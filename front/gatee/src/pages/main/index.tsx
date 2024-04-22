@@ -1,9 +1,9 @@
 import React from 'react';
 
-function Index() {
+function MainIndex() {
     return (
-        <div></div>
+        <div>메인</div>
     );
 }
 
-export default Index;
+export default MainIndex;

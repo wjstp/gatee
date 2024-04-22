@@ -1,9 +1,9 @@
 import React from 'react';
 
-function Index() {
+function ProfileIndex() {
     return (
-        <div></div>
+        <div>프로필</div>
     );
 }
 
-export default Index;
+export default ProfileIndex;

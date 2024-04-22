@@ -1,9 +1,9 @@
 import React from 'react';
 
-function Index() {
+function SignupIndex() {
     return (
-        <div></div>
+        <div>회원가입</div>
     );
 }
 
-export default Index;
+export default SignupIndex;

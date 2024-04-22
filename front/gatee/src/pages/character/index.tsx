@@ -1,9 +1,9 @@
 import React from 'react';
 
-function Index() {
+function CharacterIndex() {
     return (
-        <div></div>
+        <div>백과사전</div>
     );
 }
 
-export default Index;
+export default CharacterIndex;
