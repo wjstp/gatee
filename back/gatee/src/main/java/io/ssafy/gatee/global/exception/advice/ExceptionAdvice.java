@@ -9,19 +9,19 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ExceptionAdvice {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler({})
+//    @ExceptionHandler
     public String handleNotFound(RuntimeException e) {
         return e.getMessage();
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler()
+//    @ExceptionHandler
     public String handleBadRequest(RuntimeException e) {
         return e.getMessage();
     }
 
-    @ExceptionHandler()
     @ResponseStatus(HttpStatus.CONFLICT)
+//    @ExceptionHandler
     public String handleDuplicateException(RuntimeException e) {
         return e.getMessage();
     }
