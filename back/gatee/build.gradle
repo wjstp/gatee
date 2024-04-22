@@ -1,0 +1,99 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.2.4'
+	id 'io.spring.dependency-management' version '1.1.4'
+	id "org.asciidoctor.jvm.convert" version "3.3.2"
+}
+
+group = 'com'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	sourceCompatibility = '17'
+}
+
+configurations {
+	asciidoctorExt
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	// OAuth2
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	testImplementation 'org.springframework.security:spring-security-test'
+
+	// gson
+	implementation 'com.google.code.gson:gson:2.9.0'
+
+	// jwt
+	implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.3'
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.3'
+
+	// redis
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'org.redisson:redisson-spring-boot-starter:3.24.3'
+
+	// QueryDsl 설정
+	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
+	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
+	// aws s3
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
+	// batch
+	implementation 'org.springframework.boot:spring-boot-starter-batch'
+
+	// ShedLock(with Redis)
+	implementation 'net.javacrumbs.shedlock:shedlock-spring:4.29.0'
+	implementation 'net.javacrumbs.shedlock:shedlock-provider-redis-spring:4.29.0'
+
+	// chatGPT
+	implementation 'com.theokanning.openai-gpt3-java:service:0.12.0'
+	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+
+	// spring rest docs
+	asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+
+	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'com.mysql:mysql-connector-j'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
+}
+
+ext {
+	snippetsDir = file('build/generated-snippets')
+}
+
+asciidoctor {
+	configurations 'asciidoctorExt'
+	inputs.dir snippetsDir
+	dependsOn test
+}
+
+tasks.named('test') {
+	outputs.dir snippetsDir
+	useJUnitPlatform()
+}
+
+bootJar {
+	dependsOn asciidoctor	// 9
+	from ("${asciidoctor.outputDir}") {	// 10
+		into 'static/docs'
+	}
+}
