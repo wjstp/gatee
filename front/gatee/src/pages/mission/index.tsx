@@ -1,9 +1,9 @@
 import React from 'react';
 
-function Index() {
+function MissionIndex() {
     return (
-        <div></div>
+        <div>미션</div>
     );
 }
 
-export default Index;
+export default MissionIndex;

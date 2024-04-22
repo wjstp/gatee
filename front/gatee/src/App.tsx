@@ -1,10 +1,9 @@
 import React from 'react';
-
-
+import Router from "./Router";
 function App() {
   return (
-    <div className="App">
-      첫 시작
+    <div>
+        <Router/>
     </div>
   );
 }

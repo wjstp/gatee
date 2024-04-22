@@ -1,9 +1,9 @@
 import React from 'react';
 
-function Index() {
+function NotificationIndex() {
     return (
-        <div></div>
+        <div>알림</div>
     );
 }
 
-export default Index;
+export default NotificationIndex;

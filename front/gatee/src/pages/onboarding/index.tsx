@@ -1,9 +1,9 @@
 import React from 'react';
 
-function Index() {
+function OnboardingIndex() {
     return (
-        <div></div>
+        <div>온보딩</div>
     );
 }
 
-export default Index;
+export default OnboardingIndex;

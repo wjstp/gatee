@@ -1,9 +1,10 @@
 import React from 'react';
-
-function Index() {
+function ExamIndex() {
     return (
-        <div></div>
+        <div>
+            Exam
+        </div>
     );
 }
 
-export default Index;
+export default ExamIndex;
