@@ -1,0 +1,31 @@
+---
+spring:
+  config:
+    activate:
+      on-profile: db-local
+  jpa:
+    show-sql: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url:
+    username:
+    password:
+  data:
+    redis:
+      host:
+      port:
+
+---
+spring:
+  config:
+    activate:
+      on-profile: db-prod
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url:
+    username:
+    password:
+  data:
+    redis:
+      host:
+      port:
