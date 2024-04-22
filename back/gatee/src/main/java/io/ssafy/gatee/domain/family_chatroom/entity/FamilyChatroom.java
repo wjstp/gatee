@@ -1,7 +1,7 @@
-package io.ssafy.gatee.domain.member_family.entity;
+package io.ssafy.gatee.domain.family_chatroom.entity;
 
+import io.ssafy.gatee.domain.chatroom.entity.ChatRoom;
 import io.ssafy.gatee.domain.family.entity.Family;
-import io.ssafy.gatee.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,25 +13,17 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberFamily {
+public class FamilyChatroom {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "member_id")
-    private Member member;
-
-    @ManyToOne
     @JoinColumn(name = "family_id")
     private Family family;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
-
-    private boolean isLeader;
-
-    private Integer score;
-
+    @ManyToOne
+    @JoinColumn(name = "chat_room_id")
+    private ChatRoom chatRoom;
 }

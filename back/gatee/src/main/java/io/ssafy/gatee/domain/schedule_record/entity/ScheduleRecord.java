@@ -1,7 +1,6 @@
-package io.ssafy.gatee.domain.family.entity;
+package io.ssafy.gatee.domain.schedule_record.entity;
 
-
-import io.ssafy.gatee.domain.file.entity.File;
+import io.ssafy.gatee.domain.schedule.entity.Schedule;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,16 +12,15 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Family {
+public class ScheduleRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    @OneToOne
+    @JoinColumn(name = "schedule_id")
+    private Schedule schedule;
 
-    private Integer score;
-
-    @OneToOne(mappedBy = "file_id", cascade = CascadeType.ALL)
-    private File file;
+    private String content;
 }

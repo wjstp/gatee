@@ -1,6 +1,6 @@
-package io.ssafy.gatee.domain.member_family.entity;
+package io.ssafy.gatee.domain.member_appointment.entity;
 
-import io.ssafy.gatee.domain.family.entity.Family;
+import io.ssafy.gatee.domain.appointment.entity.Appointment;
 import io.ssafy.gatee.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberFamily {
+public class MemberAppointment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,14 +24,6 @@ public class MemberFamily {
     private Member member;
 
     @ManyToOne
-    @JoinColumn(name = "family_id")
-    private Family family;
-
-    @Enumerated(EnumType.STRING)
-    private Role role;
-
-    private boolean isLeader;
-
-    private Integer score;
-
+    @JoinColumn(name = "appointment_id")
+    private Appointment appointment;
 }

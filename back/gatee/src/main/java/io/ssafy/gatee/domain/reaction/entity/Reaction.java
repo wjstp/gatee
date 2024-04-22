@@ -1,7 +1,7 @@
-package io.ssafy.gatee.domain.member_family.entity;
+package io.ssafy.gatee.domain.reaction.entity;
 
-import io.ssafy.gatee.domain.family.entity.Family;
 import io.ssafy.gatee.domain.member.entity.Member;
+import io.ssafy.gatee.domain.photo.entity.Photo;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,25 +13,19 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberFamily {
+public class Reaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private String content;
 
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
 
     @ManyToOne
-    @JoinColumn(name = "family_id")
-    private Family family;
-
-    @Enumerated(EnumType.STRING)
-    private Role role;
-
-    private boolean isLeader;
-
-    private Integer score;
-
+    @JoinColumn(name = "photo_id")
+    private Photo photo;
 }

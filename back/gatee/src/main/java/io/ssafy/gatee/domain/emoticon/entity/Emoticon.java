@@ -1,5 +1,4 @@
-package io.ssafy.gatee.domain.family.entity;
-
+package io.ssafy.gatee.domain.emoticon.entity;
 
 import io.ssafy.gatee.domain.file.entity.File;
 import jakarta.persistence.*;
@@ -13,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Family {
+public class Emoticon {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,8 +20,7 @@ public class Family {
 
     private String name;
 
-    private Integer score;
-
-    @OneToOne(mappedBy = "file_id", cascade = CascadeType.ALL)
+    @OneToOne
+    @JoinColumn(name = "file_id")
     private File file;
 }

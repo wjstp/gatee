@@ -1,7 +1,5 @@
-package io.ssafy.gatee.domain.family.entity;
+package io.ssafy.gatee.domain.notification.entity;
 
-
-import io.ssafy.gatee.domain.file.entity.File;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,16 +11,21 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Family {
+public class Notification {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    @Enumerated(EnumType.STRING)
+    private Type type;
 
-    private Integer score;
+    private String content;
 
-    @OneToOne(mappedBy = "file_id", cascade = CascadeType.ALL)
-    private File file;
+    private boolean isCheck;
+
+    @PrePersist
+    public void prePersist() {
+        this.isCheck = false;
+    }
 }
