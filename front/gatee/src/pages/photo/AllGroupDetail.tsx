@@ -1,9 +1,9 @@
 import React from 'react';
 
-function AllGroupDetail() {
+function PhotoAllGroupDetail() {
     return (
-        <div></div>
+        <div>PhotoAllGroupDetail</div>
     );
 }
 
-export default AllGroupDetail;
+export default PhotoAllGroupDetail;

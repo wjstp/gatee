@@ -1,9 +1,9 @@
 import React from 'react';
 
-function Family() {
+function SignupFamily() {
     return (
-        <div></div>
+        <div>SignupFamily</div>
     );
 }
 
-export default Family;
+export default SignupFamily;

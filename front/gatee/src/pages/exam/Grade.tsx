@@ -1,9 +1,9 @@
 import React from 'react';
 
-function Grade() {
+function ExamGrade() {
     return (
-        <div></div>
+        <div>ExamGrade</div>
     );
 }
 
-export default Grade;
+export default ExamGrade;
