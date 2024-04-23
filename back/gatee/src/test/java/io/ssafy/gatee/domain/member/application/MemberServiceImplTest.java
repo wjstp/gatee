@@ -1,7 +1,6 @@
 package io.ssafy.gatee.domain.member.application;
 
 import io.ssafy.gatee.domain.member.dao.MemberRepository;
-import io.ssafy.gatee.domain.member.dto.request.MemberInfoReq;
 import io.ssafy.gatee.domain.member.entity.Member;
 import io.ssafy.gatee.domain.member_family.dao.MemberFamilyRepository;
 import io.ssafy.gatee.domain.member_family.entity.MemberFamily;

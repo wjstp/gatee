@@ -13,7 +13,6 @@ public record MemberInfoRes(
         String nickname,
         String birth,
         String birthType,
-
         String mood,
         String role
 ) {

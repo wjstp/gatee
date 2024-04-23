@@ -39,15 +39,7 @@ public class MemberFamily extends BaseEntity {
 
     private Integer score;
 
-
-    public void saveRole(Member member, String role) {
-
-        if (Objects.nonNull(member)) {
-            this.member = member;
-        }
-
-        if (Objects.nonNull(role)) {
-            this.role = Role.valueOf(role);
-        }
+    public void editRole(String roleString) {
+        this.role = Role.valueOf(roleString);
     }
 }

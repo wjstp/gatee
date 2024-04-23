@@ -3,7 +3,8 @@ package io.ssafy.gatee.domain.member.entity;
 
 import io.ssafy.gatee.domain.base.BaseEntity;
 import io.ssafy.gatee.domain.file.entity.File;
-import io.ssafy.gatee.domain.member.dto.request.MemberInfoReq;
+import io.ssafy.gatee.domain.member.dto.request.MemberEditReq;
+import io.ssafy.gatee.domain.member.dto.request.MemberSaveReq;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +16,6 @@ import org.hibernate.annotations.SQLRestriction;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -52,30 +52,28 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Privilege privilege;
 
-    public void saveInfo(MemberInfoReq memberInfoReq) throws ParseException {
+    // 회원 정보 저장 - file field 추가 예정
+    public void saveInfo(MemberSaveReq memberSaveReq) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-        if(Objects.nonNull(memberInfoReq.name())) {
-            this.name = memberInfoReq.name();
-        }
-        if(Objects.nonNull(memberInfoReq.email())) {
-            this.email = memberInfoReq.email();
-        }
-        if(Objects.nonNull(memberInfoReq.nickname())) {
-            this.nickname = memberInfoReq.nickname();
-        }
-        if(Objects.nonNull(memberInfoReq.birth())) {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        this.name = memberSaveReq.name();
+        this.nickname = memberSaveReq.nickname();
+        this.birth = sdf.parse(memberSaveReq.birth());
+        this.birthType = BirthType.valueOf(memberSaveReq.birthType());
+    }
 
-            this.birth = sdf.parse(memberInfoReq.birth());
-        }
-        if(Objects.nonNull(memberInfoReq.birthType())) {
-            this.birthType = BirthType.valueOf(memberInfoReq.birthType());
-        }
-        if(Objects.nonNull(memberInfoReq.mood())) {
-            this.mood = memberInfoReq.mood();
-        }
-        if(Objects.nonNull(memberInfoReq.privilege())) {
-            this.privilege = Privilege.valueOf(memberInfoReq.privilege());
-        }
+    // 회원 정보 수정
+    public void editInfo(MemberEditReq memberEditReq) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        this.name = memberEditReq.name();
+        this.nickname = memberEditReq.nickname();
+        this.birth = sdf.parse(memberEditReq.birth());
+        this.birthType = BirthType.valueOf(memberEditReq.birthType());
+    }
+
+    // 기분 상태 수정
+    public void editMood(String mood) {
+        this.mood = mood;
     }
 }
