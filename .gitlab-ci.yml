@@ -8,21 +8,21 @@ test:
   stage: test spring code
   script:
     - echo [INFO] "Running Test"
-    # yaml 파일 세팅
-    # db
-    - cd ./back/gatee/src/main/resources
-    - export DATABASE_URL="$DATABASE_URL"
-    - export DATABASE_USERNAME="$DATABASE_USERNAME"
-    - export DATABASE_PASSWORD="$DATABASE_PASSWORD"
-    - envsubst < application-db.yaml.template > application-db.yaml
-    # ai
-    - export CHATGPT_KEY="$CHATGPT_KEY"
-    - envsubst < application-ai.yaml.template > application-ai.yaml
-    # aws
-    - export AWS_BUCKET_NAME="$AWS_BUCKET_NAME"
-    - export AWS_ACCESS_KEY="$AWS_ACCESS_KEY"
-    - export AWS_SECRET_KEY="AWS_SECRET_KEY"
-    - envsubst < application-aws.yaml.template > application-aws.yaml
+    # AI 관련 설정 파일 생성
+    - cp application-ai-template.yml application-ai.yaml
+    - sed -i 's/${CHATGPT_KEY}/'"$CHATGPT_KEY"'/g' application-ai.yaml
+
+    # 데이터베이스 관련 설정 파일 생성
+    - cp application-db-template.yml application-db.yaml
+    - sed -i 's/${DATABASE_URL}/'"$DATABASE_URL"'/g' application-db.yaml
+    - sed -i 's/${DATABASE_USERNAME}/'"$DATABASE_USERNAME"'/g' application-db.yaml
+    - sed -i 's/${DATABASE_PASSWORD}/'"$DATABASE_PASSWORD"'/g' application-db.yaml
+
+    # AWS 관련 설정 파일 생성
+    - cp application-aws-template.yml application-aws.yaml
+    - sed -i 's/${AWS_BUCKET_NAME}/'"$AWS_BUCKET_NAME"'/g' application-aws.yaml
+    - sed -i 's/${AWS_ACCESS_KEY}/'"$AWS_ACCESS_KEY"'/g' application-aws.yaml
+    - sed -i 's/${AWS_SECRET_KEY}/'"$AWS_SECRET_KEY"'/g' application-aws.yaml
     - cd ../..
     - ./gradlew test
   only:
@@ -40,21 +40,21 @@ build:
     - echo "$DOCKER_REGISTRY_PASSWORD" | docker login -u $DOCKER_REGISTRY_USER --password-stdin
   script:
     - echo [INFO] yaml Settings
-    # yaml 파일 세팅
-    # db
-    - cd ./back/gatee/src/main/resources
-    - export DATABASE_URL="$DATABASE_URL"
-    - export DATABASE_USERNAME="$DATABASE_USERNAME"
-    - export DATABASE_PASSWORD="$DATABASE_PASSWORD"
-    - envsubst < application-db.yaml.template > application-db.yaml
-    # ai
-    - export CHATGPT_KEY="$CHATGPT_KEY"
-    - envsubst < application-ai.yaml.template > application-ai.yaml
-    # aws
-    - export AWS_BUCKET_NAME="$AWS_BUCKET_NAME"
-    - export AWS_ACCESS_KEY="$AWS_ACCESS_KEY"
-    - export AWS_SECRET_KEY="AWS_SECRET_KEY"
-    - envsubst < application-aws.yaml.template > application-aws.yaml
+    # AI 관련 설정 파일 생성
+    - cp application-ai-template.yml application-ai.yaml
+    - sed -i 's/${CHATGPT_KEY}/'"$CHATGPT_KEY"'/g' application-ai.yaml
+
+    # 데이터베이스 관련 설정 파일 생성
+    - cp application-db-template.yml application-db.yaml
+    - sed -i 's/${DATABASE_URL}/'"$DATABASE_URL"'/g' application-db.yaml
+    - sed -i 's/${DATABASE_USERNAME}/'"$DATABASE_USERNAME"'/g' application-db.yaml
+    - sed -i 's/${DATABASE_PASSWORD}/'"$DATABASE_PASSWORD"'/g' application-db.yaml
+
+    # AWS 관련 설정 파일 생성
+    - cp application-aws-template.yml application-aws.yaml
+    - sed -i 's/${AWS_BUCKET_NAME}/'"$AWS_BUCKET_NAME"'/g' application-aws.yaml
+    - sed -i 's/${AWS_ACCESS_KEY}/'"$AWS_ACCESS_KEY"'/g' application-aws.yaml
+    - sed -i 's/${AWS_SECRET_KEY}/'"$AWS_SECRET_KEY"'/g' application-aws.yaml
     - chmod +x ./deploy/build-image.sh
     - ./devops/build-image.sh $CI_REGISTRY/gatee-api
     - docker push $CI_REGISTRY/gatee-api:latest
