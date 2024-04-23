@@ -1,0 +1,13 @@
+// 가운데 정렬
+@mixin flex_center {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+
+// 양쪽 정렬
+@mixin flex_between {
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+}
