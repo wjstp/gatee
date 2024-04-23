@@ -42,6 +42,7 @@ build:
   script:
     - echo [INFO] yaml Settings
     - cd ./back/gatee/src/main/resources
+    - ls
     # AI 관련 설정 파일 생성
     - cp application-ai-template.yml application-ai.yaml
     - sed -i 's/${CHATGPT_KEY}/'"$CHATGPT_KEY"'/g' application-ai.yaml
