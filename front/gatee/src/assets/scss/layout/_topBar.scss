@@ -1,0 +1,18 @@
+@use '../abstracts/index' as *;
+
+.topBar {
+  @include flex_between;
+  width: 100%;
+  height: $bar-height;
+  background-color: $orange400;
+  padding: 0 1rem;
+
+  .topBar__leftDiv {
+    @include flex_center;
+  }
+
+  .topBar__rightDiv {
+    @include flex_center;
+    gap: 1rem;
+  }
+}
