@@ -1,5 +1,9 @@
 package io.ssafy.gatee.global.security.config;
 
+import io.ssafy.gatee.global.jwt.application.JwtService;
+import io.ssafy.gatee.global.jwt.filter.JwtFilter;
+import io.ssafy.gatee.global.security.handler.CustomOAuth2FailureHandler;
+import io.ssafy.gatee.global.security.handler.CustomOAuth2SuccessHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
@@ -19,10 +23,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final String[] WHITE_LIST_URL = {
-            "/oauth2/authorization/kakao", "/auth/refresh",  "/api/login",
+    private final String[] URL_WHITE_LIST = {
+            "/oauth2/authorization/kakao", "/auth/refresh", "/api/login",
             "/docs/**",
     };
+
+    private final JwtService jwtService;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
@@ -31,28 +37,24 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        // csrf를 disable 설정 : stateless 상태로 관리하기 때문에 csrf 공격을 관리하지 않아도 됨
         http.csrf(AbstractHttpConfigurer::disable)
-                // 세션 설정 - stateless
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                // 경로별 인가작업
+                .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers(WHITE_LIST_URL).permitAll()
-                        .requestMatchers("/api/members").hasRole("ANONYMOUS")   // 회원가입 후 정보 등록 페이지는 anony
-                        .anyRequest().authenticated());
-//                .oauth2Login(
-//                        oauth2 -> oauth2
-//                                .successHandler(new CustomOauth2SuccessHandler(jwtUtil, jwtService))
-//                                .failureHandler(new CustomOauth2FailureHandler())
-//                )
+                        .requestMatchers(URL_WHITE_LIST).permitAll()
+                        // 회원가입 후 정보 등록 페이지는 anonymous만 접근 가능, 정보등록을 하지 않은 유저는 다른 페이지에 접근 불가
+                        .requestMatchers("/api/members").hasRole("ANONYMOUS")
+                        .anyRequest().authenticated())
+                .oauth2Login(
+                        oauth2 -> oauth2
+                                .successHandler(new CustomOAuth2SuccessHandler())
+                                .failureHandler(new CustomOAuth2FailureHandler())
+                )
 //                .exceptionHandling(
 //                        configurer -> configurer.accessDeniedHandler(new CustomAccessDeniedHandler())
-////                                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+//                                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
 //                )
-                // http basic auth 기반으로 한 로그인 인증창 사용하지않으므로 disable
-//                .httpBasic(AbstractHttpConfigurer::disable)
-                // jwtfilter 등록 - UsernamePasswordAuthenticationFilter 전
-//                .addFilterBefore(new JwtFilter(jwtService), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JwtFilter(jwtService), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
