@@ -5,11 +5,11 @@ spring:
 cloud:
   aws:
     s3:
-      bucket:
+      bucket: ${AWS_BUCKET_NAME}
     stack:
       auto: false
     region:
       static: ap-southeast-2
     credentials:
-      access-key:
-      secret-key:
+      access-key: ${AWS_ACCESS_KEY}
+      secret-key: ${AWS_SECRET_KEY}
