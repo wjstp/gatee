@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  gatee-api:
+    image: ${CI_REGISTRY}/gatee-api:latest
+    container_name: gatee-api
+    ports:
+      - "8080:8080"
+    environment:
+      - ENV=prod
+    networks:
+      - gatee-network
+
+networks:
+  gatee-network:
+    name: gatee-network
+    driver: bridge

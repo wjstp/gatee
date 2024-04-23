@@ -1,0 +1,88 @@
+stages:
+  - test spring code
+  - build spring server
+  - deploy spring server
+
+test:
+  image: gradle:8.5.0-jdk17
+  stage: test spring server
+  script:
+    - echo [INFO] "Running Test"
+    # yaml 파일 세팅
+    # db
+    - cd ./back/gatee/src/main/resources
+    - export DATABASE_URL="$DATABASE_URL"
+    - export DATABASE_USERNAME="$DATABASE_USERNAME"
+    - export DATABASE_PASSWORD="$DATABASE_PASSWORD"
+    - envsubst < application-db.yaml.template > application-db.yaml
+    # ai
+    - export CHATGPT_KEY="$CHATGPT_KEY"
+    - envsubst < application-ai.yaml.template > application-ai.yaml
+    # aws
+    - export AWS_BUCKET_NAME="$AWS_BUCKET_NAME"
+    - export AWS_ACCESS_KEY="$AWS_ACCESS_KEY"
+    - export AWS_SECRET_KEY="AWS_SECRET_KEY"
+    - envsubst < application-aws.yaml.template > application-aws.yaml
+    - cd ../..
+    - ./gradlew test
+  only:
+    - develop
+    - master
+    - release
+
+build:
+  stage: build spring server
+  image: gradle:8.5.0-jdk17
+  services:
+    - docker:26.1.0-dind
+  before_script:
+    - echo [INFO] docker deploy start!
+    - echo "$DOCKER_REGISTRY_PASSWORD" | docker login -u $DOCKER_REGISTRY_USER --password-stdin
+  script:
+    - echo [INFO] yaml Settings
+    # yaml 파일 세팅
+    # db
+    - cd ./back/gatee/src/main/resources
+    - export DATABASE_URL="$DATABASE_URL"
+    - export DATABASE_USERNAME="$DATABASE_USERNAME"
+    - export DATABASE_PASSWORD="$DATABASE_PASSWORD"
+    - envsubst < application-db.yaml.template > application-db.yaml
+    # ai
+    - export CHATGPT_KEY="$CHATGPT_KEY"
+    - envsubst < application-ai.yaml.template > application-ai.yaml
+    # aws
+    - export AWS_BUCKET_NAME="$AWS_BUCKET_NAME"
+    - export AWS_ACCESS_KEY="$AWS_ACCESS_KEY"
+    - export AWS_SECRET_KEY="AWS_SECRET_KEY"
+    - envsubst < application-aws.yaml.template > application-aws.yaml
+    - chmod +x ./deploy/build-image.sh
+    - ./devops/build-image.sh $CI_REGISTRY/gatee-api
+    - docker push $CI_REGISTRY/gatee-api:latest
+  only:
+    - develop
+    - master
+    - release
+deploy:
+  image: gradle:8.5.0-jdk17
+  stage: deploy spring server
+  services:
+    - docker:26.1.0-dind
+  before_script:
+  - echo [INFO] docker deploy start!
+  - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_PASSWORD
+  script:
+    - CI_REGISTRY="${CI_REGISTRY}"
+    - docker system prune --volumes -f
+    - docker-compose down
+    - docker-compose up --build -d
+  after_script:
+    - docker logout
+    - echo [INFO] docker deploy end!
+  only:
+    - develop
+    - master
+    - release
+
+
+
+
