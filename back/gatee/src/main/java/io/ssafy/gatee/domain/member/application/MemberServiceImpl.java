@@ -5,6 +5,7 @@ import io.ssafy.gatee.domain.member.dto.request.MemberInfoReq;
 import io.ssafy.gatee.domain.member.dto.response.MemberInfoRes;
 import io.ssafy.gatee.domain.member.entity.BirthType;
 import io.ssafy.gatee.domain.member.entity.Member;
+import io.ssafy.gatee.domain.member.entity.Privilege;
 import io.ssafy.gatee.domain.member_family.dao.MemberFamilyRepository;
 import io.ssafy.gatee.domain.member_family.entity.MemberFamily;
 import io.ssafy.gatee.domain.member_family.entity.Role;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -33,16 +35,19 @@ public class MemberServiceImpl implements MemberService{
 
     private final MemberFamilyRepository memberFamilyRepository;
 
+
     @Override
     @Transactional
     public void register(String name, String nickname) {
         Member member = Member.builder()
                 .name(name)
                 .nickname(nickname)
+                .privilege(Privilege.valueOf("USER"))
                 .build();
 
         memberRepository.save(member);
     }
+
 
     @Override
     @Transactional  // transaction을 사용하기 위해 선언
@@ -50,20 +55,15 @@ public class MemberServiceImpl implements MemberService{
         Member member = memberRepository.findById(UUID.fromString(memberInfoReq.memberId()))
                 .orElseThrow(()-> new MemberNotFoundException(MEMBER_NOT_FOUND));
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date birth = sdf.parse(memberInfoReq.birth());
+        member.saveInfo(memberInfoReq);
 
-        member.saveInfo(memberInfoReq.name(), memberInfoReq.nickname(), birth, BirthType.valueOf(memberInfoReq.birthType()));
+        MemberFamily memberFamily = new MemberFamily();
 
-        memberRepository.save(member);
-
-        MemberFamily memberFamily = MemberFamily.builder()
-                .member(member)
-                .role(Role.valueOf(memberInfoReq.role()))
-                .build();
+        memberFamily.saveRole(member, memberInfoReq.role());
 
         memberFamilyRepository.save(memberFamily);
     }
+
 
     @Override
     public MemberInfoRes readMemberInfo(Long familyId, UUID memberId) {
@@ -86,6 +86,4 @@ public class MemberServiceImpl implements MemberService{
                 .role(String.valueOf(memberFamily.getRole()))
                 .build();
     }
-
-
 }

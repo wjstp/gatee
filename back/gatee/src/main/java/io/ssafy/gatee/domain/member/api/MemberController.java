@@ -29,24 +29,23 @@ public class MemberController {
     // 1. 회원 정보 등록
     @PatchMapping
     @ResponseStatus(HttpStatus.OK)
-    public void saveInfo(@Valid @RequestBody MemberInfoReq memberInfoReq) throws ParseException {
+    public void saveInfo(@RequestBody MemberInfoReq memberInfoReq) throws ParseException {
         memberService.saveMemberInfo(memberInfoReq);
     }
 
-    // 2. 회원 정보 조회3
+    // 2. 회원 정보 조회
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public MemberInfoRes readInfo(
             @RequestParam("familyId") Long familyId,
             @RequestParam("memberId") String memberId
-
     ) {
         log.info(String.valueOf(familyId));
         log.info(memberId);
         return memberService.readMemberInfo(familyId, UUID.fromString(memberId));
     }
 
-    // 3. 회원 정보 변경
 
-    // 4. 상태 등록
+    // 3. 상태 등록
+
 }
