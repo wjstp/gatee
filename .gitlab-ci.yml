@@ -5,7 +5,7 @@ stages:
 
 test:
   image: gradle:8.5.0-jdk17
-  stage: test spring server
+  stage: test spring code
   script:
     - echo [INFO] "Running Test"
     # yaml 파일 세팅
