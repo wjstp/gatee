@@ -1,9 +1,9 @@
 import React from 'react';
 
-function AlbumIndex() {
+function PhotoAlbumIndex() {
     return (
         <div>앨범</div>
     );
 }
 
-export default AlbumIndex;
+export default PhotoAlbumIndex;

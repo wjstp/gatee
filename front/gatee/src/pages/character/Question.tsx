@@ -1,9 +1,9 @@
 import React from 'react';
 
-function Question() {
+function CharacterQuestion() {
     return (
-        <div></div>
+        <div>CharacterQuestion</div>
     );
 }
 
-export default Question;
+export default CharacterQuestion;
