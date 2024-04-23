@@ -1,9 +1,9 @@
 import React from 'react';
 
-function Start() {
+function CharacterStart() {
     return (
-        <div></div>
+        <div>CharacterStart</div>
     );
 }
 
-export default Start;
+export default CharacterStart;

@@ -1,0 +1,13 @@
+@use '../abstracts/index' as *;
+
+.bottomBar {
+  @include flex_between;
+  width: 100%;
+  height: $bar-height;
+  background-color: $orange100;
+  padding: 0 2rem;
+
+  .bottomBar__item {
+
+  }
+}
