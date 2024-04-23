@@ -1,9 +1,9 @@
 import React from 'react';
 
-function Taking() {
+function ExamTaking() {
     return (
-        <div></div>
+        <div>ExamTaking</div>
     );
 }
 
-export default Taking;
+export default ExamTaking;

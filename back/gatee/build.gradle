@@ -91,6 +91,10 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
+clean {
+	delete file('src/main/generated')
+}
+
 bootJar {
 	dependsOn asciidoctor	// 9
 	from ("${asciidoctor.outputDir}") {	// 10

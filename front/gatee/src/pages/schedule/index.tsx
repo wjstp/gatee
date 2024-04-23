@@ -1,9 +1,9 @@
 import React from 'react';
 
-function Index() {
+function ScheduleIndex() {
     return (
-        <div></div>
+        <div>일정</div>
     );
 }
 
-export default Index;
+export default ScheduleIndex;

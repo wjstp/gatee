@@ -1,9 +1,9 @@
 import React from 'react';
 
-function CreateSchedule() {
+function ScheduleCreateSchedule() {
     return (
-        <div></div>
+        <div>ScheduleCreateSchedule</div>
     );
 }
 
-export default CreateSchedule;
+export default ScheduleCreateSchedule;

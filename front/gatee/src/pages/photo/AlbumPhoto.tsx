@@ -1,9 +1,9 @@
 import React from 'react';
 
-function AlbumPhoto() {
+function PhotoAlbumPhoto() {
     return (
-        <div></div>
+        <div>PhotoAlbumPhoto</div>
     );
 }
 
-export default AlbumPhoto;
+export default PhotoAlbumPhoto;
