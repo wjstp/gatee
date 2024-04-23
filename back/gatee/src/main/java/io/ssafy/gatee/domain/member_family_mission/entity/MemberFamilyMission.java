@@ -1,5 +1,6 @@
 package io.ssafy.gatee.domain.member_family_mission.entity;
 
+import io.ssafy.gatee.domain.base.BaseEntity;
 import io.ssafy.gatee.domain.member_family.entity.MemberFamily;
 import io.ssafy.gatee.domain.mission.entity.Mission;
 import jakarta.persistence.*;
@@ -7,13 +8,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberFamilyMission {
+@SQLRestriction("status=TRUE")
+public class MemberFamilyMission extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

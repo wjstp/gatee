@@ -1,5 +1,6 @@
 package io.ssafy.gatee.domain.chatmessage.entity;
 
+import io.ssafy.gatee.domain.base.BaseEntity;
 import io.ssafy.gatee.domain.chatroom.entity.ChatRoom;
 import io.ssafy.gatee.domain.file.entity.File;
 import io.ssafy.gatee.domain.member.entity.Member;
@@ -8,13 +9,17 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLRestriction;
+
+import java.util.List;
 
 @Entity
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChatMessage {
+@SQLRestriction("status=TRUE")
+public class ChatMessage extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,6 +38,7 @@ public class ChatMessage {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToOne(mappedBy = "file_id", cascade = CascadeType.ALL)
-    private File file;
+    @OneToMany
+    @JoinColumn(name = "file_id")
+    private List<File> file;
 }

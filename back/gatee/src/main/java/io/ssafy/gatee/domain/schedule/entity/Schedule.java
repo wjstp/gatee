@@ -1,10 +1,13 @@
 package io.ssafy.gatee.domain.schedule.entity;
 
+import io.ssafy.gatee.domain.base.BaseEntity;
+import io.ssafy.gatee.domain.schedule_record.entity.ScheduleRecord;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLRestriction;
 import org.joda.time.DateTime;
 
 @Entity
@@ -12,7 +15,8 @@ import org.joda.time.DateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Schedule {
+@SQLRestriction("status=TRUE")
+public class Schedule extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,4 +34,7 @@ public class Schedule {
     private DateTime startDate;
 
     private DateTime endDate;
+
+    @OneToOne(mappedBy = "schedule", cascade = CascadeType.ALL)
+    private ScheduleRecord scheduleRecord;
 }

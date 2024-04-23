@@ -1,11 +1,13 @@
 package io.ssafy.gatee.domain.appointment.entity;
 
+import io.ssafy.gatee.domain.base.BaseEntity;
 import io.ssafy.gatee.domain.chatroom.entity.ChatRoom;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLRestriction;
 import org.joda.time.DateTime;
 
 @Entity
@@ -13,7 +15,8 @@ import org.joda.time.DateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Appointment {
+@SQLRestriction("status=TRUE")
+public class Appointment extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
