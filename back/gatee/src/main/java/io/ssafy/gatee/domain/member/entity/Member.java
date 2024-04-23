@@ -46,5 +46,12 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Privilege privilege;
 
-    private boolean isLunar;
+    private BirthType birthType;
+
+    public void saveInfo(String name, String nickname, Date birth, BirthType birthType) {
+        this.name = name;
+        this.nickname = nickname;
+        this.birth = birth;
+        this.birthType = birthType;
+    }
 }
