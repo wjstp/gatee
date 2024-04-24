@@ -1,4 +1,4 @@
-package io.ssafy.gatee.domain.Family_schedule.entity;
+package io.ssafy.gatee.domain.family_schedule.entity;
 
 import io.ssafy.gatee.domain.base.BaseEntity;
 import io.ssafy.gatee.domain.family.entity.Family;
