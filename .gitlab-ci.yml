@@ -34,7 +34,7 @@ test:
     - cd ../../..
     - pwd
     - chmod +x gradlew
-    - ./gradlew test
+    - SPRING_PROFILES_ACTIVE=prod ./gradlew test
   only:
     - develop
     - master
