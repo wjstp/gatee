@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {BrowserRouter, Routes, Route} from "react-router-dom";
 // 모의고사
 import ExamIndex from "./pages/exam";
 import ExamGrade from "./pages/exam/Grade";
@@ -11,7 +11,8 @@ import MissionIndex from "./pages/mission";
 // 알림
 import NotificationIndex from "./pages/notification";
 // 온보딩
-import OnboardingIndex from "./pages/onboarding";
+import OnboardingIndex from "./pages/onboarding/index";
+import KaKaoLogin from "./pages/onboarding/component/KaKaoLogin";
 // 프로필
 import ProfileIndex from "./pages/profile";
 // 일정
@@ -35,7 +36,7 @@ import PhotoAlbumIndex from "./pages/photo";
 import PhotoAlbumGroupDetail from "./pages/photo/AlbumGroupDetail";
 import PhotoAllGroupDetail from "./pages/photo/AllGroupDetail";
 import PhotoAlbumPhoto from "./pages/photo/AlbumPhoto";
-const Tsx = () => {
+const Router = () => {
   return (
       <BrowserRouter>
         <TopBar/>
@@ -43,6 +44,7 @@ const Tsx = () => {
               <Routes>
                   {/*온보딩*/}
                   <Route path="/" element={<OnboardingIndex />} />
+                  <Route path="/kakao" element={<KaKaoLogin />} />
                   {/*회원가입*/}
                   <Route path="/signup" element={<SignupIndex />} />
                   <Route path="/signup/member" element={<SignupMember />} />
@@ -82,4 +84,4 @@ const Tsx = () => {
   );
 }
 
-export default Tsx;
+export default Router;
