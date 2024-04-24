@@ -1,4 +1,12 @@
-function aasd() {
-}
+import React from 'react';
 
-export default aasd;
+const QuestionItem = () => {
+    // console.log(props);
+    return (
+        <div>
+            QuestionItem
+        </div>
+    );
+};
+
+export default QuestionItem;

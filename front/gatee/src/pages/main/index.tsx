@@ -10,12 +10,12 @@ function MainIndex() {
 
     return (
         <div>
+            <span>메인</span>
             <div>
-                <span>메인</span>
+                <button onClick={signupButtonClick}>
+                    회원가입
+                </button>
             </div>
-            <button onClick={signupButtonClick}>
-                회원가입
-            </button>
         </div>
     );
 }
