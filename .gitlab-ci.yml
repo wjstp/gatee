@@ -28,7 +28,7 @@ test:
     - sed -i 's|${AWS_SECRET_KEY}|'"$AWS_SECRET_KEY"'|g' application-aws.yaml
     - ls
     - pwd
-    - cd ../..
+    - cd ../../..
     - pwd
     - ./gradlew test
   only:
