@@ -5,7 +5,8 @@
 :toc: left
 :toclevels: 3
 
-== 회원가입 (adoc 예시)
+
+== 회원 정보 등록
 
 === Request
 
@@ -14,3 +15,36 @@ include::{snippets}/회원 정보 등록/http-request.adoc[]
 === Response
 
 include::{snippets}/회원 정보 등록/http-response.adoc[]
+
+
+== 회원 정보 수정
+
+=== Request
+
+include::{snippets}/회원 정보 수정/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/회원 정보 수정/http-response.adoc[]
+
+
+== 기분 상태 수정
+
+=== Request
+
+include::{snippets}/기분 상태 수정/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/기분 상태 수정/http-response.adoc[]
+
+
+== 회원 정보 조회
+
+=== Request
+
+include::{snippets}/회원 정보 조회/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/회원 정보 조회/http-response.adoc[]
