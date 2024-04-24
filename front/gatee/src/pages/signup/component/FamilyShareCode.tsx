@@ -1,9 +1,11 @@
 import React from 'react';
 
 function FamilyShareCode() {
-    return (
-        <div></div>
-    );
+  return (
+    <div>
+      familyshare
+    </div>
+  );
 }
 
 export default FamilyShareCode;
