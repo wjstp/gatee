@@ -35,7 +35,7 @@ import PhotoAlbumIndex from "./pages/photo";
 import PhotoAlbumGroupDetail from "./pages/photo/AlbumGroupDetail";
 import PhotoAllGroupDetail from "./pages/photo/AllGroupDetail";
 import PhotoAlbumPhoto from "./pages/photo/AlbumPhoto";
-const Router = () => {
+const Tsx = () => {
   return (
       <BrowserRouter>
         <TopBar/>
@@ -77,9 +77,9 @@ const Router = () => {
                   <Route path="/photo/album/:id" element={<PhotoAlbumGroupDetail />} />
               </Routes>
           </div>
-        <BottomBar style={{position: "fixed",bottom: 0, left: 0, right: 0}}/>
+        <BottomBar />
       </BrowserRouter>
   );
 }
 
-export default Router;
+export default Tsx;

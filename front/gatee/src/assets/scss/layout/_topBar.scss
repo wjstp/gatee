@@ -3,16 +3,25 @@
 .topBar {
   @include flex_between;
   width: 100%;
-  height: $bar-height;
-  background-color: $orange400;
+  height: $topBar-height;
   padding: 0 1rem;
 
-  .topBar__leftDiv {
+  .leftDiv {
     @include flex_center;
   }
 
-  .topBar__rightDiv {
+  .rightDiv {
     @include flex_center;
+    color: $gray300;
     gap: 1rem;
+
+    div, a {
+      @include flex_center;
+    }
+
+    &--active {
+      @extend .rightDiv;
+      color: $orange400;
+    }
   }
 }

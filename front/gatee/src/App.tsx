@@ -1,9 +1,9 @@
 import React from 'react';
-import Router from "./Router";
+import Tsx from "./Router";
 function App() {
   return (
     <div>
-        <Router/>
+        <Tsx/>
     </div>
   );
 }

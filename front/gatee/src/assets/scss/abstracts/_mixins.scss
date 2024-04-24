@@ -2,12 +2,86 @@
 @mixin flex_center {
   display: flex;
   justify-content: center;
-  align-content: center;
+  align-items: center;
 }
 
 // 양쪽 정렬
 @mixin flex_between {
   display: flex;
   justify-content: space-between;
-  align-content: center;
+  align-items: center;
+}
+
+// 세로 flex
+@mixin flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+// 가로 flex
+@mixin flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+// margin
+@mixin m-($num){
+  margin: $num+rem;
+}
+
+@mixin mr-($num){
+  margin-right: $num+rem;
+}
+
+@mixin ml-($num){
+  margin-left: $num+rem;
+}
+
+@mixin mt-($num){
+  margin-top: $num+rem;
+}
+
+@mixin mb-($num){
+  margin-bottom: $num+rem;
+}
+
+@mixin my-($num){
+  margin-top: $num+rem;
+  margin-bottom: $num+rem;
+}
+
+@mixin mx-($num){
+  margin-left: $num+rem;
+  margin-right: $num+rem;
+}
+
+// padding
+@mixin p-($num){
+  padding: $num+rem;
+}
+
+@mixin pr-($num){
+  padding-right: $num+rem;
+}
+
+@mixin pl-($num){
+  padding-left: $num+rem;
+}
+
+@mixin py-($num){
+  padding-top: $num+rem;
+  padding-bottom: $num+rem;
+}
+
+@mixin px-($num){
+  padding-left: $num+rem;
+  padding-right: $num+rem;
+}
+
+@mixin pt-($num){
+  padding-top: $num+rem;
+}
+
+@mixin pb-($num){
+  padding-bottom: $num+rem;
 }

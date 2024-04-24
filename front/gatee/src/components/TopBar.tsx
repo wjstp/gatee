@@ -1,16 +1,19 @@
-import React from 'react';
-import { useNavigate } from "react-router-dom";
-import { IoChevronBack } from "react-icons/io5";
-import { IoPersonOutline } from "react-icons/io5";
-import { GoBell } from "react-icons/go";
+import React, { useEffect, useState } from 'react';
+import { useNavigate, NavLink, useLocation } from "react-router-dom";
+import { PiCaretLeft } from "react-icons/pi";
+import { PiBell } from "react-icons/pi";
+import { PiUserCircle } from "react-icons/pi";
+import { PiSquaresFour } from "react-icons/pi";
+import { PiGearSix } from "react-icons/pi";
 
-function TopBar () {
+const TopBar = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const [currentPage, setCurrentPage] = useState('');
 
-    // 가려는 목적지를 문자열로 받으면, 이동시켜주는 함수
-    const goTo = (destination: string) => {
-        navigate(`/${destination}`);
-    }
+    useEffect(() => {
+        setCurrentPage(location.pathname)
+    }, [ location ])
 
     // 바로 이전 페이지로 이동
     const goBack = () => {
@@ -18,16 +21,26 @@ function TopBar () {
     }
 
     return <div className="topBar">
-        <div className="topBar__leftDiv" onClick={goBack}>
-            <IoChevronBack/>
+        <div className="leftDiv" onClick={goBack}>
+            <PiCaretLeft size={24} />
         </div>
-        <div className="topBar__rightDiv">
-        <div onClick={() => goTo("notification")}>
-            <GoBell />
-        </div>
-        <div onClick={() => goTo("profile")}>
-            <IoPersonOutline />
-        </div>
+        <div className="rightDiv">
+            {currentPage === '/notification' && (
+                <PiGearSix size={24} />
+            )}
+            {currentPage === '/chat' && (
+                <PiSquaresFour size={24} />
+            )}
+            <NavLink to="/notification" className={({isActive}) =>
+                isActive ? 'rightDiv--active' : ''
+            }>
+                <PiBell size={24} />
+            </NavLink>
+            <NavLink to="/profile" className={({isActive}) =>
+                isActive ? 'rightDiv--active' : ''
+            }>
+                <PiUserCircle size={24} />
+            </NavLink>
         </div>
     </div>
 }

@@ -1,35 +1,44 @@
 import React from 'react';
-import { useNavigate } from "react-router-dom";
-import { ReactComponent as ExamIcon } from "../assets/icons/exam.svg"
-import { ReactComponent as CalendarIcon } from "../assets/icons/calendar.svg"
-import { ReactComponent as ChatIcon } from "../assets/icons/chat.svg"
+import { NavLink } from "react-router-dom";
 import { ReactComponent as HomeIcon } from "../assets/icons/home.svg"
-import { ReactComponent as PhotoIcon } from "../assets/icons/photo.svg"
+import { PiGraduationCap } from "react-icons/pi";
+import { PiCalendar } from "react-icons/pi";
+import { PiChatCenteredDots } from "react-icons/pi";
+import { PiImage } from "react-icons/pi";
 
-function BottomBar(){
-    // 가려는 목적지를 문자로 받으면, 이동시켜주는 함수
-    const navigate = useNavigate();
-    const goTo = (destination: string) => {
-        navigate(`/${destination}`);
-    }
-
+const BottomBar = () => {
     return (
         <div className="bottomBar">
-            <div className="bottomBar__item" onClick={() => goTo("exam")}>
-                <ExamIcon/>
-            </div>
-            <div className="bottomBar__item" onClick={() => goTo("chat")}>
-                <ChatIcon/>
-            </div>
-            <div className="bottomBar__item" onClick={() => goTo("main")}>
-                <HomeIcon/>
-            </div>
-            <div className="bottomBar__item" onClick={() => goTo("schedule")}>
-                <CalendarIcon/>
-            </div>
-            <div className="bottomBar__item" onClick={() => goTo("album")}>
-                <PhotoIcon/>
-            </div>
+            <NavLink to="/exam" className={({isActive}) =>
+                isActive ? 'bottomBar__item--active' : 'bottomBar__item'
+            }>
+                <PiGraduationCap size={24} />
+                <span>모의고사</span>
+            </NavLink>
+            <NavLink to="/chat" className={({isActive}) =>
+                isActive ? 'bottomBar__item--active' : 'bottomBar__item'
+            }>
+                <PiChatCenteredDots size={24} />
+                <span>채팅</span>
+            </NavLink>
+            <NavLink to="/main" className={({isActive}) =>
+                isActive ? 'bottomBar__item--active bottomBar__itemHome--active' : 'bottomBar__item'
+            }>
+                <HomeIcon />
+                <span>홈</span>
+            </NavLink>
+            <NavLink to="/schedule" className={({isActive}) =>
+                isActive ? 'bottomBar__item--active' : 'bottomBar__item'
+            }>
+                <PiCalendar size={24} />
+                <span>일정</span>
+            </NavLink>
+            <NavLink to="/photo" className={({isActive}) =>
+                isActive ? 'bottomBar__item--active' : 'bottomBar__item'
+            }>
+                <PiImage size={24} />
+                <span>앨범</span>
+            </NavLink>
         </div>
     )
 }
