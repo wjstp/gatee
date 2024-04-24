@@ -38,7 +38,7 @@ public class MemberFamilyExam extends BaseEntity {
     private String answer;
 
     @ElementCollection  // List 타입일 경우 선언
-    private List<String> wrongAnswer = new ArrayList<>();
+    private List<String> wrongAnswer;
 
     private String choice;
 }
