@@ -17,7 +17,7 @@ test:
 
     # 데이터베이스 관련 설정 파일 생성
     - cp application-db.yaml.template application-db.yaml
-    - sed -i 's|${DATABASE_URL|'"$DATABASE_URL"'|g' application-db.yaml
+    - sed -i 's|${DATABASE_URL}|'"$DATABASE_URL"'|g' application-db.yaml
     - sed -i 's|${DATABASE_USERNAME}|'"$DATABASE_USERNAME"'|g' application-db.yaml
     - sed -i 's|${DATABASE_PASSWORD}|'"$DATABASE_PASSWORD"'|g' application-db.yaml
     - sed -i 's|${REDIS_HOST}|'"$REDIS_HOST"'|g' application-db.yaml
