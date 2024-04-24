@@ -80,7 +80,7 @@ build:
     - master
     - release
 deploy:
-  image: gradle:8.5.0-jdk17
+  image: docker:latest
   stage: deploy spring server
   services:
     - docker:dind
