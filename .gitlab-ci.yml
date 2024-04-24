@@ -30,6 +30,7 @@ test:
     - pwd
     - cd ../../..
     - pwd
+    - chmod +x gradlew
     - ./gradlew test
   only:
     - develop
