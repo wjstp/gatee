@@ -1,10 +1,9 @@
-package io.ssafy.gatee.domain.group.entity;
+package io.ssafy.gatee.domain.photo_album.entity;
 
 import io.ssafy.gatee.domain.base.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import io.ssafy.gatee.domain.album.entity.Album;
+import io.ssafy.gatee.domain.photo.entity.Photo;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,11 +16,17 @@ import org.hibernate.annotations.SQLRestriction;
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLRestriction("status=TRUE")
-public class Group extends BaseEntity {
+public class PhotoAlbum extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    @ManyToOne
+    @JoinColumn(name = "photo_id")
+    private Photo photo;
+
+    @ManyToOne
+    @JoinColumn(name = "album_id")
+    private Album album;
 }

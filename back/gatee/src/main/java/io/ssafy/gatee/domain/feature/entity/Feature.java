@@ -1,4 +1,4 @@
-package io.ssafy.gatee.domain.character.entity;
+package io.ssafy.gatee.domain.feature.entity;
 
 import io.ssafy.gatee.domain.base.BaseEntity;
 import jakarta.persistence.*;
@@ -14,7 +14,7 @@ import org.hibernate.annotations.SQLRestriction;
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLRestriction("status=TRUE")
-public class Character extends BaseEntity {
+public class Feature extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

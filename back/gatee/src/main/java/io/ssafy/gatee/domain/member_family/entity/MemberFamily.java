@@ -10,6 +10,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLRestriction;
 
+import java.util.Objects;
+
 @Entity
 @Getter
 @Builder
@@ -37,4 +39,7 @@ public class MemberFamily extends BaseEntity {
 
     private Integer score;
 
+    public void editRole(String roleString) {
+        this.role = Role.valueOf(roleString);
+    }
 }

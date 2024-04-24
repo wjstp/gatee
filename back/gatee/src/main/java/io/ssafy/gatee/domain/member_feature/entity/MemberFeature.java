@@ -1,7 +1,7 @@
-package io.ssafy.gatee.domain.member_character.entity;
+package io.ssafy.gatee.domain.member_feature.entity;
 
 import io.ssafy.gatee.domain.base.BaseEntity;
-import io.ssafy.gatee.domain.character.entity.Character;
+import io.ssafy.gatee.domain.feature.entity.Feature;
 import io.ssafy.gatee.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -18,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLRestriction("status=TRUE")
-public class MemberCharacter extends BaseEntity {
+public class MemberFeature extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,8 +29,8 @@ public class MemberCharacter extends BaseEntity {
     private Member member;
 
     @ManyToOne
-    @JoinColumn(name = "character_id")
-    private Character character;
+    @JoinColumn(name = "feature_id")
+    private Feature feature;
 
     private String answer;
 

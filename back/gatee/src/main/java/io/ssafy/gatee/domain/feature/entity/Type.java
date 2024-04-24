@@ -1,4 +1,4 @@
-package io.ssafy.gatee.domain.character.entity;
+package io.ssafy.gatee.domain.feature.entity;
 
 public enum Type {
     PARENTS, CHILDREN, ALL

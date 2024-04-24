@@ -3,6 +3,8 @@ package io.ssafy.gatee.domain.member.entity;
 
 import io.ssafy.gatee.domain.base.BaseEntity;
 import io.ssafy.gatee.domain.file.entity.File;
+import io.ssafy.gatee.domain.member.dto.request.MemberEditReq;
+import io.ssafy.gatee.domain.member.dto.request.MemberSaveReq;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +13,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.SQLRestriction;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 @Entity
@@ -33,7 +36,9 @@ public class Member extends BaseEntity {
 
     private String nickname;
 
-    private Date birth;
+    private LocalDate birth;
+
+    private BirthType birthType;
 
     private String mood;
 
@@ -46,5 +51,24 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Privilege privilege;
 
-    private boolean isLunar;
+    // 회원 정보 저장 - file field 추가 예정
+    public void saveInfo(MemberSaveReq memberSaveReq) {
+        this.name = memberSaveReq.name();
+        this.nickname = memberSaveReq.nickname();
+        this.birth = LocalDate.parse(memberSaveReq.birth(), DateTimeFormatter.ISO_DATE);
+        this.birthType = BirthType.valueOf(memberSaveReq.birthType());
+    }
+
+    // 회원 정보 수정
+    public void editInfo(MemberEditReq memberEditReq)   {
+        this.name = memberEditReq.name();
+        this.nickname = memberEditReq.nickname();
+        this.birth = LocalDate.parse(memberEditReq.birth(), DateTimeFormatter.ISO_DATE);
+        this.birthType = BirthType.valueOf(memberEditReq.birthType());
+    }
+
+    // 기분 상태 수정
+    public void editMood(String mood) {
+        this.mood = mood;
+    }
 }
