@@ -11,6 +11,5 @@ services:
       - gatee-net
 
 networks:
-  gatee-network:
-    name: gatee-net
+  gatee-net:
     driver: bridge
