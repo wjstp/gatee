@@ -8,9 +8,9 @@ services:
     environment:
       - ENV=prod
     networks:
-      - gatee-network
+      - gatee-net
 
 networks:
   gatee-network:
-    name: gatee-network
+    name: gatee-net
     driver: bridge
