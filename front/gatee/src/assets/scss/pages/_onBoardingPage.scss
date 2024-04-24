@@ -1,1 +1,115 @@
 @use '../abstracts/index' as *;
+
+.containerCenter {
+  justify-content: center;
+  align-items: center;
+}
+
+.onBoardingContainer {
+  @include flex_center;
+  flex-direction: column;
+  height: 100vh;
+
+  h1, h2, h3, h4, h5, h6, p {
+    text-align: center;
+  }
+
+  p {
+    font-size: 1.2rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  h1 {
+    font-size:2rem;
+  }
+
+  .mb {
+    margin-bottom: 10px;
+  }
+  .mb-large {
+    margin-bottom: 30px;
+  }
+  .explain {
+    @include flex-col;
+    @include flex_center;
+    height: 100vh*0.5;
+    width: 100vw;
+    padding-top: 3rem;
+    //border: 3px solid red;
+  }
+.pb {
+  padding-bottom: 3rem;
+}
+  .emptyBox{
+    height: 100px;
+  }
+  .textFlex {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  img {
+    object-fit: cover;
+  }
+  //카카오 버튼
+  .kakaoLoginButton {
+    height: 80px;
+    width: 100vw;
+    font-weight: bold;
+    color: black;
+    font-size: 20px;
+    background-color: $kakaoYellow;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    padding-top: 20px;
+    position: absolute;
+    bottom: 0;
+  }
+
+  .kakaoLoginButton:hover {
+    opacity: 0.2;
+    transition: 0.1s;
+  }
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: end;
+  width: 100%;
+  margin-right: 20%;
+
+  .skipButton {
+    font-size: 1.2rem;
+    margin-top: 20px;
+    color: $gray100;
+  }
+}
+// 표시줄
+.dotContainer {
+  display: flex;
+  gap:10px;
+  justify-content: center;
+  width: 100vw;
+  margin-top: 25%;
+  position: absolute;
+
+  // 인디케이터 도트
+  .disableDot {
+    width: 0.7rem;
+    height: 0.7rem;
+    border-radius: 50%;
+    background-color: $gray100;
+  }
+  .activeDot {
+    width: 0.7rem;
+    height: 0.7rem;
+    border-radius: 50%;
+    background-color: $orange400;
+  }
+}
+
