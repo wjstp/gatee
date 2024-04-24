@@ -48,7 +48,7 @@ const OnboardingIndex = () => {
         // 현재 슬라이드보다 큰것들만 주황색
         const index:number[] = [0,1,2,3]
         return(
-            <div className="dotContainer">
+            <div className="onboarding__dotContainer">
                 {index.map((item:number) =>{
                     if (activeSlide >= item)
                         return <div className="activeDot"></div>
@@ -59,7 +59,7 @@ const OnboardingIndex = () => {
         )
     }
     return (
-        <div className="containerCenter">
+        <div className="onboarding__container-center">
             <Indicator/>
             <Slider {...settings}>
                 <FirstExam/>

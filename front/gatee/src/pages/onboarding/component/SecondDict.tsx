@@ -5,7 +5,7 @@ const SecondDict = () => {
 
 
     return (
-        <div className={"onBoardingContainer"}>
+        <div className={"slider__container"}>
             <div className="border mb">
                 <p className="mb">질문들을 채워 가족들에게 나를 알려줘요</p>
                 <h2>나만의 백과사전</h2>

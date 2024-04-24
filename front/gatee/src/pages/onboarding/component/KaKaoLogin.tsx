@@ -6,7 +6,7 @@ const KaKaoLogin = () => {
 
     return (
         <div>
-            <div className="onBoardingContainer">
+            <div className="slider__container">
                 <div className="textFlex">
                     <h2>가족들과 같이, </h2><h1>가티</h1>
                 </div>
