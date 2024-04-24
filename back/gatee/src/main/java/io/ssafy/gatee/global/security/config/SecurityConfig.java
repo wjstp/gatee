@@ -2,6 +2,7 @@ package io.ssafy.gatee.global.security.config;
 
 import io.ssafy.gatee.global.jwt.application.JwtService;
 import io.ssafy.gatee.global.jwt.filter.JwtFilter;
+import io.ssafy.gatee.global.security.filter.CustomOAuth2LoginFilter;
 import io.ssafy.gatee.global.security.handler.CustomOAuth2FailureHandler;
 import io.ssafy.gatee.global.security.handler.CustomOAuth2SuccessHandler;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -54,6 +56,7 @@ public class SecurityConfig {
 //                        configurer -> configurer.accessDeniedHandler(new CustomAccessDeniedHandler())
 //                                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
 //                )
+//                .addFilterAt(new CustomOAuth2LoginFilter(), OAuth2LoginAuthenticationFilter.class)
                 .addFilterBefore(new JwtFilter(jwtService), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

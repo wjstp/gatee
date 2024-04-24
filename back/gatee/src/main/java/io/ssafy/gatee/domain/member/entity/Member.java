@@ -13,6 +13,7 @@ import org.hibernate.annotations.SQLRestriction;
 
 import java.util.Date;
 import java.util.UUID;
+import java.util.List;
 
 @Entity
 @Getter
@@ -44,7 +45,8 @@ public class Member extends BaseEntity {
     private File file;
 
     @Enumerated(EnumType.STRING)
-    private Privilege privilege;
+    @ElementCollection(fetch = FetchType.LAZY)
+    private List<Privilege> privilege;
 
     private BirthType birthType;
 
