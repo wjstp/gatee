@@ -4,7 +4,7 @@ WORKDIR /work
 COPY . /work
 
 RUN chmod +x ./gradlew
-RUN ./gradlew clean bootJar
+RUN ./gradlew clean build
 
 FROM openjdk:17-jdk
 ENV TZ="Asia/Seoul"
