@@ -26,7 +26,10 @@ test:
     - sed -i 's|${AWS_BUCKET_NAME}|'"$AWS_BUCKET_NAME"'|g' application-aws.yaml
     - sed -i 's|${AWS_ACCESS_KEY}|'"$AWS_ACCESS_KEY"'|g' application-aws.yaml
     - sed -i 's|${AWS_SECRET_KEY}|'"$AWS_SECRET_KEY"'|g' application-aws.yaml
+    - ls
+    - pwd
     - cd ../..
+    - pwd
     - ./gradlew test
   only:
     - develop
