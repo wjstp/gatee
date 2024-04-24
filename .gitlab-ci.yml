@@ -19,13 +19,13 @@ test:
     - cp application-db.yaml.template application-db.yaml
     - sed -i 's|${DATABASE_URL|'"$DATABASE_URL"'|g' application-db.yaml
     - sed -i 's|${DATABASE_USERNAME}|'"$DATABASE_USERNAME"'|g' application-db.yaml
-    - sed -i 's|${DATABASE_PASSWORD}/'"$DATABASE_PASSWORD"'|g' application-db.yaml
+    - sed -i 's|${DATABASE_PASSWORD}|'"$DATABASE_PASSWORD"'|g' application-db.yaml
 
     # AWS 관련 설정 파일 생성
     - cp application-aws.yaml.template application-aws.yaml
     - sed -i 's|${AWS_BUCKET_NAME}|'"$AWS_BUCKET_NAME"'|g' application-aws.yaml
-    - sed -i 's|${AWS_ACCESS_KEY}/'"$AWS_ACCESS_KEY"'|g' application-aws.yaml
-    - sed -i 's|${AWS_SECRET_KEY}/'"$AWS_SECRET_KEY"'|g' application-aws.yaml
+    - sed -i 's|${AWS_ACCESS_KEY}|'"$AWS_ACCESS_KEY"'|g' application-aws.yaml
+    - sed -i 's|${AWS_SECRET_KEY}|'"$AWS_SECRET_KEY"'|g' application-aws.yaml
     - cd ../..
     - ./gradlew test
   only:
@@ -54,13 +54,13 @@ build:
     - cp application-db.yaml.template application-db.yaml
     - sed -i 's|${DATABASE_URL|'"$DATABASE_URL"'|g' application-db.yaml
     - sed -i 's|${DATABASE_USERNAME}|'"$DATABASE_USERNAME"'|g' application-db.yaml
-    - sed -i 's|${DATABASE_PASSWORD}/'"$DATABASE_PASSWORD"'|g' application-db.yaml
+    - sed -i 's|${DATABASE_PASSWORD}|'"$DATABASE_PASSWORD"'|g' application-db.yaml
 
     # AWS 관련 설정 파일 생성
     - cp application-aws.yaml.template application-aws.yaml
     - sed -i 's|${AWS_BUCKET_NAME}|'"$AWS_BUCKET_NAME"'|g' application-aws.yaml
-    - sed -i 's|${AWS_ACCESS_KEY}/'"$AWS_ACCESS_KEY"'|g' application-aws.yaml
-    - sed -i 's|${AWS_SECRET_KEY}/'"$AWS_SECRET_KEY"'|g' application-aws.yaml
+    - sed -i 's|${AWS_ACCESS_KEY}|'"$AWS_ACCESS_KEY"'|g' application-aws.yaml
+    - sed -i 's|${AWS_SECRET_KEY}|'"$AWS_SECRET_KEY"'|g' application-aws.yaml
     - chmod +x ./deploy/build-image.sh
     - ./devops/build-image.sh $CI_REGISTRY/gatee-api
     - docker push $CI_REGISTRY/gatee-api:latest
