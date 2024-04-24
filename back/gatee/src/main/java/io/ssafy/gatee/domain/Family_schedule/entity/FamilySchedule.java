@@ -1,7 +1,7 @@
-package io.ssafy.gatee.domain.member_schedule.entity;
+package io.ssafy.gatee.domain.Family_schedule.entity;
 
 import io.ssafy.gatee.domain.base.BaseEntity;
-import io.ssafy.gatee.domain.member.entity.Member;
+import io.ssafy.gatee.domain.family.entity.Family;
 import io.ssafy.gatee.domain.schedule.entity.Schedule;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -16,15 +16,15 @@ import org.hibernate.annotations.SQLRestriction;
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLRestriction("status=TRUE")
-public class MemberSchedule extends BaseEntity {
+public class FamilySchedule extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @JoinColumn(name = "family_id")
+    private Family family;
 
     @ManyToOne
     @JoinColumn(name = "schedule_id")
