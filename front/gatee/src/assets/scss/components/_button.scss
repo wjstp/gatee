@@ -7,3 +7,14 @@
   text-align: center;
   background-color: $orange400;
 }
+
+// 회원가입 버튼
+.signupButton {
+  background-color: $orange400;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 30px;
+  height: 60px;
+  width: 89%;
+  color: white;
+}

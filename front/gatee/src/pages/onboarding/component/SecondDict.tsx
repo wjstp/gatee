@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Explain2 from "../../../assets/onboarding/explain2.png"
-import {useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 const SecondDict = () => {
-    const navigate = useNavigate();
+
 
     return (
         <div className={"onBoardingContainer"}>
@@ -14,10 +14,9 @@ const SecondDict = () => {
                 <img src={Explain2} width={200} alt=""/>
             </div>
             <div className="buttonContainer">
-                <button className="skipButton"
-                        onClick={() => navigate("kakao")}>
+                <Link to="/kakao">
                     건너뛰기
-                </button>
+                </Link>
             </div>
         </div>
     );

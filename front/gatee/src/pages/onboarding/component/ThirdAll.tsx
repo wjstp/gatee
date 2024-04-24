@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Explain3 from "../../../assets/onboarding/explain3.png"
-import {useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 
 const ThirdAll = () => {
-    const navigate = useNavigate();
+
 
     return (
         <div className={"onBoardingContainer"}>
@@ -15,10 +15,9 @@ const ThirdAll = () => {
                 <img src={Explain3} className="explain" alt=""/>
             </div>
             <div className="buttonContainer">
-                <button className="skipButton"
-                        onClick={() => navigate("kakao")}>
-                    다음
-                </button>
+              <Link to="/kakao">
+                다음
+              </Link>
             </div>
         </div>
     );

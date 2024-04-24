@@ -1,1 +1,161 @@
 @use '../abstracts/index' as *;
+
+// 가족 생성/입장 - 첫 선택 페이지
+.signupIndex {
+  height: 100%;
+  border: 1px solid black;
+  background-color: $orange400;
+  padding-left: 10%;
+
+  &__iconBox {
+    padding-top: 5%;
+    padding-bottom: 5%;
+
+    &__icon {
+      width: 100px;
+      height: 100px;
+
+      path {
+        fill: white;
+      }
+    }
+  }
+
+  &__textBox {
+    font-size: 40px;
+    display: flex;
+    flex-direction: column;
+
+    &__text1 {
+      font-weight: bold;
+    }
+
+    &__text2 {
+      font-weight: bold;
+    }
+
+    &__text3 {
+    }
+  }
+
+  &__createButtonBox {
+    padding-top: 20%;
+
+    &__createButton {
+      background-color: white;
+      border-radius: 12px;
+      font-weight: bold;
+      font-size: 30px;
+      height: 60px;
+      width: 89%;
+      color: black;
+    }
+  }
+
+  &__joinButtonBox {
+    padding-top: 5%;
+
+    &__joinButton {
+      background-color: $orange100;
+      border-radius: 12px;
+      font-weight: bold;
+      font-size: 30px;
+      height: 60px;
+      width: 89%;
+      color: black;
+    }
+  }
+}
+
+// 가족 생성/입장 - 부모 페이지
+.signupFamily {
+  height: 100%;
+  width: 100%;
+
+  &__div {
+    height: 100%;
+    width: 100%;
+  }
+}
+
+// 가족 생성/입장 - 가족 생성 컴포넌트
+.familySetInfo {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+  border: 1px solid black;
+
+  &__textBox {
+    margin-top: 10%;
+
+    &__text1 {
+      font-weight: bold;
+      font-size: 30px;
+    }
+
+    &__text2 {
+      font-size: 30px;
+    }
+  }
+
+  &__imageBox {
+    margin-top: 5%;
+    border: 1px solid black;
+    height: 155px;
+    width: 155px;
+    border-radius: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &__image {
+      border: 1px solid black;
+      height: 150px;
+      width: 150px;
+      border-radius: 100%;
+    }
+
+    &__changeButtonBox {
+      height: 25%;
+      width: 25%;
+      position: absolute;
+      border-radius: 100%;
+      right: 0;
+      bottom: 0;
+
+      &__changeButton {
+        height: 40px;
+        width: 40px;
+        border-radius: 100%;
+        background-color: $orange400;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &__icon {
+        }
+
+      }
+    }
+  }
+
+  &__inputBox {
+    @include flex_center;
+    height: 6%;
+    width: 70%;
+    margin-top: 5%;
+    border-bottom: 1px solid black;
+
+    &__input {
+      font-size: 30px;
+      text-align: center;
+      justify-content: center;
+    }
+  }
+
+  &__nextButtonBox {
+  }
+}

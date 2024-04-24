@@ -1,12 +1,9 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Router from "./Router";
-import StartRouter from "./StartRouter";
-function App() {
-    const [isLogin, setIsLogin] = useState(false);
+const App = ()=> {
   return (
     <div>
-        <Router/>
-
+      <Router/>
     </div>
   );
 }
