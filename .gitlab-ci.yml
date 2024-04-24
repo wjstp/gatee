@@ -72,6 +72,9 @@ build:
     - sed -i 's|${AWS_ACCESS_KEY}|'"$AWS_ACCESS_KEY"'|g' application-aws.yaml
     - sed -i 's|${AWS_SECRET_KEY}|'"$AWS_SECRET_KEY"'|g' application-aws.yaml
     - chmod +x ./devops/build-image.sh
+    - ls
+    - cd ../../..
+    - ls
     - ./devops/build-image.sh $CI_REGISTRY/gatee-api
     - docker push $CI_REGISTRY/gatee-api:latest
   only:
