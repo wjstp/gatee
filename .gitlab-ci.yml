@@ -8,6 +8,8 @@ test:
   stage: test spring code
   script:
     - echo [INFO] "Running Test"
+    - ls
+    - pwd
     - cd ./back/gatee/src/main/resources
     # AI 관련 설정 파일 생성
     - cp application-ai-template.yml application-ai.yaml
