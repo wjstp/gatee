@@ -7,8 +7,13 @@ function TopBar (){
     const goto = function(destination:String){
         navigate(`/${destination}`);}
     // 뒤로는 연결 못함
+    const back = function(): void {
+        navigate(-1);
+    }
     return <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-        <div>뒤로</div>
+        <button onClick={()=>back()}>
+            &lt;
+        </button>
         <div style={{display: 'flex', flexDirection: 'row', gap:10}}>
         <button onClick={()=>goto("notification")}>알림</button>
         <button onClick={()=>goto("profile")}>프로필</button>
