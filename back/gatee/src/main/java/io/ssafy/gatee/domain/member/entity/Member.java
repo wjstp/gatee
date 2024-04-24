@@ -13,9 +13,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.SQLRestriction;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 @Entity
@@ -37,7 +36,7 @@ public class Member extends BaseEntity {
 
     private String nickname;
 
-    private Date birth;
+    private LocalDate birth;
 
     private BirthType birthType;
 
@@ -53,22 +52,18 @@ public class Member extends BaseEntity {
     private Privilege privilege;
 
     // 회원 정보 저장 - file field 추가 예정
-    public void saveInfo(MemberSaveReq memberSaveReq) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
+    public void saveInfo(MemberSaveReq memberSaveReq) {
         this.name = memberSaveReq.name();
         this.nickname = memberSaveReq.nickname();
-        this.birth = sdf.parse(memberSaveReq.birth());
+        this.birth = LocalDate.parse(memberSaveReq.birth(), DateTimeFormatter.ISO_DATE);
         this.birthType = BirthType.valueOf(memberSaveReq.birthType());
     }
 
     // 회원 정보 수정
-    public void editInfo(MemberEditReq memberEditReq) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
+    public void editInfo(MemberEditReq memberEditReq)   {
         this.name = memberEditReq.name();
         this.nickname = memberEditReq.nickname();
-        this.birth = sdf.parse(memberEditReq.birth());
+        this.birth = LocalDate.parse(memberEditReq.birth(), DateTimeFormatter.ISO_DATE);
         this.birthType = BirthType.valueOf(memberEditReq.birthType());
     }
 

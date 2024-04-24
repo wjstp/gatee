@@ -18,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 import static io.ssafy.gatee.global.exception.message.ExceptionMessage.*;
@@ -48,7 +50,7 @@ public class MemberServiceImpl implements MemberService{
     // 회원 정보 저장
     @Override
     @Transactional  // transaction을 사용하기 위해 선언
-    public void saveMemberInfo(MemberSaveReq memberSaveReq) throws ParseException {
+    public void saveMemberInfo(MemberSaveReq memberSaveReq) {
         Member member = memberRepository.findById(UUID.fromString(memberSaveReq.memberId()))
                 .orElseThrow(()-> new MemberNotFoundException(MEMBER_NOT_FOUND));
 
@@ -63,7 +65,7 @@ public class MemberServiceImpl implements MemberService{
     // 회원 정보 수정
     @Override
     @Transactional
-    public void editMemberInfo(MemberEditReq memberEditReq) throws ParseException {
+    public void editMemberInfo(MemberEditReq memberEditReq) {
         Member member = memberRepository.findById(UUID.fromString(memberEditReq.memberId()))
                 .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
 
@@ -100,14 +102,12 @@ public class MemberServiceImpl implements MemberService{
         MemberFamily memberFamily = memberFamilyRepository.findByMemberAndFamily_Id(member, familyId)
                 .orElseThrow(() -> new MemberFamilyNotFoundException(MEMBER_FAMILY_NOT_FOUND));
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
         return MemberInfoRes.builder()
                 .memberId(member.getId())
                 .name(member.getName())
                 .email(member.getEmail())
                 .nickname(member.getNickname())
-                .birth(sdf.format(member.getBirth()))
+                .birth(String.valueOf(member.getBirth()))
                 .birthType(String.valueOf(member.getBirthType()))
                 .mood(member.getMood())
                 .role(String.valueOf(memberFamily.getRole()))
