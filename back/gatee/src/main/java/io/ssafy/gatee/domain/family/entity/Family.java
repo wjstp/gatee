@@ -29,4 +29,8 @@ public class Family extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "file_id")
     private File file;
+
+    public void editFamilyName(String name) {
+        this.name = name;
+    }
 }

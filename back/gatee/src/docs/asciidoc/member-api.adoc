@@ -6,6 +6,10 @@
 :toclevels: 3
 
 
+---
+
+= Member
+
 == 회원 정보 등록
 
 === Request
@@ -48,3 +52,44 @@ include::{snippets}/회원 정보 조회/http-request.adoc[]
 === Response
 
 include::{snippets}/회원 정보 조회/http-response.adoc[]
+
+
+---
+
+
+= Family
+
+== 가족 생성
+
+=== Request
+
+include::{snippets}/가족 생성/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/가족 생성/http-response.adoc[]
+
+
+== 가족 정보 조회
+
+=== Request
+
+include::{snippets}/가족 정보 조회/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/가족 정보 조회/http-response.adoc[]
+
+
+== 가족 이름 수정
+
+=== Request
+
+include::{snippets}/가족 이름 수정/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/가족 이름 수정/http-response.adoc[]
+
+
+---
