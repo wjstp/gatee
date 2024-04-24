@@ -1,1 +1,26 @@
 @use '../abstracts/index' as *;
+@use '../base' as *;
+
+.exam__font-choson {
+  font-family: $ChosunGs;
+}
+.exam__index {
+  //지난 평가
+  .exam__heading-font {
+
+  }
+  .main-font {
+
+  }
+}
+
+.exam__header {
+  .exam__header-title {
+    text-align: center;
+    font-family: $ChosunGs;
+    font-size: 30px;
+  }
+  .exam__border {
+    border: 1px solid black;
+  }
+}
