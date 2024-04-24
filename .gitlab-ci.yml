@@ -42,9 +42,9 @@ stages:
 
 build:
   stage: build spring server
-  image: gradle:8.5.0-jdk17
+  image: docker:latest
   services:
-    - docker:26.1.0-dind
+    - docker:dind
   before_script:
     - echo [INFO] docker deploy start!
     - echo "$DOCKER_REGISTRY_PASSWORD" | docker login -u $DOCKER_REGISTRY_USER --password-stdin
@@ -82,7 +82,7 @@ deploy:
   image: gradle:8.5.0-jdk17
   stage: deploy spring server
   services:
-    - docker:26.1.0-dind
+    - docker:dind
   before_script:
   - echo [INFO] docker deploy start!
   - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_PASSWORD
