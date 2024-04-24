@@ -8,9 +8,9 @@ test:
   stage: test spring code
   script:
     - echo [INFO] "Running Test"
+    - cd ./back/gatee/src/main/resources
     - ls
     - pwd
-    - cd ./back/gatee/src/main/resources
     # AI 관련 설정 파일 생성
     - cp application-ai-template.yml application-ai.yaml
     - sed -i 's/${CHATGPT_KEY}/'"$CHATGPT_KEY"'/g' application-ai.yaml
