@@ -20,8 +20,8 @@ test:
     - sed -i 's|${DATABASE_URL|'"$DATABASE_URL"'|g' application-db.yaml
     - sed -i 's|${DATABASE_USERNAME}|'"$DATABASE_USERNAME"'|g' application-db.yaml
     - sed -i 's|${DATABASE_PASSWORD}|'"$DATABASE_PASSWORD"'|g' application-db.yaml
-    - sed -i 's|${REDIS_HOST}|'"REDIS_HOST"'|g' application-db.yaml
-    - sed -i 's|${REDIS_PORT}|'"REDIS_PORT"'|g' application-db.yaml
+    - sed -i 's|${REDIS_HOST}|'"$REDIS_HOST"'|g' application-db.yaml
+    - sed -i 's|${REDIS_PORT}|'"$REDIS_PORT"'|g' application-db.yaml
     - cat application-db.yaml
 
     # AWS 관련 설정 파일 생성
@@ -62,6 +62,9 @@ build:
     - sed -i 's|${DATABASE_URL|'"$DATABASE_URL"'|g' application-db.yaml
     - sed -i 's|${DATABASE_USERNAME}|'"$DATABASE_USERNAME"'|g' application-db.yaml
     - sed -i 's|${DATABASE_PASSWORD}|'"$DATABASE_PASSWORD"'|g' application-db.yaml
+    - sed -i 's|${REDIS_HOST}|'"$REDIS_HOST"'|g' application-db.yaml
+    - sed -i 's|${REDIS_PORT}|'"$REDIS_PORT"'|g' application-db.yaml
+    - cat application-db.yaml
 
     # AWS 관련 설정 파일 생성
     - cp application-aws.yaml.template application-aws.yaml
