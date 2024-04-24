@@ -1,13 +1,33 @@
 @use '../abstracts/index' as *;
 
 .bottomBar {
-  @include flex_between;
+  @include flex-row;
+  justify-content: space-between;
+  height: $bottomBar-height;
+  align-items: start;
   width: 100%;
-  height: $bar-height;
-  background-color: $orange100;
-  padding: 0 2rem;
+  padding: 0 1rem;
+  border-top: 1px solid $gray100;
+}
 
-  .bottomBar__item {
+.bottomBar__item {
+  @include flex-col;
+  @include flex-center;
+  color: $gray300;
+  font-size: $font-size-small;
+  gap: 4px;
+  margin-top: 10px;
+  width: 20%;
+  height: 60%;
 
+  &--active {
+    @extend .bottomBar__item;
+    color: $orange400;
+  }
+}
+
+.bottomBar__itemHome--active {
+  svg path {
+    fill: $orange400;
   }
 }
