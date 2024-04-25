@@ -2,6 +2,7 @@ package io.ssafy.gatee.global.jwt.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.ssafy.gatee.global.security.user.UserSecurityDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -39,14 +40,6 @@ public class JwtProvider {
         this.refreshTokenExpiration = refreshTokenExpiration;
     }
 
-    public Claims verifyJwtToken(String token) {
-        return Jwts.parser()
-                .verifyWith(secretKey)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
-    }
-
     public String generateAccessToken(Authentication authentication) {
         return generateToken(authentication, accessTokenExpiration);
     }
@@ -69,20 +62,5 @@ public class JwtProvider {
                 .compact();
     }
 
-//    public Authentication getAuthentication(String token) {
-//        Claims claims = Jwts.parser()
-//                .verifyWith(secretKey)
-//                .build()
-//                .parseSignedClaims(token)
-//                .getPayload();
-//        Collection<? extends GrantedAuthority> authorities = getAuthorities(claims);
-//        CustomUserDetailsDTO principal = CustomUserDetailsDTO.builder()
-//                .authorities(authorities)
-//                .isEnabled(true)
-//                .isCredentialsNonExpired(true)
-//                .isAccountNonLocked(true)
-//                .build();
-//
-//        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
-//    }
+
 }

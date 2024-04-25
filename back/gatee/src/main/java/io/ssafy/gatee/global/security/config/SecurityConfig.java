@@ -2,6 +2,8 @@ package io.ssafy.gatee.global.security.config;
 
 import io.ssafy.gatee.global.jwt.application.JwtService;
 import io.ssafy.gatee.global.jwt.filter.JwtFilter;
+import io.ssafy.gatee.global.jwt.util.JwtProvider;
+import io.ssafy.gatee.global.security.application.AuthService;
 import io.ssafy.gatee.global.security.filter.CustomOAuth2LoginFilter;
 import io.ssafy.gatee.global.security.handler.CustomOAuth2FailureHandler;
 import io.ssafy.gatee.global.security.handler.CustomOAuth2SuccessHandler;
@@ -31,6 +33,9 @@ public class SecurityConfig {
     };
 
     private final JwtService jwtService;
+    private final AuthService authService;
+    private final JwtProvider jwtProvider;
+    private final CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
@@ -46,17 +51,12 @@ public class SecurityConfig {
                         .requestMatchers(URL_WHITE_LIST).permitAll()
                         // 회원가입 후 정보 등록 페이지는 anonymous만 접근 가능, 정보등록을 하지 않은 유저는 다른 페이지에 접근 불가
                         .requestMatchers("/api/members").hasRole("ANONYMOUS")
-                        .anyRequest().authenticated())
-                .oauth2Login(
-                        oauth2 -> oauth2
-                                .successHandler(new CustomOAuth2SuccessHandler())
-                                .failureHandler(new CustomOAuth2FailureHandler())
-                )
+                        .anyRequest().authenticated())  // todo: whitelist와 회원정보 기입 뺴고는 전부 user만 가능하도록
 //                .exceptionHandling(
 //                        configurer -> configurer.accessDeniedHandler(new CustomAccessDeniedHandler())
 //                                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
 //                )
-//                .addFilterAt(new CustomOAuth2LoginFilter(), OAuth2LoginAuthenticationFilter.class)
+                .addFilterAt(new CustomOAuth2LoginFilter(authService, jwtService, jwtProvider,customOAuth2SuccessHandler), OAuth2LoginAuthenticationFilter.class)
                 .addFilterBefore(new JwtFilter(jwtService), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
