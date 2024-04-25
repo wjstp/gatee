@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.ssafy.gatee.domain.schedule.application.ScheduleService;
 import io.ssafy.gatee.domain.schedule.dto.request.ScheduleEditReq;
 import io.ssafy.gatee.domain.schedule.dto.request.ScheduleParticipateReq;
+import io.ssafy.gatee.domain.schedule.dto.request.ScheduleSaveRecordReq;
 import io.ssafy.gatee.domain.schedule.dto.request.ScheduleSaveReq;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,6 +19,7 @@ import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
+import java.util.List;
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -125,6 +127,30 @@ class ScheduleControllerTest {
                         .content(scheduleParticipateReqJson))
                 .andDo(MockMvcResultHandlers.print())
                 .andDo(MockMvcRestDocumentation.document("일정 참여"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("일정 후기 등록 테스트")
+    void saveScheduleRecord() throws Exception {
+        Long[] fileIdList = new Long[3];
+
+        fileIdList[0] = 1L;
+        fileIdList[1] = 2L;
+        fileIdList[2] = 3L;
+
+        ScheduleSaveRecordReq scheduleSaveRecordReq = ScheduleSaveRecordReq.builder()
+                .content("일정 후기 등록 테스트")
+                .fileIdList(List.of(fileIdList))
+                .build();
+
+        String scheduleSaveRecordReqJson = objectMapper.writeValueAsString(scheduleSaveRecordReq);
+
+        mockMvc.perform(post("/api/schedule/1/record")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(scheduleSaveRecordReqJson))
+                .andDo(MockMvcResultHandlers.print())
+                .andDo(MockMvcRestDocumentation.document("일정 후기 등록"))
                 .andExpect(status().isOk());
     }
 }
