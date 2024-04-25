@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import Stamp from "assets/icons/stamp_logo.png"
+import {useNavigate} from "react-router-dom";
 interface GradeData {
   point: number;
   date: string;
@@ -42,6 +43,7 @@ const ExamGrade = () =>{
 }
 
 const Table = ({gradeData}: { gradeData: GradeData }) => {
+  const navigate = useNavigate()
   // 등급
   let grade = 0;
   const point = gradeData.point;
@@ -66,7 +68,7 @@ const Table = ({gradeData}: { gradeData: GradeData }) => {
   }
 
   return (
-    <div className="exam-grade-data">
+    <div className="exam-grade-data" onClick={()=>navigate("/exam/scored/1")}>
       <div className="flex-date">{gradeData.date}</div>
       <div className="flex-point">{gradeData.point}/100</div>
       <div className="flex-comment">{grade}</div>

@@ -131,16 +131,16 @@
     .deactivateIndex {
       border: 1px solid black;
       border-radius: 50%;
-      width: 1rem;
-      height: 1rem;
+      width: 1.2rem;
+      height: 1.2rem;
       @include flex_center;
     }
 
     .activateIndex {
       border: 1px solid black;
       border-radius: 50%;
-      width: 1rem;
-      height: 1rem;
+      width: 1.2rem;
+      height: 1.2rem;
       background-color: $gray300;
       @include flex_center;
     }
@@ -219,6 +219,7 @@
       @include flex_row;
       @include flex_center;
       border-bottom: 1px solid black;
+      cursor:pointer;
       .bgGray {
         background-color: $gray100;
       }
