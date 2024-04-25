@@ -161,7 +161,14 @@
   }
 }
 .exam__scored {
-
+  position: relative;
+  .exam__scored-mark{
+    position: absolute;
+    top:0;
+    right:3dvw;
+    width: 13dvh;
+    //background-color: #000000;
+  }
   .exam__scored-footer {
     height: 1vh;
     border-top: 1px solid black;
