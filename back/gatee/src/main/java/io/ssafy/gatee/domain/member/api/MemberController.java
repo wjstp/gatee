@@ -61,8 +61,8 @@ public class MemberController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public MemberInfoRes readInfo(
-            @RequestParam("familyId") Long familyId,
-            @RequestParam("memberId") String memberId
+            @RequestParam Long familyId,
+            @RequestParam String memberId
     ) {
         log.info(String.valueOf(familyId));
         log.info(memberId);
