@@ -24,19 +24,21 @@ build:
     - sed -i 's|${DATABASE_PASSWORD}|'"$DATABASE_PASSWORD"'|g' application-db.yaml
     - sed -i 's|${REDIS_HOST}|'"$REDIS_HOST"'|g' application-db.yaml
     - sed -i 's|${REDIS_PORT}|'"$REDIS_PORT"'|g' application-db.yaml
-    - cat application-db.yaml
 
     # AWS 관련 설정 파일 생성
     - cp application-aws.yaml.template application-aws.yaml
     - sed -i 's|${AWS_BUCKET_NAME}|'"$AWS_BUCKET_NAME"'|g' application-aws.yaml
     - sed -i 's|${AWS_ACCESS_KEY}|'"$AWS_ACCESS_KEY"'|g' application-aws.yaml
     - sed -i 's|${AWS_SECRET_KEY}|'"$AWS_SECRET_KEY"'|g' application-aws.yaml
-    - ls
-    - cd ../../..
-    - ls
+    # 권한 부여 후 현재 서버 환경 확인
+    - chmod +x ./devops/nginx/detect_env.sh
+    - DEPLOY_ENV=$(./devops/nginx/detect_env.sh)
+    # tag 설정
+    - if [ "$DEPLOY_ENV" == "blue" ]; then TAG="green"; else TAG="blue"; fi
+    - echo "Building image for $TAG environment..."
     - chmod +x ./devops/build-image.sh
-    - ./devops/build-image.sh $CI_REGISTRY/gatee-api
-    - docker push $CI_REGISTRY/gatee-api:latest
+    - ./devops/build-image.sh $CI_REGISTRY/gatee-api$TAG
+    - docker push $CI_REGISTRY/gatee-api:$TAG
   only:
     - develop
     - master
@@ -48,13 +50,23 @@ deploy:
   services:
     - docker:dind
   before_script:
-  - echo [INFO] docker deploy start!
-  - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_PASSWORD
+    - echo [INFO] docker deploy start!
+    - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_PASSWORD
   script:
-    - CI_REGISTRY="${CI_REGISTRY}"
-    - docker system prune --volumes -f
-    - docker-compose down
-    - docker-compose up --build -d
+    - chmod +x ./devops/nginx/detect_env.sh
+    - DEPLOY_ENV=$(./devops/nginx/detect_env.sh)
+    - if [ "$DEPLOY_ENV" == "blue" ]; then
+      echo "Deploying to green environment...";
+      docker-compose -f docker-compose-green.yaml down;
+      docker-compose -f docker-compose-green.yaml up --build -d;
+      else
+      echo "Deploying to blue environment...";
+      docker-compose -f docker-compose-blue.yml down;
+      docker-compose -f docker-compose-blue.yml up --build -d;
+      fi
+    - sed -i 's/\${SOME_VARIABLE}/'"$SOME_VARIABLE"'/g' nginx.conf
+    - scp nginx.conf ubuntu@your-server-ip:/home/ubuntu/nginx.conf
+    - ssh ubuntu@your-server-ip 'docker exec nginx-container nginx -s reload'
   after_script:
     - docker logout
     - echo [INFO] docker deploy end!
