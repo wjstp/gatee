@@ -45,7 +45,7 @@ public class JwtService {
         String role = claims.get("role").toString();   // 수정
         // member를 생성하여 값 set
         UserSecurityDTO customUserDetails = UserSecurityDTO.builder()
-                .memberId(UUID.fromString(username))
+                .username(username)
                 .privilege(Privilege.valueOf(role))
                 .build();
         // 스프링 시큐리티 인증 토큰 생성

@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.SQLRestriction;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 import java.util.List;
@@ -44,9 +45,13 @@ public class Member extends BaseEntity {
     @JoinColumn(name = "file_id")
     private File file;
 
+    @Getter
+    @Builder.Default
     @Enumerated(EnumType.STRING)
     @ElementCollection(fetch = FetchType.LAZY)
-    private List<Privilege> privilege;
+    @CollectionTable(name = "member_privilege",
+            joinColumns = @JoinColumn(name = "member_id"))
+    private List<Privilege> privilege = new ArrayList<>();
 
     private BirthType birthType;
 

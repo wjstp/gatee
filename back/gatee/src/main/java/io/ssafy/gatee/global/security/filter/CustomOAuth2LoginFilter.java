@@ -26,7 +26,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class CustomOAuth2LoginFilter extends OncePerRequestFilter {
 
-    private final String KAKAO_USER_INFO_URL = "/api/auth/kakao";
+    private final String KAKAO_USER_INFO_URL = "/api/auth/kakao/login";
     private final AuthService authService;
     private final JwtService jwtService;
     private final JwtProvider jwtProvider;
@@ -34,38 +34,34 @@ public class CustomOAuth2LoginFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        log.info("접근 uri" + request.getRequestURI());
+        log.info("카카오 access token" + request.getHeader("Kakao-Access-Token"));   //todo : 확인
         // 모바일에서 토큰을 가지고 요청하는 uri인지 확인
-        System.out.println("######################################");
-        System.out.println((request.getHeader("Kakao-Access-Token")));
-        System.out.println(request.getHeader("Connection"));
-        log.trace("접근 uri" + request.getRequestURI());
-        log.trace("카카오 access token" + request.getHeader("Kakao-Access-Token"));   //todo : 확인
-
         if (request.getRequestURI().endsWith(KAKAO_USER_INFO_URL)){ // todo: 확인할 것
+            System.out.println("dd");
             try {
-                System.out.println("url : " + request.getRequestURI());
-                System.out.println("검증 시작");
+                log.info("1. 로그인 또는 회원가입 시도");
                 // 유저 정보 kakao로부터 받아오기
                 KakaoTokenRes kakaoTokenRes = authService.requestKakaoUserInfo(request.getHeader("Kakao-Access-Token"));
-                System.out.println("카카오 토큰 확인 완료");
+                log.info("2. 카카오 토큰 확인 및 회원 정보 로드 완료");
                  // 회원가입 또는 로그인 - OAuth2User 반환
                 UserSecurityDTO userSecurityDTO = authService.loadUserSecurityDTO(kakaoTokenRes);
-                System.out.println("회원검증 완료");
-                System.out.println("userdetails 변환 전 확인 " + userSecurityDTO.getUsername());
+                log.info("3. 회원가입 또는 로그인 완료");
                 // userdetails로 변환
-                UserDetails userDetails = userSecurityDTO.toUserDetails();
-                System.out.println(userDetails.getUsername());
+                // todo: userdetails implements면 바로 가능하지 않음?
+//                UserDetails userDetails = userSecurityDTO.toUserDetails();
+//                System.out.println(userDetails.getUsername());
                 // spring security contextholder에 설정
-                SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-                Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                SecurityContext securityContext = SecurityContextHolder.getContext();
+                Authentication authentication = new UsernamePasswordAuthenticationToken(userSecurityDTO, null, userSecurityDTO.getAuthorities());
                 securityContext.setAuthentication(authentication);
                 SecurityContextHolder.setContext(securityContext);
+                log.info("4. spring context 설정 완료");
+                log.info(securityContext.getAuthentication().getDetails().toString());
                 // 로그인 성공 핸들러 호출
 //                new CustomOAuth2SuccessHandler(jwtProvider, jwtService);
-                System.out.println(userDetails.getUsername());
                 customOAuth2SuccessHandler.onAuthenticationSuccess(request, response, authentication);
-                System.out.println(userDetails.getUsername());
-
+                log.info("5. 인증 작업 및 토큰 발급 완료");
             } catch (Exception exception){
                 // 로그인 실패 핸들러 호출
                 new CustomOAuth2FailureHandler();
