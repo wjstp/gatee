@@ -1,6 +1,7 @@
 package io.ssafy.gatee.global.exception.advice;
 
 import io.ssafy.gatee.global.exception.error.bad_request.DoNotHavePermission;
+import io.ssafy.gatee.global.exception.error.bad_request.ExpiredCode;
 import io.ssafy.gatee.global.exception.error.not_found.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -25,7 +26,8 @@ public class ExceptionAdvice {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({
-            DoNotHavePermission.class
+            DoNotHavePermission.class,
+            ExpiredCode.class
     })
     public String handleBadRequest(RuntimeException e) {
         return e.getMessage();
