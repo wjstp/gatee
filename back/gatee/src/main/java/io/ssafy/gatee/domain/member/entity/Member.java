@@ -1,6 +1,7 @@
 package io.ssafy.gatee.domain.member.entity;
 
 
+import io.ssafy.gatee.domain.family_schedule.entity.FamilySchedule;
 import io.ssafy.gatee.domain.base.BaseEntity;
 import io.ssafy.gatee.domain.file.entity.File;
 import io.ssafy.gatee.domain.member.dto.request.MemberEditReq;
@@ -15,6 +16,7 @@ import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collection;
 import java.util.UUID;
 
 @Entity

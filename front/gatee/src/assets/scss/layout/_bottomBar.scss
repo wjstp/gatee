@@ -2,6 +2,7 @@
 
 .bottomBar {
   @include flex-row;
+  background-color: $white;
   justify-content: space-between;
   height: $bottomBar-height;
   align-items: start;
@@ -13,21 +14,39 @@
 .bottomBar__item {
   @include flex-col;
   @include flex-center;
-  color: $gray300;
+  color: $gray200;
   font-size: $font-size-small;
-  gap: 4px;
+  gap: 5px;
   margin-top: 10px;
   width: 20%;
   height: 60%;
 
   &--active {
     @extend .bottomBar__item;
-    color: $orange400;
+    color: $orange500;
   }
 }
 
-.bottomBar__itemHome--active {
+.bottomBar__itemHome {
+  @include flex-col;
+  @include flex-center;
+  color: $gray200;
+  font-size: $font-size-small;
+  gap: 5px;
+  margin-top: 10px;
+  width: 20%;
+  height: 60%;
+
   svg path {
-    fill: $orange400;
+    fill: $gray200;
+  }
+
+  &--active {
+    @extend .bottomBar__itemHome;
+    color: $orange500;
+
+    svg path {
+      fill: $orange500;
+    }
   }
 }

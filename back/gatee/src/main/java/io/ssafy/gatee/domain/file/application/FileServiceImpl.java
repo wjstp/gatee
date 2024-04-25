@@ -1,6 +1,7 @@
 package io.ssafy.gatee.domain.file.application;
 
 import io.ssafy.gatee.domain.file.dao.FileRepository;
+import io.ssafy.gatee.domain.file.dto.FileUrlRes;
 import io.ssafy.gatee.domain.file.entity.File;
 import io.ssafy.gatee.domain.file.entity.type.FileType;
 import io.ssafy.gatee.global.s3.util.S3Util;
@@ -22,9 +23,14 @@ public class FileServiceImpl implements FileService {
 
     @Override
     @Transactional
-    public void uploadFile(FileType fileType, MultipartFile file) throws IOException {
+    public FileUrlRes uploadFile(FileType fileType, MultipartFile file) throws IOException {
         File entity = s3Util.upload(fileType, file);
         fileRepository.save(entity);
+
+        return FileUrlRes.builder()
+                .fileId(entity.getId())
+                .imageUrl(entity.getUrl())
+                .build();
     }
 
     @Override
