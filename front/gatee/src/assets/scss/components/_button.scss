@@ -1,20 +1,41 @@
 @use '../abstracts/index' as *;
-.bottomAbsoluteButton {
-  position: absolute;
-  bottom: 0;
-  width: 90%;
+
+// orangeButtonLarge, orangeButtonMedium, orangeButtonSmall
+// 커스텀 하는 법
+// 1. 상단에 '@use '../compenents/index' as *' 작성
+// 2. 클래스 안에 '@extend .버튼클래스명;' 작성 후 원하는 속성 변경
+@mixin orangeButtonCommon() {
+  @include flex_center;
+  @include my-(1);
+  background-color: $orange500;
+  font: {
+    weight: 600;
+    size: $font-size-big;
+  }
+  height: 50px;
+  color: white;
   border-radius: 10px;
-  text-align: center;
-  background-color: $orange400;
 }
 
-// 회원가입 버튼
-.signupButton {
-  background-color: $orange400;
-  border-radius: 12px;
-  font-weight: bold;
-  font-size: 30px;
-  height: 60px;
-  width: 89%;
-  color: white;
+.orangeButton {
+  &Large {
+    @include orangeButtonCommon;
+    width: 90%;
+  }
+
+  &Medium {
+    @include orangeButtonCommon;
+    width: 200px;
+    border-radius: 25px;
+  }
+
+  &Small {
+    @include orangeButtonCommon;
+    width: 80px;
+    height: 35px;
+    font: {
+      weight: 600;
+      size: $font-size;
+    };
+  }
 }
