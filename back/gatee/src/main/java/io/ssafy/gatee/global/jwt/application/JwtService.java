@@ -4,7 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.ssafy.gatee.domain.member.entity.Privilege;
-import io.ssafy.gatee.global.jwt.dao.RefreshTokenRepository;
+import io.ssafy.gatee.global.jwt.dao.RefreshTokenRedisRepository;
 import io.ssafy.gatee.global.jwt.dto.RefreshToken;
 import io.ssafy.gatee.global.jwt.util.JwtClaimsParser;
 import io.ssafy.gatee.global.jwt.util.JwtProvider;
@@ -29,7 +29,7 @@ public class JwtService {
 
     private final JwtClaimsParser jwtClaimsParser;
 
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final RefreshTokenRedisRepository refreshTokenRepository;
 
     private static final String ACCESS_HEADER_AUTHORIZATION = "Authorization";
 
@@ -70,10 +70,11 @@ public class JwtService {
     }
 
     // token 갱신
-    public String rotateAccessToken(String refreshToken, String accessToken) {
+    public String rotateAccessToken(String refreshToken, String memberId) {
         Claims claims = verifyJwtToken(refreshToken); // 예외처리 할 것
+        System.out.println(memberId);
         // 기존 redis 삭제
-        RefreshToken redisRefreshToken = refreshTokenRepository.findByAccessToken(accessToken)
+        RefreshToken redisRefreshToken = refreshTokenRepository.findByMemberId(memberId)
                 .orElseThrow(() -> new JwtException("일치하는 refreshtoken이 없다잉"));
         refreshTokenRepository.delete(redisRefreshToken);
         // access token이 일치하지 않으면 refresh token으로 요청보낼 것
@@ -82,12 +83,9 @@ public class JwtService {
         // access token 발급
         // todo: 일치하는 refresh token 없을 떄 exception 추가. exception 시, refresh token 삭제 로직 추가
         // todo: refresh token 발급은 하지 않는다.
+        // todo: refresh 갱신 로직 추가
         Authentication authentication = jwtClaimsParser.getAuthentication(refreshToken);
-        String newAccessToken = jwtProvider.generateAccessToken(authentication);
-        // refresh token 갱신
-        String newRefreshToken = jwtProvider.generateRefreshToken(authentication);
-        saveToken(newAccessToken, newRefreshToken);
-        return newAccessToken;
+        return jwtProvider.generateAccessToken(authentication);
     }
 
     public Claims verifyJwtToken(String token) {
@@ -99,10 +97,10 @@ public class JwtService {
         }
     }
 
-    public void saveToken(String accessToken, String refreshToken) {
+    public void saveToken(String memberId, String refreshToken) {
         refreshTokenRepository.save(
                 RefreshToken.builder()
-                        .accessToken(accessToken)
+                        .memberId(memberId)
                         .refreshToken(refreshToken)
                         .build());
     }

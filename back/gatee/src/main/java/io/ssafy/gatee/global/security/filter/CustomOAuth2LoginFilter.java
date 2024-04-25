@@ -41,25 +41,24 @@ public class CustomOAuth2LoginFilter extends OncePerRequestFilter {
             System.out.println("dd");
             try {
                 log.info("1. 로그인 또는 회원가입 시도");
+
                 // 유저 정보 kakao로부터 받아오기
                 KakaoTokenRes kakaoTokenRes = authService.requestKakaoUserInfo(request.getHeader("Kakao-Access-Token"));
                 log.info("2. 카카오 토큰 확인 및 회원 정보 로드 완료");
-                 // 회원가입 또는 로그인 - OAuth2User 반환
+
+                // 회원가입 또는 로그인 - OAuth2User 반환
                 UserSecurityDTO userSecurityDTO = authService.loadUserSecurityDTO(kakaoTokenRes);
                 log.info("3. 회원가입 또는 로그인 완료");
-                // userdetails로 변환
-                // todo: userdetails implements면 바로 가능하지 않음?
-//                UserDetails userDetails = userSecurityDTO.toUserDetails();
-//                System.out.println(userDetails.getUsername());
+
                 // spring security contextholder에 설정
                 SecurityContext securityContext = SecurityContextHolder.getContext();
                 Authentication authentication = new UsernamePasswordAuthenticationToken(userSecurityDTO, null, userSecurityDTO.getAuthorities());
                 securityContext.setAuthentication(authentication);
                 SecurityContextHolder.setContext(securityContext);
+                log.info(securityContext.getAuthentication().getPrincipal().toString());
                 log.info("4. spring context 설정 완료");
-                log.info(securityContext.getAuthentication().getDetails().toString());
+
                 // 로그인 성공 핸들러 호출
-//                new CustomOAuth2SuccessHandler(jwtProvider, jwtService);
                 customOAuth2SuccessHandler.onAuthenticationSuccess(request, response, authentication);
                 log.info("5. 인증 작업 및 토큰 발급 완료");
             } catch (Exception exception){

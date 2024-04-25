@@ -56,17 +56,7 @@ public class AuthServiceImpl implements AuthService {
         Optional<Member> member = memberRepository.findByEmail(socialData.kakaoAccount().email());
         // 로그인
         if (member.isPresent()) {
-            System.out.println("???");
-            System.out.println(member.get().getId());
-            System.out.println(member.get().getEmail());
-            System.out.println(member.get());
-            System.out.println(member.get().getPrivilege().get(0));
-            System.out.println("???");
-
-            var result = toUserSecurityDTO(member.get());
-            System.out.println("###############");
-            System.out.println(result);
-            return result;
+            return toUserSecurityDTO(member.get());
         }
         // db에 없다면 회원가입
         return toUserSecurityDTO(register(socialData));

@@ -2,6 +2,7 @@ package io.ssafy.gatee.global.security.handler;
 
 import io.ssafy.gatee.global.jwt.application.JwtService;
 import io.ssafy.gatee.global.jwt.util.JwtProvider;
+import io.ssafy.gatee.global.security.user.UserSecurityDTO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.client.OAuth2AuthorizationSuccessHandler;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -29,12 +32,10 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        System.out.println("오는지 확인");
-        
         log.info("로그인 성공");
         log.info(authentication.getPrincipal().toString());
         log.info(authentication.getAuthorities().toString());
-        log.info(authentication.getDetails().toString());
+//        log.info(authentication.getDetails().toString());
 
         // access token 생성
         String accessToken = jwtProvider.generateAccessToken(authentication);
@@ -44,7 +45,8 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
         String refreshToken = jwtProvider.generateRefreshToken(authentication);
 
         // refresh token 저장
-        jwtService.saveToken(accessToken, refreshToken);
+        UserSecurityDTO userSecurityDTO = (UserSecurityDTO) authentication.getPrincipal();
+        jwtService.saveToken(userSecurityDTO.getUsername(), refreshToken);
         Cookie cookie = jwtService.createCookie(refreshToken);
         response.addCookie(cookie);//로그인 성공 메세지
         response.setContentType("application/json");

@@ -45,13 +45,11 @@ public class Member extends BaseEntity {
     @JoinColumn(name = "file_id")
     private File file;
 
-    @Getter
-    @Builder.Default
     @Enumerated(EnumType.STRING)
-    @ElementCollection(fetch = FetchType.LAZY)
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "member_privilege",
             joinColumns = @JoinColumn(name = "member_id"))
-    private List<Privilege> privilege = new ArrayList<>();
+    private List<Privilege> privilege;
 
     private BirthType birthType;
 

@@ -1,6 +1,7 @@
 package io.ssafy.gatee.global.jwt.api;
 
 import io.ssafy.gatee.global.jwt.application.JwtService;
+import io.ssafy.gatee.global.security.user.UserSecurityDTO;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -31,13 +32,11 @@ public class AuthController {
 
     // todo: access token 검증할 때 refresh token의 남은 시간을 확인해서 갱신하는 로직 추가
     @PostMapping("/rotate-toekn")
-    public void rotateAccessToken(HttpServletRequest request, HttpServletResponse response) {
+    public void rotateAccessToken(HttpServletRequest request, HttpServletResponse response, UserSecurityDTO userSecurityDTO) {
         log.info("토큰 재발급 시작");
         String refreshToken = this.getCookie(request).getValue();
-        log.info(refreshToken);
-        String previousAccessToken = request.getHeader("Access-Token");
-        log.info("액세스 토큰 " + previousAccessToken);
-        String accessToken = jwtService.rotateAccessToken(refreshToken, previousAccessToken);
+        log.info("refresh Token : " + refreshToken);
+        String accessToken = jwtService.rotateAccessToken(refreshToken, userSecurityDTO.getUsername());
         // accessToken 헤더에 추가
         response.addHeader("Access-Token", "Bearer " + accessToken);
     }

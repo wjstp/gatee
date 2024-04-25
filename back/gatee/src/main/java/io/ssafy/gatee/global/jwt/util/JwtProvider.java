@@ -41,6 +41,8 @@ public class JwtProvider {
     }
 
     public String generateAccessToken(Authentication authentication) {
+        System.out.println("test");
+        System.out.println(authentication);
         return generateToken(authentication, accessTokenExpiration);
     }
 
@@ -49,6 +51,8 @@ public class JwtProvider {
     }
 
     public String generateToken(Authentication authentication, long expiration) {
+        System.out.println("authentication");
+        System.out.println(authentication);
         String authorities = authentication.getAuthorities()
                 .stream()
                 .map(GrantedAuthority::getAuthority)
