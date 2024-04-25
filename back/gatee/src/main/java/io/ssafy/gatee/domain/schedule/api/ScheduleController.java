@@ -30,7 +30,7 @@ public class ScheduleController {
     @ResponseStatus(HttpStatus.OK)
     public ScheduleListRes readSchedule(
             @Valid
-            @RequestParam("familyId") Long familyId
+            @RequestParam Long familyId
     ) throws FamilyNotFoundException {
         return scheduleService.readSchedule(familyId);
     }
