@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {useNavigate} from "react-router-dom";
-import { ReactComponent as CameraIcon } from "assets/icons/camera.svg"
+import {PiCamera} from "react-icons/pi";
+
 
 function FamilySetInfo() {
   const navigate = useNavigate();
@@ -30,8 +31,9 @@ function FamilySetInfo() {
         />
         <div className="familySetInfo__imageBox__changeButtonBox">
           <button className="familySetInfo__imageBox__changeButtonBox__changeButton">
-            <CameraIcon
+            <PiCamera
               className="familySetInfo__imageBox__changeButtonBox__changeButton__icon"
+              size={27}
             />
           </button>
         </div>
@@ -49,7 +51,7 @@ function FamilySetInfo() {
       </div>
       <div className="familySetInfo__nextButtonBox">
         <button
-          className="signupButton"
+          className="familySetInfo__nextButtonBox__nextButton"
           onClick={goToFamilyShareCode}
         >
           다음

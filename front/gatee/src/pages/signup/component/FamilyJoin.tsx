@@ -8,10 +8,6 @@ function FamilyJoin() {
     setIsCodeEntered(true);
   };
 
-  const handleExit = (): void => {
-    setIsCodeEntered(false);
-  }
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const value: string = e.target.value;
     setInputValue(value);
@@ -51,22 +47,21 @@ return (
       </div>
     ) : (
       <div className="familyJoin__codeResult">
-        <div>
-          <img src="" alt=""/>
+        <div className="familyJoin__codeResult__imageBox">
+          <img
+            className="familyJoin__codeResult__imageBox__image"
+            src=""
+            alt=""
+          />
         </div>
-        <div>
-          <span>OO이네 가족</span>
+        <div className="familyJoin__codeResult__nameBox">
+          <span className="familyJoin__codeResult__nameBox__name">예삐네 가족</span>
         </div>
-        <div>
-          <button>
-            입장하기
-          </button>
-        </div>
-        <div>
+        <div className="familyJoin__codeResult__inputButtonBox">
           <button
-            onClick={handleExit}
+            className="familyJoin__codeResult__inputButtonBox__inputButton"
           >
-            우리 가족이 아니에요..
+            입장하기
           </button>
         </div>
       </div>

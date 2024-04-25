@@ -29,8 +29,13 @@ function FamilyShareCode() {
             A43959FE
           </span>
         </div>
-        <div className="familyShareCode__codeSection__iconBox">
-          <BiCopy className="familyShareCode__codeSection__iconBox__icon"/>
+        <div className="familyShareCode__codeSection__copyButtonBox">
+          <button className="familyShareCode__codeSection__copyButtonBox__copyButton">
+            <BiCopy
+              className="familyShareCode__codeSection__copyButtonBox__copyButton__icon"
+              size={24}
+            />
+          </button>
         </div>
       </div>
       <div className="familyShareCode__kakaoButtonBox">
@@ -42,7 +47,7 @@ function FamilyShareCode() {
       </div>
       <div className="familyShareCode__nextButtonBox">
         <button
-          className="signupButton"
+          className="familyShareCode__nextButtonBox__nextButton"
         >
           다음
         </button>

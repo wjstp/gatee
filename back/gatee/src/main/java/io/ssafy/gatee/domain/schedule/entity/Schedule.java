@@ -1,6 +1,7 @@
 package io.ssafy.gatee.domain.schedule.entity;
 
 import io.ssafy.gatee.domain.base.BaseEntity;
+import io.ssafy.gatee.domain.schedule.dto.request.ScheduleEditReq;
 import io.ssafy.gatee.domain.schedule_record.entity.ScheduleRecord;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -8,7 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLRestriction;
-import org.joda.time.DateTime;
+import org.joda.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -31,10 +32,19 @@ public class Schedule extends BaseEntity {
 
     private String content;
 
-    private DateTime startDate;
+    private LocalDateTime startDate;
 
-    private DateTime endDate;
+    private LocalDateTime endDate;
 
     @OneToOne(mappedBy = "schedule", cascade = CascadeType.ALL)
     private ScheduleRecord scheduleRecord;
+
+    public void editSchedule(ScheduleEditReq scheduleEditReq) {
+        this.category = Category.valueOf(scheduleEditReq.category());
+        this.title = scheduleEditReq.title();
+        this.emoji = scheduleEditReq.emoji();
+        this.content = scheduleEditReq.content();
+        this.startDate = LocalDateTime.parse(scheduleEditReq.startDate());
+        this.endDate = LocalDateTime.parse(scheduleEditReq.endDate());
+    }
 }

@@ -2,6 +2,7 @@
 
 .topBar {
   @include flex_between;
+  background-color: $white;
   width: 100%;
   height: $topBar-height;
   padding: 0 1rem;

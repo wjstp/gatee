@@ -24,9 +24,15 @@ body {
   }
 
   // topBar, bottomBar 제외한 나머지 영역 차지
-  .container {
+  #mainContainer {
     height: calc(100svh - $topBar-height - $bottomBar-height);
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  // 전체 영역 차지
+  #subContainer {
+    height: 100svh;
   }
 }
 
@@ -61,4 +67,9 @@ ul,
 ol {
   padding-left: 0;
   list-style: none;
+}
+
+::-webkit-scrollbar {
+  display: none;
+  width: 0;
 }
