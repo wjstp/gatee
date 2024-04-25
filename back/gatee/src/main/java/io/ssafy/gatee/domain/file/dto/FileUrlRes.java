@@ -7,6 +7,9 @@ import lombok.Builder;
 public record FileUrlRes(
 
         @NotNull
+        Long fileId,
+
+        @NotNull
         String imageUrl
 ) {
 }
