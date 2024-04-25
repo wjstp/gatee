@@ -28,6 +28,7 @@ public class FileServiceImpl implements FileService {
         fileRepository.save(entity);
 
         return FileUrlRes.builder()
+                .fileId(entity.getId())
                 .imageUrl(entity.getUrl())
                 .build();
     }
