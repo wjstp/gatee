@@ -4,6 +4,7 @@ import io.ssafy.gatee.domain.family.dao.FamilyRepository;
 import io.ssafy.gatee.domain.family.entity.Family;
 import io.ssafy.gatee.domain.family_schedule.dao.FamilyScheduleRepository;
 import io.ssafy.gatee.domain.family_schedule.entity.FamilySchedule;
+import io.ssafy.gatee.domain.file.application.FileServiceImpl;
 import io.ssafy.gatee.domain.member.dao.MemberRepository;
 import io.ssafy.gatee.domain.member.entity.Member;
 import io.ssafy.gatee.domain.member_family_schedule.dao.MemberFamilyScheduleRepository;
@@ -11,6 +12,7 @@ import io.ssafy.gatee.domain.member_family_schedule.entity.MemberFamilySchedule;
 import io.ssafy.gatee.domain.schedule.dao.ScheduleRepository;
 import io.ssafy.gatee.domain.schedule.dto.request.ScheduleEditReq;
 import io.ssafy.gatee.domain.schedule.dto.request.ScheduleParticipateReq;
+import io.ssafy.gatee.domain.schedule.dto.request.ScheduleSaveRecordReq;
 import io.ssafy.gatee.domain.schedule.dto.request.ScheduleSaveReq;
 import io.ssafy.gatee.domain.schedule.dto.response.ScheduleInfoRes;
 import io.ssafy.gatee.domain.schedule.dto.response.ScheduleListRes;
@@ -41,6 +43,8 @@ public class ScheduleServiceImpl implements ScheduleService {
     private final FamilyScheduleRepository familyScheduleRepository;
 
     private final MemberFamilyScheduleRepository memberFamilyScheduleRepository;
+
+    private final FileServiceImpl fileService;
 
     // 전체 일정 조회
     @Override
@@ -158,5 +162,12 @@ public class ScheduleServiceImpl implements ScheduleService {
                         .isCreater(false)
                         .build())
             );
+    }
+
+    // 일정 후기 등록
+    @Override
+    @Transactional
+    public void saveScheduleRecord(ScheduleSaveRecordReq scheduleSaveRecordReq, Long scheduleId) {
+
     }
 }

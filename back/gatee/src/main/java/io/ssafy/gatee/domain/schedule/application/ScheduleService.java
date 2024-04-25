@@ -2,6 +2,7 @@ package io.ssafy.gatee.domain.schedule.application;
 
 import io.ssafy.gatee.domain.schedule.dto.request.ScheduleEditReq;
 import io.ssafy.gatee.domain.schedule.dto.request.ScheduleParticipateReq;
+import io.ssafy.gatee.domain.schedule.dto.request.ScheduleSaveRecordReq;
 import io.ssafy.gatee.domain.schedule.dto.request.ScheduleSaveReq;
 import io.ssafy.gatee.domain.schedule.dto.response.ScheduleInfoRes;
 import io.ssafy.gatee.domain.schedule.dto.response.ScheduleListRes;
@@ -19,4 +20,5 @@ public interface ScheduleService {
     void saveSchedule(ScheduleSaveReq scheduleSaveReq) throws FamilyNotFoundException;
     void editSchedule(ScheduleEditReq scheduleEditReq, Long scheduleId) throws ScheduleNotFoundException, DoNotHavePermission, FamilyScheduleNotFoundException, MemberFamilyScheduleNotFoundException, FamilyNotFoundException;
     void participateSchedule(ScheduleParticipateReq scheduleParticipateReq, Long scheduleId) throws FamilyScheduleNotFoundException, MemberFamilyScheduleNotFoundException;
+    void saveScheduleRecord(ScheduleSaveRecordReq scheduleSaveRecordReq, Long scheduleId);
 }

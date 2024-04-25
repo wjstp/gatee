@@ -3,6 +3,7 @@ package io.ssafy.gatee.domain.schedule.api;
 import io.ssafy.gatee.domain.schedule.application.ScheduleService;
 import io.ssafy.gatee.domain.schedule.dto.request.ScheduleEditReq;
 import io.ssafy.gatee.domain.schedule.dto.request.ScheduleParticipateReq;
+import io.ssafy.gatee.domain.schedule.dto.request.ScheduleSaveRecordReq;
 import io.ssafy.gatee.domain.schedule.dto.request.ScheduleSaveReq;
 import io.ssafy.gatee.domain.schedule.dto.response.ScheduleInfoRes;
 import io.ssafy.gatee.domain.schedule.dto.response.ScheduleListRes;
@@ -73,5 +74,16 @@ public class ScheduleController {
             @PathVariable("scheduleId") Long scheduleId
     ) throws MemberFamilyScheduleNotFoundException, FamilyScheduleNotFoundException {
         scheduleService.participateSchedule(scheduleParticipateReq, scheduleId);
+    }
+
+    // 일정 기록 등록
+    @PostMapping("/{scheduleId}/record")
+    @ResponseStatus(HttpStatus.OK)
+    public void saveScheduleRecord(
+            @Valid
+            @RequestBody ScheduleSaveRecordReq scheduleSaveRecordReq,
+            @PathVariable("scheduleId") Long scheduleId
+    ){
+        scheduleService.saveScheduleRecord(scheduleSaveRecordReq, scheduleId);
     }
 }
