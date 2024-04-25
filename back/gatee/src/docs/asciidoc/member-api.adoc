@@ -81,6 +81,28 @@ include::{snippets}/가족 정보 조회/http-request.adoc[]
 include::{snippets}/가족 정보 조회/http-response.adoc[]
 
 
+== 가족 코드 생성
+
+=== Request
+
+include::{snippets}/가족 코드 생성/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/가족 코드 생성/http-response.adoc[]
+
+
+== 가족 합류
+
+=== Request
+
+include::{snippets}/가족 합류/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/가족 합류/http-response.adoc[]
+
+
 == 가족 이름 수정
 
 === Request
