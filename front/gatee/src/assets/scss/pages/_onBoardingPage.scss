@@ -34,7 +34,7 @@
       @include flex-col;
       @include flex_center;
       height: 100vh*0.5;
-      width: 100vw;
+      //width: 100vw;
       padding-top: 3rem;
       //border: 3px solid red;
     }
@@ -95,7 +95,7 @@
   gap:10px;
   justify-content: center;
   width: 100vw;
-  margin-top: 25%;
+  margin-top: 10dvh;
   position: absolute;
 
   // 인디케이터 도트
@@ -112,4 +112,3 @@
     background-color: $orange400;
   }
 }
-

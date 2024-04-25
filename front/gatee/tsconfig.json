@@ -5,6 +5,24 @@
       "@assets/*": [
         "assets/*"
       ],
+      "@components/*": [
+        "components/*"
+      ],
+      "@pages/*": [
+        "pages/*"
+      ],
+      "@api/*": [
+        "api/*"
+      ],
+      "@layout/*": [
+        "layout/*"
+      ],
+      "@constance/*": [
+        "constance/*"
+      ],
+      "@types/*": [
+        "types/*"
+      ]
     },
     "target": "es5",
     "lib": [
