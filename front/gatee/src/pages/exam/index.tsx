@@ -1,6 +1,8 @@
 import React from 'react';
 import {Link} from "react-router-dom";
 import { MdArrowForwardIos } from "react-icons/md";
+import ExamAnimation from "../../assets/animation/examAnimation.json"
+import Lottie from "lottie-react";
 function ExamIndex() {
   return (
     <div className="exam__index">
@@ -17,7 +19,7 @@ function ExamIndex() {
         <h2>나를 테스트해보는 시간!</h2>
       </div>
       <div className="exam__index__img">
-        <img src="" alt="그림"/>
+        <Lottie animationData={ExamAnimation} />
       </div>
       <div className="exam__index-goToExam">
         <Link to="/exam/taking">

@@ -49,11 +49,11 @@ const OnboardingIndex = () => {
     const index: number[] = [0, 1, 2, 3]
     return (
       <div className="onboarding__dotContainer">
-        {index.map((item: number) => {
+        {index.map((item: number,i:number) => {
           if (activeSlide >= item)
-            return <div className="activeDot"></div>
+            return <div key={i} className="activeDot"></div>
           else
-            return <div className="disableDot"></div>
+            return <div key={i} className="disableDot"></div>
         })}
       </div>
     )
