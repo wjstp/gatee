@@ -5,7 +5,12 @@
 :toc: left
 :toclevels: 3
 
-== 회원가입 (adoc 예시)
+
+---
+
+= Member
+
+== 회원 정보 등록
 
 === Request
 
@@ -14,3 +19,145 @@ include::{snippets}/회원 정보 등록/http-request.adoc[]
 === Response
 
 include::{snippets}/회원 정보 등록/http-response.adoc[]
+
+
+== 회원 정보 수정
+
+=== Request
+
+include::{snippets}/회원 정보 수정/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/회원 정보 수정/http-response.adoc[]
+
+
+== 기분 상태 수정
+
+=== Request
+
+include::{snippets}/기분 상태 수정/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/기분 상태 수정/http-response.adoc[]
+
+
+== 회원 정보 조회
+
+=== Request
+
+include::{snippets}/회원 정보 조회/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/회원 정보 조회/http-response.adoc[]
+
+
+---
+
+
+= Family
+
+== 가족 생성
+
+=== Request
+
+include::{snippets}/가족 생성/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/가족 생성/http-response.adoc[]
+
+
+== 가족 정보 조회
+
+=== Request
+
+include::{snippets}/가족 정보 조회/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/가족 정보 조회/http-response.adoc[]
+
+
+== 가족 이름 수정
+
+=== Request
+
+include::{snippets}/가족 이름 수정/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/가족 이름 수정/http-response.adoc[]
+
+
+---
+
+
+= Schedule
+
+== 가족 전체 일정 조회
+
+=== Request
+
+include::{snippets}/가족 전체 일정 조회/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/가족 전체 일정 조회/http-response.adoc[]
+
+
+== 일정 상세 조회
+
+=== Request
+
+include::{snippets}/일정 상세 조회/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/일정 상세 조회/http-response.adoc[]
+
+
+== 일정 등록
+
+=== Request
+
+include::{snippets}/일정 등록/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/일정 등록/http-response.adoc[]
+
+
+== 일정 수정
+
+=== Request
+
+include::{snippets}/일정 수정/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/일정 수정/http-response.adoc[]
+
+
+== 일정 참여
+
+=== Request
+
+include::{snippets}/일정 참여/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/일정 참여/http-response.adoc[]
+
+
+== 일정 후기 등록
+
+=== Request
+
+include::{snippets}/일정 후기 등록/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/일정 후기 등록/http-response.adoc[]

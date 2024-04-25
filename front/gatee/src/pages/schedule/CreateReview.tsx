@@ -1,9 +1,9 @@
 import React from 'react';
 
-function CreateReview() {
+function ScheduleCreateReview() {
     return (
-        <div></div>
+        <div>ScheduleCreateReview</div>
     );
 }
 
-export default CreateReview;
+export default ScheduleCreateReview;

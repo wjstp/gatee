@@ -1,8 +1,11 @@
 package io.ssafy.gatee.domain.member.entity;
 
 
+import io.ssafy.gatee.domain.family_schedule.entity.FamilySchedule;
 import io.ssafy.gatee.domain.base.BaseEntity;
 import io.ssafy.gatee.domain.file.entity.File;
+import io.ssafy.gatee.domain.member.dto.request.MemberEditReq;
+import io.ssafy.gatee.domain.member.dto.request.MemberSaveReq;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,6 +14,9 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.SQLRestriction;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Collection;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
@@ -35,7 +41,9 @@ public class Member extends BaseEntity {
 
     private String nickname;
 
-    private Date birth;
+    private LocalDate birth;
+
+    private BirthType birthType;
 
     private String mood;
 
@@ -51,12 +59,24 @@ public class Member extends BaseEntity {
             joinColumns = @JoinColumn(name = "member_id"))
     private List<Privilege> privilege;
 
-    private BirthType birthType;
+    // 회원 정보 저장 - file field 추가 예정
+    public void saveInfo(MemberSaveReq memberSaveReq) {
+        this.name = memberSaveReq.name();
+        this.nickname = memberSaveReq.nickname();
+        this.birth = LocalDate.parse(memberSaveReq.birth(), DateTimeFormatter.ISO_DATE);
+        this.birthType = BirthType.valueOf(memberSaveReq.birthType());
+    }
 
-    public void saveInfo(String name, String nickname, Date birth, BirthType birthType) {
-        this.name = name;
-        this.nickname = nickname;
-        this.birth = birth;
-        this.birthType = birthType;
+    // 회원 정보 수정
+    public void editInfo(MemberEditReq memberEditReq)   {
+        this.name = memberEditReq.name();
+        this.nickname = memberEditReq.nickname();
+        this.birth = LocalDate.parse(memberEditReq.birth(), DateTimeFormatter.ISO_DATE);
+        this.birthType = BirthType.valueOf(memberEditReq.birthType());
+    }
+
+    // 기분 상태 수정
+    public void editMood(String mood) {
+        this.mood = mood;
     }
 }

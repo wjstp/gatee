@@ -1,6 +1,5 @@
 package io.ssafy.gatee.domain.member.dto.response;
 
-import io.ssafy.gatee.domain.member.entity.BirthType;
 import lombok.Builder;
 
 import java.util.UUID;
@@ -13,7 +12,6 @@ public record MemberInfoRes(
         String nickname,
         String birth,
         String birthType,
-
         String mood,
         String role
 ) {

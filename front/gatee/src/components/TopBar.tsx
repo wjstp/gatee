@@ -1,19 +1,52 @@
-import React from 'react';
-import {useNavigate} from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { useNavigate, NavLink, useLocation } from "react-router-dom";
+import { PiCaretLeft } from "react-icons/pi";
+import { PiBell } from "react-icons/pi";
+import { PiUserCircle } from "react-icons/pi";
+import { PiSquaresFour } from "react-icons/pi";
+import { PiGearSix } from "react-icons/pi";
 
-function TopBar (){
-    const navigate = useNavigate();
-    // 가려는 목적지를 문자로 받으면, 이동시켜주는 함수
-    const goto = function(destination:String){
-        navigate(`/${destination}`);}
-    // 뒤로는 연결 못함
-    return <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-        <div>뒤로</div>
-        <div style={{display: 'flex', flexDirection: 'row', gap:10}}>
-        <button onClick={()=>goto("notification")}>알림</button>
-        <button onClick={()=>goto("profile")}>프로필</button>
+const TopBar = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [currentPage, setCurrentPage] = useState('');
+
+  useEffect(() => {
+    setCurrentPage(location.pathname)
+  }, [location])
+
+  // 바로 이전 페이지로 이동
+  const goBack = () => {
+    navigate(-1);
+  }
+
+  return (
+    <div>
+      <div className="topBar">
+        <div className="leftDiv" onClick={goBack}>
+          <PiCaretLeft size={24}/>
         </div>
+        <div className="rightDiv">
+          {currentPage === '/notification' && (
+            <PiGearSix size={24}/>
+          )}
+          {currentPage === '/chat' && (
+            <PiSquaresFour size={24}/>
+          )}
+          <NavLink to="/notification" className={({isActive}) =>
+            isActive ? 'rightDiv--active' : ''
+          }>
+            <PiBell size={24}/>
+          </NavLink>
+          <NavLink to="/profile" className={({isActive}) =>
+            isActive ? 'rightDiv--active' : ''
+          }>
+            <PiUserCircle size={24}/>
+          </NavLink>
+        </div>
+      </div>
     </div>
+  )
 }
 
 export default TopBar;

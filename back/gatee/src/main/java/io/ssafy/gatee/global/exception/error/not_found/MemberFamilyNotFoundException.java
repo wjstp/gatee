@@ -6,5 +6,4 @@ public class MemberFamilyNotFoundException extends RuntimeException {
     public MemberFamilyNotFoundException(ExceptionMessage exceptionMessage) {
         super(exceptionMessage.getMessage());
     }
-
 }

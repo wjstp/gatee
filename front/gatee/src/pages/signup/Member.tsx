@@ -1,9 +1,9 @@
 import React from 'react';
 
-function Member() {
+function SignupMember() {
     return (
-        <div></div>
+        <div>SignupMember</div>
     );
 }
 
-export default Member;
+export default SignupMember;

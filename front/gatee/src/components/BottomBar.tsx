@@ -1,21 +1,48 @@
 import React from 'react';
-import {useNavigate} from "react-router-dom";
-function BottomBar(){
-    // 가려는 목적지를 문자로 받으면, 이동시켜주는 함수
-    const navigate = useNavigate();
-    const goto = function(destination:String){
-        navigate(`/${destination}`);
-    }
-    return (
-    <div style={{display:'flex',flexDirection:'row',justifyContent:'space-between'}}>
+import { NavLink } from "react-router-dom";
+import {ReactComponent as HomeIcon } from "../assets/icons/home.svg"
+import { PiGraduationCap } from "react-icons/pi";
+import { PiCalendar } from "react-icons/pi";
+import { PiChatCenteredDots } from "react-icons/pi";
+import { PiImage } from "react-icons/pi";
 
-        <button onClick={()=>goto("exam")}>모의고사</button>
-        <button onClick={()=>goto("chat")}>채팅</button>
-        <button onClick={()=>goto("main")}>홈</button>
-        <button onClick={()=>goto("schedule")}>일정</button>
-        <button onClick={()=>goto("album")}>앨범</button>
+const BottomBar = () => {
+  return (
+    <div>
+      <div className="bottomBar">
+        <NavLink to="/exam" className={({isActive}) =>
+          isActive ? 'bottomBar__item--active' : 'bottomBar__item'
+        }>
+          <PiGraduationCap size={24}/>
+          <span>모의고사</span>
+        </NavLink>
+        <NavLink to="/chat" className={({isActive}) =>
+          isActive ? 'bottomBar__item--active' : 'bottomBar__item'
+        }>
+          <PiChatCenteredDots size={24}/>
+          <span>채팅</span>
+        </NavLink>
+        <NavLink to="/main" className={({isActive}) =>
+          isActive ? 'bottomBar__itemHome--active' : 'bottomBar__itemHome'
+        }>
+          <HomeIcon/>
+          <span>홈</span>
+        </NavLink>
+        <NavLink to="/schedule" className={({isActive}) =>
+          isActive ? 'bottomBar__item--active' : 'bottomBar__item'
+        }>
+          <PiCalendar size={24}/>
+          <span>일정</span>
+        </NavLink>
+        <NavLink to="/photo" className={({isActive}) =>
+          isActive ? 'bottomBar__item--active' : 'bottomBar__item'
+        }>
+          <PiImage size={24}/>
+          <span>앨범</span>
+        </NavLink>
+      </div>
     </div>
-)
+  )
 }
 
 export default BottomBar;

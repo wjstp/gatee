@@ -1,9 +1,10 @@
 import React from 'react';
 import Router from "./Router";
-function App() {
+
+const App = ()=> {
   return (
     <div>
-        <Router/>
+      <Router/>
     </div>
   );
 }
