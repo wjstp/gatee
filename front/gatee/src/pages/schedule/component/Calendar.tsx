@@ -1,26 +1,41 @@
 import React from 'react';
+import {
+  EventApi,
+  DateSelectArg,
+  EventClickArg,
+  EventContentArg,
+  formatDate,
+} from '@fullcalendar/core'
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
 
-const Calendar = () => {
-  return (
-    <>
+interface CalendarState {
+  weekendsVisible: boolean
+  currentEvents: EventApi[]
+}
+
+export default class Calendar extends React.Component<{}, CalendarState> {
+  state: CalendarState = {
+    weekendsVisible: true,
+    currentEvents: []
+  }
+
+  render() {
+    return (
       <FullCalendar
-        plugins={[ dayGridPlugin ]}
-        initialView="dayGridMonth"  // 월 기준
-        weekends={true}   // 주말 포함 여부
+        plugins={[dayGridPlugin, interactionPlugin]}
         headerToolbar={{
-          left: "left",
-          center: "center",
-          right: "right"
+          left: "prev",
+          center: "title",
+          right: 'next'
         }}
-        events={[
-          {title: 'event 1', date: '2024-04-25'},
-          {title: 'event 1', date: '2024-04-26'}
-        ]}
+        initialView="dayGridMonth"
+        height="75dvh"      // calendar 높이
+        editable={true}     // 일정 이벤트
+        selectable={true}   // 영역 선택
+        dayMaxEvents={true} // row 높이보다 많으면 +N more 링크 표시
       />
-    </>
-  );
-};
-
-export default Calendar;
+    )
+  }
+}
