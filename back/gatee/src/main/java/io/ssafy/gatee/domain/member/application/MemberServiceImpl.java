@@ -21,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
+import java.util.List;
 
 import static io.ssafy.gatee.global.exception.message.ExceptionMessage.*;
 
@@ -41,7 +42,7 @@ public class MemberServiceImpl implements MemberService{
         Member member = Member.builder()
                 .name(name)
                 .nickname(nickname)
-                .privilege(Privilege.valueOf("USER"))
+                .privilege(List.of(Privilege.valueOf("USER")))
                 .build();
 
         memberRepository.save(member);

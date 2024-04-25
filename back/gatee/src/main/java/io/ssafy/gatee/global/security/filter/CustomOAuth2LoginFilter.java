@@ -13,8 +13,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,6 +33,7 @@ public class CustomOAuth2LoginFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final JwtProvider jwtProvider;
     private final CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
+    private final CustomOAuth2FailureHandler customOAuth2FailureHandler;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -38,7 +41,6 @@ public class CustomOAuth2LoginFilter extends OncePerRequestFilter {
         log.info("카카오 access token" + request.getHeader("Kakao-Access-Token"));   //todo : 확인
         // 모바일에서 토큰을 가지고 요청하는 uri인지 확인
         if (request.getRequestURI().endsWith(KAKAO_USER_INFO_URL)){ // todo: 확인할 것
-            System.out.println("dd");
             try {
                 log.info("1. 로그인 또는 회원가입 시도");
 
@@ -63,8 +65,10 @@ public class CustomOAuth2LoginFilter extends OncePerRequestFilter {
                 log.info("5. 인증 작업 및 토큰 발급 완료");
             } catch (Exception exception){
                 // 로그인 실패 핸들러 호출
-                new CustomOAuth2FailureHandler();
+                customOAuth2FailureHandler.onAuthenticationFailure(request, response, new BadCredentialsException("인증 실패"));
             }
         }
+        filterChain.doFilter(request, response);
     }
+
 }

@@ -12,6 +12,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -21,8 +23,14 @@ import java.util.stream.Collectors;
 @Component
 public class JwtClaimsParser {
     private final String AUTHORITIES_KEY = "authorities";  // todo : 이후 수정할 것
-    private SecretKey secretKey;
 
+    private SecretKey secretKey;
+    public JwtClaimsParser(
+            @Value("${jwt.secret}")
+            String secret
+    ) {
+        secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
+    }
     public Claims verifyJwtToken(String token) {
         return Jwts.parser()
                 .verifyWith(secretKey)

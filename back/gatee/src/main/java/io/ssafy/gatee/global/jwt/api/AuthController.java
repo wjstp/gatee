@@ -21,24 +21,17 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public class AuthController {
     private final JwtService jwtService;
-    /*
-     * access token이 만료된 경우 요청
-     * refresh token을 header에 담아서 요청
-     * refresh token이 만료됐는지 확인
-     * 만료가 되지 않았다면 access token 발급
-     * refresh token 이 만료됐다면
-     * exception 처리
-     * */
 
     // todo: access token 검증할 때 refresh token의 남은 시간을 확인해서 갱신하는 로직 추가
-    @PostMapping("/rotate-toekn")
-    public void rotateAccessToken(HttpServletRequest request, HttpServletResponse response, UserSecurityDTO userSecurityDTO) {
-        log.info("토큰 재발급 시작");
+    @PostMapping("/rotate-token")
+    public void rotateAccessToken(HttpServletRequest request, HttpServletResponse response) {
+        log.info("액세스 토큰 재발급 시작");
         String refreshToken = this.getCookie(request).getValue();
         log.info("refresh Token : " + refreshToken);
-        String accessToken = jwtService.rotateAccessToken(refreshToken, userSecurityDTO.getUsername());
+        String accessToken = jwtService.rotateAccessToken(refreshToken);
         // accessToken 헤더에 추가
         response.addHeader("Access-Token", "Bearer " + accessToken);
+        // todo: header에 refresh token 다시 달아줘야 하는 지 확인
     }
 
     private Cookie getCookie(HttpServletRequest request) {

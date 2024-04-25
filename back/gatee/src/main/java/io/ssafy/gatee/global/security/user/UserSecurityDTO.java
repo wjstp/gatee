@@ -37,9 +37,7 @@ public class UserSecurityDTO implements UserDetails {
 
     public static UserSecurityDTO toUserSecurityDTO(Member member) {
         System.out.println("dto로 변환");
-        var authorities = toAuthorities(member);
-        System.out.println(authorities);
-        var result = UserSecurityDTO.builder()
+        return UserSecurityDTO.builder()
                 .username(member.getId().toString())
                 .authorities(toAuthorities(member))
                 .password(UUID.randomUUID().toString())
@@ -49,7 +47,6 @@ public class UserSecurityDTO implements UserDetails {
                 .isAccountNonExpired(true)
                 .build();
 
-        return result;
     }
     public static Collection<? extends GrantedAuthority> toAuthorities(Member member) {
         return AuthorityUtils.createAuthorityList(member.getPrivilege().stream()
@@ -68,7 +65,7 @@ public class UserSecurityDTO implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.username.toString();
+        return this.username;
     }
 
     @Override

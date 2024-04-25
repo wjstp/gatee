@@ -70,13 +70,13 @@ public class JwtService {
     }
 
     // token 갱신
-    public String rotateAccessToken(String refreshToken, String memberId) {
-        Claims claims = verifyJwtToken(refreshToken); // 예외처리 할 것
-        System.out.println(memberId);
+    public String rotateAccessToken(String refreshToken) {
+        Claims claims = verifyJwtToken(refreshToken);// 예외처리 할 것
+        String memberId = claims.getSubject();
         // 기존 redis 삭제
         RefreshToken redisRefreshToken = refreshTokenRepository.findByMemberId(memberId)
                 .orElseThrow(() -> new JwtException("일치하는 refreshtoken이 없다잉"));
-        refreshTokenRepository.delete(redisRefreshToken);
+//        refreshTokenRepository.delete(redisRefreshToken);
         // access token이 일치하지 않으면 refresh token으로 요청보낼 것
         // 1. refresh token이 일치하는 경우 accesstoken을 재발급해서 제공
         // 2. refresh token이 일치하지 않는 경우 refresh token과 aceess token모두 재발급
@@ -106,7 +106,7 @@ public class JwtService {
     }
 
     public Cookie createCookie(String refreshToken) {
-        System.out.println("refreshtoken 확인 " + refreshToken);
+        log.info("refreshtoken 확인 " + refreshToken);
         String cookieName = "Refresh-Token";
         Cookie cookie = new Cookie(cookieName, refreshToken);
         // 쿠키 속성 설정

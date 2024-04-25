@@ -46,6 +46,7 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 
         // refresh token 저장
         UserSecurityDTO userSecurityDTO = (UserSecurityDTO) authentication.getPrincipal();
+        System.out.println(userSecurityDTO.getAuthorities());
         jwtService.saveToken(userSecurityDTO.getUsername(), refreshToken);
         Cookie cookie = jwtService.createCookie(refreshToken);
         response.addCookie(cookie);//로그인 성공 메세지

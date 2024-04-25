@@ -28,7 +28,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final String[] URL_WHITE_LIST = {
-            "/oauth2/authorization/kakao", "/auth/refresh", "/api/login",
+            "/api/jwt/**", "/api/auth/**",
             "/docs/**",
     };
 
@@ -36,6 +36,7 @@ public class SecurityConfig {
     private final AuthService authService;
     private final JwtProvider jwtProvider;
     private final CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
+    private final CustomOAuth2FailureHandler customOAuth2FailureHandler;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
@@ -56,7 +57,7 @@ public class SecurityConfig {
 //                        configurer -> configurer.accessDeniedHandler(new CustomAccessDeniedHandler())
 //                                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
 //                )
-                .addFilterAt(new CustomOAuth2LoginFilter(authService, jwtService, jwtProvider,customOAuth2SuccessHandler), OAuth2LoginAuthenticationFilter.class)
+                .addFilterAt(new CustomOAuth2LoginFilter(authService, jwtService, jwtProvider, customOAuth2SuccessHandler, customOAuth2FailureHandler), OAuth2LoginAuthenticationFilter.class)
                 .addFilterBefore(new JwtFilter(jwtService), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

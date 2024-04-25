@@ -51,16 +51,12 @@ public class JwtProvider {
     }
 
     public String generateToken(Authentication authentication, long expiration) {
-        System.out.println("authentication");
-        System.out.println(authentication);
-        String authorities = authentication.getAuthorities()
-                .stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(","));
+        UserSecurityDTO userSecurityDTO = (UserSecurityDTO) authentication.getPrincipal();
         long now = System.currentTimeMillis();
         return Jwts.builder()
-                .claim(AUTHORITIES_KEY, authorities)
+                .claim(AUTHORITIES_KEY, userSecurityDTO.getAuthorities())
                 .issuedAt(new Date(now))
+                .subject(userSecurityDTO.getUsername())
                 .expiration(new Date(now + expiration))
                 .signWith(secretKey)
                 .compact();
