@@ -73,15 +73,4 @@ public class Member extends BaseEntity {
     public void editMood(String mood) {
         this.mood = mood;
     }
-
-    @OneToMany(mappedBy = "memberList")
-    private Collection<FamilySchedule> familySchedule;
-
-    public Collection<FamilySchedule> getFamilySchedule() {
-        return familySchedule;
-    }
-
-    public void setFamilySchedule(Collection<FamilySchedule> familySchedule) {
-        this.familySchedule = familySchedule;
-    }
 }

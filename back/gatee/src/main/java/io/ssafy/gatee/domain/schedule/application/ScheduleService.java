@@ -14,9 +14,9 @@ import io.ssafy.gatee.global.exception.error.not_found.ScheduleNotFoundException
 import java.util.List;
 
 public interface ScheduleService {
-    ScheduleListRes readSchedule(Long familyId);
+    ScheduleListRes readSchedule(Long familyId) throws FamilyNotFoundException;
     ScheduleInfoRes readScheduleDetail(Long scheduleId) throws ScheduleNotFoundException;
     void saveSchedule(ScheduleSaveReq scheduleSaveReq) throws FamilyNotFoundException;
-    void editSchedule(ScheduleEditReq scheduleEditReq, Long scheduleId) throws ScheduleNotFoundException, DoNotHavePermission, FamilyScheduleNotFoundException, MemberFamilyScheduleNotFoundException;
+    void editSchedule(ScheduleEditReq scheduleEditReq, Long scheduleId) throws ScheduleNotFoundException, DoNotHavePermission, FamilyScheduleNotFoundException, MemberFamilyScheduleNotFoundException, FamilyNotFoundException;
     void participateSchedule(ScheduleParticipateReq scheduleParticipateReq, Long scheduleId) throws FamilyScheduleNotFoundException, MemberFamilyScheduleNotFoundException;
 }

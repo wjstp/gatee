@@ -17,8 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Slf4j
 @RestController
 @RequestMapping("/api/schedule")
@@ -33,7 +31,7 @@ public class ScheduleController {
     public ScheduleListRes readSchedule(
             @Valid
             @RequestParam("familyId") Long familyId
-    ) {
+    ) throws FamilyNotFoundException {
         return scheduleService.readSchedule(familyId);
     }
 
@@ -54,20 +52,20 @@ public class ScheduleController {
     }
 
     // 일정 수정
-    @PatchMapping("/{scheduleId")
+    @PatchMapping("/{scheduleId}")
     @ResponseStatus(HttpStatus.OK)
     public void editSchedule(
             @Valid
             @RequestBody ScheduleEditReq scheduleEditReq,
             @PathVariable("scheduleId") Long scheduleId
-    ) throws ScheduleNotFoundException, DoNotHavePermission, MemberFamilyScheduleNotFoundException, FamilyScheduleNotFoundException {
+    ) throws ScheduleNotFoundException, DoNotHavePermission, MemberFamilyScheduleNotFoundException, FamilyScheduleNotFoundException, FamilyNotFoundException {
         scheduleService.editSchedule(scheduleEditReq, scheduleId);
     }
 
     // 일정 삭제
 
     // 일정 참여
-    @PostMapping("/scheduleId")
+    @PostMapping("/{scheduleId}")
     @ResponseStatus(HttpStatus.OK)
     public void participateSchedule(
             @Valid

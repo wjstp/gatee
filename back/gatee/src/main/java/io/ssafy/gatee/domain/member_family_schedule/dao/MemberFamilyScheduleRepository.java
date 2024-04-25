@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface MemberFamilyScheduleRepository extends JpaRepository {
+public interface MemberFamilyScheduleRepository extends JpaRepository<MemberFamilySchedule, Long> {
     Optional<MemberFamilySchedule> findByMemberAndFamilySchedule(Member member, FamilySchedule familySchedule);
 }
