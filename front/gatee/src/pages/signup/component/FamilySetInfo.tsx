@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useNavigate} from "react-router-dom";
-import { ReactComponent as CameraIcon } from "assets/icons/camera.svg";
+import { ReactComponent as CameraIcon } from "assets/icons/camera.svg"
 
 function FamilySetInfo() {
   const navigate = useNavigate();
@@ -44,6 +44,7 @@ function FamilySetInfo() {
           placeholder="OO이네 가족"
           value={inputValue}
           onChange={handleInputChange}
+          autoFocus
         />
       </div>
       <div className="familySetInfo__nextButtonBox">

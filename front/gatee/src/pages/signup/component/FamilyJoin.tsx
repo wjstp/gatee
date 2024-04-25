@@ -1,29 +1,48 @@
 import React, {useState} from 'react';
 
 function FamilyJoin() {
-const [isCodeEntered, setIsCodeEntered] = useState(false);
+  const [isCodeEntered, setIsCodeEntered] = useState(false);
+  const [inputValue, setInputValue] = useState('');
 
-const handleEnter = (): void => {
-  setIsCodeEntered(true);
-};
+  const handleEnter = (): void => {
+    setIsCodeEntered(true);
+  };
 
-const handleExit = (): void => {
-  setIsCodeEntered(false);
-}
+  const handleExit = (): void => {
+    setIsCodeEntered(false);
+  }
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const value: string = e.target.value;
+    setInputValue(value);
+  }
 
 return (
   <div className="familyJoin">
     {!isCodeEntered ? (
-      <div className="familyJoin__inputCode">
-        <div>
-          <span>가족코드를 입력</span>
-          <span>해주세요</span>
+      <div className="familyJoin__codeInput">
+        <div className="familyJoin__codeInput__textBox">
+          <span className="familyJoin__codeInput__textBox__text1">
+            가족코드를 입력
+          </span>
+          <span className="familyJoin__codeInput__textBox__text2">
+            해주세요
+          </span>
         </div>
-        <div>
-          <input type="text"/>
+        <div className="familyJoin__codeInput__inputBox">
+          <input
+            className="familyJoin__codeInput__inputBox__input"
+            type="text"
+            pattern="[가-힣]*"
+            placeholder="EX) A43959FE "
+            value={inputValue}
+            onChange={handleInputChange}
+            autoFocus
+          />
         </div>
-        <div>
+        <div className="familyJoin__codeInput__inputButtonBox">
           <button
+            className="familyJoin__codeInput__inputButtonBox__inputButton"
             onClick={handleEnter}
           >
             입력하기
@@ -31,7 +50,7 @@ return (
         </div>
       </div>
     ) : (
-      <div className="familyJoin__checkFamily">
+      <div className="familyJoin__codeResult">
         <div>
           <img src="" alt=""/>
         </div>
