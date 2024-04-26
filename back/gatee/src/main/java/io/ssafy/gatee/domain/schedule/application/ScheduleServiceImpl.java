@@ -4,21 +4,32 @@ import io.ssafy.gatee.domain.family.dao.FamilyRepository;
 import io.ssafy.gatee.domain.family.entity.Family;
 import io.ssafy.gatee.domain.family_schedule.dao.FamilyScheduleRepository;
 import io.ssafy.gatee.domain.family_schedule.entity.FamilySchedule;
+import io.ssafy.gatee.domain.file.application.FileServiceImpl;
+import io.ssafy.gatee.domain.file.dao.FileRepository;
+import io.ssafy.gatee.domain.file.entity.File;
 import io.ssafy.gatee.domain.member.dao.MemberRepository;
 import io.ssafy.gatee.domain.member.entity.Member;
 import io.ssafy.gatee.domain.member_family_schedule.dao.MemberFamilyScheduleRepository;
 import io.ssafy.gatee.domain.member_family_schedule.entity.MemberFamilySchedule;
+import io.ssafy.gatee.domain.photo.dao.PhotoRepository;
+import io.ssafy.gatee.domain.photo.entity.Photo;
+import io.ssafy.gatee.domain.photo_schedule_record.dao.PhotoScheduleRecordRepository;
+import io.ssafy.gatee.domain.photo_schedule_record.entity.PhotoScheduleRecord;
 import io.ssafy.gatee.domain.schedule.dao.ScheduleRepository;
 import io.ssafy.gatee.domain.schedule.dto.request.ScheduleEditReq;
 import io.ssafy.gatee.domain.schedule.dto.request.ScheduleParticipateReq;
+import io.ssafy.gatee.domain.schedule.dto.request.ScheduleSaveRecordReq;
 import io.ssafy.gatee.domain.schedule.dto.request.ScheduleSaveReq;
 import io.ssafy.gatee.domain.schedule.dto.response.ScheduleInfoRes;
 import io.ssafy.gatee.domain.schedule.dto.response.ScheduleListRes;
 import io.ssafy.gatee.domain.schedule.entity.Category;
 import io.ssafy.gatee.domain.schedule.entity.Schedule;
+import io.ssafy.gatee.domain.schedule_record.dao.ScheduleRecordRepository;
+import io.ssafy.gatee.domain.schedule_record.entity.ScheduleRecord;
 import io.ssafy.gatee.global.exception.error.bad_request.DoNotHavePermission;
 import io.ssafy.gatee.global.exception.error.not_found.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.joda.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,11 +39,14 @@ import java.util.List;
 import static io.ssafy.gatee.global.exception.message.ExceptionMessage.*;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class ScheduleServiceImpl implements ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
+
+    private final ScheduleRecordRepository scheduleRecordRepository;
 
     private final MemberRepository memberRepository;
 
@@ -41,6 +55,14 @@ public class ScheduleServiceImpl implements ScheduleService {
     private final FamilyScheduleRepository familyScheduleRepository;
 
     private final MemberFamilyScheduleRepository memberFamilyScheduleRepository;
+
+    private final PhotoRepository photoRepository;
+
+    private final PhotoScheduleRecordRepository photoScheduleRecordRepository;
+
+    private final FileRepository fileRepository;
+
+    private final FileServiceImpl fileService;
 
     // 전체 일정 조회
     @Override
@@ -158,5 +180,37 @@ public class ScheduleServiceImpl implements ScheduleService {
                         .isCreater(false)
                         .build())
             );
+    }
+
+    // 일정 후기 등록
+    @Override
+    @Transactional
+    public void saveScheduleRecord(ScheduleSaveRecordReq scheduleSaveRecordReq, Long scheduleId) {
+        Member member = memberRepository.getReferenceById(scheduleSaveRecordReq.memberId());
+
+        Schedule schedule = scheduleRepository.getReferenceById(scheduleId);
+
+        ScheduleRecord scheduleRecord = ScheduleRecord.builder()
+                .content(scheduleSaveRecordReq.content())
+                .schedule(schedule)
+                .build();
+
+        scheduleRecordRepository.save(scheduleRecord);
+
+        List<Photo> photos = scheduleSaveRecordReq.fileIdList().stream().map(fileId ->
+            Photo.builder()
+                    .member(member)
+                    .file(fileRepository.getReferenceById(fileId))
+                    .build()).toList();
+
+        List<Photo> photoList = photoRepository.saveAll(photos);
+
+        List<PhotoScheduleRecord> photoScheduleRecordList = photoList.stream().map(photo ->
+                PhotoScheduleRecord.builder()
+                        .photo(photo)
+                        .scheduleRecord(scheduleRecord)
+                        .build()).toList();
+
+        photoScheduleRecordRepository.saveAll(photoScheduleRecordList);
     }
 }
