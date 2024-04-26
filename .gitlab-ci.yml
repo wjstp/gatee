@@ -84,6 +84,8 @@ deploy:
     - cd ../..
     ## 환경이 변경됨
     - echo $DEPLOY_ENV
+    - pwd
+    - ls
     - if [ "$DEPLOY_ENV" == "blue" ]; then
       docker-compose -f docker-compose.green.yaml down;
       echo "docker-compose -f docker-compose.green.yaml down do!!";
@@ -98,5 +100,3 @@ deploy:
     - develop
     - master
     - release
-
-
