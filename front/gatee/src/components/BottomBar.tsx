@@ -1,11 +1,11 @@
 import React from 'react';
 import { NavLink } from "react-router-dom";
-import {ReactComponent as HomeIcon } from "../assets/icons/home.svg"
+import {ReactComponent as HomeIcon } from "@assets/icons/home.svg"
 import { PiGraduationCap } from "react-icons/pi";
 import { PiCalendar } from "react-icons/pi";
 import { PiChatCenteredDots } from "react-icons/pi";
 import { PiImage } from "react-icons/pi";
-import NotificationBadge from "../components/NotificationBadge";
+// import NotificationBadge from "@components/NotificationBadge";
 
 const BottomBar = () => {
   return (

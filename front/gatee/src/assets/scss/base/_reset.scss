@@ -53,15 +53,18 @@ textarea {
   background-color: transparent;
   border: 0;
 
-  &:focus {
-    outline: none;
-    box-shadow: none;
-  }
+
 }
 
 a,
 button {
   cursor: pointer;
+  -webkit-tap-highlight-color : transparent !important;
+
+  &:focus &:active {
+    outline: none;
+    box-shadow: none;
+  }
 }
 
 ul,

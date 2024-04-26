@@ -1,14 +1,15 @@
 import React from 'react';
-import Calendar from "./component/Calendar";
+import ScheduleCalendar from "./component/ScheduleCalendar";
 
-function ScheduleIndex() {
+const ScheduleIndex = () => {
   return (
     <div className="calendarContainer">
-      <div className="banner5">
+      {/*배너*/}
+      <div className="banner4">
       </div>
-      <div className="calendar">
-        <Calendar />
-      </div>
+      
+      {/*달력*/}
+      <ScheduleCalendar />
     </div>
   );
 }

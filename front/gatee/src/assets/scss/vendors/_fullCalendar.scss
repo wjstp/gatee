@@ -1,39 +1,42 @@
 @use '../abstracts/index' as *;
 
-// @FullCalendar 라이브러리 CSS 수정 파일
+// @ScheduleCalendar 라이브러리 CSS 수정 파일
+:root {
+  --fc-small-font-size: 9px;
+  --fc-border-color: transparent;
+  --fc-button-text-color: black;
+  --fc-button-bg-color: transparent;
+  --fc-button-border-color: transparent;
+  --fc-button-hover-bg-color: transparent;
+  --fc-button-hover-border-color: transparent;
+  --fc-button-active-bg-color: transparent;
+  --fc-button-active-border-color: transparent;
+  --fc-today-bg-color: transparent;
+}
 
 // 헤더
 .fc-toolbar {
-
   // 헤더 제목
   .fc-toolbar-title {
     font-weight: 400;
   }
-
-  // prev, next 버튼
-  .fc-button {
-    background-color: transparent !important;
-    border: none !important;
-    color: inherit !important;
-    box-shadow: none !important;
-  }
 }
-
 
 // 달력
 .fc-daygrid {
-  margin-top: 2dvh;
-
   // 요일
   .fc-col-header-cell-cushion {
-    font-size: $font-size-small;
-    margin-bottom: 1dvh;
+    font:{
+      size: $font-size-small;
+      weight: 400;
+    };
+    margin-bottom: 0.5rem;
     opacity: 0.3;
   }
 
   // 일요일 빨간색
   .fc-day-sun {
-    color: red;
+    color: #ed6363;
   }
 
   // 일자
@@ -45,20 +48,14 @@
     }
   }
 
-  // more 버튼 스타일
-  .fc-daygrid-more-link.fc-more-link {
-
-  }
-
-  // 이벤트
-  .fc-daygrid-day-events {
-    .fc-event-main-frame {
-      //background-color: red !important;
-      //border: none !important;
-    }
-
-    .fc-event-title {
-
+  // more 버튼
+  .fc-daygrid-day-bottom {
+    .fc-daygrid-more-link {
+      font:{
+        size: $font-size-xSmall;
+        weight: 500;
+      }
+      color: $orange400;
     }
   }
 }

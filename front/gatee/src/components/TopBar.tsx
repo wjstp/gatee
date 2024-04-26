@@ -5,7 +5,7 @@ import { PiBell } from "react-icons/pi";
 import { PiUserCircle } from "react-icons/pi";
 import { PiSquaresFour } from "react-icons/pi";
 import { PiGearSix } from "react-icons/pi";
-import NotificationBadge from "../components/NotificationBadge";
+// import NotificationBadge from "@components/NotificationBadge";
 
 const TopBar = () => {
   const navigate = useNavigate();

@@ -5,7 +5,6 @@
 }
 
 .calendarContainer {
-  position: relative;
   height: 100%;
 
   // banner뒤의 숫자에 따라 1월부터 12월까지의 이미지로 변경
@@ -13,26 +12,38 @@
     @for $i from 1 through 12 {
       &#{$i} {
         background: {
-          //image: url(calendarBannerImage(#{$i}));
-          image: url(calendarBannerImage(5));
+          image: url(calendarBannerImage(#{$i}));
           position: center;
           repeat: no-repeat;
           size: cover;
         };
-
-        position: absolute;
-        z-index: -10;
-        height: 6rem;
-        width: 100%;
-        border-radius: 30px 30px 0 0;
-        opacity: 0.7;
+        height: 13%;
+        border-radius: 40px 40px 0 0;
       }
     }
   }
 
   .calendar {
-    @include pt-(2);
-    margin: 0 1%;
-    height: 100%;
+    margin: 0 2%;
+    height: 87%;
+
+    .calendar__header {
+      @include flex_row;
+      justify-content: center;
+      align-items: end;
+      height: 8%;
+
+      .calendar__headerButton {
+        color: $orange200;
+      }
+
+      .calendar__headerTitle {
+        @include mx-(1);
+        font: {
+          weight: 500;
+          size: $font-size-big;
+        };
+      }
+    }
   }
 }
