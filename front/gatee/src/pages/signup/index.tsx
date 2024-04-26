@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import { ReactComponent as HomeIcon } from "assets/icons/home.svg";
+import { ReactComponent as HomeIcon } from "@assets/icons/home.svg"
 
 function SignupIndex() {
   return (
@@ -8,10 +8,10 @@ function SignupIndex() {
       <div className="signupIndex__iconBox">
         <HomeIcon className="signupIndex__iconBox__icon" />
       </div>
-      <div className="signupIndex__textBox">
-        <span className="signupIndex__textBox__text1">가족에게</span>
-        <span className="signupIndex__textBox__text2">한발짝</span>
-        <span className="signupIndex__textBox__text3">다가가 볼까요?</span>
+      <div className="signupIndex__spanBox">
+        <span className="signupIndex__spanBox__span1">가족에게</span>
+        <span className="signupIndex__spanBox__span2">한발짝</span>
+        <span className="signupIndex__spanBox__span3">다가가 볼까요?</span>
       </div>
       <div className="signupIndex__createButtonBox">
         <Link
@@ -19,7 +19,7 @@ function SignupIndex() {
           to="/signup/family"
           state={{ action: 'set-info' }}
         >
-          <span className="signupIndex__createButtonBox__createButton__text">
+          <span className="signupIndex__createButtonBox__createButton__span">
             내 가족 생성하기
           </span>
         </Link>
@@ -30,7 +30,7 @@ function SignupIndex() {
           to="/signup/family"
           state={{ action: 'join' }}
         >
-          <span className="signupIndex__joinButtonBox__joinButton__text">
+          <span className="signupIndex__joinButtonBox__joinButton__span">
             초대 코드 입력
           </span>
         </Link>

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import Stamp from "assets/icons/stamp_logo.png"
+import Stamp from "../../assets/icons/stamp_logo.png"
 import {useNavigate} from "react-router-dom";
 interface GradeData {
   point: number;
