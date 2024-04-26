@@ -78,7 +78,7 @@ deploy:
     - pwd
     - echo [INFO] $TAG
     - source ./deploy_script.sh $TAG
-    - cp ./back/gatee/deploy/nginx/nginx.conf /home/ubuntu/nginx.conf
+    - cp ./nginx.conf /home/ubuntu/nginx.conf
     - docker exec proxy-server nginx -s reload
     - if [ "$DEPLOY_ENV" == "blue" ]; then
       docker-compose -f docker-compose.blue.yaml down;
