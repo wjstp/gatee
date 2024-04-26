@@ -80,7 +80,7 @@ deploy:
     - pwd
     - echo [INFO] $TAG
     - source ./deploy_script.sh $TAG
-    - cp ./builds/s10-final/S10P31A505/back/gatee/devops/nginx/nginx.conf /home/ubuntu/nginx.conf
+    - cp ./nginx.conf /home/ubuntu/nginx.conf
     - sudo docker exec proxy-server nginx -s reload
   after_script:
     - docker logout
