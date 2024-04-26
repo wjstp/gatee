@@ -1,0 +1,9 @@
+@use '../abstracts/index' as *;
+
+.notificationBadge {
+  background-color: $orange500;
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+  border: 1px white solid;
+}

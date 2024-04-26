@@ -32,56 +32,56 @@ const Router = () => {
   return (
     <Routes>
       <Route element={<MainLayout/>}>
-        // 모의고사 페이지
+        {/*모의고사 페이지*/}
         <Route path="/exam" element={<ExamIndex/>}/>
         <Route path="/exam/grade" element={<ExamGrade/>}/>
         <Route path="/exam/scored/:id" element={<ExamScored/>}/>
         <Route path="/exam/taking" element={<ExamTaking/>}/>
 
-        // 채팅 페이지
+        {/*채팅 페이지*/}
         <Route path="/chat" element={<ChatIndex/>}/>
 
-        // 알림 페이지
+        {/*알림 페이지*/}
         <Route path="/notification" element={<NotificationIndex/>}/>
 
-        // 프로필 페이지
+        {/*프로필 페이지*/}
         <Route path="/profile" element={<ProfileIndex/>}/>
 
-        // 메인 페이지
+        {/*메인 페이지*/}
         <Route path="/main" element={<MainIndex/>}/>
         <Route path="/main/mission" element={<MissionIndex/>}/>
 
-        // 스케줄 페이지
+        {/*스케줄 페이지*/}
         <Route path="/schedule" element={<ScheduleIndex/>}/>
         <Route path="/schedule/create-schedule" element={<ScheduleCreateSchedule/>}/>
         <Route path="/schedule/create-review" element={<ScheduleCreateReview/>}/>
         <Route path="/schedule/:id" element={<ScheduleDetail/>}/>
 
-        // 백과사전 페이지
+        {/*백과사전 페이지*/}
         <Route path="/character" element={<CharacterIndex/>}/>
         <Route path="/character/start" element={<CharacterStart/>}/>
         <Route path="/character/question" element={<CharacterQuestion/>}/>
 
-        // 앨범 페이지
+        {/*앨범 페이지*/}
         <Route path="/photo" element={<PhotoAlbumIndex/>}/>
         <Route path="/photo/album" element={<PhotoAlbumPhoto/>}/>
         <Route path="/photo/group/:id" element={<PhotoAllGroupDetail/>}/>
         <Route path="/photo/album/:id" element={<PhotoAlbumGroupDetail/>}/>
       </Route>
 
-      // TabBar, BottomBar 없는 레이아웃
+      {/*TabBar, BottomBar 없는 레이아웃*/}
       <Route element={<SubLayout/>}>
-        // 온보딩 페이지
+        {/*온보딩 페이지*/}
         <Route path="/" element={<OnboardingIndex/>}/>
         <Route path="/kakao" element={<KaKaoLogin/>}/>
 
-        // 회원가입 페이지
+        {/*회원가입 페이지*/}
         <Route path="/signup" element={<SignupIndex/>}/>
         <Route path="/signup/member" element={<SignupMember/>}/>
         <Route path="/signup/family" element={<SignupFamily/>}/>
       </Route>
 
-      // 404 처리
+      {/*404 처리*/}
       {/*<Route component={NotFount} />*/}
     </Routes>
   );

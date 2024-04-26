@@ -20,12 +20,12 @@ export default class Calendar extends React.Component<{}, CalendarState> {
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin]}
         headerToolbar={{
-          left: "prev",
-          center: "title",
-          right: 'next'
+          left: "prev",     // 이전 달 버튼
+          center: "title",  // yyyy년 mm월
+          right: 'next'     // 다음 달 버튼
         }}
         initialView="dayGridMonth"
-        height="99%"      // calendar 높이
+        height="100%"       // calendar 높이
         locale="kr"         // 언어 한글로 변경
         editable={true}     // 일정 이벤트
         selectable={true}   // 영역 선택
