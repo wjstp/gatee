@@ -5,7 +5,7 @@ import io.ssafy.gatee.domain.family.dto.request.FamilyNameReq;
 import io.ssafy.gatee.domain.family.dto.request.FamilySaveReq;
 import io.ssafy.gatee.domain.family.dto.response.FamilyCodeRes;
 import io.ssafy.gatee.domain.family.dto.response.FamilyInfoRes;
-import io.ssafy.gatee.global.exception.error.bad_request.ExpiredCode;
+import io.ssafy.gatee.global.exception.error.bad_request.ExpiredCodeException;
 import io.ssafy.gatee.global.exception.error.not_found.FamilyNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +44,7 @@ public class FamilyController {
             @Valid
             @RequestParam String familyCode,
             @RequestParam String memberId
-    ) throws ExpiredCode {
+    ) throws ExpiredCodeException {
         familyService.joinFamily(familyCode, UUID.fromString(memberId));
     }
 
