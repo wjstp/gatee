@@ -5,6 +5,7 @@ import io.ssafy.gatee.global.jwt.filter.JwtFilter;
 import io.ssafy.gatee.global.jwt.util.JwtProvider;
 import io.ssafy.gatee.global.security.application.AuthService;
 import io.ssafy.gatee.global.security.filter.CustomOAuth2LoginFilter;
+import io.ssafy.gatee.global.security.handler.CustomAccessDeniedHandler;
 import io.ssafy.gatee.global.security.handler.CustomOAuth2FailureHandler;
 import io.ssafy.gatee.global.security.handler.CustomOAuth2SuccessHandler;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Log4j2
@@ -28,7 +30,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final String[] URL_WHITE_LIST = {
-            "/api/jwt/**", "/api/auth/**",
+            "/api/auth/**", "/api/jwt/**",
             "/docs/**",
     };
 
@@ -37,6 +39,7 @@ public class SecurityConfig {
     private final JwtProvider jwtProvider;
     private final CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
     private final CustomOAuth2FailureHandler customOAuth2FailureHandler;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
@@ -52,11 +55,12 @@ public class SecurityConfig {
                         .requestMatchers(URL_WHITE_LIST).permitAll()
                         // 회원가입 후 정보 등록 페이지는 anonymous만 접근 가능, 정보등록을 하지 않은 유저는 다른 페이지에 접근 불가
                         .requestMatchers("/api/members").hasRole("ANONYMOUS")
-                        .anyRequest().authenticated())  // todo: whitelist와 회원정보 기입 뺴고는 전부 user만 가능하도록
-//                .exceptionHandling(
-//                        configurer -> configurer.accessDeniedHandler(new CustomAccessDeniedHandler())
+//                        .requestMatchers("/**").hasRole("USER")
+                        .anyRequest().authenticated())
+                .exceptionHandling(configurer -> configurer
+                                .accessDeniedHandler(customAccessDeniedHandler)
 //                                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
-//                )
+                )
                 .addFilterAt(new CustomOAuth2LoginFilter(authService, jwtService, jwtProvider, customOAuth2SuccessHandler, customOAuth2FailureHandler), OAuth2LoginAuthenticationFilter.class)
                 .addFilterBefore(new JwtFilter(jwtService), UsernamePasswordAuthenticationFilter.class);
 

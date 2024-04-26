@@ -5,10 +5,13 @@ import io.ssafy.gatee.domain.family.dto.request.FamilyNameReq;
 import io.ssafy.gatee.domain.family.dto.request.FamilySaveReq;
 import io.ssafy.gatee.domain.family.dto.response.FamilyInfoRes;
 import io.ssafy.gatee.global.exception.error.not_found.FamilyNotFoundException;
+import io.ssafy.gatee.global.security.user.UserSecurityDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/family")
@@ -19,10 +22,11 @@ public class FamilyController {
     private final FamilyService familyService;
 
     // 가족 생성
+
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public void saveFamily(@RequestBody FamilySaveReq familySaveReq) {
-        familyService.saveFamily(familySaveReq);
+    public void saveFamily(@RequestBody FamilySaveReq familySaveReq, UserSecurityDTO userSecurityDTO) {
+        familyService.saveFamily(familySaveReq, UUID.fromString(userSecurityDTO.getUsername()));
     }
 
     // 가족 정보 조회
@@ -39,7 +43,7 @@ public class FamilyController {
     public void editFamilyName(
             @PathVariable("familyId") String familyId,
             @RequestBody FamilyNameReq familyNameReq
-            ) throws FamilyNotFoundException {
+    ) throws FamilyNotFoundException {
         log.info(familyId);
         familyService.editFamilyName(Long.valueOf(familyId), familyNameReq);
     }

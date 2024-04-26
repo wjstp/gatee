@@ -47,8 +47,10 @@ public class JwtClaimsParser {
                 .getPayload();
         Collection<? extends GrantedAuthority> authorities = getAuthorities(claims);
         UserSecurityDTO principal = UserSecurityDTO.builder()
+                .username(claims.getSubject())
                 .authorities(authorities)
                 .isEnabled(true)
+                .isAccountNonExpired(true)
                 .isCredentialsNonExpired(true)
                 .isAccountNonLocked(true)
                 .build();

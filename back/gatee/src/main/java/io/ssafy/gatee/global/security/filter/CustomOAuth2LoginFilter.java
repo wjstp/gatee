@@ -59,6 +59,7 @@ public class CustomOAuth2LoginFilter extends OncePerRequestFilter {
                 SecurityContextHolder.setContext(securityContext);
                 log.info(securityContext.getAuthentication().getPrincipal().toString());
                 log.info("4. spring context 설정 완료");
+                System.out.println("@@@@@@@@@@@@@@@" + securityContext.getAuthentication());
 
                 // 로그인 성공 핸들러 호출
                 customOAuth2SuccessHandler.onAuthenticationSuccess(request, response, authentication);

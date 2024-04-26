@@ -51,8 +51,8 @@ public class MemberServiceImpl implements MemberService{
     // 회원 정보 저장
     @Override
     @Transactional  // transaction을 사용하기 위해 선언
-    public void saveMemberInfo(MemberSaveReq memberSaveReq) {
-        Member member = memberRepository.findById(UUID.fromString(memberSaveReq.memberId()))
+    public void saveMemberInfo(MemberSaveReq memberSaveReq, UUID memberId) {
+        Member member = memberRepository.findById(memberId)
                 .orElseThrow(()-> new MemberNotFoundException(MEMBER_NOT_FOUND));
 
         member.saveInfo(memberSaveReq);

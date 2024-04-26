@@ -49,8 +49,11 @@ public class UserSecurityDTO implements UserDetails {
 
     }
     public static Collection<? extends GrantedAuthority> toAuthorities(Member member) {
-        return AuthorityUtils.createAuthorityList(member.getPrivilege().stream()
+        var result = AuthorityUtils.createAuthorityList(member.getPrivilege().stream()
                 .map(Enum::toString).collect(Collectors.toList()));
+
+        System.out.println("???????????" + result);
+        return result;
     }
 
     @Override

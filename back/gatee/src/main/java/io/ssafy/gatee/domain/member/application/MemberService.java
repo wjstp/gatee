@@ -12,7 +12,7 @@ public interface MemberService {
 
     void register(String name, String nickname);
 
-    void saveMemberInfo(MemberSaveReq memberSaveReq) throws ParseException;
+    void saveMemberInfo(MemberSaveReq memberSaveReq, UUID memberId) throws ParseException;
 
     void editMemberInfo(MemberEditReq memberEditReq) throws ParseException;
 

@@ -15,10 +15,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -35,18 +38,26 @@ public class JwtService {
 
     private static final String TOKEN_PREFIX = "Bearer ";
 
+    private final String AUTHORITIES_KEY = "authorities";
+
     public Authentication authenticateJwtToken(HttpServletRequest request) {
         String token = parseJwt(request);
         if (Objects.isNull(token)) {
             return null;
         }
         Claims claims = verifyJwtToken(token);
-        String username = claims.get("username").toString();
-        String role = claims.get("role").toString();   // 수정
+        String username = claims.getSubject();
+        System.out.println(username);
+        List<String> role = (List<String>) claims.get(AUTHORITIES_KEY);   // 수정
+        System.out.println(role);
         // member를 생성하여 값 set
         UserSecurityDTO customUserDetails = UserSecurityDTO.builder()
                 .username(username)
-                .privilege(Privilege.valueOf(role))
+                .authorities((Collection<? extends GrantedAuthority>) claims.get(AUTHORITIES_KEY))
+                .password(UUID.randomUUID().toString())
+                .isAccountNonLocked(true)
+                .isCredentialsNonExpired(true)
+                .isAccountNonExpired(true)
                 .build();
         // 스프링 시큐리티 인증 토큰 생성
         return new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
