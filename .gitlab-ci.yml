@@ -86,6 +86,7 @@ deploy:
     - echo $DEPLOY_ENV
     - pwd
     - ls
+    ## 업스트림 교체 후 이전 컨테이너 종료 및 제거
     - if [ "$DEPLOY_ENV" == "blue" ]; then
       docker-compose -f docker-compose.green.yaml down;
       echo "docker-compose -f docker-compose.green.yaml down do!!";
