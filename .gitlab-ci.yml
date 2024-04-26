@@ -66,8 +66,8 @@ deploy:
       docker-compose -f docker-compose.green.yaml up --build -d;
       else
       echo "Deploying to blue environment...";
-      docker-compose -f docker-compose.blue.yml down;
-      docker-compose -f docker-compose.blue.yml up --build -d;
+      docker-compose -f docker-compose.blue.yaml down;
+      docker-compose -f docker-compose.blue.yaml up --build -d;
       fi
     - echo [INFO] upstream change
     - chmod +x ./devops/nginx/deploy_script.sh
