@@ -1,0 +1,66 @@
+@use '../abstracts/index' as *;
+
+// @FullCalendar 라이브러리 CSS 수정 파일
+
+// 헤더
+.fc-toolbar {
+
+  // 헤더 제목
+  .fc-toolbar-title {
+    font: {
+      weight: 600;
+    };
+  }
+
+  // prev, next 버튼
+  .fc-button {
+    background-color: transparent !important;
+    border: none !important;
+    color: inherit !important;
+    box-shadow: none !important;
+  }
+}
+
+
+// 달력
+.fc-daygrid {
+  margin-top: 2dvh;
+
+  // 요일
+  .fc-col-header-cell-cushion {
+    font-size: $font-size-small;
+    margin-bottom: 1dvh;
+  }
+
+  // 일요일 빨간색
+  .fc-day-sun {
+    color: red;
+  }
+
+  // 일자
+  .fc-daygrid-day-top {
+    @include flex_center;
+
+    .fc-daygrid-day-number {
+      font-size: $font-size-small;
+    }
+  }
+
+  // more 버튼 스타일
+  .fc-daygrid-more-link.fc-more-link {
+
+  }
+
+  // 이벤트
+  .fc-daygrid-day-events {
+    .fc-event-main-frame {
+      //background-color: red !important;
+      //border: none !important;
+    }
+
+    .fc-event-title {
+
+    }
+  }
+}
+

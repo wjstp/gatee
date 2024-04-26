@@ -21,7 +21,7 @@
         };
 
         position: absolute;
-        top: 1rem;
+        top: 1%;
         z-index: -10;
         height: 6rem;
         width: 100%;
@@ -32,7 +32,8 @@
   }
 
   .calendar {
-    @include pt-(3);
+    @include pt-(2.5);
+    margin: 0 1%;
     height: 100%;
   }
 }
