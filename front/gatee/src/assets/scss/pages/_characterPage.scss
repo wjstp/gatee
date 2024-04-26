@@ -1,1 +1,57 @@
 @use '../abstracts/index' as *;
+
+.character__index {
+  @include mx-(2);
+  @include flex-col;
+  @include mt-(2);
+
+  h3 {
+    @include my-(1);
+  }
+
+  .explain {
+    color: $gray200;
+    @include flex-col;
+    gap: 0.4rem;
+  }
+
+  .orangeButtonLarge {
+    display: flex;
+    margin: 2rem auto;
+    width: 100%;
+  }
+}
+
+.character__question {
+  @include flex-col;
+  height: 80dvh;
+  justify-content: center;
+  @include mx-(2);
+  //margin:  0;
+  .text-input {
+    font-size: 1.3rem;
+    border: 1px solid $gray100;
+    border-radius: 0.5rem;
+    @include my-(1);
+    @include p-(0.6);
+  }
+
+  .orangeButtonLarge {
+    width: 100%;
+  }
+
+  .flex-center {
+    @include flex-center;
+  }
+
+  .skipButton {
+    text-decoration: underline;
+    color: $gray200;
+    @include mb-(1);
+  }
+
+}
+
+.book-imgSize {
+  width: 30dvw;
+}

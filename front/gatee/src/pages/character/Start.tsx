@@ -1,8 +1,12 @@
 import React from 'react';
+import Header from "@pages/character/component/Header";
 
 function CharacterStart() {
     return (
-        <div>CharacterStart</div>
+        <div>
+            <Header/>
+
+        </div>
     );
 }
 

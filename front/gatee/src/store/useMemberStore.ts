@@ -36,7 +36,7 @@ export const useMemberStore = create<MemberStore>()(
     setRefreshToken: (newRefreshToken: string) => set({ refreshToken: newRefreshToken }),
     memberId: null,
     setMemberId: (newMemberId: string) => set({ memberId: newMemberId }),
-    name: null,
+    name: "예빈",
     setName: (newName: string) => set({ name: newName }),
     nickname: null,
     setNickName: (newNickname: string) => set({ nickname: newNickname }),
