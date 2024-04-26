@@ -71,6 +71,8 @@ deploy:
       fi
     - echo [INFO] upstream change
     - chmod +x ./devops/nginx/deploy_script.sh
+    - cd devops
+    - cd nginx
     - ls
     - pwd
     - ./devops/nginx/deploy_script.sh $DEPLOY_ENV
