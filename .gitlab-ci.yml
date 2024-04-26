@@ -85,11 +85,11 @@ deploy:
     ## 환경이 변경됨
     - echo $DEPLOY_ENV
     - if [ "$DEPLOY_ENV" == "blue" ]; then
-      docker-compose -f docker-compose.green.yaml down;
-      echo "docker-compose -f docker-compose.green.yaml down do!!";
-      else
       docker-compose -f docker-compose.blue.yaml down;
-      echo "docker-compose -f docker-compose.blue.yaml down do!!!";
+      echo "docker-compose -f docker-compose.blue.yaml down do!!";
+      else
+      docker-compose -f docker-compose.green.yaml down;
+      echo "docker-compose -f docker-compose.green.yaml down do!!!";
       fi
   after_script:
     - docker logout
