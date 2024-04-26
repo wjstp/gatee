@@ -7,7 +7,7 @@ pwd
 ls
 
 # Nginx 설정 파일 경로 설정
-NGINX_CONF="./back/gatee/devops/nginx/nginx.conf"
+NGINX_CONF="./nginx.conf"
 
 # 블루 서버 설정
 BLUE_SERVER="gatee-api-blue:8080"
