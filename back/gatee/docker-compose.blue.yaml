@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  gatee-api:
+    image: ${CI_REGISTRY}/gatee-api:blue
+    container_name: gatee-api-blue
+    ports:
+      - "8080:8080"
+    environment:
+      - ENV=prod, common
+    networks:
+      - gatee-net
+
+networks:
+  gatee-net:
+    external: true
