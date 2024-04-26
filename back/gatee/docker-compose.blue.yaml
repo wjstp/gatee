@@ -1,4 +1,3 @@
-version: '3.8'
 services:
   gatee-api:
     image: ${CI_REGISTRY}/gatee-api:blue
