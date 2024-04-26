@@ -64,12 +64,10 @@ deploy:
     - if [ "$DEPLOY_ENV" == "blue" ]; then
       TAG="green";
       echo "Deploying to green environment...";
-      docker-compose -f docker-compose.green.yaml down;
       docker-compose -f docker-compose.green.yaml up --build -d;
       else
       TAG="blue";
       echo "Deploying to blue environment...";
-      docker-compose -f docker-compose.blue.yaml down;
       docker-compose -f docker-compose.blue.yaml up --build -d;
       fi
     - export TAG
