@@ -61,10 +61,12 @@ deploy:
     - chmod +x ./devops/nginx/detect_env.sh
     - DEPLOY_ENV=$(source ./devops/nginx/detect_env.sh)
     - if [ "$DEPLOY_ENV" == "blue" ]; then
+      TAG="green"
       echo "Deploying to green environment...";
       docker-compose -f docker-compose.green.yaml down;
       docker-compose -f docker-compose.green.yaml up --build -d;
       else
+      TAG="blue"
       echo "Deploying to blue environment...";
       docker-compose -f docker-compose.blue.yaml down;
       docker-compose -f docker-compose.blue.yaml up --build -d;
@@ -75,8 +77,8 @@ deploy:
     - cd nginx
     - ls
     - pwd
-    - echo [INFO] $DEPLOY_ENV
-    - ./deploy_script.sh $DEPLOY_ENV
+    - echo [INFO] $TAG
+    - ./deploy_script.sh $TAG
     - cp ./back/gatee/deploy/nginx/nginx.conf /home/ubuntu/nginx.conf
     - sudo docker exec proxy-server nginx -s reload
   after_script:
