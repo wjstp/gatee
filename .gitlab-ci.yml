@@ -32,8 +32,6 @@ build:
     - sed -i 's|${AWS_SECRET_KEY}|'"$AWS_SECRET_KEY"'|g' application-aws.yaml
     # 권한 부여 후 현재 서버 환경 확인
     - cd ../../..
-    - ls
-    - pwd
     - chmod +x ./devops/nginx/detect_env.sh
     - DEPLOY_ENV=$(source ./devops/nginx/detect_env.sh)
     # tag 설정
@@ -75,8 +73,6 @@ deploy:
     - chmod +x ./devops/nginx/deploy_script.sh
     - cd devops
     - cd nginx
-    - ls
-    - pwd
     - echo [INFO] $TAG
     - source ./deploy_script.sh $TAG
     - cp ./nginx.conf /home/ubuntu/nginx.conf
