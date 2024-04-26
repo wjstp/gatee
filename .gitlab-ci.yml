@@ -37,6 +37,7 @@ build:
     - chmod +x ./devops/nginx/detect_env.sh
     - DEPLOY_ENV=$(source ./devops/nginx/detect_env.sh)
     # tag 설정
+    - echo $DEPLOY_ENV
     - if [ "$DEPLOY_ENV" == "blue" ]; then TAG="green"; else TAG="blue"; fi
     - echo "Building image for $TAG environment..."
     - chmod +x ./devops/build-image.sh
