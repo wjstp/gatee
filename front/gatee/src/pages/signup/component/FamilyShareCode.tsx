@@ -1,12 +1,16 @@
 import React from 'react';
 import { BiCopy } from "react-icons/bi";
+import {useLocation, Link} from "react-router-dom";
 
 function FamilyShareCode() {
+  const location = useLocation();
+  const { inputValue, action } = location.state;
+
   return (
     <div className="familyShareCode">
-      <div className="familyShareCode__textBox">
-        <span className="familyShareCode__textBox__text1">가족을 초대</span>
-        <span className="familyShareCode__textBox__text2">해봐요</span>
+      <div className="familyShareCode__spanBox">
+        <span className="familyShareCode__spanBox__span1">가족을 초대</span>
+        <span className="familyShareCode__spanBox__span2">해봐요</span>
       </div>
       <div className="familyShareCode__imageBox">
         <img
@@ -16,11 +20,13 @@ function FamilyShareCode() {
         />
       </div>
       <div className="familyShareCode__nameBox">
-        <span className="familyShareCode__nameBox__name">예삐네 가족</span>
+        <span className="familyShareCode__nameBox__name">
+          {inputValue}
+        </span>
       </div>
       <div className="familyShareCode__codeSection">
-        <div className="familyShareCode__codeSection__textBox">
-          <span className="familyShareCode__codeSection__textBox__text">
+        <div className="familyShareCode__codeSection__spanBox">
+          <span className="familyShareCode__codeSection__spanBox__span">
             초대 코드
           </span>
         </div>
@@ -46,11 +52,17 @@ function FamilyShareCode() {
         </button>
       </div>
       <div className="familyShareCode__nextButtonBox">
-        <button
+        <Link
           className="familyShareCode__nextButtonBox__nextButton"
+          to="/signup/member"
+          state={{
+            action: 'set-name',
+          }}
         >
-          다음
-        </button>
+          <span className="familyShareCode__nextButtonBox__nextButton__span">
+            다음
+          </span>
+        </Link>
       </div>
     </div>
   );

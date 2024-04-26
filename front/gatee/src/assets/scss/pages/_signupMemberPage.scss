@@ -1,0 +1,20 @@
+@use '../abstracts/index' as *;
+@use '../components/index' as *;
+
+// 멤버 - 인덱스 페이지
+.signupMember {
+  height: 100%;
+  width: 100%;
+
+  &__div {
+    @include flex-center;
+    height: 100%;
+    width: 100%;
+    background-color: $orange400;
+
+    &__span {
+      font-weight: bold;
+      font-size: 30px;
+    }
+  }
+}

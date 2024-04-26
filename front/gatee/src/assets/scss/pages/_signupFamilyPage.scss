@@ -1,5 +1,6 @@
 @use '../abstracts/index' as *;
 @use '../components/index' as *;
+
 // 가족 생성/입장 - 첫 선택 페이지
 .signupIndex {
   height: 100%;
@@ -23,21 +24,21 @@
     }
   }
 
-  &__textBox {
+  &__spanBox {
     margin-top: 5%;
     font-size: 200%;
     display: flex;
     flex-direction: column;
 
-    &__text1 {
+    &__span1 {
       font-weight: bold;
     }
 
-    &__text2 {
+    &__span2 {
       font-weight: bold;
     }
 
-    &__text3 {
+    &__span3 {
     }
   }
 
@@ -50,7 +51,7 @@
       height: 60px;
       margin-top: 0px;
 
-      &__text {
+      &__span {
         color: black;
         font-weight: bold;
       }
@@ -65,7 +66,7 @@
       margin-top: 0;
       height: 60px;
 
-      &__text {
+      &__span {
         color: black;
         font-weight: bold;
       }
@@ -79,8 +80,15 @@
   width: 100%;
 
   &__div {
+    @include flex-center;
     height: 100%;
     width: 100%;
+    background-color: $orange400;
+
+    &__span {
+      font-weight: bold;
+      font-size: 30px;
+    }
   }
 }
 
@@ -92,15 +100,15 @@
   width: 100%;
   flex-direction: column;
 
-  &__textBox {
+  &__spanBox {
     margin-top: 12%;
 
-    &__text1 {
+    &__span1 {
       font-weight: bold;
       font-size: 30px;
     }
 
-    &__text2 {
+    &__span2 {
       font-size: 30px;
     }
   }
@@ -174,6 +182,21 @@
   }
 }
 
+// 가족 생성/입장 - 가족 생성 확인 모달
+.familySetCheckModal {
+  border: 1px solid black;
+  height: 100%;
+  width: 100%;
+
+  &__spanBox {
+    border: 1px solid black;
+
+    &__span {
+
+    }
+  }
+}
+
 // 가족 생성/입장 - 초대 코드 공유 컴포넌트
 .familyShareCode {
   display: flex;
@@ -182,15 +205,15 @@
   width: 100%;
   flex-direction: column;
 
-  &__textBox {
+  &__spanBox {
     margin-top: 12%;
 
-    &__text1 {
+    &__span1 {
       font-weight: bold;
       font-size: 30px;
     }
 
-    &__text2 {
+    &__span2 {
       font-size: 30px;
     }
   }
@@ -225,19 +248,18 @@
   }
 
   &__codeSection {
+    @include flex_center;
     position: relative;
-    height: 13%;
-    width: 60%;
-    background-color: gainsboro;
+    height: 18%;
+    width: 75%;
+    background-color: $gray50;
     border-radius: 12px;
     display: flex;
-    align-items: center;
     flex-direction: column;
 
-    &__textBox {
-      margin-top: 8%;
+    &__spanBox {
       display: block;
-      &__text {
+      &__span {
         font-size: 20px;
       }
     }
@@ -246,7 +268,7 @@
       margin-top: 5%;
       display: block;
       &__code {
-        font-size: 25px;
+        font-size: 30px;
         font-weight: bold;
       }
     }
@@ -296,7 +318,6 @@
 .familyJoin {
   height: 100%;
   width: 100%;
-  border: 1px solid black;
 
   // 코드 입력 전
   &__codeInput {
@@ -305,15 +326,15 @@
     flex-direction: column;
     height: 100%;
 
-    &__textBox {
+    &__spanBox {
       margin-top: 30%;
 
-      &__text1 {
+      &__span1 {
         font-size: 30px;
         font-weight: bold;
       }
 
-      &__text2 {
+      &__span2 {
         font-size: 30px;
       }
     }
@@ -321,7 +342,7 @@
     &__inputBox {
       @include flex_center;
       height: 6%;
-      width: 65%;
+      width: 75%;
       margin-top: 10%;
       padding-bottom: 2%;
       border-bottom: 1px solid black;
@@ -334,23 +355,25 @@
     }
 
     &__inputButtonBox {
-      margin-top: 10%;
+      margin-top: 5%;
 
       &__inputButton {
         @extend .orangeButtonMedium;
+
+        &__span {
+
+        }
       }
     }
   }
 
   // 코드 입력 후
   &__codeResult {
-    display: flex;
-    align-items: center;
+    @include flex_center;
+    height: 100%;
     flex-direction: column;
-    margin-top: 21%;
 
     &__imageBox {
-      margin-top: 5%;
       border: 1px solid black;
       height: 155px;
       width: 155px;
@@ -370,7 +393,6 @@
 
     &__nameBox {
       margin-top: 10%;
-      height: 10%;
 
       &__name {
         font-weight: bold;
@@ -378,11 +400,30 @@
       }
     }
 
-    &__inputButtonBox {
+    &__joinFamilyButtonBox {
       margin-top: 10%;
 
-      &__inputButton {
+      &__joinFamilyButton {
         @extend .orangeButtonMedium;
+
+        &__span {
+
+        }
+      }
+    }
+
+    &__backButtonBox {
+      @include flex_center;
+      width: 24%;
+      border-bottom: 1px solid $gray200;
+      padding-bottom: 1%;
+
+      &__backButton {
+
+        &__span {
+          font-size: 100%;
+          color: $gray200;
+        }
       }
     }
   }
