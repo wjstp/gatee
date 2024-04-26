@@ -37,7 +37,6 @@ build:
     - chmod +x ./devops/nginx/detect_env.sh
     - DEPLOY_ENV=$(source ./devops/nginx/detect_env.sh)
     # tag 설정
-    - echo $DEPLOY_ENV
     - if [ "$DEPLOY_ENV" == "blue" ]; then TAG="green"; else TAG="blue"; fi
     - echo "Building image for $TAG environment..."
     - chmod +x ./devops/build-image.sh
@@ -60,28 +59,29 @@ deploy:
     - echo [INFO] get env
     - cd ./back/gatee
     - chmod +x ./devops/nginx/detect_env.sh
-    - chmod +x ./devops/nginx/deploy_script.sh
     - DEPLOY_ENV=$(source ./devops/nginx/detect_env.sh)
-    ## 블루인 경우
     - if [ "$DEPLOY_ENV" == "blue" ]; then
+      TAG="green";
       echo "Deploying to green environment...";
-      docker-compose -f docker-compose.green.yaml up --build -d;
-      source ./devops/nginx/deploy_script.sh green
-      echo [INFO] upstream change to green!!
-      cp ./devops/nginx/nginx.conf /home/ubuntu/nginx.conf
-      docker exec proxy-server nginx -s reload
-      docker-compose -f docker-compose.blue.yaml down;
-      ## 그린인 경우와 초기 배포 상황
-      else
-      echo "Deploying to blue environment...";
-      docker-compose -f docker-compose.blue.yaml up --build -d;
-      source ./devops/nginx/deploy_script.sh blue
-      echo [INFO] upstream change to blue!!
-      cp ./devops/nginx/nginx.conf /home/ubuntu/nginx.conf
-      docker exec proxy-server nginx -s reload
       docker-compose -f docker-compose.green.yaml down;
+      docker-compose -f docker-compose.green.yaml up --build -d;
+      else
+      TAG="blue";
+      echo "Deploying to blue environment...";
+      docker-compose -f docker-compose.blue.yaml down;
+      docker-compose -f docker-compose.blue.yaml up --build -d;
       fi
-    - echo [INFO] $DEPLOY_ENV
+    - export TAG
+    - echo [INFO] upstream change
+    - chmod +x ./devops/nginx/deploy_script.sh
+    - cd devops
+    - cd nginx
+    - ls
+    - pwd
+    - echo [INFO] $TAG
+    - ./deploy_script.sh $TAG
+    - cp ./back/gatee/deploy/nginx/nginx.conf /home/ubuntu/nginx.conf
+    - sudo docker exec proxy-server nginx -s reload
   after_script:
     - docker logout
     - echo [INFO] docker deploy end!
@@ -89,7 +89,5 @@ deploy:
     - develop
     - master
     - release
-
-
 
 
