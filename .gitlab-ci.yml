@@ -71,6 +71,8 @@ deploy:
       fi
     - echo [INFO] upstream change
     - chmod +x ./devops/nginx/deploy_script.sh
+    - ls
+    - pwd
     - ./devops/nginx/deploy_script.sh $DEPLOY_ENV
     - cp ./back/gatee/deploy/nginx/nginx.conf /home/ubuntu/nginx.conf
     - sudo docker exec proxy-server nginx -s reload
