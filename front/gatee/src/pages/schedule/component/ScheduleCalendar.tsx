@@ -1,11 +1,10 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { EventApi } from '@fullcalendar/core'
-import Calendar from "@fullcalendar/react";
+import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin from '@fullcalendar/interaction';
+import interactionPlugin, {DateClickArg} from '@fullcalendar/interaction';
 import { FaCaretLeft } from "react-icons/fa";
 import { FaCaretRight } from "react-icons/fa";
-import FullCalendar from "@fullcalendar/react";
 
 const ScheduleCalendar: React.FC = () => {
   const [weekendsVisible, setWeekendsVisible] = useState(true);
@@ -13,20 +12,24 @@ const ScheduleCalendar: React.FC = () => {
   const calendarRef = useRef<any>(null)
 
   // 일자 클릭 핸들러 (일자별 일정 리스트)
-  const handleDateClick = (arg: any) => {
+  const handleDateClick = (arg: DateClickArg) => {
     console.log(arg)
   }
 
   // 이전 달로 이동하는 클릭 핸들러
   const handlePrevClick = () => {
-    const calendarApi = calendarRef.current.getApi()
-    calendarApi.prev()
+    if (calendarRef.current) {
+      const calendarApi = calendarRef.current.getApi();
+      calendarApi.prev();
+    }
   };
 
   // 다음 달로 이동하는 클릭 핸들러
   const handleNextClick = () => {
-    const calendarApi = calendarRef.current.getApi()
-    calendarApi.next()
+    if (calendarRef.current) {
+      const calendarApi = calendarRef.current.getApi();
+      calendarApi.next();
+    }
   };
 
   return (
@@ -41,9 +44,10 @@ const ScheduleCalendar: React.FC = () => {
           <FaCaretRight size={24} />
         </button>
       </div>
-      
+
       {/*달력*/}
       <FullCalendar
+        ref={calendarRef} // useRef로 참조 설정
         plugins={[ dayGridPlugin, interactionPlugin ]}
         headerToolbar={{ left: "", center: "", right: "" }}
         initialView="dayGridMonth"
@@ -55,14 +59,18 @@ const ScheduleCalendar: React.FC = () => {
         dayCellContent={(arg) => {
           return arg.dayNumberText.replace('일', '');    // 일자에서 '일' 제거
         }}
+
+        // 일정
         events={[
-          { title: '', start: '2024-04-20', end: '2024-04-23' },
-          { title: '', start: '2024-04-21', end: '2024-04-24' },
-          { title: '', start: '2024-04-20', end: '2024-04-23' },
-        ]}  // 이벤트 리스트
-        eventColor="#FFE8E8"    // 일정 컨테이너 색상
-        eventTextColor="black"  // 일정 텍스트 색상
-        dateClick={ handleDateClick }   // 일자 클릭 이벤트
+          { start: '2024-04-20', end: '2024-04-23', color: '#FFE8E8' },
+          { start: '2024-04-21', end: '2024-04-24', color: '#FFED91' },
+          { start: '2024-04-20', end: '2024-04-23', color: '#c2e5c5' },
+        ]}
+        eventTextColor="black"
+        eventBorderColor="white"
+
+        // 일자 클릭 이벤트
+        dateClick={ handleDateClick }
       />
     </div>
   );
