@@ -53,6 +53,7 @@ deploy:
     - echo [INFO] docker deploy start!
     - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_PASSWORD
   script:
+    - echo [INFO] get env
     - chmod +x ./devops/nginx/detect_env.sh
     - DEPLOY_ENV=$(./devops/nginx/detect_env.sh)
     - if [ "$DEPLOY_ENV" == "blue" ]; then
@@ -64,9 +65,11 @@ deploy:
       docker-compose -f docker-compose-blue.yml down;
       docker-compose -f docker-compose-blue.yml up --build -d;
       fi
-    - sed -i 's/\${SOME_VARIABLE}/'"$SOME_VARIABLE"'/g' nginx.conf
-    - scp nginx.conf ubuntu@your-server-ip:/home/ubuntu/nginx.conf
-    - ssh ubuntu@your-server-ip 'docker exec nginx-container nginx -s reload'
+    - echo [INFO] upstream change
+    - chmod +x ./devops/nginx/deploy_script.sh
+    - ./devops/nginx/deploy_script.sh $DEPLOY_ENV
+    - cp ./back/gatee/deploy/nginx/nginx.conf /home/ubuntu/nginx.conf
+    - sudo docker exec proxy-server nginx -s reload
   after_script:
     - docker logout
     - echo [INFO] docker deploy end!
