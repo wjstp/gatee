@@ -57,6 +57,8 @@ deploy:
     - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_PASSWORD
   script:
     - echo [INFO] get env
+    - pwd
+    - ls
     - chmod +x ./devops/nginx/detect_env.sh
     - DEPLOY_ENV=$(source ./devops/nginx/detect_env.sh)
     - if [ "$DEPLOY_ENV" == "blue" ]; then
