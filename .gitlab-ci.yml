@@ -83,6 +83,7 @@ deploy:
     - docker exec proxy-server nginx -s reload
     - cd ../..
     ## 환경이 변경됨
+    - echo $DEPLOY_ENV
     - if [ "$DEPLOY_ENV" == "blue" ]; then
       docker-compose -f docker-compose.green.yaml down;
       echo "removing blue environment...";
