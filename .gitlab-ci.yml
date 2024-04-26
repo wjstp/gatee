@@ -57,7 +57,6 @@ deploy:
     - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_PASSWORD
   script:
     - echo [INFO] get env
-    - export TAG
     - cd ./back/gatee
     - chmod +x ./devops/nginx/detect_env.sh
     - DEPLOY_ENV=$(source ./devops/nginx/detect_env.sh)
@@ -72,6 +71,7 @@ deploy:
       docker-compose -f docker-compose.blue.yaml down;
       docker-compose -f docker-compose.blue.yaml up --build -d;
       fi
+    - export TAG
     - echo [INFO] upstream change
     - chmod +x ./devops/nginx/deploy_script.sh
     - cd devops
