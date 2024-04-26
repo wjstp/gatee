@@ -62,11 +62,11 @@ deploy:
     - if [ "$DEPLOY_ENV" == "blue" ]; then
       TAG="green";
       echo "Deploying to green environment...";
-      docker-compose -f docker-compose.green.yaml up --no-deps --build gatee-api-green;
+      docker-compose -f docker-compose.green.yaml up --no-deps --build -d;
       else
       TAG="blue";
       echo "Deploying to blue environment...";
-      docker-compose -f docker-compose.blue.yaml up --no-deps --build gatee-api-blue;
+      docker-compose -f docker-compose.blue.yaml up --no-deps --build -d;
       fi
     - export TAG
     - echo [INFO] upstream change
