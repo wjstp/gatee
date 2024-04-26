@@ -40,7 +40,7 @@ build:
     - if [ "$DEPLOY_ENV" == "blue" ]; then TAG="green"; else TAG="blue"; fi
     - echo "Building image for $TAG environment..."
     - chmod +x ./devops/build-image.sh
-    - ./devops/build-image.sh $CI_REGISTRY/gatee-api$TAG
+    - ./devops/build-image.sh $CI_REGISTRY/gatee-api:$TAG
     - docker push $CI_REGISTRY/gatee-api:$TAG
   only:
     - develop
