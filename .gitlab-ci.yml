@@ -81,7 +81,7 @@ deploy:
     - echo [INFO] $TAG
     - source ./deploy_script.sh $TAG
     - cp ./nginx.conf /home/ubuntu/nginx.conf
-    - sudo docker exec proxy-server nginx -s reload
+    - docker exec proxy-server nginx -s reload
   after_script:
     - docker logout
     - echo [INFO] docker deploy end!
