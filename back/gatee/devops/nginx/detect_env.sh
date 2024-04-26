@@ -2,7 +2,7 @@
 
 # detect_env.sh
 pwd
-cd ../../../..
+cd ../../..
 pwd
 # NGINX의 설정 파일 경로 설정
 NGINX_CONFIG_FILE="/home/ubuntu/nginx.conf"
