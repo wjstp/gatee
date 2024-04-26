@@ -27,7 +27,7 @@ return (
             가족코드를 입력
           </span>
           <span className="familyJoin__codeInput__spanBox__span2">
-            해주세요
+            해 주세요
           </span>
         </div>
         <div className="familyJoin__codeInput__inputBox">

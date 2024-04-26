@@ -1,6 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Link} from "react-router-dom";
-import {PiCamera} from "react-icons/pi";
+import { IoIosCamera } from "react-icons/io";
 import FamilySetCheckModal from "./FamilySetCheckModal";
 
 function FamilySetInfo() {
@@ -45,7 +44,7 @@ function FamilySetInfo() {
     <div className="familySetInfo">
       <div className="familySetInfo__spanBox">
         <span className="familySetInfo__spanBox__span1">가족을 소개</span>
-        <span className="familySetInfo__spanBox__span2">해주세요</span>
+        <span className="familySetInfo__spanBox__span2">해 주세요</span>
       </div>
       <div className="familySetInfo__imageBox">
         <img
@@ -55,9 +54,9 @@ function FamilySetInfo() {
         />
         <div className="familySetInfo__imageBox__changeButtonBox">
           <button className="familySetInfo__imageBox__changeButtonBox__changeButton">
-            <PiCamera
+            <IoIosCamera
               className="familySetInfo__imageBox__changeButtonBox__changeButton__icon"
-              size={27}
+              size={29}
             />
           </button>
         </div>

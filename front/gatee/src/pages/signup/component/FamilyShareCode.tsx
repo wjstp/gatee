@@ -10,7 +10,7 @@ function FamilyShareCode() {
     <div className="familyShareCode">
       <div className="familyShareCode__spanBox">
         <span className="familyShareCode__spanBox__span1">가족을 초대</span>
-        <span className="familyShareCode__spanBox__span2">해봐요</span>
+        <span className="familyShareCode__spanBox__span2">해 봐요</span>
       </div>
       <div className="familyShareCode__imageBox">
         <img
