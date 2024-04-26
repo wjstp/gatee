@@ -1,27 +1,18 @@
 import React from 'react';
-import {useNavigate} from "react-router-dom";
+import { Link } from "react-router-dom";
 import NotificationBadge from "@components/NotificationBadge";
 
 function MainIndex() {
-  const navigate = useNavigate();
-
-  const signupButtonClick = (): void => {
-    navigate('/signup');
-  }
-  const gotoMission = (): void => {
-    navigate('/mission');
-  }
-
   return (
     <div>
-      <span>메인</span>
-      <div>
-        <button onClick={signupButtonClick}>
-          회원가입
-        </button>
-        <button onClick={gotoMission}>
-          미션
-        </button>
+      <div style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "1rem",
+        margin: "1rem"
+      }}>
+        <Link to="/signup">회원가입</Link>
+        <Link to="/main/mission">미션</Link>
       </div>
     </div>
   );
