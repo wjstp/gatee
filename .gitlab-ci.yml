@@ -79,6 +79,7 @@ deploy:
     - ls
     - pwd
     - echo [INFO] $TAG
+    - ls
     - source ./deploy_script.sh $TAG
     - cp ./back/gatee/deploy/nginx/nginx.conf /home/ubuntu/nginx.conf
     - sudo docker exec proxy-server nginx -s reload
