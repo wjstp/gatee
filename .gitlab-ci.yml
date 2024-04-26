@@ -84,8 +84,10 @@ deploy:
     - cd ../..
     - if [ "$DEPLOY_ENV" == "blue" ]; then
       docker-compose -f docker-compose.blue.yaml down;
+      echo "removing blue environment...";
       else
       docker-compose -f docker-compose.green.yaml down;
+      echo "removing green environment...";
       fi
   after_script:
     - docker logout
