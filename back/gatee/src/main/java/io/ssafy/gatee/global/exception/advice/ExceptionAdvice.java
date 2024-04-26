@@ -1,8 +1,8 @@
 package io.ssafy.gatee.global.exception.advice;
 
-import io.ssafy.gatee.global.exception.error.not_found.FamilyNotFoundException;
-import io.ssafy.gatee.global.exception.error.not_found.MemberFamilyNotFoundException;
-import io.ssafy.gatee.global.exception.error.not_found.MemberNotFoundException;
+import io.ssafy.gatee.global.exception.error.bad_request.DoNotHavePermission;
+import io.ssafy.gatee.global.exception.error.bad_request.ExpiredCode;
+import io.ssafy.gatee.global.exception.error.not_found.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -15,14 +15,20 @@ public class ExceptionAdvice {
     @ExceptionHandler({
             MemberNotFoundException.class,
             MemberFamilyNotFoundException.class,
-            FamilyNotFoundException.class
+            FamilyNotFoundException.class,
+            ScheduleNotFoundException.class,
+            FamilyScheduleNotFoundException.class,
+            MemberFamilyScheduleNotFoundException.class
     })
     public String handleNotFound(RuntimeException e) {
         return e.getMessage();
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    @ExceptionHandler
+    @ExceptionHandler({
+            DoNotHavePermission.class,
+            ExpiredCode.class
+    })
     public String handleBadRequest(RuntimeException e) {
         return e.getMessage();
     }

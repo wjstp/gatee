@@ -5,6 +5,10 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  // 모든 속성에 대해 드래그 및 요소 복사 금지
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 :root {
