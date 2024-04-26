@@ -2,7 +2,7 @@ import React from 'react';
 
 const NotificationBadge = () => {
   return (
-    <div className="notificationBadge">
+    <div className="notification-badge">
     </div>
   );
 };

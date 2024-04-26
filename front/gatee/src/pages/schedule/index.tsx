@@ -3,11 +3,11 @@ import ScheduleCalendar from "./component/ScheduleCalendar";
 
 const ScheduleIndex = () => {
   return (
-    <div className="calendarContainer">
+    <div className="schedule-container">
       {/*배너*/}
-      <div className="banner4">
+      <div className="schedule__banner4">
       </div>
-      
+
       {/*달력*/}
       <ScheduleCalendar />
     </div>

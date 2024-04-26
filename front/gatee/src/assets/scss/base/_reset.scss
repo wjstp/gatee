@@ -25,14 +25,14 @@ body {
   }
 
   // topBar, bottomBar 제외한 나머지 영역 차지
-  #mainContainer {
+  #main-container {
     height: calc(100svh - $topBar-height - $bottomBar-height);
     overflow-x: hidden;
     overflow-y: auto;
   }
 
   // 전체 영역 차지
-  #subContainer {
+  #sub-container {
     height: 100svh;
   }
 }

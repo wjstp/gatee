@@ -11,7 +11,7 @@ const MainLayout = () => {
         <meta name="theme-color" id="theme-color" content="#ffffff"/>
       </Helmet>
       <TopBar></TopBar>
-      <div id="mainContainer">
+      <div id="main-container">
         <Outlet />
       </div>
       <BottomBar></BottomBar>

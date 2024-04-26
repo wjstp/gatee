@@ -4,11 +4,11 @@
   @return '../../image/schedule/calendarBanner' + $month + '.jpg';
 }
 
-.calendarContainer {
+.schedule-container {
   height: 100%;
 
   // banner뒤의 숫자에 따라 1월부터 12월까지의 이미지로 변경
-  .banner {
+  .schedule__banner {
     @for $i from 1 through 12 {
       &#{$i} {
         background: {
@@ -23,7 +23,7 @@
     }
   }
 
-  .calendar {
+  .schedule__calendar {
     margin: 0 2%;
     height: 87%;
 
@@ -33,11 +33,11 @@
       align-items: end;
       height: 8%;
 
-      .calendar__headerButton {
+      .calendar__month-button {
         color: $orange200;
       }
 
-      .calendar__headerTitle {
+      .calendar__title {
         @include mx-(1);
         font: {
           weight: 500;

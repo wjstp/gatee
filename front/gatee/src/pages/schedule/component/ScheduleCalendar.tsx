@@ -30,14 +30,14 @@ const ScheduleCalendar: React.FC = () => {
   };
 
   return (
-    <div className="calendar">
+    <div className="schedule__calendar">
       {/*달력 헤더*/}
       <div className="calendar__header">
-        <button className="calendar__headerButton" onClick={ handlePrevClick }>
+        <button className="calendar__month-button" onClick={ handlePrevClick }>
           <FaCaretLeft size={24} />
         </button>
-        <div className="calendar__headerTitle">4월</div>
-        <button className="calendar__headerButton" onClick={ handleNextClick }>
+        <div className="calendar__title">4월</div>
+        <button className="calendar__month-button" onClick={ handleNextClick }>
           <FaCaretRight size={24} />
         </button>
       </div>

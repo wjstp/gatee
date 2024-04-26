@@ -25,7 +25,7 @@ const SubLayout = () => {
             <meta name="theme-color" id="theme-color" content="#ffffff"/>
           </Helmet>
       }
-      <div id="subContainer">
+      <div id="sub-container">
         <Outlet />
       </div>
     </>
