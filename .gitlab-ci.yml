@@ -64,10 +64,12 @@ deploy:
     - if [ "$DEPLOY_ENV" == "blue" ]; then
       TAG="green";
       echo "Deploying to green environment...";
+      docker-compose -f docker-compose.green.yaml down;
       docker-compose -f docker-compose.green.yaml up --build -d;
       else
       TAG="blue";
       echo "Deploying to blue environment...";
+      docker-compose -f docker-compose.blue.yaml down;
       docker-compose -f docker-compose.blue.yaml up --build -d;
       fi
     - export TAG
@@ -84,14 +86,6 @@ deploy:
     - cd ../..
     ## 환경이 변경됨
     - echo $TAG
-    # 업스트림 교체 후 이전 컨테이너 종료 및 제거
-    - if [ "$TAG" == "blue" ]; then
-      docker-compose -f docker-compose.green.yaml down;
-      echo "docker-compose -f docker-compose.green.yaml down do!!";
-      else
-      docker-compose -f docker-compose.blue.yaml down;
-      echo "docker-compose -f docker-compose.blue.yaml down do!!!";
-      fi
   after_script:
     - docker logout
     - echo [INFO] docker deploy end!
