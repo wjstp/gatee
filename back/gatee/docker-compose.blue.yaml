@@ -1,8 +1,7 @@
-version: '3.8'
 services:
   gatee-api:
-    image: ${CI_REGISTRY}/gatee-api:latest
-    container_name: gatee-api
+    image: ${CI_REGISTRY}/gatee-api:blue
+    container_name: gatee-api-blue
     ports:
       - "8080:8080"
     environment:

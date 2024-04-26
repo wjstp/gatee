@@ -8,6 +8,9 @@ function MainIndex() {
   const signupButtonClick = (): void => {
     navigate('/signup');
   }
+  const gotoMission = (): void => {
+    navigate('/mission');
+  }
 
   return (
     <div>
@@ -15,6 +18,9 @@ function MainIndex() {
       <div>
         <button onClick={signupButtonClick}>
           회원가입
+        </button>
+        <button onClick={gotoMission}>
+          미션
         </button>
       </div>
     </div>

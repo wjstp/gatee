@@ -7,6 +7,7 @@
     "@fullcalendar/daygrid": "^6.1.11",
     "@fullcalendar/interaction": "^6.1.11",
     "@fullcalendar/react": "^6.1.11",
+    "@ramonak/react-progress-bar": "^5.2.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -19,6 +20,7 @@
     "lottie-react": "^2.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-helmet": "^6.1.0",
     "react-icons": "^5.1.0",
     "react-modal": "^3.16.1",
     "react-router-dom": "^6.22.3",
@@ -66,6 +68,7 @@
     ]
   },
   "devDependencies": {
+    "@types/react-helmet": "^6.1.11",
     "@craco/craco": "^7.1.0",
     "@craco/types": "^7.1.0",
     "@types/react-slick": "^0.23.13",

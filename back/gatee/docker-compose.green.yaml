@@ -1,0 +1,14 @@
+services:
+  gatee-api:
+    image: ${CI_REGISTRY}/gatee-api:green
+    container_name: gatee-api-green
+    ports:
+      - "8081:8080"
+    environment:
+      - ENV=prod, common
+    networks:
+      - gatee-net
+
+networks:
+  gatee-net:
+    external: true

@@ -39,4 +39,16 @@
       size: $font-size;
     };
   }
+  &RadiusLarge {
+    background-color: $orange500;
+    @include px-(1.2);
+    @include py-(0.5);
+    color: white;
+    height: 40px;
+    border-radius: 10rem;
+    font: {
+      weight: 800;
+      size: 1.2rem;
+    };
+  }
 }

@@ -28,7 +28,7 @@ const OnboardingIndex = () => {
     infinite: false,
     autoplay: false,
     autoplaySpeed: 3000,
-    speed: 800,
+    speed: 400,
     slidesToShow: 1,
     slidesToScroll: 1,
     // 빠르게 바뀌는데 적용되는 부분
