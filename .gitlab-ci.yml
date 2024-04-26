@@ -80,6 +80,7 @@ deploy:
     - source ./deploy_script.sh $TAG
     - cp ./nginx.conf /home/ubuntu/nginx.conf
     - docker exec proxy-server nginx -s reload
+    - cd ../..
     - if [ "$DEPLOY_ENV" == "blue" ]; then
       docker-compose -f docker-compose.blue.yaml down;
       else
