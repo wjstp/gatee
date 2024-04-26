@@ -4,7 +4,6 @@ import io.ssafy.gatee.domain.family.dao.FamilyRepository;
 import io.ssafy.gatee.domain.family.entity.Family;
 import io.ssafy.gatee.domain.family_schedule.dao.FamilyScheduleRepository;
 import io.ssafy.gatee.domain.family_schedule.entity.FamilySchedule;
-import io.ssafy.gatee.domain.file.application.FileServiceImpl;
 import io.ssafy.gatee.domain.file.dao.FileRepository;
 import io.ssafy.gatee.domain.member.dao.MemberRepository;
 import io.ssafy.gatee.domain.member.entity.Member;
@@ -27,7 +26,7 @@ import io.ssafy.gatee.domain.schedule.entity.Category;
 import io.ssafy.gatee.domain.schedule.entity.Schedule;
 import io.ssafy.gatee.domain.schedule_record.dao.ScheduleRecordRepository;
 import io.ssafy.gatee.domain.schedule_record.entity.ScheduleRecord;
-import io.ssafy.gatee.global.exception.error.bad_request.DoNotHavePermission;
+import io.ssafy.gatee.global.exception.error.bad_request.DoNotHavePermissionException;
 import io.ssafy.gatee.global.exception.error.not_found.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -139,7 +138,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     @Transactional
     public void editSchedule(ScheduleEditReq scheduleEditReq, Long scheduleId)
-            throws DoNotHavePermission, FamilyScheduleNotFoundException, MemberFamilyScheduleNotFoundException, FamilyNotFoundException {
+            throws DoNotHavePermissionException, FamilyScheduleNotFoundException, MemberFamilyScheduleNotFoundException, FamilyNotFoundException {
         Member member = memberRepository.getReferenceById(scheduleEditReq.memberId());
 
         Family family = familyRepository.getReferenceById(Long.valueOf(scheduleEditReq.familyId()));
@@ -156,7 +155,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         if (memberFamilySchedule.isCreater()) {
             schedule.editSchedule(scheduleEditReq);
         } else {
-            throw new DoNotHavePermission(DO_NOT_HAVE_REQUEST);
+            throw new DoNotHavePermissionException(DO_NOT_HAVE_REQUEST);
         }
     }
 

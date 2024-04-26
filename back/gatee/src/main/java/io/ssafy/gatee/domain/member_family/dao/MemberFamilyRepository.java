@@ -13,7 +13,8 @@ import java.util.Optional;
 public interface MemberFamilyRepository extends JpaRepository<MemberFamily, Long> {
 
     Optional<MemberFamily> findByMemberAndFamily_Id(Member member, Long familyId);
-
     Optional<MemberFamily> findByMemberAndFamily(Member member, Family family);
     Optional<List<MemberFamily>> findAllById(Long familyId);
+
+    Optional<List<MemberFamily>> findAllByFamily(Family family);
 }

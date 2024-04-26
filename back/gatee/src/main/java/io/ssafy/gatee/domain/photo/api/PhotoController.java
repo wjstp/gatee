@@ -1,14 +1,18 @@
 package io.ssafy.gatee.domain.photo.api;
 
 import io.ssafy.gatee.domain.photo.application.PhotoService;
+import io.ssafy.gatee.domain.photo.dto.request.PhotoListReq;
 import io.ssafy.gatee.domain.photo.dto.request.PhotoSaveReq;
 import io.ssafy.gatee.domain.photo.dto.response.PhotoDetailRes;
-import io.ssafy.gatee.global.exception.error.bad_request.DoNotHavePermission;
+import io.ssafy.gatee.domain.photo.dto.response.PhotoListRes;
+import io.ssafy.gatee.global.exception.error.bad_request.DoNotHavePermissionException;
+import io.ssafy.gatee.global.exception.error.bad_request.WrongTypeFilterException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -18,6 +22,14 @@ public class PhotoController {
     private final PhotoService photoService;
 
     // 사진 목록 조회 (QueryDSL 구현)
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<PhotoListRes> readPhotoList(
+            @Valid
+            @RequestBody PhotoListReq photoListReq
+    ) throws WrongTypeFilterException {
+        return photoService.readPhotoList(photoListReq);
+    }
 
     // 사진 상세 조회
     @GetMapping("/{photoId}")
@@ -43,7 +55,7 @@ public class PhotoController {
             @Valid
             @RequestParam Long memberFamilyId,
             @PathVariable("photoId") Long photoId
-    ) throws DoNotHavePermission {
+    ) throws DoNotHavePermissionException {
         photoService.deletePhoto(memberFamilyId, photoId);
     }
 
