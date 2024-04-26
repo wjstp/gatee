@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {Link} from 'react-router-dom';
 
 function FamilyJoin() {
   const [isCodeEntered, setIsCodeEntered] = useState(false);
@@ -7,6 +8,10 @@ function FamilyJoin() {
   const handleEnter = (): void => {
     setIsCodeEntered(true);
   };
+
+  const handleExit = (): void => {
+    setIsCodeEntered(false);
+  }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const value: string = e.target.value;
@@ -17,12 +22,12 @@ return (
   <div className="familyJoin">
     {!isCodeEntered ? (
       <div className="familyJoin__codeInput">
-        <div className="familyJoin__codeInput__textBox">
-          <span className="familyJoin__codeInput__textBox__text1">
+        <div className="familyJoin__codeInput__spanBox">
+          <span className="familyJoin__codeInput__spanBox__span1">
             가족코드를 입력
           </span>
-          <span className="familyJoin__codeInput__textBox__text2">
-            해주세요
+          <span className="familyJoin__codeInput__spanBox__span2">
+            해 주세요
           </span>
         </div>
         <div className="familyJoin__codeInput__inputBox">
@@ -41,7 +46,9 @@ return (
             className="familyJoin__codeInput__inputButtonBox__inputButton"
             onClick={handleEnter}
           >
-            입력하기
+            <span className="familyJoin__codeInput__inputButtonBox__inputButton__span">
+              입력하기
+            </span>
           </button>
         </div>
       </div>
@@ -57,11 +64,27 @@ return (
         <div className="familyJoin__codeResult__nameBox">
           <span className="familyJoin__codeResult__nameBox__name">예삐네 가족</span>
         </div>
-        <div className="familyJoin__codeResult__inputButtonBox">
-          <button
-            className="familyJoin__codeResult__inputButtonBox__inputButton"
+        <div className="familyJoin__codeResult__joinFamilyButtonBox">
+          <Link
+            className="familyJoin__codeResult__joinFamilyButtonBox__joinFamilyButton"
+            to="/signup/member"
+            state={{
+              action: 'set-name',
+            }}
           >
-            입장하기
+            <span className="familyJoin__codeResult__joinFamilyButtonBox__joinFamilyButton__span">
+              입장하기
+            </span>
+          </Link>
+        </div>
+        <div className="familyJoin__codeResult__backButtonBox">
+          <button
+            className="familyJoin__codeResult__backButtonBox__backButton"
+            onClick={handleExit}
+          >
+            <span className="familyJoin__codeResult__backButtonBox__backButton__span">
+              우리 가족이 아니에요
+            </span>
           </button>
         </div>
       </div>

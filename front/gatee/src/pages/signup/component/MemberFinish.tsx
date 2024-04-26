@@ -1,9 +1,9 @@
 import React from 'react';
 
-function MemberSetPermission() {
+function MemberFinish() {
     return (
         <div></div>
     );
 }
 
-export default MemberSetPermission;
+export default MemberFinish;
