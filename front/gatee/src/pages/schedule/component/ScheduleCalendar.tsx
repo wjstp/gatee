@@ -1,10 +1,11 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { EventApi } from '@fullcalendar/core'
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin, {DateClickArg} from '@fullcalendar/interaction';
+import interactionPlugin, { DateClickArg } from '@fullcalendar/interaction';
 import { FaCaretLeft } from "react-icons/fa";
 import { FaCaretRight } from "react-icons/fa";
+import { LuCalendarPlus } from "react-icons/lu";
 
 const ScheduleCalendar: React.FC = () => {
   const [weekendsVisible, setWeekendsVisible] = useState(true);
@@ -32,30 +33,54 @@ const ScheduleCalendar: React.FC = () => {
     }
   };
 
+  const handleTodayClick = () => {
+    if (calendarRef.current) {
+      const calendarApi = calendarRef.current.getApi();
+      calendarApi.today();
+    }
+  }
+
   return (
     <div className="schedule__calendar">
       {/*달력 헤더*/}
       <div className="calendar__header">
-        <button className="calendar__month-button" onClick={ handlePrevClick }>
-          <FaCaretLeft size={24} />
+        {/*오늘 날짜 이동 버튼*/}
+        <button className="calendar__button--today" onClick={ handleTodayClick }>
+          <span>today</span>
         </button>
-        <div className="calendar__title">4월</div>
-        <button className="calendar__month-button" onClick={ handleNextClick }>
-          <FaCaretRight size={24} />
+
+        <div className="calendar__title">
+          {/*이전 달 전환 버튼*/}
+          <button className="calendar__button--month" onClick={ handlePrevClick }>
+            <FaCaretLeft size={24} />
+          </button>
+
+          {/*달력 제목*/}
+          <div className="calendar__month">4월</div>
+
+          {/*다음 달 전환 버튼*/}
+          <button className="calendar__button--month" onClick={ handleNextClick }>
+            <FaCaretRight size={24} />
+          </button>
+        </div>
+
+        {/*일정 추가 버튼*/}
+        <button className="calendar__button--add-event">
+          <LuCalendarPlus size={22} />
         </button>
       </div>
 
       {/*달력*/}
       <FullCalendar
-        ref={calendarRef} // useRef로 참조 설정
+        ref={ calendarRef }
         plugins={[ dayGridPlugin, interactionPlugin ]}
         headerToolbar={{ left: "", center: "", right: "" }}
         initialView="dayGridMonth"
-        height="90%"          // calendar 높이
-        locale="kr"           // 언어 한글로 변경
-        editable={true}       // 일정 이벤트
-        selectable={true}     // 영역 선택
-        dayMaxEvents={true}   // row 높이보다 많으면 +N more 링크 표시
+        height="85%"            // calendar 높이
+        locale="kr"             // 언어 한글로 변경
+        editable={ true }       // 일정 이벤트
+        selectable={ true }     // 영역 선택
+        dayMaxEvents={ true }   // row 높이보다 많으면 +N more 링크 표시
         dayCellContent={(arg) => {
           return arg.dayNumberText.replace('일', '');    // 일자에서 '일' 제거
         }}

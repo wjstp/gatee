@@ -3,7 +3,7 @@
 // @ScheduleCalendar 라이브러리 CSS 수정 파일
 
 :root {
-  --fc-small-font-size: 9px;
+  --fc-small-font-size: 8px;
   --fc-border-color: transparent;
   --fc-button-text-color: black;
   --fc-button-bg-color: transparent;
@@ -16,11 +16,8 @@
 }
 
 // 헤더
-.fc-toolbar {
-  // 헤더 제목
-  .fc-toolbar-title {
-    font-weight: 400;
-  }
+.fc .fc-toolbar.fc-header-toolbar {
+  display: none;
 }
 
 // 달력
