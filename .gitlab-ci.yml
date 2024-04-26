@@ -31,6 +31,7 @@ build:
     - sed -i 's|${AWS_ACCESS_KEY}|'"$AWS_ACCESS_KEY"'|g' application-aws.yaml
     - sed -i 's|${AWS_SECRET_KEY}|'"$AWS_SECRET_KEY"'|g' application-aws.yaml
     # 권한 부여 후 현재 서버 환경 확인
+    - cd ../../..
     - ls
     - pwd
     - chmod +x ./devops/nginx/detect_env.sh
