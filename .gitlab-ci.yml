@@ -75,7 +75,7 @@ deploy:
     - cd nginx
     - ls
     - pwd
-    - ./devops/nginx/deploy_script.sh $DEPLOY_ENV
+    - ./deploy_script.sh $DEPLOY_ENV
     - cp ./back/gatee/deploy/nginx/nginx.conf /home/ubuntu/nginx.conf
     - sudo docker exec proxy-server nginx -s reload
   after_script:
