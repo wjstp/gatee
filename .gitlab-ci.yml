@@ -61,12 +61,12 @@ deploy:
     - chmod +x ./devops/nginx/detect_env.sh
     - DEPLOY_ENV=$(source ./devops/nginx/detect_env.sh)
     - if [ "$DEPLOY_ENV" == "blue" ]; then
-      TAG="green"
+      TAG="green";
       echo "Deploying to green environment...";
       docker-compose -f docker-compose.green.yaml down;
       docker-compose -f docker-compose.green.yaml up --build -d;
       else
-      TAG="blue"
+      TAG="blue";
       echo "Deploying to blue environment...";
       docker-compose -f docker-compose.blue.yaml down;
       docker-compose -f docker-compose.blue.yaml up --build -d;
