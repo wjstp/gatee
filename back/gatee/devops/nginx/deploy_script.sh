@@ -3,6 +3,9 @@
 # 배포할 환경 변수 설정 (예: blue 또는 green)
 DEPLOY_ENV=$1
 
+pwd
+ls
+
 # Nginx 설정 파일 경로 설정
 NGINX_CONF="./back/gatee/devops/nginx/nginx.conf"
 
