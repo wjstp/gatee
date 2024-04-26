@@ -58,7 +58,7 @@ deploy:
   script:
     - echo [INFO] get env
     - chmod +x ./devops/nginx/detect_env.sh
-    - DEPLOY_ENV=$(./devops/nginx/detect_env.sh)
+    - DEPLOY_ENV=$(source ./devops/nginx/detect_env.sh)
     - if [ "$DEPLOY_ENV" == "blue" ]; then
       echo "Deploying to green environment...";
       docker-compose -f docker-compose-green.yaml down;
