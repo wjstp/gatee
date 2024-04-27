@@ -1,8 +1,8 @@
 import React from 'react';
 import {useLocation} from "react-router-dom";
-import FamilySetInfo from "./component/FamilySetInfo";
-import FamilyJoin from "./component/FamilyJoin";
-import FamilyShareCode from "./component/FamilyShareCode";
+import FamilySetInfo from "@pages/signup/components/FamilySetInfo";
+import FamilyJoin from "@pages/signup/components/FamilyJoin";
+import FamilyShareCode from "@pages/signup/components/FamilyShareCode";
 
 function SignupFamily() {
   const location = useLocation();

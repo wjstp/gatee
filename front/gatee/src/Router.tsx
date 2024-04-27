@@ -10,7 +10,7 @@ import MainIndex from "@pages/main";  // 메인
 import MissionIndex from "@pages/mission";  // 미션
 import NotificationIndex from "@pages/notification";  // 알림
 import OnboardingIndex from "@pages/onboarding/index";  // 온보딩
-import KaKaoLogin from "@pages/onboarding/component/KaKaoLogin";
+import KaKaoLogin from "@pages/onboarding/components/KaKaoLogin";
 import ProfileIndex from "@pages/profile";  // 프로필
 import ScheduleIndex from "@pages/schedule";  // 일정
 import ScheduleCreateSchedule from "@pages/schedule/CreateSchedule";
@@ -66,9 +66,9 @@ const Router = () => {
 
         {/*앨범 페이지*/}
         <Route path="/photo" element={<PhotoAlbumIndex/>}/>
-          <Route path="album" element={<PhotoAlbumPhoto/>}/>
-          <Route path="/album/:id" element={<PhotoAlbumGroupDetail/>}/>
-          <Route path="/group/:id" element={<PhotoAllGroupDetail/>}/>
+        <Route path="album" element={<PhotoAlbumPhoto/>}/>
+        <Route path="/album/:id" element={<PhotoAlbumGroupDetail/>}/>
+        <Route path="/group/:id" element={<PhotoAllGroupDetail/>}/>
 
       </Route>
 
@@ -85,7 +85,7 @@ const Router = () => {
       </Route>
 
       {/*404 처리*/}
-      {/*<Route component={NotFount} />*/}
+      {/*<Route components={NotFount} />*/}
     </Routes>
   );
 }

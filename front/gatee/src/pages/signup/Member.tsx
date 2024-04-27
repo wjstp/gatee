@@ -1,10 +1,10 @@
 import React from 'react';
 import {useLocation} from "react-router-dom";
-import MemberSetName from "./component/MemberSetName";
-import MemberSetBirth from "./component/MemberSetBirth";
-import MemberSetRole from "./component/MemberSetRole";
-import MemberCheckInfo from "./component/MemberCheckInfo";
-import MemberCheckPermission from "./component/MemberCheckPermission";
+import MemberSetName from "@pages/signup/components/MemberSetName";
+import MemberSetBirth from "@pages/signup/components/MemberSetBirth";
+import MemberSetRole from "@pages/signup/components/MemberSetRole";
+import MemberCheckInfo from "@pages/signup/components/MemberCheckInfo";
+import MemberCheckPermission from "@pages/signup/components/MemberCheckPermission";
 
 function SignupMember() {
   const location = useLocation();

@@ -1,5 +1,5 @@
 import React from 'react';
-// import sampleImage from "@assets/image/schedule/calendarBanner3.jpg"
+// import sampleImage from "@assets/images/schedule/calendarBanner3.jpg"
 
 // 사진 그룹 타입
 interface PhotoListProps {

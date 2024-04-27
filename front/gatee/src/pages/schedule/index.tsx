@@ -1,5 +1,5 @@
 import React from 'react';
-import ScheduleCalendar from "./component/ScheduleCalendar";
+import ScheduleCalendar from "@pages/schedule/components/ScheduleCalendar";
 
 const ScheduleIndex = () => {
   return (

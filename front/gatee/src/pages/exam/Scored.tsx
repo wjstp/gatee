@@ -1,17 +1,17 @@
 import React from 'react';
-import Header from "./component/Header";
-import QuestionItem from "./component/QuestionItem";
-import {ReactComponent as Scored100} from "@assets/image/examImg/score100.svg"
-import {ReactComponent as Scored90} from "@assets/image/examImg/score90.svg"
-import {ReactComponent as Scored80} from "@assets/image/examImg/score80.svg"
-import {ReactComponent as Scored70} from "@assets/image/examImg/score70.svg"
-import {ReactComponent as Scored60} from "@assets/image/examImg/score60.svg"
-import {ReactComponent as Scored50} from "@assets/image/examImg/score50.svg"
-import {ReactComponent as Scored40} from "@assets/image/examImg/score40.svg"
-import {ReactComponent as Scored30} from "@assets/image/examImg/score30.svg"
-import {ReactComponent as Scored20} from "@assets/image/examImg/score20.svg"
-import {ReactComponent as Scored10} from "@assets/image/examImg/score10.svg"
-import {ReactComponent as Scored0} from "@assets/image/examImg/score0.svg"
+import Header from "./components/Header";
+import QuestionItem from "./components/QuestionItem";
+import {ReactComponent as Scored100} from "@assets/images/examImg/score100.svg"
+import {ReactComponent as Scored90} from "@assets/images/examImg/score90.svg"
+import {ReactComponent as Scored80} from "@assets/images/examImg/score80.svg"
+import {ReactComponent as Scored70} from "@assets/images/examImg/score70.svg"
+import {ReactComponent as Scored60} from "@assets/images/examImg/score60.svg"
+import {ReactComponent as Scored50} from "@assets/images/examImg/score50.svg"
+import {ReactComponent as Scored40} from "@assets/images/examImg/score40.svg"
+import {ReactComponent as Scored30} from "@assets/images/examImg/score30.svg"
+import {ReactComponent as Scored20} from "@assets/images/examImg/score20.svg"
+import {ReactComponent as Scored10} from "@assets/images/examImg/score10.svg"
+import {ReactComponent as Scored0} from "@assets/images/examImg/score0.svg"
 const ExamScored = () => {
   const questions=[
     {

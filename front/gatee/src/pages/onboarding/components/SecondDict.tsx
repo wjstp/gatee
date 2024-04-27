@@ -1,5 +1,5 @@
 import React from 'react';
-import Explain2 from "@assets/image/onboarding/explain2.png"
+import Explain2 from "@assets/images/onboarding/explain2.png"
 import {Link} from "react-router-dom";
 
 const SecondDict = () => {
