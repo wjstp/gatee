@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@mui/material": "^5.15.15",
     "@ramonak/react-progress-bar": "^5.2.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
@@ -17,6 +20,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
+    "react-helmet-async": "^2.0.4",
     "react-icons": "^5.1.0",
     "react-modal": "^3.16.1",
     "react-router-dom": "^6.22.3",
@@ -64,9 +68,9 @@
     ]
   },
   "devDependencies": {
-    "@types/react-helmet": "^6.1.11",
     "@craco/craco": "^7.1.0",
     "@craco/types": "^7.1.0",
+    "@types/react-helmet": "^6.1.11",
     "@types/react-slick": "^0.23.13",
     "react-app-alias": "^2.2.2"
   }

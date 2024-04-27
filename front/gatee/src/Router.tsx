@@ -27,7 +27,7 @@ import ScheduleDetail from "./pages/schedule/ScheduleDetail";
 import ChatIndex from "./pages/chat";
 // 백과사전
 import CharacterIndex from "./pages/character";
-import CharacterStart from "./pages/character/Start";
+import CharacterStart from "./pages/character/AnswerList";
 import CharacterQuestion from "./pages/character/Question";
 // 회원가입
 import SignupIndex from "./pages/signup";

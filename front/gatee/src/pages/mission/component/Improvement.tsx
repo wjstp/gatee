@@ -1,13 +1,13 @@
 import React from 'react';
-import HeartIcon from "../../../assets/Icon3D/heart.png"
-import BookIcon from "../../../assets/Icon3D/book.png"
-import GoalIcon from "../../../assets/Icon3D/goal.png"
-import SmileIcon from "../../../assets/Icon3D/smile.png"
+import HeartIcon from "@assets/image/icon3D/heart.png"
+import BookIcon from "@assets/image/icon3D/book.png"
+import GoalIcon from "@assets/image/icon3D/goal.png"
+import SmileIcon from "@assets/image/icon3D/smile.png"
 
 
 const Improvement = ({type}: any) => {
 
-  console.log(type)
+  // console.log(type)
   // const type = "hello"
   const content:any = {
     heart: {
