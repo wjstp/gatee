@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import { ReactComponent as CorrectImg } from "@assets/image/examImg/correct.svg"
-import { ReactComponent as WrongImg } from "@assets/image/examImg/wrong.svg"
+import { ReactComponent as CorrectImg } from "@assets/images/examImg/correct.svg"
+import { ReactComponent as WrongImg } from "@assets/images/examImg/wrong.svg"
 interface QuestionItemProps {
   question: {
     questionId: number;

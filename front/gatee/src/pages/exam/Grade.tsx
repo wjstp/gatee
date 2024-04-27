@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import Stamp from "@assets/image/icons/stamp_logo.png"
+import Stamp from "@assets/images/icons/stamp_logo.png"
 import {useNavigate} from "react-router-dom";
 // import Pagination from '@mui/material/Pagination';
 // import Stack from '@mui/material/Stack';
