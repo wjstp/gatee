@@ -1,5 +1,5 @@
 import React from 'react';
-import Explain3 from "@assets/image/onboarding/explain3.png"
+import Explain3 from "@assets/images/onboarding/explain3.png"
 import {Link} from "react-router-dom";
 
 const ThirdAll = () => {

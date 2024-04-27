@@ -1,5 +1,5 @@
 import React from 'react';
-import {ReactComponent as LineLogo} from "@assets/image/logo/logo_line.svg"
+import {ReactComponent as LineLogo} from "@assets/images/logo/logo_line.svg"
 import {Link} from "react-router-dom";
 
 const KaKaoLogin = () => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import Explain1 from "@assets/image/onboarding/explain1.png"
+import Explain1 from "@assets/images/onboarding/explain1.png"
 import {Link} from "react-router-dom";
 
 const FirstExam = () => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from "react-router-dom";
 import { MdArrowForwardIos } from "react-icons/md";
-import ExamAnimation from "@assets/image/animation/examAnimation.json"
+import ExamAnimation from "@assets/images/animation/examAnimation.json"
 import Lottie from "lottie-react";
 function ExamIndex() {
   return (

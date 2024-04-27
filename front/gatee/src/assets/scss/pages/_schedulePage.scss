@@ -1,7 +1,7 @@
 @use '../abstracts/index' as *;
 
 @function calendarBannerImage($month) {
-  @return '../../image/schedule/calendarBanner' + $month + '.jpg';
+  @return '../../images/schedule/calendarBanner' + $month + '.jpg';
 }
 
 .schedule-container {
