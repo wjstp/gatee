@@ -52,7 +52,7 @@ export const useMemberStore = create<MemberStore>()(
         }),
         {
             name: "member",
-            getStorage: () => localStorage
+
         }
     )
 );

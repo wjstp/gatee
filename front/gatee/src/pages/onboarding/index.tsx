@@ -43,30 +43,40 @@ const OnboardingIndex = () => {
       setActiveSlide2(current)
     }
   };
+
   // 상단 인덱스 표시 도트
   const Indicator = () => {
-    // 현재 슬라이드보다 큰것들만 주황색
+    // 인덱스 수
     const index: number[] = [0, 1, 2, 3]
+
     return (
       <div className="onboarding__dotContainer">
+
+        {/* 4개의 인덱스를 넘어가면서 현재 인덱스 이전까지 주황표시 */}
         {index.map((item: number,i:number) => {
           if (activeSlide >= item)
             return <div key={i} className="activeDot"></div>
           else
             return <div key={i} className="disableDot"></div>
         })}
+
       </div>
     )
   }
+
   return (
     <div className="onboarding__container-center">
+      {/* 상단 인덱스 표시 도트 */}
       <Indicator/>
+
+      {/* 슬라이드 */}
       <Slider {...settings}>
         <FirstExam/>
         <SecondDict/>
         <ThirdAll/>
         <KaKaoLogin/>
       </Slider>
+
     </div>
   );
 }

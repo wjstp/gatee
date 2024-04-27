@@ -1,10 +1,10 @@
 import React from "react";
-import FileIcon from "../../../assets/Icon3D/file.png"
-import CameraIcon from "../../../assets/Icon3D/camera.png"
-import TargetIcon from "../../../assets/Icon3D/target.png"
-import CalendarIcon from "../../../assets/Icon3D/calendar.png"
-import GoodIcon from "../../../assets/Icon3D/good.png"
-import PencilIcon from "../../../assets/Icon3D/pencil.png"
+import FileIcon from "@assets/image/icon3D/file.png"
+import CameraIcon from "@assets/image/icon3D/camera.png"
+import TargetIcon from "@assets/image/icon3D/target.png"
+import CalendarIcon from "@assets/image/icon3D/calendar.png"
+import GoodIcon from "@assets/image/icon3D/good.png"
+import PencilIcon from "@assets/image/icon3D/pencil.png"
 import {Link} from "react-router-dom";
 import {FaCheckCircle} from "react-icons/fa";
 

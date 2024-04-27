@@ -1,5 +1,5 @@
 import React from 'react';
-import DictionaryIcon from "@assets/Icon3D/dictionary.png"
+import DictionaryIcon from "@assets/image/icon3D/dictionary.png"
 import {useMemberStore} from "../../../store/useMemberStore";
 const Header = () => {
   const {name} = useMemberStore()
