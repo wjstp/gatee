@@ -11,25 +11,18 @@ import io.ssafy.gatee.domain.member.entity.Member;
 import io.ssafy.gatee.domain.member_family.dao.MemberFamilyRepository;
 import io.ssafy.gatee.domain.member_family.dto.response.MemberFamilyInfoRes;
 import io.ssafy.gatee.domain.member_family.entity.MemberFamily;
-import io.ssafy.gatee.global.exception.error.bad_request.ExpiredCode;
+import io.ssafy.gatee.global.exception.error.bad_request.ExpiredCodeException;
 import io.ssafy.gatee.global.exception.error.not_found.FamilyNotFoundException;
 import io.ssafy.gatee.global.exception.error.not_found.MemberFamilyNotFoundException;
 import jodd.util.StringUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.weaver.ast.Instanceof;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.data.redis.serializer.RedisSerializer;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -98,11 +91,11 @@ public class FamilyServiceImpl implements FamilyService {
     // 가족 합류
     @Override
     @Transactional
-    public void joinFamily(String familyCode, UUID memberId) throws ExpiredCode {
+    public void joinFamily(String familyCode, UUID memberId) throws ExpiredCodeException {
         ValueOperations<String, String> redisValueOperation = redisTemplate.opsForValue();
 
         if (StringUtil.isEmpty(redisValueOperation.get(familyCode))) {
-            throw new ExpiredCode(EXPIRED_CODE);
+            throw new ExpiredCodeException(EXPIRED_CODE);
         } else {
             String familyId = redisValueOperation.get(familyCode);
 

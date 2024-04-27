@@ -1,9 +1,7 @@
 #!/bin/bash
 
 # detect_env.sh
-pwd
 cd ../../..
-pwd
 # NGINX의 설정 파일 경로 설정
 NGINX_CONFIG_FILE="/home/ubuntu/nginx.conf"
 

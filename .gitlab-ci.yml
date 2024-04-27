@@ -32,8 +32,6 @@ build:
     - sed -i 's|${AWS_SECRET_KEY}|'"$AWS_SECRET_KEY"'|g' application-aws.yaml
     # 권한 부여 후 현재 서버 환경 확인
     - cd ../../..
-    - ls
-    - pwd
     - chmod +x ./devops/nginx/detect_env.sh
     - DEPLOY_ENV=$(source ./devops/nginx/detect_env.sh)
     # tag 설정
@@ -60,28 +58,25 @@ deploy:
     - cd ./back/gatee
     - chmod +x ./devops/nginx/detect_env.sh
     - DEPLOY_ENV=$(source ./devops/nginx/detect_env.sh)
+    - echo $DEPLOY_ENV
     - if [ "$DEPLOY_ENV" == "blue" ]; then
       TAG="green";
       echo "Deploying to green environment...";
-      docker-compose -f docker-compose.green.yaml down;
-      docker-compose -f docker-compose.green.yaml up --build -d;
+      docker-compose -f docker-compose.green.yaml up --no-deps --build -d;
       else
       TAG="blue";
       echo "Deploying to blue environment...";
-      docker-compose -f docker-compose.blue.yaml down;
-      docker-compose -f docker-compose.blue.yaml up --build -d;
+      docker-compose -f docker-compose.blue.yaml up --no-deps --build -d;
       fi
     - export TAG
     - echo [INFO] upstream change
     - chmod +x ./devops/nginx/deploy_script.sh
     - cd devops
     - cd nginx
-    - ls
-    - pwd
     - echo [INFO] $TAG
-    - ./deploy_script.sh $TAG
-    - cp ./back/gatee/deploy/nginx/nginx.conf /home/ubuntu/nginx.conf
-    - sudo docker exec proxy-server nginx -s reload
+    - source ./deploy_script.sh $TAG
+    - cp ./nginx.conf /home/ubuntu/nginx.conf
+    - docker exec proxy-server nginx -s reload
   after_script:
     - docker logout
     - echo [INFO] docker deploy end!
@@ -89,7 +84,3 @@ deploy:
     - develop
     - master
     - release
-
-
-
-

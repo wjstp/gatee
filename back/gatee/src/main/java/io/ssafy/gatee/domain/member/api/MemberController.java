@@ -25,8 +25,8 @@ public class MemberController {
     // 회원 가입
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public void register(@RequestBody MemberReq memberReq) {
-        memberService.register(memberReq.name(), memberReq.nickname());
+    public UUID register(@RequestBody MemberReq memberReq) {
+        return memberService.register(memberReq.name(), memberReq.nickname());
     }
 
     // 회원 정보 등록 (회원 가입 후 처음)
