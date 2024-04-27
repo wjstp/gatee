@@ -4,63 +4,62 @@
   @return '../../images/schedule/bg_calendar_banner' + $month + '.jpg';
 }
 
-.schedule-container {
-  height: 100%;
-}
+.schedule {
+  height: 98%;
 
-// banner뒤의 숫자에 따라 1월부터 12월까지의 이미지로 변경
-.schedule__banner {
-  @for $i from 1 through 12 {
-    &#{$i} {
-      background: {
-        image: url(calendarBannerImage(#{$i}));
-        position: center;
-        repeat: no-repeat;
-        size: cover;
-      };
-      height: 13%;
-      border-radius: 40px 40px 0 0;
+  &__banner {
+    // banner뒤의 숫자에 따라 1월부터 12월까지의 이미지로 변경
+    @for $i from 1 through 12 {
+      &#{$i} {
+        background: {
+          image: url(calendarBannerImage(#{$i}));
+          position: center;
+          repeat: no-repeat;
+          size: cover;
+        };
+        height: 13%;
+        border-radius: 40px 40px 0 0;
+      }
     }
   }
 }
 
-.schedule__calendar {
+.schedule-calendar {
   margin: 0 2%;
   height: 87%;
-}
 
-.calendar__header {
-  @include flex_between;
-  height: 13%;
-}
-
-.calendar__title {
-  @include flex_center;
-  gap: 1.5rem;
-}
-
-.calendar__month {
-  font: {
-    weight: 600;
-    size: $font-size-big;
-  };
-}
-
-.calendar__button {
-  color: $orange300;
-  &--today {
-    @extend .calendar__button;
-    font-weight: 600;
-    width: 20%;
+  &__header {
+    @include flex_between;
+    height: 13%;
   }
 
-  &--month {
-    @extend .calendar__button;
-  }
-
-  &--add-event {
-    @extend .calendar__button;
+  &__title-wrapper {
     @include flex_center;
-    width: 20%;
+    gap: 1.5rem;
+  }
+
+  &__button {
+    &-today {
+      color: $orange300;
+      font-weight: 600;
+      width: 20%;
+    }
+
+    &-month {
+      color: black;
+    }
+
+    &-add-event {
+      @include flex_center;
+      color: $orange300;
+      width: 20%;
+    }
+  }
+
+  &__month {
+    font: {
+      weight: 600;
+      size: $font-size-big;
+    };
   }
 }

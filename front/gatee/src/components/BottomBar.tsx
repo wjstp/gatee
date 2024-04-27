@@ -10,49 +10,47 @@ import { PiImage } from "react-icons/pi";
 
 const BottomBar = () => {
   return (
-    <div>
-      <div className="bottomBar">
-        {/*모의고사*/}
-        <NavLink to="/exam" className={({isActive}) =>
-          isActive ? 'bottomBar__item--active' : 'bottomBar__item'
-        }>
-          <PiGraduationCap size={24}/>
-          <span>모의고사</span>
-        </NavLink>
+    <div className="bottom-bar">
+      {/*모의고사*/}
+      <NavLink to="/exam" className={({isActive}) =>
+        isActive ? 'bottom-bar__item--active' : 'bottom-bar__item'
+      }>
+        <PiGraduationCap size={24}/>
+        <span>모의고사</span>
+      </NavLink>
 
-        {/*채팅*/}
-        <NavLink to="/chat" className={({isActive}) =>
-          isActive ? 'bottomBar__item--active' : 'bottomBar__item'
-        }>
-          <PiChatCenteredDots size={24}/>
-          <span>채팅</span>
-          {/*<NotificationBadge />*/}
-        </NavLink>
+      {/*채팅*/}
+      <NavLink to="/chat" className={({isActive}) =>
+        isActive ? 'bottom-bar__item--active' : 'bottom-bar__item'
+      }>
+        <PiChatCenteredDots size={24}/>
+        <span>채팅</span>
+        {/*<NotificationBadge />*/}
+      </NavLink>
 
-        {/*홈*/}
-        <NavLink to="/main" className={({isActive}) =>
-          isActive ? 'bottomBar__itemHome--active' : 'bottomBar__itemHome'
-        }>
-          <HomeIcon/>
-          <span>홈</span>
-        </NavLink>
+      {/*홈*/}
+      <NavLink to="/main" className={({isActive}) =>
+        isActive ? 'bottom-bar__item-home--active' : 'bottom-bar__item-home'
+      }>
+        <HomeIcon/>
+        <span>홈</span>
+      </NavLink>
 
-        {/*일정*/}
-        <NavLink to="/schedule" className={({isActive}) =>
-          isActive ? 'bottomBar__item--active' : 'bottomBar__item'
-        }>
-          <PiCalendar size={24}/>
-          <span>일정</span>
-        </NavLink>
+      {/*일정*/}
+      <NavLink to="/schedule" className={({isActive}) =>
+        isActive ? 'bottom-bar__item--active' : 'bottom-bar__item'
+      }>
+        <PiCalendar size={24}/>
+        <span>일정</span>
+      </NavLink>
 
-        {/*앨범*/}
-        <NavLink to="/photo" className={({isActive}) =>
-          isActive ? 'bottomBar__item--active' : 'bottomBar__item'
-        }>
-          <PiImage size={24}/>
-          <span>앨범</span>
-        </NavLink>
-      </div>
+      {/*앨범*/}
+      <NavLink to="/photo" className={({isActive}) =>
+        isActive ? 'bottom-bar__item--active' : 'bottom-bar__item'
+      }>
+        <PiImage size={24}/>
+        <span>앨범</span>
+      </NavLink>
     </div>
   )
 }

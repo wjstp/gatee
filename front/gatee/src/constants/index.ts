@@ -1,4 +1,3 @@
-import React from 'react';
 import { Member, Question, Character } from "src/types";
 
 export const API_URL: string = "https://gaty.duckdns.org";
