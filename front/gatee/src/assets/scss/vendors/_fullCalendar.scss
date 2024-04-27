@@ -1,0 +1,60 @@
+@use '../abstracts/index' as *;
+
+// @ScheduleCalendar 라이브러리 CSS 수정 파일
+
+:root {
+  --fc-small-font-size: 8px;
+  --fc-border-color: transparent;
+  --fc-button-text-color: black;
+  --fc-button-bg-color: transparent;
+  --fc-button-border-color: transparent;
+  --fc-button-hover-bg-color: transparent;
+  --fc-button-hover-border-color: transparent;
+  --fc-button-active-bg-color: transparent;
+  --fc-button-active-border-color: transparent;
+  --fc-today-bg-color: transparent;
+  --fc-highlight-color: #fff3e4;
+}
+
+// 헤더
+.fc .fc-toolbar.fc-header-toolbar {
+  display: none;
+}
+
+// 달력
+.fc-daygrid {
+  // 요일
+  .fc-col-header-cell-cushion {
+    font:{
+      size: $font-size-small;
+      weight: 400;
+    };
+    margin-bottom: 0.5rem;
+    opacity: 0.3;
+  }
+
+  // 일요일 빨간색
+  .fc-day-sun {
+    color: #ed6363;
+  }
+
+  // 일자
+  .fc-daygrid-day-top {
+    @include flex_center;
+
+    .fc-daygrid-day-number {
+      font-size: $font-size-small;
+    }
+  }
+
+  // more 버튼
+  .fc-daygrid-day-bottom {
+    .fc-daygrid-more-link {
+      font:{
+        size: $font-size-xSmall;
+        weight: 500;
+      }
+      color: $orange400;
+    }
+  }
+}

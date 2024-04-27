@@ -1,7 +1,10 @@
 @use '../abstracts/index' as *;
 
+// 커스텀 하는 법
+// 1. 상단에 '@use '../compenents/index' as *' 작성
+// 2. 클래스 안에 '@extend .클래스명;' 작성 후 원하는 속성 변경
+
 // orangeButtonLarge, orangeButtonMedium, orangeButtonSmall
-// 색상 바꾸는 법: '@extent .버튼클래스명;' 작성 후 원하는 속성 변경
 @mixin orangeButtonCommon() {
   @include flex_center;
   @include my-(1);

@@ -4,7 +4,6 @@ import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from "react-router-dom";
-
 import './assets/scss/main.scss'
 
 const root = ReactDOM.createRoot(

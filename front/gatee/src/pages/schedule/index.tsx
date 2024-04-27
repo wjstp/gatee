@@ -1,9 +1,17 @@
 import React from 'react';
+import ScheduleCalendar from "./component/ScheduleCalendar";
 
-function ScheduleIndex() {
-    return (
-        <div>일정</div>
-    );
+const ScheduleIndex = () => {
+  return (
+    <div className="schedule-container">
+      {/*배너*/}
+      <div className="schedule__banner4">
+      </div>
+
+      {/*달력*/}
+      <ScheduleCalendar />
+    </div>
+  );
 }
 
 export default ScheduleIndex;

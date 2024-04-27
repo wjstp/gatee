@@ -1,26 +1,18 @@
 import React from 'react';
-import {useNavigate} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function MainIndex() {
-  const navigate = useNavigate();
-
-
-  const goto = (destination: string): void => {
-    navigate(destination);
-  }
   return (
     <div>
-      <span>메인</span>
-      <div>
-        <button onClick={() => goto("/signup")}>
-          회원가입
-        </button>
-        <button onClick={() => goto('/mission')}>
-          미션
-        </button>
-        <button onClick={() => goto('/character')}>
-          백과사전
-        </button>
+      <div style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "1rem",
+        margin: "1rem"
+      }}>
+        <Link to="/signup">회원가입</Link>
+        <Link to="/mission">미션</Link>
+        <Link to="/character">백과사전</Link>
       </div>
     </div>
   );

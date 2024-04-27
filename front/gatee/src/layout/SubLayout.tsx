@@ -29,7 +29,7 @@ const SubLayout = () => {
             </Helmet>
           </HelmetProvider>
       }
-      <div id="subContainer">
+      <div id="sub-container">
         <Outlet />
       </div>
     </>
