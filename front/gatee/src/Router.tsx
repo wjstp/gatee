@@ -1,29 +1,29 @@
 import React from 'react';
 import { Routes, Route } from "react-router-dom";
-import MainLayout from "@layout/MainLayout";
+import MainLayout from "@layout/MainLayout";  // 레이아웃
 import SubLayout from "@layout/SubLayout";
-import ExamIndex from "@pages/exam";
+import ExamIndex from "@pages/exam";  // 모의고사
 import ExamGrade from "@pages/exam/Grade";
 import ExamScored from "@pages/exam/Scored";
 import ExamTaking from "@pages/exam/Taking";
-import MainIndex from "@pages/main";
-import MissionIndex from "@pages/mission";
-import NotificationIndex from "@pages/notification";
-import OnboardingIndex from "@pages/onboarding/index";
+import MainIndex from "@pages/main";  // 메인
+import MissionIndex from "@pages/mission";  // 미션
+import NotificationIndex from "@pages/notification";  // 알림
+import OnboardingIndex from "@pages/onboarding/index";  // 온보딩
 import KaKaoLogin from "@pages/onboarding/component/KaKaoLogin";
-import ProfileIndex from "@pages/profile";
-import ScheduleIndex from "@pages/schedule";
+import ProfileIndex from "@pages/profile";  // 프로필
+import ScheduleIndex from "@pages/schedule";  // 일정
 import ScheduleCreateSchedule from "@pages/schedule/CreateSchedule";
 import ScheduleCreateReview from "@pages/schedule/CreateReview";
 import ScheduleDetail from "@pages/schedule/ScheduleDetail";
-import ChatIndex from "@pages/chat";
-import CharacterIndex from "@pages/character";
-import CharacterStart from "@pages/character/Start";
+import ChatIndex from "@pages/chat";  // 채팅
+import CharacterIndex from "@pages/character";  // 백과사전
+import CharacterStart from "@pages/character/AnswerList";
 import CharacterQuestion from "@pages/character/Question";
-import SignupIndex from "@pages/signup";
+import SignupIndex from "@pages/signup";  // 회원가입
 import SignupMember from "@pages/signup/Member";
 import SignupFamily from "@pages/signup/Family";
-import PhotoAlbumIndex from "@pages/photo";
+import PhotoAlbumIndex from "@pages/photo"; // 앨범
 import PhotoAlbumGroupDetail from "@pages/photo/AlbumGroupDetail";
 import PhotoAllGroupDetail from "@pages/photo/AllGroupDetail";
 import PhotoAlbumPhoto from "@pages/photo/AlbumPhoto";
@@ -49,7 +49,9 @@ const Router = () => {
 
         {/*메인 페이지*/}
         <Route path="/main" element={<MainIndex/>}/>
-        <Route path="/main/mission" element={<MissionIndex/>}/>
+
+        {/*미션 페이지*/}
+        <Route path="/mission" element={<MissionIndex/>}/>
 
         {/*스케줄 페이지*/}
         <Route path="/schedule" element={<ScheduleIndex/>}/>

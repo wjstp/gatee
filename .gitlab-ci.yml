@@ -32,8 +32,6 @@ build:
     - sed -i 's|${AWS_SECRET_KEY}|'"$AWS_SECRET_KEY"'|g' application-aws.yaml
     # 권한 부여 후 현재 서버 환경 확인
     - cd ../../..
-    - ls
-    - pwd
     - chmod +x ./devops/nginx/detect_env.sh
     - DEPLOY_ENV=$(source ./devops/nginx/detect_env.sh)
     # tag 설정
@@ -64,35 +62,21 @@ deploy:
     - if [ "$DEPLOY_ENV" == "blue" ]; then
       TAG="green";
       echo "Deploying to green environment...";
-      docker-compose -f docker-compose.green.yaml up --build -d;
+      docker-compose -f docker-compose.green.yaml up --no-deps --build -d;
       else
       TAG="blue";
       echo "Deploying to blue environment...";
-      docker-compose -f docker-compose.blue.yaml up --build -d;
+      docker-compose -f docker-compose.blue.yaml up --no-deps --build -d;
       fi
     - export TAG
     - echo [INFO] upstream change
     - chmod +x ./devops/nginx/deploy_script.sh
     - cd devops
     - cd nginx
-    - ls
-    - pwd
     - echo [INFO] $TAG
     - source ./deploy_script.sh $TAG
     - cp ./nginx.conf /home/ubuntu/nginx.conf
     - docker exec proxy-server nginx -s reload
-    - cd ../..
-    ## 환경이 변경됨
-    - echo $DEPLOY_ENV
-    - pwd
-    - ls
-    - if [ "$DEPLOY_ENV" == "blue" ]; then
-      docker-compose -f docker-compose.green.yaml down;
-      echo "docker-compose -f docker-compose.green.yaml down do!!";
-      else
-      docker-compose -f docker-compose.blue.yaml down;
-      echo "docker-compose -f docker-compose.blue.yaml down do!!!";
-      fi
   after_script:
     - docker logout
     - echo [INFO] docker deploy end!

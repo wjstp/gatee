@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Outlet, useLocation} from 'react-router-dom'
-import {Helmet} from "react-helmet";
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 const SubLayout = () => {
   const [currentUrl, setcurrentUrl] = useState("");
@@ -17,13 +17,17 @@ const SubLayout = () => {
       */}
       {
         currentUrl=="/signup" ?
-          <Helmet>
-            <meta name="theme-color" id="theme-color" content="#FFBE5C"/>
-          </Helmet>
+          <HelmetProvider>
+            <Helmet>
+              <meta name="theme-color" id="theme-color" content="#FFBE5C"/>
+            </Helmet>
+          </HelmetProvider>
         :
-          <Helmet>
-            <meta name="theme-color" id="theme-color" content="#ffffff"/>
-          </Helmet>
+          <HelmetProvider>
+            <Helmet>
+              <meta name="theme-color" id="theme-color" content="#ffffff"/>
+            </Helmet>
+          </HelmetProvider>
       }
       <div id="sub-container">
         <Outlet />

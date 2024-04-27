@@ -1,5 +1,5 @@
 services:
-  gatee-api:
+  gatee-api-blue:
     image: ${CI_REGISTRY}/gatee-api:blue
     container_name: gatee-api-blue
     ports:

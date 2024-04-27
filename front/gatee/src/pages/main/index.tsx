@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import NotificationBadge from "@components/NotificationBadge";
 
 function MainIndex() {
   return (
@@ -12,7 +11,8 @@ function MainIndex() {
         margin: "1rem"
       }}>
         <Link to="/signup">회원가입</Link>
-        <Link to="/main/mission">미션</Link>
+        <Link to="/mission">미션</Link>
+        <Link to="/character">백과사전</Link>
       </div>
     </div>
   );

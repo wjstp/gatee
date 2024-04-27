@@ -14,8 +14,13 @@ const ScheduleCalendar: React.FC = () => {
 
   // 일자 클릭 핸들러 (일자별 일정 리스트)
   const handleDateClick = (arg: DateClickArg) => {
-    console.log(arg)
-  }
+    console.log(arg);
+  };
+
+  // 영역 선택 시 핸들러
+  const handleSelect = (arg: any) => {
+    console.log('Selected range: ', arg.start, arg.end);
+  };
 
   // 이전 달로 이동하는 클릭 핸들러
   const handlePrevClick = () => {
@@ -33,6 +38,7 @@ const ScheduleCalendar: React.FC = () => {
     }
   };
 
+  // 오늘 날짜로 이동하는 클릭 핸들러
   const handleTodayClick = () => {
     if (calendarRef.current) {
       const calendarApi = calendarRef.current.getApi();
@@ -66,7 +72,7 @@ const ScheduleCalendar: React.FC = () => {
 
         {/*일정 추가 버튼*/}
         <button className="calendar__button--add-event">
-          <LuCalendarPlus size={22} />
+          <LuCalendarPlus size={20} />
         </button>
       </div>
 
@@ -78,7 +84,6 @@ const ScheduleCalendar: React.FC = () => {
         initialView="dayGridMonth"
         height="85%"            // calendar 높이
         locale="kr"             // 언어 한글로 변경
-        editable={ true }       // 일정 이벤트
         selectable={ true }     // 영역 선택
         dayMaxEvents={ true }   // row 높이보다 많으면 +N more 링크 표시
         dayCellContent={(arg) => {
@@ -96,6 +101,9 @@ const ScheduleCalendar: React.FC = () => {
 
         // 일자 클릭 이벤트
         dateClick={ handleDateClick }
+
+        // 영역 선택 이벤트
+        select={ handleSelect }
       />
     </div>
   );

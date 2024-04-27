@@ -1,5 +1,5 @@
 services:
-  gatee-api:
+  gatee-api-green:
     image: ${CI_REGISTRY}/gatee-api:green
     container_name: gatee-api-green
     ports:
