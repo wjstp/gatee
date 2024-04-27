@@ -66,9 +66,10 @@ const Router = () => {
 
         {/*앨범 페이지*/}
         <Route path="/photo" element={<PhotoAlbumIndex/>}/>
-        <Route path="/photo/album" element={<PhotoAlbumPhoto/>}/>
-        <Route path="/photo/group/:id" element={<PhotoAllGroupDetail/>}/>
-        <Route path="/photo/album/:id" element={<PhotoAlbumGroupDetail/>}/>
+          <Route path="album" element={<PhotoAlbumPhoto/>}/>
+          <Route path="/album/:id" element={<PhotoAlbumGroupDetail/>}/>
+          <Route path="/group/:id" element={<PhotoAllGroupDetail/>}/>
+
       </Route>
 
       {/*TabBar, BottomBar 없는 레이아웃*/}
