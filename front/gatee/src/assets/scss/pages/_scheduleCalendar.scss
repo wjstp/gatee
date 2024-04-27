@@ -1,7 +1,7 @@
 @use '../abstracts/index' as *;
 
 @function calendarBannerImage($month) {
-  @return '../../images/schedule/calendarBanner' + $month + '.jpg';
+  @return '../../images/schedule/bg_calendar_banner' + $month + '.jpg';
 }
 
 .schedule-container {
@@ -41,7 +41,7 @@
 
 .calendar__month {
   font: {
-    weight: 500;
+    weight: 600;
     size: $font-size-big;
   };
 }
