@@ -7,7 +7,7 @@ import SmileIcon from "@assets/image/icon3D/smile.png"
 
 const Improvement = ({type}: any) => {
 
-  console.log(type)
+  // console.log(type)
   // const type = "hello"
   const content:any = {
     heart: {
