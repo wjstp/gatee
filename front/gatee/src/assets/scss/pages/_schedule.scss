@@ -5,7 +5,7 @@
 }
 
 .schedule {
-  height: 98%;
+  height: 100%;
 
   &__banner {
     // banner뒤의 숫자에 따라 1월부터 12월까지의 이미지로 변경
@@ -19,7 +19,12 @@
         };
         height: 13%;
         border-radius: 40px 40px 0 0;
+        transition: height 0.5s ease;
       }
+    }
+
+    &--open {
+      height: 0%;
     }
   }
 }
@@ -31,7 +36,7 @@
   &__header {
     @include flex_between;
 
-    height: 13%;
+    height: 15%;
     padding-top: 1rem;
   }
 
@@ -39,6 +44,15 @@
     @include flex_center;
 
     gap: 1.5rem;
+  }
+
+  &__main {
+    height: 85%;
+    //transition: height 0.5s ease;
+
+    &--open {
+      height: 50%;
+    }
   }
 
   &__button {
@@ -63,7 +77,7 @@
   &__month {
     position: relative;
     font: {
-      weight: 600;
+      weight: 800;
       size: $font-size-big;
     };
   }
@@ -75,16 +89,28 @@
     width: 100%;
     color: $gray400;
     font: {
-      weight: 400;
+      weight: 500;
       size: $font-size-small;
     };
   }
 
-  &__main {
-    height: 85%;
-
-    &--active-day {
-
-    }
+  &__day {
+    position: relative;
   }
+
+  &__today {
+    position: absolute;
+    z-index: -10;
+    background: $orange400;
+    top: -3px;
+    left: -4px;
+    width: 25px;
+    height: 24px;
+    border-radius: 50%;
+  }
+}
+
+.day-toast {
+  background-color: $orange300;
+  height: 50%;
 }

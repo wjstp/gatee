@@ -82,6 +82,75 @@
   fill: #FFA41C;
 }
 
+.notification-badge {
+  background-color: #FFA41C;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px white solid;
+}
+
+.signupIndex__createButtonBox__createButton, .signupIndex__joinButtonBox__joinButton, .familySetInfo__nextButtonBox__nextButton, .familyShareCode__nextButtonBox__nextButton, .create-schedule__button-create button, .character__index .orangeButtonLarge, .character__question .orangeButtonLarge {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  background-color: #FFA41C;
+  font-weight: 600;
+  font-size: 22px;
+  height: 50px;
+  color: white;
+  border-radius: 10px;
+  width: 90%;
+}
+.signupIndex__createButtonBox__createButton:focus, .signupIndex__joinButtonBox__joinButton:focus, .familySetInfo__nextButtonBox__nextButton:focus, .familyShareCode__nextButtonBox__nextButton:focus, .create-schedule__button-create button:focus, .character__index .orangeButtonLarge:focus, .character__question .orangeButtonLarge:focus, .signupIndex__createButtonBox__createButton:active, .signupIndex__joinButtonBox__joinButton:active, .familySetInfo__nextButtonBox__nextButton:active, .familyShareCode__nextButtonBox__nextButton:active, .create-schedule__button-create button:active, .character__index .orangeButtonLarge:active, .character__question .orangeButtonLarge:active, .signupIndex__createButtonBox__createButton:hover, .signupIndex__joinButtonBox__joinButton:hover, .familySetInfo__nextButtonBox__nextButton:hover, .familyShareCode__nextButtonBox__nextButton:hover, .create-schedule__button-create button:hover, .character__index .orangeButtonLarge:hover, .character__question .orangeButtonLarge:hover {
+  background-color: #f89c00;
+}
+.familyJoin__codeInput__inputButtonBox__inputButton, .familyJoin__codeResult__joinFamilyButtonBox__joinFamilyButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  background-color: #FFA41C;
+  font-weight: 600;
+  font-size: 22px;
+  height: 50px;
+  color: white;
+  border-radius: 10px;
+  width: 200px;
+  border-radius: 25px;
+}
+.familyJoin__codeInput__inputButtonBox__inputButton:focus, .familyJoin__codeResult__joinFamilyButtonBox__joinFamilyButton:focus, .familyJoin__codeInput__inputButtonBox__inputButton:active, .familyJoin__codeResult__joinFamilyButtonBox__joinFamilyButton:active, .familyJoin__codeInput__inputButtonBox__inputButton:hover, .familyJoin__codeResult__joinFamilyButtonBox__joinFamilyButton:hover {
+  background-color: #f89c00;
+}
+.mission__index .improvement-card-button {
+  padding-left: 1.2rem;
+  padding-right: 1.2rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  background-color: #FFA41C;
+  color: white;
+  height: 40px;
+  border-radius: 10rem;
+  font-weight: 800;
+  font-size: 1.2rem;
+}
+.mission__index .improvement-card-button:focus, .mission__index .improvement-card-button:active, .mission__index .improvement-card-button:hover {
+  background-color: #f89c00;
+}
+
+.create-schedule-participant__profile-image {
+  border-radius: 50%;
+}
+.create-schedule-participant__profile-image img {
+  width: 100%;
+  height: auto;
+  border-radius: inherit;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
 .character__index {
   display: flex;
   flex-direction: column;
@@ -748,7 +817,7 @@ ol {
 }
 
 .schedule {
-  height: 98%;
+  height: 100%;
 }
 .schedule__banner1 {
   background-image: url("../../images/schedule/bg_calendar_banner1.jpg");
@@ -757,6 +826,7 @@ ol {
   background-size: cover;
   height: 13%;
   border-radius: 40px 40px 0 0;
+  transition: height 0.5s ease;
 }
 .schedule__banner2 {
   background-image: url("../../images/schedule/bg_calendar_banner2.jpg");
@@ -765,6 +835,7 @@ ol {
   background-size: cover;
   height: 13%;
   border-radius: 40px 40px 0 0;
+  transition: height 0.5s ease;
 }
 .schedule__banner3 {
   background-image: url("../../images/schedule/bg_calendar_banner3.jpg");
@@ -773,6 +844,7 @@ ol {
   background-size: cover;
   height: 13%;
   border-radius: 40px 40px 0 0;
+  transition: height 0.5s ease;
 }
 .schedule__banner4 {
   background-image: url("../../images/schedule/bg_calendar_banner4.jpg");
@@ -781,6 +853,7 @@ ol {
   background-size: cover;
   height: 13%;
   border-radius: 40px 40px 0 0;
+  transition: height 0.5s ease;
 }
 .schedule__banner5 {
   background-image: url("../../images/schedule/bg_calendar_banner5.jpg");
@@ -789,6 +862,7 @@ ol {
   background-size: cover;
   height: 13%;
   border-radius: 40px 40px 0 0;
+  transition: height 0.5s ease;
 }
 .schedule__banner6 {
   background-image: url("../../images/schedule/bg_calendar_banner6.jpg");
@@ -797,6 +871,7 @@ ol {
   background-size: cover;
   height: 13%;
   border-radius: 40px 40px 0 0;
+  transition: height 0.5s ease;
 }
 .schedule__banner7 {
   background-image: url("../../images/schedule/bg_calendar_banner7.jpg");
@@ -805,6 +880,7 @@ ol {
   background-size: cover;
   height: 13%;
   border-radius: 40px 40px 0 0;
+  transition: height 0.5s ease;
 }
 .schedule__banner8 {
   background-image: url("../../images/schedule/bg_calendar_banner8.jpg");
@@ -813,6 +889,7 @@ ol {
   background-size: cover;
   height: 13%;
   border-radius: 40px 40px 0 0;
+  transition: height 0.5s ease;
 }
 .schedule__banner9 {
   background-image: url("../../images/schedule/bg_calendar_banner9.jpg");
@@ -821,6 +898,7 @@ ol {
   background-size: cover;
   height: 13%;
   border-radius: 40px 40px 0 0;
+  transition: height 0.5s ease;
 }
 .schedule__banner10 {
   background-image: url("../../images/schedule/bg_calendar_banner10.jpg");
@@ -829,6 +907,7 @@ ol {
   background-size: cover;
   height: 13%;
   border-radius: 40px 40px 0 0;
+  transition: height 0.5s ease;
 }
 .schedule__banner11 {
   background-image: url("../../images/schedule/bg_calendar_banner11.jpg");
@@ -837,6 +916,7 @@ ol {
   background-size: cover;
   height: 13%;
   border-radius: 40px 40px 0 0;
+  transition: height 0.5s ease;
 }
 .schedule__banner12 {
   background-image: url("../../images/schedule/bg_calendar_banner12.jpg");
@@ -845,6 +925,10 @@ ol {
   background-size: cover;
   height: 13%;
   border-radius: 40px 40px 0 0;
+  transition: height 0.5s ease;
+}
+.schedule__banner--open {
+  height: 0%;
 }
 
 .schedule-calendar {
@@ -855,7 +939,7 @@ ol {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 13%;
+  height: 15%;
   padding-top: 1rem;
 }
 .schedule-calendar__title-wrapper {
@@ -863,6 +947,12 @@ ol {
   justify-content: center;
   align-items: center;
   gap: 1.5rem;
+}
+.schedule-calendar__main {
+  height: 85%;
+}
+.schedule-calendar__main--open {
+  height: 50%;
 }
 .schedule-calendar__button-today {
   color: #FFC773;
@@ -881,7 +971,7 @@ ol {
 }
 .schedule-calendar__month {
   position: relative;
-  font-weight: 600;
+  font-weight: 800;
   font-size: 22px;
 }
 .schedule-calendar__year {
@@ -890,63 +980,26 @@ ol {
   text-align: center;
   width: 100%;
   color: #4f4f4f;
-  font-weight: 400;
+  font-weight: 500;
   font-size: 14px;
 }
-.schedule-calendar__main {
-  height: 85%;
+.schedule-calendar__day {
+  position: relative;
 }
-.notification-badge {
-  background-color: #FFA41C;
-  width: 10px;
-  height: 10px;
+.schedule-calendar__today {
+  position: absolute;
+  z-index: -10;
+  background: #FFBE5C;
+  top: -3px;
+  left: -4px;
+  width: 25px;
+  height: 24px;
   border-radius: 50%;
-  border: 1px white solid;
 }
 
-.signupIndex__createButtonBox__createButton, .signupIndex__joinButtonBox__joinButton, .familySetInfo__nextButtonBox__nextButton, .familyShareCode__nextButtonBox__nextButton, .create-schedule__button-create button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  background-color: #FFA41C;
-  font-weight: 600;
-  font-size: 22px;
-  height: 50px;
-  color: white;
-  border-radius: 10px;
-  width: 90%;
-}
-.signupIndex__createButtonBox__createButton:focus, .signupIndex__joinButtonBox__joinButton:focus, .familySetInfo__nextButtonBox__nextButton:focus, .familyShareCode__nextButtonBox__nextButton:focus, .create-schedule__button-create button:focus, .signupIndex__createButtonBox__createButton:active, .signupIndex__joinButtonBox__joinButton:active, .familySetInfo__nextButtonBox__nextButton:active, .familyShareCode__nextButtonBox__nextButton:active, .create-schedule__button-create button:active, .signupIndex__createButtonBox__createButton:hover, .signupIndex__joinButtonBox__joinButton:hover, .familySetInfo__nextButtonBox__nextButton:hover, .familyShareCode__nextButtonBox__nextButton:hover, .create-schedule__button-create button:hover {
-  background-color: #f89c00;
-}
-.familyJoin__codeInput__inputButtonBox__inputButton, .familyJoin__codeResult__joinFamilyButtonBox__joinFamilyButton {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  background-color: #FFA41C;
-  font-weight: 600;
-  font-size: 22px;
-  height: 50px;
-  color: white;
-  border-radius: 10px;
-  width: 200px;
-  border-radius: 25px;
-}
-.familyJoin__codeInput__inputButtonBox__inputButton:focus, .familyJoin__codeResult__joinFamilyButtonBox__joinFamilyButton:focus, .familyJoin__codeInput__inputButtonBox__inputButton:active, .familyJoin__codeResult__joinFamilyButtonBox__joinFamilyButton:active, .familyJoin__codeInput__inputButtonBox__inputButton:hover, .familyJoin__codeResult__joinFamilyButtonBox__joinFamilyButton:hover {
-  background-color: #f89c00;
-}
-.create-schedule-participant__profile-image {
-  border-radius: 50%;
-}
-.create-schedule-participant__profile-image img {
-  width: 100%;
-  height: auto;
-  border-radius: inherit;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+.day-toast {
+  background-color: #FFC773;
+  height: 50%;
 }
 
 .create-schedule {
@@ -1370,7 +1423,7 @@ ol {
 
 .fc-daygrid .fc-col-header-cell-cushion {
   font-size: 14px;
-  font-weight: 400;
+  font-weight: 500;
   margin-bottom: 0.5rem;
   opacity: 0.3;
 }
@@ -1384,8 +1437,10 @@ ol {
 }
 .fc-daygrid .fc-daygrid-day-top .fc-daygrid-day-number {
   font-size: 14px;
+  font-weight: 500;
 }
 .fc-daygrid .fc-daygrid-day-bottom .fc-daygrid-more-link {
+  pointer-events: none;
   font-size: 10px;
   font-weight: 500;
   color: #FFBE5C;

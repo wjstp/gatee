@@ -27,7 +27,7 @@
   .fc-col-header-cell-cushion {
     font:{
       size: $font-size-small;
-      weight: 400;
+      weight: 500;
     };
     margin-bottom: 0.5rem;
     opacity: 0.3;
@@ -43,13 +43,17 @@
     @include flex_center;
 
     .fc-daygrid-day-number {
-      font-size: $font-size-small;
+      font: {
+        size: $font-size-small;
+        weight: 500;
+      }
     }
   }
 
   // more 버튼
   .fc-daygrid-day-bottom {
     .fc-daygrid-more-link {
+      pointer-events: none;
       font:{
         size: $font-size-xSmall;
         weight: 500;
