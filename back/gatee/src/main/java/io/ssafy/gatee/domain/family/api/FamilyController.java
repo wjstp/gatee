@@ -5,10 +5,11 @@ import io.ssafy.gatee.domain.family.dto.request.FamilyNameReq;
 import io.ssafy.gatee.domain.family.dto.request.FamilySaveReq;
 import io.ssafy.gatee.domain.family.dto.response.FamilyInfoRes;
 import io.ssafy.gatee.global.exception.error.not_found.FamilyNotFoundException;
-import io.ssafy.gatee.global.security.user.UserSecurityDTO;
+import io.ssafy.gatee.global.security.user.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -25,8 +26,8 @@ public class FamilyController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public void saveFamily(@RequestBody FamilySaveReq familySaveReq, UserSecurityDTO userSecurityDTO) {
-        familyService.saveFamily(familySaveReq, UUID.fromString(userSecurityDTO.getUsername()));
+    public void saveFamily(@RequestBody FamilySaveReq familySaveReq, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        familyService.saveFamily(familySaveReq, UUID.fromString(customUserDetails.getUsername()));
     }
 
     // 가족 정보 조회

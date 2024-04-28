@@ -3,14 +3,14 @@ package io.ssafy.gatee.global.jwt.application;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.MalformedJwtException;
-import io.ssafy.gatee.domain.member.entity.Privilege;
 import io.ssafy.gatee.global.jwt.dao.RefreshTokenRedisRepository;
 import io.ssafy.gatee.global.jwt.dto.RefreshToken;
 import io.ssafy.gatee.global.jwt.util.JwtClaimsParser;
 import io.ssafy.gatee.global.jwt.util.JwtProvider;
-import io.ssafy.gatee.global.security.user.UserSecurityDTO;
+import io.ssafy.gatee.global.security.user.CustomUserDetails;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.List;
 
 @Slf4j
 @Service
@@ -42,23 +41,31 @@ public class JwtService {
 
     public Authentication authenticateJwtToken(HttpServletRequest request) {
         String token = parseJwt(request);
+        CustomUserDetails customUserDetails;
         if (Objects.isNull(token)) {
-            return null;
+            customUserDetails = CustomUserDetails.builder()
+                    .username(UUID.randomUUID().toString())
+                    .password(UUID.randomUUID().toString())
+                    .privilege("ANONYMOUS")
+                    .authorities(jwtClaimsParser.getAnonymousAuthorities())
+                    .isAccountNonLocked(true)
+                    .isCredentialsNonExpired(true)
+                    .isAccountNonExpired(true)
+                    .build();
+        } else {
+            Claims claims = verifyJwtToken(token);
+
+            // member를 생성하여 값 set
+            customUserDetails = CustomUserDetails.builder()
+                    .username(claims.getSubject())
+                    .privilege(claims.get("privilege").toString())
+                    .authorities((Collection<? extends GrantedAuthority>) claims.get(AUTHORITIES_KEY))
+                    .password(UUID.randomUUID().toString())
+                    .isAccountNonLocked(true)
+                    .isCredentialsNonExpired(true)
+                    .isAccountNonExpired(true)
+                    .build();
         }
-        Claims claims = verifyJwtToken(token);
-        String username = claims.getSubject();
-        System.out.println(username);
-        List<String> role = (List<String>) claims.get(AUTHORITIES_KEY);   // 수정
-        System.out.println(role);
-        // member를 생성하여 값 set
-        UserSecurityDTO customUserDetails = UserSecurityDTO.builder()
-                .username(username)
-                .authorities((Collection<? extends GrantedAuthority>) claims.get(AUTHORITIES_KEY))
-                .password(UUID.randomUUID().toString())
-                .isAccountNonLocked(true)
-                .isCredentialsNonExpired(true)
-                .isAccountNonExpired(true)
-                .build();
         // 스프링 시큐리티 인증 토큰 생성
         return new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
     }
@@ -84,17 +91,8 @@ public class JwtService {
     public String rotateAccessToken(String refreshToken) {
         Claims claims = verifyJwtToken(refreshToken);// 예외처리 할 것
         String memberId = claims.getSubject();
-        // 기존 redis 삭제
         RefreshToken redisRefreshToken = refreshTokenRepository.findByMemberId(memberId)
                 .orElseThrow(() -> new JwtException("일치하는 refreshtoken이 없다잉"));
-//        refreshTokenRepository.delete(redisRefreshToken);
-        // access token이 일치하지 않으면 refresh token으로 요청보낼 것
-        // 1. refresh token이 일치하는 경우 accesstoken을 재발급해서 제공
-        // 2. refresh token이 일치하지 않는 경우 refresh token과 aceess token모두 재발급
-        // access token 발급
-        // todo: 일치하는 refresh token 없을 떄 exception 추가. exception 시, refresh token 삭제 로직 추가
-        // todo: refresh token 발급은 하지 않는다.
-        // todo: refresh 갱신 로직 추가
         Authentication authentication = jwtClaimsParser.getAuthentication(refreshToken);
         return jwtProvider.generateAccessToken(authentication);
     }
@@ -127,4 +125,21 @@ public class JwtService {
         cookie.setMaxAge(15 & 50 * 60 * 24);
         return cookie;
     }
+
+    public void publishTokens(HttpServletResponse response, Authentication authentication) {
+        String accessToken = jwtProvider.generateAccessToken(authentication);
+        response.addHeader("Authorization", "Bearer " + accessToken);
+        log.info("access token 발급 완료");
+
+        String refreshToken = jwtProvider.generateRefreshToken(authentication);
+        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+        if (refreshTokenRepository.existsByMemberId(customUserDetails.getMemberId().toString())) {
+            refreshTokenRepository.deleteByMemberId((customUserDetails.getMemberId().toString()));
+        }
+        saveToken(customUserDetails.getUsername(), refreshToken);
+        Cookie cookie = createCookie(refreshToken);
+        response.addCookie(cookie);
+        log.info("refresh token 발급 완료");
+    }
+
 }

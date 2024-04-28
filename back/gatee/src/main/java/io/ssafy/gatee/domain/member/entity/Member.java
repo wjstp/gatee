@@ -54,14 +54,12 @@ public class Member extends BaseEntity {
     private File file;
 
     @Enumerated(EnumType.STRING)
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "member_privilege",
-            joinColumns = @JoinColumn(name = "member_id"))
-    private List<Privilege> privilege;
+    private Privilege privilege;
 
     // 회원 정보 저장 - file field 추가 예정
     public void saveInfo(MemberSaveReq memberSaveReq) {
         this.name = memberSaveReq.name();
+        this.privilege = Privilege.USER;    // 추가 정보 저장시 권한 변경
         this.nickname = memberSaveReq.nickname();
         this.birth = LocalDate.parse(memberSaveReq.birth(), DateTimeFormatter.ISO_DATE);
         this.birthType = BirthType.valueOf(memberSaveReq.birthType());

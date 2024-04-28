@@ -1,7 +1,6 @@
 package io.ssafy.gatee.global.jwt.api;
 
 import io.ssafy.gatee.global.jwt.application.JwtService;
-import io.ssafy.gatee.global.security.user.UserSecurityDTO;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -31,7 +30,6 @@ public class AuthController {
         String accessToken = jwtService.rotateAccessToken(refreshToken);
         // accessToken 헤더에 추가
         response.addHeader("Access-Token", "Bearer " + accessToken);
-        // todo: header에 refresh token 다시 달아줘야 하는 지 확인
     }
 
     private Cookie getCookie(HttpServletRequest request) {

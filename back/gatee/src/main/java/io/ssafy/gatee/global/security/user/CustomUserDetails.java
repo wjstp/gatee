@@ -1,28 +1,28 @@
 package io.ssafy.gatee.global.security.user;
 
 import io.ssafy.gatee.domain.member.entity.Member;
-import io.ssafy.gatee.domain.member.entity.Privilege;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.Map;
+import java.util.Collections;
 import java.util.UUID;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @Builder
-public class UserSecurityDTO implements UserDetails {
+public class CustomUserDetails implements UserDetails {
+
     private String username;
+
+    private UUID memberId;
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    private Privilege privilege;
+    private String privilege;
 
     private String password;
 
@@ -35,10 +35,12 @@ public class UserSecurityDTO implements UserDetails {
     private boolean isEnabled;
 
 
-    public static UserSecurityDTO toUserSecurityDTO(Member member) {
-        System.out.println("dto로 변환");
-        return UserSecurityDTO.builder()
+
+    public static CustomUserDetails toCustomUserDetails(Member member) {
+
+        return CustomUserDetails.builder()
                 .username(member.getId().toString())
+                .privilege(member.getPrivilege().toString())
                 .authorities(toAuthorities(member))
                 .password(UUID.randomUUID().toString())
                 .isAccountNonLocked(true)
@@ -48,17 +50,16 @@ public class UserSecurityDTO implements UserDetails {
                 .build();
 
     }
-    public static Collection<? extends GrantedAuthority> toAuthorities(Member member) {
-        var result = AuthorityUtils.createAuthorityList(member.getPrivilege().stream()
-                .map(Enum::toString).collect(Collectors.toList()));
-
-        System.out.println("???????????" + result);
-        return result;
+    public static Collection<? extends  GrantedAuthority> toAuthorities(Member member) {
+        return AuthorityUtils.createAuthorityList(String.valueOf(member.getPrivilege()));
+    }
+    public UUID getMemberId() {
+        return UUID.fromString(this.username);
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return AuthorityUtils.createAuthorityList(this.authorities.toString());
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + this.privilege));
     }
 
     @Override
@@ -73,21 +74,21 @@ public class UserSecurityDTO implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return this.isAccountNonExpired;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return this.isAccountNonLocked;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return this.isCredentialsNonExpired;
     }
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return this.isEnabled;
     }
 }

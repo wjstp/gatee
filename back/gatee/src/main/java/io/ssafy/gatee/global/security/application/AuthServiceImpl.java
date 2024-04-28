@@ -4,7 +4,7 @@ import io.ssafy.gatee.domain.member.dao.MemberRepository;
 import io.ssafy.gatee.domain.member.entity.Member;
 import io.ssafy.gatee.domain.member.entity.Privilege;
 import io.ssafy.gatee.global.security.dto.response.KakaoTokenRes;
-import io.ssafy.gatee.global.security.user.UserSecurityDTO;
+import io.ssafy.gatee.global.security.user.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,19 +12,13 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
-import static io.ssafy.gatee.global.security.user.UserSecurityDTO.toUserSecurityDTO;
+import static io.ssafy.gatee.global.security.user.CustomUserDetails.toCustomUserDetails;
 
 @Service
 @Slf4j
@@ -51,15 +45,15 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public UserSecurityDTO loadUserSecurityDTO(KakaoTokenRes socialData) {// member가 존재하는지 확인
+    public CustomUserDetails loadUserSecurityDTO(KakaoTokenRes socialData) {// member가 존재하는지 확인
         log.info(socialData.kakaoAccount().toString());
         Optional<Member> member = memberRepository.findByEmail(socialData.kakaoAccount().email());
         // 로그인
         if (member.isPresent()) {
-            return toUserSecurityDTO(member.get());
+            return toCustomUserDetails(member.get());
         }
         // db에 없다면 회원가입
-        return toUserSecurityDTO(register(socialData));
+        return toCustomUserDetails(register(socialData));
     }
 
 
@@ -69,7 +63,7 @@ public class AuthServiceImpl implements AuthService {
         return memberRepository.save(Member.builder()
                 .email(socialData.kakaoAccount().email())
                 .name(socialData.kakaoAccount().kakaoProfile().nickname())
-                .privilege(Collections.singletonList(Privilege.ANONYMOUS))   //todo: 수정
+                .privilege(Privilege.ANONYMOUS)
                 .build());
     }
 }

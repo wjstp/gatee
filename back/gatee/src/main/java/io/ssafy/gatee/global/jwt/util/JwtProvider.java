@@ -1,21 +1,17 @@
 package io.ssafy.gatee.global.jwt.util;
 
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.ssafy.gatee.global.security.user.UserSecurityDTO;
+import io.ssafy.gatee.global.security.user.CustomUserDetails;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
-import java.util.Collection;
 import java.util.Date;
-import java.util.stream.Collectors;
+import java.util.List;
 
 
 @Slf4j
@@ -41,8 +37,6 @@ public class JwtProvider {
     }
 
     public String generateAccessToken(Authentication authentication) {
-        System.out.println("test");
-        System.out.println(authentication);
         return generateToken(authentication, accessTokenExpiration);
     }
 
@@ -51,12 +45,17 @@ public class JwtProvider {
     }
 
     public String generateToken(Authentication authentication, long expiration) {
-        UserSecurityDTO userSecurityDTO = (UserSecurityDTO) authentication.getPrincipal();
+        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
         long now = System.currentTimeMillis();
+        String authorities = authentication.getAuthorities()
+                .stream()
+                .map(grantedAuthority -> grantedAuthority.getAuthority()).toString();
+        List<String> authority = ((CustomUserDetails) authentication.getPrincipal()).getAuthorities().stream().map(auth -> "ROLE_" + auth).toList();
         return Jwts.builder()
-                .claim(AUTHORITIES_KEY, userSecurityDTO.getAuthorities())
+                .claim(AUTHORITIES_KEY, authority)
+                .claim("privilege", ((CustomUserDetails) authentication.getPrincipal()).getPrivilege())
                 .issuedAt(new Date(now))
-                .subject(userSecurityDTO.getUsername())
+                .subject(customUserDetails.getUsername())
                 .expiration(new Date(now + expiration))
                 .signWith(secretKey)
                 .compact();
