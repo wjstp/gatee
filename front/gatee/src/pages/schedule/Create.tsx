@@ -2,7 +2,7 @@ import React from 'react';
 import { FamilyMemberInfoSample } from "../../constants";
 import ProfileImage from '@assets/images/logo/app_icon_orange.png'
 
-const ScheduleCreateSchedule = () => {
+const ScheduleCreate = () => {
   return (
     <div className="create-schedule">
       <div className="create-schedule__input-container">
@@ -81,4 +81,4 @@ const ScheduleCreateSchedule = () => {
   );
 }
 
-export default ScheduleCreateSchedule;
+export default ScheduleCreate;
