@@ -16,7 +16,7 @@ const SubLayout = () => {
       인덱스에서만 오렌지 색상 부여
       */}
       {
-        currentUrl=="/signup" ?
+        currentUrl==="/signup" ?
           <HelmetProvider>
             <Helmet>
               <meta name="theme-color" id="theme-color" content="#FFBE5C"/>

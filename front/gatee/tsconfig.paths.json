@@ -7,7 +7,7 @@
       "@pages/*": ["src/pages/*"],
       "@api/*": ["src/api/*"],
       "@layout/*": ["src/layout/*"],
-      "@constance/*": ["src/constance/*"],
+      "@constants/*": ["src/constance/*"],
       "@types/*": ["src/types/*"],
       "@store/*": ["src/store/*"]
     }

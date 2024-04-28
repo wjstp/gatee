@@ -1,6 +1,6 @@
 import React from 'react';
 
-function PhotoAlbumGroupDetail() {
+const PhotoAlbumGroupDetail = () => {
     return (
         <div>PhotoAlbumGroupDetail</div>
     );

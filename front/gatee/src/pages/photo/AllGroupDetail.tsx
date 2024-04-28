@@ -1,6 +1,6 @@
 import React from 'react';
 
-function PhotoAllGroupDetail() {
+const PhotoAllGroupDetail = () => {
     return (
         <div>PhotoAllGroupDetail</div>
     );

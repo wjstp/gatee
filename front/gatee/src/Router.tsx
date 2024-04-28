@@ -65,11 +65,11 @@ const Router = () => {
         <Route path="/character/question" element={<CharacterQuestion/>}/>
 
         {/*앨범 페이지*/}
-        <Route path="/photo" element={<PhotoAlbumIndex/>}/>
-        <Route path="album" element={<PhotoAlbumPhoto/>}/>
-        <Route path="/album/:id" element={<PhotoAlbumGroupDetail/>}/>
-        <Route path="/group/:id" element={<PhotoAllGroupDetail/>}/>
-
+        <Route path="/photo" element={<PhotoAlbumIndex/>}>
+          <Route path="album" element={<PhotoAlbumPhoto/>}/>
+          <Route path="album/:id" element={<PhotoAlbumGroupDetail/>}/>
+          <Route path="group/:id" element={<PhotoAllGroupDetail/>}/>
+        </Route>
       </Route>
 
       {/*TabBar, BottomBar 없는 레이아웃*/}

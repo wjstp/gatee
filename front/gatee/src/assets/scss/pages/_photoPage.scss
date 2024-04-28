@@ -1,1 +1,70 @@
 @use '../abstracts/index' as *;
+
+.photoTab--container {
+
+  @include flex_center;
+  justify-content: space-evenly;
+  position: relative;
+  @include mt-(1);
+
+  .tabButton {
+    color: $gray200; /* 기본 버튼 색상 */
+    padding-bottom: 0.2rem;
+    font-size: 1.3rem;
+  }
+
+  .tabButton.active {
+    color: $orange500; /* 활성화된 탭의 버튼 색상 */
+    border-bottom: 2px solid $orange500;
+    padding-bottom: 0.2rem;
+    font-weight: bold;
+    font-size: 1.3rem;
+  }
+
+  .plusButton {
+    position: absolute;
+    right: 1rem;
+    color: $orange500;
+  }
+}
+
+.photoAll--container {
+
+  .dayMonthYear--controller {
+    @include flex_center;
+    position: fixed;
+    bottom: 12dvh;
+    left: 5dvw;
+    font-size: 1.3rem;
+    border-radius: 12rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    .dayBtn {
+      @include flex_center;
+      width: 5rem;
+      height: 3rem;
+      border-top-left-radius: 12rem;
+      border-bottom-left-radius: 12rem;
+    }
+
+
+    .monthBtn {
+      @include flex_center;
+      width: 5rem;
+      height: 3rem;
+    }
+
+    .yearBtn {
+      @include flex_center;
+      width: 5rem;
+      height: 3rem;
+      border-top-right-radius: 12rem;
+      border-bottom-right-radius: 12rem;
+    }
+
+    .activeBtn {
+      background-color: $orange400;
+      color: white;
+    }
+  }
+}
