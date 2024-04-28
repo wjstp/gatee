@@ -32,6 +32,7 @@
     @include flex_between;
 
     height: 13%;
+    padding-top: 1rem;
   }
 
   &__title-wrapper {
@@ -60,9 +61,30 @@
   }
 
   &__month {
+    position: relative;
     font: {
       weight: 600;
       size: $font-size-big;
     };
+  }
+
+  &__year {
+    position: absolute;
+    top: -20px;
+    text-align: center;
+    width: 100%;
+    color: $gray400;
+    font: {
+      weight: 400;
+      size: $font-size-small;
+    };
+  }
+
+  &__main {
+    height: 85%;
+
+    &--active-day {
+
+    }
   }
 }

@@ -15,6 +15,7 @@ const ScheduleCreateSchedule = () => {
           {/*일정 제목 입력*/}
           <div className="create-schedule-info__input-title">
             <input type="text" placeholder="제목 *"/>
+
             {/*일정 색상 선택*/}
             <div className="create-schedule-info__input-color">
             </div>
@@ -74,7 +75,7 @@ const ScheduleCreateSchedule = () => {
 
       {/*생성 버튼*/}
       <div className="create-schedule__button-create">
-        <button>생성</button>
+        <button className="create-schedule__button-create">생성</button>
       </div>
     </div>
   );

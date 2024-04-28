@@ -856,6 +856,7 @@ ol {
   justify-content: space-between;
   align-items: center;
   height: 13%;
+  padding-top: 1rem;
 }
 .schedule-calendar__title-wrapper {
   display: flex;
@@ -879,10 +880,22 @@ ol {
   width: 20%;
 }
 .schedule-calendar__month {
+  position: relative;
   font-weight: 600;
   font-size: 22px;
 }
-
+.schedule-calendar__year {
+  position: absolute;
+  top: -20px;
+  text-align: center;
+  width: 100%;
+  color: #4f4f4f;
+  font-weight: 400;
+  font-size: 14px;
+}
+.schedule-calendar__main {
+  height: 85%;
+}
 .notification-badge {
   background-color: #FFA41C;
   width: 10px;

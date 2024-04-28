@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect  } from 'react';
 import { DayCellContentArg } from '@fullcalendar/core'
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -11,15 +11,27 @@ import { Link } from "react-router-dom";
 
 const ScheduleCalendar: React.FC = () => {
   const calendarRef:any = useRef(null)
+  const [currentDate, setCurrentDate] = useState<Date>(new Date());
 
-  // 일자 클릭 핸들러 (일자별 일정 리스트)
+  useEffect(() => {
+    if (calendarRef.current) {
+      const calendarApi = calendarRef.current.getApi();
+      const calendarDate = calendarApi.getDate();
+      setCurrentDate(calendarDate);
+    }
+
+  }, []);
+  // 일자 클릭 핸들러
   const handleDateClick = (arg: DateClickArg) => {
-    console.log(arg);
+    const clickedDate: string  = arg.date.toISOString().slice(0, 10);
+    console.log(clickedDate);
   };
 
-  // 영역 선택 시 핸들러
+  // 영역 선택 핸들러
   const handleSelect = (arg: any) => {
-    console.log('Selected range: ', arg.start, arg.end);
+    const selectedStartDate: string = arg.start.toISOString().slice(0, 10);
+    const selectedEndDate: string = arg.end.toISOString().slice(0, 10);
+    console.log('Selected range: ', selectedStartDate, selectedEndDate);
   };
 
   // 이전 달로 이동하는 클릭 핸들러
@@ -27,6 +39,10 @@ const ScheduleCalendar: React.FC = () => {
     if (calendarRef.current) {
       const calendarApi = calendarRef.current.getApi();
       calendarApi.prev();
+
+      // 달력 업데이트
+      const updatedDate = calendarApi.getDate();
+      setCurrentDate(updatedDate);
     }
   };
 
@@ -35,6 +51,10 @@ const ScheduleCalendar: React.FC = () => {
     if (calendarRef.current) {
       const calendarApi = calendarRef.current.getApi();
       calendarApi.next();
+
+      // 달력 업데이트
+      const updatedDate = calendarApi.getDate();
+      setCurrentDate(updatedDate);
     }
   };
 
@@ -62,7 +82,12 @@ const ScheduleCalendar: React.FC = () => {
           </button>
 
           {/*달력 제목*/}
-          <div className="schedule-calendar__month">4월</div>
+          <div className="schedule-calendar__month">
+            {currentDate.toLocaleString('default', { month: 'long' })}
+            <div className="schedule-calendar__year">
+              {currentDate.getFullYear()}
+            </div>
+          </div>
 
           {/*다음 달 전환 버튼*/}
           <button className="schedule-calendar__button-month" onClick={ handleNextClick }>
@@ -76,35 +101,37 @@ const ScheduleCalendar: React.FC = () => {
         </Link>
       </div>
 
-      {/*달력*/}
-      <FullCalendar
-        ref={ calendarRef }
-        plugins={[ dayGridPlugin, interactionPlugin ]}
-        headerToolbar={{ left: "", center: "", right: "" }}
-        initialView="dayGridMonth"
-        height="85%"            // calendar 높이
-        locale="kr"             // 언어 한글로 변경
-        selectable={ true }     // 영역 선택
-        dayMaxEvents={ true }   // row 높이보다 많으면 +N more 링크 표시
-        dayCellContent={(arg: DayCellContentArg) => {
-          return arg.dayNumberText.replace('일', '');    // 일자에서 '일' 제거
-        }}
+      <div className="schedule-calendar__main">
+        {/*달력*/}
+        <FullCalendar
+          ref={ calendarRef }
+          plugins={[ dayGridPlugin, interactionPlugin ]}
+          headerToolbar={{ left: "", center: "", right: "" }}
+          initialView="dayGridMonth"
+          height="100%"            // calendar 높이
+          locale="kr"             // 언어 한글로 변경
+          selectable={ true }     // 영역 선택
+          dayMaxEvents={ true }   // row 높이보다 많으면 +N more 링크 표시
+          dayCellContent={(arg: DayCellContentArg) => {
+            return arg.dayNumberText.replace('일', '');    // 일자에서 '일' 제거
+          }}
 
-        // 일정
-        events={[
-          { start: '2024-04-20', end: '2024-04-23', color: '#FFE8E8' },
-          { start: '2024-04-21', end: '2024-04-24', color: '#FFED91' },
-          { start: '2024-04-20', end: '2024-04-23', color: '#c2e5c5' },
-        ]}
-        eventTextColor="black"
-        eventBorderColor="white"
+          // 일정
+          events={[
+            { start: '2024-04-20', end: '2024-04-23', color: '#FFE8E8' },
+            { start: '2024-04-21', end: '2024-04-24', color: '#FFED91' },
+            { start: '2024-04-20', end: '2024-04-23', color: '#c2e5c5' },
+          ]}
+          eventTextColor="black"
+          eventBorderColor="white"
 
-        // 일자 클릭 이벤트
-        dateClick={ handleDateClick }
+          // 일자 클릭 이벤트
+          dateClick={ handleDateClick }
 
-        // 영역 선택 이벤트
-        select={ handleSelect }
-      />
+          // 영역 선택 이벤트
+          select={ handleSelect }
+        />
+      </div>
     </div>
   );
 };
