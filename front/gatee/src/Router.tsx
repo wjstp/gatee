@@ -30,14 +30,24 @@ import CharacterIndex from "./pages/character";
 import CharacterStart from "./pages/character/Start";
 import CharacterQuestion from "./pages/character/Question";
 // 회원가입
-import SignupIndex from "./pages/signup";
-import SignupMember from "./pages/signup/Member";
-import SignupFamily from "./pages/signup/Family";
+import SignupIndex from "@pages/signup";
+import MemberSetBirth from "@pages/signup/MemberSetBirth";
+import MemberSetCheck from "@pages/signup/MemberSetCheck";
+import MemberSetFinish from "@pages/signup/MemberSetFinish";
+import MemberSetRole from "@pages/signup/MemberSetRole";
+import MemberSetPermission from "@pages/signup/MemberSetPermission";
+import MemberSet from "@pages/signup/MemberSet";
+import FamilySetShare from "@pages/signup/FamilySetShare";
+import FamilySetCheck from "@pages/signup/FamilySetCheck";
+import FamilySet from "@pages/signup/FamilySet";
+import FamilyJoin from "@pages/signup/FamilyJoin";
+import FamilyJoinCheck from "@pages/signup/FamilyJoinCheck";
 // 앨범
 import PhotoAlbumIndex from "./pages/photo";
 import PhotoAlbumGroupDetail from "./pages/photo/AlbumGroupDetail";
 import PhotoAllGroupDetail from "./pages/photo/AllGroupDetail";
 import PhotoAlbumPhoto from "./pages/photo/AlbumPhoto";
+import SignupFamily from "@pages/signup/Family";
 
 const Router = () => {
   return (
@@ -78,7 +88,19 @@ const Router = () => {
         <Route path="/kakao" element={<KaKaoLogin/>}/>
         {/*회원가입*/}
         <Route path="/signup" element={<SignupIndex/>}/>
-        <Route path="/signup/member" element={<SignupMember/>}/>
+        <Route path="/signup/family-set" element={<FamilySet/>}/>
+        <Route path="/signup/family-set/check" element={<FamilySetCheck/>}/>
+        <Route path="/signup/family-set/share" element={<FamilySetShare/>}/>
+        <Route path="/signup/family-join" element={<FamilyJoin/>}/>
+        <Route path="/signup/family-join/check" element={<FamilyJoinCheck/>}/>
+        <Route path="/signup/member-set" element={<MemberSet/>}/>
+        <Route path="/signup/member-set/birth" element={<MemberSetBirth/>}/>
+        <Route path="/signup/member-set/role" element={<MemberSetRole/>}/>
+        <Route path="/signup/member-set/check" element={<MemberSetCheck/>}/>
+        <Route path="/signup/member-set/permission" element={<MemberSetPermission/>}/>
+        <Route path="/signup/member-set/finish" element={<MemberSetFinish/>}/>
+
+        <Route path="/signup/family" element={<SignupFamily/>}/>
         <Route path="/signup/family" element={<SignupFamily/>}/>
       </Route>
     </Routes>

@@ -1,6 +1,6 @@
 import React from 'react';
 
-function MemberCheckInfo() {
+const MemberCheckInfo = () => {
     return (
         <div></div>
     );

@@ -1,6 +1,6 @@
 import React from 'react';
 
-function MemberSetName() {
+const MemberSetName = () => {
   return (
     <div className="memberSetName">
       <div className="memberSetName__textBox">

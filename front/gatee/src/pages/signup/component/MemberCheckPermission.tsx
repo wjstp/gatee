@@ -1,6 +1,6 @@
 import React from 'react';
 
-function MemberCheckPermission() {
+const MemberCheckPermission = () => {
     return (
         <div></div>
     );

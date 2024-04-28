@@ -1,6 +1,6 @@
 import React from 'react';
 
-function MemberFinish() {
+const MemberFinish = () => {
     return (
         <div></div>
     );

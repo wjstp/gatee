@@ -1,34 +1,48 @@
 import React from 'react';
-import { Link } from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import { ReactComponent as HomeIcon } from "@assets/icons/home.svg"
 
-function SignupIndex() {
+const SignupIndex = () => {
+  const location = useLocation();
+  const action = location.state?.action;
+
   return (
     <div className="signupIndex">
+      {/* 홈 아이콘 */}
       <div className="signupIndex__iconBox">
         <HomeIcon className="signupIndex__iconBox__icon" />
       </div>
+
+      {/* 문구 박스 */}
       <div className="signupIndex__spanBox">
         <span className="signupIndex__spanBox__span1">가족에게</span>
         <span className="signupIndex__spanBox__span2">한발짝</span>
         <span className="signupIndex__spanBox__span3">다가가 볼까요?</span>
       </div>
+
+      {/* 생성 링크 */}
       <div className="signupIndex__createButtonBox">
         <Link
           className="signupIndex__createButtonBox__createButton"
           to="/signup/family"
-          state={{ action: 'set-info' }}
+          state={{
+            action: 'set-info'
+          }}
         >
           <span className="signupIndex__createButtonBox__createButton__span">
             내 가족 생성하기
           </span>
         </Link>
       </div>
+
+      {/* 입장 링크 */}
       <div className="signupIndex__joinButtonBox">
         <Link
           className="signupIndex__joinButtonBox__joinButton"
           to="/signup/family"
-          state={{ action: 'join' }}
+          state={{
+            action: 'join'
+          }}
         >
           <span className="signupIndex__joinButtonBox__joinButton__span">
             초대 코드 입력

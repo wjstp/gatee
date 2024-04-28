@@ -94,27 +94,121 @@
 
 // 가족 생성/입장 - 가족 생성 컴포넌트
 .familySetInfo {
-  display: flex;
-  align-items: center;
+  height: 100%;
+  width: 100%;
+
+  &__nameInput {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    flex-direction: column;
+
+    &__spanBox {
+      margin-top: 12%;
+
+      &__span1 {
+        font-weight: bold;
+        font-size: 30px;
+      }
+
+      &__span2 {
+        font-size: 30px;
+      }
+    }
+
+    &__imageBox {
+      margin-top: 5%;
+      border: 1px solid black;
+      height: 155px;
+      width: 155px;
+      border-radius: 100%;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      &__image {
+        border: 1px solid black;
+        height: 150px;
+        width: 150px;
+        border-radius: 100%;
+      }
+
+      &__changeButtonBox {
+        height: 25%;
+        width: 25%;
+        position: absolute;
+        border-radius: 100%;
+        right: 0;
+        bottom: 0;
+
+        &__changeButton {
+          height: 40px;
+          width: 40px;
+          border-radius: 100%;
+          background-color: $gray100;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          &__icon {
+            fill: white;
+          }
+
+        }
+      }
+    }
+
+    &__inputBox {
+      @include flex_center;
+      height: 6%;
+      width: 65%;
+      margin-top: 10%;
+      border-bottom: 1px solid $gray100;
+
+      &__input {
+        font-size: 25px;
+        text-align: center;
+        justify-content: center;
+      }
+    }
+
+    &__nextButtonBox {
+      @include flex_center;
+      margin-top: 5%;
+      height: 10%;
+      width: 100%;
+
+      &__nextButton {
+        @extend .orangeButtonLarge;
+      }
+    }
+  }
+}
+
+// 가족 생성/입장 - 가족 정보 확인 컴포넌트
+.familyCheckInfo {
+  @include flex_center;
   height: 100%;
   width: 100%;
   flex-direction: column;
 
   &__spanBox {
-    margin-top: 12%;
+    font-size: 30px;
+    margin-bottom: 10%;
 
     &__span1 {
       font-weight: bold;
-      font-size: 30px;
+
     }
 
     &__span2 {
-      font-size: 30px;
+
     }
   }
 
   &__imageBox {
-    margin-top: 5%;
     border: 1px solid black;
     height: 155px;
     width: 155px;
@@ -130,69 +224,40 @@
       width: 150px;
       border-radius: 100%;
     }
+  }
 
-    &__changeButtonBox {
-      height: 25%;
-      width: 25%;
-      position: absolute;
-      border-radius: 100%;
-      right: 0;
-      bottom: 0;
+  &__nameBox {
+    margin-top: 10%;
 
-      &__changeButton {
-        height: 40px;
-        width: 40px;
-        border-radius: 100%;
-        background-color: $gray100;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+    &__name {
+      font-weight: bold;
+      font-size: 30px;
+    }
+  }
 
-        &__icon {
-          fill: white;
-        }
+  &__createFamilyButtonBox {
+    margin-top: 10%;
+
+    &__createFamilyButton {
+      @extend .orangeButtonMedium;
+
+      &__span {
 
       }
     }
   }
 
-  &__inputBox {
+  &__backButtonBox {
     @include flex_center;
-    height: 6%;
-    width: 65%;
-    margin-top: 10%;
-    border-bottom: 1px solid black;
+    width: 30%;
 
-    &__input {
-      font-size: 25px;
-      text-align: center;
-      justify-content: center;
-    }
-  }
+    &__backButton {
 
-  &__nextButtonBox {
-    @include flex_center;
-    margin-top: 5%;
-    height: 10%;
-    width: 100%;
-
-    &__nextButton {
-      @extend .orangeButtonLarge;
-    }
-  }
-}
-
-// 가족 생성/입장 - 가족 생성 확인 모달
-.familySetCheckModal {
-  border: 1px solid black;
-  height: 100%;
-  width: 100%;
-
-  &__spanBox {
-    border: 1px solid black;
-
-    &__span {
-
+      &__span {
+        font-size: 120%;
+        color: $gray200;
+        text-decoration: underline;
+      }
     }
   }
 }
@@ -345,7 +410,7 @@
       width: 75%;
       margin-top: 10%;
       padding-bottom: 2%;
-      border-bottom: 1px solid black;
+      border-bottom: 1px solid $gray100;
 
       &__input {
         font-size: 25px;
@@ -414,15 +479,14 @@
 
     &__backButtonBox {
       @include flex_center;
-      width: 24%;
-      border-bottom: 1px solid $gray200;
-      padding-bottom: 1%;
+      width: 30%;
 
       &__backButton {
 
         &__span {
-          font-size: 100%;
+          font-size: 120%;
           color: $gray200;
+          text-decoration: underline;
         }
       }
     }
