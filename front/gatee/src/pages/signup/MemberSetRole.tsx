@@ -1,6 +1,6 @@
 import React from 'react';
 
-const MemberSetRole = () => {
+const SignupMemberSetRole = () => {
   return (
     <div>
       MemberSetRole
@@ -8,4 +8,4 @@ const MemberSetRole = () => {
   );
 };
 
-export default MemberSetRole;
+export default SignupMemberSetRole;

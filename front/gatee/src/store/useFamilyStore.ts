@@ -12,12 +12,11 @@ export const useFamilyStore = create<FamilyStore>()(
     (set) => ({
         familyId: "",
         setFamilyId: (newId: string) => set({ familyId: newId }),
-        familyName: "",
+        familyName: "예빈이네",
         setFamilyName: (newName: string) => set({ familyName: newName }),
     }),
     {
         name: "family",
-        getStorage: () => localStorage
     }
 )
 );

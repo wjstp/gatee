@@ -1,44 +1,6 @@
 stages:
-#  - test spring code
   - build spring server
   - deploy spring server
-
-#test:
-#  image: gradle:8.5.0-jdk17
-#  stage: test spring code
-#  script:
-#    - echo [INFO] "Running Test"
-#    - cd ./back/gatee/src/main/resources
-#    - ls
-#    - pwd
-#    # AI 관련 설정 파일 생성
-#    - cp application-ai.yaml.template application-ai.yaml
-#    - sed -i 's|${CHATGPT_KEY}|'"$CHATGPT_KEY"'|g' application-ai.yaml
-#
-#    # 데이터베이스 관련 설정 파일 생성
-#    - cp application-db.yaml.template application-db.yaml
-#    - sed -i 's|${DATABASE_URL}|'"$DATABASE_URL"'|g' application-db.yaml
-#    - sed -i 's|${DATABASE_USERNAME}|'"$DATABASE_USERNAME"'|g' application-db.yaml
-#    - sed -i 's|${DATABASE_PASSWORD}|'"$DATABASE_PASSWORD"'|g' application-db.yaml
-#    - sed -i 's|${REDIS_HOST}|'"$REDIS_HOST"'|g' application-db.yaml
-#    - sed -i 's|${REDIS_PORT}|'"$REDIS_PORT"'|g' application-db.yaml
-#    - cat application-db.yaml
-#
-#    # AWS 관련 설정 파일 생성
-#    - cp application-aws.yaml.template application-aws.yaml
-#    - sed -i 's|${AWS_BUCKET_NAME}|'"$AWS_BUCKET_NAME"'|g' application-aws.yaml
-#    - sed -i 's|${AWS_ACCESS_KEY}|'"$AWS_ACCESS_KEY"'|g' application-aws.yaml
-#    - sed -i 's|${AWS_SECRET_KEY}|'"$AWS_SECRET_KEY"'|g' application-aws.yaml
-#    - ls
-#    - pwd
-#    - cd ../../..
-#    - pwd
-#    - chmod +x gradlew
-#    - SPRING_PROFILES_ACTIVE=prod ./gradlew test
-#  only:
-#    - develop
-#    - master
-#    - release
 
 build:
   stage: build spring server
@@ -62,36 +24,59 @@ build:
     - sed -i 's|${DATABASE_PASSWORD}|'"$DATABASE_PASSWORD"'|g' application-db.yaml
     - sed -i 's|${REDIS_HOST}|'"$REDIS_HOST"'|g' application-db.yaml
     - sed -i 's|${REDIS_PORT}|'"$REDIS_PORT"'|g' application-db.yaml
-    - cat application-db.yaml
 
     # AWS 관련 설정 파일 생성
     - cp application-aws.yaml.template application-aws.yaml
     - sed -i 's|${AWS_BUCKET_NAME}|'"$AWS_BUCKET_NAME"'|g' application-aws.yaml
     - sed -i 's|${AWS_ACCESS_KEY}|'"$AWS_ACCESS_KEY"'|g' application-aws.yaml
     - sed -i 's|${AWS_SECRET_KEY}|'"$AWS_SECRET_KEY"'|g' application-aws.yaml
-    - ls
+    # 권한 부여 후 현재 서버 환경 확인
     - cd ../../..
-    - ls
+    - chmod +x ./devops/nginx/detect_env.sh
+    - DEPLOY_ENV=$(source ./devops/nginx/detect_env.sh)
+    # tag 설정
+    - if [ "$DEPLOY_ENV" == "blue" ]; then TAG="green"; else TAG="blue"; fi
+    - echo "Building image for $TAG environment..."
     - chmod +x ./devops/build-image.sh
-    - ./devops/build-image.sh $CI_REGISTRY/gatee-api
-    - docker push $CI_REGISTRY/gatee-api:latest
+    - ./devops/build-image.sh $CI_REGISTRY/gatee-api:$TAG
+    - docker push $CI_REGISTRY/gatee-api:$TAG
   only:
     - develop
     - master
     - release
+
 deploy:
   image: docker:latest
   stage: deploy spring server
   services:
     - docker:dind
   before_script:
-  - echo [INFO] docker deploy start!
-  - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_PASSWORD
+    - echo [INFO] docker deploy start!
+    - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_PASSWORD
   script:
-    - CI_REGISTRY="${CI_REGISTRY}"
-    - docker system prune --volumes -f
-    - docker-compose down
-    - docker-compose up --build -d
+    - echo [INFO] get env
+    - cd ./back/gatee
+    - chmod +x ./devops/nginx/detect_env.sh
+    - DEPLOY_ENV=$(source ./devops/nginx/detect_env.sh)
+    - echo $DEPLOY_ENV
+    - if [ "$DEPLOY_ENV" == "blue" ]; then
+      TAG="green";
+      echo "Deploying to green environment...";
+      docker-compose -f docker-compose.green.yaml up --no-deps --build -d;
+      else
+      TAG="blue";
+      echo "Deploying to blue environment...";
+      docker-compose -f docker-compose.blue.yaml up --no-deps --build -d;
+      fi
+    - export TAG
+    - echo [INFO] upstream change
+    - chmod +x ./devops/nginx/deploy_script.sh
+    - cd devops
+    - cd nginx
+    - echo [INFO] $TAG
+    - source ./deploy_script.sh $TAG
+    - cp ./nginx.conf /home/ubuntu/nginx.conf
+    - docker exec proxy-server nginx -s reload
   after_script:
     - docker logout
     - echo [INFO] docker deploy end!
@@ -99,7 +84,3 @@ deploy:
     - develop
     - master
     - release
-
-
-
-

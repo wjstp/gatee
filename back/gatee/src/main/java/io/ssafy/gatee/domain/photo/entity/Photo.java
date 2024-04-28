@@ -2,7 +2,7 @@ package io.ssafy.gatee.domain.photo.entity;
 
 import io.ssafy.gatee.domain.base.BaseEntity;
 import io.ssafy.gatee.domain.file.entity.File;
-import io.ssafy.gatee.domain.member.entity.Member;
+import io.ssafy.gatee.domain.member_family.entity.MemberFamily;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,6 +27,6 @@ public class Photo extends BaseEntity {
     private File file;
 
     @ManyToOne
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @JoinColumn(name = "member_family_id")
+    private MemberFamily memberFamily;
 }

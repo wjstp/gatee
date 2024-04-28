@@ -1,6 +1,6 @@
 import React from 'react';
 
-const MemberSetFinish = () => {
+const SignupMemberSetFinish = () => {
   return (
     <div>
       MemberSetFinish
@@ -8,4 +8,4 @@ const MemberSetFinish = () => {
   );
 };
 
-export default MemberSetFinish;
+export default SignupMemberSetFinish;

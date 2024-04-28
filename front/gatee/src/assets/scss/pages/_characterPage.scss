@@ -1,1 +1,110 @@
 @use '../abstracts/index' as *;
+
+.character__index {
+
+  @include flex-col;
+  @include mt-(2);
+  @include mx-(2);
+
+  .character__index__explain__title {
+    @include my-(1);
+
+  }
+
+  .character__index__explain__content {
+    @include flex-col;
+    color: $gray200;
+    gap: 0.4rem;
+  }
+
+  .orangeButtonLarge {
+    width: 100%;
+  }
+
+}
+
+.character__question {
+  @include flex-col;
+  @include mx-(2);
+  height: 80dvh;
+  justify-content: center;
+
+  .character__question-input {
+    font-size: 1.3rem;
+    border: 1px solid $gray100;
+    border-radius: 0.5rem;
+    @include my-(1);
+    @include p-(0.6);
+  }
+
+  .orangeButtonLarge {
+    width: 100%;
+
+  }
+
+  .flex-center {
+    @include flex-center;
+  }
+
+  .skipButton {
+    text-decoration: underline;
+    color: $gray200;
+    @include mb-(1);
+  }
+}
+
+.character__header {
+  .character__header__bookIconSize {
+    width: 30dvw;
+  }
+}
+
+.character__answerList {
+  @include mx-(2);
+
+
+
+  .orangeButtonLarge {
+    width: 100%;
+  }
+  .character__answer__item-card {
+    @include p-(0.8);
+    @include my-(1);
+    border: 1px solid $gray100;
+    border-radius: 0.5rem;
+    position: relative;
+
+    .character__answer-item-container {
+      @include flex-row;
+      gap: 0.3rem;
+
+      .character__answer__item-index {
+        color: $orange400;
+        font-weight: bold;
+        //font-family: $Itim;
+      }
+
+
+
+    }
+    .editPencil{
+      color: $gray200;
+      position: absolute;
+      top: 0.8rem;
+      right: 0.8rem;
+    }
+
+    .character__answer__item-content {
+      font-weight: 600;
+      font-size: 1.5rem;
+      @include mt-(0.5);
+
+      .edit__input{
+        font-size: 1.3rem;
+        border-bottom: 1px solid $gray100;
+        //@include pb-(0.3);
+      }
+    }
+  }
+}
+

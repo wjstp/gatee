@@ -1,6 +1,6 @@
 import React from 'react';
 
-const MemberSetPermission = () => {
+const SignupMemberSetPermission = () => {
   return (
     <div>
       MemberSetPermission
@@ -8,4 +8,4 @@ const MemberSetPermission = () => {
   );
 };
 
-export default MemberSetPermission;
+export default SignupMemberSetPermission;

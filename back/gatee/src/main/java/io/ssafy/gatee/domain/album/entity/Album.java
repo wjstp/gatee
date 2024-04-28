@@ -1,10 +1,8 @@
 package io.ssafy.gatee.domain.album.entity;
 
 import io.ssafy.gatee.domain.base.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import io.ssafy.gatee.domain.family.entity.Family;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,4 +22,12 @@ public class Album extends BaseEntity {
     private Long id;
 
     private String name;
+
+    @ManyToOne
+    @JoinColumn(name = "family_id")
+    private Family family;
+
+    public void changeName(String name) {
+        this.name = name;
+    }
 }

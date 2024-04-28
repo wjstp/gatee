@@ -113,10 +113,18 @@
 }
 
 .exam__item {
+  position: relative;
   * {
     font-family: $ChosunGs;
   }
 
+  .exam__result__mark {
+    position: absolute;
+    top: -3rem;
+    left: -0.3rem;
+    width: 15dvh;
+    //background-color: red;
+  }
   .exam__item__question {
     font-size: 1.2rem;
     margin: 5vh 8vw 3vh 8vw;

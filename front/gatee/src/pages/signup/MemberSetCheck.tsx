@@ -1,6 +1,6 @@
 import React from 'react';
 
-const MemberSetCheck = () => {
+const SignupMemberSetCheck = () => {
   return (
     <div>
       MemberSetCheck
@@ -8,4 +8,4 @@ const MemberSetCheck = () => {
   );
 };
 
-export default MemberSetCheck;
+export default SignupMemberSetCheck;

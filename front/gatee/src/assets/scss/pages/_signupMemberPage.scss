@@ -1,20 +1,107 @@
 @use '../abstracts/index' as *;
 @use '../components/index' as *;
 
-// 멤버 - 인덱스 페이지
-.signupMember {
+// 멤버 이름 설정 페이지
+.signup-member-set {
   height: 100%;
   width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 
-  &__div {
-    @include flex-center;
-    height: 100%;
-    width: 100%;
-    background-color: $orange400;
+  &__title {
+    margin-top: 30%;
+    font-size: 30px;
 
-    &__span {
+    .title__part--01 {
       font-weight: bold;
-      font-size: 30px;
+    }
+
+    .title__part--02 {
+    }
+  }
+
+  &__input-box {
+    @include flex_center;
+    height: 6%;
+    width: 60%;
+    margin-top: 10%;
+    padding-bottom: 5%;
+    border-bottom: 1px solid $gray100;
+
+    .input-box__input {
+      width: 100%;
+      font-size: 40px;
+      text-align: center;
+      justify-content: center;
+    }
+  }
+
+  &__btn {
+    @include flex_center;
+    width: 100%;
+    margin-top: 5%;
+
+    .btn-next {
+      @extend .orangeButtonLarge;
+
+      &__text {
+      }
+    }
+  }
+}
+
+// 멤버 생일과 성별 입력 페이지
+.signup-member-set-birth {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  &__title {
+    margin-top: 30%;
+    font-size: 30px;
+
+    .title__part--01 {
+      font-weight: bold;
+    }
+
+    .title__part--02 {
+    }
+  }
+
+  .date-picker {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .date-selector {
+    width: 100px;
+    height: 40px;
+    border: 1px solid #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+
+  .date-selector:hover {
+    transform: rotate(90deg); /* 마우스를 올리면 90도 회전 */
+  }
+
+  &__btn {
+    @include flex_center;
+    width: 100%;
+    margin-top: 5%;
+
+    .btn-next {
+      @extend .orangeButtonLarge;
+
+      &__text {
+      }
     }
   }
 }

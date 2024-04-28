@@ -4,7 +4,7 @@ import io.ssafy.gatee.domain.family.dto.request.FamilyNameReq;
 import io.ssafy.gatee.domain.family.dto.request.FamilySaveReq;
 import io.ssafy.gatee.domain.family.dto.response.FamilyCodeRes;
 import io.ssafy.gatee.domain.family.dto.response.FamilyInfoRes;
-import io.ssafy.gatee.global.exception.error.bad_request.ExpiredCode;
+import io.ssafy.gatee.global.exception.error.bad_request.ExpiredCodeException;
 import io.ssafy.gatee.global.exception.error.not_found.FamilyNotFoundException;
 
 import java.util.UUID;
@@ -15,7 +15,7 @@ public interface FamilyService {
 
     FamilyCodeRes createFamilyCode(Long familyId);
 
-    void joinFamily(String familyCode, UUID memberId) throws ExpiredCode;
+    void joinFamily(String familyCode, UUID memberId) throws ExpiredCodeException;
 
     FamilyInfoRes readFamily(Long familyId) throws FamilyNotFoundException;
 
