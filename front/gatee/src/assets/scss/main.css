@@ -891,7 +891,7 @@ ol {
   border: 1px white solid;
 }
 
-.orangeButtonLarge, .signupIndex__createButtonBox__createButton, .signupIndex__joinButtonBox__joinButton, .familySetInfo__nextButtonBox__nextButton, .familyShareCode__nextButtonBox__nextButton, .create-schedule__button-create button {
+.signupIndex__createButtonBox__createButton, .signupIndex__joinButtonBox__joinButton, .familySetInfo__nextButtonBox__nextButton, .familyShareCode__nextButtonBox__nextButton, .create-schedule__button-create button {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -905,7 +905,10 @@ ol {
   border-radius: 10px;
   width: 90%;
 }
-.orangeButtonMedium, .familyJoin__codeInput__inputButtonBox__inputButton, .familyJoin__codeResult__joinFamilyButtonBox__joinFamilyButton {
+.signupIndex__createButtonBox__createButton:focus, .signupIndex__joinButtonBox__joinButton:focus, .familySetInfo__nextButtonBox__nextButton:focus, .familyShareCode__nextButtonBox__nextButton:focus, .create-schedule__button-create button:focus, .signupIndex__createButtonBox__createButton:active, .signupIndex__joinButtonBox__joinButton:active, .familySetInfo__nextButtonBox__nextButton:active, .familyShareCode__nextButtonBox__nextButton:active, .create-schedule__button-create button:active, .signupIndex__createButtonBox__createButton:hover, .signupIndex__joinButtonBox__joinButton:hover, .familySetInfo__nextButtonBox__nextButton:hover, .familyShareCode__nextButtonBox__nextButton:hover, .create-schedule__button-create button:hover {
+  background-color: #f89c00;
+}
+.familyJoin__codeInput__inputButtonBox__inputButton, .familyJoin__codeResult__joinFamilyButtonBox__joinFamilyButton {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -920,40 +923,13 @@ ol {
   width: 200px;
   border-radius: 25px;
 }
-.orangeButtonSmall {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  background-color: #FFA41C;
-  font-weight: 600;
-  font-size: 22px;
-  height: 50px;
-  color: white;
-  border-radius: 10px;
-  width: 80px;
-  height: 35px;
-  font-weight: 600;
-  font-size: 16px;
+.familyJoin__codeInput__inputButtonBox__inputButton:focus, .familyJoin__codeResult__joinFamilyButtonBox__joinFamilyButton:focus, .familyJoin__codeInput__inputButtonBox__inputButton:active, .familyJoin__codeResult__joinFamilyButtonBox__joinFamilyButton:active, .familyJoin__codeInput__inputButtonBox__inputButton:hover, .familyJoin__codeResult__joinFamilyButtonBox__joinFamilyButton:hover {
+  background-color: #f89c00;
 }
-.orangeButtonRadiusLarge {
-  background-color: #FFA41C;
-  padding-left: 1.2rem;
-  padding-right: 1.2rem;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-  color: white;
-  height: 40px;
-  border-radius: 10rem;
-  font-weight: 800;
-  font-size: 1.2rem;
-}
-
-.circular-profile-image, .create-schedule-participant__profile-image {
+.create-schedule-participant__profile-image {
   border-radius: 50%;
 }
-.circular-profile-image img, .create-schedule-participant__profile-image img {
+.create-schedule-participant__profile-image img {
   width: 100%;
   height: auto;
   border-radius: inherit;

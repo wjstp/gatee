@@ -1,6 +1,9 @@
 @use '../abstracts/index' as *;
 
-.circular-profile-image {
+// @extend %circular-profile-image;
+
+// 원형 프로필
+%circular-profile-image {
   border-radius: 50%;
 
   img {

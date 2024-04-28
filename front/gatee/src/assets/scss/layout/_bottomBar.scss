@@ -2,6 +2,7 @@
 
 .bottom-bar {
   @include flex-row;
+
   background-color: $white;
   justify-content: space-between;
   height: $bottomBar-height;
@@ -13,6 +14,7 @@
   &__item {
     @include flex-col;
     @include flex-center;
+
     color: $gray200;
     font-size: $font-size-xSmall;
     gap: 5px;
@@ -22,12 +24,14 @@
 
     &--active {
       @extend .bottom-bar__item;
+
       color: $orange500;
     }
 
     &-home {
       @include flex-col;
       @include flex-center;
+
       color: $gray200;
       font-size: $font-size-small;
       gap: 5px;
@@ -41,6 +45,7 @@
 
       &--active {
         @extend .bottom-bar__item-home;
+
         color: $orange500;
 
         svg path {

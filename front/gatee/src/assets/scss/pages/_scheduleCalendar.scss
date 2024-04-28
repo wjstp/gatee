@@ -30,11 +30,13 @@
 
   &__header {
     @include flex_between;
+
     height: 13%;
   }
 
   &__title-wrapper {
     @include flex_center;
+
     gap: 1.5rem;
   }
 
@@ -51,6 +53,7 @@
 
     &-add-event {
       @include flex_center;
+
       color: $orange300;
       width: 20%;
     }
