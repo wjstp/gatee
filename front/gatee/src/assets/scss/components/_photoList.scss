@@ -1,1 +1,19 @@
 @use '../abstracts/index' as *;
+
+.photo__item__list-container {
+  @include flex-row;
+  flex-wrap: wrap;
+  width: 100dvw;
+  margin: 0 5vw;
+
+  .photo__item {
+    @include flex_center;
+
+    img {
+      width: 29dvw;
+      height: 29dvw;
+      margin: 0.5vw;
+      object-fit: cover;
+    }
+  }
+}

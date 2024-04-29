@@ -1,0 +1,227 @@
+@use '../abstracts/index' as *;
+@use '../components' as *;
+.photo {
+  height: 100%;
+
+  .photo-tab-container {
+
+    @include flex_center;
+    @include my-(1);
+
+    justify-content: space-evenly;
+    position: relative;
+
+    .photo-tab-container__button {
+      color: $gray200; /* 기본 버튼 색상 */
+      padding-bottom: 0.2rem;
+      font-size: 1.1rem;
+    }
+
+    .photo-tab-container__button.active {
+      color: $orange500; /* 활성화된 탭의 버튼 색상 */
+      border-bottom: 2px solid $orange500;
+      padding-bottom: 0.2rem;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+
+    .photo-tab-container__plus-button {
+      position: absolute;
+      right: 1rem;
+      color: $orange500;
+    }
+  }
+
+  .day-month-year-controller {
+
+    @include flex_center;
+
+    position: absolute;
+    bottom: 12dvh;
+    left: 5dvw;
+    z-index: 9999;
+    font-size: 1.1rem;
+    border-radius: 12rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    .day-btn {
+      @include flex_center;
+
+      width: 4rem;
+      height: 2.5rem;
+      border-top-left-radius: 12rem;
+      border-bottom-left-radius: 12rem;
+      background-color: white;
+    }
+
+
+    .month-btn {
+      @include flex_center;
+
+      width: 4rem;
+      height: 2.5rem;
+      background-color: white;
+    }
+
+    .year-btn {
+      @include flex_center;
+
+      width: 4rem;
+      height: 2.5rem;
+      border-top-right-radius: 12rem;
+      border-bottom-right-radius: 12rem;
+      background-color: white;
+    }
+
+    .active-btn {
+      background-color: $orange400;
+      color: white;
+    }
+  }
+
+  .month-photo-container {
+
+    @include flex_center;
+    @include flex-col;
+
+    .month-photo-item--container {
+      @include mb-(1);
+
+      height: 8rem;
+      width: 90%;
+      border-radius: 1rem;
+      position: relative;
+
+      .month {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        font-size: 1.3rem;
+        z-index: 10;
+        color: white;
+        font-weight: bold;
+      }
+
+      .photo {
+        height: 100%;
+        width: 100%;
+        border-radius: 1rem;
+        filter: brightness(70%);
+        object-fit: cover;
+        background-color: red;
+        //box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+      }
+    }
+  }
+
+  .year-photo-container {
+
+    @include flex_center;
+    @include flex-col;
+    gap: 1rem;
+
+    .year-photo-item--container {
+
+      height: 20rem;
+      width: 90%;
+      border-radius: 1rem;
+      position: relative;
+
+      .year {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        font-size: 1.3rem;
+        z-index: 10;
+        color: white;
+        font-weight: bold;
+      }
+
+      .photo {
+        background-color: red;
+        height: 100%;
+        width: 100%;
+        border-radius: 1rem;
+        filter: brightness(70%);
+        object-fit: cover;
+        box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+      }
+    }
+  }
+
+  .photo-group--container {
+
+    @include flex-row;
+
+    margin: 0 2dvw;
+
+    flex-wrap: wrap;
+
+    .photo-group--item--container {
+
+      @include flex_center;
+      @include flex-col;
+
+      width: 48dvw;
+
+      .photo {
+        background-color: red;
+        width: 40dvw;
+        height: 40dvw;
+        border-radius: 0.5rem;
+        object-fit: cover;
+        //box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+      }
+
+      .title {
+        @include mt-(0.2);
+        @include mb-(1);
+
+        width: 80%;
+      }
+
+      .text-white {
+        color: white;
+      }
+
+      .plus-album--button-container {
+
+        @include flex_center;
+
+        height: 40dvw;
+        width: 40dvw;
+        border-radius: 0.5rem;
+        border: 2px solid $gray100;
+
+
+        .plus-button{
+          color: $gray100;
+        }
+      }
+    }
+
+  }
+
+  .detail-tab--title {
+    @include mx-(1.5);
+    @include my-(0.5);
+    width: 85%;
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: $orange500;
+  }
+
+  .edit-modal {
+    @extend %modal-overlay;
+    @extend %modal-content;
+    background-color: red;
+  }
+
+
+}
+
+.photo-detail {
+  padding: 15dvh 0;
+  //background-color: red;
+  height: 100%;
+}

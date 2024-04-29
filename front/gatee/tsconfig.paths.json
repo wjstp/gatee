@@ -7,8 +7,10 @@
       "@pages/*": ["src/pages/*"],
       "@api/*": ["src/api/*"],
       "@layout/*": ["src/layout/*"],
-      "@constance/*": ["src/constance/*"],
-      "@types/*": ["src/types/*"]
+      "@constants/*": ["src/constance/*"],
+      "@types/*": ["src/types/*"],
+      "@store/*": ["src/store/*"],
+      "@hooks/*": ["src/hooks/*"]
     }
   }
 }

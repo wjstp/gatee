@@ -1,6 +1,9 @@
 import React, {useState} from 'react';
-import Stamp from "../../assets/icons/stamp_logo.png"
+import Stamp from "@assets/images/icons/stamp_logo.png"
 import {useNavigate} from "react-router-dom";
+// import Pagination from '@mui/material/Pagination';
+// import Stack from '@mui/material/Stack';
+
 interface GradeData {
   point: number;
   date: string;
@@ -16,11 +19,14 @@ const ExamGrade = () =>{
   ])
   return (
     <div className="exam-grade">
+
+      {/* 상단 헤더 */}
       <div className="exam__grade-header">
         <div className="small">나의 평균 점수는?</div>
         <div className="large">{avgGrade}등급</div>
       </div>
       <div className="exam__grade-body">
+
         {/*표 제목 - 인덱스*/}
         <div className="exam-grade-data">
           <div className="flex-date bgGray">날짜</div>
@@ -28,12 +34,19 @@ const ExamGrade = () =>{
           <div className="flex-comment bgGray">등급</div>
           <div className="flex-comment bgGray">댓글</div>
         </div>
+
         {/*표 내용 */}
         {gradeDataList.map((gradeData, index) => {
           return <Table key={index} gradeData={gradeData}/>;
         })}
-
       </div>
+
+      {/* 페이지 네이션 */}
+      {/*<Stack spacing={2}>*/}
+      {/*<Pagination count={10} />*/}
+      {/*</Stack>*/}
+
+      {/* 하단 도장 */}
       <div className="exam__grade-footer">
         <p>가족 퀴즈 모의고사 평가원장</p>
         <img src={Stamp} alt=""/>
@@ -42,6 +55,7 @@ const ExamGrade = () =>{
   );
 }
 
+// 표
 const Table = ({gradeData}: { gradeData: GradeData }) => {
   const navigate = useNavigate()
   // 등급

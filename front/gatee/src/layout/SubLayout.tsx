@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Outlet, useLocation} from 'react-router-dom'
-import {Helmet} from "react-helmet";
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 const SubLayout = () => {
   const [currentUrl, setcurrentUrl] = useState("");
@@ -16,16 +16,20 @@ const SubLayout = () => {
       인덱스에서만 오렌지 색상 부여
       */}
       {
-        currentUrl=="/signup" ?
-          <Helmet>
-            <meta name="theme-color" id="theme-color" content="#FFBE5C"/>
-          </Helmet>
+        currentUrl==="/signup" ?
+          <HelmetProvider>
+            <Helmet>
+              <meta name="theme-color" id="theme-color" content="#FFBE5C"/>
+            </Helmet>
+          </HelmetProvider>
         :
-          <Helmet>
-            <meta name="theme-color" id="theme-color" content="#ffffff"/>
-          </Helmet>
+          <HelmetProvider>
+            <Helmet>
+              <meta name="theme-color" id="theme-color" content="#ffffff"/>
+            </Helmet>
+          </HelmetProvider>
       }
-      <div id="subContainer">
+      <div id="sub-container">
         <Outlet />
       </div>
     </>

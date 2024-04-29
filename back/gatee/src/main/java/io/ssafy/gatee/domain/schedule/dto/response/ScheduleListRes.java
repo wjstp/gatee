@@ -9,9 +9,9 @@ import java.util.List;
 public record ScheduleListRes(
 
         @NotNull
-        List<ScheduleInfoRes> personalScheduleList,
+        List<ScheduleListInfoRes> personalScheduleList,
 
         @NotNull
-        List<ScheduleInfoRes> groupScheduleList
+        List<ScheduleListInfoRes> groupScheduleList
 ) {
 }

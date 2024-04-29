@@ -1,14 +1,14 @@
 import React, {useState} from 'react';
-import FirstExam from "./component/FirstExam";
-import SecondDict from "./component/SecondDict";
-import ThirdAll from "./component/ThirdAll";
+import FirstExam from "@pages/onboarding/components/FirstExam";
+import SecondDict from "@pages/onboarding/components/SecondDict";
+import ThirdAll from "@pages/onboarding/components/ThirdAll";
 import Slider from "react-slick";
-import KaKaoLogin from "./component/KaKaoLogin";
+import KaKaoLogin from "@pages/onboarding/components/KaKaoLogin";
 // 공식 문서 : https://react-slick.neostack.com/docs/api
 const OnboardingIndex = () => {
-  const [oldSlide, setOldSlide] = useState(0);
+  // const [oldSlide, setOldSlide] = useState(0);
   const [activeSlide, setActiveSlide] = useState(0);
-  const [activeSlide2, setActiveSlide2] = useState(0);
+  // const [activeSlide2, setActiveSlide2] = useState(0);
 
   // 슬라이더 세팅
   var settings
@@ -21,7 +21,7 @@ const OnboardingIndex = () => {
     slidesToShow: number,
     slidesToScroll: number,
     beforeChange: (current: number, next: number) => void,
-    afterChange: (current: number) => void
+    // afterChange: (current: number) => void
   }
     = {
     dots: false,
@@ -34,39 +34,49 @@ const OnboardingIndex = () => {
     // 빠르게 바뀌는데 적용되는 부분
     beforeChange: (current: number, next: number) => {
       // 옛날 슬라이드
-      setOldSlide(current);
+      // setOldSlide(current);
       // 활성화된 슬라이드
       setActiveSlide(next);
     },
     // 바뀌고 좀 나중에 적용되는 함수
-    afterChange: (current: number) => {
-      setActiveSlide2(current)
-    }
+    // afterChange: (current: number) => {
+    //   setActiveSlide2(current)
+    // }
   };
+
   // 상단 인덱스 표시 도트
   const Indicator = () => {
-    // 현재 슬라이드보다 큰것들만 주황색
+    // 인덱스 수
     const index: number[] = [0, 1, 2, 3]
+
     return (
       <div className="onboarding__dotContainer">
+
+        {/* 4개의 인덱스를 넘어가면서 현재 인덱스 이전까지 주황표시 */}
         {index.map((item: number,i:number) => {
           if (activeSlide >= item)
             return <div key={i} className="activeDot"></div>
           else
             return <div key={i} className="disableDot"></div>
         })}
+
       </div>
     )
   }
+
   return (
     <div className="onboarding__container-center">
+      {/* 상단 인덱스 표시 도트 */}
       <Indicator/>
+
+      {/* 슬라이드 */}
       <Slider {...settings}>
         <FirstExam/>
         <SecondDict/>
         <ThirdAll/>
         <KaKaoLogin/>
       </Slider>
+
     </div>
   );
 }
