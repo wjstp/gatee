@@ -47,7 +47,15 @@ spring:
   config:
     activate:
       on-profile: security-prod
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: ${CLIENT_ID}
+            client-secret: ${CLIENT_SECRET}
+            redirect-uri: https://gaty.duckdns.org/login/oauth2/code/kakao
 
 jwt:
-  token-validity-in-seconds:
-  refresh-token-validity-in-seconds:
+  access-token-validity-in-seconds: 1800
+  refresh-token-validity-in-seconds: 180000
