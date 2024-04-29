@@ -1,6 +1,5 @@
 package io.ssafy.gatee.domain.schedule.api;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.ssafy.gatee.config.security.CustomWithMockUser;
 import io.ssafy.gatee.domain.schedule.application.ScheduleService;
@@ -47,7 +46,7 @@ class ScheduleControllerTest {
     void readSchedule() throws Exception {
         mockMvc.perform(get("/api/schedule")
                         .with(csrf())
-                    .param("familyId", "1"))
+                        .param("familyId", "1"))
                 .andDo(MockMvcResultHandlers.print())
                 .andDo(MockMvcRestDocumentation.document("가족 전체 일정 조회"))
                 .andExpect(status().isOk());
