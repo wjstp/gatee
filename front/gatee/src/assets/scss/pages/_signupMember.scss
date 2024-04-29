@@ -43,7 +43,7 @@
     margin-top: 5%;
 
     .btn-next {
-      @extend .orangeButtonLarge;
+      @extend %orange-button-large;
 
       &__text {
       }
@@ -211,7 +211,7 @@
     margin-top: 5%;
 
     .btn-next {
-      @extend .orangeButtonLarge;
+      @extend %orange-button-large;
 
       &__text {
       }
@@ -330,7 +330,7 @@
     margin-top: 5%;
 
     .btn-next {
-      @extend .orangeButtonLarge;
+      @extend %orange-button-large;
 
       &__text {
       }
@@ -376,7 +376,7 @@
     margin-top: 5%;
 
     .btn-next__btn {
-      @extend .orangeButtonLarge;
+      @extend %orange-button-large;
 
       .btn__text {
       }
@@ -409,7 +409,7 @@
     margin-top: 5%;
 
     .btn-next {
-      @extend .orangeButtonLarge;
+      @extend %orange-button-large;
 
       &__text {
       }
@@ -461,7 +461,7 @@
     width: 100%;
 
     .btn-next {
-      @extend .orangeButtonLarge;
+      @extend %orange-button-large;
 
       &__text {
       }
