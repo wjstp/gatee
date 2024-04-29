@@ -8,8 +8,6 @@ import java.util.UUID;
 @Builder
 public record ScheduleParticipateReq(
 
-        UUID memberId,
-
         @NotNull
         String familyId
 ) {

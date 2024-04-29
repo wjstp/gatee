@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
-import Header from "./component/Header";
-import QuestionItem from "./component/QuestionItem";
+import Header from "@pages/exam/components/Header";
+import QuestionItem from "@pages/exam/components/QuestionItem";
 import {useNavigate} from "react-router-dom";
 
 const ExamTaking = () => {
   const navigate = useNavigate();
-  const [questions, setQuestions] = useState([
+  const questions = [
     {
       questionId: 1,
       question: "어쩌고 저쩌고",
@@ -116,7 +116,7 @@ const ExamTaking = () => {
       ]
     },
 
-  ])
+  ]
   const [questionIndex, setQuestionIndex] = useState(0);
   const [myAnswerList, setMyAnswerList] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
   // 인덱스를 넘겨주고, 마지막 문제에서는 채점 화면으로 이동시켜준다
@@ -130,7 +130,7 @@ const ExamTaking = () => {
       // 마지막 문제일때는 저장 후 제출
       console.log("제출")
       console.log(newAnswerList)
-      navigate("/exam/scored/1")
+      navigate("/exam/grade")
     }
   }
   // 이전 문제로 되돌려 준다
@@ -143,7 +143,8 @@ const ExamTaking = () => {
     <div>
       <Header/>
 
-      {/*// 문제 컴포넌트 재사용성을 위해 이용되는 위치를 prop으로 내려줌*/}
+      {/* 문제 컴포넌트
+          재사용성을 위해 이용되는 위치를 prop으로 내려줌*/}
       <QuestionItem question={questions[questionIndex]} type={"taking"}
                     handleNextIndex={handleNextIndex}
                     myAnswerList={myAnswerList}

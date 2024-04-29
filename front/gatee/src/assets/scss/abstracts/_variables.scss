@@ -4,9 +4,9 @@ $black: #000;
 $orange100: #FFE3B9;
 $orange200: #FFD08A;
 $orange300: #FFC773;
-$orange400: #FFBE5C;  // 메인 컬러
+$orange400: #FFBE5C;  // 대표 색상
 $orange500: #FFA41C;
-$kakaoYellow: #FDDC3F;
+$orange600: #f89c00;
 
 $gray50: #F5F5F5;
 $gray100: #D6D6D6;
@@ -14,13 +14,22 @@ $gray200: #9e9e9e;
 $gray300: #686868;
 $gray400: #4f4f4f;
 
+$kakaoYellow: #FDDC3F;
+
+$lightpink: #FFE8E8;
+$lightyellow: #FFED91;
+$lightgreen: #c2e5c5;
+$lightblue: #b8cdff;
+$lightpurple: #d5beff;
+
 $bg-color: $white;
 $text-color: $black;
 $subtext-color: $gray200;
 
 $font-size: 16px;
-$font-size-small: 11px;
-$font-size-big: 24px;
+$font-size-xSmall: 10px;
+$font-size-small: 14px;
+$font-size-big: 22px;
 
 $bottomBar-height: 10dvh;
 $topBar-height: 6dvh;

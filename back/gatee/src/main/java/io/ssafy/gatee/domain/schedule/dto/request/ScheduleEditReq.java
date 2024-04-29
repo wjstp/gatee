@@ -7,7 +7,6 @@ import java.util.UUID;
 
 @Builder
 public record ScheduleEditReq(
-        UUID memberId,
 
         @NotNull
         String familyId,

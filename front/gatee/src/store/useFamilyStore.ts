@@ -17,7 +17,6 @@ export const useFamilyStore = create<FamilyStore>()(
     }),
     {
         name: "family",
-        getStorage: () => localStorage
     }
 )
 );

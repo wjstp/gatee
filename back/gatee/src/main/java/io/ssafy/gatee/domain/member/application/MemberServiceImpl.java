@@ -9,20 +9,25 @@ import io.ssafy.gatee.domain.member.entity.Member;
 import io.ssafy.gatee.domain.member.entity.Privilege;
 import io.ssafy.gatee.domain.member_family.dao.MemberFamilyRepository;
 import io.ssafy.gatee.domain.member_family.entity.MemberFamily;
-import io.ssafy.gatee.domain.member_family.entity.Role;
 import io.ssafy.gatee.global.exception.error.not_found.MemberFamilyNotFoundException;
 import io.ssafy.gatee.global.exception.error.not_found.MemberNotFoundException;
+import io.ssafy.gatee.global.jwt.application.JwtService;
+import io.ssafy.gatee.global.security.user.CustomUserDetails;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.UUID;
 
-import static io.ssafy.gatee.global.exception.message.ExceptionMessage.*;
+import static io.ssafy.gatee.global.exception.message.ExceptionMessage.MEMBER_FAMILY_NOT_FOUND;
+import static io.ssafy.gatee.global.exception.message.ExceptionMessage.MEMBER_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +39,7 @@ public class MemberServiceImpl implements MemberService{
 
     private final MemberFamilyRepository memberFamilyRepository;
 
+    private final JwtService jwtService;
     // 회원 가입
     @Override
     @Transactional
@@ -41,7 +47,7 @@ public class MemberServiceImpl implements MemberService{
         Member member = Member.builder()
                 .name(name)
                 .nickname(nickname)
-                .privilege(Privilege.valueOf("USER"))
+                .privilege(Privilege.USER)
                 .build();
 
         memberRepository.save(member);
@@ -52,8 +58,8 @@ public class MemberServiceImpl implements MemberService{
     // 회원 정보 저장
     @Override
     @Transactional  // transaction을 사용하기 위해 선언
-    public void saveMemberInfo(MemberSaveReq memberSaveReq) {
-        Member member = memberRepository.findById(UUID.fromString(memberSaveReq.memberId()))
+    public void saveMemberInfo(MemberSaveReq memberSaveReq, UUID memberId, HttpServletResponse response) {
+        Member member = memberRepository.findById(memberId)
                 .orElseThrow(()-> new MemberNotFoundException(MEMBER_NOT_FOUND));
 
         member.saveInfo(memberSaveReq);
@@ -62,13 +68,16 @@ public class MemberServiceImpl implements MemberService{
                 .orElseThrow(() -> new MemberFamilyNotFoundException(MEMBER_FAMILY_NOT_FOUND));
 
         memberFamily.editRole(memberSaveReq.role());
+        
+        // 토큰 발급
+        modifyMemberToken(member, response);
     }
 
     // 회원 정보 수정
     @Override
     @Transactional
-    public void editMemberInfo(MemberEditReq memberEditReq) {
-        Member member = memberRepository.findById(UUID.fromString(memberEditReq.memberId()))
+    public void editMemberInfo(MemberEditReq memberEditReq, UUID memberId) {
+        Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
 
         member.editInfo(memberEditReq);
@@ -89,8 +98,8 @@ public class MemberServiceImpl implements MemberService{
     // 기분 상태 수정
     @Override
     @Transactional
-    public void editMood(MemberEditMoodReq memberEditMoodReq) {
-        Member member = memberRepository.findById(UUID.fromString(memberEditMoodReq.memberId()))
+    public void editMood(MemberEditMoodReq memberEditMoodReq, UUID memberId) {
+        Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
 
         member.editMood(memberEditMoodReq.mood());
@@ -114,5 +123,25 @@ public class MemberServiceImpl implements MemberService{
                 .mood(member.getMood())
                 .role(String.valueOf(memberFamily.getRole()))
                 .build();
+    }
+
+
+    @Override
+    public void modifyMemberToken(Member member, HttpServletResponse response) {
+        Collection<GrantedAuthority> newAuthorities = new ArrayList<>();
+        newAuthorities.add(new SimpleGrantedAuthority(Privilege.USER.name()));
+        CustomUserDetails customUserDetails = CustomUserDetails.builder()
+                .username(member.getId().toString())
+                .privilege(member.getPrivilege().toString())
+                .authorities(newAuthorities)
+                .password(UUID.randomUUID().toString())
+                .isAccountNonLocked(true)
+                .isEnabled(true)
+                .isCredentialsNonExpired(true)
+                .isAccountNonExpired(true)
+                .build();
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(customUserDetails, null, newAuthorities);
+        jwtService.publishTokens(response, authentication);
     }
 }

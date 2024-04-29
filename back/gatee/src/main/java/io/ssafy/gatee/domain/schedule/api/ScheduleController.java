@@ -12,11 +12,15 @@ import io.ssafy.gatee.global.exception.error.not_found.FamilyNotFoundException;
 import io.ssafy.gatee.global.exception.error.not_found.FamilyScheduleNotFoundException;
 import io.ssafy.gatee.global.exception.error.not_found.MemberFamilyScheduleNotFoundException;
 import io.ssafy.gatee.global.exception.error.not_found.ScheduleNotFoundException;
+import io.ssafy.gatee.global.security.user.CustomUserDetails;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Currency;
 
 @Slf4j
 @RestController
@@ -40,16 +44,21 @@ public class ScheduleController {
     @GetMapping("/{scheduleId}")
     @ResponseStatus(HttpStatus.OK)
     public ScheduleInfoRes readScheduleDetail(
-            @PathVariable("scheduleId") Long scheduleId
-    ) throws ScheduleNotFoundException {
-        return scheduleService.readScheduleDetail(scheduleId);
+            @PathVariable("scheduleId") Long scheduleId,
+            @RequestParam Long familyId
+    ) throws ScheduleNotFoundException, FamilyScheduleNotFoundException, MemberFamilyScheduleNotFoundException {
+        return scheduleService.readScheduleDetail(scheduleId, familyId);
     }
 
     // 일정 등록
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public void saveSchedule(@Valid @RequestBody ScheduleSaveReq scheduleSaveReq) throws FamilyNotFoundException {
-        scheduleService.saveSchedule(scheduleSaveReq);
+    public void saveSchedule(
+            @Valid
+            @RequestBody ScheduleSaveReq scheduleSaveReq,
+            @AuthenticationPrincipal CustomUserDetails customUserDetails
+    ) throws FamilyNotFoundException {
+        scheduleService.saveSchedule(scheduleSaveReq, customUserDetails.getMemberId());
     }
 
     // 일정 수정
@@ -58,9 +67,10 @@ public class ScheduleController {
     public void editSchedule(
             @Valid
             @RequestBody ScheduleEditReq scheduleEditReq,
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @PathVariable("scheduleId") Long scheduleId
     ) throws ScheduleNotFoundException, DoNotHavePermissionException, MemberFamilyScheduleNotFoundException, FamilyScheduleNotFoundException, FamilyNotFoundException {
-        scheduleService.editSchedule(scheduleEditReq, scheduleId);
+        scheduleService.editSchedule(scheduleEditReq, customUserDetails.getMemberId(), scheduleId);
     }
 
     // 일정 삭제
@@ -71,9 +81,10 @@ public class ScheduleController {
     public void participateSchedule(
             @Valid
             @RequestBody ScheduleParticipateReq scheduleParticipateReq,
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @PathVariable("scheduleId") Long scheduleId
     ) throws MemberFamilyScheduleNotFoundException, FamilyScheduleNotFoundException {
-        scheduleService.participateSchedule(scheduleParticipateReq, scheduleId);
+        scheduleService.participateSchedule(scheduleParticipateReq, customUserDetails.getMemberId(), scheduleId);
     }
 
     // 일정 기록 등록
@@ -82,8 +93,9 @@ public class ScheduleController {
     public void saveScheduleRecord(
             @Valid
             @RequestBody ScheduleSaveRecordReq scheduleSaveRecordReq,
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @PathVariable("scheduleId") Long scheduleId
     ){
-        scheduleService.saveScheduleRecord(scheduleSaveRecordReq, scheduleId);
+        scheduleService.saveScheduleRecord(scheduleSaveRecordReq, customUserDetails.getMemberId(), scheduleId);
     }
 }

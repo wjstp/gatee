@@ -1,0 +1,451 @@
+@use '../abstracts/index' as *;
+@use '../components/index' as *;
+
+// 첫 선택 페이지
+.signup-index {
+  height: 100%;
+  background-color: $orange400;
+  padding-left: 10%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  &__icon {
+    width: 30%;
+    height: 13%;
+
+    .icon {
+      width: 100%;
+      height: 100%;
+
+      path {
+        fill: white;
+      }
+    }
+  }
+
+  &__title {
+    margin-top: 5%;
+    font-size: 200%;
+    display: flex;
+    flex-direction: column;
+
+    .title__part--01 {
+      font-weight: bold;
+    }
+
+    .title__part--02 {
+      font-weight: bold;
+    }
+
+    .title__part--03 {
+    }
+  }
+
+  &__btn {
+    margin-top: 20%;
+
+    .btn-family-set {
+      @extend %orange-button-large;
+      background-color: white;
+      height: 60px;
+      margin-top: 0px;
+
+      &__text {
+        color: black;
+        font-weight: bold;
+      }
+    }
+
+    .btn-family-join {
+      @extend %orange-button-large;
+      background-color: $orange200;
+      margin-top: 0;
+      height: 60px;
+
+      &__text {
+        color: black;
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+// 가족 생성 페이지
+.signup-family-set {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  &__title {
+    margin-top: 12%;
+    font-size: 30px;
+
+    .title__part--01 {
+      font-weight: bold;
+    }
+
+    .title__part-02 {
+    }
+  }
+
+  &__img-box {
+    margin-top: 5%;
+    border: 1px solid black;
+    height: 200px;
+    width: 200px;
+    border-radius: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .img-box__img {
+      border: 1px solid black;
+      height: 195px;
+      width: 195px;
+      border-radius: 100%;
+      object-fit: cover;
+    }
+
+    .img-box__btn {
+      position: absolute;
+      border-radius: 100%;
+      height: 40px;
+      width: 40px;
+      background-color: $gray100;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      right: 5px;
+      bottom: 5px;
+
+      .btn__icon {
+        fill: white;
+      }
+    }
+  }
+
+  &__input-box {
+    @include flex_center;
+    height: 6%;
+    width: 65%;
+    margin-top: 5%;
+    border-bottom: 1px solid $gray100;
+
+    .input-box__input {
+      width: 100%;
+      font-size: 25px;
+      text-align: center;
+      justify-content: center;
+    }
+  }
+
+  &__btn {
+    @include flex_center;
+    height: 10%;
+    width: 100%;
+
+    .btn-next {
+      @extend %orange-button-large;
+
+      &__text {
+      }
+    }
+  }
+}
+
+// 가족 생성 확인
+.signup-family-set-check {
+  @include flex_center;
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+
+  &__title {
+    font-size: 30px;
+    margin-bottom: 10%;
+
+    .title__part--01 {
+      font-weight: bold;
+
+    }
+
+    .title__part--02 {
+    }
+  }
+
+  &__img {
+    border: 1px solid black;
+    height: 200px;
+    width: 200px;
+    border-radius: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .img {
+      border: 1px solid black;
+      height: 195px;
+      width: 195px;
+      border-radius: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__name {
+    margin-top: 10%;
+
+    .name {
+      font-weight: bold;
+      font-size: 30px;
+    }
+  }
+
+  &__btn {
+    @include flex_center;
+    margin-top: 10%;
+    flex-direction: column;
+
+    .btn-introduce {
+      @extend %orange-button-medium;
+
+      &__text {
+      }
+    }
+
+    .btn-back {
+
+      &__text {
+        font-size: 120%;
+        color: $gray200;
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+// 가족 코드 공유
+.signup-family-set-share {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+
+  &__title {
+    margin-top: 12%;
+    font-size: 30px;
+
+    .title__part--01 {
+      font-weight: bold;
+    }
+
+    .title__part--02 {
+    }
+  }
+
+  &__img {
+    margin-top: 5%;
+    border: 1px solid black;
+    height: 200px;
+    width: 200px;
+    border-radius: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .img {
+      border: 1px solid black;
+      height: 195px;
+      width: 195px;
+      border-radius: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__name {
+    margin-top: 10%;
+    height: 10%;
+
+    .name {
+      font-weight: bold;
+      font-size: 30px;
+    }
+  }
+
+  &__code-box {
+    @include flex_center;
+    position: relative;
+    height: 18%;
+    width: 75%;
+    background-color: $gray50;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+
+    .code-box {
+
+      &__text {
+        font-size: 20px;
+      }
+
+      &__code {
+        margin-top: 5%;
+        display: block;
+        font-size: 30px;
+        font-weight: bold;
+      }
+
+      &__btn {
+        height: 20px;
+        width: 20px;
+        position: absolute;
+        top: 55%;
+        right: 10%;
+
+        .btn-copy {
+          height: 100%;
+          width: 100%;
+
+          &__icon {
+            color: black;
+          }
+        }
+      }
+    }
+
+  }
+
+  &__btn-kakao {
+    margin-top: 20%;
+    border: 1px solid black;
+
+    .btn-kakao__btn {
+    }
+  }
+
+  &__btn-next {
+    @include flex_center;
+    position: absolute;
+    bottom: 5%;
+    margin-top: 5%;
+    height: 10%;
+    width: 100%;
+
+    .btn-next__btn {
+      @extend %orange-button-large;
+    }
+  }
+}
+
+// 가족 입장 페이지
+.signup-family-join {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  &__title {
+    margin-top: 30%;
+    font-size: 30px;
+
+    .title__part--01 {
+      font-weight: bold;
+    }
+
+    .title__part--02 {
+    }
+  }
+
+  &__input-box {
+    @include flex_center;
+    height: 6%;
+    width: 75%;
+    margin-top: 10%;
+    padding-bottom: 2%;
+    border-bottom: 1px solid $gray100;
+
+    .input-box__input {
+      width: 100%;
+      font-size: 25px;
+      text-align: center;
+      justify-content: center;
+    }
+  }
+
+  &__btn {
+    margin-top: 5%;
+
+    .btn-input {
+      @extend %orange-button-medium;
+
+      &__text {
+      }
+    }
+  }
+}
+
+// 가족 입장 체크 페이지
+.signup-family-join-check {
+  @include flex_center;
+  height: 100%;
+  flex-direction: column;
+
+  &__img {
+    border: 1px solid black;
+    height: 200px;
+    width: 200px;
+    border-radius: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .img {
+      border: 1px solid black;
+      height: 195px;
+      width: 195px;
+      border-radius: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__name {
+    margin-top: 10%;
+
+    .name {
+      font-weight: bold;
+      font-size: 30px;
+    }
+  }
+
+  &__btn {
+    @include flex_center;
+    flex-direction: column;
+    margin-top: 10%;
+
+    .btn-join-member {
+      @extend %orange-button-medium;
+
+      &__text {
+      }
+    }
+
+    .btn-back {
+      width: 80%;
+
+      &__text {
+        font-size: 120%;
+        color: $gray200;
+        text-decoration: underline;
+      }
+    }
+  }
+
+}
