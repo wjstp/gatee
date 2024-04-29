@@ -46,7 +46,7 @@
     margin-top: 20%;
 
     .btn-family-set {
-      @extend .orangeButtonLarge;
+      @extend %orange-button-large;
       background-color: white;
       height: 60px;
       margin-top: 0px;
@@ -58,7 +58,7 @@
     }
 
     .btn-family-join {
-      @extend .orangeButtonLarge;
+      @extend %orange-button-large;
       background-color: $orange200;
       margin-top: 0;
       height: 60px;
@@ -149,7 +149,7 @@
     width: 100%;
 
     .btn-next {
-      @extend .orangeButtonLarge;
+      @extend %orange-button-large;
 
       &__text {
       }
@@ -211,7 +211,7 @@
     flex-direction: column;
 
     .btn-introduce {
-      @extend .orangeButtonMedium;
+      @extend %orange-button-medium;
 
       &__text {
       }
@@ -338,7 +338,7 @@
     width: 100%;
 
     .btn-next__btn {
-      @extend .orangeButtonLarge;
+      @extend %orange-button-large;
     }
   }
 }
@@ -383,7 +383,7 @@
     margin-top: 5%;
 
     .btn-input {
-      @extend .orangeButtonMedium;
+      @extend %orange-button-medium;
 
       &__text {
       }
@@ -431,7 +431,7 @@
     margin-top: 10%;
 
     .btn-join-member {
-      @extend .orangeButtonMedium;
+      @extend %orange-button-medium;
 
       &__text {
       }
