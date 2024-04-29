@@ -23,7 +23,7 @@ spring:
 jwt:
   header: Authorization
   # openssl rand -base64 128 | tr -d '\n'
-  secret: =%
+  secret: ${JWT_SECRET}
 
 ---
 spring:
@@ -35,8 +35,8 @@ spring:
       client:
         registration:
           kakao:
-            client-id:
-            client-secret:
+            client-id: ${CLIENT_ID}
+            client-secret: ${CLIENT_SECRET}
             redirect-uri: http://localhost:8080/login/oauth2/code/kakao
 
 jwt:
