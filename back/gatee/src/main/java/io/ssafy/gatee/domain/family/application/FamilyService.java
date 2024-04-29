@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public interface FamilyService {
 
-    void saveFamily(FamilySaveReq familySaveReq);
+    void saveFamily(FamilySaveReq familySaveReq, UUID memberId);
 
     FamilyCodeRes createFamilyCode(Long familyId);
 

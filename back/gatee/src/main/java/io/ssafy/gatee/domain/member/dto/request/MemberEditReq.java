@@ -5,7 +5,6 @@ import lombok.Builder;
 
 @Builder
 public record MemberEditReq(
-        String memberId,
 
         @NotNull
         String name,
