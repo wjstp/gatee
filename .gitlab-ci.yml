@@ -36,7 +36,7 @@ build:
     - sed -i 's|${AWS_BUCKET_NAME}|'"$AWS_BUCKET_NAME"'|g' application-aws.yaml
     - sed -i 's|${AWS_BUCKET_NAME}|'"$AWS_BUCKET_NAME"'|g' application-aws.yaml
     - sed -i 's|${AWS_BUCKET_NAME}|'"$AWS_BUCKET_NAME"'|g' application-aws.yaml
-
+    - cat application-security.yaml
 
     # 권한 부여 후 현재 서버 환경 확인
     - cd ../../..
