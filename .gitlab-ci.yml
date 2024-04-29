@@ -83,7 +83,7 @@ deploy:
     - cd nginx
     - echo [INFO] $TAG
     - source ./deploy_script.sh $TAG
-    - cp ./nginx.conf /home/ubuntu/nginx.conf
+    - docker cp ./nginx.conf  proxy-server:/etc/nginx/nginx.conf
     - docker exec proxy-server nginx -s reload
     - cd ../..
     - if [ "$DEPLOY_ENV" == "blue" ]; then
