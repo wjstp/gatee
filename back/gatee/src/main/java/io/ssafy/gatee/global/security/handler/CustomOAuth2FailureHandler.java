@@ -18,5 +18,9 @@ public class CustomOAuth2FailureHandler implements AuthenticationFailureHandler 
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         log.info("로그인 실패");
         response.setStatus(401);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write("{\"message\":\"회원등록 또는 로그인에 실패하였습니다.\"}");
+
     }
 }

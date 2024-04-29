@@ -18,7 +18,7 @@ import java.util.Arrays;
 @RestController
 @RequestMapping("/api/jwt")
 @RequiredArgsConstructor
-public class AuthController {
+public class JwtController {
     private final JwtService jwtService;
 
     // todo: access token 검증할 때 refresh token의 남은 시간을 확인해서 갱신하는 로직 추가
