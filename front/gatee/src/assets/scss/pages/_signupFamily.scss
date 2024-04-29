@@ -46,7 +46,7 @@
     margin-top: 20%;
 
     &__createButton {
-      @extend .orangeButtonLarge;
+      @extend %orange-button-large;
       background-color: white;
       height: 60px;
       margin-top: 0px;
@@ -61,7 +61,7 @@
   &__joinButtonBox {
 
     &__joinButton {
-      @extend .orangeButtonLarge;
+      @extend %orange-button-large;
       background-color: $orange200;
       margin-top: 0;
       height: 60px;
@@ -177,7 +177,7 @@
     width: 100%;
 
     &__nextButton {
-      @extend .orangeButtonLarge;
+      @extend %orange-button-large;
     }
   }
 }
@@ -309,7 +309,7 @@
     width: 100%;
 
     &__nextButton {
-      @extend .orangeButtonLarge;
+      @extend %orange-button-large;
     }
   }
 }
@@ -358,7 +358,7 @@
       margin-top: 5%;
 
       &__inputButton {
-        @extend .orangeButtonMedium;
+        @extend %orange-button-medium;
 
         &__span {
 
@@ -404,7 +404,7 @@
       margin-top: 10%;
 
       &__joinFamilyButton {
-        @extend .orangeButtonMedium;
+        @extend %orange-button-medium;
 
         &__span {
 

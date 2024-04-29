@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import { ReactComponent as HomeIcon } from "@assets/images/icons/home.svg"
+import { ReactComponent as HomeIcon } from "@assets/images/icons/ic_home.svg"
 
 function SignupIndex() {
   return (
