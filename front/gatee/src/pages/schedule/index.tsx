@@ -6,15 +6,19 @@ import interactionPlugin, { DateClickArg } from "@fullcalendar/interaction";
 import googleCalendarPlugin from "@fullcalendar/google-calendar";
 import { FaCaretLeft, FaCaretRight } from "react-icons/fa";
 import { LuCalendarPlus } from "react-icons/lu";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DayToast from "@pages/schedule/component/DayToast";
+import { FaPlus } from "react-icons/fa6";
 
 
 const ScheduleIndex: React.FC = () => {
+  const navigate = useNavigate();
   const calendarRef: any = useRef(null)
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const [selectedDate, setSelectedDate] = useState<string>("");
   const [isOpenDayToast, setIsOpenDayToast] = useState<boolean>(false);
+  const [selectedStartDate, setSelectedStartDate] = useState<string>("");
+  const [selectedEndDate, setSelectedEndDate] = useState<string>("");
 
   useEffect(() => {
     if (calendarRef.current) {
@@ -47,9 +51,8 @@ const ScheduleIndex: React.FC = () => {
 
   // 영역 선택 핸들러
   const handleSelect = (arg: DateSelectArg) => {
-    const selectedStartDate: string = arg.startStr;
-    const selectedEndDate: string = arg.end.toISOString().slice(0, 10);
-    console.log(selectedStartDate, selectedEndDate);
+    setSelectedStartDate(arg.startStr);
+    setSelectedEndDate(arg.end.toISOString().slice(0, 10));
   };
 
   // 오늘 날짜로 이동하는 클릭 핸들러
@@ -69,6 +72,17 @@ const ScheduleIndex: React.FC = () => {
   const handleCloseClick = () => {
     setIsOpenDayToast(false);
   };
+
+  // 일정 생성 버튼 클릭 핸들러
+  const handleCreateScheduleClick = () => {
+    // 선택한 영역을 query string으로 전송
+    navigate(
+      {
+      pathname: '/schedule/create-schedule',
+      search: `?start=${selectedStartDate}&end=${selectedEndDate}`,
+    }
+    );
+  }
 
   return (
     <div className="schedule">
@@ -103,11 +117,6 @@ const ScheduleIndex: React.FC = () => {
               <FaCaretRight size={18}/>
             </button>
           </div>
-
-          {/*일정 추가 버튼*/}
-          <Link to="/schedule/create-schedule" className="schedule-calendar__button-add-event">
-            <LuCalendarPlus size={20} />
-          </Link>
         </div>
 
         {/*달력*/}
@@ -156,6 +165,10 @@ const ScheduleIndex: React.FC = () => {
         {/*일자별 일정 리스트*/}
         {isOpenDayToast && <DayToast date={selectedDate} onCloseClick={handleCloseClick} />}
       </div>
+
+      <button className="schedule-calendar__button-add-event" onClick={handleCreateScheduleClick}>
+        <FaPlus size={20} />
+      </button>
     </div>
   );
 };

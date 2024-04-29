@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 interface DayToastProps {
   date: string;
   onCloseClick: () => void;
@@ -12,6 +11,7 @@ const DayToast: React.FC<DayToastProps> = ({ date, onCloseClick }) => {
         <div>{date}</div>
         <button onClick={onCloseClick}>close</button>
         <div>No Events</div>
+
       </div>
     );
 }

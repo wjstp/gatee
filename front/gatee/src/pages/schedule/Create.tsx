@@ -1,8 +1,26 @@
-import React from 'react';
+import React, { useState } from "react";
 import { FamilyMemberInfoSample } from "../../constants";
 import ProfileImage from '@assets/images/logo/app_icon_orange.png'
+import { useSearchParams, useNavigate } from "react-router-dom"
+import { Schedule } from "../../types";
 
 const ScheduleCreate = () => {
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [inputTitle, setInputTitle] = useState<string | null>(null)
+  const [inputContent, setInputContent] = useState<string | null>(null)
+  const [inputStartDate, setInputStartDate] = useState<string | null>(searchParams.get("start"))
+  const [inputEndDate, setInputEndDate] = useState<string | null>(searchParams.get("end"))
+  const [inputStartTime, setInputStartTime] = useState<string | null>(null)
+  const [inputEndTime, setInputEndTime] = useState<string | null>(null)
+  const [participant, setParticipant] = useState<string[] | null>(null)
+
+  // 일정 생성
+  const handleCreateSchedule = () => {
+    console.log("Create schedule")
+    navigate('/schedule')
+  }
+
   return (
     <div className="create-schedule">
       <div className="create-schedule__input-container">
@@ -74,7 +92,7 @@ const ScheduleCreate = () => {
       </div>
 
       {/*생성 버튼*/}
-      <div className="create-schedule__button-create">
+      <div className="create-schedule__button-create" onClick={handleCreateSchedule}>
         <button className="create-schedule__button-create">생성</button>
       </div>
     </div>

@@ -19,3 +19,13 @@ export interface Character {
   question: string;
   answer: string;
 }
+
+export interface Schedule {
+  title: string | null;
+  content: string | null;
+  category: string | null;
+  color: string | null;
+  startDate: string | null;
+  endDate: string | null;
+  participant: string[] | [];
+}
