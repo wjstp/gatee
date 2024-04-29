@@ -13,20 +13,26 @@ const SignupFamilyJoinCheck = () => {
     navigate(-1);
   }
 
+  const familyData = {
+    familyId: "33",
+    familyImage: "https://cacamaru.com/cacamaru/wp-content/uploads/2019/08/6.%EC%A7%B1%EA%B5%AC%EA%B0%80%EC%A1%B1.jpg",
+    familyName: "짱구네 가족"
+  }
+
   return (
     <div className="signup-family-join-check">
       {/*가족 이미지*/}
       <div className="signup-family-join-check__img">
         <img
           className="img"
-          src=""
-          alt=""
+          src={familyData.familyImage}
+          alt="family-image"
         />
       </div>
 
       {/*가족 이름*/}
       <div className="signup-family-join-check__name">
-        <span className="name">예삐네 가족</span>
+        <span className="name">{familyData.familyName}</span>
       </div>
 
       <div className="signup-family-join-check__btn">

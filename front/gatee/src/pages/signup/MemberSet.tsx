@@ -13,7 +13,11 @@ const SignupMemberSet = () => {
   }
 
   const goToMemberSetBirth = () => {
-    navigate("/signup/member-set/birth");
+    navigate("/signup/member-set/birth", {
+      state: {
+        inputName
+      }
+    });
   }
 
   return (

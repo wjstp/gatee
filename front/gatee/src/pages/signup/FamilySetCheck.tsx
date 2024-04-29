@@ -1,15 +1,18 @@
 import React from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
+import SampleFamily from "@assets/images/signup/sample.svg"
 
 const SignupFamilySetCheck = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const inputValue = location.state?.inputValue || "";
+  const selectedImage = location.state?.selectedImage || "";
 
   const goToFamilySetCheck = () => {
     navigate("/signup/family-set/share", {
       state: {
-        inputValue
+        inputValue,
+        selectedImage
       }
     });
   }
@@ -34,8 +37,8 @@ const SignupFamilySetCheck = () => {
       <div className="signup-family-set-check__img">
         <img
           className="img"
-          src=""
-          alt=""
+          src={selectedImage || SampleFamily}
+          alt="family-image"
         />
       </div>
 

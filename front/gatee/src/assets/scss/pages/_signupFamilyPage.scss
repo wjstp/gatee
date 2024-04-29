@@ -94,8 +94,8 @@
   &__img-box {
     margin-top: 5%;
     border: 1px solid black;
-    height: 155px;
-    width: 155px;
+    height: 200px;
+    width: 200px;
     border-radius: 100%;
     position: relative;
     display: flex;
@@ -104,9 +104,10 @@
 
     .img-box__img {
       border: 1px solid black;
-      height: 150px;
-      width: 150px;
+      height: 195px;
+      width: 195px;
       border-radius: 100%;
+      object-fit: cover;
     }
 
     .img-box__btn {
@@ -118,8 +119,8 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      right: 0;
-      bottom: 0;
+      right: 5px;
+      bottom: 5px;
 
       .btn__icon {
         fill: white;
@@ -131,7 +132,7 @@
     @include flex_center;
     height: 6%;
     width: 65%;
-    margin-top: 10%;
+    margin-top: 5%;
     border-bottom: 1px solid $gray100;
 
     .input-box__input {
@@ -144,7 +145,6 @@
 
   &__btn {
     @include flex_center;
-    margin-top: 5%;
     height: 10%;
     width: 100%;
 
@@ -179,8 +179,8 @@
 
   &__img {
     border: 1px solid black;
-    height: 155px;
-    width: 155px;
+    height: 200px;
+    width: 200px;
     border-radius: 100%;
     position: relative;
     display: flex;
@@ -189,9 +189,10 @@
 
     .img {
       border: 1px solid black;
-      height: 150px;
-      width: 150px;
+      height: 195px;
+      width: 195px;
       border-radius: 100%;
+      object-fit: cover;
     }
   }
 
@@ -250,8 +251,8 @@
   &__img {
     margin-top: 5%;
     border: 1px solid black;
-    height: 155px;
-    width: 155px;
+    height: 200px;
+    width: 200px;
     border-radius: 100%;
     position: relative;
     display: flex;
@@ -260,9 +261,10 @@
 
     .img {
       border: 1px solid black;
-      height: 150px;
-      width: 150px;
+      height: 195px;
+      width: 195px;
       border-radius: 100%;
+      object-fit: cover;
     }
   }
 
@@ -397,8 +399,8 @@
 
   &__img {
     border: 1px solid black;
-    height: 155px;
-    width: 155px;
+    height: 200px;
+    width: 200px;
     border-radius: 100%;
     position: relative;
     display: flex;
@@ -407,9 +409,10 @@
 
     .img {
       border: 1px solid black;
-      height: 150px;
-      width: 150px;
+      height: 195px;
+      width: 195px;
       border-radius: 100%;
+      object-fit: cover;
     }
   }
 
@@ -435,7 +438,7 @@
     }
 
     .btn-back {
-      width: 60%;
+      width: 80%;
 
       &__text {
         font-size: 120%;

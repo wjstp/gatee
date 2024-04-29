@@ -1,17 +1,39 @@
 import React, { useRef, useState } from 'react';
 import { IoIosCamera } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
+import basicFamily from "@assets/images/signup/basic.svg"
 
 const SignupFamilySet = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [inputValue, setInputValue] = useState("");
+  const [selectedImage, setSelectedImage] = useState<string | ArrayBuffer | null>(null);
 
   // 입력값
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const value: string = e.target.value;
     setInputValue(value);
+  }
+
+  // 이미지 선택 처리
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const file = e.target.files ? e.target.files[0] : null;
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setSelectedImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  // 카메라 버튼 클릭 처리
+  const handleCameraButtonClick = (): void => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
   }
 
   // 다음 버튼 클릭 처리
@@ -27,7 +49,8 @@ const SignupFamilySet = () => {
     // } else {
       navigate("/signup/family-set/check", {
         state: {
-          inputValue
+          inputValue,
+          selectedImage
         }
       });
     // }
@@ -45,11 +68,19 @@ const SignupFamilySet = () => {
       <div className="signup-family-set__img-box">
         <img
           className="img-box__img"
-          src=""
-          alt=""
+          src={selectedImage ? selectedImage.toString() : basicFamily}
+          alt="family-image"
+        />
+        <input
+          type="file"
+          accept="image/*"
+          style={{display: 'none'}}
+          ref={fileInputRef}
+          onChange={handleImageChange}
         />
         <button
           className="img-box__btn"
+          onClick={handleCameraButtonClick}
         >
           <IoIosCamera
             className="btn__icon"
@@ -62,6 +93,7 @@ const SignupFamilySet = () => {
       <div className="signup-family-set__input-box">
         <input
           className="input-box__input"
+          ref={inputRef}
           type="text"
           placeholder="OO이네 가족"
           value={inputValue}

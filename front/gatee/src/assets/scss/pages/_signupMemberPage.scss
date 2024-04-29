@@ -71,31 +71,394 @@
     }
   }
 
-  .date-picker {
-    display: flex;
+  &__birthday {
+    @include flex_center;
     flex-direction: column;
-    align-items: center;
+    width: 100%;
+
+    .birthday-calendar {
+      margin-top: 5%;
+    }
+
+    .birthday-choice {
+      @include flex_center;
+      width: 100%;
+      margin-top: 10%;
+      font-size: 18px;
+
+      &__solar {
+        appearance: none;
+        background-color: #fff;
+        margin: 0;
+        color: orange; /* 주황색 아이콘 */
+        border: 1px solid orange;
+        border-radius: 50%;
+        display: grid;
+        place-content: center;
+      }
+
+      &__solar:checked::before {
+        content: "";
+        width: 0.65em;
+        height: 0.65em;
+        border-radius: 50%;
+        background: orange;
+      }
+
+      &__solar--label {
+        color: orange; /* 주황색 글자 */
+        margin-left: 1%;
+        margin-right: 3%;
+      }
+
+      &__lunar {
+        appearance: none;
+        background-color: #fff;
+        margin: 0;
+        color: orange; /* 주황색 아이콘 */
+        width: 1.15em;
+        height: 1.15em;
+        border: 1px solid orange;
+        border-radius: 50%;
+        transform: translateY(-0.075em);
+        display: grid;
+        place-content: center;
+      }
+
+      &__lunar:checked::before {
+        content: "";
+        width: 0.65em;
+        height: 0.65em;
+        border-radius: 50%;
+        background: orange;
+      }
+
+      &__lunar--label {
+        color: orange; /* 주황색 글자 */
+        margin-left: 1%;
+      }
+    }
   }
 
-  .date-selector {
-    width: 100px;
-    height: 40px;
-    border: 1px solid #ccc;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-  }
+  &__gender {
+    @include flex_center;
+    width: 100%;
+    font-size: 18px;
+    margin-top: 5%;
 
-  .date-selector:hover {
-    transform: rotate(90deg); /* 마우스를 올리면 90도 회전 */
+    .gender-choice {
+      @include flex_center;
+      width: 100%;
+
+      &__male {
+        appearance: none;
+        background-color: #fff;
+        margin: 0;
+        color: orange; /* 주황색 아이콘 */
+        border: 1px solid orange;
+        border-radius: 50%;
+        display: grid;
+        place-content: center;
+      }
+
+      &__male:checked::before {
+        content: "";
+        width: 0.65em;
+        height: 0.65em;
+        border-radius: 50%;
+        background: orange;
+      }
+
+      &__male--label {
+        color: orange; /* 주황색 글자 */
+        margin-left: 1%;
+        margin-right: 3%;
+      }
+
+      &__female {
+        appearance: none;
+        background-color: #fff;
+        margin: 0;
+        color: orange; /* 주황색 아이콘 */
+        width: 1.15em;
+        height: 1.15em;
+        border: 1px solid orange;
+        border-radius: 50%;
+        transform: translateY(-0.075em);
+        display: grid;
+        place-content: center;
+      }
+
+      &__female:checked::before {
+        content: "";
+        width: 0.65em;
+        height: 0.65em;
+        border-radius: 50%;
+        background: orange;
+      }
+
+      &__female--label {
+        color: orange; /* 주황색 글자 */
+        margin-left: 1%;
+      }
+    }
+
   }
 
   &__btn {
     @include flex_center;
     width: 100%;
     margin-top: 5%;
+
+    .btn-next {
+      @extend .orangeButtonLarge;
+
+      &__text {
+      }
+    }
+  }
+}
+
+// 멤버 역할 및 아이콘 설정 페이지
+.signup-member-set-role {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  &__title-role {
+    margin-top: 30%;
+    font-size: 30px;
+
+    .title__part--01 {
+      font-weight: bold;
+    }
+
+    .title__part--02 {
+    }
+  }
+
+  &__role {
+    @include flex_center;
+    flex-direction: column;
+    margin-top: 5%;
+    height: 230px;
+    width: 500px;
+
+    .role-parents {
+      @include flex_center;
+      height: 100%;
+      width: 100%;
+      gap: 10px;
+
+      &__btn-dad {
+        font-size: 25px;
+        color: $gray200;
+        height: 60px;
+        width: 140px;
+        border: 1px solid $gray200;
+        border-radius: 30px;
+      }
+
+      &__btn-mom {
+        font-size: 25px;
+        color: $gray200;
+        height: 60px;
+        width: 140px;
+        border: 1px solid $gray200;
+        border-radius: 30px;
+      }
+    }
+
+    .role-children {
+      @include flex_center;
+      height: 100%;
+      width: 100%;
+      gap: 10px;
+
+      &__btn-son {
+        font-size: 25px;
+        color: $gray200;
+        height: 60px;
+        width: 140px;
+        border: 1px solid $gray200;
+        border-radius: 30px;
+      }
+
+      &__btn-daughter {
+        font-size: 25px;
+        color: $gray200;
+        height: 60px;
+        width: 140px;
+        border: 1px solid $gray200;
+        border-radius: 30px;
+      }
+    }
+
+    .role-etc {
+      @include flex_center;
+      height: 100%;
+      width: 100%;
+
+      &__btn-etc {
+        font-size: 25px;
+        color: $gray200;
+        height: 60px;
+        width: 140px;
+        border: 1px solid $gray200;
+        border-radius: 30px;
+      }
+    }
+  }
+
+  &__title-icon {
+    margin-top: 30%;
+    font-size: 30px;
+
+    .title__part--01 {
+      font-weight: bold;
+    }
+
+    .title__part--02 {
+    }
+  }
+
+  &__btn {
+    @include flex_center;
+    width: 100%;
+    margin-top: 5%;
+
+    .btn-next {
+      @extend .orangeButtonLarge;
+
+      &__text {
+      }
+    }
+  }
+}
+
+// 멤버 정보 확인 페이지
+.signup-member-set-check {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  &__title {
+    margin-top: 30%;
+    font-size: 30px;
+
+    .title__text {
+      font-weight: bold;
+    }
+  }
+
+  &__btn-back {
+    @include flex_center;
+    margin-top: 5%;
+
+    .btn-back__btn {
+      width: 100%;
+
+      .btn__text {
+        font-size: 120%;
+        color: $gray200;
+        text-decoration: underline;
+      }
+    }
+  }
+
+  &__btn-next {
+    @include flex_center;
+    width: 100%;
+    margin-top: 5%;
+
+    .btn-next__btn {
+      @extend .orangeButtonLarge;
+
+      .btn__text {
+      }
+    }
+  }
+}
+
+// 권한 설정 페이지
+.signup-member-set-permission {
+  height: 100%;
+  width: 100%;
+
+  &__title {
+    @include flex_center;
+    flex-direction: column;
+    margin-top: 30%;
+    font-size: 30px;
+    font-weight: bold;
+
+    .title__part--01 {
+    }
+
+    .title__part--02 {
+    }
+  }
+
+  &__btn {
+    @include flex_center;
+    width: 100%;
+    margin-top: 5%;
+
+    .btn-next {
+      @extend .orangeButtonLarge;
+
+      &__text {
+      }
+    }
+  }
+}
+
+.signup-member-set-finish {
+  height: 100%;
+  width: 100%;
+
+  &__title {
+    display: flex;
+    flex-direction: column;
+    margin-top: 30%;
+    margin-left: 10%;
+
+    .title__header {
+      font-size: 30px;
+
+      .title__part--01 {
+        font-weight: bold;
+      }
+
+      .title__part--02 {
+      }
+    }
+
+    .title__body {
+      margin-top: 1%;
+      font-size: 28px;
+
+      .title__part--03 {
+      }
+    }
+  }
+
+  &__img {
+    margin-left: 15%;
+    margin-top: 33%;
+
+    .img {
+
+    }
+  }
+
+  &__btn {
+    @include flex_center;
+    width: 100%;
 
     .btn-next {
       @extend .orangeButtonLarge;

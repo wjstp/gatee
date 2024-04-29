@@ -1,11 +1,13 @@
 import React from 'react';
 import { BiCopy } from "react-icons/bi";
 import { useNavigate, useLocation } from "react-router-dom";
+import SampleFamily from "@assets/images/signup/sample.svg"
 
 const SignupFamilySetShare = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const inputValue = location.state?.inputValue || "";
+  const selectedImage = location.state?.selectedImage || "";
 
   const goToMemberSet = () => {
     navigate("/signup/member-set");
@@ -23,15 +25,15 @@ const SignupFamilySetShare = () => {
       <div className="signup-family-set-share__img">
         <img
           className="img"
-          src=""
-          alt=""
+          src={selectedImage || SampleFamily}
+          alt="family-image"
         />
       </div>
 
       {/*가족 이름*/}
       <div className="signup-family-set-share__name">
         <span className="name">
-          가족
+          {inputValue}
         </span>
       </div>
 
@@ -61,7 +63,9 @@ const SignupFamilySetShare = () => {
         <button
           className="btn-kakao__btn"
         >
-          KaKao
+          <span className="btn__text">
+            KaKao
+          </span>
         </button>
       </div>
 
