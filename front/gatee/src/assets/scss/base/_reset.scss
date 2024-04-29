@@ -1,13 +1,14 @@
 @use '../abstracts/index' as *;
 @use 'typography' as *;
 
-@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css");
-@import url('https://webfontworld.github.io/ChosunGs/ChosunGs.css');
-
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  // 모든 속성에 대해 드래그 및 요소 복사 금지
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 :root {
@@ -24,14 +25,14 @@ body {
   }
 
   // topBar, bottomBar 제외한 나머지 영역 차지
-  #mainContainer {
+  #main-container {
     height: calc(100svh - $topBar-height - $bottomBar-height);
     overflow-x: hidden;
     overflow-y: auto;
   }
 
   // 전체 영역 차지
-  #subContainer {
+  #sub-container {
     height: 100svh;
   }
 }
@@ -51,16 +52,17 @@ select,
 textarea {
   background-color: transparent;
   border: 0;
-
-  &:focus {
-    outline: none;
-    box-shadow: none;
-  }
 }
 
 a,
 button {
   cursor: pointer;
+  -webkit-tap-highlight-color : transparent !important;
+
+  &:focus &:active {
+    outline: none;
+    box-shadow: none;
+  }
 }
 
 ul,

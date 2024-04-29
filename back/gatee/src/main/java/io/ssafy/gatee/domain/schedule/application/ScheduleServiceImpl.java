@@ -4,11 +4,11 @@ import io.ssafy.gatee.domain.family.dao.FamilyRepository;
 import io.ssafy.gatee.domain.family.entity.Family;
 import io.ssafy.gatee.domain.family_schedule.dao.FamilyScheduleRepository;
 import io.ssafy.gatee.domain.family_schedule.entity.FamilySchedule;
-import io.ssafy.gatee.domain.file.application.FileServiceImpl;
 import io.ssafy.gatee.domain.file.dao.FileRepository;
-import io.ssafy.gatee.domain.file.entity.File;
 import io.ssafy.gatee.domain.member.dao.MemberRepository;
 import io.ssafy.gatee.domain.member.entity.Member;
+import io.ssafy.gatee.domain.member_family.dao.MemberFamilyRepository;
+import io.ssafy.gatee.domain.member_family.entity.MemberFamily;
 import io.ssafy.gatee.domain.member_family_schedule.dao.MemberFamilyScheduleRepository;
 import io.ssafy.gatee.domain.member_family_schedule.entity.MemberFamilySchedule;
 import io.ssafy.gatee.domain.photo.dao.PhotoRepository;
@@ -26,7 +26,7 @@ import io.ssafy.gatee.domain.schedule.entity.Category;
 import io.ssafy.gatee.domain.schedule.entity.Schedule;
 import io.ssafy.gatee.domain.schedule_record.dao.ScheduleRecordRepository;
 import io.ssafy.gatee.domain.schedule_record.entity.ScheduleRecord;
-import io.ssafy.gatee.global.exception.error.bad_request.DoNotHavePermission;
+import io.ssafy.gatee.global.exception.error.bad_request.DoNotHavePermissionException;
 import io.ssafy.gatee.global.exception.error.not_found.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,6 +52,8 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     private final FamilyRepository familyRepository;
 
+    private final MemberFamilyRepository memberFamilyRepository;
+
     private final FamilyScheduleRepository familyScheduleRepository;
 
     private final MemberFamilyScheduleRepository memberFamilyScheduleRepository;
@@ -61,8 +63,6 @@ public class ScheduleServiceImpl implements ScheduleService {
     private final PhotoScheduleRecordRepository photoScheduleRecordRepository;
 
     private final FileRepository fileRepository;
-
-    private final FileServiceImpl fileService;
 
     // 전체 일정 조회
     @Override
@@ -138,7 +138,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     @Transactional
     public void editSchedule(ScheduleEditReq scheduleEditReq, Long scheduleId)
-            throws ScheduleNotFoundException, DoNotHavePermission, FamilyScheduleNotFoundException, MemberFamilyScheduleNotFoundException, FamilyNotFoundException {
+            throws DoNotHavePermissionException, FamilyScheduleNotFoundException, MemberFamilyScheduleNotFoundException, FamilyNotFoundException {
         Member member = memberRepository.getReferenceById(scheduleEditReq.memberId());
 
         Family family = familyRepository.getReferenceById(Long.valueOf(scheduleEditReq.familyId()));
@@ -155,7 +155,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         if (memberFamilySchedule.isCreater()) {
             schedule.editSchedule(scheduleEditReq);
         } else {
-            throw new DoNotHavePermission(DO_NOT_HAVE_REQUEST);
+            throw new DoNotHavePermissionException(DO_NOT_HAVE_REQUEST);
         }
     }
 
@@ -188,6 +188,11 @@ public class ScheduleServiceImpl implements ScheduleService {
     public void saveScheduleRecord(ScheduleSaveRecordReq scheduleSaveRecordReq, Long scheduleId) {
         Member member = memberRepository.getReferenceById(scheduleSaveRecordReq.memberId());
 
+        Family family = familyRepository.getReferenceById(scheduleSaveRecordReq.familyId());
+
+        MemberFamily memberFamily = memberFamilyRepository.findByMemberAndFamily(member, family)
+                .orElseThrow(() -> new MemberFamilyNotFoundException(MEMBER_FAMILY_NOT_FOUND));
+
         Schedule schedule = scheduleRepository.getReferenceById(scheduleId);
 
         ScheduleRecord scheduleRecord = ScheduleRecord.builder()
@@ -199,7 +204,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         List<Photo> photos = scheduleSaveRecordReq.fileIdList().stream().map(fileId ->
             Photo.builder()
-                    .member(member)
+                    .memberFamily(memberFamily)
                     .file(fileRepository.getReferenceById(fileId))
                     .build()).toList();
 

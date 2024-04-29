@@ -11,6 +11,8 @@ public record ScheduleSaveRecordReq(
 
         UUID memberId,
 
+        Long familyId,
+
         @NotNull
         List<Long> fileIdList,
 

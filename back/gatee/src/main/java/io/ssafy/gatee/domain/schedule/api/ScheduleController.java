@@ -7,7 +7,7 @@ import io.ssafy.gatee.domain.schedule.dto.request.ScheduleSaveRecordReq;
 import io.ssafy.gatee.domain.schedule.dto.request.ScheduleSaveReq;
 import io.ssafy.gatee.domain.schedule.dto.response.ScheduleInfoRes;
 import io.ssafy.gatee.domain.schedule.dto.response.ScheduleListRes;
-import io.ssafy.gatee.global.exception.error.bad_request.DoNotHavePermission;
+import io.ssafy.gatee.global.exception.error.bad_request.DoNotHavePermissionException;
 import io.ssafy.gatee.global.exception.error.not_found.FamilyNotFoundException;
 import io.ssafy.gatee.global.exception.error.not_found.FamilyScheduleNotFoundException;
 import io.ssafy.gatee.global.exception.error.not_found.MemberFamilyScheduleNotFoundException;
@@ -59,7 +59,7 @@ public class ScheduleController {
             @Valid
             @RequestBody ScheduleEditReq scheduleEditReq,
             @PathVariable("scheduleId") Long scheduleId
-    ) throws ScheduleNotFoundException, DoNotHavePermission, MemberFamilyScheduleNotFoundException, FamilyScheduleNotFoundException, FamilyNotFoundException {
+    ) throws ScheduleNotFoundException, DoNotHavePermissionException, MemberFamilyScheduleNotFoundException, FamilyScheduleNotFoundException, FamilyNotFoundException {
         scheduleService.editSchedule(scheduleEditReq, scheduleId);
     }
 
