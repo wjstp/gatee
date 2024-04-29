@@ -63,6 +63,26 @@ export const FamilyMemberInfoSample : Member[] = [
     }
 ]
 
+// 백과사전 임시 데이터
+export const CharacterSample : Character[] = [
+  {
+    question: "못 먹는 음식은",
+    answer: "피망"
+  },
+  {
+    question: "부모님이 가장 보고 싶을 때는",
+    answer: "맛있는 거 먹을 때"
+  },
+  {
+    question: "올해 꼭 하고 싶은 일은",
+    answer: "혼자 해외여행 가기"
+  },
+  {
+    question: "인생에서 가장 후회되는 일은",
+    answer: "학점 관리 안 한 것"
+  }
+]
+
 // 모의고사 임시 데이터
 export const QuestionSample : Question[] = [
     {
@@ -127,33 +147,15 @@ export const QuestionSample : Question[] = [
     }
 ]
 
-// 백과사전 임시 데이터
-export const CharacterSample : Character[] = [
-    {
-        question: "못 먹는 음식은",
-        answer: "피망"
-    },
-    {
-        question: "부모님이 가장 보고 싶을 때는",
-        answer: "맛있는 거 먹을 때"
-    },
-    {
-        question: "올해 꼭 하고 싶은 일은",
-        answer: "혼자 해외여행 가기"
-    },
-    {
-        question: "인생에서 가장 후회되는 일은",
-        answer: "학점 관리 안 한 것"
-    }
-]
 
+// 사진 임시 데이터
 export const photoGroup = [
-    {
-        dateTime:"",
-        src: '@assets/images/schedule/calendarBanner3.jpg',
-    },
-    {
-        dateTime:"",
-        src: '@assets/images/schedule/calendarBanner3.jpg',
-    },
+  {
+    dateTime:"",
+    src: '@assets/images/schedule/calendarBanner3.jpg',
+  },
+  {
+    dateTime:"",
+    src: '@assets/images/schedule/calendarBanner3.jpg',
+  },
 ]

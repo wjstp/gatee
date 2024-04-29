@@ -17,7 +17,10 @@ import org.hibernate.annotations.SQLRestriction;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.UUID;
+import java.util.List;
 
 @Entity
 @Getter
@@ -56,6 +59,7 @@ public class Member extends BaseEntity {
     // 회원 정보 저장 - file field 추가 예정
     public void saveInfo(MemberSaveReq memberSaveReq) {
         this.name = memberSaveReq.name();
+        this.privilege = Privilege.USER;    // 추가 정보 저장시 권한 변경
         this.nickname = memberSaveReq.nickname();
         this.birth = LocalDate.parse(memberSaveReq.birth(), DateTimeFormatter.ISO_DATE);
         this.birthType = BirthType.valueOf(memberSaveReq.birthType());

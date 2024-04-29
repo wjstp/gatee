@@ -9,7 +9,8 @@
       "@layout/*": ["src/layout/*"],
       "@constants/*": ["src/constance/*"],
       "@types/*": ["src/types/*"],
-      "@store/*": ["src/store/*"]
+      "@store/*": ["src/store/*"],
+      "@hooks/*": ["src/hooks/*"]
     }
   }
 }

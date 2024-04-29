@@ -1,6 +1,7 @@
 package io.ssafy.gatee.domain.member.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.ssafy.gatee.config.security.CustomWithMockUser;
 import io.ssafy.gatee.domain.member.application.MemberService;
 import io.ssafy.gatee.domain.member.dto.request.MemberEditMoodReq;
 import io.ssafy.gatee.domain.member.dto.request.MemberEditReq;
@@ -19,6 +20,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import java.util.UUID;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -40,6 +42,7 @@ class MemberControllerTest {
 
     @Test
     @DisplayName("회원 정보 등록 테스트")
+    @CustomWithMockUser(role = "ANONYMOUS")
     void saveInfo() throws Exception {
         MemberSaveReq memberSaveReq = MemberSaveReq.builder()
                 .name("name")
@@ -53,6 +56,7 @@ class MemberControllerTest {
         String memberSaveJson = objectMapper.writeValueAsString(memberSaveReq);
 
         mockMvc.perform(patch("/api/members")
+                        .with(csrf())   // security에서 csrf disable 설정을 해두었기 떄문에 추가
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(memberSaveJson))
                 .andDo(MockMvcResultHandlers.print())
@@ -62,6 +66,7 @@ class MemberControllerTest {
     }
 
     @Test
+    @CustomWithMockUser
     @DisplayName("회원 정보 수정 테스트")
     void editInfo() throws Exception {
         MemberEditReq memberEditReq = MemberEditReq.builder()
@@ -76,6 +81,7 @@ class MemberControllerTest {
         String memberEditJson = objectMapper.writeValueAsString(memberEditReq);
 
         mockMvc.perform(patch("/api/members/profile")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(memberEditJson))
                 .andDo(MockMvcResultHandlers.print())
@@ -84,6 +90,7 @@ class MemberControllerTest {
     }
 
     @Test
+    @CustomWithMockUser
     @DisplayName("기분 상태 수정 테스트")
     void editMood() throws Exception {
         MemberEditMoodReq memberEditMoodReq = MemberEditMoodReq.builder()
@@ -93,6 +100,7 @@ class MemberControllerTest {
         String memberEditMoodJson = objectMapper.writeValueAsString(memberEditMoodReq);
 
         mockMvc.perform(patch("/api/members/moods")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(memberEditMoodJson))
                 .andDo(MockMvcResultHandlers.print())
@@ -101,12 +109,13 @@ class MemberControllerTest {
     }
 
     @Test
+    @CustomWithMockUser
     @DisplayName("회원 정보 조회 테스트")
     void readInfo() throws Exception {
         UUID memberId = UUID.randomUUID();
 
         mockMvc.perform(get("/api/members")
-                        .param("memberId", memberId.toString())
+                        .with(csrf())
                         .param("familyId", "1"))
                 .andDo(MockMvcResultHandlers.print())
                 .andDo(MockMvcRestDocumentation.document("회원 정보 조회"))

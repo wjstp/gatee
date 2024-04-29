@@ -1,7 +1,8 @@
 @use '../abstracts/index' as *;
 
-.bottomBar {
+.bottom-bar {
   @include flex-row;
+
   background-color: $white;
   justify-content: space-between;
   height: $bottomBar-height;
@@ -9,44 +10,49 @@
   width: 100%;
   padding: 0 1rem;
   border-top: 1px solid $gray100;
-}
 
-.bottomBar__item {
-  @include flex-col;
-  @include flex-center;
-  color: $gray200;
-  font-size: $font-size-xSmall;
-  gap: 5px;
-  margin-top: 10px;
-  width: 20%;
-  height: 60%;
+  &__item {
+    @include flex-col;
+    @include flex-center;
 
-  &--active {
-    @extend .bottomBar__item;
-    color: $orange500;
-  }
-}
+    color: $gray200;
+    font-size: $font-size-xSmall;
+    gap: 5px;
+    margin-top: 10px;
+    width: 20%;
+    height: 60%;
 
-.bottomBar__itemHome {
-  @include flex-col;
-  @include flex-center;
-  color: $gray200;
-  font-size: $font-size-small;
-  gap: 5px;
-  margin-top: 10px;
-  width: 20%;
-  height: 60%;
+    &--active {
+      @extend .bottom-bar__item;
 
-  svg path {
-    fill: $gray200;
-  }
+      color: $orange500;
+    }
 
-  &--active {
-    @extend .bottomBar__itemHome;
-    color: $orange500;
+    &-home {
+      @include flex-col;
+      @include flex-center;
 
-    svg path {
-      fill: $orange500;
+      color: $gray200;
+      font-size: $font-size-small;
+      gap: 5px;
+      margin-top: 10px;
+      width: 20%;
+      height: 60%;
+
+      svg path {
+        fill: $gray200;
+      }
+
+      &--active {
+        @extend .bottom-bar__item-home;
+
+        color: $orange500;
+
+        svg path {
+          fill: $orange500;
+        }
+      }
     }
   }
 }
+

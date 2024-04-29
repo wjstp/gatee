@@ -1,5 +1,5 @@
 import React from 'react';
-import {Routes, Route} from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import MainLayout from "@layout/MainLayout";  // 레이아웃
 import SubLayout from "@layout/SubLayout";
 import ExamIndex from "@pages/exam";  // 모의고사
@@ -13,24 +13,34 @@ import OnboardingIndex from "@pages/onboarding/index";  // 온보딩
 import KaKaoLogin from "@pages/onboarding/components/KaKaoLogin";
 import ProfileIndex from "@pages/profile";  // 프로필
 import ScheduleIndex from "@pages/schedule";  // 일정
-import ScheduleCreateSchedule from "@pages/schedule/CreateSchedule";
+import ScheduleCreateSchedule from "@pages/schedule/Create";
 import ScheduleCreateReview from "@pages/schedule/CreateReview";
 import ScheduleDetail from "@pages/schedule/ScheduleDetail";
 import ChatIndex from "@pages/chat";  // 채팅
 import CharacterIndex from "@pages/character";  // 백과사전
 import CharacterStart from "@pages/character/AnswerList";
-import CharacterQuestion from "@pages/character/Question";
-import SignupIndex from "@pages/signup";  // 회원가입
-import SignupMember from "@pages/signup/Member";
-import SignupFamily from "@pages/signup/Family";
-import PhotoIndex from "@pages/photo";
+import CharacterQuestion from "@pages/character/Question";  // 백과사전
+import SignupIndex from "@pages/signup";
+import SignupFamilyJoin from "@pages/signup/FamilyJoin";
+import SignupFamilyJoinCheck from "@pages/signup/FamilyJoinCheck";
+import SignupFamilySet from "@pages/signup/FamilySet";
+import SignupFamilySetCheck from "@pages/signup/FamilySetCheck";
+import SignupFamilySetShare from "@pages/signup/FamilySetShare";
+import SignupMemberSet from "@pages/signup/MemberSet";
+import SignupMemberSetBirth from "@pages/signup/MemberSetBirth";
+import SignupMemberSetCheck from "@pages/signup/MemberSetCheck";
+import SignupMemberSetFinish from "@pages/signup/MemberSetFinish";
+import SignupMemberSetPermission from "@pages/signup/MemberSetPermission";
+import SignupMemberSetRole from "@pages/signup/MemberSetRole";  // 회원가입
+import PhotoAlbumIndex from "@pages/photo";
 import PhotoAlbum from "@pages/photo/AlbumGroup";
 import PhotoAlbumGroupDetail from "@pages/photo/AlbumGroupDetail";
 import PhotoAllMonthGroupDetail from "@pages/photo/AllMonthGroupDetail";
 import PhotoAllYearGroupDetail from "@pages/photo/AllYearGroupDetail";
 import AllDay from "@pages/photo/AllDay";
 import AllMonth from "@pages/photo/AllMonth";
-import AllYear from "@pages/photo/AllYear"; // 앨범
+import AllYear from "@pages/photo/AllYear";
+import PhotoIndex from "@pages/photo"; // 앨범
 
 
 const Router = () => {
@@ -90,8 +100,17 @@ const Router = () => {
 
         {/*회원가입 페이지*/}
         <Route path="/signup" element={<SignupIndex/>}/>
-        <Route path="/signup/member" element={<SignupMember/>}/>
-        <Route path="/signup/family" element={<SignupFamily/>}/>
+        <Route path="/signup/family-set" element={<SignupFamilySet/>}/>
+        <Route path="/signup/family-set/check" element={<SignupFamilySetCheck/>}/>
+        <Route path="/signup/family-set/share" element={<SignupFamilySetShare/>}/>
+        <Route path="/signup/family-join" element={<SignupFamilyJoin/>}/>
+        <Route path="/signup/family-join/check" element={<SignupFamilyJoinCheck/>}/>
+        <Route path="/signup/member-set" element={<SignupMemberSet/>}/>
+        <Route path="/signup/member-set/birth" element={<SignupMemberSetBirth/>}/>
+        <Route path="/signup/member-set/role" element={<SignupMemberSetRole/>}/>
+        <Route path="/signup/member-set/check" element={<SignupMemberSetCheck/>}/>
+        <Route path="/signup/member-set/permission" element={<SignupMemberSetPermission/>}/>
+        <Route path="/signup/member-set/finish" element={<SignupMemberSetFinish/>}/>
       </Route>
 
       {/*404 처리*/}
