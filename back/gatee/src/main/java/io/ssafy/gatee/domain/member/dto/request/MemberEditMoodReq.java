@@ -5,7 +5,6 @@ import lombok.Builder;
 
 @Builder
 public record MemberEditMoodReq(
-        String memberId,
 
         @NotNull
         String mood

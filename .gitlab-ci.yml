@@ -27,9 +27,17 @@ build:
 
     # AWS 관련 설정 파일 생성
     - cp application-aws.yaml.template application-aws.yaml
+    - sed -i 's|${CLIENT_ID}|'"CLIENT_ID"'|g' application-aws.yaml
+    - sed -i 's|${CLIENT_SECRET}|'"CLIENT_SECRET"'|g' application-aws.yaml
+    - sed -i 's|${JWT_SECRET}|'"JWT_SECRET"'|g' application-aws.yaml
+
+    # security 관련 설정 파일 생성
+    - cp application-security.yaml.template application-security.yaml
     - sed -i 's|${AWS_BUCKET_NAME}|'"$AWS_BUCKET_NAME"'|g' application-aws.yaml
-    - sed -i 's|${AWS_ACCESS_KEY}|'"$AWS_ACCESS_KEY"'|g' application-aws.yaml
-    - sed -i 's|${AWS_SECRET_KEY}|'"$AWS_SECRET_KEY"'|g' application-aws.yaml
+    - sed -i 's|${AWS_BUCKET_NAME}|'"$AWS_BUCKET_NAME"'|g' application-aws.yaml
+    - sed -i 's|${AWS_BUCKET_NAME}|'"$AWS_BUCKET_NAME"'|g' application-aws.yaml
+
+
     # 권한 부여 후 현재 서버 환경 확인
     - cd ../../..
     - chmod +x ./devops/nginx/detect_env.sh
@@ -77,6 +85,14 @@ deploy:
     - source ./deploy_script.sh $TAG
     - cp ./nginx.conf /home/ubuntu/nginx.conf
     - docker exec proxy-server nginx -s reload
+    - cd ../..
+    - if [ "$DEPLOY_ENV" == "blue" ]; then
+      echo "Removing to green environment...";
+      docker-compose -f docker-compose.green.yaml down;
+      else
+      echo "Deploying to blue environment...";
+      docker-compose -f docker-compose.blue.yaml down;
+      fi
   after_script:
     - docker logout
     - echo [INFO] docker deploy end!
@@ -84,3 +100,7 @@ deploy:
     - develop
     - master
     - release
+
+
+
+

@@ -8,7 +8,6 @@ import java.util.UUID;
 @Builder
 public record FamilySaveReq(
 
-        String memberId,
 
         @NotNull
         String name

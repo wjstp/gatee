@@ -46,9 +46,9 @@ public class FamilyServiceImpl implements FamilyService {
     // 가족 생성
     @Override
     @Transactional
-    public void saveFamily(FamilySaveReq familySaveReq) {
+    public void saveFamily(FamilySaveReq familySaveReq, UUID memberId) {
         Member member = Member.builder()
-                .id(UUID.fromString(familySaveReq.memberId()))
+                .id(memberId)
                 .build();
 
         Family family = familyRepository.save(Family.builder()
