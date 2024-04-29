@@ -166,5 +166,4 @@ class ScheduleControllerTest {
                 .andDo(MockMvcRestDocumentation.document("일정 후기 등록"))
                 .andExpect(status().isOk());
     }
-
 }

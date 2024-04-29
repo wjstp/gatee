@@ -121,5 +121,4 @@ class MemberControllerTest {
                 .andDo(MockMvcRestDocumentation.document("회원 정보 조회"))
                 .andExpect(status().isOk());
     }
-
 }

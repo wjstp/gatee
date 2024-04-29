@@ -108,5 +108,4 @@ class FamilyControllerTest {
                 .andDo(MockMvcRestDocumentation.document("가족 이름 수정"))
                 .andExpect(status().isOk());
     }
-
 }
