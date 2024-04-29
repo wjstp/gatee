@@ -66,8 +66,8 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("회원 정보 수정 테스트")
     @CustomWithMockUser
+    @DisplayName("회원 정보 수정 테스트")
     void editInfo() throws Exception {
         MemberEditReq memberEditReq = MemberEditReq.builder()
                 .name("name")

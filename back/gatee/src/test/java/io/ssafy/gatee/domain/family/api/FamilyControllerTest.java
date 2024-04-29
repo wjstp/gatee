@@ -17,10 +17,9 @@ import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -58,18 +57,21 @@ class FamilyControllerTest {
     }
 
     @Test
+    @CustomWithMockUser
     @DisplayName("가족 코드 생성 테스트")
     void createFamilyCode() throws Exception {
         mockMvc.perform(get("/api/family/1/code"))
-                    .andDo(MockMvcResultHandlers.print())
-                    .andDo(MockMvcRestDocumentation.document("가족 코드 생성"))
+                .andDo(MockMvcResultHandlers.print())
+                .andDo(MockMvcRestDocumentation.document("가족 코드 생성"))
                 .andExpect(status().isOk());
     }
 
     @Test
+    @CustomWithMockUser
     @DisplayName("가족 합류 테스트")
     void joinFamily() throws Exception {
         mockMvc.perform(post("/api/family/join")
+                        .with(csrf())
                         .param("familyCode", "A1B2C3D4")
                         .param("memberId", String.valueOf(UUID.randomUUID())))
                 .andDo(MockMvcResultHandlers.print())
