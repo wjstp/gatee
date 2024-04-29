@@ -36,7 +36,7 @@ const ScheduleIndex: React.FC = () => {
 
       // 달력 업데이트
       const updatedDate = calendarApi.getDate();
-      const firstDayOfMonth = new Date(updatedDate.setDate(2));
+      const firstDayOfMonth = new Date(updatedDate.setDate(1));
       const formattedFirstDayOfMonth = firstDayOfMonth.toISOString().slice(0, 10);
       setCurrentDate(updatedDate);
       setSelectedDate(formattedFirstDayOfMonth);
