@@ -1,8 +1,8 @@
 @use '../abstracts/index' as *;
 @use '../components/index' as *;
 
-// 가족 생성/입장 - 첫 선택 페이지
-.signupIndex {
+// 첫 선택 페이지
+.signup-index {
   height: 100%;
   background-color: $orange400;
   padding-left: 10%;
@@ -10,11 +10,11 @@
   flex-direction: column;
   justify-content: center;
 
-  &__iconBox {
+  &__icon {
     width: 30%;
     height: 13%;
 
-    &__icon {
+    .icon {
       width: 100%;
       height: 100%;
 
@@ -24,49 +24,46 @@
     }
   }
 
-  &__spanBox {
+  &__title {
     margin-top: 5%;
     font-size: 200%;
     display: flex;
     flex-direction: column;
 
-    &__span1 {
+    .title__part--01 {
       font-weight: bold;
     }
 
-    &__span2 {
+    .title__part--02 {
       font-weight: bold;
     }
 
-    &__span3 {
+    .title__part--03 {
     }
   }
 
-  &__createButtonBox {
+  &__btn {
     margin-top: 20%;
 
-    &__createButton {
-      @extend %orange-button-large;
+    .btn-family-set {
+      @extend .orangeButtonLarge;
       background-color: white;
       height: 60px;
       margin-top: 0px;
 
-      &__span {
+      &__text {
         color: black;
         font-weight: bold;
       }
     }
-  }
 
-  &__joinButtonBox {
-
-    &__joinButton {
-      @extend %orange-button-large;
+    .btn-family-join {
+      @extend .orangeButtonLarge;
       background-color: $orange200;
       margin-top: 0;
       height: 60px;
 
-      &__span {
+      &__text {
         color: black;
         font-weight: bold;
       }
@@ -74,180 +71,214 @@
   }
 }
 
-// 가족 생성/입장 - 부모 페이지
-.signupFamily {
+// 가족 생성 페이지
+.signup-family-set {
   height: 100%;
   width: 100%;
-
-  &__div {
-    @include flex-center;
-    height: 100%;
-    width: 100%;
-    background-color: $orange400;
-
-    &__span {
-      font-weight: bold;
-      font-size: 30px;
-    }
-  }
-}
-
-// 가족 생성/입장 - 가족 생성 컴포넌트
-.familySetInfo {
   display: flex;
   align-items: center;
-  height: 100%;
-  width: 100%;
   flex-direction: column;
 
-  &__spanBox {
+  &__title {
     margin-top: 12%;
+    font-size: 30px;
 
-    &__span1 {
+    .title__part--01 {
       font-weight: bold;
-      font-size: 30px;
     }
 
-    &__span2 {
-      font-size: 30px;
+    .title__part-02 {
     }
   }
 
-  &__imageBox {
+  &__img-box {
     margin-top: 5%;
     border: 1px solid black;
-    height: 155px;
-    width: 155px;
+    height: 200px;
+    width: 200px;
     border-radius: 100%;
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
 
-    &__image {
+    .img-box__img {
       border: 1px solid black;
-      height: 150px;
-      width: 150px;
+      height: 195px;
+      width: 195px;
       border-radius: 100%;
+      object-fit: cover;
     }
 
-    &__changeButtonBox {
-      height: 25%;
-      width: 25%;
+    .img-box__btn {
       position: absolute;
       border-radius: 100%;
-      right: 0;
-      bottom: 0;
+      height: 40px;
+      width: 40px;
+      background-color: $gray100;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      right: 5px;
+      bottom: 5px;
 
-      &__changeButton {
-        height: 40px;
-        width: 40px;
-        border-radius: 100%;
-        background-color: $gray100;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        &__icon {
-          fill: white;
-        }
-
+      .btn__icon {
+        fill: white;
       }
     }
   }
 
-  &__inputBox {
+  &__input-box {
     @include flex_center;
     height: 6%;
     width: 65%;
-    margin-top: 10%;
-    border-bottom: 1px solid black;
+    margin-top: 5%;
+    border-bottom: 1px solid $gray100;
 
-    &__input {
+    .input-box__input {
+      width: 100%;
       font-size: 25px;
       text-align: center;
       justify-content: center;
     }
   }
 
-  &__nextButtonBox {
+  &__btn {
     @include flex_center;
-    margin-top: 5%;
     height: 10%;
     width: 100%;
 
-    &__nextButton {
-      @extend %orange-button-large;
+    .btn-next {
+      @extend .orangeButtonLarge;
+
+      &__text {
+      }
     }
   }
 }
 
-// 가족 생성/입장 - 가족 생성 확인 모달
-.familySetCheckModal {
-  border: 1px solid black;
-  height: 100%;
-  width: 100%;
-
-  &__spanBox {
-    border: 1px solid black;
-
-    &__span {
-
-    }
-  }
-}
-
-// 가족 생성/입장 - 초대 코드 공유 컴포넌트
-.familyShareCode {
-  display: flex;
-  align-items: center;
+// 가족 생성 확인
+.signup-family-set-check {
+  @include flex_center;
   height: 100%;
   width: 100%;
   flex-direction: column;
 
-  &__spanBox {
-    margin-top: 12%;
+  &__title {
+    font-size: 30px;
+    margin-bottom: 10%;
 
-    &__span1 {
+    .title__part--01 {
       font-weight: bold;
-      font-size: 30px;
+
     }
 
-    &__span2 {
-      font-size: 30px;
+    .title__part--02 {
     }
   }
 
-  &__imageBox {
-    margin-top: 5%;
+  &__img {
     border: 1px solid black;
-    height: 155px;
-    width: 155px;
+    height: 200px;
+    width: 200px;
     border-radius: 100%;
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
 
-    &__image {
+    .img {
       border: 1px solid black;
-      height: 150px;
-      width: 150px;
+      height: 195px;
+      width: 195px;
       border-radius: 100%;
+      object-fit: cover;
     }
   }
 
-  &__nameBox {
+  &__name {
     margin-top: 10%;
-    height: 10%;
 
-    &__name {
+    .name {
       font-weight: bold;
       font-size: 30px;
     }
   }
 
-  &__codeSection {
+  &__btn {
+    @include flex_center;
+    margin-top: 10%;
+    flex-direction: column;
+
+    .btn-introduce {
+      @extend .orangeButtonMedium;
+
+      &__text {
+      }
+    }
+
+    .btn-back {
+
+      &__text {
+        font-size: 120%;
+        color: $gray200;
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+// 가족 코드 공유
+.signup-family-set-share {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+
+  &__title {
+    margin-top: 12%;
+    font-size: 30px;
+
+    .title__part--01 {
+      font-weight: bold;
+    }
+
+    .title__part--02 {
+    }
+  }
+
+  &__img {
+    margin-top: 5%;
+    border: 1px solid black;
+    height: 200px;
+    width: 200px;
+    border-radius: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .img {
+      border: 1px solid black;
+      height: 195px;
+      width: 195px;
+      border-radius: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__name {
+    margin-top: 10%;
+    height: 10%;
+
+    .name {
+      font-weight: bold;
+      font-size: 30px;
+    }
+  }
+
+  &__code-box {
     @include flex_center;
     position: relative;
     height: 18%;
@@ -257,50 +288,48 @@
     display: flex;
     flex-direction: column;
 
-    &__spanBox {
-      display: block;
-      &__span {
+    .code-box {
+
+      &__text {
         font-size: 20px;
       }
-    }
 
-    &__codeBox {
-      margin-top: 5%;
-      display: block;
       &__code {
+        margin-top: 5%;
+        display: block;
         font-size: 30px;
         font-weight: bold;
       }
-    }
 
-    &__copyButtonBox {
-      height: 20px;
-      width: 20px;
-      position: absolute;
-      top: 55%;
-      right: 10%;
+      &__btn {
+        height: 20px;
+        width: 20px;
+        position: absolute;
+        top: 55%;
+        right: 10%;
 
-      &__copyButton {
-        height: 100%;
-        width: 100%;
+        .btn-copy {
+          height: 100%;
+          width: 100%;
 
-        &__icon {
-          color: black;
+          &__icon {
+            color: black;
+          }
         }
       }
     }
+
   }
 
-  &__kakaoButtonBox {
+  &__btn-kakao {
     margin-top: 20%;
     border: 1px solid black;
 
-    &__kakaoButton {
-
+    .btn-kakao__btn {
     }
   }
 
-  &__nextButtonBox {
+  &__btn-next {
     @include flex_center;
     position: absolute;
     bottom: 5%;
@@ -308,123 +337,115 @@
     height: 10%;
     width: 100%;
 
-    &__nextButton {
-      @extend %orange-button-large;
+    .btn-next__btn {
+      @extend .orangeButtonLarge;
     }
   }
 }
 
-// 가족 생성/입장 - 코드 입력 컴포넌트
-.familyJoin {
+// 가족 입장 페이지
+.signup-family-join {
   height: 100%;
   width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 
-  // 코드 입력 전
-  &__codeInput {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    height: 100%;
+  &__title {
+    margin-top: 30%;
+    font-size: 30px;
 
-    &__spanBox {
-      margin-top: 30%;
-
-      &__span1 {
-        font-size: 30px;
-        font-weight: bold;
-      }
-
-      &__span2 {
-        font-size: 30px;
-      }
+    .title__part--01 {
+      font-weight: bold;
     }
 
-    &__inputBox {
-      @include flex_center;
-      height: 6%;
-      width: 75%;
-      margin-top: 10%;
-      padding-bottom: 2%;
-      border-bottom: 1px solid black;
-
-      &__input {
-        font-size: 25px;
-        text-align: center;
-        justify-content: center;
-      }
-    }
-
-    &__inputButtonBox {
-      margin-top: 5%;
-
-      &__inputButton {
-        @extend %orange-button-medium;
-
-        &__span {
-
-        }
-      }
+    .title__part--02 {
     }
   }
 
-  // 코드 입력 후
-  &__codeResult {
+  &__input-box {
     @include flex_center;
-    height: 100%;
-    flex-direction: column;
+    height: 6%;
+    width: 75%;
+    margin-top: 10%;
+    padding-bottom: 2%;
+    border-bottom: 1px solid $gray100;
 
-    &__imageBox {
-      border: 1px solid black;
-      height: 155px;
-      width: 155px;
-      border-radius: 100%;
-      position: relative;
-      display: flex;
+    .input-box__input {
+      width: 100%;
+      font-size: 25px;
+      text-align: center;
       justify-content: center;
-      align-items: center;
-
-      &__image {
-        border: 1px solid black;
-        height: 150px;
-        width: 150px;
-        border-radius: 100%;
-      }
     }
+  }
 
-    &__nameBox {
-      margin-top: 10%;
+  &__btn {
+    margin-top: 5%;
 
-      &__name {
-        font-weight: bold;
-        font-size: 30px;
-      }
-    }
+    .btn-input {
+      @extend .orangeButtonMedium;
 
-    &__joinFamilyButtonBox {
-      margin-top: 10%;
-
-      &__joinFamilyButton {
-        @extend %orange-button-medium;
-
-        &__span {
-
-        }
-      }
-    }
-
-    &__backButtonBox {
-      @include flex_center;
-      width: 24%;
-      border-bottom: 1px solid $gray200;
-      padding-bottom: 1%;
-
-      &__backButton {
-
-        &__span {
-          font-size: 100%;
-          color: $gray200;
-        }
+      &__text {
       }
     }
   }
+}
+
+// 가족 입장 체크 페이지
+.signup-family-join-check {
+  @include flex_center;
+  height: 100%;
+  flex-direction: column;
+
+  &__img {
+    border: 1px solid black;
+    height: 200px;
+    width: 200px;
+    border-radius: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .img {
+      border: 1px solid black;
+      height: 195px;
+      width: 195px;
+      border-radius: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__name {
+    margin-top: 10%;
+
+    .name {
+      font-weight: bold;
+      font-size: 30px;
+    }
+  }
+
+  &__btn {
+    @include flex_center;
+    flex-direction: column;
+    margin-top: 10%;
+
+    .btn-join-member {
+      @extend .orangeButtonMedium;
+
+      &__text {
+      }
+    }
+
+    .btn-back {
+      width: 80%;
+
+      &__text {
+        font-size: 120%;
+        color: $gray200;
+        text-decoration: underline;
+      }
+    }
+  }
+
 }
