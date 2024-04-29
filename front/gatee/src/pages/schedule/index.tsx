@@ -7,7 +7,7 @@ import googleCalendarPlugin from "@fullcalendar/google-calendar";
 import { FaCaretLeft, FaCaretRight } from "react-icons/fa";
 import { LuCalendarPlus } from "react-icons/lu";
 import { Link } from "react-router-dom";
-import DayToast from "@pages/schedule/component/DayToast";
+import DayToast from "@pages/schedule/components/DayToast";
 
 
 const ScheduleIndex: React.FC = () => {

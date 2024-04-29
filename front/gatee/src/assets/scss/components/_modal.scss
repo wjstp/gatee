@@ -1,6 +1,6 @@
 @use '../abstracts/index' as *;
 
-.modalOverlay {
+%modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -12,7 +12,7 @@
   align-items: center;
 }
 
-.modalContent {
+%modal-content {
   @include flex_center;
   width: 60%;
   height: 20%;

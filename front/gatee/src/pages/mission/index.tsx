@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import MissionItem from "./component/MissionItem";
+import MissionItem from "@pages/mission/components/MissionItem";
 import Slider from "react-slick";
-import Improvement from "./component/Improvement";
+import Improvement from "@pages/mission/components/Improvement";
 import {useFamilyStore} from "../../store/useFamilyStore";
 
 interface KoreanMentType {

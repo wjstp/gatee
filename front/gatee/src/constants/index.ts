@@ -1,9 +1,9 @@
-import { Member, Question, Character } from "src/types";
+import {Member, Question, Character} from "src/types";
 
 export const API_URL: string = "https://gaty.duckdns.org";
 
 // 멤버 임시 데이터
-export const MemberInfoSample : Member = {
+export const MemberInfoSample: Member = {
   nickname: "이윤정",
   email: "zyo0720@kakao.com",
   role: "딸",
@@ -14,7 +14,7 @@ export const MemberInfoSample : Member = {
 }
 
 // 가족 구성원 임시 데이터
-export const FamilyMemberInfoSample : Member[] = [
+export const FamilyMemberInfoSample: Member[] = [
   {
     nickname: "윤예빈",
     email: "yebin4684@gmail.com",
@@ -62,8 +62,28 @@ export const FamilyMemberInfoSample : Member[] = [
   }
 ]
 
+// 백과사전 임시 데이터
+export const CharacterSample: Character[] = [
+  {
+    question: "못 먹는 음식은",
+    answer: "피망"
+  },
+  {
+    question: "부모님이 가장 보고 싶을 때는",
+    answer: "맛있는 거 먹을 때"
+  },
+  {
+    question: "올해 꼭 하고 싶은 일은",
+    answer: "혼자 해외여행 가기"
+  },
+  {
+    question: "인생에서 가장 후회되는 일은",
+    answer: "학점 관리 안 한 것"
+  }
+]
+
 // 모의고사 임시 데이터
-export const QuestionSample : Question[] = [
+export const QuestionSample: Question[] = [
   {
     memberName: "윤예빈",
     question: "좋아하는 음식은 무엇인가요?",
@@ -126,22 +146,37 @@ export const QuestionSample : Question[] = [
   }
 ]
 
-// 백과사전 임시 데이터
-export const CharacterSample : Character[] = [
+
+// 사진 임시 데이터
+export const photoGroup = [
   {
-    question: "못 먹는 음식은",
-    answer: "피망"
+    dateTime: "2024-01-31T12:00:00",
+    src: '@assets/images/schedule/calendarBanner3.jpg',
   },
   {
-    question: "부모님이 가장 보고 싶을 때는",
-    answer: "맛있는 거 먹을 때"
+    dateTime: "2024-01-31T12:00:00",
+    src: '@assets/images/schedule/calendarBanner3.jpg',
+  },
+
+  {
+    dateTime: "2024-01-31T12:00:00",
+    src: '@assets/images/schedule/calendarBanner3.jpg',
   },
   {
-    question: "올해 꼭 하고 싶은 일은",
-    answer: "혼자 해외여행 가기"
+    dateTime: "2024-01-31T12:00:00",
+    src: '@assets/images/schedule/calendarBanner3.jpg',
   },
   {
-    question: "인생에서 가장 후회되는 일은",
-    answer: "학점 관리 안 한 것"
-  }
+    dateTime: "2024-01-31T12:00:00",
+    src: '@assets/images/schedule/calendarBanner3.jpg',
+  },
+  {
+    dateTime: "2024-01-31T12:00:00",
+    src: '@assets/images/schedule/calendarBanner3.jpg',
+  },
+  {
+    dateTime: "2024-01-31T12:00:00",
+    src: '@assets/images/schedule/calendarBanner3.jpg',
+  },
+
 ]

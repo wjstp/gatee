@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import FirstExam from "./component/FirstExam";
-import SecondDict from "./component/SecondDict";
-import ThirdAll from "./component/ThirdAll";
+import FirstExam from "@pages/onboarding/components/FirstExam";
+import SecondDict from "@pages/onboarding/components/SecondDict";
+import ThirdAll from "@pages/onboarding/components/ThirdAll";
 import Slider from "react-slick";
-import KaKaoLogin from "./component/KaKaoLogin";
+import KaKaoLogin from "@pages/onboarding/components/KaKaoLogin";
 // 공식 문서 : https://react-slick.neostack.com/docs/api
 const OnboardingIndex = () => {
   // const [oldSlide, setOldSlide] = useState(0);
