@@ -10,21 +10,19 @@ function SignupFamily() {
 
   return (
     <div className="signupFamily">
-      <div className="signupFamily__div">
-        {action === 'set-info' ? (
-          <FamilySetInfo />
-        ) : action === 'join' ? (
-          <FamilyJoin />
-        ) : action === 'share-code' ? (
-          <FamilyShareCode />
-        ) : (
-          <div className="signupFamily__div__div">
-            <span className="signupFamily_div__div__span">
-              잘못된 접근입니다.
-            </span>
-          </div>
-        )}
-      </div>
+      {action === 'set-info' ? (
+        <FamilySetInfo />
+      ) : action === 'join' ? (
+        <FamilyJoin />
+      ) : action === 'share-code' ? (
+        <FamilyShareCode />
+      ) : (
+        <div className="signupFamily__div">
+          <span className="signupFamily__div__span">
+            이쪽은 잘못된 방향이에요!
+          </span>
+        </div>
+      )}
     </div>
   );
 }

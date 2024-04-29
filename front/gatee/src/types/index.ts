@@ -1,6 +1,21 @@
-import React from 'react';
-
-function Index() {
+export interface Member {
+  nickname: string;
+  email: string;
+  role: string;
+  birth: string;
+  birthType: string;
+  image: string;
+  mood: string | null;
 }
 
-export default Index;
+export interface Question {
+  memberName: string;
+  question: string;
+  correctAnswer: string;
+  answerList: string[];
+}
+
+export interface Character {
+  question: string;
+  answer: string;
+}

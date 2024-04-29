@@ -12,7 +12,7 @@ import java.util.UUID;
 
 public interface MemberService {
 
-    void register(String name, String nickname);
+    UUID register(String name, String nickname);
 
     void saveMemberInfo(MemberSaveReq memberSaveReq, UUID memberId, HttpServletResponse response) throws ParseException;
 

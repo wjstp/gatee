@@ -43,7 +43,7 @@ public class MemberServiceImpl implements MemberService{
     // 회원 가입
     @Override
     @Transactional
-    public void register(String name, String nickname) {
+    public UUID register(String name, String nickname) {
         Member member = Member.builder()
                 .name(name)
                 .nickname(nickname)
@@ -51,6 +51,8 @@ public class MemberServiceImpl implements MemberService{
                 .build();
 
         memberRepository.save(member);
+
+        return member.getId();
     }
 
     // 회원 정보 저장

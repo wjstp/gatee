@@ -1,0 +1,153 @@
+@use '../abstracts/index' as *;
+@use '../components/index' as *;
+
+.mission__index {
+
+  .improvement-oneline {
+    @include flex_center;
+    @include flex_col;
+    gap:0.2rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+
+    .flex-row {
+      display: flex;
+      flex-direction: row;
+      align-items: end;
+
+      .text-orange {
+        color: $orange500;
+        font-size: 1.3rem;
+
+      }
+
+
+    }
+
+    .improvement-comment {
+      @include mx-(3);
+
+    }
+  }
+
+  .improvement-card {
+    @include mx-(2);
+    @include mt-(1);
+    padding: 1rem;
+    padding-top: 1.5rem;
+    font-weight: bold;
+    font-size: 1.3rem;
+    background-color: $orange100;
+    border-radius: 0.5rem;
+
+    .flex-row {
+      @include flex_row;
+      align-items: end;
+      justify-content: space-between;
+      //background-color: red;
+      .imgWidth {
+        width: 5rem;
+        height: auto;
+      }
+    }
+
+    &-button {
+      @extend %orange-button-radius-large;
+    }
+  }
+
+  .mission__item-title {
+    text-align: center;
+    @include my-(1);
+  }
+
+  .mission__item {
+    @include flex-row;
+    align-items: center;
+    @include mb-(1);
+    @include mx-(2);
+
+    .mission-content {
+      flex: 3.5;
+
+      .mission__name-container {
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        @include mb-(0.5);
+
+        .title-check-align {
+          @include flex_row;
+          align-items: center;
+
+          .title {
+            font-size: 1.1rem;
+            @include mr-(0.4);
+          }
+        }
+
+        .title {
+          font-size: 1.1rem;
+        }
+      }
+
+      .mission-goto {
+        color: $orange500;
+      }
+
+      .mission__complete-button {
+        background-color: $orange500;
+        color: white;
+        border-radius: 0.3rem;
+        font-size: 1rem;
+        font-weight: bold;
+        padding: 0.3rem;
+      }
+    }
+
+  }
+
+  .iconimg {
+    width: 7dvh;
+    @include mr-(1.2);
+    flex: 1;
+  }
+
+  h3 {
+    font-weight: normal;
+    @include mt-(2);
+  }
+
+  .dots_custom {
+    width: 100%;
+    display: flex;
+    margin-top: 1rem;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .dots_custom li {
+    list-style: none;
+    cursor: pointer;
+    display: inline-block;
+    margin: 0 6px;
+    padding: 0;
+  }
+
+  .dots_custom li button {
+    border: none;
+    background: $gray100;
+    color: transparent;
+    cursor: pointer;
+    display: block;
+    height: 8px;
+    width: 8px;
+    border-radius: 100%;
+    padding: 0;
+  }
+
+  .dots_custom li.slick-active button {
+    background-color: $orange500;
+  }
+}

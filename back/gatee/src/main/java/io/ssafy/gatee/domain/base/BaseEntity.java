@@ -30,4 +30,8 @@ public class BaseEntity {
     public void prePersis() {
         this.status = true;
     }
+
+    public void deleteData() {
+        this.status = false;
+    }
 }

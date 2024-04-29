@@ -1,0 +1,116 @@
+@use '../abstracts/index' as *;
+
+@function calendarBannerImage($month) {
+  @return '../../images/schedule/bg_calendar_banner' + $month + '.jpg';
+}
+
+.schedule {
+  height: 100%;
+
+  &__banner {
+    // banner뒤의 숫자에 따라 1월부터 12월까지의 이미지로 변경
+    @for $i from 1 through 12 {
+      &#{$i} {
+        background: {
+          image: url(calendarBannerImage(#{$i}));
+          position: center;
+          repeat: no-repeat;
+          size: cover;
+        };
+        height: 13%;
+        border-radius: 40px 40px 0 0;
+        transition: height 0.5s ease;
+      }
+    }
+
+    &--open {
+      height: 0%;
+    }
+  }
+}
+
+.schedule-calendar {
+  margin: 0 2%;
+  height: 87%;
+
+  &__header {
+    @include flex_between;
+
+    height: 15%;
+    padding-top: 1rem;
+  }
+
+  &__title-wrapper {
+    @include flex_center;
+
+    gap: 1.5rem;
+  }
+
+  &__main {
+    height: 85%;
+    //transition: height 0.5s ease;
+
+    &--open {
+      height: 50%;
+    }
+  }
+
+  &__button {
+    &-today {
+      color: $orange300;
+      font-weight: 600;
+      width: 20%;
+    }
+
+    &-month {
+      color: black;
+    }
+
+    &-add-event {
+      @include flex_center;
+
+      color: $orange300;
+      width: 20%;
+    }
+  }
+
+  &__month {
+    position: relative;
+    font: {
+      weight: 800;
+      size: $font-size-big;
+    };
+  }
+
+  &__year {
+    position: absolute;
+    top: -20px;
+    text-align: center;
+    width: 100%;
+    color: $gray400;
+    font: {
+      weight: 500;
+      size: $font-size-small;
+    };
+  }
+
+  &__day {
+    position: relative;
+  }
+
+  &__today {
+    position: absolute;
+    z-index: -10;
+    background: $orange400;
+    top: -3px;
+    left: -4px;
+    width: 25px;
+    height: 24px;
+    border-radius: 50%;
+  }
+}
+
+.day-toast {
+  background-color: $orange300;
+  height: 50%;
+}
