@@ -83,8 +83,6 @@ deploy:
     - cd nginx
     - echo [INFO] $TAG
     - source ./deploy_script.sh $TAG
-    - docker cp ./nginx.conf  proxy-server:/etc/nginx/nginx.conf
-    - docker exec proxy-server nginx -s reload
     - cd ../..
     - if [ "$DEPLOY_ENV" == "blue" ]; then
       echo "Removing to green environment...";
