@@ -83,6 +83,7 @@ deploy:
       else
       echo "Deploying to blue environment...";
       docker-compose -f docker-compose.blue.yaml down;
+      fi
   after_script:
     - docker logout
     - echo [INFO] docker deploy end!
