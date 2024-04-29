@@ -46,7 +46,7 @@ const BottomBar = () => {
         </NavLink>
 
         {/*앨범*/}
-        <NavLink to="/photo" className={({isActive}) =>
+        <NavLink to="/photo/day" className={({isActive}) =>
           isActive ? 'bottomBar__item--active' : 'bottomBar__item'
         }>
           <PiImage size={24}/>

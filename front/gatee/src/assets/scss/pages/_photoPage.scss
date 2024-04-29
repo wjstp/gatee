@@ -1,70 +1,152 @@
 @use '../abstracts/index' as *;
 
-.photoTab--container {
+.photo {
+  .photo-tab-container {
 
-  @include flex_center;
-  justify-content: space-evenly;
-  position: relative;
-  @include mt-(1);
-
-  .tabButton {
-    color: $gray200; /* 기본 버튼 색상 */
-    padding-bottom: 0.2rem;
-    font-size: 1.3rem;
-  }
-
-  .tabButton.active {
-    color: $orange500; /* 활성화된 탭의 버튼 색상 */
-    border-bottom: 2px solid $orange500;
-    padding-bottom: 0.2rem;
-    font-weight: bold;
-    font-size: 1.3rem;
-  }
-
-  .plusButton {
-    position: absolute;
-    right: 1rem;
-    color: $orange500;
-  }
-}
-
-.photoAll--container {
-
-  .dayMonthYear--controller {
     @include flex_center;
-    position: fixed;
+    @include my-(1);
+    justify-content: space-evenly;
+    position: relative;
+
+    .photo-tab-container__button {
+      color: $gray200; /* 기본 버튼 색상 */
+      padding-bottom: 0.2rem;
+      font-size: 1.1rem;
+    }
+
+    .photo-tab-container__button.active {
+      color: $orange500; /* 활성화된 탭의 버튼 색상 */
+      border-bottom: 2px solid $orange500;
+      padding-bottom: 0.2rem;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+
+    .photo-tab-container__plus-button {
+      position: absolute;
+      right: 1rem;
+      color: $orange500;
+    }
+  }
+
+  .day-month-year-controller {
+
+    @include flex_center;
+    position: absolute;
     bottom: 12dvh;
     left: 5dvw;
-    font-size: 1.3rem;
+    z-index: 9999;
+    font-size: 1.1rem;
     border-radius: 12rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
-    .dayBtn {
+    .day-btn {
       @include flex_center;
-      width: 5rem;
-      height: 3rem;
+      width: 4rem;
+      height: 2.5rem;
       border-top-left-radius: 12rem;
       border-bottom-left-radius: 12rem;
+      background-color: white;
     }
 
 
-    .monthBtn {
+    .month-btn {
       @include flex_center;
-      width: 5rem;
-      height: 3rem;
+      width: 4rem;
+      height: 2.5rem;
+      background-color: white;
     }
 
-    .yearBtn {
+    .year-btn {
       @include flex_center;
-      width: 5rem;
-      height: 3rem;
+      width: 4rem;
+      height: 2.5rem;
       border-top-right-radius: 12rem;
       border-bottom-right-radius: 12rem;
+      background-color: white;
     }
 
-    .activeBtn {
+    .active-btn {
       background-color: $orange400;
       color: white;
     }
+  }
+
+  .month-photo-container {
+
+    @include flex_center;
+    @include flex-col;
+
+    .month-photo-item--container {
+      @include mb-(1);
+      height: 8rem;
+      width: 90%;
+      border-radius: 1rem;
+      position: relative;
+
+      .month {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        font-size: 1.3rem;
+        z-index: 10;
+        color: white;
+        font-weight: bold;
+      }
+
+      .photo {
+        height: 100%;
+        width: 100%;
+        border-radius: 1rem;
+        filter: brightness(70%);
+        object-fit: cover;
+        background-color: red;
+        box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+      }
+    }
+  }
+
+  .year-photo-container {
+
+    @include flex_center;
+    @include flex-col;
+    gap: 1rem;
+
+    .year-photo-item--container {
+
+      height: 20rem;
+      width: 90%;
+      border-radius: 1rem;
+      position: relative;
+
+      .year {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        font-size: 1.3rem;
+        z-index: 10;
+        color: white;
+        font-weight: bold;
+      }
+
+      .photo {
+        background-color: red;
+        height: 100%;
+        width: 100%;
+        border-radius: 1rem;
+        filter: brightness(70%);
+        object-fit: cover;
+        box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+      }
+    }
+  }
+
+  .detail-tab--title {
+    @include mx-(1.5);
+    @include my-(0.5);
+    width: 85%;
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: $orange500;
   }
 }

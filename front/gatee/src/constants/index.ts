@@ -146,3 +146,14 @@ export const CharacterSample : Character[] = [
         answer: "학점 관리 안 한 것"
     }
 ]
+
+export const photoGroup = [
+    {
+        dateTime:"",
+        src: '@assets/images/schedule/calendarBanner3.jpg',
+    },
+    {
+        dateTime:"",
+        src: '@assets/images/schedule/calendarBanner3.jpg',
+    },
+]

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from "react-router-dom";
+import {Routes, Route} from "react-router-dom";
 import MainLayout from "@layout/MainLayout";  // 레이아웃
 import SubLayout from "@layout/SubLayout";
 import ExamIndex from "@pages/exam";  // 모의고사
@@ -23,10 +23,15 @@ import CharacterQuestion from "@pages/character/Question";
 import SignupIndex from "@pages/signup";  // 회원가입
 import SignupMember from "@pages/signup/Member";
 import SignupFamily from "@pages/signup/Family";
-import PhotoAlbumIndex from "@pages/photo"; // 앨범
+import PhotoIndex from "@pages/photo";
+import PhotoAlbum from "@pages/photo/AlbumGroup";
 import PhotoAlbumGroupDetail from "@pages/photo/AlbumGroupDetail";
-import PhotoAllGroupDetail from "@pages/photo/AllGroupDetail";
-import PhotoAlbumPhoto from "@pages/photo/AlbumPhoto";
+import PhotoAllMonthGroupDetail from "@pages/photo/AllMonthGroupDetail";
+import PhotoAllYearGroupDetail from "@pages/photo/AllYearGroupDetail";
+import AllDay from "@pages/photo/AllDay";
+import AllMonth from "@pages/photo/AllMonth";
+import AllYear from "@pages/photo/AllYear"; // 앨범
+
 
 const Router = () => {
   return (
@@ -65,12 +70,17 @@ const Router = () => {
         <Route path="/character/question" element={<CharacterQuestion/>}/>
 
         {/*앨범 페이지*/}
-        <Route path="/photo" element={<PhotoAlbumIndex/>}>
-          <Route path="album" element={<PhotoAlbumPhoto/>}/>
+        <Route path="/photo" element={<PhotoIndex/>}>
+          <Route path="day" element={<AllDay/>}/>
+          <Route path="month" element={<AllMonth/>}/>
+          <Route path="year" element={<AllYear/>}/>
+          <Route path="month/:year/:month" element={<PhotoAllMonthGroupDetail/>}/>
+          <Route path="year/:year" element={<PhotoAllYearGroupDetail/>}/>
+          <Route path="album" element={<PhotoAlbum/>}/>
           <Route path="album/:id" element={<PhotoAlbumGroupDetail/>}/>
-          <Route path="group/:id" element={<PhotoAllGroupDetail/>}/>
         </Route>
       </Route>
+
 
       {/*TabBar, BottomBar 없는 레이아웃*/}
       <Route element={<SubLayout/>}>
