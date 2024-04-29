@@ -49,5 +49,5 @@ spring:
       on-profile: security-prod
 
 jwt:
-  token-validity-in-seconds: 1800
+  access-token-validity-in-seconds: 1800
   refresh-token-validity-in-seconds: 180000
