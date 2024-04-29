@@ -90,7 +90,7 @@ deploy:
       echo "Removing to green environment...";
       docker-compose -f docker-compose.green.yaml down;
       else
-      echo "Deploying to blue environment...";
+      echo "removing to blue environment...";
       docker-compose -f docker-compose.blue.yaml down;
       fi
   after_script:
