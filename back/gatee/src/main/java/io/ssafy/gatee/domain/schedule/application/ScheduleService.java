@@ -12,11 +12,13 @@ import io.ssafy.gatee.global.exception.error.not_found.FamilyScheduleNotFoundExc
 import io.ssafy.gatee.global.exception.error.not_found.MemberFamilyScheduleNotFoundException;
 import io.ssafy.gatee.global.exception.error.not_found.ScheduleNotFoundException;
 
+import java.util.UUID;
+
 public interface ScheduleService {
     ScheduleListRes readSchedule(Long familyId) throws FamilyNotFoundException;
-    ScheduleInfoRes readScheduleDetail(Long scheduleId) throws ScheduleNotFoundException;
-    void saveSchedule(ScheduleSaveReq scheduleSaveReq) throws FamilyNotFoundException;
-    void editSchedule(ScheduleEditReq scheduleEditReq, Long scheduleId) throws ScheduleNotFoundException, DoNotHavePermissionException, FamilyScheduleNotFoundException, MemberFamilyScheduleNotFoundException, FamilyNotFoundException;
-    void participateSchedule(ScheduleParticipateReq scheduleParticipateReq, Long scheduleId) throws FamilyScheduleNotFoundException, MemberFamilyScheduleNotFoundException;
-    void saveScheduleRecord(ScheduleSaveRecordReq scheduleSaveRecordReq, Long scheduleId);
+    ScheduleInfoRes readScheduleDetail(Long scheduleId, Long familyId) throws ScheduleNotFoundException, FamilyScheduleNotFoundException, MemberFamilyScheduleNotFoundException;
+    void saveSchedule(ScheduleSaveReq scheduleSaveReq, UUID memberId) throws FamilyNotFoundException;
+    void editSchedule(ScheduleEditReq scheduleEditReq, UUID memberId, Long scheduleId) throws ScheduleNotFoundException, DoNotHavePermissionException, FamilyScheduleNotFoundException, MemberFamilyScheduleNotFoundException, FamilyNotFoundException;
+    void participateSchedule(ScheduleParticipateReq scheduleParticipateReq, UUID memberId, Long scheduleId) throws FamilyScheduleNotFoundException, MemberFamilyScheduleNotFoundException;
+    void saveScheduleRecord(ScheduleSaveRecordReq scheduleSaveRecordReq, UUID memberId, Long scheduleId);
 }

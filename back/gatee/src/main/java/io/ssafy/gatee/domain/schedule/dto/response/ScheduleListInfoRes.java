@@ -1,7 +1,6 @@
 package io.ssafy.gatee.domain.schedule.dto.response;
 
 import io.ssafy.gatee.domain.member.entity.Member;
-import io.ssafy.gatee.domain.member_family_schedule.entity.MemberFamilySchedule;
 import io.ssafy.gatee.domain.schedule.entity.Schedule;
 import io.ssafy.gatee.domain.schedule_record.entity.ScheduleRecord;
 import jakarta.validation.constraints.NotNull;
@@ -10,7 +9,7 @@ import lombok.Builder;
 import java.util.List;
 
 @Builder
-public record ScheduleInfoRes(
+public record ScheduleListInfoRes(
         @NotNull
         Long scheduleId,
 
@@ -32,12 +31,10 @@ public record ScheduleInfoRes(
         @NotNull
         String endDate,
 
-        ScheduleRecord scheduleRecord,
-
-        List<ParticipateMemberRes> participateMembers
+        ScheduleRecord scheduleRecord
 ) {
-    public static ScheduleInfoRes toDto(Schedule schedule, List<Member> memberList) {
-        return ScheduleInfoRes.builder()
+    public static ScheduleListInfoRes toDto(Schedule schedule) {
+        return ScheduleListInfoRes.builder()
                 .scheduleId(schedule.getId())
                 .category(String.valueOf(schedule.getCategory()))
                 .title(schedule.getTitle())
@@ -46,7 +43,6 @@ public record ScheduleInfoRes(
                 .startDate(String.valueOf(schedule.getStartDate()))
                 .endDate(String.valueOf(schedule.getEndDate()))
                 .scheduleRecord(schedule.getScheduleRecord())
-                .participateMembers(memberList.stream().map(ParticipateMemberRes::toDto).toList())
                 .build();
     }
 }
