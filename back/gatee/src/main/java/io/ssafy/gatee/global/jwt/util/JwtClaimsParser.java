@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 public class JwtClaimsParser {
-    private final String AUTHORITIES_KEY = "authorities";  // todo : 이후 수정할 것
+    private final String AUTHORITIES_KEY = "authorities";
 
     private SecretKey secretKey;
 

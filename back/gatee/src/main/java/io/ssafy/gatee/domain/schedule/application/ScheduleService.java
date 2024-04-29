@@ -12,8 +12,6 @@ import io.ssafy.gatee.global.exception.error.not_found.FamilyScheduleNotFoundExc
 import io.ssafy.gatee.global.exception.error.not_found.MemberFamilyScheduleNotFoundException;
 import io.ssafy.gatee.global.exception.error.not_found.ScheduleNotFoundException;
 
-import java.util.List;
-
 public interface ScheduleService {
     ScheduleListRes readSchedule(Long familyId) throws FamilyNotFoundException;
     ScheduleInfoRes readScheduleDetail(Long scheduleId) throws ScheduleNotFoundException;
