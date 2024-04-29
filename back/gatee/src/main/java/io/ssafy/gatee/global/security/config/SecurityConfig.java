@@ -2,7 +2,6 @@ package io.ssafy.gatee.global.security.config;
 
 import io.ssafy.gatee.global.jwt.application.JwtService;
 import io.ssafy.gatee.global.jwt.filter.JwtFilter;
-import io.ssafy.gatee.global.jwt.util.JwtProvider;
 import io.ssafy.gatee.global.security.application.AuthService;
 import io.ssafy.gatee.global.security.filter.CustomOAuth2LoginFilter;
 import io.ssafy.gatee.global.security.handler.CustomAccessDeniedHandler;
@@ -36,9 +35,8 @@ import java.util.List;
 public class SecurityConfig {
 
     private final String[] URL_WHITE_LIST = {
-//            "/**",
-            "/api/jwt/**", "/api/auth/**", "/login",
-            "/docs/**", "/error"
+            "/api/jwt/**", "/api/auth/**", "/error",
+            "/docs/**"
     };
 
     private final JwtService jwtService;
@@ -61,16 +59,16 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests
                         ((auth) -> auth
-                        .requestMatchers(URL_WHITE_LIST).permitAll()
-                        // 회원가입 후 정보 등록 페이지는 anonymous만 접근 가능, 정보등록을 하지 않은 유저는 다른 페이지에 접근 불가
-                        .requestMatchers(HttpMethod.PATCH,"/api/members").hasRole("ANONYMOUS")
-                        .requestMatchers(HttpMethod.POST, "/api/family").hasAnyRole("ANONYMOUS", "USER")
-                        .anyRequest().hasRole("USER")
-                )
+                                .requestMatchers(URL_WHITE_LIST).permitAll()
+                                // 회원가입 후 정보 등록 페이지는 anonymous만 접근 가능, 정보등록을 하지 않은 유저는 다른 페이지에 접근 불가
+                                .requestMatchers(HttpMethod.PATCH, "/api/members").hasRole("ANONYMOUS")
+                                .requestMatchers(HttpMethod.POST, "/api/family").hasAnyRole("ANONYMOUS", "USER")
+                                .anyRequest().hasRole("USER")
+                        )
 
                 .exceptionHandling(configurer -> configurer
-                                .accessDeniedHandler(customAccessDeniedHandler)
-                                .authenticationEntryPoint(new CustomAuthenticationEntryPointHandler())
+                        .accessDeniedHandler(customAccessDeniedHandler)
+                        .authenticationEntryPoint(new CustomAuthenticationEntryPointHandler())
                 )
 
                 .addFilterAt(new CustomOAuth2LoginFilter(authService, customOAuth2SuccessHandler, customOAuth2FailureHandler), OAuth2LoginAuthenticationFilter.class)

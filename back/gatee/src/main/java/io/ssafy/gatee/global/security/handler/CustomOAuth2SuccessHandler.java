@@ -1,10 +1,7 @@
 package io.ssafy.gatee.global.security.handler;
 
 import io.ssafy.gatee.global.jwt.application.JwtService;
-import io.ssafy.gatee.global.jwt.util.JwtProvider;
-import io.ssafy.gatee.global.security.user.CustomUserDetails;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +16,6 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler {
-
-    private final JwtProvider jwtProvider;
 
     private final JwtService jwtService;
 

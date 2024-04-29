@@ -33,6 +33,7 @@ public class CustomOAuth2LoginFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         log.info("접근 uri" + request.getRequestURI());
         log.info("카카오 access token" + request.getHeader("Kakao-Access-Token"));   //todo : 확인
+
         // 모바일에서 토큰을 가지고 요청하는 uri인지 확인
         if (request.getRequestURI().endsWith(KAKAO_USER_INFO_URL)) { // todo: 확인할 것
             try {
@@ -63,5 +64,4 @@ public class CustomOAuth2LoginFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(request, response);
     }
-
 }

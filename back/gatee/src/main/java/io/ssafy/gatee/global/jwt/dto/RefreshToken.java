@@ -7,8 +7,6 @@ import lombok.Getter;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.index.Indexed;
 
-import java.util.UUID;
-
 @Getter
 @Builder
 @AllArgsConstructor

@@ -26,12 +26,14 @@ public class JwtClaimsParser {
     private final String AUTHORITIES_KEY = "authorities";  // todo : 이후 수정할 것
 
     private SecretKey secretKey;
+
     public JwtClaimsParser(
             @Value("${jwt.secret}")
             String secret
     ) {
         secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
     }
+
     public Claims verifyJwtToken(String token) {
         return Jwts.parser()
                 .verifyWith(secretKey)
@@ -46,7 +48,7 @@ public class JwtClaimsParser {
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
-        Collection<? extends GrantedAuthority> authority = (Collection<? extends GrantedAuthority>)claims.get(AUTHORITIES_KEY);
+        Collection<? extends GrantedAuthority> authority = (Collection<? extends GrantedAuthority>) claims.get(AUTHORITIES_KEY);
         CustomUserDetails customUserDetails = CustomUserDetails.builder()
                 .username(claims.getSubject())
                 .privilege(claims.get("privilege").toString())
@@ -60,16 +62,14 @@ public class JwtClaimsParser {
         return new UsernamePasswordAuthenticationToken(customUserDetails, token, getAuthorities(claims));
     }
 
-    // 일반 유저 authority 가져오기
     public Collection<? extends GrantedAuthority> getAuthorities(Claims claims) {
-         Collection<? extends GrantedAuthority> authorities =
+        Collection<? extends GrantedAuthority> authorities =
                 Arrays.stream(("ROLE_" + claims.get(AUTHORITIES_KEY).toString()).split(","))
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toCollection(ArrayList::new));
-    return authorities;
+        return authorities;
     }
-    
-    // 익명 유저  authority 별도로? 우리 서비스에서는 안필요할 수도 있을 것 같음
+
     public Collection<? extends GrantedAuthority> getAnonymousAuthorities() {
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_" + Privilege.ANONYMOUS));

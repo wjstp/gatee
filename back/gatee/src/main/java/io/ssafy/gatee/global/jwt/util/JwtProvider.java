@@ -60,6 +60,4 @@ public class JwtProvider {
                 .signWith(secretKey)
                 .compact();
     }
-
-
 }

@@ -28,15 +28,10 @@ import java.util.UUID;
 public class JwtService {
 
     private final JwtProvider jwtProvider;
-
     private final JwtClaimsParser jwtClaimsParser;
-
     private final RefreshTokenRedisRepository refreshTokenRepository;
-
     private static final String ACCESS_HEADER_AUTHORIZATION = "Authorization";
-
     private static final String TOKEN_PREFIX = "Bearer ";
-
     private final String AUTHORITIES_KEY = "authorities";
 
     public Authentication authenticateJwtToken(HttpServletRequest request) {
@@ -66,7 +61,6 @@ public class JwtService {
                     .isAccountNonExpired(true)
                     .build();
         }
-        // 스프링 시큐리티 인증 토큰 생성
         return new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
     }
 
@@ -76,11 +70,11 @@ public class JwtService {
 
         // Authorization 헤더 검증
         if (Objects.isNull(authorization)) {
-            System.out.println("토큰이 존재하지 않습니다.");   // todo: exception 추가
+            log.info("토큰이 존재하지 않습니다.");   // todo: exception 추가
             return null;    //  todo: null 수정
         }
         if (!authorization.startsWith(TOKEN_PREFIX)) {
-            System.out.println("접두사가 일치하지 않습니다.");
+            log.info("접두사가 일치하지 않습니다.");
             return null;
         }
         // Bearer 제거 후 순수 토큰 획득

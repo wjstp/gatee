@@ -19,18 +19,18 @@ import java.util.Arrays;
 @RequestMapping("/api/jwt")
 @RequiredArgsConstructor
 public class JwtController {
+
     private final JwtService jwtService;
 
-    // todo: access token 검증할 때 refresh token의 남은 시간을 확인해서 갱신하는 로직 추가
     @PostMapping("/rotate-token")
     public void rotateAccessToken(HttpServletRequest request, HttpServletResponse response) {
         log.info("액세스 토큰 재발급 시작");
         String refreshToken = this.getCookie(request).getValue();
         log.info("refresh Token : " + refreshToken);
         String accessToken = jwtService.rotateAccessToken(refreshToken);
-        // accessToken 헤더에 추가
         response.addHeader("Access-Token", "Bearer " + accessToken);
     }
+    // todo: access token 검증할 때 refresh token의 남은 시간을 확인해서 갱신하는 로직 추가
 
     private Cookie getCookie(HttpServletRequest request) {
         return Arrays.stream(request.getCookies())

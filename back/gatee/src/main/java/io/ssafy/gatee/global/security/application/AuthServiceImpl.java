@@ -56,7 +56,6 @@ public class AuthServiceImpl implements AuthService {
         return toCustomUserDetails(register(socialData));
     }
 
-
     @Override
     @Transactional
     public Member register(KakaoTokenRes socialData) {

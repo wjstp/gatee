@@ -35,7 +35,6 @@ public class CustomUserDetails implements UserDetails {
     private boolean isEnabled;
 
 
-
     public static CustomUserDetails toCustomUserDetails(Member member) {
 
         return CustomUserDetails.builder()
@@ -50,9 +49,11 @@ public class CustomUserDetails implements UserDetails {
                 .build();
 
     }
-    public static Collection<? extends  GrantedAuthority> toAuthorities(Member member) {
+
+    public static Collection<? extends GrantedAuthority> toAuthorities(Member member) {
         return AuthorityUtils.createAuthorityList(String.valueOf(member.getPrivilege()));
     }
+
     public UUID getMemberId() {
         return UUID.fromString(this.username);
     }
