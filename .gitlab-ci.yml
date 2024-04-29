@@ -77,6 +77,12 @@ deploy:
     - source ./deploy_script.sh $TAG
     - cp ./nginx.conf /home/ubuntu/nginx.conf
     - docker exec proxy-server nginx -s reload
+    - if [ "$DEPLOY_ENV" == "blue" ]; then
+      echo "Removing to green environment...";
+      docker-compose -f docker-compose.green.yaml down;
+      else
+      echo "Deploying to blue environment...";
+      docker-compose -f docker-compose.blue.yaml down;
   after_script:
     - docker logout
     - echo [INFO] docker deploy end!
@@ -84,3 +90,7 @@ deploy:
     - develop
     - master
     - release
+
+
+
+
