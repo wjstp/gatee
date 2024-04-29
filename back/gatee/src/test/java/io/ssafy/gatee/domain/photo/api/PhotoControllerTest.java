@@ -136,4 +136,5 @@ class PhotoControllerTest {
                 .andDo(MockMvcRestDocumentation.document("사진 상호작용 삭제"))
                 .andExpect(status().isOk());
     }
+
 }
