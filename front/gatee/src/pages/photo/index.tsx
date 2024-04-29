@@ -18,7 +18,7 @@ const PhotoIndex = () => {
 
   // 뒤로가기 고려한 상태 변경
   useEffect(() => {
-    console.log(location.pathname);
+
     if (location.pathname.includes("/photo/month")) {
       setAllPhotoTab("month")
       setActiveTab("all")
@@ -30,11 +30,11 @@ const PhotoIndex = () => {
       setActiveTab("all")
     } else if (location.pathname.includes("/photo/album")) {
       setActiveTab("album")
-    } else {
-
+    } else if (location.pathname==="/photo") {
       navigate("day")
+    } else {
+      setActiveTab("detail")
     }
-
   }, [location.pathname]);
 
   return (
@@ -54,7 +54,7 @@ const PhotoIndex = () => {
         <FiEdit className="photo-tab-container__plus-button" size={20}/>
       </div>
 
-      {activeTab === "all" ?
+      {activeTab === "all"  ?
         (<div className="day-month-year-controller">
           <Link to="/photo/day"
                 className={allPhotoTab === "day" ? "day-btn active-btn" : "day-btn"}

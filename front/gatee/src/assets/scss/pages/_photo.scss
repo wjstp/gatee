@@ -1,6 +1,8 @@
 @use '../abstracts/index' as *;
 @use '../components' as *;
 .photo {
+  height: 100%;
+
   .photo-tab-container {
 
     @include flex_center;
@@ -214,4 +216,12 @@
     @extend %modal-content;
     background-color: red;
   }
+
+
+}
+
+.photo-detail {
+  padding: 15dvh 0;
+  //background-color: red;
+  height: 100%;
 }

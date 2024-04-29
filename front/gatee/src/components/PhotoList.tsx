@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link, useNavigate} from "react-router-dom";
 // import sampleImage from "@assets/images/schedule/calendarBanner3.jpg"
 
 // 사진 그룹 타입
@@ -13,7 +14,7 @@ interface PhotoListProps {
 const PhotoList = ({photoGroup}:PhotoListProps) => {
 
     return (
-        <div className="photo__item__list-container">
+        <Link to="/photo/1" className="photo__item__list-container">
             {/* 사진 묶음 - 3개씩 보여주기 */}
             {photoGroup.map((item: any,index    ) => {
                 return (
@@ -23,7 +24,7 @@ const PhotoList = ({photoGroup}:PhotoListProps) => {
                     </div>)
             })}
 
-        </div>
+        </Link>
     )
 
 }

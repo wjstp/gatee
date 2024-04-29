@@ -32,15 +32,16 @@ import SignupMemberSetCheck from "@pages/signup/MemberSetCheck";
 import SignupMemberSetFinish from "@pages/signup/MemberSetFinish";
 import SignupMemberSetPermission from "@pages/signup/MemberSetPermission";
 import SignupMemberSetRole from "@pages/signup/MemberSetRole";  // 회원가입
-import PhotoAlbumIndex from "@pages/photo";
+
 import PhotoAlbum from "@pages/photo/AlbumGroup";
-import PhotoAlbumGroupDetail from "@pages/photo/AlbumGroupDetail";
 import PhotoAllMonthGroupDetail from "@pages/photo/AllMonthGroupDetail";
 import PhotoAllYearGroupDetail from "@pages/photo/AllYearGroupDetail";
 import AllDay from "@pages/photo/AllDay";
 import AllMonth from "@pages/photo/AllMonth";
 import AllYear from "@pages/photo/AllYear";
-import PhotoIndex from "@pages/photo"; // 앨범
+import PhotoIndex from "@pages/photo";
+import PhotoDetail from "@pages/photo/PhotoDetail";
+import PhotoAlbumGroupDetail from "@pages/photo/AlbumGroupDetail"; // 앨범
 
 
 const Router = () => {
@@ -88,6 +89,7 @@ const Router = () => {
           <Route path="year/:year" element={<PhotoAllYearGroupDetail/>}/>
           <Route path="album" element={<PhotoAlbum/>}/>
           <Route path="album/:id" element={<PhotoAlbumGroupDetail/>}/>
+          <Route path=":id" element={<PhotoDetail/>}/>
         </Route>
       </Route>
 
