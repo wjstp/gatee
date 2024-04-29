@@ -52,7 +52,8 @@ class ScheduleControllerTest {
     @Test
     @DisplayName("일정 상세 조회 테스트")
     void readScheduleDetail() throws Exception {
-        mockMvc.perform(get("/api/schedule/1"))
+        mockMvc.perform(get("/api/schedule/1")
+                        .param("familyId", "1"))
                 .andDo(MockMvcResultHandlers.print())
                 .andDo(MockMvcRestDocumentation.document("일정 상세 조회"))
                 .andExpect(status().isOk());

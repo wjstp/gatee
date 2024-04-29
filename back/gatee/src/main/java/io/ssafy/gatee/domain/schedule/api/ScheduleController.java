@@ -40,9 +40,10 @@ public class ScheduleController {
     @GetMapping("/{scheduleId}")
     @ResponseStatus(HttpStatus.OK)
     public ScheduleInfoRes readScheduleDetail(
-            @PathVariable("scheduleId") Long scheduleId
-    ) throws ScheduleNotFoundException {
-        return scheduleService.readScheduleDetail(scheduleId);
+            @PathVariable("scheduleId") Long scheduleId,
+            @RequestParam Long familyId
+    ) throws ScheduleNotFoundException, FamilyScheduleNotFoundException, MemberFamilyScheduleNotFoundException {
+        return scheduleService.readScheduleDetail(scheduleId, familyId);
     }
 
     // 일정 등록

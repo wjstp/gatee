@@ -1,8 +1,11 @@
 package io.ssafy.gatee.domain.album.api;
 
 import io.ssafy.gatee.domain.album.application.AlbumService;
+import io.ssafy.gatee.domain.album.dto.request.AddAlbumPhotoListReq;
 import io.ssafy.gatee.domain.album.dto.request.AlbumSaveReq;
+import io.ssafy.gatee.domain.album.dto.request.DeleteAlbumPhotoListReq;
 import io.ssafy.gatee.domain.album.dto.response.AlbumListRes;
+import io.ssafy.gatee.domain.album.dto.response.AlbumPhotoListRes;
 import io.ssafy.gatee.domain.photo.dto.response.PhotoListRes;
 import io.ssafy.gatee.global.exception.error.not_found.AlbumNotFoundException;
 import jakarta.validation.Valid;
@@ -13,29 +16,30 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/album")
+@RequestMapping("/api/albums")
 @RequiredArgsConstructor
 public class AlbumController {
+
     private final AlbumService albumService;
 
-    // 앨범 목록 조회
-//    @GetMapping
-//    @ResponseStatus(HttpStatus.OK)
-//    public List<AlbumListRes> readAlbumList(
-//            @Valid
-//            @RequestParam Long familyId
-//    ) throws AlbumNotFoundException {
-//        return albumService.readAlbumList(familyId);
-//    }
+//     앨범 목록 조회
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<AlbumListRes> readAlbumList(
+            @Valid
+            @RequestParam Long familyId
+    ) throws AlbumNotFoundException {
+        return albumService.readAlbumList(familyId);
+    }
 
-    // 앨범 상세 조회
-//    @GetMapping("/{albumId}")
-//    @ResponseStatus(HttpStatus.OK)
-//    public List<PhotoListRes> readAlbumDetail (
-//            @PathVariable("albumId") Long albumId
-//    ) {
-//
-//    }
+//    앨범 상세 조회
+    @GetMapping("/{albumId}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<AlbumPhotoListRes> readAlbumDetail (
+            @PathVariable("albumId") Long albumId
+    ) {
+        return albumService.readAlbumDetail(albumId);
+    }
 
     // 앨범 생성
     @PostMapping
@@ -58,8 +62,6 @@ public class AlbumController {
         albumService.editAlbumName(albumId, name);
     }
 
-    // 앨범 내 사진 목록 수정
-
     // 앨범 삭제
     @DeleteMapping("/{albumId}")
     @ResponseStatus(HttpStatus.OK)
@@ -67,5 +69,27 @@ public class AlbumController {
             @PathVariable("albumId") Long albumId
     ) {
         albumService.deleteAlbum(albumId);
+    }
+
+    // 앨범 내 사진 추가
+    @PostMapping("/{albumId}/photos")
+    @ResponseStatus(HttpStatus.OK)
+    public List<AlbumPhotoListRes> addAlbumPhotoList(
+            @Valid
+            @PathVariable("albumId") Long albumId,
+            @RequestBody AddAlbumPhotoListReq addAlbumPhotoListReq
+    ) {
+        return albumService.addAlbumPhotoList(albumId, addAlbumPhotoListReq);
+    }
+
+    // 앨범 내 사진 삭제
+    @DeleteMapping("/{albumId}/photos")
+    @ResponseStatus(HttpStatus.OK)
+    public List<AlbumPhotoListRes> deleteAlbumPhotoList(
+            @Valid
+            @PathVariable("albumId") Long albumId,
+            @RequestBody DeleteAlbumPhotoListReq deleteAlbumPhotoListReq
+    ) {
+        return albumService.deleteAlbumPhotoList(albumId, deleteAlbumPhotoListReq);
     }
 }
