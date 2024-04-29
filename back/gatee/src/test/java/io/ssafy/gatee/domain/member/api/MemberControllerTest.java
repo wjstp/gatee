@@ -2,6 +2,7 @@ package io.ssafy.gatee.domain.member.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.ssafy.gatee.config.security.CustomWithMockUser;
+import io.ssafy.gatee.domain.member.application.MemberService;
 import io.ssafy.gatee.domain.member.dto.request.MemberEditMoodReq;
 import io.ssafy.gatee.domain.member.dto.request.MemberEditReq;
 import io.ssafy.gatee.domain.member.dto.request.MemberSaveReq;
@@ -14,6 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
@@ -35,6 +37,9 @@ class MemberControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @MockBean
+    private MemberService memberService;
+
 
     @Test
     @DisplayName("회원 정보 등록 테스트")
@@ -52,8 +57,7 @@ class MemberControllerTest {
         String memberSaveJson = objectMapper.writeValueAsString(memberSaveReq);
 
         mockMvc.perform(patch("/api/members")
-                        // security에서 csrf disable 설정을 해두었기 떄문에 추가
-                        .with(csrf())
+                        .with(csrf())   // security에서 csrf disable 설정을 해두었기 떄문에 추가
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(memberSaveJson))
                 .andDo(MockMvcResultHandlers.print())

@@ -2,6 +2,7 @@ package io.ssafy.gatee.domain.family.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.ssafy.gatee.config.security.CustomWithMockUser;
+import io.ssafy.gatee.domain.family.application.FamilyService;
 import io.ssafy.gatee.domain.family.dto.request.FamilyNameReq;
 import io.ssafy.gatee.domain.family.dto.request.FamilySaveReq;
 import org.junit.jupiter.api.DisplayName;
@@ -31,6 +32,8 @@ class FamilyControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @MockBean
+    private FamilyService familyService;
 
     @Test
     @CustomWithMockUser
