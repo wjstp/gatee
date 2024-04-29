@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {Link, Outlet, useLocation} from "react-router-dom";
 import {BsPlus} from "react-icons/bs";
-
+import { CiMenuKebab } from "react-icons/ci";
+import { FiEdit } from "react-icons/fi";
 const PhotoIndex = () => {
   const location = useLocation();
   // 상단 탭 상태 관리 -> 모든 사진 / 앨범사진
@@ -40,7 +41,7 @@ const PhotoIndex = () => {
               onClick={() => handleTabClick("album")}>앨범 사진</Link>
 
         {/* 사진 추가 버튼 */}
-        <BsPlus className="photo-tab-container__plus-button" size={40}/>
+        <FiEdit className="photo-tab-container__plus-button" size={20}/>
       </div>
 
       {activeTab === "all" ?
@@ -68,8 +69,21 @@ const PhotoIndex = () => {
       <Outlet/>
       {/* 활설화된 모든 사진의 일월연 탭  */}
 
+
     </div>
   );
 }
 
+const EditModal = () => {
+  return (
+    <div className="edit-modal">
+      <div>
+        사진 삭제
+      </div>
+      <div>
+        앨범 생성
+      </div>
+    </div>
+  )
+}
 export default PhotoIndex;
