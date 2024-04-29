@@ -80,7 +80,7 @@ const MonthItem = ({monthPhotoData}: MonthPhotoItemProps) => {
       {/* 월 표시 */}
       <div className="month">{month}월</div>
       {/* 배경 사진 */}
-      <img className="photo" src={monthPhotoData.src}/>
+      <img className="photo" src={monthPhotoData.src} alt={`${month}`}/>
     </Link>
   )
 }

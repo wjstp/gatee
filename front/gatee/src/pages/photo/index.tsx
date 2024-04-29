@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Link, Outlet, useLocation, useNavigate} from "react-router-dom";
+import {Link, Outlet, useLocation} from "react-router-dom";
 import {BsPlus} from "react-icons/bs";
 
 const PhotoIndex = () => {

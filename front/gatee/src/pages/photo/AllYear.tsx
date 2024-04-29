@@ -44,7 +44,7 @@ const YearItem = ({yearPhotoData}: YearPhotoItemProps) => {
       {/* 연 표시 */}
       <div className="year">{year}년</div>
       {/* 배경 사진 */}
-      <img className="photo" src={yearPhotoData.src}/>
+      <img className="photo" src={yearPhotoData.src} alt={`${year}`}/>
     </Link>
   )
 }
