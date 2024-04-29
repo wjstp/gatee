@@ -50,4 +50,4 @@ spring:
 
 jwt:
   token-validity-in-seconds:
-  refresh-token-validity-in-seconds:
+  refresh-token-validity-in-seconds: 180000
