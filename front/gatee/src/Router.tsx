@@ -13,7 +13,7 @@ import OnboardingIndex from "@pages/onboarding/index";  // 온보딩
 import KaKaoLogin from "@pages/onboarding/component/KaKaoLogin";
 import ProfileIndex from "@pages/profile";  // 프로필
 import ScheduleIndex from "@pages/schedule";  // 일정
-import ScheduleCreateSchedule from "@pages/schedule/CreateSchedule";
+import ScheduleCreateSchedule from "@pages/schedule/Create";
 import ScheduleCreateReview from "@pages/schedule/CreateReview";
 import ScheduleDetail from "@pages/schedule/ScheduleDetail";
 import ChatIndex from "@pages/chat";  // 채팅

@@ -41,7 +41,7 @@ const Improvement = ({type}: any) => {
         <div>{content[type].content[0]}</div>
         <div>{content[type].content[1]}</div>
         <div className="flex-row">
-          <button className="orangeButtonRadiusLarge">{content[type].buttonComment}</button>
+          <button className="improvement-card-button">{content[type].buttonComment}</button>
           <img className="imgWidth" src={content[type].icon} alt="개선방안"/>
         </div>
       </div>

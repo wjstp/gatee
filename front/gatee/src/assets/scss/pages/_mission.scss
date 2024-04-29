@@ -1,4 +1,5 @@
 @use '../abstracts/index' as *;
+@use '../components/index' as *;
 
 .mission__index {
 
@@ -48,6 +49,10 @@
         width: 5rem;
         height: auto;
       }
+    }
+
+    &-button {
+      @extend %orange-button-radius-large;
     }
   }
 
