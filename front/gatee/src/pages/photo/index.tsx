@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {Link, Outlet, useLocation} from "react-router-dom";
-import {BsPlus} from "react-icons/bs";
-import { CiMenuKebab } from "react-icons/ci";
+import {Link, Outlet, useLocation, useNavigate} from "react-router-dom";
 import { FiEdit } from "react-icons/fi";
 const PhotoIndex = () => {
   const location = useLocation();
+
+  const navigate = useNavigate()
   // 상단 탭 상태 관리 -> 모든 사진 / 앨범사진
 
   const [activeTab, setActiveTab] = useState("all"); // 현재 경로를 기본값으로 설정
@@ -18,13 +18,23 @@ const PhotoIndex = () => {
 
   // 뒤로가기 고려한 상태 변경
   useEffect(() => {
+    console.log(location.pathname);
     if (location.pathname.includes("/photo/month")) {
       setAllPhotoTab("month")
+      setActiveTab("all")
     } else if (location.pathname.includes("/photo/year")) {
       setAllPhotoTab("year")
-    } else {
+      setActiveTab("all")
+    } else if (location.pathname.includes("/photo/day")) {
       setAllPhotoTab("day")
+      setActiveTab("all")
+    } else if (location.pathname.includes("/photo/album")) {
+      setActiveTab("album")
+    } else {
+
+      navigate("day")
     }
+
   }, [location.pathname]);
 
   return (

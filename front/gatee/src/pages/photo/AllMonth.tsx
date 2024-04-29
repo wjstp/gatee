@@ -45,7 +45,6 @@ const AllMonth = () => {
       {Object.keys(groupedByYear).sort((a, b) => parseInt(b) - parseInt(a))
         .map(year => {
           const yearData = groupedByYear[year]; // 해당 년도의 데이터 가져오기
-
           // 각각의 년도별 데이터를 처리한 결과를 반환
           return (
            <>
