@@ -17,16 +17,25 @@ import ScheduleCreateSchedule from "@pages/schedule/Create";
 import ScheduleCreateReview from "@pages/schedule/CreateReview";
 import ScheduleDetail from "@pages/schedule/ScheduleDetail";
 import ChatIndex from "@pages/chat";  // 채팅
-import CharacterIndex from "@pages/character";  // 백과사전
+import CharacterIndex from "@pages/character";
 import CharacterStart from "@pages/character/AnswerList";
-import CharacterQuestion from "@pages/character/Question";
-import SignupIndex from "@pages/signup";  // 회원가입
-import SignupMember from "@pages/signup/Member";
-import SignupFamily from "@pages/signup/Family";
-import PhotoAlbumIndex from "@pages/photo"; // 앨범
+import CharacterQuestion from "@pages/character/Question";  // 백과사전
+import SignupIndex from "@pages/signup";
+import SignupFamilyJoin from "@pages/signup/FamilyJoin";
+import SignupFamilyJoinCheck from "@pages/signup/FamilyJoinCheck";
+import SignupFamilySet from "@pages/signup/FamilySet";
+import SignupFamilySetCheck from "@pages/signup/FamilySetCheck";
+import SignupFamilySetShare from "@pages/signup/FamilySetShare";
+import SignupMemberSet from "@pages/signup/MemberSet";
+import SignupMemberSetBirth from "@pages/signup/MemberSetBirth";
+import SignupMemberSetCheck from "@pages/signup/MemberSetCheck";
+import SignupMemberSetFinish from "@pages/signup/MemberSetFinish";
+import SignupMemberSetPermission from "@pages/signup/MemberSetPermission";
+import SignupMemberSetRole from "@pages/signup/MemberSetRole";  // 회원가입
+import PhotoAlbumIndex from "@pages/photo";
 import PhotoAlbumGroupDetail from "@pages/photo/AlbumGroupDetail";
 import PhotoAllGroupDetail from "@pages/photo/AllGroupDetail";
-import PhotoAlbumPhoto from "@pages/photo/AlbumPhoto";
+import PhotoAlbumPhoto from "@pages/photo/AlbumPhoto";  // 앨범
 
 const Router = () => {
   return (
@@ -79,8 +88,17 @@ const Router = () => {
 
         {/*회원가입 페이지*/}
         <Route path="/signup" element={<SignupIndex/>}/>
-        <Route path="/signup/member" element={<SignupMember/>}/>
-        <Route path="/signup/family" element={<SignupFamily/>}/>
+        <Route path="/signup/family-set" element={<SignupFamilySet/>}/>
+        <Route path="/signup/family-set/check" element={<SignupFamilySetCheck/>}/>
+        <Route path="/signup/family-set/share" element={<SignupFamilySetShare/>}/>
+        <Route path="/signup/family-join" element={<SignupFamilyJoin/>}/>
+        <Route path="/signup/family-join/check" element={<SignupFamilyJoinCheck/>}/>
+        <Route path="/signup/member-set" element={<SignupMemberSet/>}/>
+        <Route path="/signup/member-set/birth" element={<SignupMemberSetBirth/>}/>
+        <Route path="/signup/member-set/role" element={<SignupMemberSetRole/>}/>
+        <Route path="/signup/member-set/check" element={<SignupMemberSetCheck/>}/>
+        <Route path="/signup/member-set/permission" element={<SignupMemberSetPermission/>}/>
+        <Route path="/signup/member-set/finish" element={<SignupMemberSetFinish/>}/>
       </Route>
 
       {/*404 처리*/}
