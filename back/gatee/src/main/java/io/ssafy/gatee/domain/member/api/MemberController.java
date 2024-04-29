@@ -47,7 +47,7 @@ public class MemberController {
         memberService.editMemberInfo(memberEditReq, customUserDetails.getMemberId());
     }
 
-    // 프로필 이미지 수정 - file 추가 예정
+//     프로필 이미지 수정 - file 추가 예정
 //    @PatchMapping("/image")
 //    @ResponseStatus(HttpStatus.OK)
 //    public void editProfileImage(@Valid @RequestBody String imageUrl) {
