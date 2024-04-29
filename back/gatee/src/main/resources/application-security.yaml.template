@@ -54,7 +54,7 @@ spring:
           kakao:
             client-id: ${CLIENT_ID}
             client-secret: ${CLIENT_SECRET}
-            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
+            redirect-uri: https://gaty.duckdns.org/login/oauth2/code/kakao
 
 jwt:
   access-token-validity-in-seconds: 1800
