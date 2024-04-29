@@ -57,8 +57,7 @@ class ScheduleControllerTest {
     @DisplayName("일정 상세 조회 테스트")
     void readScheduleDetail() throws Exception {
         mockMvc.perform(get("/api/schedule/1")
-                        .with(csrf()))
-        mockMvc.perform(get("/api/schedule/1")
+                        .with(csrf())
                         .param("familyId", "1"))
                 .andDo(MockMvcResultHandlers.print())
                 .andDo(MockMvcRestDocumentation.document("일정 상세 조회"))
@@ -72,7 +71,6 @@ class ScheduleControllerTest {
         UUID memberId = UUID.randomUUID();
 
         ScheduleSaveReq scheduleSaveReq = ScheduleSaveReq.builder()
-                .memberId(memberId)
                 .familyId(String.valueOf(1))
                 .category("GROUP")
                 .title("첫 번째 일정")
@@ -100,7 +98,6 @@ class ScheduleControllerTest {
         UUID memberId = UUID.randomUUID();
 
         ScheduleEditReq scheduleEditReq = ScheduleEditReq.builder()
-                .memberId(memberId)
                 .familyId(String.valueOf(1))
                 .category("GROUP")
                 .title("첫 번째 일정")
@@ -128,7 +125,6 @@ class ScheduleControllerTest {
         UUID memberId = UUID.randomUUID();
 
         ScheduleParticipateReq scheduleParticipateReq = ScheduleParticipateReq.builder()
-                .memberId(memberId)
                 .familyId(String.valueOf(1))
                 .build();
 

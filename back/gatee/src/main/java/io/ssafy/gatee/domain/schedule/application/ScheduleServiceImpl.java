@@ -37,6 +37,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 import static io.ssafy.gatee.global.exception.message.ExceptionMessage.*;
 
@@ -100,7 +101,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     // 일정 등록
     @Override
     @Transactional
-    public void saveSchedule(ScheduleSaveReq scheduleSaveReq) throws FamilyNotFoundException {
+    public void saveSchedule(ScheduleSaveReq scheduleSaveReq, UUID memberId) throws FamilyNotFoundException {
         Schedule schedule = Schedule.builder()
                 .category(Category.valueOf(scheduleSaveReq.category()))
                 .title(scheduleSaveReq.title())
@@ -112,7 +113,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         scheduleRepository.save(schedule);
 
-        Member member = memberRepository.getReferenceById(scheduleSaveReq.memberId());
+        Member member = memberRepository.getReferenceById(memberId);
 
         Family family = familyRepository.getReferenceById(Long.valueOf(scheduleSaveReq.familyId()));
 
@@ -135,9 +136,9 @@ public class ScheduleServiceImpl implements ScheduleService {
     // 일정 수정
     @Override
     @Transactional
-    public void editSchedule(ScheduleEditReq scheduleEditReq, Long scheduleId)
+    public void editSchedule(ScheduleEditReq scheduleEditReq, UUID memberId, Long scheduleId)
             throws DoNotHavePermissionException, FamilyScheduleNotFoundException, MemberFamilyScheduleNotFoundException, FamilyNotFoundException {
-        Member member = memberRepository.getReferenceById(scheduleEditReq.memberId());
+        Member member = memberRepository.getReferenceById(memberId);
 
         Family family = familyRepository.getReferenceById(Long.valueOf(scheduleEditReq.familyId()));
 
@@ -160,9 +161,9 @@ public class ScheduleServiceImpl implements ScheduleService {
     // 일정 참여
     @Override
     @Transactional
-    public void participateSchedule(ScheduleParticipateReq scheduleParticipateReq, Long scheduleId)
+    public void participateSchedule(ScheduleParticipateReq scheduleParticipateReq, UUID memberId, Long scheduleId)
             throws FamilyScheduleNotFoundException {
-        Member member = memberRepository.getReferenceById(scheduleParticipateReq.memberId());
+        Member member = memberRepository.getReferenceById(memberId);
 
         Family family = familyRepository.getReferenceById(Long.valueOf(scheduleParticipateReq.familyId()));
 
@@ -183,8 +184,8 @@ public class ScheduleServiceImpl implements ScheduleService {
     // 일정 후기 등록
     @Override
     @Transactional
-    public void saveScheduleRecord(ScheduleSaveRecordReq scheduleSaveRecordReq, Long scheduleId) {
-        Member member = memberRepository.getReferenceById(scheduleSaveRecordReq.memberId());
+    public void saveScheduleRecord(ScheduleSaveRecordReq scheduleSaveRecordReq, UUID memberId, Long scheduleId) {
+        Member member = memberRepository.getReferenceById(memberId);
 
         Family family = familyRepository.getReferenceById(scheduleSaveRecordReq.familyId());
 

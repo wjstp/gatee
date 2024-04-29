@@ -13,7 +13,6 @@ import java.util.UUID;
 
 @Builder
 public record ScheduleSaveReq(
-        UUID memberId,
 
         @NotNull
         String familyId,

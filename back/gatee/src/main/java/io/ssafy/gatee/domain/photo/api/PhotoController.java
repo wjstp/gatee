@@ -7,9 +7,11 @@ import io.ssafy.gatee.domain.photo.dto.response.PhotoDetailRes;
 import io.ssafy.gatee.domain.photo.dto.response.PhotoListRes;
 import io.ssafy.gatee.global.exception.error.bad_request.DoNotHavePermissionException;
 import io.ssafy.gatee.global.exception.error.bad_request.WrongTypeFilterException;
+import io.ssafy.gatee.global.security.user.CustomUserDetails;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,9 +38,9 @@ public class PhotoController {
     @ResponseStatus(HttpStatus.OK)
     public PhotoDetailRes readPhotoDetail(
             @PathVariable("photoId") Long photoId,
-            @RequestParam UUID memberId
-    ) {
-        return photoService.readPhotoDetail(photoId, memberId);
+            @AuthenticationPrincipal CustomUserDetails customUserDetails
+            ) {
+        return photoService.readPhotoDetail(photoId, customUserDetails.getMemberId());
     }
 
     // 사진 등록
@@ -64,10 +66,10 @@ public class PhotoController {
     @ResponseStatus(HttpStatus.OK)
     public void savePhotoReaction(
             @Valid
-            @RequestParam UUID memberId,
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @PathVariable("photoId") Long photoId
     ) {
-        photoService.savePhotoReaction(memberId, photoId);
+        photoService.savePhotoReaction(customUserDetails.getMemberId(), photoId);
     }
 
     // 사진 상호작용 취소
@@ -75,9 +77,9 @@ public class PhotoController {
     @ResponseStatus(HttpStatus.OK)
     public void deletePhotoReaction(
             @Valid
-            @RequestParam UUID memberId,
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @PathVariable("photoId") Long photoId
     ){
-        photoService.deletePhotoReaction(memberId, photoId);
+        photoService.deletePhotoReaction(customUserDetails.getMemberId(), photoId);
     }
 }
