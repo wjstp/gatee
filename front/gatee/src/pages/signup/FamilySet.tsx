@@ -9,7 +9,7 @@ const SignupFamilySet = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [inputValue, setInputValue] = useState("");
-  const [selectedImage, setSelectedImage] = useState<string | ArrayBuffer | null>(null);
+  const [selectedFamilyImage, setSelectedFamilyImage] = useState<string | ArrayBuffer | null>(null);
 
   // 입력값
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -23,7 +23,7 @@ const SignupFamilySet = () => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setSelectedImage(reader.result);
+        setSelectedFamilyImage(reader.result);
       };
       reader.readAsDataURL(file);
     }
@@ -50,7 +50,7 @@ const SignupFamilySet = () => {
       navigate("/signup/family-set/check", {
         state: {
           inputValue,
-          selectedImage
+          selectedFamilyImage
         }
       });
     // }
@@ -68,7 +68,7 @@ const SignupFamilySet = () => {
       <div className="signup-family-set__img-box">
         <img
           className="img-box__img"
-          src={selectedImage ? selectedImage.toString() : basicFamily}
+          src={selectedFamilyImage ? selectedFamilyImage.toString() : basicFamily}
           alt="family-image"
         />
         <input
@@ -84,7 +84,7 @@ const SignupFamilySet = () => {
         >
           <IoIosCamera
             className="btn__icon"
-            size={29}
+            size={25}
           />
         </button>
       </div>
@@ -95,7 +95,7 @@ const SignupFamilySet = () => {
           className="input-box__input"
           ref={inputRef}
           type="text"
-          placeholder="OO이네 가족"
+          placeholder="예) 길동이네"
           value={inputValue}
           onChange={handleInputChange}
           autoFocus

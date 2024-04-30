@@ -52,6 +52,7 @@ select,
 textarea {
   background-color: transparent;
   border: 0;
+  caret-color: $orange300;
 
   &:focus {
     outline: none;

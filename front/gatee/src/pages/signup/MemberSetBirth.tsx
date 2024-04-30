@@ -8,7 +8,6 @@ import { AiOutlineWoman } from "react-icons/ai";
 import dayjs, { Dayjs } from 'dayjs';
 import { DateField } from '@mui/x-date-pickers/DateField';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import {set} from "date-fns";
 
 const SignupMemberSetBirth = () => {
   const navigate = useNavigate();
@@ -20,8 +19,25 @@ const SignupMemberSetBirth = () => {
   const [gender, setGender] = useState("male");
 
   const formattedDate = selectedDate ? selectedDate.format("YYYY-MM-DD") : "";
+  const dateFieldCustom = {
+    "& .MuiOutlinedInput-root": {
+      color: "#000",
+      "&.Mui-focused": {
+        "& .MuiOutlinedInput-notchedOutline": {
+          borderColor: "#FFBE5C",
+          borderWidth: "2px",
+        },
+      },
+    },
+    "&.Mui-focused": {
+      "& .MuiOutlinedInput-notchedOutline": {
+        borderColor: "secondary.main",
+        borderWidth: "3px",
+      },
+    },
+  };
 
-  const handleDateChange = (date: Dayjs | null) => {
+  const handleSetSelectedDateChange = (date: Dayjs | null) => {
     setSelectedDate(date); // 선택된 날짜를 업데이트
   };
 
@@ -35,7 +51,7 @@ const SignupMemberSetBirth = () => {
       }
     });
   }
-  console.log(formattedDate)
+
   return (
     <div className="signup-member-set-birth">
       {/*생일 제목*/}
@@ -50,50 +66,63 @@ const SignupMemberSetBirth = () => {
 
       {/*생일 선택*/}
       <div className="signup-member-set-birth__birthday">
-        <div className="birthday-calendar">
+        <div className="birthday-date-field">
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer
-              components={['DateField']}
+              components={["DateField"]}
             >
               <DateField
-                label="생년월일"
-                defaultValue={dayjs("2024-04-05")}
-                format="YYYY-MM-DD"
+                className="birthday-datefield__input"
+                format="YYYY / MM / DD"
                 autoFocus={true}
-                color={"warning"}
                 value={selectedDate}
-                onChange={handleDateChange}
+                onChange={handleSetSelectedDateChange}
+                inputProps={{
+                  style: {
+                    textAlign: "center", fontSize: "24px" },
+                }}
+                sx={dateFieldCustom}
               />
             </DemoContainer>
           </LocalizationProvider>
         </div>
         <div className="birthday-choice">
-          <input
-            className="birthday-choice__solar"
-            type="radio"
-            name="calendarType"
-            value="solar"
-            checked={calendarType === "solar"}
-            onChange={(e) => setCalendarType(e.target.value)}
-          />
-          <label
-            className={calendarType === "solar" ? "birthday-choice__solar--label--selected" : "birthday-choice__solar--label"}
+          <button
+            className="birthday-choice__btn-solar"
+            onClick={() => setCalendarType("solar")}
           >
-            양력
-          </label>
-          <input
-            className="birthday-choice__lunar"
-            type="radio"
-            name="calendarType"
-            value="lunar"
-            checked={calendarType === "lunar"}
-            onChange={(e) => setCalendarType(e.target.value)}
-          />
-          <label
-            className={calendarType === "lunar" ? "birthday-choice__lunar--label--selected" : "birthday-choice__lunar--label"}
+            <input
+              className="btn-solar__input"
+              type="radio"
+              name="calendarType"
+              value="solar"
+              checked={calendarType === "solar"}
+              onChange={(e) => setCalendarType(e.target.value)}
+            />
+            <label
+              className={calendarType === "solar" ? "btn-solar__input--label--selected" : "btn-solar__input--label"}
+            >
+              양력
+            </label>
+          </button>
+          <button
+            className="birthday-choice__btn-lunar"
+            onClick={() => setCalendarType("lunar")}
           >
-            음력
-          </label>
+            <input
+              className="btn-lunar__input"
+              type="radio"
+              name="calendarType"
+              value="lunar"
+              checked={calendarType === "lunar"}
+              onChange={(e) => setCalendarType(e.target.value)}
+            />
+            <label
+              className={calendarType === "lunar" ? "btn-lunar__input--label--selected" : "btn-lunar__input--label"}
+            >
+              음력
+            </label>
+          </button>
         </div>
       </div>
 

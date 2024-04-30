@@ -27,12 +27,11 @@
     height: 6%;
     width: 60%;
     margin-top: 10%;
-    padding-bottom: 5%;
     border-bottom: 1px solid $gray100;
 
     .input-box__input {
       width: 100%;
-      font-size: 40px;
+      font-size: 30px;
       text-align: center;
       justify-content: center;
     }
@@ -79,61 +78,75 @@
     width: 85%;
     margin-top: 5%;
 
-    .birthday-calendar {
+    .birthday-date-field {
       height: 100%;
       width: 100%;
+
+      &__input {
+      }
     }
 
     .birthday-choice {
       @include flex_center;
 
-      margin-top: 3%;
       width: 100%;
-      font-size: 18px;
+      margin-left: 3%;
+      margin-top: 3%;
 
-      &__solar, &__lunar {
-        appearance: none;
-        background-color: #fff;
-        margin: 0;
-        color: $gray200;
-        width: 1.15em;
-        height: 1.15em;
-        border: 1px solid $gray200;
-        border-radius: 50%;
-        transform: translateY(-0.075em);
-        display: grid;
-        place-content: center;
-      }
+      &__btn-solar, &__btn-lunar {
+        @include flex_center;
 
-      &__solar:checked, &__lunar:checked {
-        color: orange; /* 선택됐을 때 주황색으로 변경 */
-        border-color: orange; /* 선택됐을 때 테두리 색상을 주황색으로 변경 */
-      }
+        width: 50%;
+        font-size: 18px;
 
-      &__solar:checked::before, &__lunar:checked::before {
-        content: "";
-        width: 0.65em;
-        height: 0.65em;
-        border-radius: 50%;
-        background: orange;
-      }
+        .btn-solar__input, .btn-lunar__input {
+          margin-top: 3%;
+          margin-right: 3%;
+          appearance: none;
+          background-color: #fff;
+          color: $gray200;
+          width: 1.6em;
+          height: 1.6em;
+          border: 1px solid $gray200;
+          border-radius: 50%;
+          transform: translateY(-0.075em);
+          display: grid;
+          place-content: center;
 
-      &__solar--label, &__lunar--label {
-        color: $gray200;
-        margin-left: 5%;
-      }
+          &:checked {
+            color: orange;
+            border-color: orange;
+          }
 
-      &__solar--label {
-        margin-right: 5%;
-      }
+          &:checked::before {
+            content: "";
+            width: 1em;
+            height: 1em;
+            border-radius: 50%;
+            background: orange;
+          }
 
-      &__solar--label--selected, &__lunar--label--selected {
-        color: $orange400;
-        margin-left: 5%;
-      }
+          &--label {
+            color: $gray100;
+            margin-left: 5%;
+          }
 
-      &__solar--label--selected {
-        margin-right: 5%;
+          &--label--selected {
+            color: $orange400;
+            margin-left: 5%;
+          }
+        }
+
+        .btn-solar__input {
+
+          &--label {
+            margin-right: 5%;
+
+            &--selected {
+              margin-right: 5%;
+            }
+          }
+        }
       }
     }
   }
@@ -164,34 +177,66 @@
       height: 100%;
       gap: 20px;
 
-      &__btn-male, &__btn-female {
+      &__btn-male {
         @include flex_center;
 
-        width: 50px;
-        height: 50px;
-        border: 1px solid $gray200;
+        width: 60px;
+        height: 60px;
+        border: 2px solid $gray100;
         border-radius: 100%;
+
+        &--selected {
+          @include flex_center;
+
+          width: 60px;
+          height: 60px;
+          border-radius: 100%;
+          border: 2px solid $lightblue;
+          background-color: $lightblue;
+        }
       }
 
-      &__btn-male--selected, &__btn-female--selected {
+      &__btn-female {
         @include flex_center;
 
-        width: 50px;
-        height: 50px;
-        border: 1px solid $orange400;
+        width: 60px;
+        height: 60px;
+        border: 2px solid $gray100;
         border-radius: 100%;
+
+        &--selected {
+          @include flex_center;
+
+          width: 60px;
+          height: 60px;
+          border-radius: 100%;
+          border: 2px solid #FFB6D5;
+          background-color: #FFB6D5;
+        }
       }
 
-      .btn-male--icon, .btn-female--icon {
-        color: $gray200;
-        width: 35px;
-        height: 35px;
+      .btn-male--icon {
+        color: $gray100;
+        width: 75%;
+        height: 75%;
+
+        &--selected {
+          color: white;
+          width: 75%;
+          height: 75%;
+        }
       }
 
-      .btn-male--icon--selected, .btn-female--icon--selected {
-        color: $orange400;
-        width: 35px;
-        height: 35px;
+      .btn-female--icon {
+        color: $gray100;
+        width: 75%;
+        height: 75%;
+
+        &--selected {
+          color: white;
+          width: 75%;
+          height: 75%;
+        }
       }
     }
   }
@@ -219,8 +264,40 @@
   align-items: center;
   flex-direction: column;
 
+  &__choice {
+    @include flex_center;
+
+    height: 75%;
+    width: 100%;
+  }
+
+  &__btn {
+    @include flex_center;
+
+    width: 100%;
+    margin-top: 5%;
+
+    .btn-next {
+      @extend %orange-button-large;
+
+      &__text {
+      }
+    }
+  }
+}
+
+// 멤버 역할 - 남성
+.signup-member-set-role-male {
+  @include flex_center;
+
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+
   &__title-role {
-    margin-top: 30%;
+    @include flex_center;
+
+    margin-top: 7%;
     font-size: 30px;
 
     .title__part--01 {
@@ -236,80 +313,125 @@
 
     flex-direction: column;
     margin-top: 5%;
-    height: 230px;
-    width: 500px;
 
-    .role-parents {
-      @include flex_center;
+    .btn-dad, .btn-son, .btn-etc {
+      margin-top: 5%;
+      font-weight: bold;
+      font-size: 25px;
+      color: $gray100;
+      height: 60px;
+      width: 200px;
+      border: 2px solid $gray100;
+      border-radius: 30px;
 
-      height: 100%;
-      width: 100%;
-      gap: 10px;
-
-      &__btn-dad {
+      &--selected {
+        margin-top: 5%;
+        font-weight: bold;
         font-size: 25px;
-        color: $gray200;
+        color: $orange400;
         height: 60px;
-        width: 140px;
-        border: 1px solid $gray200;
-        border-radius: 30px;
-      }
-
-      &__btn-mom {
-        font-size: 25px;
-        color: $gray200;
-        height: 60px;
-        width: 140px;
-        border: 1px solid $gray200;
-        border-radius: 30px;
-      }
-    }
-
-    .role-children {
-      @include flex_center;
-
-      height: 100%;
-      width: 100%;
-      gap: 10px;
-
-      &__btn-son {
-        font-size: 25px;
-        color: $gray200;
-        height: 60px;
-        width: 140px;
-        border: 1px solid $gray200;
-        border-radius: 30px;
-      }
-
-      &__btn-daughter {
-        font-size: 25px;
-        color: $gray200;
-        height: 60px;
-        width: 140px;
-        border: 1px solid $gray200;
-        border-radius: 30px;
-      }
-    }
-
-    .role-etc {
-      @include flex_center;
-
-      height: 100%;
-      width: 100%;
-
-      &__btn-etc {
-        font-size: 25px;
-        color: $gray200;
-        height: 60px;
-        width: 140px;
-        border: 1px solid $gray200;
+        width: 200px;
+        border: 2px solid $orange400;
         border-radius: 30px;
       }
     }
   }
 
+  &__role-etc {
+    @include flex_center;
+
+    height: 15%;
+    width: 80%;
+  }
+
   &__title-icon {
-    margin-top: 30%;
+    @include flex_center;
+
+    font-size: 30px;
+    margin-top: 5%;
+
+    .title__part--01 {
+      font-weight: bold;
+    }
+
+    .title__part--02 {
+    }
+  }
+
+  &__icon {
+    @include flex_center;
+
+    width: 100%;
+    margin-top: 10%;
+
+    .icon-box {
+      @include flex_center;
+
+      width: 100%;
+      height: 100%;
+      gap: 20px;
+
+      &__btn-kid, &__btn-young, &__btn-old {
+        @include flex_center;
+
+        width: 80px;
+        height: 80px;
+        border-radius: 100%;
+
+        &--selected {
+          @include flex_center;
+
+          width: 80px;
+          height: 80px;
+          border-radius: 100%;
+        }
+      }
+
+      .btn-kid--icon, .btn-young--icon, .btn-old--icon {
+        height: 100%;
+        width: 100%;
+
+        g {
+          circle {
+            fill: $gray100;
+          }
+        }
+
+        circle {
+          stroke: $gray100;
+        }
+
+        &--selected {
+          height: 100%;
+          width: 100%;
+
+          g {
+            circle {
+              fill: $orange400;
+            }
+          }
+
+          circle {
+            stroke: $orange400;
+          }
+        }
+      }
+    }
+  }
+}
+
+// 멤버 역할 - 여성
+.signup-member-set-role-female {
+  @include flex_center;
+
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+
+  &__title-role {
+    @include flex_center;
+
+    margin-top: 7%;
     font-size: 30px;
 
     .title__part--01 {
@@ -320,17 +442,136 @@
     }
   }
 
-  &__btn {
+  &__role {
+    @include flex_center;
+
+    flex-direction: column;
+    margin-top: 5%;
+
+    .btn-mom, .btn-daughter, .btn-etc {
+      margin-top: 5%;
+      font-weight: bold;
+      font-size: 25px;
+      color: $gray100;
+      height: 60px;
+      width: 200px;
+      border: 2px solid $gray100;
+      border-radius: 30px;
+
+      &--selected {
+        margin-top: 5%;
+        font-weight: bold;
+        font-size: 25px;
+        color: $orange400;
+        height: 60px;
+        width: 200px;
+        border: 2px solid $orange400;
+        border-radius: 30px;
+      }
+    }
+  }
+
+  &__role-etc {
+    @include flex_center;
+
+    height: 15%;
+    width: 80%;
+  }
+
+  &__title-icon {
+    @include flex_center;
+
+    font-size: 30px;
+    margin-top: 5%;
+
+    .title__part--01 {
+      font-weight: bold;
+    }
+
+    .title__part--02 {
+    }
+  }
+
+  &__icon {
     @include flex_center;
 
     width: 100%;
-    margin-top: 5%;
+    margin-top: 10%;
 
-    .btn-next {
-      @extend %orange-button-large;
+    .icon-box {
+      @include flex_center;
 
-      &__text {
+      width: 100%;
+      height: 100%;
+      gap: 20px;
+
+      &__btn-kid, &__btn-young, &__btn-old {
+        @include flex_center;
+
+        width: 80px;
+        height: 80px;
+        border-radius: 100%;
+
+        &--selected {
+          @include flex_center;
+
+          width: 80px;
+          height: 80px;
+          border-radius: 100%;
+        }
       }
+
+      .btn-kid--icon, .btn-young--icon, .btn-old--icon {
+        height: 100%;
+        width: 100%;
+
+        g {
+          circle {
+            fill: $gray100;
+          }
+        }
+
+        circle {
+          stroke: $gray100;
+        }
+
+        &--selected {
+          height: 100%;
+          width: 100%;
+
+          g {
+            circle {
+              fill: $orange400;
+            }
+          }
+
+          circle {
+            stroke: $orange400;
+          }
+        }
+      }
+    }
+  }
+}
+
+// 멤버 역할 - 기타
+.signup-member-set-role-etc {
+  @include flex_center;
+  height: 100%;
+
+  &__input {
+
+    height: 50%;
+    width: 55%;
+    margin-top: 5%;
+    border-bottom: 1px solid $gray100;
+
+    .input {
+      height: 100%;
+      width: 100%;
+      font-size: 30px;
+      text-align: center;
+      justify-content: center;
     }
   }
 }
@@ -349,6 +590,69 @@
 
     .title__text {
       font-weight: bold;
+    }
+  }
+
+  &__img-box {
+    @extend %circular-profile-image;
+
+    margin-top: 5%;
+    height: 200px;
+    width: 200px;
+    border-radius: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .img-box {
+
+      &__img-selected {
+        height: 100%;
+        width: 100%;
+        border-radius: 100%;
+        object-fit: cover;
+      }
+
+      &__img-male-kid,
+      &__img-male-young,
+      &__img-male-old,
+      &__img-female-kid,
+      &__img-female-young,
+      &__img-female-old {
+        height: 100%;
+        width: 100%;
+        border-radius: 100%;
+
+        g {
+          circle {
+            fill: $orange400;
+          }
+        }
+
+        circle {
+          stroke: $orange400;
+        }
+      }
+
+      &__btn {
+        @extend %circular-profile-image;
+
+        position: absolute;
+        border-radius: 100%;
+        height: 40px;
+        width: 40px;
+        background-color: $gray100;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        right: 8px;
+        bottom: 8px;
+
+        .btn__icon {
+          fill: white;
+        }
+      }
     }
   }
 
@@ -418,6 +722,7 @@
   }
 }
 
+// 가입 축하 페이지
 .signup-member-set-finish {
   height: 100%;
   width: 100%;
