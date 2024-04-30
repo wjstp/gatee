@@ -41,7 +41,7 @@ build:
     # 권한 부여 후 현재 서버 환경 확인
     - cd ../../..
     - chmod +x ./devops/nginx/detect_env.sh
-    - DEPLOY_ENV=$(source ./devops/nginx/detect_env.sh)
+    - DEPLOY_ENV=$(source ./devops/nginx/detect_env.sh gatee-api)
     # tag 설정
     - if [ "$DEPLOY_ENV" == "blue" ]; then TAG="green"; else TAG="blue"; fi
     - echo "Building images for $TAG environment..."
