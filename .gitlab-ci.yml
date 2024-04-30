@@ -65,7 +65,7 @@ deploy:
     - echo [INFO] get env
     - cd ./back/gatee
     - chmod +x ./devops/nginx/detect_env.sh
-    - DEPLOY_ENV=$(source ./devops/nginx/detect_env.sh)
+    - DEPLOY_ENV=$(source ./devops/nginx/detect_env.sh gatee-api)
     - echo $DEPLOY_ENV
     - if [ "$DEPLOY_ENV" == "blue" ]; then
       TAG="green";
