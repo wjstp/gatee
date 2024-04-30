@@ -6,7 +6,7 @@ set -x
 ls
 pwd
 DOCKER_APP_NAME="gatee-api"
-EXIST_BLUE=$(docker-compose -p ${DOCKER_APP_NAME}-blue -f docker-compose.blue.yaml ps | grep Up)
+EXIST_BLUE=$(docker-compose -p ${DOCKER_APP_NAME}-blue -f docker-compose.blue.yaml ps | grep Up || true)
 # 컨테이너 스위칭
 if [ -z "$EXIST_BLUE" ]; then
     echo "blue up"
