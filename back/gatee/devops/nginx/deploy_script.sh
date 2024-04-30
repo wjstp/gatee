@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 # 첫 번째 인자를 DOCKER_APP_NAME 변수로 설정
 DOCKER_APP_NAME=$1
 
