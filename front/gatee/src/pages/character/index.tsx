@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from "@pages/character/component/Header";
+import Header from "@pages/character/components/Header";
 import {Link} from "react-router-dom";
 
 const CharacterIndex = () => {

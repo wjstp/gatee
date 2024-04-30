@@ -1,21 +1,21 @@
 export interface Member {
-  nickname: string;
-  email: string;
-  role: string;
-  birth: string;
-  birthType: string;
-  image: string;
-  mood: string | null;
+    nickname: string;
+    email: string;
+    role: string;
+    birth: string;
+    birthType: string;
+    image: string;
+    mood: string | null;
 }
 
 export interface Question {
-  memberName: string;
-  question: string;
-  correctAnswer: string;
-  answerList: string[];
+    memberName: string;
+    question: string;
+    correctAnswer: string;
+    answerList: string[];
 }
 
 export interface Character {
-  question: string;
-  answer: string;
+    question: string;
+    answer: string;
 }

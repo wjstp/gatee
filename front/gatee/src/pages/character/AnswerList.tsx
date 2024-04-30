@@ -1,6 +1,6 @@
 import React from 'react';
-import Header from "./component/Header";
-import AnswerItem from "./component/AnswerItem";
+import Header from "@pages/character/components/Header";
+import AnswerItem from "@pages/character/components/AnswerItem";
 import {Link} from "react-router-dom";
 
 const CharacterStart = () => {

@@ -10,14 +10,14 @@ import MainIndex from "@pages/main";  // 메인
 import MissionIndex from "@pages/mission";  // 미션
 import NotificationIndex from "@pages/notification";  // 알림
 import OnboardingIndex from "@pages/onboarding/index";  // 온보딩
-import KaKaoLogin from "@pages/onboarding/component/KaKaoLogin";
+import KaKaoLogin from "@pages/onboarding/components/KaKaoLogin";
 import ProfileIndex from "@pages/profile";  // 프로필
 import ScheduleIndex from "@pages/schedule";  // 일정
 import ScheduleCreateSchedule from "@pages/schedule/Create";
 import ScheduleCreateReview from "@pages/schedule/CreateReview";
 import ScheduleDetail from "@pages/schedule/ScheduleDetail";
 import ChatIndex from "@pages/chat";  // 채팅
-import CharacterIndex from "@pages/character";
+import CharacterIndex from "@pages/character";  // 백과사전
 import CharacterStart from "@pages/character/AnswerList";
 import CharacterQuestion from "@pages/character/Question";  // 백과사전
 import SignupIndex from "@pages/signup";
@@ -32,10 +32,17 @@ import SignupMemberSetCheck from "@pages/signup/MemberSetCheck";
 import SignupMemberSetFinish from "@pages/signup/MemberSetFinish";
 import SignupMemberSetPermission from "@pages/signup/MemberSetPermission";
 import SignupMemberSetRole from "@pages/signup/MemberSetRole";  // 회원가입
-import PhotoAlbumIndex from "@pages/photo";
-import PhotoAlbumGroupDetail from "@pages/photo/AlbumGroupDetail";
-import PhotoAllGroupDetail from "@pages/photo/AllGroupDetail";
-import PhotoAlbumPhoto from "@pages/photo/AlbumPhoto";  // 앨범
+
+import PhotoAlbum from "@pages/photo/AlbumGroup";
+import PhotoAllMonthGroupDetail from "@pages/photo/AllMonthGroupDetail";
+import PhotoAllYearGroupDetail from "@pages/photo/AllYearGroupDetail";
+import AllDay from "@pages/photo/AllDay";
+import AllMonth from "@pages/photo/AllMonth";
+import AllYear from "@pages/photo/AllYear";
+import PhotoIndex from "@pages/photo";
+import PhotoDetail from "@pages/photo/PhotoDetail";
+import PhotoAlbumGroupDetail from "@pages/photo/AlbumGroupDetail"; // 앨범
+
 
 const Router = () => {
   return (
@@ -74,11 +81,18 @@ const Router = () => {
         <Route path="/character/question" element={<CharacterQuestion/>}/>
 
         {/*앨범 페이지*/}
-        <Route path="/photo" element={<PhotoAlbumIndex/>}/>
-        <Route path="/photo/album" element={<PhotoAlbumPhoto/>}/>
-        <Route path="/photo/group/:id" element={<PhotoAllGroupDetail/>}/>
-        <Route path="/photo/album/:id" element={<PhotoAlbumGroupDetail/>}/>
+        <Route path="/photo" element={<PhotoIndex/>}>
+          <Route path="day" element={<AllDay/>}/>
+          <Route path="month" element={<AllMonth/>}/>
+          <Route path="year" element={<AllYear/>}/>
+          <Route path="month/:year/:month" element={<PhotoAllMonthGroupDetail/>}/>
+          <Route path="year/:year" element={<PhotoAllYearGroupDetail/>}/>
+          <Route path="album" element={<PhotoAlbum/>}/>
+          <Route path="album/:id" element={<PhotoAlbumGroupDetail/>}/>
+          <Route path=":id" element={<PhotoDetail/>}/>
+        </Route>
       </Route>
+
 
       {/*TabBar, BottomBar 없는 레이아웃*/}
       <Route element={<SubLayout/>}>
@@ -102,7 +116,7 @@ const Router = () => {
       </Route>
 
       {/*404 처리*/}
-      {/*<Route component={NotFount} />*/}
+      {/*<Route components={NotFount} />*/}
     </Routes>
   );
 }

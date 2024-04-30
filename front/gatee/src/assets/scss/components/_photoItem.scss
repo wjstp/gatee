@@ -1,1 +1,32 @@
 @use '../abstracts/index' as *;
+
+.photo-detail--container {
+  height: 100%;
+  //background-color: red;
+  .interaction--container{
+    @include flex-row;
+    @include flex_center;
+    @include mx-(1);
+    justify-content: space-between;
+
+
+    .liked--container {
+      @include flex-row;
+      @include flex_center;
+
+      margin-top: 0.5rem;
+      gap: 2.5rem;
+
+      .liked-profiles--container {
+
+        .liked-icon{
+          margin-left: -2rem;
+          width: 3rem;
+          height: 3rem;
+          background-color: white;
+          border-radius: 10rem;
+        }
+      }
+    }
+  }
+}
