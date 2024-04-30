@@ -12,10 +12,6 @@ interface handleSetEditMode {
   handleSetEditMode: (mode: string) => void
 }
 
-interface handleCloseAlbumNameInputModal {
-  handleCloseAlbumNameInputModal: () => void;
-}
-
 
 const PhotoIndex = () => {
   const location = useLocation();
@@ -25,27 +21,24 @@ const PhotoIndex = () => {
   // 모든 사진의 하단 탭 상태 관리 -> 일 / 월 / 연
   const [allPhotoTab, setAllPhotoTab] = useState("day");
   // 모달 상태
-  const {showModal, setShowModal} = useModalStore()
-  // 편집모드 고르기 모달
+  const {setShowModal} = useModalStore()
+  // 편집모드 고르기 모달 상태
   const {isOpen: showEditModeModal, openModal: openEditModal, closeModal: closeEditModeModal} = useModal();
-  // 앨범 이름 고르기 모달
+  // 앨범 이름 고르기 모달 상태
   const {
     isOpen: showAlbumNameInputModal,
     openModal: openAlbumNameInputModal,
     closeModal: closeAlbumNameInputModal
   } = useModal();
-
   // 편집할 photoId들이 담긴 set
   const editPhotoIdList: Set<number> = new Set();
   // 수정 모드 선택
   const [editMode, setEditMode] = useState("normal")
 
-
-  // 활성화된 상단 탭을 변경
+  // 활성화된 상단 탭에 대한 상태 변경 => 모든 사진, 앨범 사진
   const handleTabClick = (path: string) => {
     setActiveTab(path);
   };
-
 
   // 선택 모드 제출 이벤트
   const handleEndEditMode = () => {
@@ -94,14 +87,15 @@ const PhotoIndex = () => {
     }
   }
 
-  // 편집할 사진 추가 => PhotoList 컴포넌트에서 받은 이벤트 실행 함수
+  // 편집할 사진 추가 및 삭제  => PhotoList 컴포넌트에서 받은 이벤트 실행 함수
   const handleChecked = (photoId: number, type: string) => {
     if (type === "delete") {
+      // 체크가 풀린 사진을 삭제한다
       editPhotoIdList.delete(photoId)
     } else {
+      // 지금 체크된 사진을 추가한다
       editPhotoIdList.add(photoId)
     }
-
   }
 
   // 뒤로가기 고려한 상태 변경

@@ -6,7 +6,7 @@ import {PhotoOutletInfoContext} from "../../types/index";
 
 const PhotoAlbumGroupDetail = () => {
   const params = useParams()
-  const id = params.id
+  // const id = params.id
   const albumName = "예빈"
   const {editMode, handleChecked} = useOutletContext<PhotoOutletInfoContext>();
   return (

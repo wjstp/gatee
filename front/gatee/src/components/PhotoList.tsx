@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {Link, useNavigate} from "react-router-dom";
-import {usePhotoStore} from "@store/usePhotoStore";
+import {useNavigate} from "react-router-dom";
+
 // import sampleImage from "@assets/images/schedule/calendarBanner3.jpg"
 import Checkbox from '@mui/material/Checkbox';
 import {PhotoListProps} from "../types/index";
