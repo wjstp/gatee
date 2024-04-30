@@ -36,7 +36,7 @@ public class SecurityConfig {
 
     private final String[] URL_WHITE_LIST = {
             "/api/jwt/**", "/api/auth/**", "/error",
-            "/docs/**"
+            "/docs/**", "/actuator/**"
     };
 
     private final JwtService jwtService;
