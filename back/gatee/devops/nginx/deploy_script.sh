@@ -1,10 +1,11 @@
-#!/bin/bash
-
-set -x
-
+set -ex
+pwd
+cd $(dirname $0)
+pwd
+cd ../..
+pwd
 # Blue 를 기준으로 현재 떠있는 컨테이너를 체크한다.
 ls
-pwd
 DOCKER_APP_NAME="gatee-api"
 EXIST_BLUE=$(docker-compose -p ${DOCKER_APP_NAME}-blue -f docker-compose.blue.yaml ps | grep Up || true)
 # 컨테이너 스위칭
