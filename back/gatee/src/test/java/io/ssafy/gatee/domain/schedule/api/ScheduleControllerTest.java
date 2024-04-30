@@ -30,6 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles({"common, prod"})
 @AutoConfigureRestDocs
 @WebMvcTest(ScheduleController.class)
+//@WebMvcTest({ScheduleController.class, TestSecurityCoanfig.class})
 @MockBean(JpaMetamodelMappingContext.class)
 class ScheduleControllerTest {
 
@@ -41,6 +42,7 @@ class ScheduleControllerTest {
 
     @MockBean
     private ScheduleService scheduleService;
+
 
     @Test
     @CustomWithMockUser

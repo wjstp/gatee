@@ -36,6 +36,7 @@ public class JwtService {
 
     public Authentication authenticateJwtToken(HttpServletRequest request) {
         String token = parseJwt(request);
+        log.info("토큰 parse 완료");
         CustomUserDetails customUserDetails;
         if (Objects.isNull(token)) {
             customUserDetails = CustomUserDetails.builder()
@@ -47,6 +48,7 @@ public class JwtService {
                     .isCredentialsNonExpired(true)
                     .isAccountNonExpired(true)
                     .build();
+            log.info("익명 유저일 시 userdetail 설정");
         } else {
             Claims claims = verifyJwtToken(token);
 
@@ -60,6 +62,7 @@ public class JwtService {
                     .isCredentialsNonExpired(true)
                     .isAccountNonExpired(true)
                     .build();
+            log.info("익명 유저가 아닌 경우 userdetail 설정");
         }
         return new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
     }

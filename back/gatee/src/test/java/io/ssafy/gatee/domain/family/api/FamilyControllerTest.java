@@ -27,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles({"common, prod"})
 @AutoConfigureRestDocs
 @WebMvcTest(FamilyController.class)
+//@WebMvcTest({FamilyController.class, TestSecurityConfig.class})
 @MockBean(JpaMetamodelMappingContext.class)
 class FamilyControllerTest {
 
@@ -38,6 +39,7 @@ class FamilyControllerTest {
 
     @MockBean
     private FamilyService familyService;
+
 
     @Test
     @CustomWithMockUser
@@ -62,7 +64,8 @@ class FamilyControllerTest {
     @CustomWithMockUser
     @DisplayName("가족 코드 생성 테스트")
     void createFamilyCode() throws Exception {
-        mockMvc.perform(get("/api/family/1/code"))
+        mockMvc.perform(get("/api/family/1/code")
+                        .with(csrf()))
                 .andDo(MockMvcResultHandlers.print())
                 .andDo(MockMvcRestDocumentation.document("가족 코드 생성"))
                 .andExpect(status().isOk());
