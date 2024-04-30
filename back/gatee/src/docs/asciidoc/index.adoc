@@ -12,48 +12,49 @@
 
 == 회원 정보 등록
 
-=== Request
+- Request
 
 include::{snippets}/회원 정보 등록/http-request.adoc[]
 
-=== Response
+- Response
 
 include::{snippets}/회원 정보 등록/http-response.adoc[]
 
 
 == 회원 정보 수정
 
-=== Request
+- Request
 
 include::{snippets}/회원 정보 수정/http-request.adoc[]
 
-=== Response
+- Response
 
 include::{snippets}/회원 정보 수정/http-response.adoc[]
 
 
 == 기분 상태 수정
 
-=== Request
+- Request
 
 include::{snippets}/기분 상태 수정/http-request.adoc[]
 
-=== Response
+- Response
 
 include::{snippets}/기분 상태 수정/http-response.adoc[]
 
 
 == 회원 정보 조회
 
-=== Request
+- Request
 
 include::{snippets}/회원 정보 조회/http-request.adoc[]
 
-=== Response
+- Response
 
 include::{snippets}/회원 정보 조회/http-response.adoc[]
 
 
+---
 ---
 
 
@@ -61,59 +62,60 @@ include::{snippets}/회원 정보 조회/http-response.adoc[]
 
 == 가족 생성
 
-=== Request
+- Request
 
 include::{snippets}/가족 생성/http-request.adoc[]
 
-=== Response
+- Response
 
 include::{snippets}/가족 생성/http-response.adoc[]
 
 
 == 가족 정보 조회
 
-=== Request
+- Request
 
 include::{snippets}/가족 정보 조회/http-request.adoc[]
 
-=== Response
+- Response
 
 include::{snippets}/가족 정보 조회/http-response.adoc[]
 
 
 == 가족 코드 생성
 
-=== Request
+- Request
 
 include::{snippets}/가족 코드 생성/http-request.adoc[]
 
-=== Response
+- Response
 
 include::{snippets}/가족 코드 생성/http-response.adoc[]
 
 
 == 가족 합류
 
-=== Request
+- Request
 
 include::{snippets}/가족 합류/http-request.adoc[]
 
-=== Response
+- Response
 
 include::{snippets}/가족 합류/http-response.adoc[]
 
 
 == 가족 이름 수정
 
-=== Request
+- Request
 
 include::{snippets}/가족 이름 수정/http-request.adoc[]
 
-=== Response
+- Response
 
 include::{snippets}/가족 이름 수정/http-response.adoc[]
 
 
+---
 ---
 
 
@@ -121,141 +123,145 @@ include::{snippets}/가족 이름 수정/http-response.adoc[]
 
 == 가족 전체 일정 조회
 
-=== Request
+- Request
 
 include::{snippets}/가족 전체 일정 조회/http-request.adoc[]
 
-=== Response
+- Response
 
 include::{snippets}/가족 전체 일정 조회/http-response.adoc[]
 
 
 == 일정 상세 조회
 
-=== Request
+- Request
 
 include::{snippets}/일정 상세 조회/http-request.adoc[]
 
-=== Response
+- Response
 
 include::{snippets}/일정 상세 조회/http-response.adoc[]
 
 
 == 일정 등록
 
-=== Request
+- Request
 
 include::{snippets}/일정 등록/http-request.adoc[]
 
-=== Response
+- Response
 
 include::{snippets}/일정 등록/http-response.adoc[]
 
 
 == 일정 수정
 
-=== Request
+- Request
 
 include::{snippets}/일정 수정/http-request.adoc[]
 
-=== Response
+- Response
 
 include::{snippets}/일정 수정/http-response.adoc[]
 
 
 == 일정 참여
 
-=== Request
+- Request
 
 include::{snippets}/일정 참여/http-request.adoc[]
 
-=== Response
+- Response
 
 include::{snippets}/일정 참여/http-response.adoc[]
 
 
 == 일정 후기 등록
 
-=== Request
+- Request
 
 include::{snippets}/일정 후기 등록/http-request.adoc[]
 
-=== Response
+- Response
 
 include::{snippets}/일정 후기 등록/http-response.adoc[]
 
 
 ---
+---
+
 
 = Photo
 
 == 사진 목록 조회
 
-=== Request
+- Request
 
 include::{snippets}/사진 목록 조회/http-request.adoc[]
 
-=== Response
+- Response
 
 include::{snippets}/사진 목록 조회/http-response.adoc[]
 
 
 == 사진 상세 조회
 
-=== Request
+- Request
 
 include::{snippets}/사진 상세 조회/http-request.adoc[]
 
-=== Response
+- Response
 
 include::{snippets}/사진 상세 조회/http-response.adoc[]
 
 
 == 사진 등록
 
-=== Request
+- Request
 
 include::{snippets}/사진 등록/http-request.adoc[]
 
-=== Response
+- Response
 
 include::{snippets}/사진 등록/http-response.adoc[]
 
 
 == 사진 삭제
 
-=== Request
+- Request
 
 include::{snippets}/사진 삭제/http-request.adoc[]
 
-=== Response
+- Response
 
 include::{snippets}/사진 삭제/http-response.adoc[]
 
 
 == 사진 상호작용 생성
 
-=== Request
+- Request
 
 include::{snippets}/사진 상호작용 생성/http-request.adoc[]
 
-=== Response
+- Response
 
 include::{snippets}/사진 상호작용 생성/http-response.adoc[]
 
 
 == 사진 상호작용 삭제
 
-=== Request
+- Request
 
 include::{snippets}/사진 상호작용 삭제/http-request.adoc[]
 
-=== Response
+- Response
 
 include::{snippets}/사진 상호작용 삭제/http-response.adoc[]
 
 
 ---
+---
+
 
 = Album
 
