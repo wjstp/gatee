@@ -2,9 +2,6 @@
 
 set -x
 
-# 첫 번째 인자를 DOCKER_APP_NAME 변수로 설정
-DOCKER_APP_NAME=$1
-
 # Blue 를 기준으로 현재 떠있는 컨테이너를 체크한다.
 ls
 pwd
