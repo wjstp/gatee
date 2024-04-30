@@ -14,14 +14,12 @@ GREEN_SERVER="gatee-api-green:8081"
 
 # 환경에 따라 Nginx 설정 변경
 if [ "$DEPLOY_ENV" == "blue" ]; then
-  sed -i "s|server .*;|server $BLUE_SERVER;|g" $NGINX_CONF
+  cp /etc/nginx/nginx.${$DEPLOY_ENV}.conf /etc/nginx/nginx.conf
   echo "Switched to BLUE server configuration."
-elif [ "$DEPLOY_ENV" == "green" ]; then
-  sed -i "s|server .*;|server $GREEN_SERVER;|g" $NGINX_CONF
-  echo "Switched to GREEN server configuration."
 else
   echo "Unknown deployment environment: $DEPLOY_ENV"
-  exit 1
+  cp /etc/nginx/nginx.${$DEPLOY_ENV}.conf /etc/nginx/nginx.conf
+  echo "Switched to GREEN server configuration."
 fi
 
 # Docker 컨테이너 내에서 Nginx 설정 리로드
