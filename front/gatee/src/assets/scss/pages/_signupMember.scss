@@ -23,6 +23,7 @@
 
   &__input-box {
     @include flex_center;
+
     height: 6%;
     width: 60%;
     margin-top: 10%;
@@ -39,6 +40,7 @@
 
   &__btn {
     @include flex_center;
+
     width: 100%;
     margin-top: 5%;
 
@@ -59,73 +61,56 @@
   align-items: center;
   flex-direction: column;
 
-  &__title {
-    margin-top: 30%;
+  &__title-birth {
+    margin-top: 10%;
     font-size: 30px;
 
-    .title__part--01 {
+    .title-birth__part--01 {
       font-weight: bold;
     }
 
-    .title__part--02 {
+    .title-birth__part--02 {
     }
   }
 
   &__birthday {
     @include flex_center;
-    flex-direction: column;
-    width: 100%;
+
+    width: 85%;
+    margin-top: 5%;
 
     .birthday-calendar {
-      margin-top: 5%;
+      height: 100%;
+      width: 100%;
     }
 
     .birthday-choice {
       @include flex_center;
+
+      margin-top: 3%;
       width: 100%;
-      margin-top: 10%;
       font-size: 18px;
 
-      &__solar {
+      &__solar, &__lunar {
         appearance: none;
         background-color: #fff;
         margin: 0;
-        color: orange; /* 주황색 아이콘 */
-        border: 1px solid orange;
-        border-radius: 50%;
-        display: grid;
-        place-content: center;
-      }
-
-      &__solar:checked::before {
-        content: "";
-        width: 0.65em;
-        height: 0.65em;
-        border-radius: 50%;
-        background: orange;
-      }
-
-      &__solar--label {
-        color: orange; /* 주황색 글자 */
-        margin-left: 1%;
-        margin-right: 3%;
-      }
-
-      &__lunar {
-        appearance: none;
-        background-color: #fff;
-        margin: 0;
-        color: orange; /* 주황색 아이콘 */
+        color: $gray200;
         width: 1.15em;
         height: 1.15em;
-        border: 1px solid orange;
+        border: 1px solid $gray200;
         border-radius: 50%;
         transform: translateY(-0.075em);
         display: grid;
         place-content: center;
       }
 
-      &__lunar:checked::before {
+      &__solar:checked, &__lunar:checked {
+        color: orange; /* 선택됐을 때 주황색으로 변경 */
+        border-color: orange; /* 선택됐을 때 테두리 색상을 주황색으로 변경 */
+      }
+
+      &__solar:checked::before, &__lunar:checked::before {
         content: "";
         width: 0.65em;
         height: 0.65em;
@@ -133,80 +118,87 @@
         background: orange;
       }
 
-      &__lunar--label {
-        color: orange; /* 주황색 글자 */
-        margin-left: 1%;
+      &__solar--label, &__lunar--label {
+        color: $gray200;
+        margin-left: 5%;
       }
+
+      &__solar--label {
+        margin-right: 5%;
+      }
+
+      &__solar--label--selected, &__lunar--label--selected {
+        color: $orange400;
+        margin-left: 5%;
+      }
+
+      &__solar--label--selected {
+        margin-right: 5%;
+      }
+    }
+  }
+
+  &__title-gender {
+    margin-top: 10%;
+    font-size: 30px;
+
+    .title-gender__part--01 {
+      font-weight: bold;
+    }
+
+    .title-gender__part--02 {
     }
   }
 
   &__gender {
     @include flex_center;
+
     width: 100%;
     font-size: 18px;
     margin-top: 5%;
 
     .gender-choice {
       @include flex_center;
+
       width: 100%;
+      height: 100%;
+      gap: 20px;
 
-      &__male {
-        appearance: none;
-        background-color: #fff;
-        margin: 0;
-        color: orange; /* 주황색 아이콘 */
-        border: 1px solid orange;
-        border-radius: 50%;
-        display: grid;
-        place-content: center;
+      &__btn-male, &__btn-female {
+        @include flex_center;
+
+        width: 50px;
+        height: 50px;
+        border: 1px solid $gray200;
+        border-radius: 100%;
       }
 
-      &__male:checked::before {
-        content: "";
-        width: 0.65em;
-        height: 0.65em;
-        border-radius: 50%;
-        background: orange;
+      &__btn-male--selected, &__btn-female--selected {
+        @include flex_center;
+
+        width: 50px;
+        height: 50px;
+        border: 1px solid $orange400;
+        border-radius: 100%;
       }
 
-      &__male--label {
-        color: orange; /* 주황색 글자 */
-        margin-left: 1%;
-        margin-right: 3%;
+      .btn-male--icon, .btn-female--icon {
+        color: $gray200;
+        width: 35px;
+        height: 35px;
       }
 
-      &__female {
-        appearance: none;
-        background-color: #fff;
-        margin: 0;
-        color: orange; /* 주황색 아이콘 */
-        width: 1.15em;
-        height: 1.15em;
-        border: 1px solid orange;
-        border-radius: 50%;
-        transform: translateY(-0.075em);
-        display: grid;
-        place-content: center;
-      }
-
-      &__female:checked::before {
-        content: "";
-        width: 0.65em;
-        height: 0.65em;
-        border-radius: 50%;
-        background: orange;
-      }
-
-      &__female--label {
-        color: orange; /* 주황색 글자 */
-        margin-left: 1%;
+      .btn-male--icon--selected, .btn-female--icon--selected {
+        color: $orange400;
+        width: 35px;
+        height: 35px;
       }
     }
-
   }
 
   &__btn {
     @include flex_center;
+
     width: 100%;
     margin-top: 5%;
 
@@ -241,6 +233,7 @@
 
   &__role {
     @include flex_center;
+
     flex-direction: column;
     margin-top: 5%;
     height: 230px;
@@ -248,6 +241,7 @@
 
     .role-parents {
       @include flex_center;
+
       height: 100%;
       width: 100%;
       gap: 10px;
@@ -273,6 +267,7 @@
 
     .role-children {
       @include flex_center;
+
       height: 100%;
       width: 100%;
       gap: 10px;
@@ -298,6 +293,7 @@
 
     .role-etc {
       @include flex_center;
+
       height: 100%;
       width: 100%;
 
@@ -326,6 +322,7 @@
 
   &__btn {
     @include flex_center;
+
     width: 100%;
     margin-top: 5%;
 
@@ -357,6 +354,7 @@
 
   &__btn-back {
     @include flex_center;
+
     margin-top: 5%;
 
     .btn-back__btn {
@@ -372,6 +370,7 @@
 
   &__btn-next {
     @include flex_center;
+
     width: 100%;
     margin-top: 5%;
 
@@ -391,6 +390,7 @@
 
   &__title {
     @include flex_center;
+
     flex-direction: column;
     margin-top: 30%;
     font-size: 30px;
@@ -405,6 +405,7 @@
 
   &__btn {
     @include flex_center;
+
     width: 100%;
     margin-top: 5%;
 
@@ -458,6 +459,7 @@
 
   &__btn {
     @include flex_center;
+
     width: 100%;
 
     .btn-next {
