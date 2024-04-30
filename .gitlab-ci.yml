@@ -52,7 +52,7 @@ deploy:
   script:
     - echo [INFO] get env
     - cd ./back/gatee/devops
-    - cat .env.template | grep -v '^#' | awk -F '=' '{print $1 "=" ENVIRON[$1]}' > .env
+    - cat .env.template | grep -v '^#|\s' | awk -F '=' '{print $1 "=" ENVIRON[$1]}' > .env
     - cat .env
     - echo [INFO] upstream change
     - chmod +x ./nginx/deploy_script.sh
