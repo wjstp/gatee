@@ -12,7 +12,7 @@ build:
     - echo "$DOCKER_REGISTRY_PASSWORD" | docker login -u $DOCKER_REGISTRY_USER --password-stdin
   script:
     - echo [INFO] yaml Settings
-    - cd ../src/main/resources
+    - cd ./back/gatee/src/main/resources
     # AI 관련 설정 파일 생성
     - cp application-ai.yaml.template application-ai.yaml
 
