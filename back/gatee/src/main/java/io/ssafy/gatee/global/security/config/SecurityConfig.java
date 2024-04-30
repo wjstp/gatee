@@ -14,23 +14,19 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 @Log4j2
 @Configuration
@@ -40,9 +36,9 @@ public class SecurityConfig {
 
     private final String[] URL_WHITE_LIST = {
             "/api/jwt/**", "/api/auth/**", "/error",
-            "/docs/**", "/actuator/**"
+            "/docs/**"
     };
-    private final String ALLOWED_IP_ADDRESS = "172.19.0.5";
+
     private final JwtService jwtService;
     private final AuthService authService;
     private final CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
@@ -64,7 +60,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests
                         ((auth) -> auth
                                 .requestMatchers(URL_WHITE_LIST).permitAll()
-                                .requestMatchers("/actuator/**").access(this::hasIpAddress)
                                 // 회원가입 후 정보 등록 페이지는 anonymous만 접근 가능, 정보등록을 하지 않은 유저는 다른 페이지에 접근 불가
                                 .requestMatchers(HttpMethod.PATCH, "/api/members").hasRole("ANONYMOUS")
                                 .requestMatchers(HttpMethod.POST, "/api/family").hasAnyRole("ANONYMOUS", "USER")
@@ -99,8 +94,4 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", config);
         return source;
     }
-    private AuthorizationDecision hasIpAddress(Supplier<Authentication> authentication, RequestAuthorizationContext object) {
-        return new AuthorizationDecision(ALLOWED_IP_ADDRESS.matches(String.valueOf(object.getRequest())));
-    }
-
 }
