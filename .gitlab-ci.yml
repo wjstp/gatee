@@ -56,7 +56,7 @@ deploy:
     - echo [INFO] upstream change
     - chmod +x ./nginx/deploy_script.sh
     - echo [INFO] $TAG
-    - ./nginx/deploy_script.sh
+    - source ./nginx/deploy_script.sh
   after_script:
     - docker logout
     - echo [INFO] docker deploy end!
