@@ -5,7 +5,9 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - ENV=prod, common
+      - ENV=prod
+    env_file:
+      - devops/.env
     networks:
       - gatee-net
 
