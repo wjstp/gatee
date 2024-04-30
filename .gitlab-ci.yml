@@ -79,10 +79,8 @@ deploy:
     - export TAG
     - echo [INFO] upstream change
     - chmod +x ./devops/nginx/deploy_script.sh
-    - cd devops
-    - cd nginx
     - echo [INFO] $TAG
-    - source ./deploy_script.sh gatee-api
+    - source ./devops/nginx/deploy_script.sh gatee-api
     - cd ../..
     - if [ "$DEPLOY_ENV" == "blue" ]; then
       echo "Removing to green environment...";
