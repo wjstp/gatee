@@ -15,7 +15,10 @@ spring:
       - security
       - aws
       - ai
-
+management:
+  endpoint:
+    health:
+      show-details: always
 ---
 spring:
   config:
