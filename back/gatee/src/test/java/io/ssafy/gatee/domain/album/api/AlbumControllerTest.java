@@ -6,7 +6,6 @@ import io.ssafy.gatee.domain.album.application.AlbumService;
 import io.ssafy.gatee.domain.album.dto.request.AddAlbumPhotoListReq;
 import io.ssafy.gatee.domain.album.dto.request.AlbumSaveReq;
 import io.ssafy.gatee.domain.album.dto.request.DeleteAlbumPhotoListReq;
-import io.ssafy.gatee.global.security.config.TestSecurityConfig;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +22,14 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ActiveProfiles({"common, prod"})
 @AutoConfigureRestDocs
-@WebMvcTest({AlbumController.class, TestSecurityConfig.class})
+@WebMvcTest(AlbumController.class)
+//@WebMvcTest({AlbumController.class, TestSecurityConfig.class})
 @MockBean(JpaMetamodelMappingContext.class)
 class AlbumControllerTest {
 
@@ -47,7 +48,8 @@ class AlbumControllerTest {
     @DisplayName("앨범 목록 조회 테스트")
     void readAlbumList() throws Exception {
         mockMvc.perform(get("/api/albums")
-                        .param("familyId", "1"))
+                        .param("familyId", "1")
+                        .with(csrf()))
                 .andDo(MockMvcResultHandlers.print())
                 .andDo(MockMvcRestDocumentation.document("월별 목록 조회"))
                 .andExpect(status().isOk());
@@ -60,6 +62,7 @@ class AlbumControllerTest {
         long albumId = 1L;
 
         mockMvc.perform(get("/api/albums/" + albumId)
+                        .with(csrf())
                         .param("familyId", "1"))
                 .andDo(MockMvcResultHandlers.print())
                 .andDo(MockMvcRestDocumentation.document("앨범 상세 조회"))
@@ -78,6 +81,7 @@ class AlbumControllerTest {
         String albumSaveReqJson = objectMapper.writeValueAsString(albumSaveReq);
 
         mockMvc.perform(post("/api/albums")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(albumSaveReqJson))
                 .andDo(MockMvcResultHandlers.print())
@@ -93,6 +97,7 @@ class AlbumControllerTest {
         String name = "이름 변경 테스트";
 
         mockMvc.perform(patch("/api/albums/" + albumId)
+                        .with(csrf())
                         .param("name", name))
                 .andDo(MockMvcResultHandlers.print())
                 .andDo(MockMvcRestDocumentation.document("앨범 이름 수정"))
@@ -105,7 +110,8 @@ class AlbumControllerTest {
     void deleteAlbum() throws Exception {
         long albumId = 1L;
 
-        mockMvc.perform(delete("/api/albums/" + albumId))
+        mockMvc.perform(delete("/api/albums/" + albumId)
+                        .with(csrf()))
                 .andDo(MockMvcResultHandlers.print())
                 .andDo(MockMvcRestDocumentation.document("앨범 삭제"))
                 .andExpect(status().isOk());
@@ -130,6 +136,7 @@ class AlbumControllerTest {
         String addAlbumPhotoListReqJson = objectMapper.writeValueAsString(addAlbumPhotoListReq);
 
         mockMvc.perform(post("/api/albums/" + albumId + "/photos")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(addAlbumPhotoListReqJson))
                 .andDo(MockMvcResultHandlers.print())
@@ -156,6 +163,7 @@ class AlbumControllerTest {
         String deleteAlbumPhotoListReqJson = objectMapper.writeValueAsString(deleteAlbumPhotoListReq);
 
         mockMvc.perform(delete("/api/albums/" + albumId + "/photos")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(deleteAlbumPhotoListReqJson))
                 .andDo(MockMvcResultHandlers.print())
