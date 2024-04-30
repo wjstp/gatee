@@ -5,7 +5,6 @@ import io.ssafy.gatee.config.security.CustomWithMockUser;
 import io.ssafy.gatee.domain.family.application.FamilyService;
 import io.ssafy.gatee.domain.family.dto.request.FamilyNameReq;
 import io.ssafy.gatee.domain.family.dto.request.FamilySaveReq;
-import io.ssafy.gatee.global.security.config.TestSecurityConfig;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +20,14 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import java.util.UUID;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ActiveProfiles({"common, prod"})
 @AutoConfigureRestDocs
-@WebMvcTest({FamilyController.class, TestSecurityConfig.class})
+@WebMvcTest(FamilyController.class)
+//@WebMvcTest({FamilyController.class, TestSecurityConfig.class})
 @MockBean(JpaMetamodelMappingContext.class)
 class FamilyControllerTest {
 
@@ -51,6 +52,7 @@ class FamilyControllerTest {
         String familySaveJson = objectMapper.writeValueAsString(familySaveReq);
 
         mockMvc.perform(post("/api/family")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(familySaveJson))
                 .andDo(MockMvcResultHandlers.print())
@@ -62,7 +64,8 @@ class FamilyControllerTest {
     @CustomWithMockUser
     @DisplayName("가족 코드 생성 테스트")
     void createFamilyCode() throws Exception {
-        mockMvc.perform(get("/api/family/1/code"))
+        mockMvc.perform(get("/api/family/1/code")
+                        .with(csrf()))
                 .andDo(MockMvcResultHandlers.print())
                 .andDo(MockMvcRestDocumentation.document("가족 코드 생성"))
                 .andExpect(status().isOk());
@@ -73,6 +76,7 @@ class FamilyControllerTest {
     @DisplayName("가족 합류 테스트")
     void joinFamily() throws Exception {
         mockMvc.perform(post("/api/family/join")
+                        .with(csrf())
                         .param("familyCode", "A1B2C3D4")
                         .param("memberId", String.valueOf(UUID.randomUUID())))
                 .andDo(MockMvcResultHandlers.print())
@@ -84,7 +88,8 @@ class FamilyControllerTest {
     @CustomWithMockUser
     @DisplayName("가족 정보 조회 테스트")
     void readFamily() throws Exception {
-        mockMvc.perform(get("/api/family/1"))
+        mockMvc.perform(get("/api/family/1")
+                        .with(csrf()))
                 .andDo(MockMvcResultHandlers.print())
                 .andDo(MockMvcRestDocumentation.document("가족 정보 조회"))
                 .andExpect(status().isOk());
@@ -101,6 +106,7 @@ class FamilyControllerTest {
         String editFamilyNameJson = objectMapper.writeValueAsString(familyNameReq);
 
         mockMvc.perform(patch("/api/family/1")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(editFamilyNameJson))
                 .andDo(MockMvcResultHandlers.print())
