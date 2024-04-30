@@ -596,7 +596,7 @@
   &__img-box {
     @extend %circular-profile-image;
 
-    margin-top: 5%;
+    margin-top: 10%;
     height: 200px;
     width: 200px;
     border-radius: 100%;
@@ -656,6 +656,60 @@
     }
   }
 
+  &__info {
+    margin-top: 5%;
+
+    .info-header {
+      @include flex_center;
+
+      &__name {
+
+        .name--text {
+          font-size: 30px;
+          font-weight: bold;
+        }
+      }
+    }
+
+    .info-body {
+      @include flex_center;
+
+      flex-direction: column;
+      margin-top: 10%;
+
+      &__role {
+        font-size: 23px;
+
+        .role__part--01 {
+
+        }
+
+        .role__part--02 {
+          font-size: 28px;
+          font-weight: bold;
+        }
+
+        .role__part--03 {
+
+        }
+      }
+
+      &__birth {
+        font-size: 23px;
+        margin-top: 1%;
+
+        .birth__part--01 {
+          font-size: 28px;
+          font-weight: bold;
+        }
+
+        .birth__part--02 {
+
+        }
+      }
+    }
+  }
+
   &__btn-back {
     @include flex_center;
 
@@ -689,6 +743,9 @@
 
 // 권한 설정 페이지
 .signup-member-set-permission {
+  @include flex_center;
+  flex-direction: column;
+
   height: 100%;
   width: 100%;
 
@@ -696,7 +753,6 @@
     @include flex_center;
 
     flex-direction: column;
-    margin-top: 30%;
     font-size: 30px;
     font-weight: bold;
 
@@ -707,16 +763,208 @@
     }
   }
 
+  &__checkbox {
+    width: 80%;
+    font-size: 17px;
+    margin-top: 10%;
+
+    .checkbox-all {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      margin-left: 4%;
+
+      &__input {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        height: 30px;
+        width: 30px;
+        border: 2px solid $gray200;
+        border-radius: 30%;
+        cursor: default;
+
+        &:checked {
+          background-color: $orange400;
+          border-color: $orange400;
+          cursor: default;
+        }
+
+        &:checked::after {
+          content: '\2713';
+          font-size: 30px;
+          color: white;
+          line-height: 27px;
+        }
+      }
+
+      &__label {
+        margin-left: 5%;
+        font-size: 25px;
+        font-weight: bold;
+
+        .label__text {
+
+        }
+      }
+    }
+
+    .checkbox-privacy {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      margin-top: 10%;
+      margin-left: 5%;
+
+      &__input {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        height: 25px;
+        width: 25px;
+        border: 2px solid $gray200;
+        border-radius: 30%;
+        cursor: default;
+
+        &:checked {
+          background-color: $orange400;
+          border-color: $orange400;
+          cursor: default;
+        }
+
+        &:checked::after {
+          content: '\2713';
+          font-size: 25px;
+          color: white;
+          line-height: 24px;
+        }
+      }
+
+      &__label {
+        width: 80%;
+        display: flex;
+        flex-direction: column;
+        margin-left: 5%;
+
+        .label__part--01 {
+          font-weight: bold;
+        }
+
+        .label__part--02 {
+          color: $gray300;
+        }
+      }
+    }
+
+    .checkbox-push {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      margin-top: 5%;
+      margin-left: 5%;
+
+      &__input {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        height: 25px;
+        width: 25px;
+        border: 2px solid $gray200;
+        border-radius: 30%;
+        cursor: default;
+
+        &:checked {
+          background-color: $orange400;
+          border-color: $orange400;
+          cursor: default;
+        }
+
+        &:checked::after {
+          content: '\2713';
+          font-size: 25px;
+          color: white;
+          line-height: 24px;
+        }
+      }
+
+      &__label {
+        width: 80%;
+        display: flex;
+        flex-direction: column;
+        margin-left: 5%;
+
+        .label__part--01 {
+          font-weight: bold;
+        }
+
+        .label__part--02 {
+          color: $gray300;
+        }
+      }
+    }
+
+    .checkbox-camera {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      margin-top: 5%;
+      margin-left: 5%;
+
+      &__input {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        height: 25px;
+        width: 25px;
+        border: 2px solid $gray200;
+        border-radius: 30%;
+        cursor: default;
+
+        &:checked {
+          background-color: $orange400;
+          border-color: $orange400;
+          cursor: default;
+        }
+
+        &:checked::after {
+          content: '\2713';
+          font-size: 25px;
+          color: white;
+          line-height: 24px;
+        }
+      }
+
+      &__label {
+        width: 80%;
+        display: flex;
+        flex-direction: column;
+        margin-left: 5%;
+
+        .label__part--01 {
+          font-weight: bold;
+        }
+
+        .label__part--02 {
+          color: $gray300;
+        }
+      }
+    }
+  }
+
   &__btn {
     @include flex_center;
 
     width: 100%;
-    margin-top: 5%;
+    margin-top: 10%;
 
     .btn-next {
       @extend %orange-button-large;
 
       &__text {
+      }
+
+      &:disabled {
+        background-color: #ededed;
       }
     }
   }
@@ -724,20 +972,23 @@
 
 // 가입 축하 페이지
 .signup-member-set-finish {
+  @include flex_center;
+  flex-direction: column;
+
   height: 100%;
   width: 100%;
 
   &__title {
+    height: 10%;
     display: flex;
     flex-direction: column;
-    margin-top: 30%;
-    margin-left: 10%;
 
     .title__header {
       font-size: 30px;
 
       .title__part--01 {
         font-weight: bold;
+        font-size: 35px;
       }
 
       .title__part--02 {
@@ -746,7 +997,7 @@
 
     .title__body {
       margin-top: 1%;
-      font-size: 28px;
+      font-size: 30px;
 
       .title__part--03 {
       }
@@ -754,8 +1005,10 @@
   }
 
   &__img {
-    margin-left: 15%;
-    margin-top: 33%;
+    height: 40%;
+    width: 100%;
+    margin-left: 19%;
+    margin-top: 10%;
 
     .img {
 

@@ -1,11 +1,12 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 
 const SignupMemberSetRoleEtc = (props: {
   gender: string
+  inputRole: string
+  setInputRole: (inputRole: string) => void;
 }) => {
   const inputRef = useRef(null);
-  const { gender } = props;
-  const [inputRole, setInputRole] = useState<string>("");
+  const { gender, inputRole, setInputRole } = props;
 
   // 입력값
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {

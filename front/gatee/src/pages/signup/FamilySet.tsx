@@ -55,7 +55,7 @@ const SignupFamilySet = () => {
       });
     // }
   }
-
+  console.log(selectedFamilyImage)
   return (
     <div className="signup-family-set">
       {/*제목*/}

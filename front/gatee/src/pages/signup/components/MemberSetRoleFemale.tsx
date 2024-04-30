@@ -7,12 +7,14 @@ import { ReactComponent as Old } from "@assets/images/signup/grandma.svg";
 const SignupMemberSetRoleFemale = (props: {
   gender: string
   selectedRole: string
-  setSelectedRole: (role: string) => void;
+  setSelectedRole: (selectedRole: string) => void;
   selectedIcon: string
-  setSelectedIcon: (icon: string) => void;
+  setSelectedIcon: (selectedIcon: string) => void;
+  inputRole: string
+  setInputRole: (inputRole: string) => void;
 }) => {
-  const { gender, selectedRole, setSelectedRole, selectedIcon, setSelectedIcon } = props;
-
+  const { gender, selectedRole, setSelectedRole, selectedIcon, setSelectedIcon, inputRole, setInputRole } = props;
+  console.log(selectedRole)
   return (
     <div className="signup-member-set-role-female">
       {/*역할 제목*/}
@@ -58,6 +60,8 @@ const SignupMemberSetRoleFemale = (props: {
         {selectedRole === "etc" ? (
           <SignupMemberSetRoleEtc
             gender={gender}
+            inputRole={inputRole}
+            setInputRole={setInputRole}
           />
         ) : (
           null

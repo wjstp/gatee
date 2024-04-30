@@ -11,8 +11,9 @@ const SignupMemberSetRole = () => {
   const calendarType = location.state?.calendarType || "solar";
   const gender = location.state?.gender || "male";
 
-  const [selectedRole, setSelectedRole] = useState(gender === 'male' ? "dad" : "mom");
+  const [selectedRole, setSelectedRole] = useState(gender === "male" ? "dad" : "mom");
   const [selectedIcon, setSelectedIcon] = useState("kid");
+  const [inputRole, setInputRole] = useState("");
 
   const goToMemberSetCheck = () => {
     navigate("/signup/member-set/check", {
@@ -23,6 +24,7 @@ const SignupMemberSetRole = () => {
         gender,
         selectedRole,
         selectedIcon,
+        inputRole,
       }
     });
   }
@@ -38,6 +40,8 @@ const SignupMemberSetRole = () => {
             setSelectedRole={setSelectedRole}
             selectedIcon={selectedIcon}
             setSelectedIcon={setSelectedIcon}
+            inputRole={inputRole}
+            setInputRole={setInputRole}
           />
         ) : (
           <SignupMemberSetRoleFemale
@@ -46,6 +50,8 @@ const SignupMemberSetRole = () => {
             setSelectedRole={setSelectedRole}
             selectedIcon={selectedIcon}
             setSelectedIcon={setSelectedIcon}
+            inputRole={inputRole}
+            setInputRole={setInputRole}
           />
         )}
       </div>

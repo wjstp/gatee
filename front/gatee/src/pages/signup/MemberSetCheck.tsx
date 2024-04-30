@@ -18,6 +18,7 @@ const SignupMemberSetCheck = () => {
   const gender = location.state?.gender || "male";
   const selectedRole = location.state?.selectedRole || "dad";
   const selectedIcon = location.state?.selectedIcon || "kid";
+  const inputRole = location.state?.inputRole || "";
 
   const [selectedProfileImage, setSelectedProfileImage] = useState<string | ArrayBuffer | null>(null);
 
@@ -47,6 +48,32 @@ const SignupMemberSetCheck = () => {
       fileInputRef.current.click();
     }
   }
+
+  // 역할 변환 함수
+  const changeRole = (role: string): string => {
+    switch (role) {
+      case "dad":
+        return "아빠";
+      case "son":
+        return "아들";
+      case "mom":
+        return "엄마";
+      case "daughter":
+        return "딸";
+      default:
+        return role;
+    }
+  }
+
+  // 날짜 형식 변환 함수
+    const changeDate = (originalDate: string): string => {
+      const date = new Date(originalDate);
+      const year = date.getFullYear();
+      const month = date.getMonth() + 1;
+      const day = date.getDate();
+
+      return `${year}.${month}.${day}`;
+    }
 
   return (
     <div className="signup-member-set-check">
@@ -123,17 +150,18 @@ const SignupMemberSetCheck = () => {
               당신의 역할은
             </span>
             <span className="role__part--02">
+              &nbsp;{inputRole ? inputRole : changeRole(selectedRole)}
             </span>
             <span className="role__part--03">
-
+              입니다
             </span>
           </div>
           <div className="info-body__birth">
             <span className="birth__part--01">
-
+              {changeDate(formattedDate)}
             </span>
             <span className="birth__part--02">
-
+              에 태어났어요
             </span>
           </div>
         </div>

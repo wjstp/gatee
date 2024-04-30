@@ -7,7 +7,7 @@ const SignupFamilySetCheck = () => {
   const location = useLocation();
   const inputValue = location.state?.inputValue || "";
   const selectedFamilyImage = location.state?.selectedFamilyImage || "";
-
+  console.log(selectedFamilyImage)
   const goToFamilySetCheck = () => {
     navigate("/signup/family-set/share", {
       state: {
