@@ -40,7 +40,7 @@ public class SecurityConfig {
 
     private final String[] URL_WHITE_LIST = {
             "/api/jwt/**", "/api/auth/**", "/error",
-            "/docs/**"
+            "/docs/**", "actuator/**"
     };
     private final String ALLOWED_IP_ADDRESS = "172.26.13.248";
     private final JwtService jwtService;
