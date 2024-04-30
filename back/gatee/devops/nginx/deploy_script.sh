@@ -1,27 +1,32 @@
+
 #!/bin/bash
+ 
+# Blue 를 기준으로 현재 떠있는 컨테이너를 체크한다.
+EXIST_BLUE=$(docker-compose -p ${DOCKER_APP_NAME}-blue -f docker-compose.blue.yaml ps | grep Up)
 
-# 배포할 환경 변수 설정 (예: blue 또는 green)
-DEPLOY_ENV=$1
-
-# Nginx 설정 파일 경로 설정
-NGINX_CONF="/home/ubuntu/nginx.conf"
-
-# 블루 서버 설정
-BLUE_SERVER="gatee-api-blue:8080"
-
-# 그린 서버 설정
-GREEN_SERVER="gatee-api-green:8081"
-
-# 환경에 따라 Nginx 설정 변경
-if [ "$DEPLOY_ENV" == "blue" ]; then
-  cp /etc/nginx/nginx.${$DEPLOY_ENV}.conf /etc/nginx/nginx.conf
-  echo "Switched to BLUE server configuration."
+# 컨테이너 스위칭
+if [ -z "$EXIST_BLUE" ]; then
+    echo "blue up"
+    docker-compose -p ${DOCKER_APP_NAME}-blue -f docker-compose.blue.yaml up -d
+    BEFORE_COMPOSE_COLOR="green"
+    AFTER_COMPOSE_COLOR="blue"
 else
-  echo "Unknown deployment environment: $DEPLOY_ENV"
-  cp /etc/nginx/nginx.${$DEPLOY_ENV}.conf /etc/nginx/nginx.conf
-  echo "Switched to GREEN server configuration."
+    echo "green up"
+    docker-compose -p ${DOCKER_APP_NAME}-green -f docker-compose.green.yaml up -d
+    BEFORE_COMPOSE_COLOR="blue"
+    AFTER_COMPOSE_COLOR="green"
 fi
-
-# Docker 컨테이너 내에서 Nginx 설정 리로드
-CONTAINER_NAME="proxy-server"
-docker exec $CONTAINER_NAME nginx -s reload
+ 
+sleep 10
+ 
+# 새로운 컨테이너가 제대로 떴는지 확인
+EXIST_AFTER=$(docker-compose -p ${DOCKER_APP_NAME}-${AFTER_COMPOSE_COLOR} -f docker-compose.${AFTER_COMPOSE_COLOR}.yaml ps | grep Up)
+if [ -n "$EXIST_AFTER" ]; then
+  # nginx.config를 컨테이너에 맞게 변경해주고 reload 한다
+  cp /etc/nginx/nginx.${AFTER_COMPOSE_COLOR}.conf /etc/nginx/nginx.conf
+  nginx -s reload
+ 
+  # 이전 컨테이너 종료
+  docker-compose -p ${DOCKER_APP_NAME}-${BEFORE_COMPOSE_COLOR} -f docker-compose.${BEFORE_COMPOSE_COLOR}.yaml down
+  echo "$BEFORE_COMPOSE_COLOR down"
+fi

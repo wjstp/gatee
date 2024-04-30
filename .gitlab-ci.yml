@@ -82,7 +82,7 @@ deploy:
     - cd devops
     - cd nginx
     - echo [INFO] $TAG
-    - source ./deploy_script.sh $TAG
+    - source ./deploy_script.sh
     - cd ../..
     - if [ "$DEPLOY_ENV" == "blue" ]; then
       echo "Removing to green environment...";
