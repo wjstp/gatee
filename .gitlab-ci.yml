@@ -41,9 +41,9 @@ build:
     # 권한 부여 후 현재 서버 환경 확인
     - cd ../../..
     - chmod +x ./devops/nginx/detect_env.sh
-    - DEPLOY_ENV=$(source ./devops/nginx/detect_env.sh)
+    - DEPLOY_ENV=$(source ./devops/nginx/detect_env.sh gatee-api)
     # tag 설정
-    - if [ "$DEPLOY_ENV" == "blue" ]; then TAG="green"; else TAG="blue"; fi
+    - if [ "$DEPLOY_ENV" == "blue" ]; then TAG="blue"; else TAG="green"; fi
     - echo "Building images for $TAG environment..."
     - chmod +x ./devops/build-image.sh
     - ./devops/build-image.sh $CI_REGISTRY/gatee-api:$TAG
@@ -64,33 +64,10 @@ deploy:
   script:
     - echo [INFO] get env
     - cd ./back/gatee
-    - chmod +x ./devops/nginx/detect_env.sh
-    - DEPLOY_ENV=$(source ./devops/nginx/detect_env.sh)
-    - echo $DEPLOY_ENV
-    - if [ "$DEPLOY_ENV" == "blue" ]; then
-      TAG="green";
-      echo "Deploying to green environment...";
-      docker-compose -f docker-compose.green.yaml up --no-deps --build -d;
-      else
-      TAG="blue";
-      echo "Deploying to blue environment...";
-      docker-compose -f docker-compose.blue.yaml up --no-deps --build -d;
-      fi
-    - export TAG
     - echo [INFO] upstream change
     - chmod +x ./devops/nginx/deploy_script.sh
-    - cd devops
-    - cd nginx
     - echo [INFO] $TAG
-    - source ./deploy_script.sh $TAG
-    - cd ../..
-    - if [ "$DEPLOY_ENV" == "blue" ]; then
-      echo "Removing to green environment...";
-      docker-compose -f docker-compose.green.yaml down;
-      else
-      echo "removing to blue environment...";
-      docker-compose -f docker-compose.blue.yaml down;
-      fi
+    - source ./devops/nginx/deploy_script.sh
   after_script:
     - docker logout
     - echo [INFO] docker deploy end!

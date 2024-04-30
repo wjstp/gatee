@@ -6,6 +6,7 @@ import io.ssafy.gatee.domain.member.application.MemberService;
 import io.ssafy.gatee.domain.member.dto.request.MemberEditMoodReq;
 import io.ssafy.gatee.domain.member.dto.request.MemberEditReq;
 import io.ssafy.gatee.domain.member.dto.request.MemberSaveReq;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -26,9 +28,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@Slf4j
 @ActiveProfiles({"common, prod"})
 @AutoConfigureRestDocs
 @WebMvcTest(MemberController.class)
+//@WebMvcTest({MemberController.class, TestSecurityConfig.class})
 @MockBean(JpaMetamodelMappingContext.class)
 class MemberControllerTest {
 
@@ -40,7 +44,6 @@ class MemberControllerTest {
 
     @MockBean
     private MemberService memberService;
-
 
     @Test
     @DisplayName("회원 정보 등록 테스트")
@@ -58,7 +61,7 @@ class MemberControllerTest {
         String memberSaveJson = objectMapper.writeValueAsString(memberSaveReq);
 
         mockMvc.perform(patch("/api/members")
-                        .with(csrf())   // security에서 csrf disable 설정을 해두었기 떄문에 추가
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(memberSaveJson))
                 .andDo(MockMvcResultHandlers.print())
@@ -82,6 +85,7 @@ class MemberControllerTest {
 
         String memberEditJson = objectMapper.writeValueAsString(memberEditReq);
 
+        log.info("context 확인 : " + String.valueOf(SecurityContextHolder.getContext().getAuthentication()));
         mockMvc.perform(patch("/api/members/profile")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
