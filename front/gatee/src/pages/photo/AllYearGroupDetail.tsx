@@ -1,10 +1,11 @@
 import React from 'react';
 import PhotoList from "@components/PhotoList";
-import {useParams} from "react-router-dom";
+import {useOutletContext, useParams} from "react-router-dom";
 import {photoGroup} from "../../constants";
+import {PhotoOutletInfoContext} from "../../types/index";
 
 const PhotoAllYearGroupDetail = () => {
-
+  const { editMode,handleChecked } = useOutletContext<PhotoOutletInfoContext>();
 
   const params = useParams()
   return (
@@ -12,7 +13,7 @@ const PhotoAllYearGroupDetail = () => {
       <div className="detail-tab--title">
         {params.year}년
       </div>
-      <PhotoList photoGroup={photoGroup}/>
+      <PhotoList editMode={editMode} photoGroup={photoGroup} handleChecked={handleChecked}/>
     </div>
   );
 }

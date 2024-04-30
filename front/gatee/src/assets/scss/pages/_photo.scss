@@ -249,6 +249,9 @@
         @extend %orange-button-small;
         @include m-(0);
       }
+      .submit-btn:disabled {
+        background-color: $gray100;
+      }
 
     }
   }

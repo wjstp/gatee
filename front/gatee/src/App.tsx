@@ -6,6 +6,7 @@ const App = ()=> {
   // localStorage.removeItem("family");
   // localStorage.removeItem("member")
   // localStorage.removeItem("photo")
+  // localStorage.removeItem("modal")
   return (
     <div>
       <Router/>

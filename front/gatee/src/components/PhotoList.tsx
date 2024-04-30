@@ -1,46 +1,71 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Link, useNavigate} from "react-router-dom";
 import {usePhotoStore} from "@store/usePhotoStore";
 // import sampleImage from "@assets/images/schedule/calendarBanner3.jpg"
 import Checkbox from '@mui/material/Checkbox';
+import {PhotoListProps} from "../types/index";
 
-// 사진 그룹 타입
-interface PhotoListProps {
-  photoGroup: {
-    id: number,
-    dateTime: string,
-    src: string
-  }[]
+interface PhotoData {
+  id: number,
+  dateTime: string,
+  src: string
 }
 
 // 채팅 앨범과 모든 사진의 일별 사진, 월별 연별 앨범 사진 상세페이지에서 활용됨
-const PhotoList = ({photoGroup}: PhotoListProps) => {
-  const {isEdit} = usePhotoStore()
-  const label = {inputProps: {'aria-label': 'Checkbox demo'}};
-  const navigate = useNavigate();
-  const gotoDetail = () => {
-    if (isEdit === false) {
-      navigate("/photo/1")
-    }
-  }
+const PhotoList = ({editMode, photoGroup, handleChecked}: PhotoListProps) => {
+
   return (
     <div className="photo__item__list-container">
       {/* 사진 묶음 - 3개씩 보여주기 */}
       {photoGroup.map((item: any, index) => {
-        return (
-          <div onClick={gotoDetail} className="photo__item"
-               key={index}>
-            {isEdit ?
-              <Checkbox {...label} className="check-box"/>
-              :
-              null}
-            <img src={item.src} alt=""/>
-          </div>)
+        return <PhotoItem key={index} photoData={item} editMode={editMode} photoGroup={photoGroup}
+                          handleChecked={handleChecked}/>
       })}
 
     </div>
   )
 
 }
+
+const PhotoItem = ({ photoData, editMode, handleChecked }: PhotoListProps & { photoData: PhotoData }) => {
+  const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
+  const navigate = useNavigate();
+  const [checked, setChecked] = useState(false);
+  const gotoDetail = () => {
+    if (editMode === 'normal') {
+      navigate("/photo/1");
+    }
+  };
+  
+  // 체크박스 변동 함수
+  const handleCheckBox = () => {
+    // 체크박스가 체크 되어있다면 리스트에서 id를 제거하고 체크를 푼다
+    if (checked) {
+      handleChecked(photoData.id,"delete")
+      setChecked(false)
+    }
+    // 체크박스가 체크 되어있지 않다면, 리스트에 id를 추가하고 체크를 한다
+    else {
+      handleChecked(photoData.id,"add")
+      setChecked(true)
+    }
+  }
+
+  // 편집 모드가 변경되었을때, 체크를 풀어준다
+  useEffect(() => {
+    setChecked(false)
+  }, [editMode]);
+  
+  return (
+    <div onClick={gotoDetail} className="photo__item">
+      {editMode !== 'normal' &&
+        <Checkbox {...label} className="check-box"
+                  checked={checked}
+                  onChange={() => handleCheckBox()}
+        />}
+      <img src={photoData.src} alt={photoData.dateTime} />
+    </div>
+  );
+};
 
 export default PhotoList;
