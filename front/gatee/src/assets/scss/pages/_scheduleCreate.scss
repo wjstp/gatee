@@ -5,12 +5,10 @@
   @include flex-col;
 
   justify-content: space-between;
-  height: 100%;
 
   &__input-container {
     @include flex-col;
-
-    gap: 1.5rem;
+    @include px-(1);
   }
 
   &__title {
@@ -22,73 +20,67 @@
   }
 
   &__sub-title {
-    @include px-(1);
+    @include mt-(1.5);
 
-    font-weight: 600;
+    font-weight: 500;
   }
-
-  //input {
-  //  width: 100%;
-  //  border: 1px $subtext-color solid;
-  //  border-radius: 10px;
-  //}
 
   &-info {
     &__input {
       &-title {
-        @include px-(1);
-
         position: relative;
         right: 0;
       }
 
-      &-color {
+      &-color-button {
         position: absolute;
         width: 2rem;
         height: 2rem;
-        border-radius: 10px;
-        border: #C9C9C9 1px solid;
+        border-radius: 30%;
+        border: $gray150 1px solid;
+        top: 28px;
+        right: 10px;
+
+        &--active {
+          @extend .create-schedule-info__input-color-button;
+
+          border: $orange300 2px solid;
+        }
       }
 
       &-content {
-        @include px-(1);
+        @include mb-(0.5);
       }
 
       &-category {
-        @include px-(1);
-
-        &-family {
-
-        }
-
-        &-individual {
-
-        }
       }
     }
   }
 
   &-period {
-    &__date {
-      @include px-(1);
+    &__input {
       @include flex-row;
-      gap: 1rem;
+
+      gap: 0.5rem;
     }
 
-    &__time {
-      @include px-(1);
-      @include flex-row;
-      gap: 1rem;
+    &__date {
+      width: 70%;
+    }
+
+    input {
+      text-align: center;
+      height: 16.5px;
     }
   }
 
   &-participant {
-
     &__profile {
-      @include flex-row;
+      @include mt-(1);
 
-      overflow-x: auto;
-      gap: 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
 
       &-image {
         @extend %circular-profile-image;
@@ -105,10 +97,49 @@
   &__button-create {
     @include flex-center;
 
-
     button {
       @extend %orange-button-large;
+      @include mt-(2);
+    }
+  }
 
+  &__input-color {
+    position: absolute;
+    z-index: 10;
+    bottom: 10dvh;
+    background-color: white;
+    height: 10rem;
+    width: 100%;
+    border-radius: 30px 30px 0 0;
+    border-top: $gray150 0.1px solid;
+    box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.05);
+
+    &-title {
+      display: flex;
+      justify-content: center;
+      align-items: end;
+      height: 25%;
+      font-weight: 500;
+    }
+
+    &-list {
+      @include flex_center;
+
+      gap: 1rem;
+      height: 70%;
+    }
+
+    &-item {
+      width: 3.5rem;
+      height: 3.5rem;
+      border-radius: 30%;
+      border: $gray150 1px solid;
+
+      &--active {
+        @extend .create-schedule__input-color-item;
+
+        border: $orange300 2px solid;
+      }
     }
   }
 }
