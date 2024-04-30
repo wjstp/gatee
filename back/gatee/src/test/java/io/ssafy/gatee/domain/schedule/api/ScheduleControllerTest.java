@@ -16,6 +16,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
@@ -26,6 +27,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@ActiveProfiles({"common, prod"})
 @AutoConfigureRestDocs
 @WebMvcTest(ScheduleController.class)
 @MockBean(JpaMetamodelMappingContext.class)
@@ -57,7 +59,8 @@ class ScheduleControllerTest {
     @DisplayName("일정 상세 조회 테스트")
     void readScheduleDetail() throws Exception {
         mockMvc.perform(get("/api/schedule/1")
-                        .with(csrf()))
+                        .with(csrf())
+                        .param("familyId", "1"))
                 .andDo(MockMvcResultHandlers.print())
                 .andDo(MockMvcRestDocumentation.document("일정 상세 조회"))
                 .andExpect(status().isOk());
@@ -70,7 +73,6 @@ class ScheduleControllerTest {
         UUID memberId = UUID.randomUUID();
 
         ScheduleSaveReq scheduleSaveReq = ScheduleSaveReq.builder()
-                .memberId(memberId)
                 .familyId(String.valueOf(1))
                 .category("GROUP")
                 .title("첫 번째 일정")
@@ -98,7 +100,6 @@ class ScheduleControllerTest {
         UUID memberId = UUID.randomUUID();
 
         ScheduleEditReq scheduleEditReq = ScheduleEditReq.builder()
-                .memberId(memberId)
                 .familyId(String.valueOf(1))
                 .category("GROUP")
                 .title("첫 번째 일정")
@@ -126,7 +127,6 @@ class ScheduleControllerTest {
         UUID memberId = UUID.randomUUID();
 
         ScheduleParticipateReq scheduleParticipateReq = ScheduleParticipateReq.builder()
-                .memberId(memberId)
                 .familyId(String.valueOf(1))
                 .build();
 

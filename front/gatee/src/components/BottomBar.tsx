@@ -44,14 +44,15 @@ const BottomBar = () => {
         <span>일정</span>
       </NavLink>
 
-      {/*앨범*/}
-      <NavLink to="/photo" className={({isActive}) =>
-        isActive ? 'bottom-bar__item--active' : 'bottom-bar__item'
-      }>
-        <PiImage size={24}/>
-        <span>앨범</span>
-      </NavLink>
-    </div>
+        {/*앨범*/}
+        <NavLink to="/photo" className={({isActive}) =>
+          isActive ? 'bottom-bar__item--active' : 'bottom-bar__item'
+        }>
+          <PiImage size={24}/>
+          <span>앨범</span>
+        </NavLink>
+      </div>
+
   )
 }
 

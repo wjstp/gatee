@@ -22,6 +22,8 @@
   }
 
   &__sub-title {
+    @include px-(1);
+
     font-weight: 600;
   }
 
@@ -32,22 +34,28 @@
   //}
 
   &-info {
-    background-color: $lightpink;
-
     &__input {
       &-title {
+        @include px-(1);
 
+        position: relative;
+        right: 0;
       }
 
       &-color {
-
+        position: absolute;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 10px;
+        border: #C9C9C9 1px solid;
       }
 
       &-content {
-
+        @include px-(1);
       }
 
       &-category {
+        @include px-(1);
 
         &-family {
 
@@ -61,18 +69,20 @@
   }
 
   &-period {
-    background-color: $lightblue;
     &__date {
-
+      @include px-(1);
+      @include flex-row;
+      gap: 1rem;
     }
 
     &__time {
-
+      @include px-(1);
+      @include flex-row;
+      gap: 1rem;
     }
   }
 
   &-participant {
-    background-color: $lightgreen;
 
     &__profile {
       @include flex-row;

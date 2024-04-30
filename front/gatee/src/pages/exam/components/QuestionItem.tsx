@@ -41,13 +41,13 @@ const QuestionItem: React.FC<QuestionItemProps> = (
   // 정답 리스트에 변화가 있으면, 부모에게 이벤트를 발송한다
   useEffect(() => {
     // 맨 첫 렌더링 제외(모든답이
-    if (copyMyAnswerList.reduce(( accumulator, currentValue) => accumulator + currentValue, 0 ) != 0 )
+    if (copyMyAnswerList.reduce(( accumulator, currentValue) => accumulator + currentValue, 0 ) !== 0 )
     handleNextIndex( copyMyAnswerList )
   }, [ copyMyAnswerList ]);
   return (
     <div className="exam__item">
       {/* 채점 */}
-      { type == "scored" ?
+      { type === "scored" ?
           <Mark/>
           :
           null
@@ -77,7 +77,7 @@ const QuestionItem: React.FC<QuestionItemProps> = (
 
       {/* 이전, 다음 버튼
           시험 보고 있는 중만 보임 */}
-      {type == "taking" ?
+      {type === "taking" ?
         <div>
           <Button questionIndex={question.questionId}
                   submitNextIndex={submitNextIndex}

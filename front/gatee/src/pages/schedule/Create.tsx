@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FamilyMemberInfoSample } from "../../constants";
 import ProfileImage from '@assets/images/logo/app_icon_orange.png'
 import { useSearchParams, useNavigate } from "react-router-dom"
-// import { Schedule } from "../../types";
+import { TextField } from '@mui/material';
 import { DateField } from '@mui/x-date-pickers/DateField';
 import { TimeField } from '@mui/x-date-pickers/TimeField';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -11,21 +11,22 @@ import dayjs, {Dayjs} from 'dayjs';
 
 
 const ScheduleCreate = () => {
-  const today: Dayjs = dayjs();;
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [title, setTitle] = useState<string | null>(null);
   const [content, setContent] = useState<string | null>(null);
+  const [startDate, setStartDate] = useState<Dayjs | null>(null);
+  const [endDate, setEndDate] = useState<Dayjs | null>(null);
+  const [startTime, setStartTime] = useState<Dayjs | null>();
+  const [endTime, setEndTime] = useState<Dayjs | null>();
   const [participant, setParticipant] = useState<string[] | null>(null);
-  const [startDate, setStartDate] = useState<Dayjs | null>(today);
-  const [endDate, setEndDate] = useState<Dayjs | null>(today);
 
   useEffect(() => {
     // 날짜 string to Dayjs
-    if (searchParams.get("start") && searchParams.get("end")) {
-      setStartDate(dayjs(`${searchParams.get("start")}T00:00:00`))
-      setEndDate(dayjs(`${searchParams.get("end")}T23:59:59`))
-    }
+    setStartDate(dayjs(searchParams.get("start")))
+    setEndDate(dayjs(searchParams.get("end")))
+    setStartTime(dayjs(`${searchParams.get("start")}T00:00:00`))
+    setEndTime(dayjs(`${searchParams.get("end")}T23:59:59`))
   }, []);
 
   // 일정 생성 핸들
@@ -37,42 +38,51 @@ const ScheduleCreate = () => {
   // 시작 일자 수정 핸들
   const handleSetStartDate = (newValue: Dayjs | null) => {
     if (newValue) {
-      const [year, month, day]: number[] = [newValue.get("year"), newValue.get("month"), newValue.get("day")];
-
-      // setStartDate(newStartDate);
-      // console.log(newStartDate)
-    } else {
-      setStartDate(null);
+      setStartDate(newValue);
     }
   }
 
   // 종료 일자 수정 핸들
   const handleSetEndDate = (newValue: Dayjs | null) => {
-
+    if (newValue) {
+      setEndTime(newValue);
+    }
   }
 
   // 시작 시간 수정 핸들
   const handleSetStartTime = (newValue: Dayjs | null) => {
-
+    if (newValue) {
+      setStartTime(newValue)
+    } else {
+      setStartTime(dayjs(`${searchParams.get("start")}T00:00:00`))
+    }
   }
 
   // 종료 시간 수정 핸들
-  const handleSetEndTIme = (newValue: Dayjs | null) => {
-
+  const handleSetEndTime = (newValue: Dayjs | null) => {
+    if (newValue) {
+      setEndTime(newValue)
+    } else {
+      setEndTime(dayjs(`${searchParams.get("end")}T23:59:59`))
+    }
   }
 
   return (
     <div className="create-schedule">
       <div className="create-schedule__input-container">
         <div className="create-schedule__title">일정 등록</div>
-
         {/*일정 설명*/}
         <div className="create-schedule-info">
           <div className="create-schedule__sub-title">설명</div>
 
           {/*일정 제목 입력*/}
           <div className="create-schedule-info__input-title">
-            <input type="text" placeholder="제목 *"/>
+            <TextField
+              id="title"
+              fullWidth
+              placeholder="제목 *"
+              margin="normal"
+            />
 
             {/*일정 색상 선택*/}
             <div className="create-schedule-info__input-color">
@@ -81,7 +91,12 @@ const ScheduleCreate = () => {
 
           {/*일정 내용 입력*/}
           <div className="create-schedule-info__input-content">
-            <input type="text" placeholder="상세 내용"/>
+            <TextField
+              id="content"
+              fullWidth
+              placeholder="상세 내용"
+              multiline rows={4}
+            />
           </div>
 
           {/*일정 카테고리 선택*/}
@@ -101,26 +116,34 @@ const ScheduleCreate = () => {
 
           {/*일정 날짜 입력*/}
           <div className="create-schedule-period__date">
-            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DateField
                 value={startDate}
                 onChange={handleSetStartDate}
                 format="YYYY-MM-DD"
+                margin="normal"
               />
               <DateField
                 value={endDate}
                 onChange={handleSetEndDate}
                 format="YYYY-MM-DD"
+                margin="normal"
               />
             </LocalizationProvider>
           </div>
 
           {/*일정 시간 입력*/}
           <div className="create-schedule-period__time">
-            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
               <TimeField
-                defaultValue={dayjs('2022-04-17T15:30')}
-                format="hh:mm"
+                value={startTime}
+                onChange={handleSetStartTime}
+                format="HH:mm"
+              />
+              <TimeField
+                value={endTime}
+                onChange={handleSetEndTime}
+                format="HH:mm"
               />
             </LocalizationProvider>
           </div>

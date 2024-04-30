@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import Header from "./component/Header";
-import QuestionItem from "./component/QuestionItem";
+import Header from "@pages/exam/components/Header";
+import QuestionItem from "@pages/exam/components/QuestionItem";
 import {useNavigate} from "react-router-dom";
 
 const ExamTaking = () => {

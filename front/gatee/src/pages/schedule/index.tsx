@@ -7,18 +7,20 @@ import googleCalendarPlugin from "@fullcalendar/google-calendar";
 import { FaCaretLeft, FaCaretRight } from "react-icons/fa";
 import { LuCalendarPlus } from "react-icons/lu";
 import { Link, useNavigate } from "react-router-dom";
-import DayToast from "@pages/schedule/component/DayToast";
 import { FaPlus } from "react-icons/fa6";
+import DayToast from "@pages/schedule/components/DayToast";
+import dayjs, {Dayjs} from 'dayjs';
 
 
 const ScheduleIndex: React.FC = () => {
+  const today: Dayjs = dayjs();
   const navigate = useNavigate();
   const calendarRef: any = useRef(null)
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const [selectedDate, setSelectedDate] = useState<string>("");
   const [isOpenDayToast, setIsOpenDayToast] = useState<boolean>(false);
-  const [selectedStartDate, setSelectedStartDate] = useState<string>("");
-  const [selectedEndDate, setSelectedEndDate] = useState<string>("");
+  const [selectedStartDate, setSelectedStartDate] = useState<string>(today.format("YYYY-MM-DD"));
+  const [selectedEndDate, setSelectedEndDate] = useState<string>(today.format("YYYY-MM-DD"));
 
   useEffect(() => {
     if (calendarRef.current) {
@@ -75,6 +77,7 @@ const ScheduleIndex: React.FC = () => {
 
   // 일정 생성 버튼 클릭 핸들러
   const handleCreateScheduleClick = () => {
+    console.log(selectedStartDate)
     // 선택한 영역을 query string으로 전송
     navigate(
       {

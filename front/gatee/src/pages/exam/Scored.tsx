@@ -1,6 +1,6 @@
 import React from 'react';
-import Header from "./component/Header";
-import QuestionItem from "./component/QuestionItem";
+import Header from "./components/Header";
+import QuestionItem from "./components/QuestionItem";
 import {ReactComponent as Scored100} from "@assets/images/examImg/score100.svg"
 import {ReactComponent as Scored90} from "@assets/images/examImg/score90.svg"
 import {ReactComponent as Scored80} from "@assets/images/examImg/score80.svg"
