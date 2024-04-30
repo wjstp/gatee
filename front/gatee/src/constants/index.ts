@@ -150,31 +150,38 @@ export const QuestionSample: Question[] = [
 // 사진 임시 데이터
 export const photoGroup = [
   {
+    id: 1,
     dateTime: "2024-01-31T12:00:00",
     src: '@assets/images/schedule/calendarBanner3.jpg',
   },
   {
+    id: 2,
     dateTime: "2024-01-31T12:00:00",
     src: '@assets/images/schedule/calendarBanner3.jpg',
   },
 
   {
+    id: 3,
     dateTime: "2024-01-31T12:00:00",
     src: '@assets/images/schedule/calendarBanner3.jpg',
   },
   {
+    id: 3,
     dateTime: "2024-01-31T12:00:00",
     src: '@assets/images/schedule/calendarBanner3.jpg',
   },
   {
+    id: 4,
     dateTime: "2024-01-31T12:00:00",
     src: '@assets/images/schedule/calendarBanner3.jpg',
   },
   {
+    id: 5,
     dateTime: "2024-01-31T12:00:00",
     src: '@assets/images/schedule/calendarBanner3.jpg',
   },
   {
+    id: 6,
     dateTime: "2024-01-31T12:00:00",
     src: '@assets/images/schedule/calendarBanner3.jpg',
   },

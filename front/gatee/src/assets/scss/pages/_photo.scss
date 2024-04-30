@@ -1,5 +1,6 @@
 @use '../abstracts/index' as *;
 @use '../components' as *;
+
 .photo {
   height: 100%;
 
@@ -194,7 +195,7 @@
         border: 2px solid $gray100;
 
 
-        .plus-button{
+        .plus-button {
           color: $gray100;
         }
       }
@@ -211,10 +212,45 @@
     color: $orange500;
   }
 
-  .edit-modal {
+  .edit-modal-bg {
     @extend %modal-overlay;
-    @extend %modal-content;
-    background-color: red;
+
+    .edit-modal-content {
+      @extend %modal-content;
+      @include p-(1);
+      @include flex-row;
+      gap:2rem;
+
+      .icon-title-center{
+        @include flex_center;
+        @include flex-col;
+
+        height: 4rem;
+        gap:0.5rem;
+      }
+
+    }
+  }
+
+  .input-modal-bg {
+    @extend %modal-overlay;
+
+    .input-modal-content {
+      @extend %modal-content;
+      @include p-(2);
+      @include flex-col;
+
+      gap:1rem;
+
+      .modal-title {
+        font-size: 1.3rem;
+      }
+      .submit-btn {
+        @extend %orange-button-small;
+        @include m-(0);
+      }
+
+    }
   }
 
 
