@@ -19,23 +19,23 @@ build:
 
     # 데이터베이스 관련 설정 파일 생성
     - cp application-db.yaml.template application-db.yaml
-    - sed -i 's|${DATABASE_URL}|'"$DATABASE_URL"'|g' application-db.yaml
-    - sed -i 's|${DATABASE_USERNAME}|'"$DATABASE_USERNAME"'|g' application-db.yaml
-    - sed -i 's|${DATABASE_PASSWORD}|'"$DATABASE_PASSWORD"'|g' application-db.yaml
-    - sed -i 's|${REDIS_HOST}|'"$REDIS_HOST"'|g' application-db.yaml
-    - sed -i 's|${REDIS_PORT}|'"$REDIS_PORT"'|g' application-db.yaml
+#    - sed -i 's|${DATABASE_URL}|'"$DATABASE_URL"'|g' application-db.yaml
+#    - sed -i 's|${DATABASE_USERNAME}|'"$DATABASE_USERNAME"'|g' application-db.yaml
+#    - sed -i 's|${DATABASE_PASSWORD}|'"$DATABASE_PASSWORD"'|g' application-db.yaml
+#    - sed -i 's|${REDIS_HOST}|'"$REDIS_HOST"'|g' application-db.yaml
+#    - sed -i 's|${REDIS_PORT}|'"$REDIS_PORT"'|g' application-db.yaml
 
     # AWS 관련 설정 파일 생성
     - cp application-aws.yaml.template application-aws.yaml
-    - sed -i 's|${AWS_BUCKET_NAME}|'"$AWS_BUCKET_NAME"'|g' application-aws.yaml
-    - sed -i 's|${AWS_ACCESS_KEY}|'"$AWS_ACCESS_KEY"'|g' application-aws.yaml
-    - sed -i 's|${AWS_SECRET_KEY}|'"$AWS_SECRET_KEY"'|g' application-aws.yaml
+#    - sed -i 's|${AWS_BUCKET_NAME}|'"$AWS_BUCKET_NAME"'|g' application-aws.yaml
+#    - sed -i 's|${AWS_ACCESS_KEY}|'"$AWS_ACCESS_KEY"'|g' application-aws.yaml
+#    - sed -i 's|${AWS_SECRET_KEY}|'"$AWS_SECRET_KEY"'|g' application-aws.yaml
 
     # security 관련 설정 파일 생성
     - cp application-security.yaml.template application-security.yaml
-    - sed -i 's|${CLIENT_ID}|'"$CLIENT_ID"'|g' application-security.yaml
-    - sed -i 's|${CLIENT_SECRET}|'"$CLIENT_SECRET"'|g' application-security.yaml
-    - sed -i 's|${JWT_SECRET}|'"$JWT_SECRET"'|g' application-security.yaml
+#    - sed -i 's|${CLIENT_ID}|'"$CLIENT_ID"'|g' application-security.yaml
+#    - sed -i 's|${CLIENT_SECRET}|'"$CLIENT_SECRET"'|g' application-security.yaml
+#    - sed -i 's|${JWT_SECRET}|'"$JWT_SECRET"'|g' application-security.yaml
     - cat application-security.yaml
 
     # 권한 부여 후 현재 서버 환경 확인
