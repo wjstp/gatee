@@ -11,8 +11,6 @@ build:
     - echo [INFO] docker deploy start!
     - echo "$DOCKER_REGISTRY_PASSWORD" | docker login -u $DOCKER_REGISTRY_USER --password-stdin
   script:
-    - cd ./back/gatee/devops
-    - cat .env.template | grep -v '^#' | awk -F '=' '{print $1 "=" ENVIRON[$1]}' > .env
     - echo [INFO] yaml Settings
     - cd ../src/main/resources
     # AI 관련 설정 파일 생성
@@ -53,11 +51,12 @@ deploy:
     - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_PASSWORD
   script:
     - echo [INFO] get env
-    - cd ./back/gatee
+    - cd ./back/gatee/devops
+    - cat .env.template | grep -v '^#' | awk -F '=' '{print $1 "=" ENVIRON[$1]}' > .env
     - echo [INFO] upstream change
-    - chmod +x ./devops/nginx/deploy_script.sh
+    - chmod +x ./nginx/deploy_script.sh
     - echo [INFO] $TAG
-    - source ./devops/nginx/deploy_script.sh
+    - ./nginx/deploy_script.sh
   after_script:
     - docker logout
     - echo [INFO] docker deploy end!
