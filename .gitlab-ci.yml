@@ -28,6 +28,10 @@ build:
 
     # 권한 부여 후 현재 서버 환경 확인
     - cd ../../..
+    - cd /devops
+    - cat .env.template | grep -v '^[#\s]' | awk -F '=' '$1 && ENVIRON[$1] {print $1 "=" ENVIRON[$1]}' > .env
+    - cat .env
+    - cd ..
     - chmod +x ./devops/nginx/detect_env.sh
     - DEPLOY_ENV=$(source ./devops/nginx/detect_env.sh gatee-api)
     # tag 설정
