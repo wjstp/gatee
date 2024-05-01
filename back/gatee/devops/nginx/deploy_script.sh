@@ -23,39 +23,23 @@ else
   AFTER_COMPOSE_COLOR="green"
 fi
 
-#!/bin/bash
+# 컨테이너가 제대로 작동하는지 확인하기 위해 반환값 체크
+RETURN_VAL=$(docker-compose -p ${DOCKER_APP_NAME}-${AFTER_COMPOSE_COLOR} -f docker-compose.${AFTER_COMPOSE_COLOR}.yaml ps -q | xargs docker inspect -f '{{ .State.Health.Status }}' | grep -w "healthy" | wc -l)
+CONTAINER_COUNT=$(docker-compose -p ${DOCKER_APP_NAME}-${AFTER_COMPOSE_COLOR} -f docker-compose.${AFTER_COMPOSE_COLOR}.yaml ps -q | wc -l)
 
-# Health check 만족시까지 기다립니다.
-MAX_ATTEMPTS=3
-SLEEP_TIME=30
-ATTEMPTS=0
+# 'healthy' 상태의 컨테이너 수를 확인하여 모두 'healthy' 상태라면 nginx 설정 변경 및 이전 환경 종료
+if [ "$RETURN_VAL" -eq "$CONTAINER_COUNT" ]; then
+  echo "All containers are healthy."
+  # nginx.config를 컨테이너에 맞게 변경하고 reload 함
+  docker exec proxy-server cp /etc/nginx/nginx.${AFTER_COMPOSE_COLOR}.conf /etc/nginx/nginx.conf
+  docker exec proxy-server nginx -s reload
 
-echo "Waiting for containers to become healthy..."
-
-while [ $ATTEMPTS -lt $MAX_ATTEMPTS ]; do
-  RETURN_VAL=$(docker-compose -p ${DOCKER_APP_NAME}-${AFTER_COMPOSE_COLOR} -f docker-compose.${AFTER_COMPOSE_COLOR}.yaml ps -q | xargs docker inspect -f '{{ .State.Health.Status }}' | grep -c "healthy")
-  CONTAINER_COUNT=$(docker-compose -p ${DOCKER_APP_NAME}-${AFTER_COMPOSE_COLOR} -f docker-compose.${AFTER_COMPOSE_COLOR}.yaml ps -q | wc -l)
-
-  if [ "$RETURN_VAL" -eq "$CONTAINER_COUNT" ]; then
-    echo "All containers are healthy."
-    break
-  fi
-
-  echo "Not all containers are healthy yet. Attempt $((ATTEMPTS + 1))/$MAX_ATTEMPTS"
-  sleep $SLEEP_TIME
-  ATTEMPTS=$((ATTEMPTS + 1))
-done
-
-if [ "$RETURN_VAL" -ne "$CONTAINER_COUNT" ]; then
-  echo "${AFTER_COMPOSE_COLOR} deployment failed. Starting rollback..."
+  # 이전 컨테이너 종료
+  docker-compose -p ${DOCKER_APP_NAME}-${BEFORE_COMPOSE_COLOR} -f docker-compose.${BEFORE_COMPOSE_COLOR}.yaml down
+  echo "$BEFORE_COMPOSE_COLOR down"
+else
+  echo "Not all containers are healthy yet. $RETURN_VAL/$CONTAINER_COUNT"
+  # 롤백 로직: 실패할 경우 새로운 환경을 내리고 삭제
   docker-compose -p ${DOCKER_APP_NAME}-${AFTER_COMPOSE_COLOR} -f docker-compose.${AFTER_COMPOSE_COLOR}.yaml down
-  echo "${AFTER_COMPOSE_COLOR} 컨테이너를 종료했습니다."
+  echo "${AFTER_COMPOSE_COLOR} deployment failed. Rolled back."
 fi
-
-# nginx 설정 변경 및 리로드
-docker exec proxy-server cp /etc/nginx/nginx.${AFTER_COMPOSE_COLOR}.conf /etc/nginx/nginx.conf
-docker exec proxy-server nginx -s reload
-
-# 이전 컨테이너 종료
-docker-compose -p ${DOCKER_APP_NAME}-${BEFORE_COMPOSE_COLOR} -f docker-compose.${BEFORE_COMPOSE_COLOR}.yaml down
-echo "${BEFORE_COMPOSE_COLOR} 컨테이너를 종료했습니다."
