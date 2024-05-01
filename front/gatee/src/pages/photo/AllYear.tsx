@@ -14,11 +14,11 @@ const AllYear = () => {
 
   // 월별 대표 사진 샘플 데이터
   const yearPhotoDatas = [
-    {dateTime:"2024-01-31T12:00:00", src: "@assets/images/schedule/calendarBanner3.jpg"},
-    {dateTime:"2023-02-28T12:00:00", src: "@assets/images/schedule/calendarBanner4.jpg"},
-    {dateTime:"2022-03-31T12:00:00", src: "@assets/images/schedule/calendarBanner5.jpg"},
-    {dateTime:"2021-04-30T12:00:00", src: "@assets/images/schedule/calendarBanner6.jpg"},
-    {dateTime:"2020-05-31T12:00:00", src: "@assets/images/schedule/calendarBanner7.jpg"},
+    {dateTime:"2024-01-31T12:00:00", src: "https://i.pinimg.com/736x/3f/53/fe/3f53fec5f0ff0426907978c6abe18c35.jpg"},
+    {dateTime:"2023-02-28T12:00:00", src: "https://i.pinimg.com/736x/3f/53/fe/3f53fec5f0ff0426907978c6abe18c35.jpg"},
+    {dateTime:"2022-03-31T12:00:00", src: "https://i.pinimg.com/736x/3f/53/fe/3f53fec5f0ff0426907978c6abe18c35.jpg"},
+    {dateTime:"2021-04-30T12:00:00", src: "https://i.pinimg.com/736x/3f/53/fe/3f53fec5f0ff0426907978c6abe18c35.jpg"},
+    {dateTime:"2020-05-31T12:00:00", src: "https://i.pinimg.com/736x/3f/53/fe/3f53fec5f0ff0426907978c6abe18c35.jpg"},
   ]
 
   return (
