@@ -25,18 +25,15 @@ fi
 
 #!/bin/bash
 
-# Health check 변수 설정
+# Health check 만족시까지 기다립니다.
 MAX_ATTEMPTS=3
 SLEEP_TIME=30
 ATTEMPTS=0
-HOST_NAME="localhost" # 또는 EC2 호스트의 특정 IP나 도메인
-PORT="8080" # 건강 상태를 체크할 포트
 
 echo "Waiting for containers to become healthy..."
 
 while [ $ATTEMPTS -lt $MAX_ATTEMPTS ]; do
-  # 컨테이너들 건강 상태 체크를 위한 요청 수행
-  RETURN_VAL=$(curl -s "http://${HOST_NAME}:${PORT}/actuator/health" | grep -c "UP")
+  RETURN_VAL=$(docker-compose -p ${DOCKER_APP_NAME}-${AFTER_COMPOSE_COLOR} -f docker-compose.${AFTER_COMPOSE_COLOR}.yaml ps -q | xargs docker inspect -f '{{ .State.Health.Status }}' | grep -c "healthy")
   CONTAINER_COUNT=$(docker-compose -p ${DOCKER_APP_NAME}-${AFTER_COMPOSE_COLOR} -f docker-compose.${AFTER_COMPOSE_COLOR}.yaml ps -q | wc -l)
 
   if [ "$RETURN_VAL" -eq "$CONTAINER_COUNT" ]; then
