@@ -26,6 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ActiveProfiles({"common, prod"})
 @AutoConfigureRestDocs
+//@WebMvcTest({PhotoController.class, TestSecurityConfig.class})
 @WebMvcTest(PhotoController.class)
 @MockBean(JpaMetamodelMappingContext.class)
 class PhotoControllerTest {
@@ -38,6 +39,7 @@ class PhotoControllerTest {
 
     @MockBean
     private PhotoService photoService;
+
 
     @Test
     @CustomWithMockUser

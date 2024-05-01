@@ -22,15 +22,14 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ActiveProfiles({"common, prod"})
 @AutoConfigureRestDocs
 @WebMvcTest(AlbumController.class)
+//@WebMvcTest({AlbumController.class, TestSecurityConfig.class})
 @MockBean(JpaMetamodelMappingContext.class)
 class AlbumControllerTest {
 
@@ -43,13 +42,14 @@ class AlbumControllerTest {
     @MockBean
     private AlbumService albumService;
 
+
     @Test
     @CustomWithMockUser
     @DisplayName("앨범 목록 조회 테스트")
     void readAlbumList() throws Exception {
         mockMvc.perform(get("/api/albums")
-                        .with(csrf())
-                        .param("familyId", "1"))
+                        .param("familyId", "1")
+                        .with(csrf()))
                 .andDo(MockMvcResultHandlers.print())
                 .andDo(MockMvcRestDocumentation.document("월별 목록 조회"))
                 .andExpect(status().isOk());

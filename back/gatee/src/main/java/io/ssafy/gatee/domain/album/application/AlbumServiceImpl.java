@@ -16,6 +16,7 @@ import io.ssafy.gatee.domain.photo_album.dao.PhotoAlbumRepositoryCustom;
 import io.ssafy.gatee.domain.photo_album.entity.PhotoAlbum;
 import io.ssafy.gatee.global.exception.error.not_found.AlbumNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -90,6 +91,8 @@ public class AlbumServiceImpl implements AlbumService {
         Album album = albumRepository.getReferenceById(albumId);
 
         album.deleteData();
+
+        photoAlbumRepository.updatePhotoAlbumStatus(albumId);
     }
 
     // 앨범 내 사진 추가
