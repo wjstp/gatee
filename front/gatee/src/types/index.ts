@@ -33,6 +33,7 @@ export interface PhotoListProps {
 export interface PhotoOutletInfoContext {
     editMode: string;
     handleChecked:(
-      photoId:number
+      photoId:number,
+      type:string,
     )=>void;
 }

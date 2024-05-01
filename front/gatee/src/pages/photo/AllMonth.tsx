@@ -38,8 +38,6 @@ const AllMonth = () => {
     groupedByYear[year].push(item); // 년도별 그룹에 아이템 추가
   });
 
-
-
   return (
     <div className="month-photo-container">
       {Object.keys(groupedByYear).sort((a, b) => parseInt(b) - parseInt(a))
@@ -48,18 +46,15 @@ const AllMonth = () => {
           // 각각의 년도별 데이터를 처리한 결과를 반환
           return (
            <>
-             <div className="detail-tab--title">{year}년</div>
+             <div className="detail-tab--title" key={year}>{year}년</div>
              {yearData.map((monthPhotoData, index) => {
-               return <MonthItem key={index} monthPhotoData={monthPhotoData}/>
+               return <MonthItem key={`${index}${monthPhotoData.dateTime}`} monthPhotoData={monthPhotoData}/>
              })
              }
            </>
           )
         })
       }
-      {/* 주어진 데이터 정렬로 return */}
-
-
     </div>
   );
 };
@@ -72,6 +67,7 @@ const MonthItem = ({monthPhotoData}: MonthPhotoItemProps) => {
 
 // 현재의 월 추출 (0부터 시작하므로 +1을 해줘야 함)
   const month = dateTime.getMonth() + 1;
+
   return (
     <Link to={`${year}/${month}`} className="month-photo-item--container">
       {/* 월 표시 */}

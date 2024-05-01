@@ -3,14 +3,13 @@ import {Link, Outlet, useLocation, useNavigate} from "react-router-dom";
 import {FiEdit} from "react-icons/fi";
 import {RiDeleteBin6Line} from "react-icons/ri";
 import {LuFolderInput} from "react-icons/lu";
-import {FiFolderPlus} from "react-icons/fi";
-import TextField from '@mui/material/TextField';
+
 import {useModalStore} from "@store/useModalStore";
 import useModal from "@hooks/useModal";
-
-interface handleSetEditMode {
-  handleSetEditMode: (mode: string) => void
-}
+import {AlbumNameInputModal} from "@pages/photo/components/CreateAlbumModal";
+import {EditModal} from "@pages/photo/components/EditModeModal";
+import TextField from "@mui/material/TextField";
+import {SelectAlbumModal} from "@pages/photo/components/SelectAlbum";
 
 
 const PhotoIndex = () => {
@@ -24,11 +23,18 @@ const PhotoIndex = () => {
   const {setShowModal} = useModalStore()
   // 편집모드 고르기 모달 상태
   const {isOpen: showEditModeModal, openModal: openEditModal, closeModal: closeEditModeModal} = useModal();
-  // 앨범 이름 고르기 모달 상태
+  // 생성할 앨범 이름 입력 모달 상태
   const {
     isOpen: showAlbumNameInputModal,
     openModal: openAlbumNameInputModal,
     closeModal: closeAlbumNameInputModal
+  } = useModal();
+
+  // 이동할 앨범 이름 고르기 모달 상태
+  const {
+    isOpen: showSelectMoveAlbumModal,
+    openModal: openSelectMoveAlbumModal,
+    closeModal: closeSelectMoveAlbumModal
   } = useModal();
   // 편집할 photoId들이 담긴 set
   const editPhotoIdList: Set<number> = new Set();
@@ -43,15 +49,27 @@ const PhotoIndex = () => {
   // 선택 모드 제출 이벤트
   const handleEndEditMode = () => {
     console.log(editPhotoIdList)
+
     if (editMode === "delete") {
       console.log('선택 사진 삭제')
+      // 담아둔 id 리스트 비우기
+      editPhotoIdList.clear()
+
     } else if (editMode === "makeAlbum") {
-      console.log('선택 사진 앨범 넣기')
+      console.log('선택 사진 앨범 생성')
+      navigate("/photo/album/1")
+      editPhotoIdList.clear()
+
+    // 편집 모드가 앨범으로 이동일때
+    } else if (editMode === "moveAlbum") {
+      console.log('선택 사진 이동할 앨범 고르기')
+      setShowModal(true)
+      openSelectMoveAlbumModal()
     }
+
     // 편집모드 변경
     setEditMode("normal")
-    // 담아둔 id 리스트 비우기
-    editPhotoIdList.clear()
+
   }
 
   // 편집 모달 보이기 이벤트
@@ -80,10 +98,15 @@ const PhotoIndex = () => {
       // 사진 삭제 모드 선택 => 모달을 끄고 편집 모드로 들어간다
       setShowModal(false)
       closeEditModeModal()
-    } else {
+
+    } else if (mode === "makeAlbum") {
       // 앨범 생성 모드 선택 => 편집모달을 끄고, 앨범 이름 입력 모달을 킨다
       closeEditModeModal()
       openAlbumNameInputModal()
+
+    } else {
+      setShowModal(false)
+      closeEditModeModal()
     }
   }
 
@@ -97,6 +120,24 @@ const PhotoIndex = () => {
       editPhotoIdList.add(photoId)
     }
   }
+
+  // 앨범 고르고 이동
+  const handleSelectAlbum = (name: string, id: number) => {
+    setShowModal(false)
+    console.log(name, '으로', editPhotoIdList, ' 이동',)
+    closeSelectMoveAlbumModal()
+    navigate(`/photo/album/${id}`)
+  }
+
+  // 슬래시 새기 함수
+  const countSlashes = (str: string): number => {
+    // 정규 표현식을 사용하여 '/' 문자의 개수를 센다
+    const regex = /\//g;
+    const matches = str.match(regex);
+
+    // '/' 문자의 개수를 반환한다
+    return matches ? matches.length : 0;
+  };
 
   // 뒤로가기 고려한 상태 변경
   useEffect(() => {
@@ -132,22 +173,25 @@ const PhotoIndex = () => {
               className={activeTab === "album" ? "photo-tab-container__button active" : "photo-tab-container__button"}
               onClick={() => handleTabClick("album")}>앨범 사진</Link>
 
-
-        {/* 편집 버튼 */}
-        {
+        {/* 편집 버튼은 월, 년 탭에서만 보이지 않음*/}
+        {(activeTab === "all" && allPhotoTab === "day") || activeTab === "album" || countSlashes(location.pathname) > 2 ?
           editMode === "delete" ?
             <RiDeleteBin6Line className="photo-tab-container__plus-button" size={25}
                               onClick={handleEndEditMode}/>
-            : editMode === "makeAlbum" ?
+            : editMode === "makeAlbum" || editMode === "moveAlbum" ?
               <LuFolderInput className="photo-tab-container__plus-button" size={20}
                              onClick={handleEndEditMode}/>
               :
               <FiEdit className="photo-tab-container__plus-button" size={20}
                       onClick={handleOpenEditModal}/>
+          :
+          null
         }
+
 
       </div>
 
+      {/* 모든 사진 탭에서만 하단 탭이 보임 */}
       {activeTab === "all" ?
         (<div className="day-month-year-controller">
           <Link to="/photo/day"
@@ -186,88 +230,17 @@ const PhotoIndex = () => {
           :
           null
       }
-    </div>
-  );
-}
 
-
-// 수정 모드 고르는 모달
-const EditModal = ({handleSetEditMode}: handleSetEditMode) => {
-
-  // 버튼 눌렀을때 편집 모드를 설정
-  const handleBtn = (mode: string) => {
-    console.log("버튼 눌렀을때 모달에서의 상태", mode)
-    handleSetEditMode(mode)
-  }
-
-  return (
-    <div className="edit-modal-bg">
-
-      {/* 모달 내용 */}
-      <div className="edit-modal-content">
-
-        {/* 사진 삭제 */}
-        <div className="icon-title-center"
-             onClick={() => handleBtn("delete")}>
-          <RiDeleteBin6Line size={30} color="gray"/>
-          <div>
-            사진 삭제
-          </div>
-        </div>
-
-        {/* 앨범 생성 */}
-        <div className="icon-title-center"
-             onClick={() => handleBtn("makeAlbum")}>
-          <FiFolderPlus size={30} color="gray"/>
-          <div>앨범 생성
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-  )
-}
-
-const AlbumNameInputModal = ({ handleCloseAlbumNameInputModal }: { handleCloseAlbumNameInputModal: () => void }) => {
-  // 입력상태
-  const [inputValue, setInputValue] = useState("");
-  const muiFocusCustom = {
-    "& .MuiOutlinedInput-root": {
-      "&.Mui-focused": {
-        "& .MuiOutlinedInput-notchedOutline": {
-          borderColor: "#FFBE5C",
-          borderWidth: "2px",
-        },
+      {
+        showSelectMoveAlbumModal ?
+          <SelectAlbumModal handleSelectAlbum={handleSelectAlbum}/>
+          :
+          null
       }
-    }
-  };
-
-
-  // 입력값이 변경될 때 호출되는 함수
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(event.target.value);
-  };
-
-  // 앨범 생성 버튼을 클릭할 때 호출되는 함수
-  const handleCreateAlbum = () => {
-    // 입력값이 비어있지 않을 때만 모달 닫기 함수 호출
-    if (inputValue.trim() !== "") {
-      handleCloseAlbumNameInputModal();
-    }
-  };
-
-  return (
-    <div className="input-modal-bg">
-      {/* 모달 내용 */}
-      <div className="input-modal-content">
-        <div className="modal-title">앨범 이름 작성</div>
-        {/* 입력값이 변경될 때마다 handleChange 함수 호출 */}
-        <TextField value={inputValue} onChange={handleChange} type="text" placeholder="예) 길동이 아기 시절" sx={muiFocusCustom} />
-        {/* 입력값이 비어있지 않으면 버튼 활성화 */}
-        <button onClick={handleCreateAlbum} disabled={inputValue.trim() === ""} className="submit-btn">앨범 생성</button>
-      </div>
     </div>
   );
-};
+}
+
+
+
 export default PhotoIndex;
