@@ -17,7 +17,7 @@ const ScheduleCreate = () => {
   const [title, setTitle] = useState<string>("");
   const [color, setColor] = useState<string>("pink")
   const [content, setContent] = useState<string>("");
-  const [category, setCategory] = useState<string>("family")
+  const [category, setCategory] = useState<string>("group")
   const [startDate, setStartDate] = useState<Dayjs | null>(null);
   const [endDate, setEndDate] = useState<Dayjs | null>(null);
   const [startTime, setStartTime] = useState<Dayjs | null>();
@@ -269,13 +269,13 @@ const ScheduleCreate = () => {
           {/*일정 카테고리 선택*/}
           <div className="create-schedule-info__input-category">
             <button
-              className={`create-schedule-info__input-category-family${category == "family" ? '--active' : ''}`}
-              onClick={() => handleSetCategory("family")}
+              className={`create-schedule-info__input-category-group${category == "group" ? '--active' : ''}`}
+              onClick={() => handleSetCategory("group")}
             >가족 일정
             </button>
             <button
-              className={`create-schedule-info__input-category-individual${category == "individual" ? '--active' : ''}`}
-              onClick={() => handleSetCategory("individual")}
+              className={`create-schedule-info__input-category-personal${category == "personal" ? '--active' : ''}`}
+              onClick={() => handleSetCategory("personal")}
             >개인 일정
             </button>
             <button
@@ -344,7 +344,7 @@ const ScheduleCreate = () => {
         </div>
 
         {/*참여하는 사람*/}
-        {category === "family" && (
+        {category === "group" && (
           <div className="create-schedule-participant">
             <div className="create-schedule__sub-title">참여자</div>
 

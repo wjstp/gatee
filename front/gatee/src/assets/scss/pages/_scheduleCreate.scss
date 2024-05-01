@@ -61,24 +61,24 @@
         grid-template-columns: repeat(3, 1fr);
         height: 56px;
 
-        @each $category in family, individual, event {
+        @each $category in group, personal, event {
           &-#{$category} {
             border: $gray150 1px solid;
 
-            @if $category == 'individual' {
+            @if $category == 'personal' {
               border-left: none;
               border-right: none;
             }
 
             color: $subtext-color;
             font-size: 15px;
-            border-radius: if($category == 'family', 5px 0 0 5px, if($category == 'event', 0 5px 5px 0, 0));
+            border-radius: if($category == 'group', 5px 0 0 5px, if($category == 'event', 0 5px 5px 0, 0));
             transition: background-color 0.2s ease, color 0.2s ease;
 
             &--active {
               @extend .create-schedule-info__input-category-#{$category};
 
-              background-color: if($category == 'family', rgb(255, 245, 221), if($category == 'event', #eefff0, #f7f0ff));
+              background-color: if($category == 'group', rgb(255, 245, 221), if($category == 'event', #eefff0, #f7f0ff));
               color: black;
             }
           }

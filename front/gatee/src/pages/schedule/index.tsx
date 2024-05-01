@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import {DateSelectArg, DayCellContentArg} from '@fullcalendar/core'
+import { DateSelectArg, DayCellContentArg } from '@fullcalendar/core'
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin, { DateClickArg } from "@fullcalendar/interaction";
@@ -20,6 +20,8 @@ const ScheduleIndex: React.FC = () => {
   const [isOpenDayToast, setIsOpenDayToast] = useState<boolean>(false);
   const [selectedStartDate, setSelectedStartDate] = useState<string>(today.format("YYYY-MM-DD"));
   const [selectedEndDate, setSelectedEndDate] = useState<string>(today.format("YYYY-MM-DD"));
+  const googleCalendarApiKey: string | undefined = process.env.REACT_APP_GOOGLE_API_KEY;
+  const googleCalendarId: string | undefined = process.env.REACT_APP_GOOGLE_CALENDAR_ID;
 
   useEffect(() => {
     if (calendarRef.current) {
@@ -130,7 +132,7 @@ const ScheduleIndex: React.FC = () => {
           <FullCalendar
             ref={calendarRef}
             plugins={[dayGridPlugin, interactionPlugin, googleCalendarPlugin]}
-            googleCalendarApiKey="AIzaSyCClq2xIHVM0X4dTFvFzh0_LAys-NfYpK0"    // 구글 캘린더 API
+            googleCalendarApiKey={googleCalendarApiKey}    // 구글 캘린더 API
             headerToolbar={{left: "", center: "", right: ""}}
             initialView={"dayGridMonth"}
             height={"98%"}               // calendar 높이
@@ -144,11 +146,18 @@ const ScheduleIndex: React.FC = () => {
             select={handleSelect}                // 영역 선택 이벤트
 
             // event
+            // 단체 일정은 띠와 함께 색에 맞는 이모티콘 보여 주기
+            // 개인 일정은 프로필 보여 주기
+            // 이벤트는 숫자에 스티커 붙이기
+            // 공휴일 가운데 정렬, 숫자 빨갛게
             events={[
-              {start: "2024-04-20", end: "2024-04-23", color: "#FFE8E8"},
-              {start: "2024-04-21", end: "2024-04-24", color: "#FFED91"},
-              {start: "2024-04-20", end: "2024-04-23", color: "#c2e5c5"},
-              {googleCalendarId: "a4b307221657a836a362cba46d11bd369901b88fdb11fa9dbf71831f702f1468@group.calendar.google.com",}
+              {start: "2024-05-01", end: "2024-05-01", color: "#FFE8E8"},
+              {start: "2024-05-01", end: "2024-05-01", color: "#FFED91"},
+              {start: "2024-05-01", end: "2024-05-01", color: "#c2e5c5"},
+              
+            ]}
+            eventSources={[
+              {googleCalendarId: googleCalendarId, textColor: "red", color: 'white'}
             ]}
             eventTextColor={"black"}
             eventBorderColor={"white"}
