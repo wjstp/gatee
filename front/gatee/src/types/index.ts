@@ -19,3 +19,21 @@ export interface Character {
     question: string;
     answer: string;
 }
+
+export interface PhotoListProps {
+    editMode:string,
+    photoGroup: {
+        id: number,
+        dateTime: string,
+        src: string
+    }[],
+    handleChecked: (photoId: number, type:string) => void;
+}
+
+export interface PhotoOutletInfoContext {
+    editMode: string;
+    handleChecked:(
+      photoId:number,
+      type:string,
+    )=>void;
+}
