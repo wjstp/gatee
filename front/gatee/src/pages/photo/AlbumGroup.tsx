@@ -27,9 +27,9 @@ const PhotoAlbum = () => {
   const {setShowModal} = useModalStore()
   // 월별 대표 사진 샘플 데이터
   const groupPhotoDatas = [
-    {id: 1, title: "툔", dateTime: "2024-01-31T12:00:00", src: "@assets/images/schedule/calendarBanner3.jpg"},
-    {id: 2, title: "예삐리리", dateTime: "2024-02-28T12:00:00", src: "@assets/images/schedule/calendarBanner4.jpg"},
-    {id: 3, title: "운덩", dateTime: "2024-03-31T12:00:00", src: "@assets/images/schedule/calendarBanner5.jpg"},
+    {id: 1, title: "툔", dateTime: "2024-01-31T12:00:00", src: "https://i.pinimg.com/736x/39/48/76/394876e0e2129f959bd910b65da6f3f8.jpg"},
+    {id: 2, title: "예삐리리", dateTime: "2024-02-28T12:00:00", src: "https://i.pinimg.com/564x/6b/67/18/6b67189e1cc9cdc691bb32a5333b1360.jpg"},
+    {id: 3, title: "운덩", dateTime: "2024-03-31T12:00:00", src: "https://i.pinimg.com/564x/4f/17/d3/4f17d3b96676946c5bdbaaf5968bbd6b.jpg"},
   ]
 // 앨범 이름 고르기 모달 상태
   const {
