@@ -8,6 +8,9 @@ RUN ./gradlew clean build
 
 FROM openjdk:17-jdk-slim
 
+# curl을 설치합니다.
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /work
 COPY --from=builder /work/build/libs/*.jar /work/app.jar
 COPY ./devops/start-app.sh /work/start-app.sh
