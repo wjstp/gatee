@@ -40,21 +40,17 @@ const AllMonth = () => {
 
   return (
     <div className="month-photo-container">
-      {Object.keys(groupedByYear).sort((a, b) => parseInt(b) - parseInt(a))
-        .map(year => {
-          const yearData = groupedByYear[year]; // 해당 년도의 데이터 가져오기
-          // 각각의 년도별 데이터를 처리한 결과를 반환
-          return (
-           <>
-             <div className="detail-tab--title" key={year}>{year}년</div>
-             {yearData.map((monthPhotoData, index) => {
-               return <MonthItem key={`${index}${monthPhotoData.dateTime}`} monthPhotoData={monthPhotoData}/>
-             })
-             }
-           </>
-          )
-        })
-      }
+      {Object.keys(groupedByYear)
+        .sort((a, b) => parseInt(b) - parseInt(a))
+        .map(year => (
+          <React.Fragment key={year}>
+            <div className="detail-tab--title">{year}년</div>
+            {groupedByYear[year].map((monthPhotoData, index) => (
+              <MonthItem key={monthPhotoData.dateTime} monthPhotoData={monthPhotoData} />
+            ))}
+          </React.Fragment>
+        ))}
+
     </div>
   );
 };

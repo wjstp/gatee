@@ -12,7 +12,7 @@ export const EditModal = ({handleSetEditMode}: handleSetEditMode) => {
 
   // 버튼 눌렀을때 편집 모드를 설정
   const handleBtn = (event: React.MouseEvent<HTMLDivElement>, mode: string) => {
-    // 이벤트 버블링 방지
+    // 백드롭 이벤트로 인한 이벤트 버블링 방지
     event.stopPropagation();
     handleSetEditMode(mode)
   }

@@ -31,12 +31,16 @@ const PhotoItem = ({ photoData, editMode, handleChecked }: PhotoListProps & { ph
   const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
   const navigate = useNavigate();
   const [checked, setChecked] = useState(false);
-  const gotoDetail = () => {
+
+  const clickPhotoItem = () => {
     if (editMode === 'normal') {
       navigate("/photo/1");
+    } else {
+      // 편집 모드에서는 체크박스 변동
+      handleCheckBox()
     }
   };
-  
+
   // 체크박스 변동 함수
   const handleCheckBox = () => {
     // 체크박스가 체크 되어있다면 리스트에서 id를 제거하고 체크를 푼다
@@ -57,7 +61,7 @@ const PhotoItem = ({ photoData, editMode, handleChecked }: PhotoListProps & { ph
   }, [editMode]);
   
   return (
-    <div onClick={gotoDetail} className="photo__item">
+    <div onClick={clickPhotoItem} className="photo__item">
       {editMode !== 'normal' &&
         <Checkbox {...label} className="check-box"
                   checked={checked}

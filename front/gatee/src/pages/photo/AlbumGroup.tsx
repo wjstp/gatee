@@ -93,7 +93,7 @@ const GroupItem = ({editMode, handleChecked, groupPhotoData}: PhotoOutletInfoCon
   return (
     <div onClick={gotoDetail} className="photo-group--item--container">
       {/* 배경 사진 */}
-      <img className="photo" src={groupPhotoData.src} alt={`${groupPhotoData.id}`}/>
+      <img className="photo-item" src={groupPhotoData.src} alt={`${groupPhotoData.id}`}/>
       {/* 삭제 모드일때만 체크모드 활성화 */}
       {editMode === 'delete' &&
         <Checkbox {...label} className="check-box"

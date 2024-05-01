@@ -1,15 +1,16 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Link, Outlet, useLocation, useNavigate} from "react-router-dom";
 import {FiEdit} from "react-icons/fi";
 import {RiDeleteBin6Line} from "react-icons/ri";
 import {LuFolderInput} from "react-icons/lu";
-
+import {FaPlus} from "react-icons/fa6";
 import {useModalStore} from "@store/useModalStore";
 import useModal from "@hooks/useModal";
 import {AlbumNameInputModal} from "@pages/photo/components/CreateAlbumModal";
 import {EditModal} from "@pages/photo/components/EditModeModal";
 import TextField from "@mui/material/TextField";
 import {SelectAlbumModal} from "@pages/photo/components/SelectAlbum";
+import {IoIosCamera} from "react-icons/io";
 
 
 const PhotoIndex = () => {
@@ -36,10 +37,18 @@ const PhotoIndex = () => {
     openModal: openSelectMoveAlbumModal,
     closeModal: closeSelectMoveAlbumModal
   } = useModal();
+
   // 편집할 photoId들이 담긴 set
   const editPhotoIdList: Set<number> = new Set();
   // 수정 모드 선택
   const [editMode, setEditMode] = useState("normal")
+  // 목적지가 될 앨범 Id
+  const [albumId, setAlbumId] = useState(0);
+  const [albumName, setAlbumName] = useState("");
+  // 추가될 사진
+  const inputRef = useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [selectedImage, setSelectedImage] = useState<string | ArrayBuffer | null>(null);
 
   // 활성화된 상단 탭에 대한 상태 변경 => 모든 사진, 앨범 사진
   const handleTabClick = (path: string) => {
@@ -60,11 +69,12 @@ const PhotoIndex = () => {
       navigate("/photo/album/1")
       editPhotoIdList.clear()
 
-    // 편집 모드가 앨범으로 이동일때
+      // 편집 모드가 앨범으로 이동일때
     } else if (editMode === "moveAlbum") {
-      console.log('선택 사진 이동할 앨범 고르기')
-      setShowModal(true)
-      openSelectMoveAlbumModal()
+      console.log('선택 사진 앨범으로 이동')
+      console.log(editPhotoIdList, ' 이동',)
+      editPhotoIdList.clear()
+      navigate(`/photo/album/${albumId}`)
     }
 
     // 편집모드 변경
@@ -79,9 +89,21 @@ const PhotoIndex = () => {
   }
 
   // 앨범 이름 입력 모달 닫기 이벤트
-  const handleCloseAlbumNameInputModal = () => {
-    closeAlbumNameInputModal()
-    setShowModal(false)
+  const handleCloseAlbumNameInputModal = (inputValue: string) => {
+    // 백드롭 클릭 이벤트로 닫힌다면, 모달도 닫고 편집모드도 normal로 돌아가기
+    if (inputValue === "") {
+      // console.log('백드롭 이벤트')
+      closeAlbumNameInputModal()
+      setShowModal(false)
+      setEditMode("normal")
+
+    } else {
+      setAlbumName(inputValue)
+      console.log(inputValue, "앨범 생성 axios")
+      closeAlbumNameInputModal()
+      setShowModal(false)
+    }
+
   }
 
   // 편집 모드를 결정하는 함수 => EditModal에서 받은 이벤트 실행 함수
@@ -91,6 +113,7 @@ const PhotoIndex = () => {
 
     if (mode === "normal") {
       // 일반 모드 선택 => 모달을 모두 끈다
+      console.log('백드롭 이벤트')
       setShowModal(false)
       closeEditModeModal()
 
@@ -105,8 +128,9 @@ const PhotoIndex = () => {
       openAlbumNameInputModal()
 
     } else {
-      setShowModal(false)
+      // 앨범으로 이동 모드 선택 => 편집 모달을 끄고, 앨범 선택 모달을 킨다
       closeEditModeModal()
+      openSelectMoveAlbumModal()
     }
   }
 
@@ -121,12 +145,20 @@ const PhotoIndex = () => {
     }
   }
 
-  // 앨범 고르고 이동
+  // 앨범 고르기
   const handleSelectAlbum = (name: string, id: number) => {
     setShowModal(false)
-    console.log(name, '으로', editPhotoIdList, ' 이동',)
     closeSelectMoveAlbumModal()
-    navigate(`/photo/album/${id}`)
+
+    // 백드롭 이벤트
+    if (name === "" && id === 0) {
+      console.log('백드롭 이벤트')
+      setEditMode("normal")
+    } else {
+      setAlbumName(name)
+      setAlbumId(id)
+    }
+
   }
 
   // 슬래시 새기 함수
@@ -139,8 +171,45 @@ const PhotoIndex = () => {
     return matches ? matches.length : 0;
   };
 
+// 이미지 선택 처리
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const files = e.target.files;
+    if (files) {
+      // 여러 파일을 업로드할 수 있도록 multiple 속성이 설정된 경우
+      const formData = new FormData();
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        // 선택된 각 파일을 FormData에 추가
+        formData.append("images[]", file);
+      }
+      // 서버로 선택된 모든 파일을 업로드
+      uploadImages(formData);
+    }
+  };
+
+// 선택된 파일들을 서버에 업로드하는 함수
+  const uploadImages = (formData: FormData): void => {
+    console.log('서버 업로드')
+    console.log(formData)
+    // 서버로 HTTP 요청을 보내는 코드 작성
+
+  };
+
+
+  // 카메라 버튼 클릭 처리
+  const handleCameraButtonClick = (): void => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  }
+
   // 뒤로가기 고려한 상태 변경
   useEffect(() => {
+    // 이동될때마다 데이터 청소
+    setEditMode("normal")
+    setShowModal(false)
+    editPhotoIdList.clear()
+
     if (location.pathname.includes("/photo/month")) {
       setAllPhotoTab("month")
       setActiveTab("all")
@@ -163,23 +232,26 @@ const PhotoIndex = () => {
     <div className="photo">
       <div className="photo-tab-container">
 
-        {/* 모든 사진 탭 */}
+        { /* 모든 사진 탭 */}
         <Link to="/photo/day"
               className={activeTab === "all" ? "photo-tab-container__button active" : "photo-tab-container__button"}
               onClick={() => handleTabClick("all")}>모든 사진</Link>
 
-        {/* 앨범 사진 탭 */}
+        { /* 앨범 사진 탭 */}
         <Link to="/photo/album"
               className={activeTab === "album" ? "photo-tab-container__button active" : "photo-tab-container__button"}
               onClick={() => handleTabClick("album")}>앨범 사진</Link>
 
-        {/* 편집 버튼은 월, 년 탭에서만 보이지 않음*/}
+        { /* 편집 버튼은 월, 년 탭에서만 보이지 않음*/}
         {(activeTab === "all" && allPhotoTab === "day") || activeTab === "album" || countSlashes(location.pathname) > 2 ?
           editMode === "delete" ?
+
             <RiDeleteBin6Line className="photo-tab-container__plus-button" size={25}
                               onClick={handleEndEditMode}/>
+
             : editMode === "makeAlbum" || editMode === "moveAlbum" ?
-              <LuFolderInput className="photo-tab-container__plus-button" size={20}
+
+              <LuFolderInput className="photo-tab-container__plus-button" size={22}
                              onClick={handleEndEditMode}/>
               :
               <FiEdit className="photo-tab-container__plus-button" size={20}
@@ -188,10 +260,9 @@ const PhotoIndex = () => {
           null
         }
 
-
       </div>
 
-      {/* 모든 사진 탭에서만 하단 탭이 보임 */}
+      { /* 모든 사진 탭에서만 하단 탭이 보임 */}
       {activeTab === "all" ?
         (<div className="day-month-year-controller">
           <Link to="/photo/day"
@@ -214,9 +285,39 @@ const PhotoIndex = () => {
         null}
 
       <Outlet context={{editMode: editMode, handleChecked: handleChecked}}/>
-      {/* 활설화된 모든 사진의 일월연 탭  */}
 
-      {/* 모달 */}
+      {/* 실질적으로 사진 입력을 받는 요소 - 여러장 */}
+      <input
+        type="file"
+        accept="image/*"
+        style={{display: 'none'}}
+        ref={fileInputRef}
+        onChange={handleImageChange}
+        multiple={true}
+      />
+
+      { /* 사진 추가 / 제출 이벤트 버튼 */}
+      {editMode === "delete" ?
+        <button className="photo__button-add-event">
+          <RiDeleteBin6Line className="photo-tab-container__plus-button" size={25}
+                            onClick={handleEndEditMode}/>
+        </button>
+        : editMode === "makeAlbum" || editMode === "moveAlbum" ?
+          <button className="photo__button-add-event">
+            <LuFolderInput className="photo-tab-container__plus-button" size={25}
+                           onClick={handleEndEditMode}/>
+          </button>
+          :
+          activeTab === "all" && editMode === "normal" ?
+            <button className="photo__button-add-event">
+              <FaPlus size={22} onClick={handleCameraButtonClick}/>
+            </button>
+            :
+            null
+      }
+
+
+      { /* 모달 */}
       {
         showEditModeModal ?
           <EditModal handleSetEditMode={handleSetEditMode}/>
@@ -240,7 +341,6 @@ const PhotoIndex = () => {
     </div>
   );
 }
-
 
 
 export default PhotoIndex;

@@ -184,6 +184,6 @@ export const photoGroup = [
     id: 6,
     dateTime: "2024-01-31T12:00:00",
     src: '@assets/images/schedule/calendarBanner3.jpg',
-  },
+  }
 
 ]
