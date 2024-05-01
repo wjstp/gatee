@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Link, useNavigate, useOutletContext} from "react-router-dom";
+import {useNavigate, useOutletContext} from "react-router-dom";
 import {FaPlus} from "react-icons/fa6";
 import {PhotoOutletInfoContext} from "../../types/index";
 import Checkbox from "@mui/material/Checkbox";

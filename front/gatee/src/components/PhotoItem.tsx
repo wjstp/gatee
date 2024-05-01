@@ -1,10 +1,8 @@
-import React, {useEffect, useState} from 'react';
-import samplePhoto from "@assets/images/schedule/bg_calendar_banner1.jpg";
+import React, { useState} from 'react';
 import samplIcon1 from "@assets/images/signup/dad.svg";
 import samplIcon2 from "@assets/images/signup/daughter.svg";
 import { IoHeart } from "react-icons/io5";
 import { IoHeartOutline } from "react-icons/io5";
-import { CiHeart } from "react-icons/ci";
 import { MdOutlineFileDownload } from "react-icons/md";
 
 interface PhotoDetailData {
@@ -14,7 +12,7 @@ interface PhotoDetailData {
 
 const PhotoItem = ({ photoDetailData }: { photoDetailData: PhotoDetailData }) => {
   const [isPressed, setIsPressed] = useState(false);
-  const [style, setStyle] = useState("width");
+  console.log(photoDetailData)
   const profileData = [
     {
       nickname: "아빠",
@@ -62,6 +60,9 @@ const PhotoItem = ({ photoDetailData }: { photoDetailData: PhotoDetailData }) =>
         <img className="photo-detail-img"
              src={"https://images.pexels.com/photos/1458926/pexels-photo-1458926.jpeg?cs=srgb&dl=pexels-poodles2doodles-1458926.jpg&fm=jpg"}
              alt="asa"/>
+      {/*<img className="photo-detail-img"*/}
+      {/*       src={photoDetailData.src}*/}
+      {/*       alt="asa"/>*/}
 
       
       <div className="interaction--container">

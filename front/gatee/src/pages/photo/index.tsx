@@ -8,9 +8,8 @@ import {useModalStore} from "@store/useModalStore";
 import useModal from "@hooks/useModal";
 import {AlbumNameInputModal} from "@pages/photo/components/CreateAlbumModal";
 import {EditModal} from "@pages/photo/components/EditModeModal";
-import TextField from "@mui/material/TextField";
 import {SelectAlbumModal} from "@pages/photo/components/SelectAlbum";
-import {IoIosCamera} from "react-icons/io";
+
 
 
 const PhotoIndex = () => {
@@ -72,7 +71,7 @@ const PhotoIndex = () => {
       // 편집 모드가 앨범으로 이동일때
     } else if (editMode === "moveAlbum") {
       console.log('선택 사진 앨범으로 이동')
-      console.log(editPhotoIdList, ' 이동',)
+      console.log(editPhotoIdList, albumName,'으로 이동',)
       editPhotoIdList.clear()
       navigate(`/photo/album/${albumId}`)
     }

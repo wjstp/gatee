@@ -45,7 +45,7 @@ const AllMonth = () => {
         .map(year => (
           <React.Fragment key={year}>
             <div className="detail-tab--title">{year}년</div>
-            {groupedByYear[year].map((monthPhotoData, index) => (
+            {groupedByYear[year].map((monthPhotoData) => (
               <MonthItem key={monthPhotoData.dateTime} monthPhotoData={monthPhotoData} />
             ))}
           </React.Fragment>

@@ -1,5 +1,4 @@
 import React from "react";
-import {id} from "date-fns/locale";
 
 export const SelectAlbumModal = ({handleSelectAlbum}: { handleSelectAlbum?: (name: string, id: number) => void }) => {
   // 앨범 리스트
