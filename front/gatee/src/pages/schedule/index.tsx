@@ -98,7 +98,7 @@ const ScheduleIndex: React.FC = () => {
       <div
         className={`schedule__banner${currentDate.getMonth() + 1}${isOpenDayToast ? ' schedule__banner--open' : ''}`}></div>
 
-      <div className="schedule-calendar">
+      <div className={`schedule-calendar${isOpenDayToast ? '--open' : ''}`}>
         {/*달력 헤더*/}
         <div className="schedule-calendar__header">
         {/*오늘 날짜 이동 버튼*/}
@@ -128,7 +128,7 @@ const ScheduleIndex: React.FC = () => {
         </div>
 
         {/*달력*/}
-        <div className={`schedule-calendar__main${isOpenDayToast ? ' schedule-calendar__main--open' : ''}`}>
+        <div className="schedule-calendar__main">
           <FullCalendar
             ref={calendarRef}
             plugins={[dayGridPlugin, interactionPlugin, googleCalendarPlugin]}
@@ -163,10 +163,10 @@ const ScheduleIndex: React.FC = () => {
             eventBorderColor={"white"}
           />
         </div>
-
-        {/*일자별 일정 리스트*/}
-        {isOpenDayToast && <DayToast date={selectedDate} onCloseClick={handleDayClose} />}
       </div>
+
+      {/*일자별 일정 리스트*/}
+      {isOpenDayToast && <DayToast date={selectedDate} onCloseClick={handleDayClose} />}
 
       {/*이벤트 추가 버튼*/}
       <button className="schedule-calendar__button-add-event" onClick={handleCreateScheduleClick}>

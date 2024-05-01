@@ -6,7 +6,6 @@ interface DayScheduleCardProps {
 }
 
 export enum ScheduleType {
-  HOLIDAY = 'holiday',
   GROUP = 'group',
   PERSONAL = 'personal',
   EVENT = 'event'
@@ -14,7 +13,7 @@ export enum ScheduleType {
 
 const GroupSchedule: React.FC<DayScheduleCardProps> = ({ schedule }) => {
   return (
-    <div>
+    <div className="day-toast__schedule-list-group">
       { schedule.title }
     </div>
   );
@@ -22,7 +21,7 @@ const GroupSchedule: React.FC<DayScheduleCardProps> = ({ schedule }) => {
 
 const PersonalSchedule: React.FC<DayScheduleCardProps> = ({ schedule }) => {
   return (
-    <div>
+    <div className="day-toast__schedule-list-personal">
       { schedule.title }
     </div>
   );
@@ -30,15 +29,7 @@ const PersonalSchedule: React.FC<DayScheduleCardProps> = ({ schedule }) => {
 
 const Event: React.FC<DayScheduleCardProps> = ({ schedule }) => {
   return (
-    <div>
-      { schedule.title }
-    </div>
-  );
-};
-
-const Holiday: React.FC<DayScheduleCardProps> = ({ schedule }) => {
-  return (
-    <div>
+    <div className="day-toast__schedule-list-event">
       { schedule.title }
     </div>
   );
@@ -52,8 +43,6 @@ const EventComponent: React.FC<{ schedule: Schedule }> = ({ schedule }) => {
       return <PersonalSchedule schedule={schedule} />;
     case ScheduleType.EVENT:
       return <Event schedule={schedule} />;
-    case ScheduleType.HOLIDAY:
-      return <Holiday schedule={schedule} />;
     default:
       return null;
   }

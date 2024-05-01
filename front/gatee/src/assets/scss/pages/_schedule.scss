@@ -34,6 +34,10 @@
   margin: 0 2%;
   height: 87%;
 
+  &--open {
+    height: 50%;
+  }
+
   &__header {
     @include flex_center;
 
@@ -49,10 +53,6 @@
 
   &__main {
     height: 85%;
-
-    &--open {
-      height: 50%;
-    }
   }
 
   &__button {
@@ -132,5 +132,56 @@
 }
 
 .day-toast {
+  @include flex-col;
+  @include px-(1);
 
+  height: 50%;
+  width: 100dvw;
+  overflow: auto;
+  border-top: $gray100 1px solid;
+
+  &__header {
+    @include mt-(1);
+  }
+
+  &__title {
+    text-align: center;
+    font: {
+      size: 20px;
+      weight: 500;
+    }
+  }
+
+  &__close {
+
+  }
+
+  &__no-event {
+
+  }
+
+  &__schedule-list {
+    @include flex_col;
+
+    gap: 1rem;
+
+    &-group {
+      background-color: #FFD08A;
+      min-height: 7rem;
+      border: $gray100 1px solid;
+      border-radius: 10px;
+    }
+
+    &-personal {
+      background-color: #c2e5c5;
+      min-height: 7rem;
+    }
+
+    &-event {
+      background-color: #b8cdff;
+      min-height: 7rem;
+      border: $gray100 1px solid;
+      border-radius: 10px;
+    }
+  }
 }
