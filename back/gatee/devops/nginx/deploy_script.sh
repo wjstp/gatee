@@ -25,7 +25,7 @@ else
   BEFORE_COMPOSE_COLOR="blue"
   AFTER_COMPOSE_COLOR="green"
 fi
-
+sleep 30
 # 컨테이너가 제대로 작동하는지 확인하기 위해 반환값 체크
 HEALTHY_COUNT=$(docker-compose -p ${DOCKER_APP_NAME}-${AFTER_COMPOSE_COLOR} -f docker-compose.${AFTER_COMPOSE_COLOR}.yaml ps -q | xargs docker inspect --format='{{.State.Health.Status}}' | grep -c "healthy")
 CONTAINER_COUNT=$(docker-compose -p ${DOCKER_APP_NAME}-${AFTER_COMPOSE_COLOR} -f docker-compose.${AFTER_COMPOSE_COLOR}.yaml ps -q | wc -l)
