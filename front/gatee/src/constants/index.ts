@@ -16,6 +16,15 @@ export const MemberInfoSample: Member = {
 // 가족 구성원 임시 데이터
 export const FamilyMemberInfoSample: Member[] = [
   {
+    nickname: "이윤정",
+    email: "zyo0720@kakao.com",
+    role: "딸",
+    birth: "2000-07-20",
+    birthType: "SOLAR",
+    image: "",
+    mood: null
+  },
+  {
     nickname: "윤예빈",
     email: "yebin4684@gmail.com",
     role: "엄마",

@@ -5,6 +5,7 @@
   @include flex-col;
 
   justify-content: space-between;
+  min-height: 100%;
 
   &__input-container {
     @include flex-col;
@@ -20,9 +21,10 @@
   }
 
   &__sub-title {
-    @include mt-(1.5);
-
+    display: flex;
+    align-items: end;
     font-weight: 500;
+    height: 3rem;
   }
 
   &-info {
@@ -53,6 +55,34 @@
       }
 
       &-category {
+        @include mb-(0.5);
+
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        height: 56px;
+
+        @each $category in family, individual, event {
+          &-#{$category} {
+            border: $gray150 1px solid;
+
+            @if $category == 'individual' {
+              border-left: none;
+              border-right: none;
+            }
+
+            color: $subtext-color;
+            font-size: 15px;
+            border-radius: if($category == 'family', 5px 0 0 5px, if($category == 'event', 0 5px 5px 0, 0));
+            transition: background-color 0.2s ease, color 0.2s ease;
+
+            &--active {
+              @extend .create-schedule-info__input-category-#{$category};
+
+              background-color: if($category == 'family', rgb(255, 245, 221), if($category == 'event', #eefff0, #f7f0ff));
+              color: black;
+            }
+          }
+        }
       }
     }
   }
@@ -65,7 +95,7 @@
     }
 
     &__date {
-      width: 70%;
+      width: 90dvw;
     }
 
     input {
@@ -86,6 +116,15 @@
         @extend %circular-profile-image;
 
         width: 18dvw;
+        margin: auto;
+        opacity: 0.6;
+        transition: opacity 0.2s ease-in-out;
+
+        &--active {
+          @extend .create-schedule-participant__profile-image;
+
+          opacity: 1;
+        }
       }
 
       &-nickname {
@@ -100,6 +139,17 @@
     button {
       @extend %orange-button-large;
       @include mt-(2);
+    }
+
+    button[disabled] {
+      opacity: 0.5;
+      cursor: not-allowed;
+
+      &:focus,
+      &:active,
+      &:hover {
+        background-color: $orange500;
+      }
     }
   }
 
@@ -140,6 +190,13 @@
 
         border: $orange300 2px solid;
       }
+    }
+
+    &-close {
+      position: absolute;
+      top: 1.3rem;
+      right: 2rem;
+      color: $subtext-color;
     }
   }
 }

@@ -15,7 +15,7 @@ const BottomBar = () => {
       <NavLink to="/exam" className={({isActive}) =>
         isActive ? 'bottom-bar__item--active' : 'bottom-bar__item'
       }>
-        <PiGraduationCap size={24}/>
+        <PiGraduationCap size={25}/>
         <span>모의고사</span>
       </NavLink>
 
@@ -23,7 +23,7 @@ const BottomBar = () => {
       <NavLink to="/chat" className={({isActive}) =>
         isActive ? 'bottom-bar__item--active' : 'bottom-bar__item'
       }>
-        <PiChatCenteredDots size={24}/>
+        <PiChatCenteredDots size={25}/>
         <span>채팅</span>
         {/*<NotificationBadge />*/}
       </NavLink>
@@ -40,7 +40,7 @@ const BottomBar = () => {
       <NavLink to="/schedule" className={({isActive}) =>
         isActive ? 'bottom-bar__item--active' : 'bottom-bar__item'
       }>
-        <PiCalendar size={24}/>
+        <PiCalendar size={25}/>
         <span>일정</span>
       </NavLink>
 
@@ -48,7 +48,7 @@ const BottomBar = () => {
         <NavLink to="/photo" className={({isActive}) =>
           isActive ? 'bottom-bar__item--active' : 'bottom-bar__item'
         }>
-          <PiImage size={24}/>
+          <PiImage size={25}/>
           <span>앨범</span>
         </NavLink>
       </div>

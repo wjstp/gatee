@@ -38,15 +38,18 @@
     color: #ed6363;
   }
 
-  // 일자
+  // 일자 상단
   .fc-daygrid-day-top {
     @include flex_center;
+
+    position: relative;
 
     .fc-daygrid-day-number {
       font: {
         size: $font-size-small;
         weight: 500;
       }
+      width: 100%;
     }
   }
 

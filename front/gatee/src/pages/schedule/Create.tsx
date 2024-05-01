@@ -1,32 +1,30 @@
-import React, {useState, useEffect, useRef} from "react";
+import React, {useState, useEffect } from "react";
 import { FamilyMemberInfoSample } from "../../constants";
 import ProfileImage from '@assets/images/logo/app_icon_orange.png'
 import { useSearchParams, useNavigate } from "react-router-dom"
+import dayjs, { Dayjs } from 'dayjs';
 import { TextField } from '@mui/material';
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { DateField } from '@mui/x-date-pickers/DateField';
 import { TimeField } from '@mui/x-date-pickers/TimeField';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import dayjs, {Dayjs} from 'dayjs';
-dayjs.locale('ko');
+import { DateValidationError } from "@mui/x-date-pickers";
 
 const ScheduleCreate = () => {
+  dayjs.locale('ko');
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [title, setTitle] = useState<string | null>(null);
+  const [title, setTitle] = useState<string>("");
   const [color, setColor] = useState<string>("pink")
-  const [content, setContent] = useState<string | null>(null);
+  const [content, setContent] = useState<string>("");
   const [category, setCategory] = useState<string>("family")
   const [startDate, setStartDate] = useState<Dayjs | null>(null);
   const [endDate, setEndDate] = useState<Dayjs | null>(null);
   const [startTime, setStartTime] = useState<Dayjs | null>();
   const [endTime, setEndTime] = useState<Dayjs | null>();
-  const [participant, setParticipant] = useState<string[] | null>(null);
+  const [participants, setParticipants] = useState<string[]>(FamilyMemberInfoSample.map(member => member.email));
   const [isOpenColor, setIsOpenColor] = useState<boolean>(false)
   const colorList: string[] = ["pink", "yellow", "green", "blue", "purple"]
-  const colorRef = useRef<HTMLDivElement>(null)
   const muiFocusCustom = {
     "& .MuiOutlinedInput-root": {
       "&.Mui-focused": {
@@ -37,54 +35,120 @@ const ScheduleCreate = () => {
       }
     }
   }
+  const [isTitleError, setIsTitleError] = useState<boolean>(false);
+  const [isStartDateError, setIsStartDateError] = useState<boolean>(false);
+  const [isEndDateError, setIsEndDateError] = useState<boolean>(false);
+  const [startDateError, setStartDateError] = useState<DateValidationError | null>(null);
+  const [endDateError, setEndDateError] = useState<DateValidationError | null>(null);
 
   useEffect(() => {
     // 날짜 string to Dayjs
-    setStartDate(dayjs(searchParams.get("start")))
-    setEndDate(dayjs(searchParams.get("end")))
-    setStartTime(dayjs(`${searchParams.get("start")}T00:00:00`))
-    setEndTime(dayjs(`${searchParams.get("end")}T23:59:59`))
+    setStartDate(dayjs(searchParams.get("start")));
+    setEndDate(dayjs(searchParams.get("end")));
+    setStartTime(dayjs(`${searchParams.get("start")}T00:00:00`));
+    setEndTime(dayjs(`${searchParams.get("end")}T23:59:59`));
   }, []);
 
-  // 일정 생성 버튼 클릭 핸들러
-  const handleCreateSchedule = () => {
-    console.log("Create schedule")
-    navigate('/schedule')
-  }
-
-  // 시작 일자 수정 핸들러
-  const handleSetStartDate = (newValue: Dayjs | null) => {
-    if (newValue) {
-      setStartDate(newValue);
-      setSearchParams({"start": dayjs(newValue).format("YYYY-MM-DD")})
+  // 제목 입력 핸들러
+  const handleSetTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(event.target.value);
+    if (!event.target.value) {
+      setIsTitleError(true);
+    } else {
+      setIsTitleError(false);
     }
   }
 
-  // 종료 일자 수정 핸들러
+  // 상세 내용 입력 핸들러
+  const handleSetContent = (event: React.ChangeEvent<HTMLInputElement>) => setContent(event.target.value);
+
+  // 카테고리 선택 핸들러
+  const handleSetCategory = (newValue: string) => {
+    if (newValue !== null)
+      setCategory(newValue)
+  }
+
+  // 시작 일자 입력 핸들러
+  const handleSetStartDate = (newValue: Dayjs | null) => {
+    if (dayjs(newValue).isValid()) {
+      setStartDate(newValue);
+      setSearchParams({"start": dayjs(newValue).format("YYYY-MM-DD")});
+    }
+  }
+
+  // 시작 일자 에러 메시지
+  const errorMessageStartDate = React.useMemo(() => {
+    switch (startDateError) {
+      case 'maxDate':
+      case 'minDate':
+      case 'invalidDate': {
+        setIsStartDateError(true);
+        return '유효한 날짜를 입력해 주세요';
+      }
+
+      default: {
+        setIsStartDateError(false);
+        return '';
+      }
+    }
+  }, [startDateError]);
+
+  // 종료 일자 입력 핸들러
   const handleSetEndDate = (newValue: Dayjs | null) => {
-    if (newValue) {
+    if (dayjs(newValue).isValid()) {
       setEndDate(newValue);
       setSearchParams({"end": dayjs(newValue).format("YYYY-MM-DD")})
     }
   }
-
-  // 시작 시간 수정 핸들러
+  
+  // 종료 일자 에러 메시지
+  const errorMessageEndDate = React.useMemo(() => {
+    switch (endDateError) {
+      case 'maxDate':
+      case 'invalidDate': {
+        setIsEndDateError(true);
+        return '유효한 날짜를 입력해 주세요';
+      }
+      
+      case 'minDate': {
+        setIsEndDateError(true);
+        return '시작일 이후의 날짜를 입력해 주세요';
+      }
+        
+      default: {
+        setIsEndDateError(false);
+        return '';
+      }
+    }
+  }, [endDateError]);
+  
+  // 시작 시간 입력 핸들러
   const handleSetStartTime = (newValue: Dayjs | null) => {
-    if (newValue) {
+    if (dayjs(newValue).isValid()) {
       setStartTime(newValue)
     } else {
       setStartTime(dayjs(`${searchParams.get("start")}T00:00:00`))
     }
   }
 
-  // 종료 시간 수정 핸들러
+  // 종료 시간 입력 핸들러
   const handleSetEndTime = (newValue: Dayjs | null) => {
-    if (newValue) {
-      setEndTime(newValue)
+    if (dayjs(newValue).isValid()) {
+      setEndTime(newValue);
+
+      // 종료 시간이 유효하지 않은 경우 기본 값으로 설정
     } else {
-      setEndTime(dayjs(`${searchParams.get("end")}T23:59:59`))
+      setEndTime(dayjs(`${searchParams.get("end")}T23:59:59`));
     }
   }
+
+  // 종료 시간 유효성 확인
+  useEffect(() => {
+    // 종료 시간이 시작 시간보다 이전이라면 기본 값으로 설정
+    if (dayjs(startDate)?.isSame(dayjs(endDate)) && dayjs(endTime)?.isBefore(dayjs(startTime))) {
+      setEndTime(dayjs(`${searchParams.get("end")}T23:59:59`));
+    }
+  }, [startDate, endDate, startTime, endTime]);
 
   // 요일 계산
   const calculateWeekday = (value: Dayjs | null) => {
@@ -97,7 +161,7 @@ const ScheduleCreate = () => {
     }
   };
 
-  // 색상 코드 리턴
+  // 색상 코드
   const colorPalette = (value: string): string => {
     if (value === "pink") {
       return "#FFE8E8";
@@ -114,16 +178,46 @@ const ScheduleCreate = () => {
     }
   };
 
-  // 색상 선택 창 외부 클릭 감지
-  useEffect(() => {
-    const handleClick = (e: MouseEvent) => {
-      if (colorRef.current && !colorRef.current.contains(e.target as Node)) {
-        setIsOpenColor(false);
-      }
-    };
-    window.addEventListener('mousedown', handleClick);
-    return () => window.removeEventListener('mousedown', handleClick);
-  }, [colorRef]);
+  // 참여자 입력 핸들러
+  const handleSetParticipants = (value: string) => {
+    if (participants.includes(value)) {
+      // 이미 참여자인 경우 참여자 목록에서 제거
+      setParticipants(participants.filter((email) => email !== value))
+    } else {
+      // 아직 참여자가 아닌 경우 참여자 목록에 추가
+      setParticipants([...participants, value]);
+    }
+  }
+
+  // 참여자 프로필 렌더링
+  const renderProfile = (email: string, nickname: string, image: string) => {
+    return (
+      <div key={email} onClick={() => handleSetParticipants(email)}>
+        <div
+          className={`create-schedule-participant__profile-image${participants.includes(email) ? '--active' : ''}`}>
+          <img src={ProfileImage} alt=""/>
+          {/*<img src={ member.image } alt={ nickname } />*/}
+        </div>
+        <div className="create-schedule-participant__profile-nickname">
+          {nickname}
+        </div>
+      </div>
+    );
+  }
+
+  // 일정 생성 버튼 활성화 여부 계산
+  const isButtonEnabled = () => {
+    return title && !isStartDateError && !isEndDateError;
+  };
+
+  // 일정 생성 버튼 클릭 핸들러
+  const handleCreateSchedule = () => {
+    if (!title) {
+      setIsTitleError(true);
+    } else {
+      navigate('/schedule');
+    }
+  }
 
   return (
     <div className="create-schedule">
@@ -137,16 +231,22 @@ const ScheduleCreate = () => {
           <div className="create-schedule-info__input-title">
             <TextField
               fullWidth
+              value={title}
+              onChange={handleSetTitle}
               placeholder="제목* (20자 이내)"
-              inputProps={{ maxLength: 20 }}
+              inputProps={{maxLength: 20}}
               margin="normal"
               sx={muiFocusCustom}
+              error={isTitleError}
+              helperText={isTitleError ? '제목을 입력해 주세요' : ''}
             />
 
             {/*일정 색상 선택*/}
             <button
               className={`create-schedule-info__input-color-button${isOpenColor ? '--active' : ''}`}
-              onClick={() => {if (!isOpenColor) setIsOpenColor(true)}}
+              onClick={() => {
+                setIsOpenColor(!isOpenColor)
+              }}
               style={{backgroundColor: colorPalette(color)}}
             >
             </button>
@@ -156,24 +256,33 @@ const ScheduleCreate = () => {
           <div className="create-schedule-info__input-content">
             <TextField
               fullWidth
+              value={content}
+              onChange={handleSetContent}
+              inputProps={{maxLength: 500}}
               placeholder="상세 내용"
-              multiline rows={4}
+              multiline
+              minRows={4}
               sx={muiFocusCustom}
             />
           </div>
 
           {/*일정 카테고리 선택*/}
           <div className="create-schedule-info__input-category">
-            <ToggleButtonGroup
-              fullWidth
-              value={category}
-              exclusive
-              onChange={(event: React.MouseEvent<HTMLElement>, newValue: string) => setCategory(newValue)}
-            >
-              <ToggleButton value="family">가족 일정</ToggleButton>
-              <ToggleButton value="individual">개인 일정</ToggleButton>
-              <ToggleButton value="event">이벤트</ToggleButton>
-            </ToggleButtonGroup>
+            <button
+              className={`create-schedule-info__input-category-family${category == "family" ? '--active' : ''}`}
+              onClick={() => handleSetCategory("family")}
+            >가족 일정
+            </button>
+            <button
+              className={`create-schedule-info__input-category-individual${category == "individual" ? '--active' : ''}`}
+              onClick={() => handleSetCategory("individual")}
+            >개인 일정
+            </button>
+            <button
+              className={`create-schedule-info__input-category-event${category == "event" ? '--active' : ''}`}
+              onClick={() => handleSetCategory("event")}
+            >이벤트
+            </button>
           </div>
         </div>
 
@@ -187,6 +296,12 @@ const ScheduleCreate = () => {
                 value={startDate}
                 onChange={handleSetStartDate}
                 format={`YYYY-MM-DD (${calculateWeekday(startDate)})`}
+                onError={(newError) => setStartDateError(newError)}
+                slotProps={{
+                  textField: {
+                    helperText: errorMessageStartDate,
+                  },
+                }}
                 margin="normal"
                 sx={muiFocusCustom}
                 className="create-schedule-period__date"
@@ -206,6 +321,13 @@ const ScheduleCreate = () => {
                 value={endDate}
                 onChange={handleSetEndDate}
                 format={`YYYY-MM-DD (${calculateWeekday(endDate)})`}
+                onError={(newError) => setEndDateError(newError)}
+                slotProps={{
+                  textField: {
+                    helperText: errorMessageEndDate,
+                  },
+                }}
+                minDate={dayjs(startDate)}
                 margin="normal"
                 sx={muiFocusCustom}
                 className="create-schedule-period__date"
@@ -222,48 +344,50 @@ const ScheduleCreate = () => {
         </div>
 
         {/*참여하는 사람*/}
-        <div className="create-schedule-participant">
-          <div className="create-schedule__sub-title">참여자</div>
+        {category === "family" && (
+          <div className="create-schedule-participant">
+            <div className="create-schedule__sub-title">참여자</div>
 
-          {/* 가족 프로필 */}
-          <div className="create-schedule-participant__profile">
-            {FamilyMemberInfoSample.map((member, index) => (
-              <div key={ index }>
-                <div className="create-schedule-participant__profile-image">
-                  <img src={ ProfileImage } alt=""/>
-                  {/*<img src={ member.image } alt={ member.nickname } />*/}
-                </div>
-                <div className="create-schedule-participant__profile-nickname">
-                  { member.nickname }
-                </div>
-              </div>
-            ))}
+            <div className="create-schedule-participant__profile">
+
+              {/*가족 프로필*/}
+              {FamilyMemberInfoSample.map((member, index: number) => (
+                renderProfile(member.email, member.nickname, member.image)
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
-      {/*생성 버튼*/}
       <div className="create-schedule__button-create" onClick={handleCreateSchedule}>
-        <button className="create-schedule__button-create">생성</button>
+        <button
+          className="create-schedule__button-create"
+          disabled={!isButtonEnabled()}
+        >
+          생성
+        </button>
       </div>
 
       {/* 색상 선택창 */}
       {isOpenColor && (
-        <div className="create-schedule__input-color" ref={colorRef}>
-          <div className="create-schedule__input-color-title">일정 색상</div>
+        <div className="create-schedule__input-color">
+          <div className="create-schedule__input-color-title">색상</div>
           <div className="create-schedule__input-color-list">
             {colorList.map((value: string, index: number) => (
               <button
                 key={index}
                 className={`create-schedule__input-color-item${value === color ? '--active' : ''}`}
-                style={{ backgroundColor: colorPalette(value) }}
-                onClick={() => {
-                  setColor(value);
-                  setIsOpenColor(false);
-                }}
+                style={{backgroundColor: colorPalette(value)}}
+                onClick={() => setColor(value)}
               />
             ))}
           </div>
+          <button
+            className="create-schedule__input-color-close"
+            onClick={() => setIsOpenColor(false)}
+          >
+            닫기
+          </button>
         </div>
       )}
     </div>
