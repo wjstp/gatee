@@ -89,8 +89,8 @@ const Router = () => {
           <Route path="year/:year" element={<PhotoAllYearGroupDetail/>}/>
           <Route path="album" element={<PhotoAlbum/>}/>
           <Route path="album/:id" element={<PhotoAlbumGroupDetail/>}/>
-          <Route path=":id" element={<PhotoDetail/>}/>
         </Route>
+        <Route path="/photo/:id" element={<PhotoDetail/>}/>
       </Route>
 
 

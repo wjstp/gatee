@@ -16,8 +16,8 @@ export interface Question {
 }
 
 export interface Character {
-  question: string;
-  answer: string;
+    question: string;
+    answer: string;
 }
 
 export interface Schedule {
@@ -28,4 +28,22 @@ export interface Schedule {
   startDate: string | null;
   endDate: string | null;
   participant: string[] | [];
+}
+
+export interface PhotoListProps {
+    editMode:string,
+    photoGroup: {
+        id: number,
+        dateTime: string,
+        src: string
+    }[],
+    handleChecked: (photoId: number, type:string) => void;
+}
+
+export interface PhotoOutletInfoContext {
+    editMode: string;
+    handleChecked:(
+      photoId:number,
+      type:string,
+    )=>void;
 }

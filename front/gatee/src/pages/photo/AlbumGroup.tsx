@@ -1,6 +1,11 @@
 import React, {useState} from 'react';
-import {Link} from "react-router-dom";
+import {useNavigate, useOutletContext} from "react-router-dom";
 import {FaPlus} from "react-icons/fa6";
+import {PhotoOutletInfoContext} from "../../types/index";
+import Checkbox from "@mui/material/Checkbox";
+import {AlbumNameInputModal} from "@pages/photo/components/CreateAlbumModal";
+import useModal from "@hooks/useModal";
+import {useModalStore} from "@store/useModalStore";
 
 interface GroupPhotoItemProps {
   groupPhotoData: {
@@ -17,43 +22,91 @@ interface PlusAlbumButton {
 
 
 const PhotoAlbum = () => {
-
-  const [showModal, setShowModal] = useState(false);
+  const {editMode, handleChecked} = useOutletContext<PhotoOutletInfoContext>();
+  // 모달 상태
+  const {setShowModal} = useModalStore()
   // 월별 대표 사진 샘플 데이터
   const groupPhotoDatas = [
     {id: 1, title: "툔", dateTime: "2024-01-31T12:00:00", src: "@assets/images/schedule/calendarBanner3.jpg"},
     {id: 2, title: "예삐리리", dateTime: "2024-02-28T12:00:00", src: "@assets/images/schedule/calendarBanner4.jpg"},
     {id: 3, title: "운덩", dateTime: "2024-03-31T12:00:00", src: "@assets/images/schedule/calendarBanner5.jpg"},
   ]
+// 앨범 이름 고르기 모달 상태
+  const {
+    isOpen: showAlbumNameInputModal,
+    openModal: openAlbumNameInputModal,
+    closeModal: closeAlbumNameInputModal
+  } = useModal();
 
+  // 앨범 이름 모달 띄우기
   const handleModal = () => {
-    setShowModal(!showModal);
+    setShowModal(true);
+    openAlbumNameInputModal()
     console.log("모달 팝업")
+  }
+
+  // 앨범이름 모달 닫기
+  const handleCloseAlbumNameInputModal = () => {
+    closeAlbumNameInputModal()
+    setShowModal(false)
+    console.log('앨범 만들기')
   }
 
   return (
     <div className="photo-group--container">
       {groupPhotoDatas.map((groupPhotoData, index) => {
-        return <GroupItem key={index} groupPhotoData={groupPhotoData}/>
+        return <GroupItem key={index} groupPhotoData={groupPhotoData} editMode={editMode}
+                          handleChecked={handleChecked}/>
       })}
       <PlusAlbum handleModal={handleModal}/>
+      {showAlbumNameInputModal ?
+        <AlbumNameInputModal handleCloseAlbumNameInputModal={handleCloseAlbumNameInputModal}/>
+        :
+        null
+      }
     </div>
   )
 }
 
-const GroupItem = ({groupPhotoData}: GroupPhotoItemProps) => {
-
+const GroupItem = ({editMode, handleChecked, groupPhotoData}: PhotoOutletInfoContext & GroupPhotoItemProps) => {
+  const label = {inputProps: {'aria-label': 'Checkbox demo'}};
+  const navigate = useNavigate();
+  const [checked, setChecked] = useState(false);
+  const gotoDetail = () => {
+    if (editMode === 'normal') {
+      navigate(`/photo/album/${groupPhotoData.id}`);
+    }
+  };
+  // 체크박스 변동 함수
+  const handleCheckBox = () => {
+    // 체크박스가 체크 되어있다면 리스트에서 id를 제거하고 체크를 푼다
+    if (checked) {
+      handleChecked(groupPhotoData.id, "delete")
+      setChecked(false)
+    }
+    // 체크박스가 체크 되어있지 않다면, 리스트에 id를 추가하고 체크를 한다
+    else {
+      handleChecked(groupPhotoData.id, "add")
+      setChecked(true)
+    }
+  }
   return (
-    <Link to={`${groupPhotoData.id}`} className="photo-group--item--container">
+    <div onClick={gotoDetail} className="photo-group--item--container">
       {/* 배경 사진 */}
-      <img className="photo" src={groupPhotoData.src} alt={`${groupPhotoData.id}`}/>
+      <img className="photo-item" src={groupPhotoData.src} alt={`${groupPhotoData.id}`}/>
+      {/* 삭제 모드일때만 체크모드 활성화 */}
+      {editMode === 'delete' &&
+        <Checkbox {...label} className="check-box"
+                  checked={checked}
+                  onChange={() => handleCheckBox()}
+        />}
       <p className="title">{groupPhotoData.title}</p>
-    </Link>
+    </div>
   )
 }
 
 
-const PlusAlbum = ({handleModal}:PlusAlbumButton) => {
+const PlusAlbum = ({handleModal}: PlusAlbumButton) => {
 
   return (
     <div className="photo-group--item--container">

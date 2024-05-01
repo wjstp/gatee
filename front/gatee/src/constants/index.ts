@@ -156,31 +156,38 @@ export const QuestionSample: Question[] = [
 // 사진 임시 데이터
 export const photoGroup = [
   {
+    id: 1,
     dateTime: "2024-01-31T12:00:00",
     src: 'https://i.pinimg.com/564x/8b/a2/83/8ba283897b9ad414c929ca1a8630b4bd.jpg',
   },
   {
+    id: 2,
     dateTime: "2024-01-31T12:00:00",
     src: 'https://i.pinimg.com/564x/d0/8c/14/d08c14ed55d5ac1429e6ccf7fe403ad4.jpg',
   },
 
   {
+    id: 3,
     dateTime: "2024-01-31T12:00:00",
     src: 'https://i.pinimg.com/564x/a6/20/b6/a620b6da690371e66d9aadaf4e491d4b.jpg',
   },
   {
+    id: 3,
     dateTime: "2024-01-31T12:00:00",
     src: 'https://i.pinimg.com/564x/5c/84/85/5c8485d98e717cf157184c38ea3816cb.jpg',
   },
   {
+    id: 4,
     dateTime: "2024-01-31T12:00:00",
     src: 'https://i.pinimg.com/736x/c5/04/ce/c504ce97f611b279f88b30858e19dd0a.jpg',
   },
   {
+    id: 5,
     dateTime: "2024-01-31T12:00:00",
     src: 'https://i.pinimg.com/736x/1a/24/64/1a2464d891d0b8ef10a6b7e0eddd444a.jpg',
   },
   {
+    id: 6,
     dateTime: "2024-01-31T12:00:00",
     src: 'https://i.pinimg.com/736x/0d/d2/4c/0dd24cbca2f3b73d7e30df8043310c11.jpg',
   },

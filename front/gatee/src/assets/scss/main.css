@@ -94,18 +94,34 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 .photo__item__list-container .photo__item img {
+  background-color: #D6D6D6;
   width: 29dvw;
   height: 29dvw;
   margin: 0.5vw;
   object-fit: cover;
 }
+.photo__item__list-container .photo__item .check-box {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #FFA41C;
+}
 
 .photo-detail--container {
+  position: relative;
+  width: 100%;
+}
+.photo-detail--container .photo-detail-img {
+  width: 100%;
   height: 100%;
+  max-height: 70dvh;
+  object-fit: contain; /* 이미지가 자리를 차지하지만 비율을 유지 */
 }
 .photo-detail--container .interaction--container {
+  bottom: 0;
   display: flex;
   flex-direction: row;
   display: flex;
@@ -121,13 +137,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 0.5rem;
-  gap: 2.5rem;
+  margin-top: 1dvh;
+  gap: 1.5rem;
 }
 .photo-detail--container .interaction--container .liked--container .liked-profiles--container .liked-icon {
-  margin-left: -2rem;
-  width: 3rem;
-  height: 3rem;
+  margin-left: -1rem;
+  width: 5dvh;
+  height: 5dvh;
   background-color: white;
   border-radius: 10rem;
 }
@@ -175,6 +191,26 @@
 .signup-family-set-check__btn .btn-introduce:focus, .signup-family-join__btn .btn-input:focus, .signup-family-join-check__btn .btn-join-member:focus, .signup-family-set-check__btn .btn-introduce:active, .signup-family-join__btn .btn-input:active, .signup-family-join-check__btn .btn-join-member:active, .signup-family-set-check__btn .btn-introduce:hover, .signup-family-join__btn .btn-input:hover, .signup-family-join-check__btn .btn-join-member:hover {
   background-color: #f89c00;
 }
+.photo .input-modal-bg .input-modal-content .submit-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  background-color: #FFA41C;
+  font-weight: 600;
+  font-size: 22px;
+  height: 50px;
+  color: white;
+  border-radius: 10px;
+  width: 80px;
+  height: 35px;
+  font-weight: 600;
+  font-size: 16px;
+}
+.photo .input-modal-bg .input-modal-content .submit-btn:focus, .photo .input-modal-bg .input-modal-content .submit-btn:active, .photo .input-modal-bg .input-modal-content .submit-btn:hover {
+  background-color: #f89c00;
+}
 .mission__index .improvement-card-button {
   padding-left: 1.2rem;
   padding-right: 1.2rem;
@@ -200,24 +236,23 @@
   border-radius: inherit;
 }
 
-.photo .edit-modal {
+.photo .edit-modal-bg, .photo .input-modal-bg, .photo .album-name-select-modal-bg {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  z-index: 9999;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.photo .edit-modal {
+.photo .edit-modal-bg .edit-modal-content, .photo .input-modal-bg .input-modal-content, .photo .album-name-select-modal-bg .album-name-select-modal-content {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 60%;
-  height: 20%;
   background-color: white;
   border-radius: 5px;
 }
@@ -768,16 +803,19 @@ ol {
 }
 
 .photo {
-  height: 100%;
+  min-height: 100%;
 }
 .photo .photo-tab-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
   justify-content: space-evenly;
-  position: relative;
+  position: sticky; /* 항상 상단에 고정됩니다. */
+  top: 0; /* 상단에 고정됩니다. */
+  z-index: 999; /* 다른 컨텐츠 위에 렌더링됩니다. */
+  background-color: #fff;
 }
 .photo .photo-tab-container .photo-tab-container__button {
   color: #9e9e9e; /* 기본 버튼 색상 */
@@ -871,6 +909,24 @@ ol {
   object-fit: cover;
   background-color: red;
 }
+.photo .photo__button-add-event {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  z-index: 10;
+  bottom: 15dvh;
+  right: 2rem;
+  background-color: #FFBE5C;
+  color: white;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.photo .photo__button-add-event:focus, .photo .photo__button-add-event:active, .photo .photo__button-add-event:hover {
+  background-color: #FFA41C;
+}
 .photo .year-photo-container {
   display: flex;
   justify-content: center;
@@ -906,7 +962,7 @@ ol {
 .photo .photo-group--container {
   display: flex;
   flex-direction: row;
-  margin: 0 2dvw;
+  margin: 3dvh 2dvw;
   flex-wrap: wrap;
 }
 .photo .photo-group--container .photo-group--item--container {
@@ -915,10 +971,11 @@ ol {
   align-items: center;
   display: flex;
   flex-direction: column;
+  position: relative;
   width: 48dvw;
 }
-.photo .photo-group--container .photo-group--item--container .photo {
-  background-color: red;
+.photo .photo-group--container .photo-group--item--container .photo-item {
+  background-color: #D6D6D6;
   width: 40dvw;
   height: 40dvw;
   border-radius: 0.5rem;
@@ -931,6 +988,13 @@ ol {
 }
 .photo .photo-group--container .photo-group--item--container .text-white {
   color: white;
+}
+.photo .photo-group--container .photo-group--item--container .check-box {
+  position: absolute;
+  top: 0;
+  left: 4dvw;
+  color: #FFA41C;
+  z-index: 9999;
 }
 .photo .photo-group--container .photo-group--item--container .plus-album--button-container {
   display: flex;
@@ -954,13 +1018,62 @@ ol {
   font-weight: bold;
   color: #FFA41C;
 }
-.photo .edit-modal {
-  background-color: red;
+.photo .edit-modal-bg .edit-modal-content {
+  padding: 1rem;
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+}
+.photo .edit-modal-bg .edit-modal-content .icon-title-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 4rem;
+  gap: 0.5rem;
+}
+.photo .input-modal-bg .input-modal-content {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.photo .input-modal-bg .input-modal-content .modal-title {
+  font-size: 1.3rem;
+}
+.photo .input-modal-bg .input-modal-content .submit-btn {
+  margin: 0rem;
+}
+.photo .input-modal-bg .input-modal-content .submit-btn:disabled {
+  background-color: #D6D6D6;
+}
+.photo .album-name-select-modal-bg .album-name-select-modal-content {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  max-height: 20rem;
+  overflow: scroll;
+  gap: 1rem;
+}
+.photo .album-name-select-modal-bg .album-name-select-modal-content .album-name-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  border: 2px solid #FFA41C;
+  border-radius: 0.2rem;
+  padding: 0.5rem;
+  font-size: 1.2rem;
+  color: #FFA41C;
 }
 
 .photo-detail {
-  padding: 15dvh 0;
+  display: flex;
+  flex-direction: column;
   height: 100%;
+  justify-content: center;
+  background-color: white;
 }
 
 .mission__index .improvement-oneline {

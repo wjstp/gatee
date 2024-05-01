@@ -1,20 +1,22 @@
 import React from 'react';
 import PhotoList from "@components/PhotoList";
 import {photoGroup} from "../../constants";
-import {useParams} from "react-router-dom";
+import {useOutletContext, useParams} from "react-router-dom";
+import {PhotoOutletInfoContext} from "../../types/index";
 
 const PhotoAlbumGroupDetail = () => {
-    const params = useParams()
-    const id = params.id
-    const albumName = "예빈"
-    return (
-        <div>
-            <div className="detail-tab--title">
-                {albumName}
-            </div>
-            <PhotoList photoGroup={photoGroup}/>
-        </div>
-    );
+  const params = useParams()
+  // const id = params.id
+  const albumName = "예빈"
+  const {editMode, handleChecked} = useOutletContext<PhotoOutletInfoContext>();
+  return (
+    <div>
+      <div className="detail-tab--title">
+        {albumName}
+      </div>
+      <PhotoList editMode={editMode} photoGroup={photoGroup} handleChecked={handleChecked}/>
+    </div>
+  );
 }
 
 export default PhotoAlbumGroupDetail;
