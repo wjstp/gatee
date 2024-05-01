@@ -32,14 +32,14 @@ const SignupMemberSet = () => {
         </span>
       </div>
 
-      {/* 코드 입력창 */}
+      {/*이름 입력*/}
       <div className="signup-member-set__input-box">
         <input
           className="input-box__input"
           ref={inputRef}
           type="text"
           pattern="[가-힣]*"
-          placeholder="홍길동"
+          placeholder="예) 홍길동"
           value={inputName}
           onChange={handleInputChange}
           autoFocus

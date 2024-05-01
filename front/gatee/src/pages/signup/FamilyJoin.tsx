@@ -50,7 +50,7 @@ const SignupFamilyJoin = () => {
           ref={inputRef}
           type="text"
           pattern="[가-힣]*"
-          placeholder="EX) A43959FE "
+          placeholder="예) A43959FE "
           value={inputCode}
           onChange={handleInputChange}
           autoFocus

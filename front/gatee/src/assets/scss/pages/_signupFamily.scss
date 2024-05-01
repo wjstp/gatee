@@ -47,6 +47,7 @@
 
     .btn-family-set {
       @extend %orange-button-large;
+
       background-color: white;
       height: 60px;
       margin-top: 0px;
@@ -59,6 +60,7 @@
 
     .btn-family-join {
       @extend %orange-button-large;
+
       background-color: $orange200;
       margin-top: 0;
       height: 60px;
@@ -87,15 +89,16 @@
       font-weight: bold;
     }
 
-    .title__part-02 {
+    .title__part--02 {
     }
   }
 
   &__img-box {
+    @extend %circular-profile-image;
+
     margin-top: 5%;
-    border: 1px solid black;
-    height: 200px;
-    width: 200px;
+    height: 155px;
+    width: 155px;
     border-radius: 100%;
     position: relative;
     display: flex;
@@ -103,18 +106,19 @@
     align-items: center;
 
     .img-box__img {
-      border: 1px solid black;
-      height: 195px;
-      width: 195px;
+      height: 100%;
+      width: 100%;
       border-radius: 100%;
       object-fit: cover;
     }
 
     .img-box__btn {
+      @extend %circular-profile-image;
+
       position: absolute;
       border-radius: 100%;
-      height: 40px;
-      width: 40px;
+      height: 33px;
+      width: 33px;
       background-color: $gray100;
       display: flex;
       justify-content: center;
@@ -130,6 +134,7 @@
 
   &__input-box {
     @include flex_center;
+
     height: 6%;
     width: 65%;
     margin-top: 5%;
@@ -137,7 +142,7 @@
 
     .input-box__input {
       width: 100%;
-      font-size: 25px;
+      font-size: 32px;
       text-align: center;
       justify-content: center;
     }
@@ -145,6 +150,7 @@
 
   &__btn {
     @include flex_center;
+
     height: 10%;
     width: 100%;
 
@@ -160,6 +166,7 @@
 // 가족 생성 확인
 .signup-family-set-check {
   @include flex_center;
+
   height: 100%;
   width: 100%;
   flex-direction: column;
@@ -169,8 +176,6 @@
     margin-bottom: 10%;
 
     .title__part--01 {
-      font-weight: bold;
-
     }
 
     .title__part--02 {
@@ -178,7 +183,8 @@
   }
 
   &__img {
-    border: 1px solid black;
+    @extend %circular-profile-image;
+
     height: 200px;
     width: 200px;
     border-radius: 100%;
@@ -188,9 +194,8 @@
     align-items: center;
 
     .img {
-      border: 1px solid black;
-      height: 195px;
-      width: 195px;
+      height: 100%;
+      width: 100%;
       border-radius: 100%;
       object-fit: cover;
     }
@@ -207,6 +212,7 @@
 
   &__btn {
     @include flex_center;
+
     margin-top: 10%;
     flex-direction: column;
 
@@ -249,8 +255,9 @@
   }
 
   &__img {
+    @extend %circular-profile-image;
+
     margin-top: 5%;
-    border: 1px solid black;
     height: 200px;
     width: 200px;
     border-radius: 100%;
@@ -260,9 +267,8 @@
     align-items: center;
 
     .img {
-      border: 1px solid black;
-      height: 195px;
-      width: 195px;
+      height: 100%;
+      width: 100%;
       border-radius: 100%;
       object-fit: cover;
     }
@@ -280,6 +286,7 @@
 
   &__code-box {
     @include flex_center;
+
     position: relative;
     height: 18%;
     width: 75%;
@@ -331,6 +338,7 @@
 
   &__btn-next {
     @include flex_center;
+
     position: absolute;
     bottom: 5%;
     margin-top: 5%;
@@ -339,6 +347,7 @@
 
     .btn-next__btn {
       @extend %orange-button-large;
+
     }
   }
 }
@@ -365,15 +374,15 @@
 
   &__input-box {
     @include flex_center;
+
     height: 6%;
     width: 75%;
     margin-top: 10%;
-    padding-bottom: 2%;
     border-bottom: 1px solid $gray100;
 
     .input-box__input {
       width: 100%;
-      font-size: 25px;
+      font-size: 30px;
       text-align: center;
       justify-content: center;
     }
@@ -394,11 +403,13 @@
 // 가족 입장 체크 페이지
 .signup-family-join-check {
   @include flex_center;
+
   height: 100%;
   flex-direction: column;
 
   &__img {
-    border: 1px solid black;
+    @extend %circular-profile-image;
+
     height: 200px;
     width: 200px;
     border-radius: 100%;
@@ -408,9 +419,8 @@
     align-items: center;
 
     .img {
-      border: 1px solid black;
-      height: 195px;
-      width: 195px;
+      height: 100%;
+      width: 100%;
       border-radius: 100%;
       object-fit: cover;
     }
@@ -427,6 +437,7 @@
 
   &__btn {
     @include flex_center;
+
     flex-direction: column;
     margin-top: 10%;
 

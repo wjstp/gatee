@@ -6,10 +6,6 @@ COPY . /work
 RUN chmod +x ./gradlew
 RUN ./gradlew clean build
 
-FROM openjdk:17-jdk
-ENV TZ="Asia/Seoul"
-
-
 FROM openjdk:17-jdk-slim
 
 WORKDIR /work

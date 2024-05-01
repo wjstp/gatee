@@ -6,13 +6,13 @@ const SignupFamilySetCheck = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const inputValue = location.state?.inputValue || "";
-  const selectedImage = location.state?.selectedImage || "";
-
+  const selectedFamilyImage = location.state?.selectedFamilyImage || "";
+  console.log(selectedFamilyImage)
   const goToFamilySetCheck = () => {
     navigate("/signup/family-set/share", {
       state: {
         inputValue,
-        selectedImage
+        selectedFamilyImage
       }
     });
   }
@@ -37,7 +37,7 @@ const SignupFamilySetCheck = () => {
       <div className="signup-family-set-check__img">
         <img
           className="img"
-          src={selectedImage || SampleFamily}
+          src={selectedFamilyImage || SampleFamily}
           alt="family-image"
         />
       </div>
