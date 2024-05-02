@@ -45,9 +45,9 @@ const PhotoIndex = () => {
   const [albumId, setAlbumId] = useState(0);
   const [albumName, setAlbumName] = useState("");
   // 추가될 사진
-  const inputRef = useRef<HTMLInputElement>(null);
+  // const inputRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [selectedImage, setSelectedImage] = useState<string | ArrayBuffer | null>(null);
+  // const [selectedImage, setSelectedImage] = useState<string | ArrayBuffer | null>(null);
 
   // 활성화된 상단 탭에 대한 상태 변경 => 모든 사진, 앨범 사진
   const handleTabClick = (path: string) => {
