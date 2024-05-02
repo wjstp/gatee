@@ -85,11 +85,11 @@ public class SecurityConfig {
                 "http://localhost:8080"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         config.setAllowedHeaders(List.of(
-                "Authorization",
-                "Cache-Control",
-                "Content-Type"
+                    "*"
+//                "Authorization",
+//                "Cache-Control",
+//                "Content-Type"
         ));
-
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return source;
