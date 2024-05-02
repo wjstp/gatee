@@ -40,6 +40,12 @@ build:
     - chmod +x ./devops/build-image.sh
     - ./devops/build-image.sh $CI_REGISTRY/gatee-api:$TAG
     - docker push $CI_REGISTRY/gatee-api:$TAG
+    # 프론트 빌드 & 푸시
+    - echo [INFO] Start build Nextjs
+    - cd ../../front/gatee
+    - echo "$FRONT_ENV" > ".env"
+    - docker build -t $CI_REGISTRY/gatee-nodejs:$TAG .
+    - docker push $CI_REGISTRY/gatee-nodejs:$TAG # Container
   only:
     - develop
     - master
