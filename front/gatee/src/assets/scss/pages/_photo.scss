@@ -256,6 +256,7 @@
       @extend %modal-content;
       @include p-(1);
       @include flex-row;
+
       gap: 2rem;
 
       .icon-title-center {
@@ -289,7 +290,7 @@
       }
 
       .submit-btn:disabled {
-        background-color: $gray100;
+        background-color: $orange100;
       }
 
 

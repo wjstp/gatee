@@ -62,13 +62,13 @@ const Router = () => {
         <Route path="/notification" element={<NotificationIndex/>}/>
 
         {/*프로필 페이지*/}
-        <Route path="/profile" element={<ProfileIndex/>}/>
+        <Route path="/profile/:name" element={<ProfileIndex/>}/>
 
         {/*메인 페이지*/}
         <Route path="/main" element={<MainIndex/>}/>
 
         {/*미션 페이지*/}
-        <Route path="/mission" element={<MissionIndex/>}/>
+        <Route path="/main/mission" element={<MissionIndex/>}/>
 
         {/*스케줄 페이지*/}
         <Route path="/schedule" element={<ScheduleIndex/>}/>
