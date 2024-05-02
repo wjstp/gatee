@@ -29,8 +29,12 @@ const TopBar = () => {
 
       <div className="top-bar__right">
         {/*알림 설정 - 알림 페이지 */}
-        {currentPage === '/notification' && (
+        {['/notification','/notification/setting'].includes(currentPage) && (
+          <NavLink to="/notification/setting" className={({isActive}) =>
+            isActive ? 'top-bar__right--active' : ''
+          }>
           <PiGearSix size={24}/>
+          </NavLink>
         )}
 
         {/*채팅 앨범 - 채팅 페이지 */}

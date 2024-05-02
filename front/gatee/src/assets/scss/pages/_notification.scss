@@ -1,1 +1,88 @@
 @use '../abstracts/index' as *;
+
+.notification-tab--container {
+  @include mt-(1);
+
+  position: relative;
+  height: 100%;
+
+  .notification-item--container {
+    @include flex-row;
+    @include p-(1.5);
+    @include py-(1.2);
+
+    height: 5.5rem;
+    align-items: center;
+    gap: 1rem;
+
+    .unread {
+      background-color: $orange100;
+    }
+
+
+    .notification-item-profile--img {
+      width: 3rem;
+      height: 3rem;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    .notification-item--content {
+      @include flex-col;
+
+      flex-grow: 1;
+      height: 100%;
+      //background-color: red;
+      justify-content: space-between;
+
+      .notification-item--top--container {
+        @include flex-row;
+        justify-content: space-between;
+      }
+    }
+  }
+
+  .notification-setting--container {
+    @include p-(2);
+
+    position: absolute;
+
+    width: 100%;
+    bottom: 0;
+    background-color: #fff;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+    box-shadow: 0 -2px 30px rgba(0, 0, 0, 0.15);
+
+    .setting--title {
+      @include mb-(2);
+      text-align: center;
+    }
+
+
+    .toggle-set-list--container {
+      @include flex-col;
+
+      gap: 1rem;
+
+      .toggle-set-one-line--container {
+        @include flex-row;
+
+        gap: 2.5rem;
+
+        .toggle-item--container {
+          @include flex-row;
+          align-items: center;
+
+          font-size: 1.3rem;
+          justify-content: space-between;
+          flex: 1;
+          gap: 1rem;
+        }
+
+      }
+    }
+
+
+  }
+}
