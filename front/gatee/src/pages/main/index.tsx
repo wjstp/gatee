@@ -3,16 +3,19 @@ import {Link} from "react-router-dom";
 import {ReactComponent as House} from "@assets/images/main/main_home.svg";
 import HeartAnimation from "@assets/images/animation/heart_animation.json"
 import Lottie from "lottie-react";
-import ProgressBar from "@ramonak/react-progress-bar";
 import { PiTarget } from "react-icons/pi";
 import {FamilyPoint} from "@pages/main/components/FamilyPoint";
 import ProfileList from "@pages/main/components/ProfileList";
 import {FamilyMemberInfoSample} from "../../constants";
+
+
 const MainIndex = () => {
+
 
   return (
     <div className="main-container">
-      {/*<div style={{
+      {/*
+      <div style={{
             display: "absolute",
             flexDirection: "column",
             gap: "1rem",
@@ -26,16 +29,18 @@ const MainIndex = () => {
       {/* 가족 온도 */}
       <FamilyPoint/>
 
+      {/* 프로필 리스트 */}
       <ProfileList profileDataList={FamilyMemberInfoSample}/>
 
       {/* 미션 탭으로 가기 */}
-      <Link to="/mission" className="go-to-mission__button-event">
+      <Link to="/main/mission" className="go-to-mission__button-event">
         <PiTarget size={35}/>
         <p>미션</p>
       </Link>
 
       <Lottie className="main-heart-animation" animationData={HeartAnimation}/>
       <House className="main-house-img"/>
+
     </div>
   );
 }
