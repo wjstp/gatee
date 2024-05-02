@@ -31,6 +31,13 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
+  gatee-nodejs-green:
+    container_name: gatee-nodejs-green
+    image: ${CI_REGISTRY}/gatee-nodejs:green
+    ports:
+      - "3001:3000"
+    networks:
+      - gatee-net
 
 networks:
   gatee-net:
