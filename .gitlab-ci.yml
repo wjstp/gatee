@@ -42,7 +42,7 @@ build:
     - docker push $CI_REGISTRY/gatee-api:$TAG
     # 프론트 빌드 & 푸시
     - echo [INFO] Start build Nextjs
-    - cd ../front/gatee
+    - cd ../../front/gatee
     - echo "$FRONT_ENV" > ".env"
     - docker build -t $DOCKER_REGISTRY_USER/gatee-nodejs:$TAG .
     - docker push $DOCKER_REGISTRY_USER/gatee-nodejs:$TAG # Container
