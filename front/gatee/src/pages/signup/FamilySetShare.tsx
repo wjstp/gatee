@@ -2,15 +2,31 @@ import React from 'react';
 import { BiCopy } from "react-icons/bi";
 import { useNavigate, useLocation } from "react-router-dom";
 import SampleFamily from "@assets/images/signup/sample.svg"
+import { ReactComponent as KaKaoMessage } from "@assets/images/signup/kakao_message.svg";
 
 const SignupFamilySetShare = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const inputValue = location.state?.inputValue || "";
   const selectedImage = location.state?.selectedImage || "";
+  const web: string = "http//localhost:3000"
+  const mobile: string = "http://192.168.35.47:3000"
 
   const goToMemberSet = () => {
     navigate("/signup/member-set");
+  }
+  
+  // 카카오 공유하기 버튼
+  const kakaoMessage = () => {
+    window.Kakao.Share.sendDefault({
+      objectType: 'text',
+      text:
+        '나의 가조쿠가 되어라',
+      link: {
+        mobileWebUrl: mobile,
+        webUrl: web,
+      },
+    });
   }
 
   return (
@@ -62,10 +78,9 @@ const SignupFamilySetShare = () => {
       <div className="signup-family-set-share__btn-kakao">
         <button
           className="btn-kakao__btn"
+          onClick={kakaoMessage}
         >
-          <span className="btn__text">
-            KaKao
-          </span>
+          <KaKaoMessage className="btn-kakao__icon" />
         </button>
       </div>
 

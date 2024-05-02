@@ -37,3 +37,10 @@ export interface PhotoOutletInfoContext {
       type:string,
     )=>void;
 }
+
+// 카카오 타입 지정
+declare global {
+    interface Window {
+        Kakao: any;
+    }
+}

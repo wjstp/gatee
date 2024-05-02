@@ -3,6 +3,7 @@
 .onboarding__container-center {
   justify-content: center;
   align-items: center;
+
   .slider__container {
     @include flex_center;
     flex-direction: column;
@@ -53,20 +54,35 @@
     img {
       object-fit: cover;
     }
-    //카카오 버튼
+    ////카카오 버튼
+    //.kakaoLoginButton {
+    //  height: 80px;
+    //  width: 100vw;
+    //  font-weight: bold;
+    //  color: black;
+    //  font-size: 20px;
+    //  background-color: $kakaoYellow;
+    //  display: flex;
+    //  text-align: center;
+    //  justify-content: center;
+    //  padding-top: 20px;
+    //  position: absolute;
+    //  bottom: 0;
+    //}
+
+    // 카카오 버튼
     .kakaoLoginButton {
-      height: 80px;
+      @include flex_center;
+
+      height: 10%;
       width: 100vw;
-      font-weight: bold;
-      color: black;
-      font-size: 20px;
-      background-color: $kakaoYellow;
-      display: flex;
-      text-align: center;
-      justify-content: center;
-      padding-top: 20px;
       position: absolute;
-      bottom: 0;
+      bottom: 5%;
+
+      .kakaoLoginImage {
+        height: 100%;
+        width: 100%;
+      }
     }
 
     .kakaoLoginButton:hover {
