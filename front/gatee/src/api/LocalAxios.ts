@@ -15,7 +15,7 @@ export default function localAxios() {
   } = useMemberStore()
 
   const instance = axios.create({
-    baseURL: "https://gaty.duckdns.org/api",
+    baseURL: process.env.REACT_APP_API_URL,
     headers: {
       tmp: "application/json",
     },

@@ -1,2 +1,93 @@
 @use '../abstracts/index' as *;
 @use '../base/index' as *;
+
+.main-container {
+  position: relative;
+  height: 100%;
+
+  .main-family-info {
+    @include px-(2);
+    @include flex-col;
+
+    width: 100%;
+    gap:1rem;
+
+    .title--container {
+
+      @include mt-(1);
+      @include flex-row;
+      align-items: end;
+      gap: 1rem;
+      font-weight: bold;
+
+
+      .title--content {
+        font-size: 1.5rem;
+      }
+
+      .title--temperature {
+        font-size: 2rem;
+        color: $orange500;
+      }
+    }
+
+    .compare-with-avg-content {
+      @include flex_center;
+
+      font-size: 1.3rem;
+      font-weight: bold;
+    }
+
+  }
+
+  .main-heart-animation {
+    position: absolute;
+    bottom: 115vw;
+    z-index: -1;
+    right: 0;
+    width: 30%;
+    opacity: 0.2;
+  }
+  .main-house-img {
+    width: 100vw;
+    position: absolute;
+    opacity: 0.5;
+
+    bottom: 0rem;
+  }
+  .go-to-mission__button {
+
+    &-event {
+      @include flex_center;
+      @include flex-col;
+
+      gap:0.2rem;
+      font-weight: bold;
+      font-size: 1rem;
+      position: absolute;
+      z-index: 10;
+      bottom: 1rem;
+      right: 1rem;
+      background-color: $orange400;
+      color: white;
+      width: 5rem;
+      height: 5rem;
+      border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+      &:focus,
+      &:active,
+      &:hover {
+        background-color: $orange500;
+      }
+    }
+  }
+
+  .main-profile-list--container {
+.main-profile-list-item--container{
+  width: 3rem;
+  height: 3rem;
+  background-color: $gray100;
+}
+  }
+}
