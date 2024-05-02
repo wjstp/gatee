@@ -47,3 +47,17 @@ export interface PhotoOutletInfoContext {
       type:string,
     )=>void;
 }
+
+export interface Holiday {
+  title: string;
+  start: string;
+  backgroundColor: string;
+  textColor: string;
+}
+
+export interface HolidayStore {
+  years: string[];
+  setYears: (newYear: string[]) => void;
+  holidays: Holiday[];
+  setHolidays: (newSchedules: Holiday[]) => void;
+}
