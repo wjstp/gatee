@@ -44,8 +44,8 @@ build:
     - echo [INFO] Start build Nextjs
     - cd ../../front/gatee
     - echo "$FRONT_ENV" > ".env"
-    - docker build -t $DOCKER_REGISTRY_USER/gatee-nodejs:$TAG .
-    - docker push $DOCKER_REGISTRY_USER/gatee-nodejs:$TAG # Container
+    - docker build -t $CI_REGISTRY/gatee-nodejs:$TAG .
+    - docker push $CI_REGISTRY/gatee-nodejs:$TAG # Container
   only:
     - develop
     - master
