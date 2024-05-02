@@ -20,6 +20,16 @@ export interface Character {
     answer: string;
 }
 
+export interface Schedule {
+  title: string | null;
+  content: string | null;
+  category: string | null;
+  color: string | null;
+  startDate: string | null;
+  endDate: string | null;
+  participant: string[] | [];
+}
+
 export interface PhotoListProps {
     editMode:string,
     photoGroup: {
