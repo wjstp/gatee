@@ -35,7 +35,7 @@ const Event: React.FC<DayScheduleCardProps> = ({ schedule }) => {
   );
 };
 
-const EventComponent: React.FC<{ schedule: Schedule }> = ({ schedule }) => {
+const EventComponent: React.FC<DayScheduleCardProps> = ({ schedule }) => {
   switch (schedule.category) {
     case ScheduleType.GROUP:
       return <GroupSchedule schedule={schedule} />;

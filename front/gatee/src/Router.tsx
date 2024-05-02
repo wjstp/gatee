@@ -17,6 +17,7 @@ import ScheduleCreateSchedule from "@pages/schedule/Create";
 import ScheduleCreateReview from "@pages/schedule/CreateReview";
 import ScheduleDetail from "@pages/schedule/ScheduleDetail";
 import ChatIndex from "@pages/chat";  // 채팅
+import ChatPhoto from "@pages/chat/ChatPhoto";
 import CharacterIndex from "@pages/character";  // 백과사전
 import CharacterStart from "@pages/character/AnswerList";
 import CharacterQuestion from "@pages/character/Question";  // 백과사전
@@ -32,7 +33,6 @@ import SignupMemberSetCheck from "@pages/signup/MemberSetCheck";
 import SignupMemberSetFinish from "@pages/signup/MemberSetFinish";
 import SignupMemberSetPermission from "@pages/signup/MemberSetPermission";
 import SignupMemberSetRole from "@pages/signup/MemberSetRole";  // 회원가입
-
 import PhotoAlbum from "@pages/photo/AlbumGroup";
 import PhotoAllMonthGroupDetail from "@pages/photo/AllMonthGroupDetail";
 import PhotoAllYearGroupDetail from "@pages/photo/AllYearGroupDetail";
@@ -56,6 +56,7 @@ const Router = () => {
 
         {/*채팅 페이지*/}
         <Route path="/chat" element={<ChatIndex/>}/>
+        <Route path="/chat/photo" element={<ChatPhoto/>}/>
 
         {/*알림 페이지*/}
         <Route path="/notification" element={<NotificationIndex/>}/>

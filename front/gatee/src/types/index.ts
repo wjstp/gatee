@@ -1,23 +1,25 @@
+import memberSetRole from "@pages/signup/MemberSetRole";
+
 export interface Member {
-    nickname: string;
-    email: string;
-    role: string;
-    birth: string;
-    birthType: string;
-    image: string;
-    mood: string | null;
+  nickname: string;
+  email: string;
+  role: string;
+  birth: string;
+  birthType: string;
+  image: string;
+  mood: string | null;
 }
 
 export interface Question {
-    memberName: string;
-    question: string;
-    correctAnswer: string;
-    answerList: string[];
+  memberName: string;
+  question: string;
+  correctAnswer: string;
+  answerList: string[];
 }
 
 export interface Character {
-    question: string;
-    answer: string;
+  question: string;
+  answer: string;
 }
 
 export interface Schedule {
@@ -31,21 +33,21 @@ export interface Schedule {
 }
 
 export interface PhotoListProps {
-    editMode:string,
-    photoGroup: {
-        id: number,
-        dateTime: string,
-        src: string
-    }[],
-    handleChecked: (photoId: number, type:string) => void;
+  editMode: string,
+  photoGroup: {
+    id: number,
+    dateTime: string,
+    src: string
+  }[],
+  handleChecked: (photoId: number, type: string) => void;
 }
 
 export interface PhotoOutletInfoContext {
-    editMode: string;
-    handleChecked:(
-      photoId:number,
-      type:string,
-    )=>void;
+  editMode: string;
+  handleChecked: (
+    photoId: number,
+    type: string,
+  ) => void;
 }
 
 export interface Holiday {
@@ -60,4 +62,42 @@ export interface HolidayStore {
   setYears: (newYear: string[]) => void;
   holidays: Holiday[];
   setHolidays: (newSchedules: Holiday[]) => void;
+}
+
+export interface PhotoData {
+  id: number,
+  dateTime: string,
+  src: string
+}
+
+export interface Chat {
+  chatList: ChatItem[];
+  cursor: number;
+}
+
+export interface ChatItem {
+  chatId: number;
+  type: string;     // "chat" or "plan"
+  sender: string;   // email
+  message: string;
+  files: ChatFile[];
+  createdAt: string;
+  readingCount: number;
+  participants: string[];
+}
+
+export interface ChatFile {
+  S3Id: string;
+  imgUrl: string;
+  thumbnailUrl: string;
+}
+
+export enum SenderType {
+  YOURS = "yours",
+  MY = "my"
+}
+
+export interface BubbleProps {
+  chat: ChatItem;
+  senderType: string;
 }

@@ -34,13 +34,16 @@ const TopBar = () => {
         )}
 
         {/*채팅 앨범 - 채팅 페이지 */}
-        {currentPage === '/chat' && (
-          <PiSquaresFour size={24}/>
+        {['/chat', '/chat/photo'].includes(currentPage) && (
+          <NavLink to="/chat/photo" className={({isActive}) =>
+            isActive ? 'top-bar__right--active': ''}>
+            <PiSquaresFour size={24}/>
+          </NavLink>
         )}
 
         {/*알림*/}
         <NavLink to="/notification" className={({isActive}) =>
-          isActive ? 'rightDiv--active' : ''
+          isActive ? 'top-bar__right--active' : ''
         }>
           <PiBell size={24}/>
           {/*<NotificationBadge />*/}

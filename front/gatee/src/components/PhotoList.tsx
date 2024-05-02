@@ -1,15 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
-
-// import sampleImage from "@assets/images/schedule/calendarBanner3.jpg"
 import Checkbox from '@mui/material/Checkbox';
-import {PhotoListProps} from "../types/index";
+import {PhotoListProps, PhotoData} from "../types/index";
 
-interface PhotoData {
-  id: number,
-  dateTime: string,
-  src: string
-}
 
 // 채팅 앨범과 모든 사진의 일별 사진, 월별 연별 앨범 사진 상세페이지에서 활용됨
 const PhotoList = ({editMode, photoGroup, handleChecked}: PhotoListProps) => {
