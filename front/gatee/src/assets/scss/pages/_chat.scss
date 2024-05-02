@@ -1,1 +1,85 @@
-@use '../abstracts/index' as *;
+@use '../abstracts' as *;
+@use '../components' as *;
+
+.chat {
+  @include flex-col;
+
+  justify-content: flex-end;
+  height: 100%;
+
+  &__main {
+    @include flex-col;
+
+    justify-content: flex-end;
+    height: 100%;
+    overflow-y: auto;
+  }
+
+  &__input {
+    background-color: #ed6363;
+    min-height: 3.5rem;
+  }
+
+  &__date {
+    @include flex-center;
+
+    background-color: $orange400;
+    width: 14rem;
+    height: 2rem;
+    border-radius: 20px;
+    color: white;
+  }
+
+  &__yours-chat {
+    @include flex-row;
+
+    &__profile {
+      @extend %circular-profile-image;
+
+      width: 3rem;
+      height: 3rem;
+    }
+
+    &__container {
+
+    }
+
+    &__nickname {
+
+    }
+
+    &__content {
+
+    }
+
+    &__file {
+
+    }
+  }
+
+  &__my-chat {
+    @include flex-row;
+
+    justify-content: end;
+
+    &__content {
+
+    }
+  }
+
+  &__title-count-wrapper {
+
+  }
+
+  &__time {
+
+  }
+
+  &__count {
+
+  }
+
+  &__file {
+
+  }
+}

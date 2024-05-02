@@ -1,4 +1,4 @@
-import {Member, Question, Character, Schedule, Chat, ChatFile} from "src/types";
+import { Member, Question, Character, Schedule, Chat } from "src/types";
 
 // 멤버 임시 데이터
 export const MemberInfoSample: Member = {

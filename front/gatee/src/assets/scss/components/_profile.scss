@@ -1,14 +1,17 @@
-@use '../abstracts/index' as *;
+@use '../abstracts' as *;
 
 // @extend %circular-profile-image;
 
 // 원형 프로필
 %circular-profile-image {
+  @include flex_center;
+
   border-radius: 50%;
 
   img {
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
     border-radius: inherit;
   }
 }

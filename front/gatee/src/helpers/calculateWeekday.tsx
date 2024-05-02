@@ -1,4 +1,4 @@
-import dayjs, {Dayjs} from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 
 const calculateWeekday = (value: Dayjs | null) => {
   const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
