@@ -26,7 +26,7 @@ else
   AFTER_COMPOSE_COLOR="green"
 fi
 
-sleep 40
+sleep 90
 CONTAINER_COUNT=$(docker-compose -p ${DOCKER_APP_NAME}-${AFTER_COMPOSE_COLOR} -f docker-compose.${AFTER_COMPOSE_COLOR}.yaml ps | grep "^gatee-api-${AFTER_COMPOSE_COLOR}" | wc -l)
 # 컨테이너가 제대로 작동하는지 확인하기 위해 반환값 체크
 HEALTHY_COUNT=$(docker-compose -p ${DOCKER_APP_NAME}-${AFTER_COMPOSE_COLOR} -f docker-compose.${AFTER_COMPOSE_COLOR}.yaml ps -q | xargs -I {} docker inspect --format '{{if .State.Health}}{{.Name}} {{.State.Health.Status}}{{end}}' {} | grep "/gatee-api-${AFTER_COMPOSE_COLOR}" | grep -c "healthy")
