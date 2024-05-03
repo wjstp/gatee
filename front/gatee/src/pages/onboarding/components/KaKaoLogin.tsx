@@ -1,8 +1,20 @@
 import React from 'react';
-import {ReactComponent as LineLogo} from "@assets/images/logo/logo_line.svg"
-import {Link} from "react-router-dom";
+import { ReactComponent as LineLogo } from "@assets/images/logo/logo_line.svg"
+import { Link } from "react-router-dom";
+import { ReactComponent as KaKao } from "@assets/images/signup/kakao_narrow.svg"
 
 const KaKaoLogin = () => {
+  // 카카오 로그인
+  const web: string = "http://localhost:3000/auth"
+  const mobile_home: string = "http://192.168.35.47:3000/auth"
+  const mobile_ssafy: string = "http://70.12.247.24:3000/auth"
+
+  const loginWithKaKao = () => {
+    window.Kakao.Auth.authorize({
+      redirectUri: web,
+      scope: "profile_nickname",
+    })
+  }
 
   return (
     <div className="onboarding__container-center">
@@ -24,10 +36,12 @@ const KaKaoLogin = () => {
         </div>
 
         {/* 로그인 버튼 */}
-        <Link to="/main" className="kakaoLoginButton">
-          카카오 간편 로그인
-          {/*<div className="mb">로고</div>*/}
-        </Link>
+        <button
+          className="kakaoLoginButton"
+          onClick={loginWithKaKao}
+        >
+          <KaKao className="kakaoLoginImage "/>
+        </button>
 
       </div>
     </div>

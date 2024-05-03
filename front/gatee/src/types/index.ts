@@ -1,4 +1,5 @@
 export interface Member {
+    name: string;
     nickname: string;
     email: string;
     role: string;
@@ -46,4 +47,11 @@ export interface PhotoOutletInfoContext {
       photoId:number,
       type:string,
     )=>void;
+}
+
+// 카카오 타입 지정
+declare global {
+    interface Window {
+        Kakao: any;
+    }
 }

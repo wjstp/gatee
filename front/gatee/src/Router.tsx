@@ -17,7 +17,7 @@ import ScheduleCreateSchedule from "@pages/schedule/Create";
 import ScheduleCreateReview from "@pages/schedule/CreateReview";
 import ScheduleDetail from "@pages/schedule/ScheduleDetail";
 import ChatIndex from "@pages/chat";  // 채팅
-import CharacterIndex from "@pages/character";  // 백과사전
+import CharacterIndex from "@pages/character";
 import CharacterStart from "@pages/character/AnswerList";
 import CharacterQuestion from "@pages/character/Question";  // 백과사전
 import SignupIndex from "@pages/signup";
@@ -31,8 +31,8 @@ import SignupMemberSetBirth from "@pages/signup/MemberSetBirth";
 import SignupMemberSetCheck from "@pages/signup/MemberSetCheck";
 import SignupMemberSetFinish from "@pages/signup/MemberSetFinish";
 import SignupMemberSetPermission from "@pages/signup/MemberSetPermission";
-import SignupMemberSetRole from "@pages/signup/MemberSetRole";  // 회원가입
-
+import SignupMemberSetRole from "@pages/signup/MemberSetRole";
+import SignupAuth from "@pages/signup/Auth";  // 회원가입
 import PhotoAlbum from "@pages/photo/AlbumGroup";
 import PhotoAllMonthGroupDetail from "@pages/photo/AllMonthGroupDetail";
 import PhotoAllYearGroupDetail from "@pages/photo/AllYearGroupDetail";
@@ -101,6 +101,7 @@ const Router = () => {
         <Route path="/kakao" element={<KaKaoLogin/>}/>
 
         {/*회원가입 페이지*/}
+        <Route path="/auth" element={<SignupAuth/>}/>
         <Route path="/signup" element={<SignupIndex/>}/>
         <Route path="/signup/family-set" element={<SignupFamilySet/>}/>
         <Route path="/signup/family-set/check" element={<SignupFamilySetCheck/>}/>
