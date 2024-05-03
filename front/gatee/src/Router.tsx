@@ -59,9 +59,9 @@ const Router = () => {
         <Route path="/chat" element={<ChatIndex/>}/>
 
         {/*알림 페이지*/}
-        <Route path="/notification" element={<NotificationIndex/>}>
-          <Route path="setting" element={<SettingsToast/>}/>
-        </Route>
+        <Route path="/notification" element={<NotificationIndex/>}/>
+
+
 
         {/*프로필 페이지*/}
         <Route path="/profile/:name" element={<ProfileIndex/>}/>

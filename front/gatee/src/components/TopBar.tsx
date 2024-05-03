@@ -11,6 +11,7 @@ const TopBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [currentPage, setCurrentPage] = useState('');
+  const [isSettingActive, setSettingActive] = useState(false);
 
   useEffect(() => {
     setCurrentPage(location.pathname)
@@ -28,14 +29,12 @@ const TopBar = () => {
       </div>
 
       <div className="top-bar__right">
-        {/*알림 설정 - 알림 페이지 */}
-        {['/notification','/notification/setting'].includes(currentPage) && (
-          <NavLink to="/notification/setting" className={({isActive}) =>
-            isActive ? 'top-bar__right--active' : ''
-          }>
-          <PiGearSix size={24}/>
-          </NavLink>
-        )}
+        {/*/!*알림 설정 - 알림 페이지 *!/*/}
+        {/*{currentPage==="/notification" && (*/}
+        {/*  <button className={isSettingActive ? 'top-bar__right--active' : ''}>*/}
+        {/*    <PiGearSix size={24}/>*/}
+        {/*  </button>*/}
+        {/*)}*/}
 
         {/*채팅 앨범 - 채팅 페이지 */}
         {currentPage === '/chat' && (

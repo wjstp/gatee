@@ -1,5 +1,12 @@
-import React, {useState} from 'react';
-import {Outlet} from "react-router-dom";
+import React, {useEffect, useState} from 'react';
+import {Outlet, useLocation, useNavigate} from "react-router-dom";
+import Box from '@mui/material/Box';
+import SwipeableDrawer from '@mui/material/SwipeableDrawer';
+import Button from '@mui/material/Button';
+import SettingsToast from "@pages/notification/components/SettingsToast";
+import {useModalStore} from "@store/useModalStore";
+
+type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
 interface NotificationItemProps {
   type: string,
@@ -7,6 +14,10 @@ interface NotificationItemProps {
 }
 
 const NotificationIndex = () => {
+  // 모달 상태 적용
+  const {setShowModal} = useModalStore()
+
+  // 알림 데이터 리스트
   const notificationDataList = [
     {type: "앨범", content: "내용", date: "2024-05"},
     {type: "한마디", content: "내용", date: "2024-05"},
@@ -14,14 +25,73 @@ const NotificationIndex = () => {
     {type: "깜짝 퀴즈", content: "내용", date: "2024-05"},
     {type: "기념일", content: "내용", date: "2024-05"},
   ]
-  //  토스트 팝업 상태관리
+
+  // 열린지 닫힌지 상태 확인 가능
+  const [state, setState] = React.useState({
+    bottom: false,
+  });
+
+  // MUI 관련 코드 -> 슬라이드 다운 해서 내리기 기능 가능 
+  const toggleDrawer =
+    (anchor: Anchor, open: boolean) =>
+      (event: React.KeyboardEvent | React.MouseEvent) => {
+        if (open === true){
+          setShowModal(true)
+        } else {
+          setShowModal(false)
+        }
+        if (
+          event &&
+          event.type === 'keydown' &&
+          ((event as React.KeyboardEvent).key === 'Tab' ||
+            (event as React.KeyboardEvent).key === 'Shift')
+        ) {
+          return;
+        }
+        setState({...state, [anchor]: open});
+      };
+
+  
+  const list = (anchor: Anchor) => (
+    <Box
+      sx={{width: 'auto'}}
+      role="presentation"
+      onKeyDown={toggleDrawer(anchor, false)}
+      style={{backgroundColor:"#7B7B7B"}}
+    >
+      {/* 토스트 팝업 되는 컴포넌트 넣기 */}
+      <SettingsToast/>
+    </Box>
+  );
+
+
   return (
     <div className="notification-tab--container">
+      {/* 상단 */}
+      <div className="notification--top--container">
+        <h2>알림 목록</h2>
+        {/* 토스트 팝업 버튼 */}
+        <React.Fragment key={"bottom"}>
+          <Button onClick={toggleDrawer("bottom", true)}>
+            알림 설정
+          </Button>
+          <SwipeableDrawer
+            anchor={"bottom"}
+            open={state["bottom"]}
+            onClose={toggleDrawer("bottom", false)}
+            onOpen={toggleDrawer("bottom", true)}>
+            {list("bottom")}
+          </SwipeableDrawer>
+        </React.Fragment>
 
+      </div>
+
+      {/* 알림 개별 아이템 */}
       {notificationDataList.map((item, index) => {
         return <NotificationItem key={index} notificationData={item}/>
       })}
-      <Outlet/>
+
+
     </div>
   );
 };
