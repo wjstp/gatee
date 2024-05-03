@@ -13,12 +13,14 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig)
 
-const messaging = firebase.messaging()
+const fcmMessaging = firebase.messaging()
 
 export function requestPermission() {
   void Notification.requestPermission().then((permission) => {
+    console.log(permission)
     if (permission === 'granted') {
-      messaging
+      console.log("알림 권한 허용됨")
+      fcmMessaging
         .getToken({ vapidKey: process.env.REACT_APP_FCM_VAPID_KEY })
         .then((token: string) => {
           console.log(`푸시 토큰 발급 완료 : ${token}`)
@@ -31,3 +33,9 @@ export function requestPermission() {
     }
   })
 }
+
+
+// fcmMessaging.onMessage((payload) => {
+//   console.log(payload?.notification?.title)
+//   console.log(payload?.notification?.body)
+// })
