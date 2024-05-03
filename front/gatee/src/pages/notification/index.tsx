@@ -30,10 +30,13 @@ const NotificationIndex = () => {
     bottom: false,
   });
 
+
+  
   // MUI 관련 코드 -> 슬라이드 다운 해서 내리기 기능 가능 
   const toggleDrawer =
     (anchor: Anchor, open: boolean) =>
       (event: React.KeyboardEvent | React.MouseEvent) => {
+        console.log(anchor)
         if (open === true){
           setShowModal(true)
         } else {
@@ -50,7 +53,13 @@ const NotificationIndex = () => {
         setState({...state, [anchor]: open});
       };
 
-  
+  // 설정 탭에서 완료 버튼 누를 때 팝업 내리기
+  const handleFinishTab = (event:React.MouseEvent) => {
+    console.log("부모")
+    toggleDrawer('bottom', false)(event)
+  }
+
+  // 토스트 객체
   const list = (anchor: Anchor) => (
     <Box
       sx={{width: 'auto'}}
@@ -59,16 +68,19 @@ const NotificationIndex = () => {
       style={{backgroundColor:"#7B7B7B"}}
     >
       {/* 토스트 팝업 되는 컴포넌트 넣기 */}
-      <SettingsToast/>
+      <SettingsToast handleFinishTab={handleFinishTab}/>
     </Box>
   );
 
+  
 
   return (
     <div className="notification-tab--container">
+
       {/* 상단 */}
       <div className="notification--top--container">
         <h2>알림 목록</h2>
+
         {/* 토스트 팝업 버튼 */}
         <React.Fragment key={"bottom"}>
           <Button onClick={toggleDrawer("bottom", true)}>
@@ -99,9 +111,13 @@ const NotificationItem = ({notificationData}: any) => {
 
   return (
     <div className="notification-item--container">
+
+      {/* 프로필 아이콘 이미지 */}
       <img className="notification-item-profile--img"
            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHBF8PhK0rOnzOdpAqEH8EI2zcbFeIooAWoRp3WWGP-Q&s"
            alt="다니에루"/>
+
+      {/* 내용 */}
       <div className="notification-item--content">
         <div className="notification-item--top--container">
           <p>앨범</p>

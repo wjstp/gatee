@@ -2,7 +2,11 @@ import React, {useEffect, useState} from 'react';
 import CustomSwitch from "@components/CustomSwitch";
 import {useNavigate} from "react-router-dom";
 
-const SettingsToast = () => {
+interface HandleFinishTab {
+  handleFinishTab:(event: React.MouseEvent<HTMLButtonElement>)=>void
+}
+
+const SettingsToast = ({handleFinishTab}:HandleFinishTab) => {
   const navigate = useNavigate();
   const [albumAlarmChecked, setAlbumAlarmChecked] = useState(false);
   const [naggingAlarmChecked, setNaggingAlarmChecked] = useState(false);
@@ -27,17 +31,20 @@ const SettingsToast = () => {
     setAnniversaryAlarmChecked(event.target.checked);
   };
 
-  const handleFinishTab = (event: React.MouseEvent<HTMLDivElement>) => {
+  // 완료 버튼 누르면 끝내기
+  const handleFinish = (event: React.MouseEvent<HTMLButtonElement>) => {
     console.log("설정 저장")
+    handleFinishTab(event)
   }
 
   return (
 
     <div
       className="notification-setting--container">
+      {/* 상단 */}
       <div className="setting-top--container">
         <h2 className="setting--title">푸시 알림 설정</h2>
-        {/*<div onClick={handleFinishTab} className="setting-finish-btn">완료</div>*/}
+        <button onClick={handleFinish} className="setting-finish-btn">완료</button>
       </div>
       {/* 설정 컨테이너 */}
       <div className="toggle-set-list--container">

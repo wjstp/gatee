@@ -42,7 +42,7 @@ const TopBar = () => {
 
         {/*알림*/}
         <NavLink to="/notification" className={({isActive}) =>
-          isActive ? 'rightDiv--active' : ''
+          isActive ? 'top-bar__right--active' : ''
         }>
           <PiBell size={24}/>
           {/*<NotificationBadge />*/}
