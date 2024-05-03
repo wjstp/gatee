@@ -2,8 +2,6 @@ services:
   gatee-api-blue-01:
     image: ${CI_REGISTRY}/gatee-api:blue
     container_name: gatee-api-blue-01
-    ports:
-      - "8080:8080"
     environment:
       - ENV=prod
     env_file:
@@ -18,8 +16,6 @@ services:
   gatee-api-blue-02:
     image: ${CI_REGISTRY}/gatee-api:blue
     container_name: gatee-api-blue-02
-    ports:
-      - "8081:8080"
     environment:
       - ENV=prod
     env_file:
@@ -34,8 +30,6 @@ services:
   gatee-nodejs-blue:
     container_name: gatee-nodejs-blue
     image: ${CI_REGISTRY}/gatee-nodejs:blue
-    ports:
-      - "3000:3000"
     networks:
       - gatee-net
 networks:
