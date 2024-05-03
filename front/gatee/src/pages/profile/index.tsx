@@ -1,78 +1,56 @@
 import React, {useRef, useState} from 'react';
 import { IoIosCamera } from "react-icons/io";
-import { useNavigate } from "react-router-dom";
-import { MemberInfoSample } from "@constants/index";
+import {useNavigate, useParams} from "react-router-dom";
+import { FamilyMemberInfoSample } from "@constants/index";
+import { FaPhone } from "react-icons/fa";
+import { ReactComponent as PencilIcon } from "@assets/images/icons/ic_pencil.svg";
 
 function ProfileIndex() {
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { name } = useParams<{ name: string }>();
 
   const [selectedProfileImage, setSelectedProfileImage] = useState<string | ArrayBuffer | null>(null);
   const [selectedMood, setSelectedMood] = useState<string>("");
   const [createdCharacter, setCreateCharacter] = useState<string>("");
 
-  // 이미지 선택 처리
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const file = e.target.files ? e.target.files[0] : null;
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setSelectedProfileImage(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
+  const goToModify = () => {
+    navigate("/profile/modify")
   }
 
-  // 카메라 버튼 클릭 처리
-  const handleCameraButtonClick = (): void => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
+  // 멤버 확인
+  const familyMember = FamilyMemberInfoSample.find(member => member.nickname === name);
+
+  // 날짜 형식 변환 함수
+  const changeDate = (originalDate: string): string => {
+    const date = new Date(originalDate);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+
+    return `${year}.${month}.${day}`;
   }
 
   return (
     <div className="profile-index">
       <div className="profile-index__profile">
         <div className="profile__img-box">
-          {selectedProfileImage ? (
-            <img
-              className="img-box__img"
-              src={selectedProfileImage.toString()}
-              alt="profile-image"
-            />
-          ) : (
-            <img
-              className="img-box__img"
-              src={MemberInfoSample.image}
-              alt="profile-image"
-            />
-          )}
-          <input
-            type="text"
-            accept="image/*"
-            style={{ display: 'none' }}
-            ref={fileInputRef}
-            onChange={handleImageChange}
+          <img
+            className="img-box__img"
+            src={familyMember?.image}
+            alt="profile-image"
           />
-          <button
-            className="img-box__btn"
-            onClick={handleCameraButtonClick}
-          >
-            <IoIosCamera
-              className="btn__icon"
-              size={25}
-            />
-          </button>
         </div>
         <div className="profile__nickname">
-          <span className="profile__nickname--text">
-            {MemberInfoSample.nickname}
+          <span className="profile__nickname__part--01">
+            {familyMember?.nickname}
           </span>
-        </div>
-        <div className="profile__name">
-          <span className="profile__name--text">
-            {MemberInfoSample.name}
-          </span>
+          <button
+            className="profile__nickname__part--02"
+            onClick={goToModify}
+          >
+            <PencilIcon className="icon" />
+          </button>
         </div>
         <div className="profile__mood-box">
           <span className="mood-box__title">
@@ -81,46 +59,87 @@ function ProfileIndex() {
           <button
             className="mood-box__btn"
           >
-            <img
-              src=""
-              alt=""
-            />
+            <span className="mood-box__btn--text">
+              {familyMember?.mood ? (
+                <>
+                  {familyMember.mood === "HAPPY" && <div>🥰</div>}
+                  {familyMember.mood === "SAD" && <div>😥</div>}
+                  {familyMember.mood === "ALONE" && <div>😑</div>}
+                  {familyMember.mood === "ANGRY" && <div>🤬</div>}
+                  {familyMember.mood === "FEAR" && <div>😱</div>}
+                  {familyMember.mood === "SLEEPY" && <div>😪</div>}
+                </>
+              ) : (
+                <div>😶</div>
+              )}
+            </span>
           </button>
         </div>
-        <div className="profile__role">
-          <div className="role__title">
-            <span className="role__title--text">
-              역할
-            </span>
+        <div className="profile__info-box">
+          <div className="info-box__name">
+            <div className="name__title">
+              <span className="name__title--text">
+                이름
+              </span>
+            </div>
+            <div className="name__body">
+              <span className="name__body--text">
+                {familyMember?.name}
+              </span>
+            </div>
           </div>
-          <div className="role__body">
-            <span className="role__body--text">
-              {MemberInfoSample.role}
-            </span>
+          <div className="info-box__role">
+            <div className="role__title">
+              <span className="role__title--text">
+                역할
+              </span>
+            </div>
+            <div className="role__body">
+              <span className="role__body--text">
+                {familyMember?.role}
+              </span>
+            </div>
           </div>
-        </div>
-        <div className="profile__birth">
-          <div className="birth__title">
-            <span className="birth__title--text">
-              생년월일
-            </span>
+          <div className="info-box__birth">
+            <div className="birth__title">
+              <span className="birth__title--text">
+                생년월일
+              </span>
+            </div>
+            <div className="birth__body">
+              <span className="birth__body__part--01">
+                {changeDate(familyMember?.birth as string)}
+              </span>
+              <span className="birth__body__part--02">
+                {familyMember?.birthType === "SOLAR" ? ("(양력)") : ("(음력)")}
+              </span>
+            </div>
           </div>
-          <div className="birth__body">
-            <span className="birth__body--text">
-              {MemberInfoSample.birth}
-            </span>
-          </div>
-        </div>
-        <div className="profile__phone">
-          <div className="phone__title">
-            <span className="phone__title--text">
-              전화번호
-            </span>
-          </div>
-          <div className="phone__body">
-            <span className="phone__body--text">
-              010-8806-8489
-            </span>
+          <div className="info-box__phone">
+            <div className="phone__title">
+              <span className="phone__title--text">
+                전화번호
+              </span>
+            </div>
+            <div className="phone__body">
+              {familyMember?.phone ? (
+                <>
+                  <span className="phone__body__part--01">
+                    {familyMember?.phone}
+                  </span>
+                    <a
+                      className="phone__body__part--02"
+                      href={`tel:${familyMember?.phone}`}
+                    >
+                      <FaPhone className="icon" />
+                    </a>
+                </>
+              ) : (
+                <span className="phone__body__part--03">
+                  입력해주세요
+                </span>
+              )}
+            </div>
           </div>
         </div>
       </div>

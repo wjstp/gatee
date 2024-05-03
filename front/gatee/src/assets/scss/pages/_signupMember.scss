@@ -608,8 +608,8 @@
     .img-box {
 
       &__img-selected {
-        height: 100%;
-        width: 100%;
+        height: 200px;
+        width: 200px;
         border-radius: 100%;
         object-fit: cover;
       }
@@ -620,8 +620,8 @@
       &__img-female-kid,
       &__img-female-young,
       &__img-female-old {
-        height: 100%;
-        width: 100%;
+        height: 200px;
+        width: 200px;
         border-radius: 100%;
 
         g {

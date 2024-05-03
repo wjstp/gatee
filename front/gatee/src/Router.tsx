@@ -10,7 +10,8 @@ import MainIndex from "@pages/main";  // 메인
 import MissionIndex from "@pages/mission";  // 미션
 import NotificationIndex from "@pages/notification";  // 알림
 import OnboardingIndex from "@pages/onboarding/index";  // 온보딩
-import KaKaoLogin from "@pages/onboarding/components/KaKaoLogin";
+import KaKaoLogin from "@pages/onboarding/components/KaKaoLogin";  // 카카오
+import ProfileModify from "@pages/profile/modify";
 import ProfileIndex from "@pages/profile";  // 프로필
 import ScheduleIndex from "@pages/schedule";  // 일정
 import ScheduleCreateSchedule from "@pages/schedule/Create";
@@ -41,7 +42,7 @@ import AllMonth from "@pages/photo/AllMonth";
 import AllYear from "@pages/photo/AllYear";
 import PhotoIndex from "@pages/photo";
 import PhotoDetail from "@pages/photo/PhotoDetail";
-import PhotoAlbumGroupDetail from "@pages/photo/AlbumGroupDetail"; // 앨범
+import PhotoAlbumGroupDetail from "@pages/photo/AlbumGroupDetail";  // 앨범
 
 
 const Router = () => {
@@ -62,6 +63,7 @@ const Router = () => {
 
         {/*프로필 페이지*/}
         <Route path="/profile/:name" element={<ProfileIndex/>}/>
+        <Route path="/profile/modify" element={<ProfileModify/>}/>
 
         {/*메인 페이지*/}
         <Route path="/main" element={<MainIndex/>}/>
