@@ -1,5 +1,5 @@
 import React from "react";
-import { ChatItem, ChatFile, SenderType } from "../../../types";
+import { ChatItem, ChatFile, SenderType } from "@type/index";
 import { MemberInfoSample } from "@constants/index";
 import getUserInfoByEmail from "@helpers/getUserInfoByEmail";
 import convertToAMPMTime from "@helpers/convertToAMPMTime";

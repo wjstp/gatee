@@ -2,18 +2,20 @@ import { Member, Question, Character, Schedule, Chat } from "src/types";
 
 // 멤버 임시 데이터
 export const MemberInfoSample: Member = {
-  nickname: "이윤정",
+  name: "이윤정",
+  nickname: "안유진",
   email: "zyo0720@kakao.com",
   role: "딸",
   birth: "2000-07-20",
   birthType: "SOLAR",
-  image: "",
+  image: "https://cdn.citytimes.co.kr/news/photo/202310/mn_19685_20231014093033_1.jpg",
   mood: null
 }
 
 // 가족 구성원 임시 데이터
 export const FamilyMemberInfoSample: Member[] = [
   {
+    name: "이윤정",
     nickname: "이윤정",
     email: "zyo0720@kakao.com",
     role: "딸",
@@ -23,6 +25,7 @@ export const FamilyMemberInfoSample: Member[] = [
     mood: null
   },
   {
+    name: "이윤정",
     nickname: "윤예빈",
     email: "yebin4684@gmail.com",
     role: "엄마",
@@ -32,6 +35,7 @@ export const FamilyMemberInfoSample: Member[] = [
     mood: "HAPPY"
   },
   {
+    name: "이윤정",
     nickname: "전세진",
     email: "wjstp14@gmail.com",
     role: "아빠",
@@ -41,6 +45,7 @@ export const FamilyMemberInfoSample: Member[] = [
     mood: "SAD"
   },
   {
+    name: "이윤정",
     nickname: "김태현",
     email: "asthyeon@gmail.com",
     role: "할머니",
@@ -50,6 +55,7 @@ export const FamilyMemberInfoSample: Member[] = [
     mood: "HAPPY"
   },
   {
+    name: "이윤정",
     nickname: "배정식",
     email: "megar0829@gmail.com",
     role: "아들",
@@ -59,6 +65,7 @@ export const FamilyMemberInfoSample: Member[] = [
     mood: "ALONE"
   },
   {
+    name: "이윤정",
     nickname: "이형우",
     email: "dlguddn3024@gmail.com",
     role: "할아버지",

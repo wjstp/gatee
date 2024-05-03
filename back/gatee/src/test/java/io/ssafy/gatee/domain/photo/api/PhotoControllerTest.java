@@ -5,6 +5,12 @@ import io.ssafy.gatee.config.security.CustomWithMockUser;
 import io.ssafy.gatee.domain.photo.application.PhotoService;
 import io.ssafy.gatee.domain.photo.dto.request.PhotoListReq;
 import io.ssafy.gatee.domain.photo.dto.request.PhotoSaveReq;
+import io.ssafy.gatee.global.jwt.application.JwtService;
+import io.ssafy.gatee.global.security.application.AuthService;
+import io.ssafy.gatee.global.security.config.SecurityConfig;
+import io.ssafy.gatee.global.security.handler.CustomAccessDeniedHandler;
+import io.ssafy.gatee.global.security.handler.CustomOAuth2FailureHandler;
+import io.ssafy.gatee.global.security.handler.CustomOAuth2SuccessHandler;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +26,12 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import java.util.UUID;
 
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ActiveProfiles({"common, prod"})
 @AutoConfigureRestDocs
-//@WebMvcTest({PhotoController.class, TestSecurityConfig.class})
-@WebMvcTest(PhotoController.class)
+@WebMvcTest({PhotoController.class, SecurityConfig.class})
 @MockBean(JpaMetamodelMappingContext.class)
 class PhotoControllerTest {
 
@@ -40,6 +44,20 @@ class PhotoControllerTest {
     @MockBean
     private PhotoService photoService;
 
+    @MockBean
+    private JwtService jwtService;
+
+    @MockBean
+    private AuthService authService;
+
+    @MockBean
+    private CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
+
+    @MockBean
+    private CustomOAuth2FailureHandler customOAuth2FailureHandler;
+
+    @MockBean
+    private CustomAccessDeniedHandler customAccessDeniedHandler;
 
     @Test
     @CustomWithMockUser
@@ -55,7 +73,6 @@ class PhotoControllerTest {
         String photoListReqJson = objectMapper.writeValueAsString(photoListReq);
 
         mockMvc.perform(get("/api/photos")
-                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(photoListReqJson))
                 .andDo(MockMvcResultHandlers.print())
@@ -70,7 +87,6 @@ class PhotoControllerTest {
         long photoId = 1L;
 
         mockMvc.perform(get("/api/photos/" + photoId)
-                        .with(csrf())
                         .param("memberId", String.valueOf(UUID.randomUUID())))
                 .andDo(MockMvcResultHandlers.print())
                 .andDo(MockMvcRestDocumentation.document("사진 상세 조회"))
@@ -89,7 +105,6 @@ class PhotoControllerTest {
         String photoSaveReqJson = objectMapper.writeValueAsString(photoSaveReq);
 
         mockMvc.perform(post("/api/photos/save")
-                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(photoSaveReqJson))
                 .andDo(MockMvcResultHandlers.print())
@@ -104,7 +119,6 @@ class PhotoControllerTest {
         long photoId = 1L;
 
         mockMvc.perform(delete("/api/photos/" + photoId)
-                        .with(csrf())
                         .param("memberFamilyId", "1"))
                 .andDo(MockMvcResultHandlers.print())
                 .andDo(MockMvcRestDocumentation.document("사진 삭제"))
@@ -119,7 +133,6 @@ class PhotoControllerTest {
         long photoId = 1L;
 
         mockMvc.perform(post("/api/photos/" + photoId + "/reaction")
-                        .with(csrf())
                         .param("memberId", String.valueOf(memberId)))
                 .andDo(MockMvcResultHandlers.print())
                 .andDo(MockMvcRestDocumentation.document("사진 상호작용 생성"))
@@ -134,7 +147,6 @@ class PhotoControllerTest {
         long photoId = 1L;
 
         mockMvc.perform(delete("/api/photos/" + photoId + "/reaction")
-                        .with(csrf())
                         .param("memberId", String.valueOf(memberId)))
                 .andDo(MockMvcResultHandlers.print())
                 .andDo(MockMvcRestDocumentation.document("사진 상호작용 삭제"))

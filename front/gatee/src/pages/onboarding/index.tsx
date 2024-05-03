@@ -1,14 +1,39 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import FirstExam from "@pages/onboarding/components/FirstExam";
 import SecondDict from "@pages/onboarding/components/SecondDict";
 import ThirdAll from "@pages/onboarding/components/ThirdAll";
 import Slider from "react-slick";
 import KaKaoLogin from "@pages/onboarding/components/KaKaoLogin";
+import * as events from "node:events";
+import { isBoolean } from "@craco/craco/dist/lib/utils";
+import { useNavigate } from "react-router-dom";
+import { useMemberStore } from "@store/useMemberStore";
+
 // 공식 문서 : https://react-slick.neostack.com/docs/api
 const OnboardingIndex = () => {
   // const [oldSlide, setOldSlide] = useState(0);
   const [activeSlide, setActiveSlide] = useState(0);
   // const [activeSlide2, setActiveSlide2] = useState(0);
+  const navigate = useNavigate();
+
+  const { accessToken } = useMemberStore();
+
+  useEffect(() => {
+    if (accessToken) {
+      navigate("/main");
+    }
+  }, []);
+
+  // 기기 파악
+  useEffect(() => {
+    const isDeviceIOS = /iPad|iPhone|iPod/.test(window.navigator.userAgent);
+
+    if (isDeviceIOS) {
+      alert("아이폰 쓰네 ㅋ")
+    } else {
+      alert("갤럭시 최고")
+    }
+  }, []);
 
   // 슬라이더 세팅
   var settings

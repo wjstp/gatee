@@ -1,1 +1,153 @@
 @use '../abstracts/index' as *;
+@use '../components/index' as *;
+
+.notification-tab--container {
+  @include mt-(0.5);
+  position: relative;
+  height: 100%;
+
+  .notification--top--container {
+    @include flex-row;
+    @include mx-(1);
+    @include ml-(2);
+    justify-content: space-between;
+    align-items: center;
+
+    button {
+      font-size: 1rem;
+      color: $orange500;
+    }
+  }
+
+  .notification-item--container {
+    @include flex-row;
+    @include p-(1.5);
+    @include py-(1.2);
+
+    height: 5.5rem;
+    align-items: center;
+    gap: 1rem;
+
+    .unread {
+      background-color: $orange100;
+    }
+
+
+    .notification-item-profile--img {
+      width: 3rem;
+      height: 3rem;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    .notification-item--content {
+      @include flex-col;
+
+      flex-grow: 1;
+      height: 100%;
+      //background-color: red;
+      justify-content: space-between;
+
+      .notification-item--top--container {
+        @include flex-row;
+        justify-content: space-between;
+      }
+    }
+  }
+
+
+}
+
+.notification-setting--container {
+  @include p-(2);
+  @include pb-(3);
+
+  //position: absolute;
+  width: 100%;
+  bottom: 0;
+  background-color: #fff;
+  border-top-left-radius: 2rem;
+  border-top-right-radius: 2rem;
+
+
+  .setting-top--container {
+
+    @include mb-(2);
+    @include flex-center;
+
+    position: relative;
+
+    .setting--title {
+
+      text-align: center;
+    }
+
+    .setting-finish-btn {
+      position: absolute;
+      right: 0;
+      font-size: 1.2rem;
+      //color: $orange500;
+    }
+  }
+
+
+  .toggle-set-list--container {
+    @include flex-col;
+
+    gap: 1rem;
+
+    .toggle-set-one-line--container {
+      @include flex-row;
+
+      gap: 2.5rem;
+
+      .toggle-item--container {
+        @include flex-row;
+        align-items: center;
+
+        font-size: 1.2rem;
+        justify-content: space-between;
+        flex: 1;
+        gap: 1rem;
+      }
+
+    }
+  }
+
+
+}
+
+
+.move-up--animation {
+  animation-name: fadeInUP;
+  animation-duration: 0.5s;
+  animation-fill-mode: both;
+}
+
+@keyframes fadeInUP {
+  from {
+    opacity: 1;
+    transform: translateY(-100dvh);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.move-down--animation {
+  animation-name: fadeOutDown;
+  animation-duration: 0.5s;
+  animation-fill-mode: both;
+}
+
+@keyframes fadeOutDown {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-100dvh);
+  }
+}

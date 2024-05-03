@@ -7,6 +7,12 @@ import io.ssafy.gatee.domain.schedule.dto.request.ScheduleEditReq;
 import io.ssafy.gatee.domain.schedule.dto.request.ScheduleParticipateReq;
 import io.ssafy.gatee.domain.schedule.dto.request.ScheduleSaveRecordReq;
 import io.ssafy.gatee.domain.schedule.dto.request.ScheduleSaveReq;
+import io.ssafy.gatee.global.jwt.application.JwtService;
+import io.ssafy.gatee.global.security.application.AuthService;
+import io.ssafy.gatee.global.security.config.SecurityConfig;
+import io.ssafy.gatee.global.security.handler.CustomAccessDeniedHandler;
+import io.ssafy.gatee.global.security.handler.CustomOAuth2FailureHandler;
+import io.ssafy.gatee.global.security.handler.CustomOAuth2SuccessHandler;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +29,12 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import java.util.List;
 import java.util.UUID;
 
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ActiveProfiles({"common, prod"})
 @AutoConfigureRestDocs
-@WebMvcTest(ScheduleController.class)
-//@WebMvcTest({ScheduleController.class, TestSecurityCoanfig.class})
+@WebMvcTest({ScheduleController.class, SecurityConfig.class})
 @MockBean(JpaMetamodelMappingContext.class)
 class ScheduleControllerTest {
 
@@ -43,13 +47,27 @@ class ScheduleControllerTest {
     @MockBean
     private ScheduleService scheduleService;
 
+    @MockBean
+    private JwtService jwtService;
+
+    @MockBean
+    private AuthService authService;
+
+    @MockBean
+    private CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
+
+    @MockBean
+    private CustomOAuth2FailureHandler customOAuth2FailureHandler;
+
+    @MockBean
+    private CustomAccessDeniedHandler customAccessDeniedHandler;
+
 
     @Test
     @CustomWithMockUser
     @DisplayName("가족 전체 일정 조회 테스트")
     void readSchedule() throws Exception {
         mockMvc.perform(get("/api/schedule")
-                        .with(csrf())
                         .param("familyId", "1"))
                 .andDo(MockMvcResultHandlers.print())
                 .andDo(MockMvcRestDocumentation.document("가족 전체 일정 조회"))
@@ -61,7 +79,6 @@ class ScheduleControllerTest {
     @DisplayName("일정 상세 조회 테스트")
     void readScheduleDetail() throws Exception {
         mockMvc.perform(get("/api/schedule/1")
-                        .with(csrf())
                         .param("familyId", "1"))
                 .andDo(MockMvcResultHandlers.print())
                 .andDo(MockMvcRestDocumentation.document("일정 상세 조회"))
@@ -87,7 +104,6 @@ class ScheduleControllerTest {
         String scheduleSaveReqJson = objectMapper.writeValueAsString(scheduleSaveReq);
 
         mockMvc.perform(post("/api/schedule")
-                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(scheduleSaveReqJson))
                 .andDo(MockMvcResultHandlers.print())
@@ -114,7 +130,6 @@ class ScheduleControllerTest {
         String scheduleSaveReqJson = objectMapper.writeValueAsString(scheduleEditReq);
 
         mockMvc.perform(patch("/api/schedule/1")
-                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(scheduleSaveReqJson))
                 .andDo(MockMvcResultHandlers.print())
@@ -135,7 +150,6 @@ class ScheduleControllerTest {
         String scheduleParticipateReqJson = objectMapper.writeValueAsString(scheduleParticipateReq);
 
         mockMvc.perform(post("/api/schedule/1")
-                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(scheduleParticipateReqJson))
                 .andDo(MockMvcResultHandlers.print())
@@ -161,7 +175,6 @@ class ScheduleControllerTest {
         String scheduleSaveRecordReqJson = objectMapper.writeValueAsString(scheduleSaveRecordReq);
 
         mockMvc.perform(post("/api/schedule/1/record")
-                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(scheduleSaveRecordReqJson))
                 .andDo(MockMvcResultHandlers.print())

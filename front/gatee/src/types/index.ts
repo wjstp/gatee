@@ -1,6 +1,5 @@
-import memberSetRole from "@pages/signup/MemberSetRole";
-
 export interface Member {
+  name: string;
   nickname: string;
   email: string;
   role: string;
@@ -95,4 +94,11 @@ export interface ChatFile {
 export enum SenderType {
   YOURS = "yours",
   MY = "my"
+}
+
+// 카카오 타입 지정
+declare global {
+    interface Window {
+        Kakao: any;
+    }
 }

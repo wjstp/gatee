@@ -2,8 +2,6 @@ services:
   gatee-api-green-01:
     image: ${CI_REGISTRY}/gatee-api:green
     container_name: gatee-api-green-01
-    ports:
-      - "8082:8080"
     environment:
       - ENV=prod
     env_file:
@@ -18,8 +16,6 @@ services:
   gatee-api-green-02:
     image: ${CI_REGISTRY}/gatee-api:green
     container_name: gatee-api-green-02
-    ports:
-      - "8083:8080"
     environment:
       - ENV=prod
     env_file:
@@ -34,8 +30,6 @@ services:
   gatee-nodejs-green:
     container_name: gatee-nodejs-green
     image: ${CI_REGISTRY}/gatee-nodejs:green
-    ports:
-      - "3001:3000"
     networks:
       - gatee-net
 
