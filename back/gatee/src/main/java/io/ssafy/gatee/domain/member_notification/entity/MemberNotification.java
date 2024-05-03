@@ -2,7 +2,7 @@ package io.ssafy.gatee.domain.member_notification.entity;
 
 import io.ssafy.gatee.domain.base.BaseEntity;
 import io.ssafy.gatee.domain.member.entity.Member;
-import io.ssafy.gatee.domain.notification.entity.Notification;
+import io.ssafy.gatee.domain.push_notification.entity.PushNotification;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,5 +32,5 @@ public class MemberNotification extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "notification_id")
-    private Notification notification;
+    private PushNotification notification;
 }

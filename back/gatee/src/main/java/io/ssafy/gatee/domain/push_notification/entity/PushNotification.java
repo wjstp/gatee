@@ -1,4 +1,4 @@
-package io.ssafy.gatee.domain.notification.entity;
+package io.ssafy.gatee.domain.push_notification.entity;
 
 import io.ssafy.gatee.domain.base.BaseEntity;
 import jakarta.persistence.*;
@@ -14,7 +14,7 @@ import org.hibernate.annotations.SQLRestriction;
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLRestriction("status=TRUE")
-public class Notification extends BaseEntity {
+public class PushNotification extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
