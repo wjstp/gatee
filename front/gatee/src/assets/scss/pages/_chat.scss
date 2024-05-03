@@ -1,59 +1,58 @@
 @use '../abstracts' as *;
 @use '../components' as *;
 
+$chat-input-height: 3rem;
+
 .chat {
-  @include flex-col;
-
-  justify-content: flex-end;
+  display: flex;
+  flex-direction: column-reverse;
   height: 100%;
-
-  &__main {
-    @include flex-col;
-
-    justify-content: flex-end;
-    height: 100%;
-    overflow-y: auto;
-  }
-
-  &__input {
-    background-color: #ed6363;
-    min-height: 3.5rem;
-  }
+  overflow-y: auto;
+  padding-bottom: calc($chat-input-height + 0.5rem);
+  padding-left: 2%;
+  padding-right: 2%;
 
   &__date {
     @include flex-center;
+    @include my-(0.5);
 
-    background-color: $orange400;
-    width: 14rem;
-    height: 2rem;
-    border-radius: 20px;
-    color: white;
+    width: 100%;
+
+    &__main {
+      @include flex_center;
+      @include p-(0.4);
+
+      background-color: $orange400;
+      color: white;
+      width: 11rem;
+      height: 100%;
+      border-radius: 20px;
+      font-size: $font-size-small;
+    }
   }
 
   &__yours-chat {
     @include flex-row;
 
+    margin: 0.2rem 0;
+
     &__profile {
       @extend %circular-profile-image;
 
-      width: 3rem;
-      height: 3rem;
+      width: 2.5rem;
+      height: 2.5rem;
+      box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
     }
 
     &__container {
+      @include flex-col;
+      @include ml-(0.5);
 
+      gap: 0.5rem;
     }
 
     &__nickname {
-
-    }
-
-    &__content {
-
-    }
-
-    &__file {
-
+      font-size: $font-size-small;
     }
   }
 
@@ -61,25 +60,218 @@
     @include flex-row;
 
     justify-content: end;
-
-    &__content {
-
-    }
+    margin: 1rem 0.5rem 0.5rem 0;
   }
 
-  &__title-count-wrapper {
+  &__time-count-wrapper {
+    @include flex-col;
+    @include mx-(0.3);
 
+    justify-content: end;
   }
 
   &__time {
-
+    color: $subtext-color;
+    font-size: $font-size-xSmall;
   }
 
   &__count {
+    color: $orange500;
+    font: {
+      size: $font-size-xSmall;
+      weight: 500;
+    }
 
+    &--right {
+      @extend .chat__count;
+
+      text-align: end;
+    }
+  }
+}
+
+.bubble-chat {
+  padding: 7px 13px;
+  min-height: 30px;
+  background-color: #eefff0;
+
+  &__my {
+    @extend .bubble-chat;
   }
 
-  &__file {
+  &__yours {
+    @extend .bubble-chat;
+  }
+}
 
+.bubble-file {
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &--multiple {
+    @extend .bubble-file;
+
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
+
+    .bubble-file__item {
+      width: 25dvw;
+      height: 25dvw;
+    }
+  }
+
+  &--single {
+    @extend .bubble-file;
+
+    .bubble-file__item {
+      width: 50dvw;
+      height: 50dvw;
+    }
+  }
+}
+
+.bubble-appointment {
+  padding: 0.7rem;
+  width: 15rem;
+
+  &__container {
+    @include flex-row;
+
+    gap: 0.7rem;
+  }
+
+  &__icon {
+    @extend %circular-profile-image;
+    @include p-(0.3);
+
+    width: 2.5rem;
+    height: 2.5rem;
+    background-color: $lightpink;
+  }
+
+  &__date {
+    color: $subtext-color;
+    font-size: $font-size-xSmall;
+  }
+
+  &__message {
+    font: {
+      weight: 600;
+      size: 20px;
+    }
+  }
+
+  &__participants {
+    @include flex-row;
+    @include mt-(0.3);
+    @include mb-(0.7);
+
+    &__item {
+      @extend %circular-profile-image;
+
+      width: 1.3rem;
+      height: 1.3rem;
+    }
+  }
+
+  &__button {
+    @include flex-between;
+
+    &__accept {
+      @extend %orange-button-small;
+      @include my-(0);
+
+      width: 48%;
+    }
+
+    &__refuse {
+      @extend %orange-button-small;
+      @include my-(0);
+
+      background-color: $gray100;
+      width: 48%;
+
+      &:focus,
+      &:active,
+      &:hover {
+        background-color: $gray150;
+      }
+    }
+  }
+}
+
+.chat-input {
+  @include flex-center;
+  @include py-(0.1);
+
+  background-color: white;
+  position: absolute;
+  width: 96%;
+  height: $chat-input-height;
+  bottom: $bottomBar-height;
+
+  &__field {
+    @include flex-row;
+    @include px-(0.3);
+
+    align-items: center;
+    background-color: $gray75;
+    width: 98%;
+    height: 90%;
+    border-radius: 30px;
+  }
+
+  &__input {
+    @include mx-(0.5);
+
+    flex:1;
+    height: 100%;
+    font-size: $font-size;
+  }
+
+  &__button {
+    @include flex_center;
+
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    color: white;
+
+    &-plus {
+      @extend .chat-input__button;
+      @include mr-(0.2);
+
+      color: $gray150;
+
+      &:focus,
+      &:active {
+        color: $gray200;
+      }
+    }
+
+    &-send {
+      @extend .chat-input__button;
+
+      background-color: $orange400;
+
+      &:focus,
+      &:active {
+        background-color: $orange500;
+      }
+    }
+
+    &-emoji {
+      margin-right: 7px;
+      color: $gray150;
+
+      &:focus,
+      &:active {
+        color: $gray200;
+      }
+    }
   }
 }

@@ -228,84 +228,90 @@ export const ScheduleSample: Schedule[] = [
 export const ChatSample: Chat = {
   chatList: [
     {
-      chatId: 1,
-      type: "chat",
-      sender: "yebin4684@gmail.com",
-      message: "안녕하세요",
-      files: [],
-      createdAt: "2024-05-02T12:00:00",
-      readingCount: 2,
-      participants: []
-    },
-    {
-      chatId: 2,
-      type: "chat",
-      sender: "yebin4684@gmail.com",
-      message: "ㅎㅎ",
-      files: [],
-      createdAt: "2024-05-02T12:00:00",
-      readingCount: 2,
-      participants: []
-    },
-    {
-      chatId: 3,
-      type: "chat",
-      sender: "2yunj007@gmail.com",
-      message: "감사해요",
-      files: [],
-      createdAt: "2024-05-02T12:10:00",
-      readingCount: 3,
-      participants: []
-    },
-    {
-      chatId: 4,
-      type: "chat",
-      sender: "wjstp14@gmail.com",
-      message: "",
-      files: [{
-        S3Id: "",
-        imgUrl: "https://i.pinimg.com/564x/8b/a2/83/8ba283897b9ad414c929ca1a8630b4bd.jpg",
-        thumbnailUrl: "https://i.pinimg.com/564x/8b/a2/83/8ba283897b9ad414c929ca1a8630b4bd.jpg"
-      }],
-      createdAt: "2024-05-02T12:20:00",
-      readingCount: 3,
-      participants: []
-    },
-    {
-      chatId: 5,
-      type: "chat",
-      sender: "asthyeon@gmail.com",
-      message: "난 차은우다!",
-      files: [{
-        S3Id: "",
-        imgUrl: "https://i.pinimg.com/736x/39/48/76/394876e0e2129f959bd910b65da6f3f8.jpg",
-        thumbnailUrl: "https://i.pinimg.com/736x/39/48/76/394876e0e2129f959bd910b65da6f3f8.jpg"
-      }],
-      createdAt: "2024-05-02T12:30:00",
-      readingCount: 4,
-      participants: []
-    },
-    {
-      chatId: 6,
-      type: "plan",
-      sender: "2yunj007@gmail.com",
-      message: "저녁 같이 먹을 사람",
-      files: [],
-      createdAt: "2024-05-02T12:40:00",
-      readingCount: 4,
-      participants: ["2yunj007@gmail.com", "yebin4684@gmail.com"]
-    }
-    ,
-    {
       chatId: 7,
-      type: "plan",
+      type: "appointment",
       sender: "asthyeon@gmail.com",
       message: "추억 회상할 사람",
-      files: [],
       createdAt: "2024-05-03T12:50:00",
       readingCount: 5,
       participants: ["asthyeon@gmail.com"]
-    }
+    },
+    {
+      chatId: 6,
+      type: "appointment",
+      sender: "zyo0720@kakao.com",
+      message: "저녁 같이 먹을 사람",
+      createdAt: "2024-05-02T12:40:00",
+      readingCount: 4,
+      participants: ["zyo0720@kakao.com", "yebin4684@gmail.com"]
+    },
+    {
+      chatId: 5,
+      type: "file",
+      sender: "asthyeon@gmail.com",
+      files: [
+        {
+          S3Id: "2",
+          imgUrl: "https://i.pinimg.com/736x/39/48/76/394876e0e2129f959bd910b65da6f3f8.jpg",
+          thumbnailUrl: "https://i.pinimg.com/736x/39/48/76/394876e0e2129f959bd910b65da6f3f8.jpg"
+        },
+        {
+          S3Id: "3",
+          imgUrl: "https://i.pinimg.com/736x/39/48/76/394876e0e2129f959bd910b65da6f3f8.jpg",
+          thumbnailUrl: "https://i.pinimg.com/736x/39/48/76/394876e0e2129f959bd910b65da6f3f8.jpg"
+        },
+        {
+          S3Id: "4",
+          imgUrl: "https://i.pinimg.com/736x/39/48/76/394876e0e2129f959bd910b65da6f3f8.jpg",
+          thumbnailUrl: "https://i.pinimg.com/736x/39/48/76/394876e0e2129f959bd910b65da6f3f8.jpg"
+        },
+        {
+          S3Id: "5",
+          imgUrl: "https://i.pinimg.com/736x/39/48/76/394876e0e2129f959bd910b65da6f3f8.jpg",
+          thumbnailUrl: "https://i.pinimg.com/736x/39/48/76/394876e0e2129f959bd910b65da6f3f8.jpg"
+        },
+      ],
+      createdAt: "2024-05-02T12:30:00",
+      readingCount: 4,
+    },
+    {
+      chatId: 4,
+      type: "file",
+      sender: "wjstp14@gmail.com",
+      files: [
+        {
+          S3Id: "1",
+          imgUrl: "https://i.pinimg.com/564x/8b/a2/83/8ba283897b9ad414c929ca1a8630b4bd.jpg",
+          thumbnailUrl: "https://i.pinimg.com/564x/8b/a2/83/8ba283897b9ad414c929ca1a8630b4bd.jpg"
+        }
+      ],
+      createdAt: "2024-05-02T12:20:00",
+      readingCount: 3,
+    },
+    {
+      chatId: 3,
+      type: "message",
+      sender: "zyo0720@kakao.com",
+      message: "감사해요",
+      createdAt: "2024-05-02T12:10:00",
+      readingCount: 3,
+    },
+    {
+      chatId: 2,
+      type: "message",
+      sender: "yebin4684@gmail.com",
+      message: "ㅎㅎ",
+      createdAt: "2024-05-02T12:00:00",
+      readingCount: 2,
+    },
+    {
+      chatId: 1,
+      type: "message",
+      sender: "yebin4684@gmail.com",
+      message: "안녕하세요",
+      createdAt: "2024-05-02T12:00:00",
+      readingCount: 2,
+    },
   ],
   cursor: 1
 }

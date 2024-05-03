@@ -1,7 +1,9 @@
 import React from "react";
-import { ChatItem, SenderType, BubbleProps } from "../../../types";
-import getUserInfoByEmail from "../../../helpers/getUserInfoByEmail";
-import convertToAMPMTime from "../../../helpers/convertToAMPMTime";
+import { ChatItem, ChatFile, SenderType } from "../../../types";
+import { MemberInfoSample } from "@constants/index";
+import getUserInfoByEmail from "@helpers/getUserInfoByEmail";
+import convertToAMPMTime from "@helpers/convertToAMPMTime";
+import renderBubbleComponent from "@helpers/renderBubbleComponent";
 
 const YoursChat: React.FC<{ chat: ChatItem }> = ({ chat }) => {
   const senderInfo = getUserInfoByEmail(chat.sender);
@@ -18,20 +20,13 @@ const YoursChat: React.FC<{ chat: ChatItem }> = ({ chat }) => {
         <div className="chat__yours-chat__nickname">{ senderInfo.nickname }</div>
 
         {/*내용*/}
-        <div className="chat__yours-chat__content">
-          { chat.message }
-
-          {/*파일*/}
-          <div className="chat__file">
-
-          </div>
-        </div>
+        {renderBubbleComponent(chat)}
       </div>
 
       <div className="chat__time-count-wrapper">
         {/*리딩 카운트*/}
         <div className="chat__count">
-          { chat.readingCount }
+        { chat.readingCount }
         </div>
 
         {/*시간*/}
@@ -39,6 +34,7 @@ const YoursChat: React.FC<{ chat: ChatItem }> = ({ chat }) => {
           { convertToAMPMTime(chat.createdAt) }
         </div>
       </div>
+
     </div>
   );
 };
@@ -48,7 +44,7 @@ const MyChat: React.FC<{ chat: ChatItem }> = ({chat }) => {
     <div className="chat__my-chat">
       <div className="chat__time-count-wrapper">
         {/*리딩 카운트*/}
-        <div className="chat__count">
+        <div className="chat__count--right">
           {chat.readingCount}
         </div>
 
@@ -59,20 +55,20 @@ const MyChat: React.FC<{ chat: ChatItem }> = ({chat }) => {
       </div>
 
       {/*내용*/}
-      <div className="chat__my-chat__content">
-        {chat.message}
-
-        {/*파일*/}
-        <div className="chat__file">
-
-        </div>
-      </div>
+      {renderBubbleComponent(chat)}
     </div>
   );
 };
 
-const BubbleChat: React.FC<BubbleProps> = ({chat, senderType}) => {
-  switch (senderType) {
+const BubbleChat: React.FC<{ chat: ChatItem }> = ({chat}) => {
+  const myEmail: string = MemberInfoSample.email;
+
+  // senderType 반환 함수
+  const getSenderType = (value: string): string => {
+    return value === myEmail ? "my" : "yours";
+  };
+
+  switch (getSenderType(chat.sender)) {
     case SenderType.YOURS:
       return <YoursChat chat={chat}/>;
     case SenderType.MY:

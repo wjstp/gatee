@@ -77,13 +77,13 @@ export interface Chat {
 
 export interface ChatItem {
   chatId: number;
-  type: string;     // "chat" or "plan"
-  sender: string;   // email
-  message: string;
-  files: ChatFile[];
+  type: string;
+  sender: string;
+  message?: string;
+  files?: ChatFile[];
   createdAt: string;
   readingCount: number;
-  participants: string[];
+  participants?: string[];
 }
 
 export interface ChatFile {
@@ -95,9 +95,4 @@ export interface ChatFile {
 export enum SenderType {
   YOURS = "yours",
   MY = "my"
-}
-
-export interface BubbleProps {
-  chat: ChatItem;
-  senderType: string;
 }
