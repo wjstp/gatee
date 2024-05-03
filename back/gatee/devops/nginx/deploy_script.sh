@@ -29,7 +29,7 @@ fi
 sleep 100
 CONTAINER_COUNT=$(docker-compose -p ${DOCKER_APP_NAME}-${AFTER_COMPOSE_COLOR} -f docker-compose.${AFTER_COMPOSE_COLOR}.yaml ps | grep "^gatee-api-${AFTER_COMPOSE_COLOR}" | wc -l)
 # 컨테이너가 제대로 작동하는지 확인하기 위해 반환값 체크
-HEALTHY_COUNT=$(docker-compose -p ${DOCKER_APP_NAME}-${AFTER_COMPOSE_COLOR} -f docker-compose.${AFTER_COMPOSE_COLOR}.yaml ps -q | xargs -I {} docker inspect --format '{{if .State.Health}}{{.Name}} {{.State.Health.Status}}{{end}}' {} | grep "/gatee-api-${AFTER_COMPOSE_COLOR}" | grep -c "healthy")
+HEALTHY_COUNT=$(docker-compose -p ${DOCKER_APP_NAME}-${AFTER_COMPOSE_COLOR} -f docker-compose.${AFTER_COMPOSE_COLOR}.yaml ps -q | xargs -I {} docker inspect --format '{{.Name}} {{if .State.Health}}{{.State.Health.Status}}{{end}}' {} | awk -v app_name="/gatee-api-${AFTER_COMPOSE_COLOR}" '$0 ~ app_name && $NF == "healthy" {count++} END {print count+0}')
 
 # 'healthy' 상태의 컨테이너 수를 확인하여 모두 'healthy' 상태라면 nginx 설정 변경 및 이전 환경 종료
 if [ "$HEALTHY_COUNT" -eq "$CONTAINER_COUNT" ]; then
