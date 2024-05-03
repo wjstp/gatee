@@ -4,5 +4,6 @@ import com.google.firebase.messaging.FirebaseMessagingException;
 
 public interface NotificationService {
 
+
     void sendPush(String token) throws FirebaseMessagingException;
 }
