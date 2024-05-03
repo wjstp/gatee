@@ -24,6 +24,8 @@ public record MemberSaveReq (
         // file - 회원 프로필 이미지 추가
 
         @NotNull
-        String familyId
+        String familyId,
+
+        String phoneNumber
 ){
 }

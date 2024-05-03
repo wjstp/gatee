@@ -6,6 +6,12 @@ import io.ssafy.gatee.domain.member.application.MemberService;
 import io.ssafy.gatee.domain.member.dto.request.MemberEditMoodReq;
 import io.ssafy.gatee.domain.member.dto.request.MemberEditReq;
 import io.ssafy.gatee.domain.member.dto.request.MemberSaveReq;
+import io.ssafy.gatee.global.jwt.application.JwtService;
+import io.ssafy.gatee.global.security.application.AuthService;
+import io.ssafy.gatee.global.security.config.SecurityConfig;
+import io.ssafy.gatee.global.security.handler.CustomAccessDeniedHandler;
+import io.ssafy.gatee.global.security.handler.CustomOAuth2FailureHandler;
+import io.ssafy.gatee.global.security.handler.CustomOAuth2SuccessHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,7 +29,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import java.util.UUID;
 
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -31,8 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Slf4j
 @ActiveProfiles({"common, prod"})
 @AutoConfigureRestDocs
-@WebMvcTest(MemberController.class)
-//@WebMvcTest({MemberController.class, TestSecurityConfig.class})
+@WebMvcTest({MemberController.class, SecurityConfig.class})
 @MockBean(JpaMetamodelMappingContext.class)
 class MemberControllerTest {
 
@@ -44,6 +48,21 @@ class MemberControllerTest {
 
     @MockBean
     private MemberService memberService;
+
+    @MockBean
+    private JwtService jwtService;
+
+    @MockBean
+    private AuthService authService;
+
+    @MockBean
+    private CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
+
+    @MockBean
+    private CustomOAuth2FailureHandler customOAuth2FailureHandler;
+
+    @MockBean
+    private CustomAccessDeniedHandler customAccessDeniedHandler;
 
     @Test
     @DisplayName("회원 정보 등록 테스트")
@@ -61,7 +80,6 @@ class MemberControllerTest {
         String memberSaveJson = objectMapper.writeValueAsString(memberSaveReq);
 
         mockMvc.perform(patch("/api/members")
-                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(memberSaveJson))
                 .andDo(MockMvcResultHandlers.print())
@@ -87,7 +105,6 @@ class MemberControllerTest {
 
         log.info("context 확인 : " + String.valueOf(SecurityContextHolder.getContext().getAuthentication()));
         mockMvc.perform(patch("/api/members/profile")
-                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(memberEditJson))
                 .andDo(MockMvcResultHandlers.print())
@@ -106,7 +123,6 @@ class MemberControllerTest {
         String memberEditMoodJson = objectMapper.writeValueAsString(memberEditMoodReq);
 
         mockMvc.perform(patch("/api/members/moods")
-                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(memberEditMoodJson))
                 .andDo(MockMvcResultHandlers.print())
@@ -121,7 +137,6 @@ class MemberControllerTest {
         UUID memberId = UUID.randomUUID();
 
         mockMvc.perform(get("/api/members")
-                        .with(csrf())
                         .param("familyId", "1"))
                 .andDo(MockMvcResultHandlers.print())
                 .andDo(MockMvcRestDocumentation.document("회원 정보 조회"))

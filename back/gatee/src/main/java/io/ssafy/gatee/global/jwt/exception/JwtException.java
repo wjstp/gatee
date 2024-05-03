@@ -16,7 +16,6 @@ public class JwtException extends RuntimeException{
         response.setStatus(status);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");
-
         var errorResponse = JwtErrorResponse.builder()
                 .code(status)
                 .message(message)
