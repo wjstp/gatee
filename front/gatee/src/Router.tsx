@@ -41,7 +41,7 @@ import AllMonth from "@pages/photo/AllMonth";
 import AllYear from "@pages/photo/AllYear";
 import PhotoIndex from "@pages/photo";
 import PhotoDetail from "@pages/photo/PhotoDetail";
-import PhotoAlbumGroupDetail from "@pages/photo/AlbumGroupDetail"; // 앨범
+import PhotoAlbumGroupDetail from "@pages/photo/AlbumGroupDetail";
 
 
 const Router = () => {
@@ -59,6 +59,8 @@ const Router = () => {
 
         {/*알림 페이지*/}
         <Route path="/notification" element={<NotificationIndex/>}/>
+
+
 
         {/*프로필 페이지*/}
         <Route path="/profile/:name" element={<ProfileIndex/>}/>
