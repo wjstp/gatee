@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.security.SignatureException;
 import io.ssafy.gatee.domain.member.entity.Privilege;
 import io.ssafy.gatee.global.jwt.exception.AccessTokenException;
 import io.ssafy.gatee.global.security.user.CustomUserDetails;
@@ -48,6 +49,8 @@ public class JwtClaimsParser {
             throw new AccessTokenException(AccessTokenException.ACCESS_TOKEN_ERROR.MAL_FORM);
         } catch (ExpiredJwtException expiredJwtException) {
             throw new AccessTokenException(AccessTokenException.ACCESS_TOKEN_ERROR.EXPIRED);
+        } catch (SignatureException signatureException) {
+            throw new AccessTokenException(AccessTokenException.ACCESS_TOKEN_ERROR.BAD_SIGN);
         }
     }
 
