@@ -28,6 +28,7 @@
     "axios": "^1.6.8",
     "date-fns": "^3.6.0",
     "dayjs": "^1.11.11",
+    "firebase": "^8.10.0",
     "lottie-react": "^2.4.0",
     "react": "^18.2.0",
     "react-datepicker": "^6.9.0",
@@ -86,6 +87,7 @@
   "devDependencies": {
     "@craco/craco": "^7.1.0",
     "@craco/types": "^7.1.0",
+    "@types/firebase": "^3.2.1",
     "@types/react-helmet": "^6.1.11",
     "@types/react-slick": "^0.23.13",
     "react-app-alias": "^2.2.2"
