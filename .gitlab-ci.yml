@@ -26,6 +26,9 @@ build:
     - cp application-security.yaml.template application-security.yaml
     - cat application-security.yaml
 
+    # firebase key
+    - $FIREBASE_KEY > gatee-bf33f-firebase-adminsdk-va5su-a0d2f8f65b.json
+
     # 권한 부여 후 현재 서버 환경 확인
     - cd ../../..
     - cd devops/
