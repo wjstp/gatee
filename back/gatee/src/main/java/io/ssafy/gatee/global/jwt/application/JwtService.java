@@ -1,10 +1,11 @@
 package io.ssafy.gatee.global.jwt.application;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.ssafy.gatee.global.jwt.dao.RefreshTokenRedisRepository;
 import io.ssafy.gatee.global.jwt.dto.RefreshToken;
+import io.ssafy.gatee.global.jwt.exception.AccessTokenException;
+import io.ssafy.gatee.global.jwt.exception.RefreshTokenException;
 import io.ssafy.gatee.global.jwt.util.JwtClaimsParser;
 import io.ssafy.gatee.global.jwt.util.JwtProvider;
 import io.ssafy.gatee.global.security.user.CustomUserDetails;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -34,7 +36,7 @@ public class JwtService {
     private static final String TOKEN_PREFIX = "Bearer ";
     private final String AUTHORITIES_KEY = "authorities";
 
-    public Authentication authenticateJwtToken(HttpServletRequest request) {
+    public Authentication authenticateJwtToken(HttpServletRequest request) throws AccessTokenException{
         String token = parseJwt(request);
         log.info("토큰 parse 완료");
         CustomUserDetails customUserDetails;
@@ -51,7 +53,6 @@ public class JwtService {
             log.info("익명 유저일 시 userdetail 설정");
         } else {
             Claims claims = verifyJwtToken(token);
-
             // member를 생성하여 값 set
             customUserDetails = CustomUserDetails.builder()
                     .username(claims.getSubject())
@@ -62,7 +63,7 @@ public class JwtService {
                     .isCredentialsNonExpired(true)
                     .isAccountNonExpired(true)
                     .build();
-            log.info("익명 유저가 아닌 경우 userdetail 설정");
+            log.info("토큰이 있는 경우");
         }
         return new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
     }
@@ -73,8 +74,8 @@ public class JwtService {
 
         // Authorization 헤더 검증
         if (Objects.isNull(authorization)) {
-            log.info("토큰이 존재하지 않습니다.");   // todo: exception 추가
-            return null;    //  todo: null 수정
+            log.info("토큰이 존재하지 않습니다.");
+            return null;
         }
         if (!authorization.startsWith(TOKEN_PREFIX)) {
             log.info("접두사가 일치하지 않습니다.");
@@ -89,18 +90,18 @@ public class JwtService {
         Claims claims = verifyJwtToken(refreshToken);// 예외처리 할 것
         String memberId = claims.getSubject();
         RefreshToken redisRefreshToken = refreshTokenRepository.findByMemberId(memberId)
-                .orElseThrow(() -> new JwtException("일치하는 refreshtoken이 없다잉"));
+                .orElseThrow(() -> new RefreshTokenException(RefreshTokenException.REFRESH_TOKEN_ERROR.NO_REFRESH));
+        if (!redisRefreshToken.getRefreshToken().equals(refreshToken)) {
+            log.info("일치하는 리프레시 토큰이 존재하지 않습니다.");
+            throw new RefreshTokenException(RefreshTokenException.REFRESH_TOKEN_ERROR.BAD_REFRESH);
+        }
         Authentication authentication = jwtClaimsParser.getAuthentication(refreshToken);
         return jwtProvider.generateAccessToken(authentication);
     }
 
-    public Claims verifyJwtToken(String token) {
-        log.info("토큰 검증 시작");
-        try {
-            return jwtClaimsParser.verifyJwtToken(token);
-        } catch (MalformedJwtException malformedJwtException) {
-            throw new RuntimeException("Malformed Token");  // todo: 수정
-        }
+    public Claims verifyJwtToken(String token) throws AccessTokenException{
+        log.info("토큰 verify 시작");
+        return jwtClaimsParser.verifyJwtToken(token);
     }
 
     public void saveToken(String memberId, String refreshToken) {
@@ -123,18 +124,23 @@ public class JwtService {
         return cookie;
     }
 
+
     public void publishTokens(HttpServletResponse response, Authentication authentication) {
         String accessToken = jwtProvider.generateAccessToken(authentication);
         response.addHeader("Authorization", "Bearer " + accessToken);
         log.info("access token 발급 완료");
 
-        String refreshToken = jwtProvider.generateRefreshToken(authentication);
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-        if (refreshTokenRepository.existsByMemberId(customUserDetails.getMemberId().toString())) {
-            refreshTokenRepository.deleteByMemberId((customUserDetails.getMemberId().toString()));
-        }
-        saveToken(customUserDetails.getUsername(), refreshToken);
-        Cookie cookie = createCookie(refreshToken);
+
+        // 삭제
+        log.info("기존 refresh token이 있는 경우 삭제");
+        Optional<RefreshToken> oldRefreshToken = refreshTokenRepository.findByMemberId(customUserDetails.getMemberId().toString());
+        oldRefreshToken.ifPresent(refreshTokenRepository::delete);
+
+        // 갱신
+        String newRefreshToken = jwtProvider.generateRefreshToken(authentication);
+        saveToken(customUserDetails.getUsername(), newRefreshToken);
+        Cookie cookie = createCookie(newRefreshToken);
         response.addCookie(cookie);
         log.info("refresh token 발급 완료");
     }
