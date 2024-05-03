@@ -17,6 +17,7 @@ public class JwtErrorResponse {
     private int code;
     private String message;
     private String time;
+
     @Builder
     public JwtErrorResponse(int code, String message) {
         this.code = code;

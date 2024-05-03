@@ -1,8 +1,11 @@
 package io.ssafy.gatee.global.jwt.util;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.ssafy.gatee.domain.member.entity.Privilege;
+import io.ssafy.gatee.global.jwt.exception.AccessTokenException;
 import io.ssafy.gatee.global.security.user.CustomUserDetails;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,11 +38,17 @@ public class JwtClaimsParser {
     }
 
     public Claims verifyJwtToken(String token) {
-        return Jwts.parser()
-                .verifyWith(secretKey)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
+        try {
+            return Jwts.parser()
+                    .verifyWith(secretKey)
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
+        } catch (MalformedJwtException malformedJwtException) {
+            throw new AccessTokenException(AccessTokenException.ACCESS_TOKEN_ERROR.MAL_FORM);
+        } catch (ExpiredJwtException expiredJwtException) {
+            throw new AccessTokenException(AccessTokenException.ACCESS_TOKEN_ERROR.EXPIRED);
+        }
     }
 
     public Authentication getAuthentication(String token) {
