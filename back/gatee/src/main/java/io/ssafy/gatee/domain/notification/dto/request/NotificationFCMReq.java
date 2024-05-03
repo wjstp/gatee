@@ -1,4 +1,13 @@
 package io.ssafy.gatee.domain.notification.dto.request;
 
-public record NotificationFCMReq() {
+import io.ssafy.gatee.domain.notification.entity.Type;
+
+public record NotificationFCMReq(
+
+        Type type,
+        Long typeId,
+        String title,
+        String content
+
+) {
 }
