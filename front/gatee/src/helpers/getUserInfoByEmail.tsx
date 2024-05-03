@@ -1,5 +1,5 @@
-import { FamilyMemberInfoSample } from "../constants";
-import { Member } from "../types";
+import { FamilyMemberInfoSample } from "@constants/index";
+import { Member } from "@type/index";
 
 const getUserInfoByEmail = (email: string) => {
   const userInfo: Member | undefined = FamilyMemberInfoSample.find(member => member.email === email);

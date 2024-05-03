@@ -11,7 +11,7 @@ const BubbleChatMessage :React.FC<{ chat: ChatItem }> = ({chat}) => {
   };
 
   return (
-    <div className={`bubble-chat__${getSenderType(chat.sender)}`}>
+    <div className={`bubble-chat__${ getSenderType(chat.sender) }`}>
       { chat.message }
     </div>
   );

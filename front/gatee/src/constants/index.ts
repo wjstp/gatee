@@ -239,7 +239,7 @@ export const ChatSample: Chat = {
       type: "appointment",
       sender: "asthyeon@gmail.com",
       message: "추억 회상할 사람",
-      createdAt: "2024-05-03T12:50:00",
+      createdAt: "2024-05-02T12:50:00",
       readingCount: 5,
       participants: ["asthyeon@gmail.com"]
     },

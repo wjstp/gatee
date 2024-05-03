@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ChatDate from "@pages/chat/components/ChatDate";
 import BubbleChat from "@pages/chat/components/BubbleChat";
 import ChatInput from "@pages/chat/components/ChatInput";
-import { ChatSample } from "../../constants";
-import { ChatItem } from "../../types"
-import dayjs from "dayjs";
+import { ChatSample } from "@constants/index";
+import { ChatItem } from "@type/index"
 
 
 const ChatIndex = () => {
