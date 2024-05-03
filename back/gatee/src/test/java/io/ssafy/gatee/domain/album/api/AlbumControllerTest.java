@@ -6,6 +6,13 @@ import io.ssafy.gatee.domain.album.application.AlbumService;
 import io.ssafy.gatee.domain.album.dto.request.AddAlbumPhotoListReq;
 import io.ssafy.gatee.domain.album.dto.request.AlbumSaveReq;
 import io.ssafy.gatee.domain.album.dto.request.DeleteAlbumPhotoListReq;
+import io.ssafy.gatee.global.jwt.application.JwtService;
+import io.ssafy.gatee.global.security.application.AuthService;
+import io.ssafy.gatee.global.security.config.SecurityConfig;
+import io.ssafy.gatee.global.security.handler.CustomAccessDeniedHandler;
+import io.ssafy.gatee.global.security.handler.CustomOAuth2FailureHandler;
+import io.ssafy.gatee.global.security.handler.CustomOAuth2SuccessHandler;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +33,10 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@Slf4j
 @ActiveProfiles({"common, prod"})
 @AutoConfigureRestDocs
-@WebMvcTest(AlbumController.class)
-//@WebMvcTest({AlbumController.class, TestSecurityConfig.class})
+@WebMvcTest({AlbumController.class, SecurityConfig.class})
 @MockBean(JpaMetamodelMappingContext.class)
 class AlbumControllerTest {
 
@@ -42,14 +49,28 @@ class AlbumControllerTest {
     @MockBean
     private AlbumService albumService;
 
+    @MockBean
+    private JwtService jwtService;
+
+    @MockBean
+    private AuthService authService;
+
+    @MockBean
+    private CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
+
+    @MockBean
+    private CustomOAuth2FailureHandler customOAuth2FailureHandler;
+
+    @MockBean
+    private CustomAccessDeniedHandler customAccessDeniedHandler;
+
 
     @Test
     @CustomWithMockUser
     @DisplayName("앨범 목록 조회 테스트")
     void readAlbumList() throws Exception {
         mockMvc.perform(get("/api/albums")
-                        .param("familyId", "1")
-                        .with(csrf()))
+                        .param("familyId", "1"))
                 .andDo(MockMvcResultHandlers.print())
                 .andDo(MockMvcRestDocumentation.document("월별 목록 조회"))
                 .andExpect(status().isOk());

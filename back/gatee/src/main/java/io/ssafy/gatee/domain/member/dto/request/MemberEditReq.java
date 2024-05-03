@@ -22,6 +22,8 @@ public record MemberEditReq(
         String role,
 
         @NotNull
-        String familyId
+        String familyId,
+
+        String phoneNumber
 ) {
 }

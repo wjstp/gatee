@@ -16,11 +16,7 @@ import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Collection;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.UUID;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Getter
@@ -73,6 +69,9 @@ public class Member extends BaseEntity {
         this.nickname = memberEditReq.nickname();
         this.birth = LocalDate.parse(memberEditReq.birth(), DateTimeFormatter.ISO_DATE);
         this.birthType = BirthType.valueOf(memberEditReq.birthType());
+        if (Objects.nonNull(memberEditReq.phoneNumber())) {
+            this.phoneNumber = memberEditReq.phoneNumber();
+        }
     }
 
     // 기분 상태 수정
