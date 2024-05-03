@@ -38,19 +38,33 @@ public class JwtService {
 
     public Authentication authenticateJwtToken(HttpServletRequest request) throws AccessTokenException{
         String token = parseJwt(request);
-        log.info("토큰 parse 완료");
+
         CustomUserDetails customUserDetails;
-        Claims claims = verifyJwtToken(token);
-        // member를 생성하여 값 set
-        customUserDetails = CustomUserDetails.builder()
-                .username(claims.getSubject())
-                .privilege(claims.get("privilege").toString())
-                .authorities((Collection<? extends GrantedAuthority>) claims.get(AUTHORITIES_KEY))
-                .password(UUID.randomUUID().toString())
-                .isAccountNonLocked(true)
-                .isCredentialsNonExpired(true)
-                .isAccountNonExpired(true)
-                .build();
+
+        log.info("토큰 parse 완료");
+        if (Objects.isNull(token)) {
+            customUserDetails = CustomUserDetails.builder()
+                    .username(UUID.randomUUID().toString())
+                    .password(UUID.randomUUID().toString())
+                    .privilege("ANONYMOUS")
+                    .authorities(jwtClaimsParser.getAnonymousAuthorities())
+                    .isAccountNonLocked(true)
+                    .isCredentialsNonExpired(true)
+                    .isAccountNonExpired(true)
+                    .build();
+        } else {
+            Claims claims = verifyJwtToken(token);
+            // member를 생성하여 값 set
+            customUserDetails = CustomUserDetails.builder()
+                    .username(claims.getSubject())
+                    .privilege(claims.get("privilege").toString())
+                    .authorities((Collection<? extends GrantedAuthority>) claims.get(AUTHORITIES_KEY))
+                    .password(UUID.randomUUID().toString())
+                    .isAccountNonLocked(true)
+                    .isCredentialsNonExpired(true)
+                    .isAccountNonExpired(true)
+                    .build();
+        }
 
         return new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
     }
@@ -62,11 +76,11 @@ public class JwtService {
         // Authorization 헤더 검증
         if (Objects.isNull(authorization)) {
             log.info("토큰이 존재하지 않습니다.");
-            throw new AccessTokenException(AccessTokenException.ACCESS_TOKEN_ERROR.UN_ACCEPT);
+            return null;
         }
         if (!authorization.startsWith(TOKEN_PREFIX)) {
             log.info("접두사가 일치하지 않습니다.");
-            throw new AccessTokenException(AccessTokenException.ACCESS_TOKEN_ERROR.BAD_TYPE);
+            return null;
         }
         // Bearer 제거 후 순수 토큰 획득
         return authorization.split(" ")[1];
