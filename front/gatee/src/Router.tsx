@@ -42,7 +42,6 @@ import AllYear from "@pages/photo/AllYear";
 import PhotoIndex from "@pages/photo";
 import PhotoDetail from "@pages/photo/PhotoDetail";
 import PhotoAlbumGroupDetail from "@pages/photo/AlbumGroupDetail";
-import SettingsToast from "@pages/notification/components/SettingsToast"; // 앨범
 
 
 const Router = () => {

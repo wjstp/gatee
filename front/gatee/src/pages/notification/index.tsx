@@ -1,5 +1,4 @@
-import React, {useEffect, useState} from 'react';
-import {Outlet, useLocation, useNavigate} from "react-router-dom";
+import React from 'react';
 import Box from '@mui/material/Box';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import Button from '@mui/material/Button';
