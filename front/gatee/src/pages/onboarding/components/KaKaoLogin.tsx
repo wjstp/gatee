@@ -5,12 +5,13 @@ import { ReactComponent as KaKao } from "@assets/images/signup/kakao_narrow.svg"
 
 const KaKaoLogin = () => {
   // 카카오 로그인
-  const web: string = "http//localhost:3000/signup"
-  const mobile: string = "http://192.168.35.47:3000/signup"
+  const web: string = "http://localhost:3000/auth"
+  const mobile_home: string = "http://192.168.35.47:3000/auth"
+  const mobile_ssafy: string = "http://70.12.247.24:3000/auth"
 
   const loginWithKaKao = () => {
     window.Kakao.Auth.authorize({
-      redirectUri: mobile,
+      redirectUri: web,
       scope: "profile_nickname",
     })
   }

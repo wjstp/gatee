@@ -7,10 +7,11 @@
       "@pages/*": ["src/pages/*"],
       "@api/*": ["src/api/*"],
       "@layout/*": ["src/layout/*"],
-      "@constants/*": ["src/constance/*"],
-      "@types/*": ["src/types/*"],
+      "@constants/*": ["src/constants/*"],
+      "@type/*": ["src/types/*"],
       "@store/*": ["src/store/*"],
-      "@hooks/*": ["src/hooks/*"]
+      "@hooks/*": ["src/hooks/*"],
+      "@helpers/*": ["src/helpers/*"]
     }
   }
 }

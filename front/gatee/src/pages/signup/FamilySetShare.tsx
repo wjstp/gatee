@@ -9,8 +9,9 @@ const SignupFamilySetShare = () => {
   const location = useLocation();
   const inputValue = location.state?.inputValue || "";
   const selectedImage = location.state?.selectedImage || "";
-  const web: string = "http//localhost:3000"
-  const mobile: string = "http://192.168.35.47:3000"
+  const web: string = "http://localhost:3000"
+  const mobile_home: string = "http://192.168.35.47:3000"
+  const mobile_ssafy: string = "http://70.12.247.24:3000"
 
   const goToMemberSet = () => {
     navigate("/signup/member-set");
@@ -23,7 +24,7 @@ const SignupFamilySetShare = () => {
       text:
         '나의 가조쿠가 되어라',
       link: {
-        mobileWebUrl: mobile,
+        mobileWebUrl: mobile_ssafy,
         webUrl: web,
       },
     });
