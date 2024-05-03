@@ -11,7 +11,7 @@ import java.io.IOException;
 
 @Service
 public class FirebaseInit {
-    
+
     private final String PATH = "gatee-bf33f-firebase-adminsdk-va5su-a0d2f8f65b.json";
     private boolean isInitialized = false;
 

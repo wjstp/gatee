@@ -36,7 +36,7 @@ public class JwtService {
     private static final String TOKEN_PREFIX = "Bearer ";
     private final String AUTHORITIES_KEY = "authorities";
 
-    public Authentication authenticateJwtToken(HttpServletRequest request) {
+    public Authentication authenticateJwtToken(HttpServletRequest request) throws AccessTokenException{
         String token = parseJwt(request);
         log.info("토큰 parse 완료");
         CustomUserDetails customUserDetails;
@@ -53,21 +53,17 @@ public class JwtService {
             log.info("익명 유저일 시 userdetail 설정");
         } else {
             Claims claims = verifyJwtToken(token);
-             try {
-                // member를 생성하여 값 set
-                customUserDetails = CustomUserDetails.builder()
-                        .username(claims.getSubject())
-                        .privilege(claims.get("privilege").toString())
-                        .authorities((Collection<? extends GrantedAuthority>) claims.get(AUTHORITIES_KEY))
-                        .password(UUID.randomUUID().toString())
-                        .isAccountNonLocked(true)
-                        .isCredentialsNonExpired(true)
-                        .isAccountNonExpired(true)
-                        .build();
-             } catch (AccessTokenException accessTokenException){
-                 System.out.println("test");
-                throw new AccessTokenException(AccessTokenException.ACCESS_TOKEN_ERROR.MAL_FORM);
-            }
+            // member를 생성하여 값 set
+            customUserDetails = CustomUserDetails.builder()
+                    .username(claims.getSubject())
+                    .privilege(claims.get("privilege").toString())
+                    .authorities((Collection<? extends GrantedAuthority>) claims.get(AUTHORITIES_KEY))
+                    .password(UUID.randomUUID().toString())
+                    .isAccountNonLocked(true)
+                    .isCredentialsNonExpired(true)
+                    .isAccountNonExpired(true)
+                    .build();
+            log.info("토큰이 있는 경우");
         }
         return new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
     }
@@ -79,11 +75,11 @@ public class JwtService {
         // Authorization 헤더 검증
         if (Objects.isNull(authorization)) {
             log.info("토큰이 존재하지 않습니다.");
-            throw new AccessTokenException(AccessTokenException.ACCESS_TOKEN_ERROR.UN_ACCEPT);
+            return null;
         }
         if (!authorization.startsWith(TOKEN_PREFIX)) {
             log.info("접두사가 일치하지 않습니다.");
-            throw new AccessTokenException(AccessTokenException.ACCESS_TOKEN_ERROR.BAD_TYPE);
+            return null;
         }
         // Bearer 제거 후 순수 토큰 획득
         return authorization.split(" ")[1];
@@ -103,15 +99,9 @@ public class JwtService {
         return jwtProvider.generateAccessToken(authentication);
     }
 
-    public Claims verifyJwtToken(String token) {
+    public Claims verifyJwtToken(String token) throws AccessTokenException{
         log.info("토큰 verify 시작");
         return jwtClaimsParser.verifyJwtToken(token);
-
-//        try {
-//            return jwtClaimsParser.verifyJwtToken(token);
-//        } catch (MalformedJwtException malformedJwtException) {
-//            throw new AccessTokenException(AccessTokenException.ACCESS_TOKEN_ERROR.MAL_FORM);
-//        }
     }
 
     public void saveToken(String memberId, String refreshToken) {
