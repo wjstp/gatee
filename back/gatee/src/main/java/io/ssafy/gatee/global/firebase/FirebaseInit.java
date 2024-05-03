@@ -18,7 +18,7 @@ public class FirebaseInit {
     private boolean isInitialized = false;
 
     // 의존성 주입 완료 후 실행, 생성자보다 늦게 호출, 다른 리소스에서 호출되지 않아도 수행된다
-    // 서버가 서비스 과정인지 체크
+    // 서버가 서비스 계정인지 체크
     @PostConstruct 
     public void init() {
         try {
