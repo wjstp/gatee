@@ -2,6 +2,7 @@ package io.ssafy.gatee.domain.push_notification.api;
 
 import com.google.firebase.messaging.FirebaseMessagingException;
 import io.ssafy.gatee.domain.push_notification.application.PushNotificationService;
+import io.ssafy.gatee.domain.push_notification.dto.request.NaggingReq;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,5 +20,10 @@ public class PushNotificationController {
     public String testNotice(@RequestBody String token) throws FirebaseMessagingException {
         notificationService.sendTestPush(token);
         return "notification success";
+    }
+
+    @PostMapping("/nagging")
+    public void sendNagging(@RequestBody NaggingReq naggingReq) {
+        notificationService.sendNagging(naggingReq);
     }
 }
