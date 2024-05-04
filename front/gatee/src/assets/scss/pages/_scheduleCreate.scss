@@ -115,8 +115,8 @@
       &-image {
         @extend %circular-profile-image;
 
-        width: 18dvw;
-        margin: auto;
+        width: 65px;
+        height: 65px;
         opacity: 0.6;
         transition: opacity 0.2s ease-in-out;
 
@@ -130,6 +130,16 @@
       &-nickname {
         text-align: center;
       }
+    }
+
+    &__number {
+      @include ml-(0.5);
+
+      font: {
+        weight: 500;
+        size: $font-size;
+      }
+      color: $orange500;
     }
   }
 
