@@ -3,7 +3,7 @@ import axios from 'axios';
 const api = localAxios()
 
 // 디바이스 토큰 서버로 보내는 함수
-export const GetPushAlarmByLocalStorage = async (accessToken) => {
+export const getPushAlarmByLocalStorage = async (accessToken) => {
   try {
     const fcmDeviceToken = localStorage.getItem('fcmDeviceToken');
     // 로컬 Axios 적용 코드 주석처리
