@@ -8,10 +8,10 @@ const KaKaoLogin = () => {
   const web: string = "http://localhost:3000/auth"
   const mobile_home: string = "http://192.168.35.47:3000/auth"
   const mobile_ssafy: string = "http://70.12.247.24:3000/auth"
-  const server: string = "https://gaty.duckdns.org/auth"
+
   const loginWithKaKao = () => {
     window.Kakao.Auth.authorize({
-      redirectUri: server,
+      redirectUri: web,
       scope: "profile_nickname",
     })
   }

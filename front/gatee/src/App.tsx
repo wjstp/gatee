@@ -1,14 +1,10 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import Router from "./Router";
-import {requestPermission} from "./firebase-messaging-sw";
-import {useMemberStore} from "@store/useMemberStore";
+// import  "./firebaseInit.ts";
+// import {requestPermission} from "./firebaseInit";
 
 const App = ()=> {
-  const {accessToken} = useMemberStore()
-  useEffect(() => {
-
-    requestPermission(accessToken)
-  }, []);
+  // requestPermission()
   // 로컬 스토리지 초기화
   // localStorage.removeItem("family");
   // localStorage.removeItem("member")
