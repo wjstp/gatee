@@ -9,8 +9,7 @@ export default function localAxios() {
   const instance = axios.create({
     baseURL: process.env.REACT_APP_API_URL,
     headers: {
-      // Authorization: `Bearer ${accessToken}`,
-      Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdGllcyI6WyJST0xFX1JPTEVfVVNFUiJdLCJwcml2aWxlZ2UiOiJVU0VSIiwiaWF0IjoxNzE0ODA4ODQxLCJzdWIiOiIzN2ZhMGZiOC04MmRlLTRmN2MtYTA1ZC0wNzRlZjdlNjk0MjkiLCJleHAiOjE3MTQ4MTA2NDF9.c6l8VJ5yFOMdPwn-MpPAEVm2S1j214-d1STYvCLEgkM`,
+      Authorization: `Bearer ${accessToken}`,
     },
   });
 
@@ -24,7 +23,7 @@ export default function localAxios() {
 
         if (accessToken !== "") {
           console.log("토큰이 있는 경우 헤더를 달아준다", accessToken);
-          config.headers.Authorization = `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdXRob3JpdGllcyI6WyJST0xFX1JPTEVfVVNFUiJdLCJwcml2aWxlZ2UiOiJVU0VSIiwiaWF0IjoxNzE0ODA4ODQxLCJzdWIiOiIzN2ZhMGZiOC04MmRlLTRmN2MtYTA1ZC0wNzRlZjdlNjk0MjkiLCJleHAiOjE3MTQ4MTA2NDF9.c6l8VJ5yFOMdPwn-MpPAEVm2S1j214-d1STYvCLEgkM`;
+          config.headers.Authorization = `Bearer ${accessToken}`;
         }
       } catch (error) {
         console.log("요청 보낼때 인터셉터 헤더 문제가 발생함")
