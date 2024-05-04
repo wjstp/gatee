@@ -5,9 +5,9 @@ import {useMemberStore} from "@store/useMemberStore";
 
 const App = ()=> {
   const {accessToken} = useMemberStore()
-  // useEffect(() => {
-  //   requestPermission(accessToken)
-  // }, []);
+  useEffect(() => {
+    requestPermission(accessToken)
+  }, []);
   // 로컬 스토리지 초기화
   // localStorage.removeItem("family");
   // localStorage.removeItem("member")
