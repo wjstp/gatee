@@ -21,7 +21,7 @@
     "jsx": "react-jsx"
   },
   "include": [
-    "src"
+    "src", "firebase-messaging-sw.js", "node_modules/firebase-messaging-sw.js"
   ],
   "extends": "./tsconfig.paths.json"
 }
