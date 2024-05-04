@@ -29,10 +29,11 @@ $text-color: $black;
 $subtext-color: $gray200;
 
 $font-size: 16px;
-$font-size-xSmall: 10px;
+$font-size-xSmall: 12px;
 $font-size-small: 14px;
 $font-size-big: 22px;
 
 $bottomBar-height: 10dvh;
 $topBar-height: 6dvh;
+$container-height: calc(100svh - $topBar-height - $bottomBar-height);
 $profile-icon-size:10dvw;

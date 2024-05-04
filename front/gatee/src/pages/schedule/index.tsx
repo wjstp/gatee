@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa6";
 import DayToast from "@pages/schedule/components/DayToast";
 import dayjs, { Dayjs } from 'dayjs';
-
+import useHoliday from "../../hooks/useHoliday"
 
 const ScheduleIndex: React.FC = () => {
   const today: Dayjs = dayjs();
@@ -22,6 +22,7 @@ const ScheduleIndex: React.FC = () => {
   const [selectedEndDate, setSelectedEndDate] = useState<string>(today.format("YYYY-MM-DD"));
   const googleCalendarApiKey: string | undefined = process.env.REACT_APP_GOOGLE_API_KEY;
   const googleCalendarId: string | undefined = process.env.REACT_APP_GOOGLE_CALENDAR_ID;
+  // const holidays = useHoliday("2024");
 
   useEffect(() => {
     if (calendarRef.current) {
@@ -90,6 +91,31 @@ const ScheduleIndex: React.FC = () => {
     )
   }
 
+  const useEventContent = (arg: { event: any, timeText: string }) => {
+    const { event } = arg;
+    const eventType: string = event.id;
+    // 단체 일정은 띠와 함께 색에 맞는 이모티콘 보여 주기
+    // 개인 일정은 프로필 보여 주기
+    // 이벤트는 숫자에 스티커 붙이기
+    if (eventType === "group") {
+      return (
+        <div>그룹 이벤트</div>
+      );
+    } else if (eventType === "personal") {
+      return (
+        <div>개인 이벤트</div>
+      );
+    } else if (eventType === "event") {
+      return (
+        <div>이벤트</div>
+      );
+    } else {
+      return (
+        <div>{event.title}</div>
+      )
+    }
+  };
+
   const handleDayClose = () => setIsOpenDayToast(false);
 
   return (
@@ -146,21 +172,23 @@ const ScheduleIndex: React.FC = () => {
             select={handleSelect}                // 영역 선택 이벤트
 
             // event
-            // 단체 일정은 띠와 함께 색에 맞는 이모티콘 보여 주기
-            // 개인 일정은 프로필 보여 주기
-            // 이벤트는 숫자에 스티커 붙이기
-            // 공휴일 가운데 정렬, 숫자 빨갛게
-            events={[
-              {start: "2024-05-01", end: "2024-05-01", color: "#FFE8E8"},
-              {start: "2024-05-01", end: "2024-05-01", color: "#FFED91"},
-              {start: "2024-05-01", end: "2024-05-01", color: "#c2e5c5"},
-              
-            ]}
             eventSources={[
-              {googleCalendarId: googleCalendarId, textColor: "red", color: 'white'}
+              {
+                googleCalendarId: googleCalendarId,
+                className: 'schedule-calendar__holiday',
+                color: "#ed6363",
+                textColor: "#FFF",
+              }
+            ]}
+
+            events={[
+              {start: "2024-05-01", end: "2024-05-01", color: "#FFE8E8", id: "group"},
+              {start: "2024-05-01", end: "2024-05-01", color: "#FFED91", id: "personal"},
+              {start: "2024-05-01", end: "2024-05-01", color: "#c2e5c5", id: "event"},
             ]}
             eventTextColor={"black"}
             eventBorderColor={"white"}
+            eventContent={useEventContent}
           />
         </div>
       </div>
