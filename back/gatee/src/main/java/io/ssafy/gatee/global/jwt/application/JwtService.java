@@ -120,7 +120,7 @@ public class JwtService {
         // 쿠키 속성 설정
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
-        cookie.setPath("/auth/refresh");
+        cookie.setPath("/api/jwt");
         cookie.setMaxAge(15 & 50 * 60 * 24);
         return cookie;
     }
