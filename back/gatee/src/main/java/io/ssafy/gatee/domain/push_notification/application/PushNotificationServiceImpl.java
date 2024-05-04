@@ -54,7 +54,7 @@ public class PushNotificationServiceImpl implements PushNotificationService {
     public void sendNagging(NaggingReq naggingReq) {
         String content = "\"" + naggingReq.message() + "\"라는 문장을 상냥한 어투로 바꿔줘. 이모티콘도 붙여줘.";
         GptResponseDto result = gptService.askQuestion(QuestionDto.builder().content(content).build());
-
+        System.out.println(result);
 
     }
 }
