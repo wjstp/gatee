@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/notifications")
 public class PushNotificationController {
+
     private final PushNotificationService notificationService;
 
     @PostMapping("/test")
