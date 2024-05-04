@@ -4,13 +4,13 @@ import axios from "axios";
 export default function localAxios() {
   // 스토어에 저장되어있는 토큰 가져오기
   const accessToken = localStorage.getItem("accessToken");
-  axios.defaults.withCredentials = true;
   // 인스턴스 생성
   const instance = axios.create({
     baseURL: process.env.REACT_APP_API_URL,
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
+    // headers: {
+    //   Authorization: `Bearer ${accessToken}`,
+    // },
+    withCredentials: true
   });
 
   // 요청을 보낼때의 인터셉터
@@ -20,6 +20,7 @@ export default function localAxios() {
       try {
         console.log("요청 보낼때 인터셉터 입장")
         config.headers["Content-Type"] = "application/json";
+        config.headers["Access-Control-Allow-Origin"] = process.env.REACT_APP_API_URL;
 
         if (accessToken !== "") {
           console.log("토큰이 있는 경우 헤더를 달아준다", accessToken);
@@ -59,13 +60,13 @@ export default function localAxios() {
         try {
           // data라는 변수에 요청을 보내 받은 응답값을 저장
           const {data} = await instance.post(
-            // url(API주소)
-            "/api/jwt/rotate-token",
-          );
+            "/api/jwt/rotate-token"
+          )
+
           // 토큰 재저장
           await localStorage.setItem("accessToken", data.data.accessToken);
           console.log("로컬 스토리지에 재 저장", data.data.accessToken);
-          
+
           const newAccessToken = data.data.accessToken;
           // 에러났던 요청 설정을 가져오기
           const config = error.config;

@@ -7,10 +7,12 @@ const SignupAuth = () => {
   const navigate = useNavigate();
   const tokenUrl: string = `https://kauth.kakao.com/oauth/token`
   const kakaoJavaScriptApiKey: string | undefined = process.env.REACT_APP_KAKAO_JAVASCRIPT_KEY;
-  const web: string = "http://localhost:3000/auth"
+  // 로컬로 할때는 이거 켜기
+  // const web: string = "http://localhost:3000/auth"
   const mobile_home: string = "http://192.168.35.47:3000/auth"
   const mobile_ssafy: string = "http://70.12.247.24:3000/auth"
-  const server: string = "https://gaty.duckdns.org/auth"
+  // 서버로 할땐 이거 켜기
+  const web: string = "https://gaty.duckdns.org/auth"
   // 토큰 상태 관리
   const { setAccessToken } = useMemberStore();
 
@@ -25,7 +27,7 @@ const SignupAuth = () => {
       const formData = new URLSearchParams();
       formData.append("grant_type", "authorization_code");
       formData.append("client_id", kakaoJavaScriptApiKey);
-      formData.append("redirect_uri", server);
+      formData.append("redirect_uri", web);
       formData.append("code", code);
 
       axios.post(

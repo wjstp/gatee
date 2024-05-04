@@ -7,15 +7,15 @@ export const GetPushAlarmByLocalStorage = async (accessToken) => {
   try {
     const fcmDeviceToken = localStorage.getItem('fcmDeviceToken');
     // 로컬 Axios 적용 코드 주석처리
-    // api.post(`${process.env.REACT_APP_API_URL}/api/notifications/test`, {token: fcmDeviceToken})
-    axios({
-      method: 'post',
-      url: `${process.env.REACT_APP_API_URL}/api/notifications/test`,
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-      data: {token: fcmDeviceToken}
-    })
+    api.post(`${process.env.REACT_APP_API_URL}/api/notifications/test`, {token: fcmDeviceToken})
+    // axios({
+    //   method: 'post',
+    //   url: `${process.env.REACT_APP_API_URL}/api/notifications/test`,
+    //   headers: {
+    //     Authorization: `Bearer ${accessToken}`,
+    //   },
+    //   data: {token: fcmDeviceToken}
+    // })
       .then(res => {
         console.log(res.data)
       })
