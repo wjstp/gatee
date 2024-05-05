@@ -42,23 +42,23 @@ self.addEventListener("activate", function (e) {
 //
 //
 //
-importScripts('https://www.gstatic.com/firebasejs/9.2.0/firebase-app-compat.js');
-importScripts('https://www.gstatic.com/firebasejs/9.2.0/firebase-messaging-compat.js');
-//
-// // console.log("public 여기 있다")
-//
-firebase.initializeApp({
-  apiKey: "AIzaSyCiiaCQgXFvOYDt5jzzRIHwnhC_kCJ5op8",
-  authDomain: "gatee-bf33f.firebaseapp.com",
-  projectId: "gatee-bf33f",
-  storageBucket: "gatee-bf33f.appspot.com",
-  messagingSenderId: "1009013790999",
-  appId: "1:1009013790999:web:e4273021380c2598cd7f52",
-  measurementId: "G-5T6L10CXW3"
-});
-//
-//
-const messaging = firebase.messaging();
+// importScripts('https://www.gstatic.com/firebasejs/9.2.0/firebase-app-compat.js');
+// importScripts('https://www.gstatic.com/firebasejs/9.2.0/firebase-messaging-compat.js');
+// //
+// // // console.log("public 여기 있다")
+// //
+// firebase.initializeApp({
+//   apiKey: "AIzaSyCiiaCQgXFvOYDt5jzzRIHwnhC_kCJ5op8",
+//   authDomain: "gatee-bf33f.firebaseapp.com",
+//   projectId: "gatee-bf33f",
+//   storageBucket: "gatee-bf33f.appspot.com",
+//   messagingSenderId: "1009013790999",
+//   appId: "1:1009013790999:web:e4273021380c2598cd7f52",
+//   measurementId: "G-5T6L10CXW3"
+// });
+// //
+// //
+// const messaging = firebase.messaging();
 //
 // messaging.onBackgroundMessage(function(payload) {
 //   console.log('[firebase-messaging-sw.js] Received background message ', payload);

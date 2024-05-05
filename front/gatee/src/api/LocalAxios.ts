@@ -10,7 +10,7 @@ export default function localAxios() {
     // headers: {
     //   Authorization: `Bearer ${accessToken}`,
     // },
-    withCredentials: true
+    withCredentials: true,
   });
 
   // 요청을 보낼때의 인터셉터
@@ -21,6 +21,7 @@ export default function localAxios() {
         console.log("요청 보낼때 인터셉터 입장")
         config.headers["Content-Type"] = "application/json";
         config.headers["Access-Control-Allow-Origin"] = process.env.REACT_APP_API_URL;
+        config.headers["Access-Control-Allow-Credentials"] = true;
 
         if (accessToken !== "") {
           console.log("토큰이 있는 경우 헤더를 달아준다", accessToken);
