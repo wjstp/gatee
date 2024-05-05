@@ -1,11 +1,11 @@
 package io.ssafy.gatee.global.jwt.application;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.MalformedJwtException;
+import io.ssafy.gatee.global.exception.error.forbidden.*;
+import io.ssafy.gatee.global.exception.message.ExceptionMessage;
 import io.ssafy.gatee.global.jwt.dao.RefreshTokenRedisRepository;
 import io.ssafy.gatee.global.jwt.dto.RefreshToken;
 import io.ssafy.gatee.global.jwt.exception.AccessTokenException;
-import io.ssafy.gatee.global.jwt.exception.RefreshTokenException;
 import io.ssafy.gatee.global.jwt.util.JwtClaimsParser;
 import io.ssafy.gatee.global.jwt.util.JwtProvider;
 import io.ssafy.gatee.global.security.user.CustomUserDetails;
@@ -36,7 +36,7 @@ public class JwtService {
     private static final String TOKEN_PREFIX = "Bearer ";
     private final String AUTHORITIES_KEY = "authorities";
 
-    public Authentication authenticateJwtToken(HttpServletRequest request) throws AccessTokenException{
+    public Authentication authenticateJwtToken(HttpServletRequest request) throws AccessTokenException, ExpiredTokenException, MalFormedTokenException, BadSignaturedToken {
         String token = parseJwt(request);
 
         CustomUserDetails customUserDetails;
@@ -87,20 +87,20 @@ public class JwtService {
     }
 
     // token 갱신
-    public String rotateAccessToken(String refreshToken) {
-        Claims claims = verifyJwtToken(refreshToken);// 예외처리 할 것
+    public String rotateAccessToken(String refreshToken) throws NoRefreshTokenException, BadRefreshTokenException, ExpiredTokenException, MalFormedTokenException, BadSignaturedToken {
+        Claims claims = verifyJwtToken(refreshToken);
         String memberId = claims.getSubject();
         RefreshToken redisRefreshToken = refreshTokenRepository.findByMemberId(memberId)
-                .orElseThrow(() -> new RefreshTokenException(RefreshTokenException.REFRESH_TOKEN_ERROR.NO_REFRESH));
+                .orElseThrow(() -> new NoRefreshTokenException(ExceptionMessage.NO_REFRESH_TOKEN));
         if (!redisRefreshToken.getRefreshToken().equals(refreshToken)) {
             log.info("일치하는 리프레시 토큰이 존재하지 않습니다.");
-            throw new RefreshTokenException(RefreshTokenException.REFRESH_TOKEN_ERROR.BAD_REFRESH);
+            throw new BadRefreshTokenException(ExceptionMessage.BAD_REFRESH_TOKEN);
         }
         Authentication authentication = jwtClaimsParser.getAuthentication(refreshToken);
         return jwtProvider.generateAccessToken(authentication);
     }
 
-    public Claims verifyJwtToken(String token) throws AccessTokenException{
+    public Claims verifyJwtToken(String token) throws AccessTokenException, ExpiredTokenException, MalFormedTokenException, BadSignaturedToken {
         log.info("토큰 verify 시작");
         return jwtClaimsParser.verifyJwtToken(token);
     }
@@ -121,7 +121,7 @@ public class JwtService {
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
         cookie.setPath("/api/jwt");
-        cookie.setMaxAge(15 & 50 * 60 * 24);
+        cookie.setMaxAge(60 * 60 * 24 * 15);
         return cookie;
     }
 

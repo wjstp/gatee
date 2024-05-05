@@ -56,7 +56,7 @@ public class JwtProvider {
                 .claim("privilege", ((CustomUserDetails) authentication.getPrincipal()).getPrivilege())
                 .issuedAt(new Date(now))
                 .subject(customUserDetails.getUsername())
-                .expiration(new Date(now + expiration * 1000))
+                .expiration(new Date(now + expiration ))    // todo: 수정
                 .signWith(secretKey)
                 .compact();
     }

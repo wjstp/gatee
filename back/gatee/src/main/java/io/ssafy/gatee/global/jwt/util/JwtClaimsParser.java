@@ -6,6 +6,10 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import io.ssafy.gatee.domain.member.entity.Privilege;
+import io.ssafy.gatee.global.exception.error.forbidden.BadSignaturedToken;
+import io.ssafy.gatee.global.exception.error.forbidden.ExpiredTokenException;
+import io.ssafy.gatee.global.exception.error.forbidden.MalFormedTokenException;
+import io.ssafy.gatee.global.exception.message.ExceptionMessage;
 import io.ssafy.gatee.global.jwt.exception.AccessTokenException;
 import io.ssafy.gatee.global.security.user.CustomUserDetails;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +42,7 @@ public class JwtClaimsParser {
         secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
     }
 
-    public Claims verifyJwtToken(String token) {
+    public Claims verifyJwtToken(String token) throws MalFormedTokenException, ExpiredTokenException, BadSignaturedToken {
         try {
             return Jwts.parser()
                     .verifyWith(secretKey)
@@ -46,11 +50,11 @@ public class JwtClaimsParser {
                     .parseSignedClaims(token)
                     .getPayload();
         } catch (MalformedJwtException malformedJwtException) {
-            throw new AccessTokenException(AccessTokenException.ACCESS_TOKEN_ERROR.MAL_FORM);
+            throw new MalFormedTokenException(ExceptionMessage.MALFORMED_TOKEN);
         } catch (ExpiredJwtException expiredJwtException) {
-            throw new AccessTokenException(AccessTokenException.ACCESS_TOKEN_ERROR.EXPIRED);
+            throw new ExpiredTokenException(ExceptionMessage.EXPIRED_TOKEN);
         } catch (SignatureException signatureException) {
-            throw new AccessTokenException(AccessTokenException.ACCESS_TOKEN_ERROR.BAD_SIGN);
+            throw new BadSignaturedToken(ExceptionMessage.BAD_SIGNATURED_TOKEN);
         }
     }
 
