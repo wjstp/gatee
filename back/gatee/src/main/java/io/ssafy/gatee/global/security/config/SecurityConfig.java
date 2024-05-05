@@ -82,6 +82,7 @@ public class SecurityConfig {
 
         config.setAllowCredentials(true);
         config.setAllowedOrigins(List.of(
+                "https://gaty.duckdns.org",
                 "http://localhost:3000",
                 "http://localhost:8080"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
