@@ -5,7 +5,7 @@ import getUserInfoByEmail from "@helpers/getUserInfoByEmail";
 import convertToAMPMTime from "@helpers/convertToAMPMTime";
 import renderBubbleComponent from "@helpers/renderBubbleComponent";
 
-const YoursChat: React.FC<{ chat: ChatMessage }> = ({ chat }) => {
+const YoursChat = ({ chat }: { chat: ChatMessage }) => {
   const senderInfo = getUserInfoByEmail(chat.sender);
 
   return (
@@ -39,7 +39,7 @@ const YoursChat: React.FC<{ chat: ChatMessage }> = ({ chat }) => {
   );
 };
 
-const MyChat: React.FC<{ chat: ChatMessage }> = ({chat }) => {
+const MyChat = ({ chat }: { chat: ChatMessage }) => {
   return (
     <div className="chat__my-chat">
       <div className="chat__time-count-wrapper">
@@ -60,7 +60,7 @@ const MyChat: React.FC<{ chat: ChatMessage }> = ({chat }) => {
   );
 };
 
-const BubbleChat: React.FC<{ chat: ChatMessage }> = ({chat}) => {
+const BubbleChat = ({ chat }: { chat: ChatMessage }) => {
   const myEmail: string = MemberInfoSample.email;
 
   // senderType 반환 함수

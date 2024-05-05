@@ -11,7 +11,7 @@ import { ChatMessage } from "@type/index";
 import getUserInfoByEmail from "@helpers/getUserInfoByEmail";
 
 
-const BubbleChatAppointment:React.FC<{ chat: ChatMessage }> = ({chat}) => {
+const BubbleChatAppointment = ({chat}: { chat: ChatMessage }) => {
   const [isUserParticipant, setUserParticipant] = useState<boolean>(false);
 
   useEffect(() => {

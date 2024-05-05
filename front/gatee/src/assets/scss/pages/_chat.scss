@@ -249,7 +249,7 @@ $chat-input-height: 3.5rem;
 
     align-items: center;
     background-color: $gray75;
-    width: 98%;
+    width: 100%;
     border-radius: 20px;
   }
 
@@ -272,14 +272,56 @@ $chat-input-height: 3.5rem;
       @extend .chat-input__button;
       @include mr-(0.2);
 
-      color: $gray150;
+      color: $subtext-color;
+      transition: transform 0.3s;
+      z-index: 10;
 
-      &:focus,
-      &:active {
-        color: $gray200;
+      &--active {
+        @extend .chat-input__button-plus;
+        transform: rotate(-45deg);
       }
     }
 
+    &-wrapper {
+      @include flex-col;
+
+      gap: 0.3rem;
+      position: relative;
+      z-index: 10;
+
+      &--disabled {
+        display: none;
+      }
+    }
+
+    &-appointment, &-camera {
+      @extend .chat-input__button;
+      position: absolute;
+      bottom: 0;
+      transition: all 0.3s ease;
+    }
+
+    &-appointment--active {
+      @extend .chat-input__button-appointment;
+      background-color: #ff9595;
+      bottom: 4.7rem;
+
+      &:focus,
+      &:active {
+        background-color: #f88282;
+      }
+    }
+
+    &-camera--active {
+      @extend .chat-input__button-camera;
+      background-color: #C1C4FF;
+      bottom: 2.2rem;
+
+      &:focus,
+      &:active {
+        background-color: #afb2fb;
+      }
+    }
     &-send {
       @extend .chat-input__button;
 
@@ -289,18 +331,80 @@ $chat-input-height: 3.5rem;
       &:active {
         background-color: $orange500;
       }
+
+      &--appointment {
+        @extend .chat-input__button;
+
+        background-color: #ff9595;
+
+        &:focus,
+        &:active {
+          background-color: #f88282;
+        }
+      }
     }
 
     &-emoji {
       @include flex_center;
 
       margin-right: 7px;
-      color: $gray150;
+      color: $subtext-color;
+    }
 
-      &:focus,
-      &:active {
-        color: $gray200;
+    &-cancel {
+      @include flex-center;
+
+      margin-right: 4.5px;
+      color: $subtext-color;
+    }
+  }
+
+  &__preview {
+    @include flex-row;
+
+    position: absolute;
+    width: 100dvw;
+    height: 33dvw;
+    background-color: rgba(0, 0, 0, 0.5);
+    bottom: $chat-input-height;
+
+    &__container {
+      width: 100dvw;
+      height: 100%;
+    }
+
+    &__file-list {
+      @include flex-row;
+      @include px-(0.5);
+
+      align-items: center;
+      width: 100dvw;
+      height: 100%;
+      overflow-x: auto;
+      gap: 0.5rem;
+    }
+
+    &__file-item {
+      @include flex_center;
+
+      position: relative;
+      width: 29dvw;
+      height: 29dvw;
+      border-radius: 10px;
+
+      img {
+        width: 29dvw;
+        height: 100%;
+        object-fit: cover;
+        border-radius: inherit;
       }
+    }
+
+    &__close {
+      position: absolute;
+      color: white;
+      top: 3px;
+      right: 3px;
     }
   }
 }

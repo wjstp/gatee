@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import CustomSwitch from "@components/CustomSwitch";
-import {requestPermission} from "../../../firebase-messaging-sw";
+// import {requestPermission} from "../../../firebase-messaging-sw";
 
 
 interface HandleFinishTab {
@@ -18,7 +18,7 @@ const SettingsToast = ({handleFinishTab}:HandleFinishTab) => {
   const handleAlbumChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAlbumAlarmChecked(event.target.checked);
     // fcm 권한 얻기
-    requestPermission()
+    // requestPermission()
   };
   const handleNaggingChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNaggingAlarmChecked(event.target.checked);

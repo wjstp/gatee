@@ -28,7 +28,7 @@ const ChatIndex = () => {
     });
   }
 
-  // 소켓 연결
+  // connect
   const connectHandler = () => {
     // SockJs 클라이언트 객체 생성
     const socket: WebSocket = new SockJS(`${REACT_APP_API_URL}/ws`); // end point 확인 후 수정
@@ -53,7 +53,8 @@ const ChatIndex = () => {
       }
     );
   }
-
+  
+  // subscribe
   const onConnected = () => {
     // 서버로부터 새로운 메시지 수신
     client.current?.subscribe(
@@ -96,7 +97,7 @@ const ChatIndex = () => {
     };
   }, []);
 
-  // 메시지 전송
+  // send
   const sendHandler = (message: ChatMessage, type: string) => {
     // 연결 확인
     if (client.current && client.current.connected) {

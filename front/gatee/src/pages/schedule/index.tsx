@@ -13,7 +13,7 @@ import { FaCaretLeft, FaCaretRight } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
 
 
-const ScheduleIndex: React.FC = () => {
+const ScheduleIndex = () => {
   const navigate = useNavigate();
   const calendarRef: any = useRef(null)
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
