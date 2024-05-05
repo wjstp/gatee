@@ -1,7 +1,7 @@
 package io.ssafy.gatee.domain.schedule_notification.entity;
 
 import io.ssafy.gatee.domain.base.BaseEntity;
-import io.ssafy.gatee.domain.notification.entity.Notification;
+import io.ssafy.gatee.domain.push_notification.entity.PushNotification;
 import io.ssafy.gatee.domain.schedule.entity.Schedule;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -28,5 +28,5 @@ public class ScheduleNotification extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "notification_id")
-    private Notification notification;
+    private PushNotification notification;
 }

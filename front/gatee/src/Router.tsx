@@ -1,26 +1,26 @@
 import React from 'react';
 import { Routes, Route } from "react-router-dom";
-import MainLayout from "@layout/MainLayout";  // 레이아웃
+import MainLayout from "@layout/MainLayout";
 import SubLayout from "@layout/SubLayout";
-import ExamIndex from "@pages/exam";  // 모의고사
+import ExamIndex from "@pages/exam";
 import ExamGrade from "@pages/exam/Grade";
 import ExamScored from "@pages/exam/Scored";
 import ExamTaking from "@pages/exam/Taking";
-import MainIndex from "@pages/main";  // 메인
-import MissionIndex from "@pages/mission";  // 미션
-import NotificationIndex from "@pages/notification";  // 알림
-import OnboardingIndex from "@pages/onboarding/index";  // 온보딩
-import KaKaoLogin from "@pages/onboarding/components/KaKaoLogin";  // 카카오
-import ProfileModify from "@pages/profile/modify";
-import ProfileIndex from "@pages/profile";  // 프로필
-import ScheduleIndex from "@pages/schedule";  // 일정
+import MainIndex from "@pages/main";
+import MissionIndex from "@pages/mission";
+import NotificationIndex from "@pages/notification";
+import OnboardingIndex from "@pages/onboarding/index";
+import KaKaoLogin from "@pages/onboarding/components/KaKaoLogin";
+import ProfileIndex from "@pages/profile";
+import ScheduleIndex from "@pages/schedule";
 import ScheduleCreateSchedule from "@pages/schedule/Create";
 import ScheduleCreateReview from "@pages/schedule/CreateReview";
 import ScheduleDetail from "@pages/schedule/ScheduleDetail";
-import ChatIndex from "@pages/chat";  // 채팅
+import ChatIndex from "@pages/chat";
+import ChatPhoto from "@pages/chat/ChatPhoto";
 import CharacterIndex from "@pages/character";
 import CharacterStart from "@pages/character/AnswerList";
-import CharacterQuestion from "@pages/character/Question";  // 백과사전
+import CharacterQuestion from "@pages/character/Question";
 import SignupIndex from "@pages/signup";
 import SignupFamilyJoin from "@pages/signup/FamilyJoin";
 import SignupFamilyJoinCheck from "@pages/signup/FamilyJoinCheck";
@@ -33,7 +33,7 @@ import SignupMemberSetCheck from "@pages/signup/MemberSetCheck";
 import SignupMemberSetFinish from "@pages/signup/MemberSetFinish";
 import SignupMemberSetPermission from "@pages/signup/MemberSetPermission";
 import SignupMemberSetRole from "@pages/signup/MemberSetRole";
-import SignupAuth from "@pages/signup/Auth";  // 회원가입
+import SignupAuth from "@pages/signup/Auth";
 import PhotoAlbum from "@pages/photo/AlbumGroup";
 import PhotoAllMonthGroupDetail from "@pages/photo/AllMonthGroupDetail";
 import PhotoAllYearGroupDetail from "@pages/photo/AllYearGroupDetail";
@@ -42,7 +42,7 @@ import AllMonth from "@pages/photo/AllMonth";
 import AllYear from "@pages/photo/AllYear";
 import PhotoIndex from "@pages/photo";
 import PhotoDetail from "@pages/photo/PhotoDetail";
-import PhotoAlbumGroupDetail from "@pages/photo/AlbumGroupDetail";  // 앨범
+import PhotoAlbumGroupDetail from "@pages/photo/AlbumGroupDetail";
 
 
 const Router = () => {
@@ -57,6 +57,7 @@ const Router = () => {
 
         {/*채팅 페이지*/}
         <Route path="/chat" element={<ChatIndex/>}/>
+        <Route path="/chat/photo" element={<ChatPhoto/>}/>
 
         {/*알림 페이지*/}
         <Route path="/notification" element={<NotificationIndex/>}/>
