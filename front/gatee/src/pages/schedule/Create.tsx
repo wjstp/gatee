@@ -17,7 +17,7 @@ import ProfileImage from '@assets/images/logo/app_icon_orange.png'
 const ScheduleCreate = () => {
   dayjs.locale('ko');
   const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const [title, setTitle] = useState<string>("");
   const [color, setColor] = useState<string>("pink")
   const [content, setContent] = useState<string>("");
@@ -46,12 +46,11 @@ const ScheduleCreate = () => {
   const [endDateError, setEndDateError] = useState<DateValidationError | null>(null);
 
   useEffect(() => {
-    // 날짜 string to Dayjs
     setStartDate(dayjs(searchParams.get("start")));
     setEndDate(dayjs(searchParams.get("end")));
     setStartTime(dayjs(`${searchParams.get("start")}T00:00:00`));
     setEndTime(dayjs(`${searchParams.get("end")}T23:59:59`));
-  }, []);
+  }, [searchParams]);
 
   // 제목 입력 핸들러
   const handleSetTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,7 +75,6 @@ const ScheduleCreate = () => {
   const handleSetStartDate = (newValue: Dayjs | null) => {
     if (dayjs(newValue).isValid()) {
       setStartDate(newValue);
-      setSearchParams({"start": dayjs(newValue).format("YYYY-MM-DD")});
     }
   }
 
@@ -101,7 +99,6 @@ const ScheduleCreate = () => {
   const handleSetEndDate = (newValue: Dayjs | null) => {
     if (dayjs(newValue).isValid()) {
       setEndDate(newValue);
-      setSearchParams({"end": dayjs(newValue).format("YYYY-MM-DD")})
     }
   }
   
@@ -152,7 +149,7 @@ const ScheduleCreate = () => {
     if (dayjs(startDate)?.isSame(dayjs(endDate)) && dayjs(endTime)?.isBefore(dayjs(startTime))) {
       setEndTime(dayjs(`${searchParams.get("end")}T23:59:59`));
     }
-  }, [startDate, endDate, startTime, endTime]);
+  }, [startDate, endDate, startTime, endTime, searchParams]);
 
   // 색상 코드
   const colorPalette = (value: string): string => {
@@ -185,9 +182,8 @@ const ScheduleCreate = () => {
   // 참여자 프로필 렌더링
   const renderProfile = (email: string, nickname: string, image: string) => {
     return (
-      <div key={email} onClick={() => handleSetParticipants(email)}>
-        <div
-          className={`create-schedule-participant__profile-image${participants.includes(email) ? '--active' : ''}`}>
+      <div className="create-schedule-participant__profile-item" key={email} onClick={() => handleSetParticipants(email)}>
+        <div className={`create-schedule-participant__profile-image${participants.includes(email) ? '--active' : ''}`}>
           <img src={ProfileImage} alt=""/>
           {/*<img src={ member.image } alt={ nickname } />*/}
         </div>
@@ -289,7 +285,6 @@ const ScheduleCreate = () => {
 
         {/*일정 기간 선택*/}
         <div className="create-schedule-period">
-          {/*일정 날짜 입력*/}
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <div className="create-schedule__sub-title">시작일</div>
             <div className="create-schedule-period__input">

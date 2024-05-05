@@ -33,7 +33,6 @@ const ChatIndex = () => {
     const socket = new SockJS(`${REACT_APP_API_URL}/ws`);
   }
 
-
   useEffect(() => {
     // loadChatHistory();
     connectHandler();
