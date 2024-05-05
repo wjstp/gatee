@@ -9,7 +9,7 @@ export default function localAxios() {
     // headers: {
     //   Authorization: `Bearer ${accessToken}`,
     // },
-    withCredentials: true,
+    // withCredentials: true,
   });
 
   // 요청을 보낼때의 인터셉터
@@ -48,21 +48,30 @@ export default function localAxios() {
     async (error) => {
       alert(`요청 에러남 ${error}`)
       // 해당 에러의 코드를 가져온다.
-      const status = error.response.data.status;
-
+      const code = error.response.data.code
+      const errorMsg = error.response.data.message
+      console.log(error)
       // 만약 에러의 이유가 토큰의 유효기간이 만료된 것이라면
       if (
-        status === 401
+        code === 401 && errorMsg === "토큰이 만료되었습니다." || code === 403
       ) {
         alert("토큰 만료 로직 입장")
         // try catch를 이용한다
         // refresh 토큰도 만료되는 경우 카카오톡 재 로그인
         try {
           // data라는 변수에 요청을 보내 받은 응답값을 저장
-          const {data} = await instance.post(
-            "/api/jwt/rotate-token"
-          )
-
+          const {data} = await axios.post(
+            `${process.env.REACT_APP_API_URL}/api/jwt/rotate-token`,
+            null,
+            {
+              withCredentials: true,
+              headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Credentials":true
+              }
+            },
+          );
+          console.log(data)
           // 토큰 재저장
           await localStorage.setItem("accessToken", data.data.accessToken);
           alert(`로컬 스토리지에 재 저장 ${data.data.accessToken}`);
@@ -77,7 +86,8 @@ export default function localAxios() {
 
         } catch (refreshError) {
           // 리프레시 토큰 만료시 카카오 로그인 화면으로 보내기
-          alert(`리프레시 토큰 만료 ${refreshError}`)
+          // alert(`리프레시 토큰 만료 ${refreshError}`)
+          console.log("리프레시 토큰 만료 ", refreshError)
           // navigate("/kakao")
         }
       }
