@@ -39,6 +39,13 @@
         Kakao.init("%REACT_APP_KAKAO_JAVASCRIPT_KEY%")
         // console.log(Kakao.isInitialized());
     </script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/firebase-messaging-sw.js');
+            });
+        }
+    </script>
 </head>
 <body>
 <noscript></noscript>

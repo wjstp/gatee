@@ -1,10 +1,15 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Router from "./Router";
-// import  "./firebaseInit.ts";
-// import {requestPermission} from "./firebaseInit";
+import {requestPermission} from "./firebase-messaging-sw";
+import {useMemberStore} from "@store/useMemberStore";
+import {getPushAlarmByLocalStorage} from "@api/FirebaseAxios";
 
 const App = ()=> {
-  // requestPermission()
+  const {accessToken} = useMemberStore()
+  useEffect(() => {
+    getPushAlarmByLocalStorage(accessToken)
+    // requestPermission(accessToken)
+  }, []);
   // 로컬 스토리지 초기화
   // localStorage.removeItem("family");
   // localStorage.removeItem("member")

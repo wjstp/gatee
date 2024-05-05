@@ -7,10 +7,12 @@ const SignupAuth = () => {
   const navigate = useNavigate();
   const tokenUrl: string = `https://kauth.kakao.com/oauth/token`
   const kakaoJavaScriptApiKey: string | undefined = process.env.REACT_APP_KAKAO_JAVASCRIPT_KEY;
-  const web: string = "http://localhost:3000/auth"
+  // 로컬로 할때는 이거 켜기
+  // const web: string = "http://localhost:3000/auth"
   const mobile_home: string = "http://192.168.35.47:3000/auth"
   const mobile_ssafy: string = "http://70.12.247.24:3000/auth"
-
+  // 서버로 할땐 이거 켜기
+  const web: string = "https://gaty.duckdns.org/auth"
   // 토큰 상태 관리
   const { setAccessToken } = useMemberStore();
 
@@ -36,7 +38,7 @@ const SignupAuth = () => {
         }
       ).then(response => {
         const kakao_access_token: string = response.data.access_token;
-        console.log(response.data.access_token);
+        console.log(response.data);
         console.log(kakao_access_token);
 
         axios.post(
@@ -55,10 +57,14 @@ const SignupAuth = () => {
             }
           }
         ).then(response => {
-          console.log(response.headers.authorization);
+          console.log("로그인시 응답",response);
+          // Bearer 떼고 토큰만 저장
           const token = response.headers.authorization.split(' ')[1];
           console.log(token)
+          // 스토어에 토큰 저장
           setAccessToken(token);
+          // 로컬 스토리지에 엑세스 토큰 저장
+          localStorage.setItem("accessToken", token);
           navigate("/signup");
         }).catch(error => {
           console.log(error.response);
