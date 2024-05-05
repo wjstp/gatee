@@ -1,6 +1,6 @@
 import React from 'react';
 import { ReactComponent as LineLogo } from "@assets/images/logo/logo_line.svg"
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ReactComponent as KaKao } from "@assets/images/signup/kakao_narrow.svg"
 
 const KaKaoLogin = () => {
