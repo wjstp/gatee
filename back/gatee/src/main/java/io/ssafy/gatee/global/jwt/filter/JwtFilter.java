@@ -1,10 +1,5 @@
 package io.ssafy.gatee.global.jwt.filter;
 
-import com.google.rpc.context.AttributeContext;
-import io.ssafy.gatee.global.exception.error.forbidden.BadSignaturedToken;
-import io.ssafy.gatee.global.exception.error.forbidden.ExpiredTokenException;
-import io.ssafy.gatee.global.exception.error.forbidden.MalFormedTokenException;
-import io.ssafy.gatee.global.exception.message.ExceptionMessage;
 import io.ssafy.gatee.global.jwt.application.JwtService;
 import io.ssafy.gatee.global.jwt.exception.AccessTokenException;
 import jakarta.servlet.FilterChain;
@@ -29,27 +24,24 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException, ExpiredTokenException {
+            throws ServletException, IOException{
 
         if (!request.getRequestURI().endsWith(KAKAO_USER_INFO_URL)) {
             log.info("토큰 검증 시작");
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            if (Objects.isNull(SecurityContextHolder.getContext().getAuthentication())) {
+            if (Objects.isNull(authentication)) {
                 try {
                     authentication = jwtService.authenticateJwtToken(request);
-                } catch (MalFormedTokenException e) {
-                    throw new RuntimeException(e);
-                } catch (BadSignaturedToken e) {
-                    throw new RuntimeException(e);
+                    // 세션에 사용자 등록 - securitycontextholder에 등록한다.
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                    log.info(String.valueOf(authentication));
+                    log.info("토큰 검증 완료");
+                    // 그 다음 필터로 이동
+                    filterChain.doFilter(request, response);
+                } catch (AccessTokenException accessTokenException) {
+                    accessTokenException.addResponseError(response);
                 }
-                // 세션에 사용자 등록 - securitycontextholder에 등록한다.
-                SecurityContextHolder.getContext().setAuthentication(authentication);
             }
-            log.info(String.valueOf(authentication));
-            // 예외 처리 추가
-            log.info("토큰 검증 완료");
         }
-        // 그 다음 필터로 이동
-        filterChain.doFilter(request, response);
     }
 }
