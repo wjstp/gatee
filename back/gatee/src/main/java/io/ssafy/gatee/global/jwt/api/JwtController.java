@@ -1,8 +1,7 @@
 package io.ssafy.gatee.global.jwt.api;
 
+import io.ssafy.gatee.global.exception.error.forbidden.*;
 import io.ssafy.gatee.global.jwt.application.JwtService;
-import io.ssafy.gatee.global.jwt.dto.RefreshToken;
-import io.ssafy.gatee.global.jwt.exception.RefreshTokenException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -25,16 +24,13 @@ public class JwtController {
     private final JwtService jwtService;
 
     @PostMapping("/rotate-token")
-    public void rotateAccessToken(HttpServletRequest request, HttpServletResponse response) throws RefreshTokenException {
-        try {
-            log.info("액세스 토큰 재발급 시작");
-            String refreshToken = this.getCookie(request).getValue();
-            log.info("refresh Token : " + refreshToken);
-            String accessToken = jwtService.rotateAccessToken(refreshToken);
-            response.addHeader("Access-Token", "Bearer " + accessToken);
-        } catch (RefreshTokenException refreshTokenException) {
-            refreshTokenException.addResponseError(response);
-        }
+    public void rotateAccessToken(HttpServletRequest request, HttpServletResponse response) throws NoRefreshTokenException, BadRefreshTokenException,
+            ExpiredTokenException, MalFormedTokenException, BadSignaturedToken {
+        log.info("액세스 토큰 재발급 시작");
+        String refreshToken = this.getCookie(request).getValue();
+        log.info("refresh Token : " + refreshToken);
+        String accessToken = jwtService.rotateAccessToken(refreshToken);
+        response.addHeader("Access-Token", "Bearer " + accessToken);
     }
     // todo: access token 검증할 때 refresh token의 남은 시간을 확인해서 갱신하는 로직 추가
 
