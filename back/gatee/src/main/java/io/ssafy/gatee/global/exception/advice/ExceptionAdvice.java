@@ -3,10 +3,7 @@ package io.ssafy.gatee.global.exception.advice;
 import io.ssafy.gatee.global.exception.error.bad_request.DoNotHavePermissionException;
 import io.ssafy.gatee.global.exception.error.bad_request.ExpiredCodeException;
 import io.ssafy.gatee.global.exception.error.bad_request.WrongTypeFilterException;
-import io.ssafy.gatee.global.exception.error.forbidden.*;
 import io.ssafy.gatee.global.exception.error.not_found.*;
-import io.ssafy.gatee.global.exception.error.unauthorized.BadTypeException;
-import io.ssafy.gatee.global.exception.error.unauthorized.UnAcceptException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -39,27 +36,6 @@ public class ExceptionAdvice {
         return e.getMessage();
     }
 
-
-    @ResponseStatus(HttpStatus.FORBIDDEN)
-    @ExceptionHandler({
-            BadRefreshTokenException.class,
-            BadSignaturedToken.class,
-            ExpiredTokenException.class,
-            MalFormedTokenException.class,
-            NoRefreshTokenException.class
-    })
-    public String handleForbidden(RuntimeException e) {
-        return e.getMessage();
-    }
-
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    @ExceptionHandler({
-            BadTypeException.class,
-            UnAcceptException.class,
-    })
-    public String handleUnauthorized(RuntimeException e) {
-        return e.getMessage();
-    }
 
     @ResponseStatus(HttpStatus.CONFLICT)
 //    @ExceptionHandler
