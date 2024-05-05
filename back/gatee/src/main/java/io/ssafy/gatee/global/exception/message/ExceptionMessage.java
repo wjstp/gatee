@@ -16,7 +16,16 @@ public enum ExceptionMessage {
 
     DO_NOT_HAVE_REQUEST("권한이 없습니다."),
     EXPIRED_CODE("만료된 인증코드입니다."),
-    WRONG_TYPE_FILTER("잘못된 필터입니다.")
+    WRONG_TYPE_FILTER("잘못된 필터입니다."),
+
+    UN_ACCEPT("토큰이 null이거나 길이가 짧습니다."),
+    BAD_TYPE("토큰이 Bearer 타입이 아닙니다."),
+
+    MALFORMED_TOKEN("Malformed Token"),
+    BAD_SIGNATURED_TOKEN( "Bad Signatured Token"),
+    EXPIRED_TOKEN("토큰이 만료되었습니다."),
+    NO_REFRESH_TOKEN("리프레시 토큰이 존재하지 않습니다."),
+    BAD_REFRESH_TOKEN("리프레시 토큰이 일치하지 않습니다."),
     ;
 
     private final String message;
