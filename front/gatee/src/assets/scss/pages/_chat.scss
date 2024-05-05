@@ -42,7 +42,6 @@ $chat-input-height: 3.5rem;
 
       width: 2.5rem;
       height: 2.5rem;
-      box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
     }
 
     &__container {
@@ -364,7 +363,7 @@ $chat-input-height: 3.5rem;
 
     position: absolute;
     width: 100dvw;
-    height: 33dvw;
+    height: 35dvw;
     background-color: rgba(0, 0, 0, 0.5);
     bottom: $chat-input-height;
 
@@ -375,25 +374,25 @@ $chat-input-height: 3.5rem;
 
     &__file-list {
       @include flex-row;
-      @include px-(0.5);
 
       align-items: center;
       width: 100dvw;
       height: 100%;
       overflow-x: auto;
-      gap: 0.5rem;
+      gap: 1dvw;
+      padding: 0 1dvw;
     }
 
     &__file-item {
       @include flex_center;
 
       position: relative;
-      width: 29dvw;
-      height: 29dvw;
+      width: 32dvw;
+      height: 32dvw;
       border-radius: 10px;
 
       img {
-        width: 29dvw;
+        width: 32dvw;
         height: 100%;
         object-fit: cover;
         border-radius: inherit;

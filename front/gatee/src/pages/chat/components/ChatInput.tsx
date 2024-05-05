@@ -46,6 +46,30 @@ const ChatInput = () => {
     setInputFile(null);
   }
 
+  // 메시지 전송 핸들러
+  const handleSendMessage = () => {
+    // FILE & MESSAGE
+    if (inputFile && inputMessage) {
+      console.log("Send file: ", inputFile);
+      console.log("Send message: ", inputMessage);
+    }
+    // FILE
+    else if (inputFile) {
+      console.log("Send file: ", inputFile);
+    }
+    else if (inputMessage) {
+      // APPOINTMENT
+      if (isOpenAppointment) {
+        console.log("Send appointment: ", inputMessage);
+      }
+      // MESSAGE
+      else {
+        console.log("Send message: ", inputMessage);
+      }
+    }
+    reset();
+  }
+
   // 메시지 입력 핸들러
   const handleSetMessage = (event: ChangeEvent<HTMLInputElement>) => {
     setInputMessage(event.target.value);
@@ -58,8 +82,6 @@ const ChatInput = () => {
 
   // 카메라 버튼 클릭 핸들러
   const handleCameraClick = () => {
-    setIsOpenPlus(false);
-
     // 파일 선택 대화 상자 열기
     if (fileInputRef.current) {
       fileInputRef.current.click();
@@ -89,13 +111,10 @@ const ChatInput = () => {
   useEffect(() => {
     if (!inputFile || inputFile.length === 0) {
       setIsOpenPreview(false);
+    } else {
+      setIsOpenPlus(false);
     }
   }, [inputFile]);
-
-  // 메시지 전송 핸들러
-  const handleSendMessage = () => {
-    reset();
-  }
 
   // input 토글
   useEffect(() => {
@@ -126,9 +145,7 @@ const ChatInput = () => {
               </button>
             </div>
           ))}
-
         </div>
-
       </div>
     )
   }

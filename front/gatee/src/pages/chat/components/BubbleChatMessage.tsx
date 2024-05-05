@@ -2,7 +2,7 @@ import React from 'react';
 import { ChatMessage } from "@type/index";
 import { MemberInfoSample } from "@constants/index";
 
-const BubbleChatMessage :React.FC<{ chat: ChatMessage }> = ({chat}) => {
+const BubbleChatMessage = ({chat}: { chat: ChatMessage }) => {
   // senderType 반환 함수
   const getSenderType = (value: string): string => {
     return value === MemberInfoSample.email ? "my" : "yours";

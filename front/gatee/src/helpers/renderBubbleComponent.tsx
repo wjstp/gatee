@@ -4,7 +4,7 @@ import BubbleChatMessage from "@pages/chat/components/BubbleChatMessage";
 import BubbleChatFile from "@pages/chat/components/BubbleChatFile";
 import BubbleChatAppointment from "@pages/chat/components/BubbleChatAppointment";
 
-// chat.type에 따라 다른 컴포넌트를 반환하는 함수
+// type에 따라 다른 컴포넌트를 반환하는 함수
 const renderBubbleComponent = (chat: ChatMessage)  => {
   switch (chat.type) {
     case "message":  // 채팅

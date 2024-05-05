@@ -1,23 +1,27 @@
 import React from "react";
-import { ChatMessage, ChatFile, SenderType } from "@type/index";
+import { ChatMessage, SenderType } from "@type/index";
 import { MemberInfoSample } from "@constants/index";
 import getUserInfoByEmail from "@helpers/getUserInfoByEmail";
 import convertToAMPMTime from "@helpers/convertToAMPMTime";
 import renderBubbleComponent from "@helpers/renderBubbleComponent";
 
-const YoursChat = ({ chat }: { chat: ChatMessage }) => {
+const YoursChat = ({ chat, isPrevSender }: { chat: ChatMessage, isPrevSender: boolean}) => {
   const senderInfo = getUserInfoByEmail(chat.sender);
 
   return (
     <div className="chat__yours-chat">
       {/*프로필*/}
       <div className="chat__yours-chat__profile">
-        <img src={senderInfo.image} alt={senderInfo.nickname}/>
+        {!isPrevSender && (
+          <img src={senderInfo.image} alt={senderInfo.nickname}/>
+        )}
       </div>
 
       <div className="chat__yours-chat__container">
         {/*닉네임*/}
-        <div className="chat__yours-chat__nickname">{ senderInfo.nickname }</div>
+        {!isPrevSender && (
+          <div className="chat__yours-chat__nickname">{ senderInfo.nickname }</div>
+        )}
 
         {/*내용*/}
         {renderBubbleComponent(chat)}
@@ -26,7 +30,9 @@ const YoursChat = ({ chat }: { chat: ChatMessage }) => {
       <div className="chat__time-count-wrapper">
         {/*리딩 카운트*/}
         <div className="chat__count">
-        { chat.readingCount }
+        {chat.readingCount > 0 && (
+          <span>{chat.readingCount}</span>
+        )}
         </div>
 
         {/*시간*/}
@@ -45,7 +51,9 @@ const MyChat = ({ chat }: { chat: ChatMessage }) => {
       <div className="chat__time-count-wrapper">
         {/*리딩 카운트*/}
         <div className="chat__count--right">
-          {chat.readingCount}
+          {chat.readingCount > 0 && (
+            <span>{chat.readingCount}</span>
+          )}
         </div>
 
         {/*시간*/}
@@ -60,7 +68,7 @@ const MyChat = ({ chat }: { chat: ChatMessage }) => {
   );
 };
 
-const BubbleChat = ({ chat }: { chat: ChatMessage }) => {
+const BubbleChat = ({ chat, isPrevSender }: { chat: ChatMessage, isPrevSender: boolean}) => {
   const myEmail: string = MemberInfoSample.email;
 
   // senderType 반환 함수
@@ -70,7 +78,7 @@ const BubbleChat = ({ chat }: { chat: ChatMessage }) => {
 
   switch (getSenderType(chat.sender)) {
     case SenderType.YOURS:
-      return <YoursChat chat={chat}/>;
+      return <YoursChat chat={chat} isPrevSender={isPrevSender}/>;
     case SenderType.MY:
       return <MyChat chat={chat}/>;
     default:

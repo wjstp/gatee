@@ -122,11 +122,31 @@ const ChatIndex = () => {
     }
   }, [newMessage]);
 
+
+  // 이전 채팅과 현재 채팅의 보낸 사람이 같은지 여부에 따라 props 설정
+  const setPrevProps = (prevChat: ChatMessage | null, currentChat: ChatMessage) => {
+    if (prevChat) {
+      return { isPrevSender: prevChat.sender === currentChat.sender };
+    }
+    return { isPrevSender: false };
+  };
+
+  // 채팅 버블 렌더링
+  const renderChatBubble = ChatSample.chatList.map((currentChat: ChatMessage, index: number) => {
+    const prevChat: ChatMessage | null = index < ChatSample.chatList.length - 1 ? ChatSample.chatList[index + 1] : null;
+
+    return (
+      <BubbleChat
+        key={currentChat.chatId}
+        chat={currentChat}
+        {...setPrevProps(prevChat, currentChat)}
+      />
+    );
+  });
+
   return (
     <div className="chat">
-      {ChatSample.chatList.map((chat: ChatMessage) =>
-        <BubbleChat key={chat.chatId} chat={chat} />
-      )}
+      {renderChatBubble}
       <ChatInput />
     </div>
   );
