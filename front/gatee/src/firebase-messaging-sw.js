@@ -1,6 +1,6 @@
 import {initializeApp} from "firebase/app";
 import {getMessaging, getToken} from "firebase/messaging";
-import {GetPushAlarmByLocalStorage} from "@api/FirebaseAxios";
+import {getPushAlarmByLocalStorage} from "@api/FirebaseAxios";
 
 // 파이어 베이스 객체 생성
 const app = initializeApp({
@@ -18,34 +18,35 @@ const messaging = getMessaging(app);
 
 // 푸시 알림 받는 설정
 /* eslint-disable-next-line no-restricted-globals */
-self.addEventListener("push", function (e) {
-  console.log("push: ", e.data.json());
-  if (!e.data.json()) return;
+// self.addEventListener("push", function (e) {
+//   console.log("push: ", e.data.json());
+//   if (!e.data.json()) return;
+//
+//   const resultData = e.data.json().notification;
+//   const notificationTitle = resultData.title;
+//   const notificationOptions = {
+//     body: resultData.body,
+//     icon: resultData.image,
+//     tag: resultData.tag,
+//     ...resultData,
+//   };
+//   console.log("push: ", {resultData, notificationTitle, notificationOptions});
+//   /* eslint-disable-next-line no-restricted-globals */
+//   self.registration.showNotification(notificationTitle, notificationOptions);
+// });
 
-  const resultData = e.data.json().notification;
-  const notificationTitle = resultData.title;
-  const notificationOptions = {
-    body: resultData.body,
-    icon: resultData.image,
-    tag: resultData.tag,
-    ...resultData,
-  };
-  console.log("push: ", {resultData, notificationTitle, notificationOptions});
-  /* eslint-disable-next-line no-restricted-globals */
-  self.registration.showNotification(notificationTitle, notificationOptions);
-});
 
 
-
-export async function requestPermission(accessToken) {
+export async function requestPermission() {
 
   // console.log("FCM 알림 권한 요청 시작");
   const permission = await Notification.requestPermission();
-
+  alert("FCM 알림 권한 요청 시작")
   if (permission === "denied") {
     // console.log("FCM 알림 권한 얻기 실패");
     return;
   } else {
+    alert("FCM 알림 권한 허용")
     // console.log("FCM 알림 권한 허용");
   }
 
@@ -61,7 +62,7 @@ export async function requestPermission(accessToken) {
     localStorage.setItem('fcmDeviceToken', token);
     // console.log("localStorage.getItem FCM device token: " + localStorage.getItem('fcmDeviceToken'));
     // 서버로 토큰 구독하기
-    GetPushAlarmByLocalStorage(accessToken)
+    getPushAlarmByLocalStorage()
     try {
       // console.log("FCM device token 업데이트 api 요청");
 
