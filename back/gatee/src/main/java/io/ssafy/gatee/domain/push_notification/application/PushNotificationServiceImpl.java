@@ -1,6 +1,10 @@
 package io.ssafy.gatee.domain.push_notification.application;
 
 import com.google.firebase.messaging.*;
+import io.ssafy.gatee.domain.chatgpt.dto.request.QuestionDto;
+import io.ssafy.gatee.domain.chatgpt.dto.response.GptResponseDto;
+import io.ssafy.gatee.domain.chatgpt.service.GptService;
+import io.ssafy.gatee.domain.push_notification.dto.request.NaggingReq;
 import io.ssafy.gatee.global.firebase.FirebaseInit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +16,8 @@ import org.springframework.stereotype.Service;
 public class PushNotificationServiceImpl implements PushNotificationService {
 
     private final FirebaseInit firebaseInit;
+    private final GptService gptService;
+
     @Override
     public void sendTestPush(String token) throws FirebaseMessagingException {
         firebaseInit.init();
@@ -42,5 +48,13 @@ public class PushNotificationServiceImpl implements PushNotificationService {
                 .build();
         String response = FirebaseMessaging.getInstance().send(message);
         log.info("successfully sent message ? " + response);
+    }
+
+    @Override
+    public void sendNagging(NaggingReq naggingReq) {
+        String content = "\"" + naggingReq.message() + "\"라는 문장을 상냥한 어투로 바꿔줘. 이모티콘도 붙여줘.";
+        GptResponseDto result = gptService.askQuestion(QuestionDto.builder().content(content).build());
+        log.info(result.answer());
+
     }
 }

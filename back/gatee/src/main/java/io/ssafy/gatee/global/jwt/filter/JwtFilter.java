@@ -1,6 +1,9 @@
 package io.ssafy.gatee.global.jwt.filter;
 
 import com.google.rpc.context.AttributeContext;
+import io.ssafy.gatee.global.exception.error.forbidden.BadSignaturedToken;
+import io.ssafy.gatee.global.exception.error.forbidden.ExpiredTokenException;
+import io.ssafy.gatee.global.exception.error.forbidden.MalFormedTokenException;
 import io.ssafy.gatee.global.jwt.application.JwtService;
 import io.ssafy.gatee.global.jwt.exception.AccessTokenException;
 import jakarta.servlet.FilterChain;
@@ -39,8 +42,12 @@ public class JwtFilter extends OncePerRequestFilter {
                 // 예외 처리 추가
                 log.info("토큰 검증 완료");
             }
-        } catch (AccessTokenException accessTokenException) {
-            accessTokenException.addResponseError(response);
+        } catch (ExpiredTokenException e) {
+            throw new RuntimeException(e);
+        } catch (MalFormedTokenException e) {
+            throw new RuntimeException(e);
+        } catch (BadSignaturedToken e) {
+            throw new RuntimeException(e);
         }
         // 그 다음 필터로 이동
         filterChain.doFilter(request, response);
