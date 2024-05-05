@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum ExceptionMessage {
 
-    File_NOT_FOUND("파일을 찾을 수 없습니다."),
+    FIlE_NOT_FOUND("파일을 찾을 수 없습니다."),
     MEMBER_NOT_FOUND("회원을 찾을 수 없습니다."),
     MEMBER_FAMILY_NOT_FOUND("회원의 가족 정보를 찾을 수 없습니다."),
     FAMILY_NOT_FOUND("가족을 찾을 수 없습니다."),
@@ -25,7 +25,7 @@ public enum ExceptionMessage {
     BAD_SIGNATURED_TOKEN( "Bad Signatured Token"),
     EXPIRED_TOKEN("토큰이 만료되었습니다."),
     NO_REFRESH_TOKEN("리프레시 토큰이 존재하지 않습니다."),
-    BAD_REFRESH_TOKEN("리프레시 토큰이 일치하지 않습니다."),
+    BAD_REFRESH_TOKEN("리프레시 토큰이 일치하지 않습니다.")
     ;
 
     private final String message;

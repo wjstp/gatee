@@ -3,10 +3,7 @@ package io.ssafy.gatee.global.exception.advice;
 import io.ssafy.gatee.global.exception.error.bad_request.DoNotHavePermissionException;
 import io.ssafy.gatee.global.exception.error.bad_request.ExpiredCodeException;
 import io.ssafy.gatee.global.exception.error.bad_request.WrongTypeFilterException;
-import io.ssafy.gatee.global.exception.error.forbidden.BadRefreshTokenException;
-import io.ssafy.gatee.global.exception.error.forbidden.BadSignaturedToken;
-import io.ssafy.gatee.global.exception.error.forbidden.MalFormedTokenException;
-import io.ssafy.gatee.global.exception.error.forbidden.NoRefreshTokenException;
+import io.ssafy.gatee.global.exception.error.forbidden.*;
 import io.ssafy.gatee.global.exception.error.not_found.*;
 import io.ssafy.gatee.global.exception.error.unauthorized.BadTypeException;
 import io.ssafy.gatee.global.exception.error.unauthorized.UnAcceptException;
@@ -47,7 +44,7 @@ public class ExceptionAdvice {
     @ExceptionHandler({
             BadRefreshTokenException.class,
             BadSignaturedToken.class,
-            ExpiredCodeException.class,
+            ExpiredTokenException.class,
             MalFormedTokenException.class,
             NoRefreshTokenException.class
     })
