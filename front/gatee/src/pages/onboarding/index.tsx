@@ -29,9 +29,9 @@ const OnboardingIndex = () => {
     const isDeviceIOS = /iPad|iPhone|iPod/.test(window.navigator.userAgent);
 
     if (isDeviceIOS) {
-      alert("아이폰 쓰네 ㅋ")
+      console.log("IOS")
     } else {
-      alert("갤럭시 최고")
+      console.log("Not an iOS")
     }
   }, []);
 

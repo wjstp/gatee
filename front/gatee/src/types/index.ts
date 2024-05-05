@@ -70,11 +70,11 @@ export interface PhotoData {
 }
 
 export interface Chat {
-  chatList: ChatItem[];
+  chatList: ChatMessage[];
   cursor: number;
 }
 
-export interface ChatItem {
+export interface ChatMessage {
   chatId: number;
   type: string;
   sender: string;

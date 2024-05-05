@@ -1,5 +1,5 @@
 import React from 'react';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import calculateWeekday from "@helpers/calculateWeekday";
 
 

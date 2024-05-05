@@ -1,15 +1,18 @@
 import React, {useState, useEffect } from "react";
-import { FamilyMemberInfoSample } from "../../constants";
-import ProfileImage from '@assets/images/logo/app_icon_orange.png'
 import { useSearchParams, useNavigate } from "react-router-dom"
-import dayjs, { Dayjs } from 'dayjs';
+
 import { TextField } from '@mui/material';
 import { DateField } from '@mui/x-date-pickers/DateField';
 import { TimeField } from '@mui/x-date-pickers/TimeField';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateValidationError } from "@mui/x-date-pickers";
+import dayjs, { Dayjs } from 'dayjs';
+
+import { FamilyMemberInfoSample } from "@constants/index";
 import calculateWeekday from "@helpers/calculateWeekday";
+import ProfileImage from '@assets/images/logo/app_icon_orange.png'
+
 
 const ScheduleCreate = () => {
   dayjs.locale('ko');
@@ -267,17 +270,17 @@ const ScheduleCreate = () => {
           {/*일정 카테고리 선택*/}
           <div className="create-schedule-info__input-category">
             <button
-              className={`create-schedule-info__input-category-group${category == "group" ? '--active' : ''}`}
+              className={`create-schedule-info__input-category-group${category === "group" ? '--active' : ''}`}
               onClick={() => handleSetCategory("group")}
             >가족 일정
             </button>
             <button
-              className={`create-schedule-info__input-category-personal${category == "personal" ? '--active' : ''}`}
+              className={`create-schedule-info__input-category-personal${category === "personal" ? '--active' : ''}`}
               onClick={() => handleSetCategory("personal")}
             >개인 일정
             </button>
             <button
-              className={`create-schedule-info__input-category-event${category == "event" ? '--active' : ''}`}
+              className={`create-schedule-info__input-category-event${category === "event" ? '--active' : ''}`}
               onClick={() => handleSetCategory("event")}
             >이벤트
             </button>

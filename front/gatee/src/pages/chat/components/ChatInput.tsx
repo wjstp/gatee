@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import { HiOutlinePlus } from "react-icons/hi";
 import { PiPaperPlaneRightFill } from "react-icons/pi";
 import { SlEmotsmile } from "react-icons/sl";
-import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 
 const ChatInput = () => {
-  const [inputMessage, setInputMessage] = useState<string | null>(null);
+  const [inputMessage, setInputMessage] = useState<string>("");
   const muiFocusCustom = {
     '& label.Mui-focused': {
       color: '#00ff0000',

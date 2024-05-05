@@ -1,11 +1,11 @@
 import React from "react";
-import { ChatItem, ChatFile, SenderType } from "@type/index";
+import { ChatMessage, ChatFile, SenderType } from "@type/index";
 import { MemberInfoSample } from "@constants/index";
 import getUserInfoByEmail from "@helpers/getUserInfoByEmail";
 import convertToAMPMTime from "@helpers/convertToAMPMTime";
 import renderBubbleComponent from "@helpers/renderBubbleComponent";
 
-const YoursChat: React.FC<{ chat: ChatItem }> = ({ chat }) => {
+const YoursChat: React.FC<{ chat: ChatMessage }> = ({ chat }) => {
   const senderInfo = getUserInfoByEmail(chat.sender);
 
   return (
@@ -39,7 +39,7 @@ const YoursChat: React.FC<{ chat: ChatItem }> = ({ chat }) => {
   );
 };
 
-const MyChat: React.FC<{ chat: ChatItem }> = ({chat }) => {
+const MyChat: React.FC<{ chat: ChatMessage }> = ({chat }) => {
   return (
     <div className="chat__my-chat">
       <div className="chat__time-count-wrapper">
@@ -60,7 +60,7 @@ const MyChat: React.FC<{ chat: ChatItem }> = ({chat }) => {
   );
 };
 
-const BubbleChat: React.FC<{ chat: ChatItem }> = ({chat}) => {
+const BubbleChat: React.FC<{ chat: ChatMessage }> = ({chat}) => {
   const myEmail: string = MemberInfoSample.email;
 
   // senderType 반환 함수
