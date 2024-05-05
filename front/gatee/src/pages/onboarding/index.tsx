@@ -18,11 +18,12 @@ const OnboardingIndex = () => {
 
   const { accessToken } = useMemberStore();
 
-  useEffect(() => {
-    if (accessToken) {
-      navigate("/main");
-    }
-  }, []);
+  // 엑세스 토큰 있을때 보내주는거 주석처리
+  // useEffect(() => {
+  //   if (accessToken) {
+  //     navigate("/main");
+  //   }
+  // }, []);
 
   // 기기 파악
   useEffect(() => {
