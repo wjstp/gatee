@@ -15,7 +15,7 @@ import io.ssafy.gatee.domain.push_notification.entity.PushNotification;
 import io.ssafy.gatee.domain.push_notification.entity.Type;
 import io.ssafy.gatee.global.exception.error.not_found.MemberNotFoundException;
 import io.ssafy.gatee.global.exception.message.ExceptionMessage;
-import io.ssafy.gatee.global.firebase.FirebaseInit;
+import io.ssafy.gatee.global.firebase.init.FirebaseInit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -159,23 +159,28 @@ public class PushNotificationServiceImpl implements PushNotificationService {
     }
 
     @Override
-    public void sendPushOneToMany(String senderToken, List<String> receiverTokenList, Type type, Long typeId) throws FirebaseMessagingException {   // 이건 토큰 할때나..
+    public void sendPushOneToMany(PushNotificationFCMReq pushNotificationFCMReq) throws FirebaseMessagingException {   // 이건 토큰 할때나..
         firebaseInit.init();
+        List<String> receiverTokens = pushNotificationFCMReq.receiverId().stream()
+                .map(receiverId ->memberRepository.findById(receiverId))
+                .filter(Optional::isPresent)
+                .filter(receiver -> checkAgreement(pushNotificationFCMReq.dataFCMReq().type(), receiver.get().getId()))
+                .map(receiver->receiver.get().getNotificationToken()).toList();
         MulticastMessage message = MulticastMessage.builder()
-                .addAllTokens(receiverTokenList)
+                .addAllTokens(receiverTokens)
 //                .putData()  // 보여줄 정보 외 데이터 설정
                 .setNotification(Notification.builder()
-                        .setTitle("제목")
-                        .setImage("보내는 사람 프로필 이미지")
-                        .setBody("내용")
+                        .setTitle(pushNotificationFCMReq.title())
+//                        .setImage("보내는 사람 프로필 이미지")
+                        .setBody(pushNotificationFCMReq.content())
                         .build())  // 내용 설정
                 // 안드로이드 설정
                 .setAndroidConfig(AndroidConfig.builder()
                         .setTtl(3600 * 1000)    // 푸시 알림 유지 시간
                         .setNotification(AndroidNotification.builder()
-                                .setTitle("제목")
-                                .setImage("보내는 사람 프로필 이미지")
-                                .setBody("내용")
+                                .setTitle(pushNotificationFCMReq.title())
+//                                .setImage("보내는 사람 프로필 이미지")
+                                .setBody(pushNotificationFCMReq.content())
                                 .setClickAction("push_click").build())  // todo: 푸시 알림 클릭시 연결 동작 - 아마도 프론트 함수 호출?
                         .build())
                 // ios 설정
@@ -193,11 +198,11 @@ public class PushNotificationServiceImpl implements PushNotificationService {
             for (int i = 0; i < responses.size(); i++) {
                 if (!responses.get(i).isSuccessful()) {
                     // todo: 토큰 오류 시 로직 추가 - db에는 저장해야 한다.
-                    failedTokens.add(receiverTokenList.get(i));
+                    failedTokens.add(receiverTokens.get(i));
                 }
             }
         }
-        // 저장 로직 success와 fail모두
+        // 저장 로직 success와 fail모두 - 이때는 receiveridlist 활용
         List<PushNotification> notificationList = new ArrayList<>();
 //        pushNotificationRepository.saveAll(notificationList);
         log.info(response.getFailureCount() + " messages were not sent");
