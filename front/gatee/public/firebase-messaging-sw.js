@@ -1,3 +1,10 @@
+/* eslint-disable */
+importScripts(
+  "https://www.gstatic.com/firebasejs/9.0.2/firebase-app-compat.js"
+);
+importScripts(
+  "https://www.gstatic.com/firebasejs/9.0.2/firebase-messaging-compat.js"
+);
 
 self.addEventListener("install", function (e) {
   console.log("FCM Service Worker install..");
@@ -21,7 +28,7 @@ self.addEventListener("push", function (e) {
     tag: resultData.tag,
     ...resultData,
   };
-  console.log("push: ", { resultData, notificationTitle, notificationOptions });
+  console.log("push: ", {resultData, notificationTitle, notificationOptions});
 
   self.registration.showNotification(notificationTitle, notificationOptions);
 });
