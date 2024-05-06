@@ -37,7 +37,7 @@ public class MemberController {
         memberService.saveMemberInfo(memberSaveReq, customUserDetails.getMemberId(), response);
     }
 
-    // 회원 토큰 저장
+    // 회원 토큰 저장 및 권한 모두 true로 변경
     @PatchMapping("/notifications")
     @ResponseStatus(HttpStatus.OK)
     public void saveNotificationToken(@Valid @RequestBody MemberTokenReq memberTokenReq, @AuthenticationPrincipal CustomUserDetails customUserDetails) {

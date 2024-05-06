@@ -10,6 +10,8 @@ import io.ssafy.gatee.domain.member.entity.Member;
 import io.ssafy.gatee.domain.member.entity.Privilege;
 import io.ssafy.gatee.domain.member_family.dao.MemberFamilyRepository;
 import io.ssafy.gatee.domain.member_family.entity.MemberFamily;
+import io.ssafy.gatee.domain.member_notification.dao.MemberNotificationRepository;
+import io.ssafy.gatee.domain.member_notification.entity.MemberNotification;
 import io.ssafy.gatee.global.exception.error.not_found.MemberFamilyNotFoundException;
 import io.ssafy.gatee.global.exception.error.not_found.MemberNotFoundException;
 import io.ssafy.gatee.global.jwt.application.JwtService;
@@ -40,7 +42,10 @@ public class MemberServiceImpl implements MemberService{
 
     private final MemberFamilyRepository memberFamilyRepository;
 
+    private final MemberNotificationRepository memberNotificationRepository;
+
     private final JwtService jwtService;
+
     // 회원 가입
     @Override
     @Transactional
@@ -80,6 +85,9 @@ public class MemberServiceImpl implements MemberService{
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(()-> new MemberNotFoundException(MEMBER_NOT_FOUND));
         member.saveNotificationToken(memberTokenReq.notificationToken());
+        memberNotificationRepository.save(MemberNotification.builder()
+                                                            .member(member)
+                                                            .build());
     }
 
     // 회원 정보 수정

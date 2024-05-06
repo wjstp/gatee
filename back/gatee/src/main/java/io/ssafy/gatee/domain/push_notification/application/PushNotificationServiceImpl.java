@@ -4,15 +4,24 @@ import com.google.firebase.messaging.*;
 import io.ssafy.gatee.domain.chatgpt.dto.request.QuestionDto;
 import io.ssafy.gatee.domain.chatgpt.dto.response.GptResponseDto;
 import io.ssafy.gatee.domain.chatgpt.service.GptService;
+import io.ssafy.gatee.domain.member.dao.MemberRepository;
+import io.ssafy.gatee.domain.member.entity.Member;
 import io.ssafy.gatee.domain.push_notification.dto.request.NaggingReq;
 import io.ssafy.gatee.domain.push_notification.dao.PushNotificationRepository;
 import io.ssafy.gatee.domain.push_notification.dto.response.PushNotificationRes;
 import io.ssafy.gatee.domain.push_notification.entity.PushNotification;
 import io.ssafy.gatee.domain.push_notification.entity.Type;
+import io.ssafy.gatee.global.exception.error.not_found.MemberNotFoundException;
+import io.ssafy.gatee.global.exception.message.ExceptionMessage;
 import io.ssafy.gatee.global.firebase.FirebaseInit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -22,6 +31,7 @@ public class PushNotificationServiceImpl implements PushNotificationService {
     private final FirebaseInit firebaseInit;
     private final GptService gptService;
     private final PushNotificationRepository pushNotificationRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     public List<PushNotificationRes> readNotifications(UUID memberId) {
@@ -61,29 +71,49 @@ public class PushNotificationServiceImpl implements PushNotificationService {
     }
 
     @Override
-    public void sendNagging(NaggingReq naggingReq) {
-        String content = "\"" + naggingReq.message() + "\"라는 문장을 상냥한 어투로 바꿔줘. 이모티콘도 붙여줘.";
-        GptResponseDto result = gptService.askQuestion(QuestionDto.builder().content(content).build());
-        log.info(result.answer());
-
-        System.out.println("successfully sent message ? " + response);
+    public String findTokenByMemberId(String memberId) {
+        return memberRepository.findById(UUID.fromString(memberId)).orElseThrow(()
+                -> new MemberNotFoundException(ExceptionMessage.MEMBER_NOT_FOUND)).getNotificationToken();
     }
 
     @Override
-    public void sendPushOneToOne(String senderToken, String receiverToken, Type type, Long typeId) throws FirebaseMessagingException {
-        firebaseInit.init();
-        Message message = Message.builder()
-                .setToken(receiverToken)
-                .build();
-        String response = FirebaseMessaging.getInstance().send(message);
-        log.info("successfully sent message ? " + response);
-        // todo: 수정
-        pushNotificationRepository.save(PushNotification.builder()
-                                        .isCheck(false)
-                                        .receiverId(List.of(UUID.fromString("testId")))
-                                        .type(Type.NAGGING) 
-                                        .typeId(1L)
-                                        .content("내용").build());
+    public void savePushNotification() {
+        
+    }
+
+    @Override
+    public void savePushNotifications() {
+
+    }
+
+    @Override
+    public void sendNagging(NaggingReq naggingReq) throws FirebaseMessagingException {
+
+        String content = "\"" + naggingReq.message() + "\"라는 문장을 상냥한 어투로 바꿔줘. 이모티콘도 붙여줘.";
+        GptResponseDto result = gptService.askQuestion(QuestionDto.builder().content(content).build());
+        log.info(result.answer());
+    }
+
+    @Override
+    public void sendPushOneToOne(String receiverId, Type type, Long typeId) throws FirebaseMessagingException {
+        // receiver의 권한 여부 확인
+        String receiverToken = findTokenByMemberId(receiverId);
+        if (Objects.nonNull(receiverToken)) {
+            firebaseInit.init();
+            Message message = Message.builder()
+                    .setToken(receiverToken)
+                    .build();
+            String response = FirebaseMessaging.getInstance().send(message);
+            log.info("successfully sent message ? " + response);
+
+            // todo: 수정
+            pushNotificationRepository.save(PushNotification.builder()
+                                            .isCheck(false)
+                                            .receiverId(List.of(UUID.fromString("testId")))
+                                            .type(Type.NAGGING)
+                                            .typeId(1L)
+                                            .content("내용").build());
+        }
     }
 
     @Override
