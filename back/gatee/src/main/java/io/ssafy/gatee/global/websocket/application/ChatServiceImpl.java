@@ -47,9 +47,11 @@ public class ChatServiceImpl implements ChatService {
     public void sendMessage(ChatDto chatDto) throws ExecutionException, InterruptedException {
         // total Member 구하기
         UUID memberId = UUID.fromString(chatDto.sender());
+        log.info("memberId: {}", memberId);
         Member member = memberRepository.getReferenceById(memberId);
         List<MemberFamily> memberFamilyList = memberFamilyRepository.findAllWithFamilyByMember(member)
                 .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
+        log.info("memberFamilyList: {}", memberFamilyList);
         // 가족 수 가져오기
         Integer familyCount = memberFamilyList.size();
 
@@ -72,13 +74,14 @@ public class ChatServiceImpl implements ChatService {
         log.info("onlineMember" + onlineMember);
         // 온라인 멤버를 언리드에서 제거, 오프라인 멤버(안읽은 멤버)만 추가
         List<Member> filteredUnreadList = unreadList.stream()
-                .filter(offline -> !onlineMember.contains(member))
+                .filter(offline -> !onlineMember.contains(offline))
                 .toList();
+        log.info("filteredUnreadList" + filteredUnreadList);
 
         List<String> unReadMemberAsStringList = filteredUnreadList.stream()
                 .map(pk -> member.getId().toString()) // UUID를 String으로 변환
                 .toList();
-        log.info(unReadMemberAsStringList.toString());
+        log.info("unReadMemberAsStringList" + unReadMemberAsStringList);
 
         FireStoreChatDto fireStoreChatDto = FireStoreChatDto.builder()
                 .messageType(chatDto.messageType())
