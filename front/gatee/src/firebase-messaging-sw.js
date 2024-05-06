@@ -41,8 +41,8 @@ export async function requestPermission() {
 
 }
 
-// 메세지 받는 함수.. 안되면 주석
-onMessage(messaging, (payload) => {
-  alert(`Message received. ${payload}`);
-  // ...
-});
+// // 메세지 받는 함수
+// onMessage(messaging, (payload) => {
+//   alert(`Message received. ${payload}`);
+//   // ...
+// });
