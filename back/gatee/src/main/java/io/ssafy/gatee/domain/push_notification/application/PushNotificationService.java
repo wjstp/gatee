@@ -6,7 +6,6 @@ import io.ssafy.gatee.domain.push_notification.dto.request.PushNotificationFCMRe
 import io.ssafy.gatee.domain.push_notification.dto.response.PushNotificationRes;
 import io.ssafy.gatee.domain.push_notification.entity.Type;
 
-
 import java.util.List;
 import java.util.UUID;
 
@@ -24,7 +23,7 @@ public interface PushNotificationService {
 
     void savePushNotifications();
 
-    void sendNagging(NaggingReq naggingReq) throws FirebaseMessagingException;
+    void sendNagging(NaggingReq naggingReq, UUID memberId) throws FirebaseMessagingException;
 
     void sendPushOneToOne(PushNotificationFCMReq pushNotificationFCMReq) throws FirebaseMessagingException;
 

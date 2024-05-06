@@ -80,11 +80,11 @@ public class PushNotificationServiceImpl implements PushNotificationService {
     @Override
     public boolean checkAgreement(Type type, UUID memberId) {
         Member proxyMember = memberRepository.getReferenceById(memberId);
-        return switch (type){
+        return switch (type) {
             case NAGGING -> memberNotificationRepository.findByMember(proxyMember).isNaggingNotification();
             case SCHEDULE -> memberNotificationRepository.findByMember(proxyMember).isScheduleNotification();
             case ALBUM -> memberNotificationRepository.findByMember(proxyMember).isAlbumNotification();
-            default ->  false;
+            default -> false;
         };
     }
 
@@ -99,13 +99,14 @@ public class PushNotificationServiceImpl implements PushNotificationService {
     }
 
     @Override
-    public void sendNagging(NaggingReq naggingReq) throws FirebaseMessagingException {
+    public void sendNagging(NaggingReq naggingReq, UUID memberId) throws FirebaseMessagingException {
         String content = "\"" + naggingReq.message() + "\"라는 문장을 상냥한 어투로 바꿔줘. 이모티콘도 붙여줘.";
         GptResponseDto result = gptService.askQuestion(QuestionDto.builder().content(content).build());
         log.info(result.answer());
 
         PushNotificationFCMReq pushNotification = PushNotificationFCMReq.builder()
                 .receiverId(Collections.singletonList(naggingReq.receiverId()))
+                .senderId(memberId)
                 .title(Type.NAGGING.toString())
                 .content(result.answer())
                 .dataFCMReq(DataFCMReq.builder()
