@@ -5,9 +5,7 @@ import io.ssafy.gatee.domain.member.dao.MemberRepository;
 import io.ssafy.gatee.domain.member.entity.Member;
 import io.ssafy.gatee.domain.member_family.dao.MemberFamilyRepository;
 import io.ssafy.gatee.domain.member_family.entity.MemberFamily;
-import io.ssafy.gatee.global.exception.error.not_found.FamilyNotFoundException;
 import io.ssafy.gatee.global.exception.error.not_found.MemberNotFoundException;
-import io.ssafy.gatee.global.exception.message.ExceptionMessage;
 import io.ssafy.gatee.global.websocket.dto.ChatDto;
 import io.ssafy.gatee.global.websocket.dto.FireStoreChatDto;
 import lombok.RequiredArgsConstructor;
@@ -16,9 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
-import static io.ssafy.gatee.global.exception.message.ExceptionMessage.FAMILY_NOT_FOUND;
 import static io.ssafy.gatee.global.exception.message.ExceptionMessage.MEMBER_NOT_FOUND;
 
 @Service
