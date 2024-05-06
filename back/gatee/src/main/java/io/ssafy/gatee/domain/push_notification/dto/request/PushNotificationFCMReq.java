@@ -4,22 +4,20 @@ import io.ssafy.gatee.domain.push_notification.entity.Type;
 import lombok.Builder;
 
 import java.util.List;
+import java.util.UUID;
 
 @Builder
 public record PushNotificationFCMReq(
 
-        Type type,
+        UUID senderId,
 
-        List<String> receiverTokenList,
-
-        Long typeId,
+        List<UUID> receiverId,
 
         String title,
 
-        String content
+        String content,
+
+        DataFCMReq dataFCMReq
 
 ) {
-//    public toDto() {
-//
-//    }
 }

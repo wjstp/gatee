@@ -6,8 +6,11 @@ import io.ssafy.gatee.domain.chatgpt.dto.response.GptResponseDto;
 import io.ssafy.gatee.domain.chatgpt.service.GptService;
 import io.ssafy.gatee.domain.member.dao.MemberRepository;
 import io.ssafy.gatee.domain.member.entity.Member;
-import io.ssafy.gatee.domain.push_notification.dto.request.NaggingReq;
+import io.ssafy.gatee.domain.member_notification.dao.MemberNotificationRepository;
 import io.ssafy.gatee.domain.push_notification.dao.PushNotificationRepository;
+import io.ssafy.gatee.domain.push_notification.dto.request.DataFCMReq;
+import io.ssafy.gatee.domain.push_notification.dto.request.NaggingReq;
+import io.ssafy.gatee.domain.push_notification.dto.request.PushNotificationFCMReq;
 import io.ssafy.gatee.domain.push_notification.dto.response.PushNotificationRes;
 import io.ssafy.gatee.domain.push_notification.entity.PushNotification;
 import io.ssafy.gatee.domain.push_notification.entity.Type;
@@ -18,10 +21,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -32,6 +32,7 @@ public class PushNotificationServiceImpl implements PushNotificationService {
     private final GptService gptService;
     private final PushNotificationRepository pushNotificationRepository;
     private final MemberRepository memberRepository;
+    private final MemberNotificationRepository memberNotificationRepository;
 
     @Override
     public List<PushNotificationRes> readNotifications(UUID memberId) {
@@ -71,14 +72,25 @@ public class PushNotificationServiceImpl implements PushNotificationService {
     }
 
     @Override
-    public String findTokenByMemberId(String memberId) {
-        return memberRepository.findById(UUID.fromString(memberId)).orElseThrow(()
+    public String findTokenByMemberId(UUID memberId) {
+        return memberRepository.findById(memberId).orElseThrow(()
                 -> new MemberNotFoundException(ExceptionMessage.MEMBER_NOT_FOUND)).getNotificationToken();
     }
 
     @Override
+    public boolean checkAgreement(Type type, UUID memberId) {
+        Member proxyMember = memberRepository.getReferenceById(memberId);
+        return switch (type){
+            case NAGGING -> memberNotificationRepository.findByMember(proxyMember).isNaggingNotification();
+            case SCHEDULE -> memberNotificationRepository.findByMember(proxyMember).isScheduleNotification();
+            case ALBUM -> memberNotificationRepository.findByMember(proxyMember).isAlbumNotification();
+            default ->  false;
+        };
+    }
+
+    @Override
     public void savePushNotification() {
-        
+
     }
 
     @Override
@@ -88,31 +100,62 @@ public class PushNotificationServiceImpl implements PushNotificationService {
 
     @Override
     public void sendNagging(NaggingReq naggingReq) throws FirebaseMessagingException {
-
         String content = "\"" + naggingReq.message() + "\"라는 문장을 상냥한 어투로 바꿔줘. 이모티콘도 붙여줘.";
         GptResponseDto result = gptService.askQuestion(QuestionDto.builder().content(content).build());
         log.info(result.answer());
+
+        PushNotificationFCMReq pushNotification = PushNotificationFCMReq.builder()
+                .receiverId(Collections.singletonList(naggingReq.receiverId()))
+                .title(Type.NAGGING.toString())
+                .content(result.answer())
+                .dataFCMReq(DataFCMReq.builder()
+                        .type(Type.NAGGING)
+                        .typeId(0L)
+                        .build())
+                .build();
+        sendPushOneToOne(pushNotification);
     }
 
     @Override
-    public void sendPushOneToOne(String receiverId, Type type, Long typeId) throws FirebaseMessagingException {
-        // receiver의 권한 여부 확인
-        String receiverToken = findTokenByMemberId(receiverId);
-        if (Objects.nonNull(receiverToken)) {
+    public void sendPushOneToOne(PushNotificationFCMReq pushNotificationFCMReq) throws FirebaseMessagingException {
+        // receiver의 권한 여부 확인 - 권한이 없으면 token도 없다
+        String receiverToken = findTokenByMemberId(pushNotificationFCMReq.receiverId().getFirst());
+
+        // type별 권한 확인
+        boolean isAgreed = checkAgreement(pushNotificationFCMReq.dataFCMReq().type(), pushNotificationFCMReq.receiverId().getFirst());
+
+        // fcm 요청
+        if (Objects.nonNull(receiverToken) && isAgreed) {
             firebaseInit.init();
             Message message = Message.builder()
+                    .putData(pushNotificationFCMReq.dataFCMReq().type().toString(),
+                            pushNotificationFCMReq.dataFCMReq().typeId().toString())
                     .setToken(receiverToken)
+                    .setNotification(Notification.builder()
+                            .setTitle(pushNotificationFCMReq.title())
+//                            .setImage("https://source.unsplash.com/random/cat")
+                            .setBody(pushNotificationFCMReq.content())
+                            .build())  // 내용 설정
+                    // 안드로이드 설정
+                    .setAndroidConfig(AndroidConfig.builder()
+                            .setTtl(3600 * 1000)    // 푸시 알림 유지 시간
+                            .setNotification(AndroidNotification.builder()
+                                    .setTitle(pushNotificationFCMReq.title())
+                                    .setImage("https://source.unsplash.com/random/cat")
+                                    .setBody(pushNotificationFCMReq.content())
+                                    .setClickAction("push_click").build())  // todo: 푸시 알림 클릭시 연결 동작 - 아마도 프론트 함수 호출?
+                            .build())
+                    // ios 설정
+                    .setApnsConfig(ApnsConfig.builder()
+                            .setAps(Aps.builder()
+                                    .setCategory("https://source.unsplash.com/random/apple")
+                                    .setBadge(42)   // todo: ?
+                                    .build())
+                            .build())
                     .build();
             String response = FirebaseMessaging.getInstance().send(message);
             log.info("successfully sent message ? " + response);
-
-            // todo: 수정
-            pushNotificationRepository.save(PushNotification.builder()
-                                            .isCheck(false)
-                                            .receiverId(List.of(UUID.fromString("testId")))
-                                            .type(Type.NAGGING)
-                                            .typeId(1L)
-                                            .content("내용").build());
+            // todo : 저장
         }
     }
 

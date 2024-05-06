@@ -26,8 +26,8 @@ public class PushNotificationController {
         return "notification success";
     }
 
-//    @PostMapping("/nagging")
-//    public void sendNagging(@RequestBody NaggingReq naggingReq) {
-//        notificationService.sendNagging(naggingReq);
-//    }
+    @PostMapping("/nagging")
+    public void sendNagging(@RequestBody NaggingReq naggingReq) throws FirebaseMessagingException {
+        notificationService.sendNagging(naggingReq);
+    }
 }
