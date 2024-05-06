@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import BubbleChat from "@pages/chat/components/BubbleChat";
 import ChatInput from "@pages/chat/components/ChatInput";
+import ChatDate from "@pages/chat/components/ChatDate";
 import { ChatSample } from "@constants/index";
 import { ChatMessage } from "@type/index"
 import { entryChatRoomApi } from "@api/Chat";
@@ -53,7 +54,7 @@ const ChatIndex = () => {
       }
     );
   }
-  
+
   // subscribe
   const onConnected = () => {
     // 서버로부터 새로운 메시지 수신
@@ -146,7 +147,10 @@ const ChatIndex = () => {
 
   return (
     <div className="chat">
-      {renderChatBubble}
+      <div className="chat__main">
+        {renderChatBubble}
+        <ChatDate date="2024-05-07" />
+      </div>
       <ChatInput />
     </div>
   );

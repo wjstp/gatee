@@ -38,7 +38,7 @@ export interface PhotoListProps {
     dateTime: string,
     src: string
   }[],
-  handleChecked: (photoId: number, type: string) => void;
+  handleChecked: ((photoId: number, type: string) => void) | null;
 }
 
 export interface PhotoOutletInfoContext {
@@ -101,4 +101,14 @@ declare global {
     interface Window {
         Kakao: any;
     }
+}
+
+export interface EmojiItem {
+  id: string;
+  image: string;
+}
+
+export interface EmojiCategory {
+  name: string;
+  item: EmojiItem[];
 }
