@@ -26,6 +26,7 @@ public interface MemberFamilyRepository extends JpaRepository<MemberFamily, Long
     @Query("""
                 select  m.member.id from MemberFamily m
                 where m.family = (select mf.family from MemberFamily mf where mf.member.id=:memberId)
+                and m.member.id != :memberId
             """)
     List<UUID> findMyFamily(@Param("memberId") UUID memberId);
 }

@@ -166,46 +166,49 @@ public class PushNotificationServiceImpl implements PushNotificationService {
                 .filter(Optional::isPresent)
                 .filter(receiver -> checkAgreement(pushNotificationFCMReq.dataFCMReq().type(), receiver.get().getId()))
                 .map(receiver->receiver.get().getNotificationToken()).toList();
-        MulticastMessage message = MulticastMessage.builder()
-                .addAllTokens(receiverTokens)
-//                .putData()  // 보여줄 정보 외 데이터 설정
-                .setNotification(Notification.builder()
-                        .setTitle(pushNotificationFCMReq.title())
-//                        .setImage("보내는 사람 프로필 이미지")
-                        .setBody(pushNotificationFCMReq.content())
-                        .build())  // 내용 설정
-                // 안드로이드 설정
-                .setAndroidConfig(AndroidConfig.builder()
-                        .setTtl(3600 * 1000)    // 푸시 알림 유지 시간
-                        .setNotification(AndroidNotification.builder()
-                                .setTitle(pushNotificationFCMReq.title())
-//                                .setImage("보내는 사람 프로필 이미지")
-                                .setBody(pushNotificationFCMReq.content())
-                                .setClickAction("push_click").build())  // todo: 푸시 알림 클릭시 연결 동작 - 아마도 프론트 함수 호출?
-                        .build())
-                // ios 설정
-                .setApnsConfig(ApnsConfig.builder()
-                        .setAps(Aps.builder()
-                                .setCategory("push_click")
-                                .setBadge(42)   // todo: ?
-                                .build())
-                        .build())
-                .build();
-        BatchResponse response = FirebaseMessaging.getInstance().sendMulticast(message);
-        if (response.getFailureCount() > 0) {
-            List<SendResponse> responses = response.getResponses();
-            List<String> failedTokens = new ArrayList<>();
-            for (int i = 0; i < responses.size(); i++) {
-                if (!responses.get(i).isSuccessful()) {
-                    // todo: 토큰 오류 시 로직 추가 - db에는 저장해야 한다.
-                    failedTokens.add(receiverTokens.get(i));
+        if (! receiverTokens.isEmpty()) {
+            MulticastMessage message = MulticastMessage.builder()
+                    .addAllTokens(receiverTokens)
+    //                .putData()  // 보여줄 정보 외 데이터 설정
+                    .setNotification(Notification.builder()
+                            .setTitle(pushNotificationFCMReq.title())
+    //                        .setImage("보내는 사람 프로필 이미지")
+                            .setBody(pushNotificationFCMReq.content())
+                            .build())  // 내용 설정
+                    // 안드로이드 설정
+                    .setAndroidConfig(AndroidConfig.builder()
+                            .setTtl(3600 * 1000)    // 푸시 알림 유지 시간
+                            .setNotification(AndroidNotification.builder()
+                                    .setTitle(pushNotificationFCMReq.title())
+    //                                .setImage("보내는 사람 프로필 이미지")
+                                    .setBody(pushNotificationFCMReq.content())
+                                    .setClickAction("push_click").build())  // todo: 푸시 알림 클릭시 연결 동작 - 아마도 프론트 함수 호출?
+                            .build())
+                    // ios 설정
+                    .setApnsConfig(ApnsConfig.builder()
+                            .setAps(Aps.builder()
+                                    .setCategory("push_click")
+                                    .setBadge(42)   // todo: ?
+                                    .build())
+                            .build())
+                    .build();
+            BatchResponse response = FirebaseMessaging.getInstance().sendMulticast(message);
+            if (response.getFailureCount() > 0) {
+                List<SendResponse> responses = response.getResponses();
+                List<String> failedTokens = new ArrayList<>();
+                for (int i = 0; i < responses.size(); i++) {
+                    if (!responses.get(i).isSuccessful()) {
+                        // todo: 토큰 오류 시 로직 추가 - db에는 저장해야 한다.
+                        failedTokens.add(receiverTokens.get(i));
+                    }
                 }
             }
+            // 저장 로직 success와 fail모두 - 이때는 receiveridlist 활용
+            List<PushNotification> notificationList = new ArrayList<>();
+    //        pushNotificationRepository.saveAll(notificationList);
+            log.info(response.getFailureCount() + " messages were not sent");
+            log.info(response.getSuccessCount() + " messages were sent successfully");
         }
-        // 저장 로직 success와 fail모두 - 이때는 receiveridlist 활용
-        List<PushNotification> notificationList = new ArrayList<>();
-//        pushNotificationRepository.saveAll(notificationList);
-        log.info(response.getFailureCount() + " messages were not sent");
-        log.info(response.getSuccessCount() + " messages were sent successfully");
-    }
+
+        }
 }
