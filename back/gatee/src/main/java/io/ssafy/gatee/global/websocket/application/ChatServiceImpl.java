@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static io.ssafy.gatee.global.exception.message.ExceptionMessage.FAMILY_NOT_FOUND;
 import static io.ssafy.gatee.global.exception.message.ExceptionMessage.MEMBER_NOT_FOUND;
@@ -34,15 +35,13 @@ public class ChatServiceImpl implements ChatService {
         // total Member 구하기
         UUID memberId = UUID.fromString(chatDto.sender());
         Member member = memberRepository.getReferenceById(memberId);
-        MemberFamily memberFamily = memberFamilyRepository.findByMember(member)
+        List<MemberFamily> memberFamilyList = memberFamilyRepository.findAllWithFamilyByMember(member)
                 .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
         // 가족 수 가져오기
-        Integer familyCount = memberFamilyRepository.countMemberFamiliesByFamily(memberFamily.getFamily());
+        Integer familyCount = memberFamilyList.size();
 
         // 전체 가족 가져오기
-        List<Member> unreadList = memberFamilyRepository.findAllByFamily(memberFamily.getFamily())
-                .orElseThrow(() -> new FamilyNotFoundException(FAMILY_NOT_FOUND))
-                .stream()
+        List<Member> unreadList = memberFamilyList.stream()
                 .map(MemberFamily::getMember)
                 .toList();
 
