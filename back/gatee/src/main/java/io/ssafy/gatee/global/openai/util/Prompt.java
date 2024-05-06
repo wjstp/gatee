@@ -5,8 +5,9 @@ import lombok.Builder;
 @Builder
 public class Prompt {
 
+
     public static String generateQuestionPrompt(String question) {
-        String strict = "";
+        String strict = "미사여구를 붙이지마";
 
         return String.format("%s", question, strict);
     }

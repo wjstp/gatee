@@ -9,6 +9,7 @@ import { TimeField } from '@mui/x-date-pickers/TimeField';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateValidationError } from "@mui/x-date-pickers";
+import calculateWeekday from "@helpers/calculateWeekday";
 
 const ScheduleCreate = () => {
   dayjs.locale('ko');
@@ -150,17 +151,6 @@ const ScheduleCreate = () => {
     }
   }, [startDate, endDate, startTime, endTime]);
 
-  // 요일 계산
-  const calculateWeekday = (value: Dayjs | null) => {
-    const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
-    const dayOfWeek = dayjs(value).day();
-    if (dayOfWeek) {
-      return weekdays[dayOfWeek];
-    } else {
-      return '요일';
-    }
-  };
-
   // 색상 코드
   const colorPalette = (value: string): string => {
     if (value === "pink") {
@@ -204,7 +194,15 @@ const ScheduleCreate = () => {
       </div>
     );
   }
-
+  
+  const getParticipantNumber = () : string => {
+    if (participants.length === FamilyMemberInfoSample.length) {
+      return "전원 참여"
+    } else {
+      return `${participants.length}명 참여`
+    }
+  }
+  
   // 일정 생성 버튼 활성화 여부 계산
   const isButtonEnabled = () => {
     return title && !isStartDateError && !isEndDateError;
@@ -346,11 +344,14 @@ const ScheduleCreate = () => {
         {/*참여하는 사람*/}
         {category === "group" && (
           <div className="create-schedule-participant">
-            <div className="create-schedule__sub-title">참여자</div>
+            <div className="create-schedule__sub-title">참여자
+              <div className="create-schedule-participant__number">
+                {getParticipantNumber()}
+              </div>
+            </div>
 
+            {/*가족 프로필*/}
             <div className="create-schedule-participant__profile">
-
-              {/*가족 프로필*/}
               {FamilyMemberInfoSample.map((member, index: number) => (
                 renderProfile(member.email, member.nickname, member.image)
               ))}

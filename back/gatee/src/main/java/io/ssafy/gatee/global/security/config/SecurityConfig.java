@@ -43,8 +43,9 @@ public class SecurityConfig {
     private final AuthService authService;
     private final CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
     private final CustomOAuth2FailureHandler customOAuth2FailureHandler;
-    private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
+    private final CustomAuthenticationEntryPointHandler customAuthenticationEntryPointHandler;
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
@@ -69,7 +70,7 @@ public class SecurityConfig {
 
                 .exceptionHandling(configurer -> configurer
                         .accessDeniedHandler(customAccessDeniedHandler)
-                        .authenticationEntryPoint(new CustomAuthenticationEntryPointHandler())
+                        .authenticationEntryPoint(customAuthenticationEntryPointHandler)
                 )
 
                 .addFilterAt(new CustomOAuth2LoginFilter(authService, customOAuth2SuccessHandler, customOAuth2FailureHandler), OAuth2LoginAuthenticationFilter.class)
@@ -82,6 +83,7 @@ public class SecurityConfig {
 
         config.setAllowCredentials(true);
         config.setAllowedOrigins(List.of(
+                "https://gaty.duckdns.org",
                 "http://localhost:3000",
                 "http://localhost:8080"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));

@@ -1,6 +1,10 @@
 package io.ssafy.gatee.domain.push_notification.application;
 
 import com.google.firebase.messaging.*;
+import io.ssafy.gatee.domain.chatgpt.dto.request.QuestionDto;
+import io.ssafy.gatee.domain.chatgpt.dto.response.GptResponseDto;
+import io.ssafy.gatee.domain.chatgpt.service.GptService;
+import io.ssafy.gatee.domain.push_notification.dto.request.NaggingReq;
 import io.ssafy.gatee.domain.push_notification.dao.PushNotificationRepository;
 import io.ssafy.gatee.domain.push_notification.dto.response.PushNotificationRes;
 import io.ssafy.gatee.domain.push_notification.entity.PushNotification;
@@ -10,16 +14,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-@Slf4j
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class PushNotificationServiceImpl implements PushNotificationService {
 
     private final FirebaseInit firebaseInit;
+    private final GptService gptService;
     private final PushNotificationRepository pushNotificationRepository;
 
     @Override
@@ -56,6 +57,15 @@ public class PushNotificationServiceImpl implements PushNotificationService {
                         .build())
                 .build();
         String response = FirebaseMessaging.getInstance().send(message);
+        log.info("successfully sent message ? " + response);
+    }
+
+    @Override
+    public void sendNagging(NaggingReq naggingReq) {
+        String content = "\"" + naggingReq.message() + "\"라는 문장을 상냥한 어투로 바꿔줘. 이모티콘도 붙여줘.";
+        GptResponseDto result = gptService.askQuestion(QuestionDto.builder().content(content).build());
+        log.info(result.answer());
+
         System.out.println("successfully sent message ? " + response);
     }
 

@@ -2,7 +2,8 @@ import React from 'react';
 import { ScheduleSample } from "../../../constants"
 import { Schedule } from "../../../types";
 import DayScheduleCard from "@pages/schedule/components/DayScheduleCard";
-import dayjs, {Dayjs} from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
+import calculateWeekday from "../../../helpers/calculateWeekday";
 
 interface DayToastProps {
   date: string;
@@ -11,17 +12,6 @@ interface DayToastProps {
 
 const DayToast: React.FC<DayToastProps> = ({date, onCloseClick}) => {
   const dateTitle = dayjs(date).format("M월 D일");
-
-  // 요일 계산
-  const calculateWeekday = (value: Dayjs | null) => {
-    const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
-    const dayOfWeek = dayjs(value).day();
-    if (dayOfWeek) {
-      return weekdays[dayOfWeek];
-    } else {
-      return '요일';
-    }
-  };
 
   return (
     <div className="day-toast">
