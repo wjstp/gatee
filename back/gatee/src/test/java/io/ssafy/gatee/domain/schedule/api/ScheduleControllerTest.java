@@ -11,6 +11,7 @@ import io.ssafy.gatee.global.jwt.application.JwtService;
 import io.ssafy.gatee.global.security.application.AuthService;
 import io.ssafy.gatee.global.security.config.SecurityConfig;
 import io.ssafy.gatee.global.security.handler.CustomAccessDeniedHandler;
+import io.ssafy.gatee.global.security.handler.CustomAuthenticationEntryPointHandler;
 import io.ssafy.gatee.global.security.handler.CustomOAuth2FailureHandler;
 import io.ssafy.gatee.global.security.handler.CustomOAuth2SuccessHandler;
 import org.junit.jupiter.api.DisplayName;
@@ -61,6 +62,9 @@ class ScheduleControllerTest {
 
     @MockBean
     private CustomAccessDeniedHandler customAccessDeniedHandler;
+
+    @MockBean
+    private CustomAuthenticationEntryPointHandler customAuthenticationEntryPointHandler;
 
 
     @Test

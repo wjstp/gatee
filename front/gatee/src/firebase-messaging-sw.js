@@ -1,5 +1,5 @@
 import {initializeApp} from "firebase/app";
-import {getMessaging, getToken} from "firebase/messaging";
+import {getMessaging, getToken,onMessage} from "firebase/messaging";
 import {getPushAlarmByLocalStorage} from "@api/FirebaseAxios";
 import {firebaseConfig,VALID_KEY} from "./config";
 
@@ -40,3 +40,9 @@ export async function requestPermission() {
   }
 
 }
+
+// 메세지 받는 함수.. 안되면 주석
+onMessage(messaging, (payload) => {
+  alert(`Message received. ${payload}`);
+  // ...
+});

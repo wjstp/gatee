@@ -5,9 +5,9 @@ const api = localAxios()
 // 디바이스 토큰 서버로 보내는 함수
 export const getPushAlarmByLocalStorage = async () => {
   try {
-    // const fcmDeviceToken = localStorage.getItem('fcmDeviceToken');
+    const fcmDeviceToken = localStorage.getItem('fcmDeviceToken');
     // 임시로 하드 코딩
-    const fcmDeviceToken = "dYpuTBgM0u6LN9QVGWOXPb:APA91bExotxhQIJfh4CHhedxryCdqKsRJ_Mb_dyFmiST58om8wvdXyIZ6GQxlaVOmhp7t2b9lcDqkxW9RNZEQDVRrr4voEXoGxDU_q5ZSPETJ_nxWdiiDOKUcBOfceLpK_K3fUTpo1yH"
+    // const fcmDeviceToken = "dYpuTBgM0u6LN9QVGWOXPb:APA91bExotxhQIJfh4CHhedxryCdqKsRJ_Mb_dyFmiST58om8wvdXyIZ6GQxlaVOmhp7t2b9lcDqkxW9RNZEQDVRrr4voEXoGxDU_q5ZSPETJ_nxWdiiDOKUcBOfceLpK_K3fUTpo1yH"
     // 로컬 Axios 적용 코드 주석처리
     api.post(`${process.env.REACT_APP_API_URL}/api/notifications/test`, {token: fcmDeviceToken})
     // axios({
