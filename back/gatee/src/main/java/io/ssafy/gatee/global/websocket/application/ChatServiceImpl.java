@@ -1,5 +1,11 @@
 package io.ssafy.gatee.global.websocket.application;
 
+import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.WriteResult;
+import com.google.firebase.cloud.FirestoreClient;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import io.ssafy.gatee.domain.family.dao.FamilyRepository;
 import io.ssafy.gatee.domain.member.dao.MemberRepository;
 import io.ssafy.gatee.domain.member.entity.Member;
@@ -9,15 +15,18 @@ import io.ssafy.gatee.global.exception.error.not_found.MemberNotFoundException;
 import io.ssafy.gatee.global.websocket.dto.ChatDto;
 import io.ssafy.gatee.global.websocket.dto.FireStoreChatDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 import static io.ssafy.gatee.global.exception.message.ExceptionMessage.MEMBER_NOT_FOUND;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class ChatServiceImpl implements ChatService {
@@ -25,9 +34,10 @@ public class ChatServiceImpl implements ChatService {
     private final MemberRepository memberRepository;
     private final MemberFamilyRepository memberFamilyRepository;
     private final FamilyRepository familyRepository;
+    private final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
     @Override
-    public void sendMessage(ChatDto chatDto) {
+    public void sendMessage(ChatDto chatDto) throws ExecutionException, InterruptedException {
         // total Member 구하기
         UUID memberId = UUID.fromString(chatDto.sender());
         Member member = memberRepository.getReferenceById(memberId);
@@ -50,9 +60,21 @@ public class ChatServiceImpl implements ChatService {
                 .messageType(chatDto.messageType())
                 .content(chatDto.content())
                 .totalMember(familyCount)
+                .sender(chatDto.sender())
 //                .unReadMember(unreadList)
                 .build();
         // 파이어스토어 전송
+        saveMessageToRealtimeDatabase(fireStoreChatDto, chatDto.roomId());
+    }
 
+    public void saveMessageToRealtimeDatabase(FireStoreChatDto fireStoreChatDto, Long roomId) {
+        // roomId를 사용하여 채팅방에 대한 참조를 가져옵니다.
+        DatabaseReference roomRef = databaseReference.child("chat").child(roomId.toString());
+
+        // 새 메시지를 생성하기 위한 고유 키를 생성합니다.
+        String messageId = roomRef.push().getKey();
+
+        // 메시지를 해당 채팅방의 하위 항목으로 저장합니다.
+        roomRef.child("messages").child(messageId).setValueAsync(fireStoreChatDto);
     }
 }
