@@ -8,7 +8,7 @@ import dayjs from "dayjs";
 import MegaphoneIcon from "@assets/images/icons/ic_megaphone.png";
 import { MemberInfoSample } from "@constants/index";
 import { ChatMessage } from "@type/index";
-import getUserInfoByEmail from "@helpers/getUserInfoByEmail";
+import getUserInfoByEmail from "../../../utils/getUserInfoByEmail";
 
 
 const BubbleChatAppointment = ({chat}: { chat: ChatMessage }) => {

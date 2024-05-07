@@ -1,7 +1,7 @@
 // v9
 // import {initializeApp} from "firebase/app";
 // import {getMessaging, getToken,isSupported} from "firebase/messaging";
-// import {getPushAlarmByLocalStorage} from "@api/FirebaseAxios";
+// import {getPushAlarmByLocalStorageApi} from "@api/FirebaseAxios";
 // import {firebaseConfig,VALID_KEY} from "./config";
 //
 // let messaging
@@ -14,7 +14,7 @@
 
 import firebase from 'firebase/app';
 import 'firebase/messaging';
-import { getPushAlarmByLocalStorage } from "@api/FirebaseAxios";
+import { getPushAlarmByLocalStorageApi } from "@api/firebase";
 import { VALID_KEY, app } from "./config";
 
 let messaging
@@ -49,7 +49,7 @@ export async function requestPermission() {
       // 스토어에 저장
       localStorage.setItem('fcmDeviceToken', token);
       // 서버로 토큰 구독하기
-      getPushAlarmByLocalStorage()
+      getPushAlarmByLocalStorageApi()
       // try {
       //   console.log("FCM device token 업데이트 api 요청");
       // } catch (error) {
