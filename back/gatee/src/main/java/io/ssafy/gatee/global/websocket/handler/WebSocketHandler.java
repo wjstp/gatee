@@ -61,6 +61,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
         onlineRoomMember.getOnlineUsers().add(memberId);
         onlineRoomMemberRepository.save(onlineRoomMember);
         // 안읽었던 메세지들 읽기
+        chatService.updateRead(memberId, familyId);
     }
 
     @Override

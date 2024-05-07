@@ -1,6 +1,7 @@
 package io.ssafy.gatee.global.websocket.application;
 
 import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.CollectionReference;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.cloud.FirestoreClient;
@@ -100,6 +101,11 @@ public class ChatServiceImpl implements ChatService {
         MemberFamily memberFamily = memberFamilyRepository.findByMember(member)
                 .orElseThrow(() -> new MemberFamilyNotFoundException(MEMBER_FAMILY_NOT_FOUND));
         return memberFamily.getFamily().getId();
+    }
+
+    @Override
+    public void updateRead(UUID memberId, Long familyId) {
+
     }
 
     public void saveMessageToRealtimeDatabase(FireStoreChatDto fireStoreChatDto, Long roomId) {
