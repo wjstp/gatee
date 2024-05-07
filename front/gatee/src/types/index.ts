@@ -1,3 +1,5 @@
+/* 응답타입: Res, 요청타입: Req, props타입: Props 뒤에 붙이고 사용하기 */
+
 // member
 export interface Member {
   name: string;
@@ -11,18 +13,24 @@ export interface Member {
   phoneNumber: string | null;
 }
 
-export interface MemberReq {
-  "name": string,
-  "nickname": string,
-  "birth": string,
-  "birthType": string,
-  "role": string,
-  "familyId": string,
-  "phoneNumber": null | string;
+export interface MemberApiReq {
+  name: string;
+  nickname: string;
+  birth: string;
+  birthType: string;
+  role: string;
+  familyId: string;
+  phoneNumber: null | string;
 }
 
-export interface CreateFamilyReq {
-  "name": string,
+export interface CreateFamilyApiReq {
+  name: string;
+}
+
+export interface Mood {
+  name: string;
+  mood: string;
+  content: string;
 }
 
 // character
@@ -118,17 +126,24 @@ export interface ChatFile {
   thumbnailUrl: string;
 }
 
+export interface Emoji {
+  name: string;
+  image: string;
+  item: EmojiItem[];
+}
+
 export interface EmojiItem {
   id: string;
   image: string;
 }
 
-export interface EmojiCategory {
-  name: string;
-  item: EmojiItem[];
-}
-
 export enum SenderType {
   YOURS = "yours",
   MY = "my"
+}
+
+// file
+export interface FileReq {
+  fileType: string;
+  file: FormData;
 }
