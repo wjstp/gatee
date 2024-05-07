@@ -1,6 +1,7 @@
 package io.ssafy.gatee.domain.member.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.ssafy.gatee.config.restdocs.RestDocsTestSupport;
 import io.ssafy.gatee.config.security.CustomWithMockUser;
 import io.ssafy.gatee.domain.member.application.MemberService;
 import io.ssafy.gatee.domain.member.dto.request.MemberEditMoodReq;
@@ -22,7 +23,6 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
-import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ActiveProfiles;
@@ -31,6 +31,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import java.util.UUID;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -40,7 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureRestDocs
 @WebMvcTest({MemberController.class, SecurityConfig.class})
 @MockBean(JpaMetamodelMappingContext.class)
-class MemberControllerTest {
+class MemberControllerTest extends RestDocsTestSupport {
 
     @Autowired
     private MockMvc mockMvc;
@@ -80,17 +83,25 @@ class MemberControllerTest {
                 .birthType("SOLAR")
                 .role("FATHER")
                 .familyId("1")
+                .phoneNumber("010-1111-1111")
                 .build();
 
         String memberSaveJson = objectMapper.writeValueAsString(memberSaveReq);
 
         mockMvc.perform(patch("/api/members")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(memberSaveJson))
-                .andDo(MockMvcResultHandlers.print())
-                .andDo(MockMvcRestDocumentation.document("회원 정보 등록"))
-                .andExpect(status().isOk());
-
+                .contentType(APPLICATION_JSON)
+                .content(memberSaveJson))
+                .andExpect(status().isOk())
+                .andDo(restDocs.document(
+                        requestFields(
+                                fieldWithPath("name").description("회원 이름"),
+                                fieldWithPath("nickname").description("회원 별명"),
+                                fieldWithPath("birth").description("회원의 생년월일"),
+                                fieldWithPath("birthType").description("생년월일 유형 (SOLAR: 양력, LUNAR: 음력)"),
+                                fieldWithPath("role").description("회원의 역할 (예: FATHER)"),
+                                fieldWithPath("familyId").description("가족 구성원 ID"),
+                                fieldWithPath("phoneNumber").description("전화번호")
+                        )));
     }
 
 
@@ -105,7 +116,7 @@ class MemberControllerTest {
         String memberTokenJson = objectMapper.writeValueAsString(memberTokenReq);    // objtect to json(string)
 
         mockMvc.perform(patch("/api/members/notifications")
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .contentType(APPLICATION_JSON)
                         .content(memberTokenJson))
                 .andDo(MockMvcResultHandlers.print())
                 .andDo(MockMvcRestDocumentation.document("회원 FCM 토큰 저장"))
@@ -129,7 +140,7 @@ class MemberControllerTest {
 
         log.info("context 확인 : " + String.valueOf(SecurityContextHolder.getContext().getAuthentication()));
         mockMvc.perform(patch("/api/members/profile")
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .contentType(APPLICATION_JSON)
                         .content(memberEditJson))
                 .andDo(MockMvcResultHandlers.print())
                 .andDo(MockMvcRestDocumentation.document("회원 정보 수정"))
@@ -147,7 +158,7 @@ class MemberControllerTest {
         String memberEditMoodJson = objectMapper.writeValueAsString(memberEditMoodReq);
 
         mockMvc.perform(patch("/api/members/moods")
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .contentType(APPLICATION_JSON)
                         .content(memberEditMoodJson))
                 .andDo(MockMvcResultHandlers.print())
                 .andDo(MockMvcRestDocumentation.document("기분 상태 수정"))

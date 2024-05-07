@@ -14,11 +14,11 @@
 
 - Request
 
-include::{snippets}/회원 정보 등록/http-request.adoc[]
+include::{snippets}/member-controller-test/save-info/http-request.adoc[]
 
 - Response
 
-include::{snippets}/회원 정보 등록/http-response.adoc[]
+include::{snippets}/member-controller-test/save-info/http-response.adoc[]
 
 
 == 회원 정보 수정
