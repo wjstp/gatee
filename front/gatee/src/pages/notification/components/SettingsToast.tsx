@@ -1,13 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import CustomSwitch from "@components/CustomSwitch";
-import {useNavigate} from "react-router-dom";
+// import {requestPermission} from "../../../firebase-messaging-sw";
+
 
 interface HandleFinishTab {
   handleFinishTab:(event: React.MouseEvent<HTMLButtonElement>)=>void
 }
 
 const SettingsToast = ({handleFinishTab}:HandleFinishTab) => {
-  const navigate = useNavigate();
+
   const [albumAlarmChecked, setAlbumAlarmChecked] = useState(false);
   const [naggingAlarmChecked, setNaggingAlarmChecked] = useState(false);
   const [scheduleAlarmChecked, setScheduleAlarmChecked] = useState(false);
@@ -16,6 +17,7 @@ const SettingsToast = ({handleFinishTab}:HandleFinishTab) => {
   // 스위치 조절 함수
   const handleAlbumChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAlbumAlarmChecked(event.target.checked);
+    // requestPermission()
   };
   const handleNaggingChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNaggingAlarmChecked(event.target.checked);

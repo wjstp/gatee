@@ -6,10 +6,12 @@ import io.ssafy.gatee.domain.member.application.MemberService;
 import io.ssafy.gatee.domain.member.dto.request.MemberEditMoodReq;
 import io.ssafy.gatee.domain.member.dto.request.MemberEditReq;
 import io.ssafy.gatee.domain.member.dto.request.MemberSaveReq;
+import io.ssafy.gatee.domain.member.dto.request.MemberTokenReq;
 import io.ssafy.gatee.global.jwt.application.JwtService;
 import io.ssafy.gatee.global.security.application.AuthService;
 import io.ssafy.gatee.global.security.config.SecurityConfig;
 import io.ssafy.gatee.global.security.handler.CustomAccessDeniedHandler;
+import io.ssafy.gatee.global.security.handler.CustomAuthenticationEntryPointHandler;
 import io.ssafy.gatee.global.security.handler.CustomOAuth2FailureHandler;
 import io.ssafy.gatee.global.security.handler.CustomOAuth2SuccessHandler;
 import lombok.extern.slf4j.Slf4j;
@@ -64,6 +66,9 @@ class MemberControllerTest {
     @MockBean
     private CustomAccessDeniedHandler customAccessDeniedHandler;
 
+    @MockBean
+    private CustomAuthenticationEntryPointHandler customAuthenticationEntryPointHandler;
+
     @Test
     @DisplayName("회원 정보 등록 테스트")
     @CustomWithMockUser(role = "ANONYMOUS")
@@ -86,6 +91,25 @@ class MemberControllerTest {
                 .andDo(MockMvcRestDocumentation.document("회원 정보 등록"))
                 .andExpect(status().isOk());
 
+    }
+
+
+    @Test
+    @CustomWithMockUser
+    @DisplayName("회원 FCM 토큰 저장 테스트")
+    void saveNotificationToken() throws Exception {
+        MemberTokenReq memberTokenReq = MemberTokenReq.builder()
+                .notificationToken("askdfjasdfshdfjdsa")
+                .build();
+
+        String memberTokenJson = objectMapper.writeValueAsString(memberTokenReq);    // objtect to json(string)
+
+        mockMvc.perform(patch("/api/members/notifications")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(memberTokenJson))
+                .andDo(MockMvcResultHandlers.print())
+                .andDo(MockMvcRestDocumentation.document("회원 FCM 토큰 저장"))
+                .andExpect(status().isOk());
     }
 
     @Test

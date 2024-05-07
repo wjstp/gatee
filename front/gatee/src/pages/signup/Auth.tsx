@@ -14,7 +14,6 @@ const SignupAuth = () => {
   const mobile_taehyeon: string = "http://70.12.247.24:3000/auth"
   // 서버로 할땐 이거 켜기
   const web: string = "https://gaty.duckdns.org/auth"
-  const server: string = "http://gaty.duckdns.org"
   // 토큰 상태 관리
   const { setAccessToken } = useMemberStore();
 
@@ -29,7 +28,7 @@ const SignupAuth = () => {
       const formData = new URLSearchParams();
       formData.append("grant_type", "authorization_code");
       formData.append("client_id", kakaoJavaScriptApiKey);
-      formData.append("redirect_uri", mobile_home);
+      formData.append("redirect_uri", web);
       formData.append("code", code);
 
       axios.post(
@@ -65,14 +64,16 @@ const SignupAuth = () => {
           console.log(token)
           // 스토어에 토큰 저장
           setAccessToken(token);
-          // // 로컬 스토리지에 엑세스 토큰 저장
-          // localStorage.setItem("accessToken", token);
+          // 로컬 스토리지에 엑세스 토큰 저장
+          localStorage.setItem("accessToken", token);
           navigate("/signup");
         }).catch(error => {
           console.log(error.response);
+          alert(error)
         })
       }).catch(error => {
         console.error(error);
+        alert(error)
       })
     }
   }

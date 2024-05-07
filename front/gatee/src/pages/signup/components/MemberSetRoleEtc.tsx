@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
 import { useMemberStore } from "@store/useMemberStore";
-import {dividerClasses} from "@mui/material";
 
 const SignupMemberSetRoleEtc = (props: {
   inputRef: React.RefObject<HTMLInputElement>;
@@ -33,8 +32,7 @@ const SignupMemberSetRoleEtc = (props: {
         />
       </div>
     </div>
-  )
-    ;
+  );
 };
 
 export default SignupMemberSetRoleEtc;

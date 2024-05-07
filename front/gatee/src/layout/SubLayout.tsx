@@ -16,17 +16,17 @@ const SubLayout = () => {
       {/*Helmet 라이브러리를 사용하여 상단바 동적 컨트롤
       인덱스에서만 오렌지 색상 부여
       */}
-      <HelmetProvider>
-        <Helmet>
-          {currentUrl === "/signup" || currentUrl === "/auth" ? (
-            <meta name="theme-color" id="theme-color" content="#FFBE5C"/>
-          ) : (
-            <meta name="theme-color" content="#FFFFFF"/>
-          )}
-        </Helmet>
-      </HelmetProvider>
-      <div id="sub-container">
-        <Outlet/>
+        <HelmetProvider>
+          <Helmet>
+            {currentUrl === "/signup" || currentUrl === "/auth" ? (
+              <meta name="theme-color" id="theme-color" content="#FFBE5C"/>
+            ) : (
+              <meta name="theme-color" content="#FFFFFF"/>
+            )}
+          </Helmet>
+        </HelmetProvider>
+      <div id="sub">
+        <Outlet />
       </div>
     </>
   )

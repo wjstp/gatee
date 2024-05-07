@@ -11,9 +11,9 @@ public class RefreshTokenException extends JwtException{
     public enum REFRESH_TOKEN_ERROR {
         NO_ACCESS(401, "No access"),
         BAD_ACCESS(401, "Bad access"),
-        NO_REFRESH(403, "No Refresh Token"),
-        OLD_REFRESH(403, "Old Refresh Token"),
-        BAD_REFRESH(403, "Bad Refresh Token"),
+        NO_REFRESH(403, "Refresh Token이 존재하지 않습니다."),
+        OLD_REFRESH(403, "오래된 Refresh Token"),
+        BAD_REFRESH(403, "잘못된 Refresh Token"),
         ;
         private final int status;
         private final String message;

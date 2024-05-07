@@ -7,11 +7,11 @@ public class AccessTokenException extends JwtException{
     private final ACCESS_TOKEN_ERROR error;
     @Getter
     public enum ACCESS_TOKEN_ERROR {
-        UN_ACCEPT(401, "Token is null or too short"),
-        BAD_TYPE(401, "Token type Bearer"),
-        MAL_FORM(403, "Malformed Token"),
-        BAD_SIGN(403, "Bad Signatured Token"),
-        EXPIRED(403, "Expired Token"),
+        UN_ACCEPT(401, "토큰이 비어있거나 짧습니다."),
+        BAD_TYPE(401, "토큰이 Bearer 타입이 아닙니다."),
+        EXPIRED(401, "토큰이 만료되었습니다."),
+        MAL_FORM(403, "잘못된 형식의 토큰"),
+        BAD_SIGN(403, "Bad Signatured 토큰"),
         ;
 
         private final int status;

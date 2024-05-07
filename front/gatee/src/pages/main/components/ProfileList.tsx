@@ -27,11 +27,11 @@ const ProfileList = ({profileDataList}: { profileDataList: Member[] }) => {
     // 모달 종료
     setShowModal(false)
     closeModal()
-    // 프로필로 가기 일때
+    // 프로필로 가기일 때
     if ( type === "gotoProfile" ) {
       navigate(`/profile/${clickedProfile?.nickname}`)
     } else if (type === "sendMessage") {
-      // 메세지 보내기일때
+      // 메세지 보내기일 때
       console.log(content,"보내기 api")
     }
   }

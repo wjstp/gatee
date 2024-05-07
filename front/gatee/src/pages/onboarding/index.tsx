@@ -23,7 +23,6 @@ const OnboardingIndex = () => {
   const [activeSlide, setActiveSlide] = useState(0);
   // const [activeSlide2, setActiveSlide2] = useState(0);
   const navigate = useNavigate();
-  const server: string = "http://gaty.duckdns.org"
 
   const { accessToken } = useMemberStore();
 
