@@ -1,9 +1,9 @@
 import React from "react";
 import { ChatMessage, SenderType } from "@type/index";
 import { MemberInfoSample } from "@constants/index";
-import getUserInfoByEmail from "@helpers/getUserInfoByEmail";
-import convertToAMPMTime from "@helpers/convertToAMPMTime";
-import renderBubbleComponent from "@helpers/renderBubbleComponent";
+import getUserInfoByEmail from "../../../utils/getUserInfoByEmail";
+import convertToAMPMTime from "../../../utils/convertToAMPMTime";
+import renderBubbleComponent from "../../../utils/renderBubbleComponent";
 
 const YoursChat = ({ chat, isPrevSender }: { chat: ChatMessage, isPrevSender: boolean}) => {
   const senderInfo = getUserInfoByEmail(chat.sender);

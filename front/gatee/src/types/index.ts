@@ -1,3 +1,4 @@
+// member
 export interface Member {
   name: string;
   nickname: string;
@@ -10,6 +11,21 @@ export interface Member {
   phoneNumber: string | null;
 }
 
+export interface MemberReq {
+  "name": string,
+  "nickname": string,
+  "birth": string,
+  "birthType": string,
+  "role": string,
+  "familyId": string,
+  "phoneNumber": null | string;
+}
+
+export interface CreateFamilyReq {
+  "name": string,
+}
+
+// character
 export interface Question {
   memberName: string;
   question: string;
@@ -22,16 +38,7 @@ export interface Character {
   answer: string;
 }
 
-export interface Schedule {
-  title: string | null;
-  content: string | null;
-  category: string | null;
-  color: string | null;
-  startDate: string | null;
-  endDate: string | null;
-  participant: string[] | [];
-}
-
+// photo
 export interface PhotoListProps {
   editMode: string,
   photoGroup: {
@@ -50,6 +57,23 @@ export interface PhotoOutletInfoContext {
   ) => void;
 }
 
+export interface PhotoData {
+  id: number,
+  dateTime: string,
+  src: string
+}
+
+// schedule
+export interface Schedule {
+  title: string | null;
+  content: string | null;
+  category: string | null;
+  color: string | null;
+  startDate: string | null;
+  endDate: string | null;
+  participant: string[] | [];
+}
+
 export interface Holiday {
   title: string;
   start: string;
@@ -64,12 +88,14 @@ export interface HolidayStore {
   setHolidays: (newSchedules: Holiday[]) => void;
 }
 
-export interface PhotoData {
-  id: number,
-  dateTime: string,
-  src: string
+// kakao
+declare global {
+    interface Window {
+        Kakao: any;
+    }
 }
 
+//chat
 export interface Chat {
   chatList: ChatMessage[];
   cursor: number;
@@ -92,18 +118,6 @@ export interface ChatFile {
   thumbnailUrl: string;
 }
 
-export enum SenderType {
-  YOURS = "yours",
-  MY = "my"
-}
-
-// 카카오 타입 지정
-declare global {
-    interface Window {
-        Kakao: any;
-    }
-}
-
 export interface EmojiItem {
   id: string;
   image: string;
@@ -112,4 +126,9 @@ export interface EmojiItem {
 export interface EmojiCategory {
   name: string;
   item: EmojiItem[];
+}
+
+export enum SenderType {
+  YOURS = "yours",
+  MY = "my"
 }

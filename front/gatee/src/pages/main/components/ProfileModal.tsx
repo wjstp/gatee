@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Member} from "../../../types/index";
+import {Member} from "@type/index";
 import TextField from "@mui/material/TextField";
 import {IoSend} from "react-icons/io5";
 import { InputAdornment } from "@mui/material";

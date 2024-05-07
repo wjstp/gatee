@@ -3,7 +3,7 @@ import { ScheduleSample } from "../../../constants"
 import { Schedule } from "../../../types";
 import DayScheduleCard from "@pages/schedule/components/DayScheduleCard";
 import dayjs, { Dayjs } from 'dayjs';
-import calculateWeekday from "../../../helpers/calculateWeekday";
+import calculateWeekday from "../../../utils/calculateWeekday";
 
 interface DayToastProps {
   date: string;
