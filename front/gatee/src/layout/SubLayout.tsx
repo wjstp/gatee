@@ -10,6 +10,7 @@ const SubLayout = () => {
   useEffect(() => {
     setcurrentUrl(location.pathname)
   },[location.pathname])
+
   return (
     <>
       {/*Helmet 라이브러리를 사용하여 상단바 동적 컨트롤
@@ -24,7 +25,7 @@ const SubLayout = () => {
             )}
           </Helmet>
         </HelmetProvider>
-      <div id="sub-container">
+      <div id="sub">
         <Outlet />
       </div>
     </>

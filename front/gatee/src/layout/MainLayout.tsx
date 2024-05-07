@@ -23,14 +23,14 @@ const MainLayout = () => {
           (
             <HelmetProvider>
             <Helmet>
-              <meta name="theme-color" id="theme-color" content="#ffffff"/>
+              <meta name="theme-color" id="theme-color" content="#FEFEFE"/>
             </Helmet>
           </HelmetProvider>
           )
       }
 
       <TopBar></TopBar>
-      <div id="main-container">
+      <div id="main">
         <Outlet />
       </div>
       <BottomBar></BottomBar>

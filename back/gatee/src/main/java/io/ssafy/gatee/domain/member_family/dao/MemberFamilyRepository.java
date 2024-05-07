@@ -16,12 +16,13 @@ import java.util.UUID;
 public interface MemberFamilyRepository extends JpaRepository<MemberFamily, Long> {
 
     Optional<MemberFamily> findByMemberAndFamily_Id(Member member, Long familyId);
-
     Optional<MemberFamily> findByMemberAndFamily(Member member, Family family);
-
     Optional<List<MemberFamily>> findAllById(Long familyId);
-
+    Optional<MemberFamily> findByMember(Member member);
+    @Query("SELECT mf FROM MemberFamily mf WHERE mf.family = (SELECT m.family FROM MemberFamily m WHERE m.member = :member)")
+    Optional<List<MemberFamily>> findAllWithFamilyByMember(Member member);
     Optional<List<MemberFamily>> findAllByFamily(Family family);
+    Integer countMemberFamiliesByFamily(Family family);
 
     @Query("""
                 select  m.member.id from MemberFamily m

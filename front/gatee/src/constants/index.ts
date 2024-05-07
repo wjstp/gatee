@@ -1,4 +1,12 @@
-import { Member, Question, Character, Schedule, Chat } from "src/types";
+import { Member, Question, Character, Schedule, Chat, EmojiCategory } from "src/types";
+import EmojiDogOne from "@assets/images/emoji/emoji_dog1.png";
+import EmojiDogTwo from "@assets/images/emoji/emoji_dog2.png";
+import EmojiDogThree from "@assets/images/emoji/emoji_dog3.png";
+import EmojiDogFour from "@assets/images/emoji/emoji_dog4.png";
+import EmojiJulOne from "@assets/images/emoji/emoji_jul1.png";
+import EmojiJulTwo from "@assets/images/emoji/emoji_jul2.png";
+import EmojiJulThree from "@assets/images/emoji/emoji_jul3.png";
+import EmojiJulFour from "@assets/images/emoji/emoji_jul4.png";
 
 // 멤버 임시 데이터
 export const MemberInfoSample: Member = {
@@ -9,7 +17,8 @@ export const MemberInfoSample: Member = {
   birth: "2000-07-20",
   birthType: "SOLAR",
   image: "https://cdn.citytimes.co.kr/news/photo/202310/mn_19685_20231014093033_1.jpg",
-  mood: null
+  mood: "HAPPY",
+  phoneNumber: "010-8806-8489"
 }
 
 // 가족 구성원 임시 데이터
@@ -22,7 +31,8 @@ export const FamilyMemberInfoSample: Member[] = [
     birth: "2000-07-20",
     birthType: "SOLAR",
     image: "https://image.xportsnews.com/contents/images/upload/article/2023/1013/mb_1697156860596868.jpg",
-    mood: null
+    mood: null,
+    phoneNumber: "010-8806-8489"
   },
   {
     name: "이윤정",
@@ -32,7 +42,8 @@ export const FamilyMemberInfoSample: Member[] = [
     birth: "1999-11-03",
     birthType: "SOLAR",
     image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRW4C8mlEPUiWYuROJ0llF7eFg9Bs9TtMqV8KfdxLV-hg&s",
-    mood: "HAPPY"
+    mood: "HAPPY",
+    phoneNumber: "010-8806-8489"
   },
   {
     name: "이윤정",
@@ -42,7 +53,8 @@ export const FamilyMemberInfoSample: Member[] = [
     birth: "1998-02-14",
     birthType: "SOLAR",
     image: "https://image.newdaily.co.kr/site/data/img/2023/09/15/2023091500117_2.jpg",
-    mood: "SAD"
+    mood: "",
+    phoneNumber: "010-8806-8489"
   },
   {
     name: "이윤정",
@@ -52,7 +64,8 @@ export const FamilyMemberInfoSample: Member[] = [
     birth: "1994-03-04",
     birthType: "SOLAR",
     image: "https://yt3.googleusercontent.com/QBR8DJ3RJIgjrnsye7IPBDXAYkIK3G-rNolklMPlq7ndsXg4sWWVcS8oHVPrfyt7ApQ3BzNnVMQ=s900-c-k-c0x00ffffff-no-rj",
-    mood: "HAPPY"
+    mood: "HAPPY",
+    phoneNumber: ""
   },
   {
     name: "이윤정",
@@ -62,7 +75,8 @@ export const FamilyMemberInfoSample: Member[] = [
     birth: "1997-08-29",
     birthType: "SOLAR",
     image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkaX7TOkcE7W_5R0WXYy8N5Dbh-fcI23Dy7_g6HFREWw&s",
-    mood: "ALONE"
+    mood: "ALONE",
+    phoneNumber: "",
   },
   {
     name: "이윤정",
@@ -72,7 +86,8 @@ export const FamilyMemberInfoSample: Member[] = [
     birth: "1994-06-22",
     birthType: "SOLAR",
     image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0cTfgWus0RScvjQpx8zAGe-F0-U0W2s960N2AZmfPSA&s",
-    mood: "ANGRY"
+    mood: "ANGRY",
+    phoneNumber: ""
   }
 ]
 
@@ -322,3 +337,25 @@ export const ChatSample: Chat = {
   ],
   cursor: 1
 }
+
+// 이모티콘
+export const Emoji: EmojiCategory[] = [
+  {
+    name: "깡지",
+    item: [
+      { id: "dog1", image: EmojiDogOne },
+      { id: "dog2", image: EmojiDogTwo },
+      { id: "dog3", image: EmojiDogThree },
+      { id: "dog4", image: EmojiDogFour },
+    ]
+  },
+  {
+    name: "주르미",
+    item: [
+      { id: "jul1", image: EmojiJulOne },
+      { id: "jul2", image: EmojiJulTwo },
+      { id: "jul3", image: EmojiJulThree },
+      { id: "jul4", image: EmojiJulFour },
+    ]
+  }
+];

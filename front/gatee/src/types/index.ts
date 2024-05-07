@@ -7,6 +7,7 @@ export interface Member {
   birthType: string;
   image: string;
   mood: string | null;
+  phoneNumber: string | null;
 }
 
 export interface Question {
@@ -38,7 +39,7 @@ export interface PhotoListProps {
     dateTime: string,
     src: string
   }[],
-  handleChecked: (photoId: number, type: string) => void;
+  handleChecked: ((photoId: number, type: string) => void) | null;
 }
 
 export interface PhotoOutletInfoContext {
@@ -70,11 +71,11 @@ export interface PhotoData {
 }
 
 export interface Chat {
-  chatList: ChatItem[];
+  chatList: ChatMessage[];
   cursor: number;
 }
 
-export interface ChatItem {
+export interface ChatMessage {
   chatId: number;
   type: string;
   sender: string;
@@ -101,4 +102,14 @@ declare global {
     interface Window {
         Kakao: any;
     }
+}
+
+export interface EmojiItem {
+  id: string;
+  image: string;
+}
+
+export interface EmojiCategory {
+  name: string;
+  item: EmojiItem[];
 }
