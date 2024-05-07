@@ -14,7 +14,7 @@ const KaKaoLogin = () => {
 
   const loginWithKaKao = () => {
     window.Kakao.Auth.authorize({
-      redirectUri: web,
+      redirectUri: mobile_taehyeon,
       scope: "profile_nickname, account_email",
     })
   }

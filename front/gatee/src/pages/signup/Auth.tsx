@@ -28,7 +28,7 @@ const SignupAuth = () => {
       const formData = new URLSearchParams();
       formData.append("grant_type", "authorization_code");
       formData.append("client_id", kakaoJavaScriptApiKey);
-      formData.append("redirect_uri", web);
+      formData.append("redirect_uri", mobile_taehyeon);
       formData.append("code", code);
 
       axios.post(
@@ -41,6 +41,7 @@ const SignupAuth = () => {
         const kakao_access_token: string = response.data.access_token;
         console.log(response.data);
         console.log(kakao_access_token);
+        alert("카카오 토큰 받기 성공")
 
         axios.post(
           'https://gaty.duckdns.org/api/auth/kakao/login', null,  {
@@ -66,13 +67,16 @@ const SignupAuth = () => {
           setAccessToken(token);
           // 로컬 스토리지에 엑세스 토큰 저장
           localStorage.setItem("accessToken", token);
+          alert(token)
           navigate("/signup");
         }).catch(error => {
           console.log(error.response);
-          alert(error)
+          alert("서버 토큰 받기 실패")
+          alert(error.response)
         })
       }).catch(error => {
         console.error(error);
+        alert("카카오 토큰 받기 실패")
         alert(error)
       })
     }
