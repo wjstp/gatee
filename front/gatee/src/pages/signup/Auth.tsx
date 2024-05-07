@@ -28,7 +28,7 @@ const SignupAuth = () => {
       const formData = new URLSearchParams();
       formData.append("grant_type", "authorization_code");
       formData.append("client_id", kakaoJavaScriptApiKey);
-      formData.append("redirect_uri", mobile_taehyeon);
+      formData.append("redirect_uri", web);
       formData.append("code", code);
 
       axios.post(
