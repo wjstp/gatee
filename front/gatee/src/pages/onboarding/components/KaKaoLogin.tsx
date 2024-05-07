@@ -17,7 +17,7 @@ const KaKaoLogin = () => {
     //   redirectUri: mobile_home,
     //   scope: "profile_nickname",
     // })
-    navigate("/signup");
+    navigate('/signup')
   }
 
   return (

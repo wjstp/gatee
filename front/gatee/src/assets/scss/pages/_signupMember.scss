@@ -37,6 +37,11 @@
     }
   }
 
+  &__error-message {
+    margin-top: 1%;
+    color: red;
+  }
+
   &__btn {
     @include flex_center;
 
@@ -47,6 +52,10 @@
       @extend %orange-button-large;
 
       &__text {
+      }
+
+      &:disabled {
+        background-color: $gray75;
       }
     }
   }
@@ -252,6 +261,10 @@
 
       &__text {
       }
+
+      &:disabled {
+        background-color: $gray75;
+      }
     }
   }
 }
@@ -281,6 +294,10 @@
       @extend %orange-button-large;
 
       &__text {
+      }
+
+      &:disabled {
+        background-color: $gray75;
       }
     }
   }
@@ -342,6 +359,10 @@
 
     height: 15%;
     width: 80%;
+  }
+
+  &__error-message {
+    color: red;
   }
 
   &__title-icon {
@@ -476,6 +497,10 @@
 
     height: 15%;
     width: 80%;
+  }
+
+  &__error-message {
+    color: red;
   }
 
   &__title-icon {

@@ -12,6 +12,7 @@ import { MemberInfoSample } from "@constants/index";
 const TopBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  // 이름 조회해야함
   const { name } = MemberInfoSample;
 
   const [currentPage, setCurrentPage] = useState('');
