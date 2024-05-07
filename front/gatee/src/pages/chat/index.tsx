@@ -6,27 +6,15 @@ import { ChatSample } from "@constants/index";
 import { ChatMessage } from "@type/index"
 
 // import SockJS from "sockjs-client";
-import { initializeApp } from "firebase/app";
-import { getDatabase, ref, set } from "firebase/database";
+
 
 const ChatIndex = () => {
-  const REACT_APP_API_URL: string | undefined = process.env.REACT_APP_API_URL
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [newMessage, setNewMessage] = useState<ChatMessage | null>(null);
   const [newMessageType, setNewMessageType] = useState<string>("");
 
-  // Firebase 초기화
-  const firebaseConfig = {
-    apiKey: process.env.REACT_APP_FCM_API_KEY,
-    authDomain: process.env.REACT_APP_FCM_AUTH_DOMAIN,
-    databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
-    projectId: process.env.REACT_APP_FCM_PROJECT_ID,
-    storageBucket: process.env.REACT_APP_FCM_STORAGE_BUCKET,
-    messagingSenderId: process.env.REACT_APP_FCM_MESSAGING_SENDER_ID
-  };
 
-  const app = initializeApp(firebaseConfig);
-  const database = getDatabase(app);
+
 
   useEffect(() => {
     // 컴포넌트 마운트 시 대화 불러오기 & 소켓 연결
