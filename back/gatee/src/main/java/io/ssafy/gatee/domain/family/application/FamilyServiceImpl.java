@@ -119,7 +119,7 @@ public class FamilyServiceImpl implements FamilyService {
 
             Member member = memberRepository.getReferenceById(memberId);
 
-            Family family = familyRepository.getReferenceById(Long.valueOf(familyId));
+            Family family = familyRepository.getReferenceById(UUID.fromString(familyId));
 
             MemberFamily memberFamily = MemberFamily.builder()
                     .member(member)
