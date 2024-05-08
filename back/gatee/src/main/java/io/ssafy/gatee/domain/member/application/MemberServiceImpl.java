@@ -123,15 +123,16 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public MemberInfoRes readMemberInfo(UUID familyId, UUID memberId) {
+    public MemberInfoRes readMemberInfo(UUID memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
 
-        MemberFamily memberFamily = memberFamilyRepository.findByMemberAndFamilyId(member, familyId)
+        MemberFamily memberFamily = memberFamilyRepository.findByMember(member)
                 .orElseThrow(() -> new MemberFamilyNotFoundException(MEMBER_FAMILY_NOT_FOUND));
 
         return MemberInfoRes.builder()
                 .memberId(member.getId())
+                .familyId(memberFamily.getFamily().getId())
                 .name(member.getName())
                 .email(member.getEmail())
                 .nickname(member.getNickname())
