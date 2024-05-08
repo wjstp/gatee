@@ -143,7 +143,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         pushNotificationService.sendPushOneToMany(PushNotificationFCMReq.builder()
                                 .senderId(memberId)
                                 .receiverId(memberFamilyRepository.findMyFamily(memberId))
-                                .title("일정 등록")
+                                .title(Type.SCHEDULE.korean)
                                 .content(member.getName() + "님이 일정을 등록하였습니다.")
                                 .dataFCMReq(DataFCMReq.builder()
                                     .type(Type.SCHEDULE)

@@ -127,7 +127,7 @@ public class PhotoServiceImpl implements PhotoService {
         
         // 사진 등록시 가족들에게 알림
         pushNotificationService.sendPushOneToMany(PushNotificationFCMReq.builder()
-                        .title("앨범 사진 등록")
+                        .title(Type.ALBUM.korean)
                         .content(memberFamily.getMember().getName() + "님이 사진을 등록하셨습니다.")
                         .receiverId(memberFamilyRepository.findMyFamily(memberId))
                         .senderId(memberFamily.getMember().getId())
