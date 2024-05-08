@@ -78,7 +78,7 @@ const ProfileModal = ({profileData, handleModalEvent}: ProfileModalProps) => {
                   :
                   profileData?.mood === "ANGRY" ?
                     <div>오늘 화나요 🤬</div>
-                    : <div>오늘 기분을 설정하지 않았어요. 😶</div>
+                    : <div>오늘 기분을 설정하지 않았어요 😶</div>
           }
         </div>
 
