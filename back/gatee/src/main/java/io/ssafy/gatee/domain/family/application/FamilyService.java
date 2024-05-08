@@ -14,7 +14,7 @@ public interface FamilyService {
 
     FamilySaveRes saveFamily(FamilySaveReq familySaveReq, UUID memberId);
 
-    FamilyCodeRes createFamilyCode(Long familyId);
+    FamilyCodeRes createFamilyCode(String familyId);
 
     UUID getFamilyIdByMemberId(UUID memberId);
 

@@ -38,7 +38,7 @@ public class FamilyController {
     @GetMapping("/{familyId}/code")
     @ResponseStatus(HttpStatus.OK)
     public FamilyCodeRes createFamilyCode(@PathVariable("familyId") String familyId) {
-        return familyService.createFamilyCode(Long.valueOf(familyId));
+        return familyService.createFamilyCode(familyId);
     }
 
     // 가족 합류
