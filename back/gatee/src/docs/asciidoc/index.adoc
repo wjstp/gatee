@@ -278,6 +278,22 @@ include::{snippets}/사진 상호작용 삭제/http-response.adoc[]
 ---
 ---
 
+= Push Notification
+
+== 한마디 보내기
+
+- Request
+
+include::{snippets}/한마디 보내기 및 FCM알림 전송/http-request.adoc[]
+
+- Response
+
+include::{snippets}/한마디 보내기 및 FCM알림 전송/http-response.adoc[]
+
+
+---
+---
+
 
 = Album
 

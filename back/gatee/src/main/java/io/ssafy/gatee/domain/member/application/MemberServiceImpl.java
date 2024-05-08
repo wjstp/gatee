@@ -67,7 +67,7 @@ public class MemberServiceImpl implements MemberService{
 
         member.saveInfo(memberSaveReq);
 
-        MemberFamily memberFamily = memberFamilyRepository.findByMemberAndFamily_Id(member, Long.valueOf(memberSaveReq.familyId()))
+        MemberFamily memberFamily = memberFamilyRepository.findByMemberAndFamilyId(member, UUID.fromString(memberSaveReq.familyId()))
                 .orElseThrow(() -> new MemberFamilyNotFoundException(MEMBER_FAMILY_NOT_FOUND));
 
         memberFamily.editRole(memberSaveReq.role());
@@ -96,7 +96,7 @@ public class MemberServiceImpl implements MemberService{
 
         member.editInfo(memberEditReq);
 
-        MemberFamily memberFamily = memberFamilyRepository.findByMemberAndFamily_Id(member, Long.valueOf(memberEditReq.familyId()))
+        MemberFamily memberFamily = memberFamilyRepository.findByMemberAndFamilyId(member, UUID.fromString(memberEditReq.familyId()))
                 .orElseThrow(() -> new MemberFamilyNotFoundException(MEMBER_FAMILY_NOT_FOUND));
 
         memberFamily.editRole(memberEditReq.role());
@@ -120,15 +120,16 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public MemberInfoRes readMemberInfo(MemberReadReq memberReadReq, UUID memberId) {
+    public MemberInfoRes readMemberInfo(UUID memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
 
-        MemberFamily memberFamily = memberFamilyRepository.findByMemberAndFamily_Id(member, Long.valueOf(memberReadReq.familyId()))
+        MemberFamily memberFamily = memberFamilyRepository.findByMember(member)
                 .orElseThrow(() -> new MemberFamilyNotFoundException(MEMBER_FAMILY_NOT_FOUND));
 
         return MemberInfoRes.builder()
                 .memberId(member.getId())
+                .familyId(memberFamily.getFamily().getId())
                 .name(member.getName())
                 .email(member.getEmail())
                 .nickname(member.getNickname())

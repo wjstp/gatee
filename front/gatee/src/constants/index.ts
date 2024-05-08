@@ -1,4 +1,4 @@
-import { Member, Question, Character, Schedule, Chat, EmojiCategory } from "src/types";
+import {Member, Mood, Question, Schedule, Chat, Emoji} from "src/types";
 import EmojiDogOne from "@assets/images/emoji/emoji_dog1.png";
 import EmojiDogTwo from "@assets/images/emoji/emoji_dog2.png";
 import EmojiDogThree from "@assets/images/emoji/emoji_dog3.png";
@@ -7,6 +7,48 @@ import EmojiJulOne from "@assets/images/emoji/emoji_jul1.png";
 import EmojiJulTwo from "@assets/images/emoji/emoji_jul2.png";
 import EmojiJulThree from "@assets/images/emoji/emoji_jul3.png";
 import EmojiJulFour from "@assets/images/emoji/emoji_jul4.png";
+import EmojiDogThum from "@assets/images/emoji/emoji_dog_thum.png";
+import EmojiJulThum from "@assets/images/emoji/emoji_jul_thum.png";
+
+/* 대문자로 작성 */
+
+// 이모티콘
+export const EMOJI: Emoji[] = [
+  {
+    name: "dog",
+    image: EmojiDogThum,
+    item: [
+      { id: "dog1", image: EmojiDogOne },
+      { id: "dog2", image: EmojiDogTwo },
+      { id: "dog3", image: EmojiDogThree },
+      { id: "dog4", image: EmojiDogFour },
+    ]
+  },
+  {
+    name: "jul",
+    image: EmojiJulThum,
+    item: [
+      { id: "jul1", image: EmojiJulOne },
+      { id: "jul2", image: EmojiJulTwo },
+      { id: "jul3", image: EmojiJulThree },
+      { id: "jul4", image: EmojiJulFour },
+    ]
+  }
+];
+
+// 파일 제한 사항
+const ALLOW_FILE_EXTENSION: string = "jpg,jpeg,png";
+const FILE_SIZE_MAX_LIMIT: number = 5 * 1024 * 1024;
+
+// 기분
+export const MOOD: Mood[] = [
+  { name: "HAPPY", mood: "🥰", content: "행복해요"},
+  { name: "SAD", mood: "😥", content: "슬퍼요" },
+  { name: "ALONE", mood: "😑", content: "혼자 있고 싶어요" },
+  { name: "ANGRY", mood: "🤬", content: "화나요" },
+  { name: "FEAR", mood: "😱", content: "심란해요" },
+  {name: "SLEEPY", mood: "😪", content: "피곤해요" },
+]
 
 // 멤버 임시 데이터
 export const MemberInfoSample: Member = {
@@ -88,26 +130,6 @@ export const FamilyMemberInfoSample: Member[] = [
     image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0cTfgWus0RScvjQpx8zAGe-F0-U0W2s960N2AZmfPSA&s",
     mood: "ANGRY",
     phoneNumber: ""
-  }
-]
-
-// 백과사전 임시 데이터
-export const CharacterSample: Character[] = [
-  {
-    question: "못 먹는 음식은",
-    answer: "피망"
-  },
-  {
-    question: "부모님이 가장 보고 싶을 때는",
-    answer: "맛있는 거 먹을 때"
-  },
-  {
-    question: "올해 꼭 하고 싶은 일은",
-    answer: "혼자 해외여행 가기"
-  },
-  {
-    question: "인생에서 가장 후회되는 일은",
-    answer: "학점 관리 안 한 것"
   }
 ]
 
@@ -337,25 +359,3 @@ export const ChatSample: Chat = {
   ],
   cursor: 1
 }
-
-// 이모티콘
-export const Emoji: EmojiCategory[] = [
-  {
-    name: "깡지",
-    item: [
-      { id: "dog1", image: EmojiDogOne },
-      { id: "dog2", image: EmojiDogTwo },
-      { id: "dog3", image: EmojiDogThree },
-      { id: "dog4", image: EmojiDogFour },
-    ]
-  },
-  {
-    name: "주르미",
-    item: [
-      { id: "jul1", image: EmojiJulOne },
-      { id: "jul2", image: EmojiJulTwo },
-      { id: "jul3", image: EmojiJulThree },
-      { id: "jul4", image: EmojiJulFour },
-    ]
-  }
-];

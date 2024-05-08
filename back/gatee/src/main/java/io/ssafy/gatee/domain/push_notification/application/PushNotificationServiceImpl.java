@@ -10,6 +10,7 @@ import io.ssafy.gatee.domain.member_notification.dao.MemberNotificationRepositor
 import io.ssafy.gatee.domain.push_notification.dto.request.DataFCMReq;
 import io.ssafy.gatee.domain.push_notification.dto.request.NaggingReq;
 import io.ssafy.gatee.domain.push_notification.dto.request.PushNotificationFCMReq;
+import io.ssafy.gatee.domain.push_notification.dto.response.NaggingRes;
 import io.ssafy.gatee.domain.push_notification.dto.response.PushNotificationRes;
 import io.ssafy.gatee.domain.push_notification.entity.PushNotification;
 import io.ssafy.gatee.domain.push_notification.entity.Type;
@@ -97,7 +98,7 @@ public class PushNotificationServiceImpl implements PushNotificationService {
     }
 
     @Override
-    public void sendNagging(NaggingReq naggingReq, UUID memberId) throws FirebaseMessagingException {
+    public NaggingRes sendNagging(NaggingReq naggingReq, UUID memberId) throws FirebaseMessagingException {
         String content = "\"" + naggingReq.message() + "\"라는 문장을 상냥한 어투로 바꿔줘. 이모티콘도 붙여줘.";
         GptResponseDto result = gptService.askQuestion(QuestionDto.builder().content(content).build());
         log.info(result.answer());
@@ -113,6 +114,8 @@ public class PushNotificationServiceImpl implements PushNotificationService {
                         .build())
                 .build();
         sendPushOneToOne(pushNotification);
+
+        return NaggingRes.builder().naggingMessage(result.answer()).build();
     }
 
     @Override
@@ -192,7 +195,7 @@ public class PushNotificationServiceImpl implements PushNotificationService {
                                     .build())
                             .build())
                     .build();
-            BatchResponse response = FirebaseMessaging.getInstance().sendMulticast(message);
+            BatchResponse response = FirebaseMessaging.getInstance().sendMulticast(message);    // sendEachForMulticast
             if (response.getFailureCount() > 0) {
                 List<SendResponse> responses = response.getResponses();
                 List<String> failedTokens = new ArrayList<>();
