@@ -13,7 +13,7 @@ const Android = () => {
           '가티'는 앱에서 더 최적화되어 있습니다!
         </div>
         <span className="android-header__part--02">
-          '<BsThreeDotsVertical/> → 가티 열기'
+          '<BsThreeDotsVertical/> → 홈 화면에 추가'
         </span>
         <span className="android-header__part--03">
           로 빠른 앱 실행을 해보세요!

@@ -1,4 +1,5 @@
 import React from 'react';
+import { IoShareOutline } from "react-icons/io5";
 
 const Ios = () => {
   return (
@@ -7,12 +8,19 @@ const Ios = () => {
         <div className="ios-header__part--01">
           '가티'는 앱에서 더 최적화되어 있습니다!
         </div>
-        <span className="ios-header__part--02">
-          '공유버튼 → 홈 화면에 추가'
-        </span>
-        <span className="ios-header__part--03">
-          로 빠른 앱 실행을 해보세요!
-        </span>
+        <div className="ios-header__part--02">
+          <IoShareOutline
+            className="icon"
+          />
+        </div>
+        <div className="ios-header__part--03">
+          <span className="text--01">
+             → 홈 화면에 추가'
+          </span>
+          <span className="text--02">
+            로 빠른 앱 실행을 해보세요!
+          </span>
+        </div>
       </div>
     </div>
   );
