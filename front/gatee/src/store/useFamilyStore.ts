@@ -1,5 +1,5 @@
 import {create} from "zustand";
-import {persist} from "zustand/middleware";
+
 type FamilyStore = {
     familyId: string;
     setFamilyId: (newId: string) => void;
@@ -11,8 +11,7 @@ type FamilyStore = {
     setFamilyCode: (newCode: string) => void;
 }
 
-export const useFamilyStore = create<FamilyStore>()(
-    persist(
+export const useFamilyStore = create<FamilyStore>(
     (set) => ({
         familyId: "",
         setFamilyId: (newId: string) => set({ familyId: newId }),
@@ -22,9 +21,5 @@ export const useFamilyStore = create<FamilyStore>()(
         setFamilyImage: (newImage: string | ArrayBuffer | null) => set({familyImage: newImage}),
         familyCode: "",
         setFamilyCode: (newCode: string) => set({ familyCode: newCode }),
-    }),
-    {
-        name: "family",
-    }
-)
+    })
 );

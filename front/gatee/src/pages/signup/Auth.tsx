@@ -14,8 +14,6 @@ const SignupAuth = () => {
   const mobile_taehyeon: string = "http://70.12.247.24:3000/auth"
   // 서버로 할땐 이거 켜기
   const web: string = "https://gaty.duckdns.org/auth"
-  // 토큰 상태 관리
-  const { setAccessToken } = useMemberStore();
 
   // 인가 코드 받기
   const code: string | null = new URL(window.location.href).searchParams.get('code');
@@ -63,8 +61,6 @@ const SignupAuth = () => {
           // Bearer 떼고 토큰만 저장
           const token = response.headers.authorization.split(' ')[1];
           console.log(token)
-          // 스토어에 토큰 저장
-          setAccessToken(token);
           // 로컬 스토리지에 엑세스 토큰 저장
           localStorage.setItem("accessToken", token);
           alert(token)

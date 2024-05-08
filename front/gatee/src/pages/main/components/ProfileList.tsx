@@ -1,15 +1,12 @@
 import React, {useState} from 'react';
 import {Member} from "@type/index";
-import {FamilyMemberInfoSample} from "@constants/index";
 import ProfileModal from "@pages/main/components/ProfileModal";
-import {useModalStore} from "@store/useModalStore";
 import useModal from "@hooks/useModal";
 import {useNavigate} from "react-router-dom";
 
 interface ProfileItemProps  { profileData: Member, handleClickProfile: (profileData: Member) => void }
 
 const ProfileList = ({profileDataList}: { profileDataList: Member[] }) => {
-  const {setShowModal} = useModalStore();
   const {isOpen, openModal, closeModal} = useModal();
   const [clickedProfile, setClickedProfile] = useState<Member | null>(null);
   const navigate = useNavigate()
@@ -19,13 +16,11 @@ const ProfileList = ({profileDataList}: { profileDataList: Member[] }) => {
     // 상태 업데이트, 모달 켜주고, 모달 store 업데이트
     setClickedProfile(profileData)
     openModal()
-    setShowModal(true)
   }
 
   // 모달 이벤트
   const handleModalEvent = (type:string,content:string) => {
     // 모달 종료
-    setShowModal(false)
     closeModal()
     // 프로필로 가기일 때
     if ( type === "gotoProfile" ) {
