@@ -1,10 +1,7 @@
 package io.ssafy.gatee.domain.member.application;
 
 import io.ssafy.gatee.domain.member.dao.MemberRepository;
-import io.ssafy.gatee.domain.member.dto.request.MemberEditMoodReq;
-import io.ssafy.gatee.domain.member.dto.request.MemberEditReq;
-import io.ssafy.gatee.domain.member.dto.request.MemberSaveReq;
-import io.ssafy.gatee.domain.member.dto.request.MemberTokenReq;
+import io.ssafy.gatee.domain.member.dto.request.*;
 import io.ssafy.gatee.domain.member.dto.response.MemberInfoRes;
 import io.ssafy.gatee.domain.member.entity.Member;
 import io.ssafy.gatee.domain.member.entity.Privilege;
@@ -123,11 +120,11 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public MemberInfoRes readMemberInfo(Long familyId, UUID memberId) {
+    public MemberInfoRes readMemberInfo(MemberReadReq memberReadReq, UUID memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
 
-        MemberFamily memberFamily = memberFamilyRepository.findByMemberAndFamily_Id(member, familyId)
+        MemberFamily memberFamily = memberFamilyRepository.findByMemberAndFamily_Id(member, Long.valueOf(memberReadReq.familyId()))
                 .orElseThrow(() -> new MemberFamilyNotFoundException(MEMBER_FAMILY_NOT_FOUND));
 
         return MemberInfoRes.builder()

@@ -21,6 +21,17 @@ include::{snippets}/회원 정보 등록/http-request.adoc[]
 include::{snippets}/회원 정보 등록/http-response.adoc[]
 
 
+== 회원 FCM 토큰 저장
+
+- Request
+
+include::{snippets}/회원 FCM 토큰 저장/http-request.adoc[]
+
+- Response
+
+include::{snippets}/회원 FCM 토큰 저장/http-response.adoc[]
+
+
 == 회원 정보 수정
 
 - Request
@@ -47,11 +58,12 @@ include::{snippets}/기분 상태 수정/http-response.adoc[]
 
 - Request
 
-include::{snippets}/회원 정보 조회/http-request.adoc[]
+include::{snippets}/member-controller-test/read-info/http-request.adoc[]
 
 - Response
 
-include::{snippets}/회원 정보 조회/http-response.adoc[]
+include::{snippets}/member-controller-test/read-info/http-response.adoc[]
+include::{snippets}/member-controller-test/read-info/response-fields.adoc[]
 
 
 ---
@@ -75,11 +87,15 @@ include::{snippets}/가족 생성/http-response.adoc[]
 
 - Request
 
-include::{snippets}/가족 정보 조회/http-request.adoc[]
+include::{snippets}/family-controller-test/read-family/http-request.adoc[]
+include::{snippets}/family-controller-test/read-family/path-parameters.adoc[]
+
 
 - Response
 
-include::{snippets}/가족 정보 조회/http-response.adoc[]
+include::{snippets}/family-controller-test/read-family/response-body.adoc[]
+include::{snippets}/family-controller-test/read-family/response-fields.adoc[]
+
 
 
 == 가족 코드 생성

@@ -26,7 +26,6 @@ public class FamilyController {
     private final FamilyService familyService;
 
     // 가족 생성
-
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public void saveFamily(@RequestBody FamilySaveReq familySaveReq, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
