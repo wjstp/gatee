@@ -9,7 +9,7 @@ import java.util.UUID;
 @Builder
 public record ScheduleSaveRecordReq(
 
-        Long familyId,
+        UUID familyId,
 
         @NotNull
         List<Long> fileIdList,
