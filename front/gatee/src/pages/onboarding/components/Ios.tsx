@@ -9,16 +9,16 @@ const Ios = () => {
           '가티'는 앱에서 더 최적화되어 있습니다!
         </div>
         <div className="ios-header__part--02">
-          <IoShareOutline
-            className="icon"
-          />
-        </div>
-        <div className="ios-header__part--03">
           <span className="text--01">
-             → 홈 화면에 추가'
+            <IoShareOutline
+              className="icon"
+            />
+            <span className="text">
+            &nbsp;→ 홈 화면에 추가
+            </span>
           </span>
           <span className="text--02">
-            로 빠른 앱 실행을 해보세요!
+            &nbsp;로 빠른 앱 실행을 해보세요!
           </span>
         </div>
       </div>

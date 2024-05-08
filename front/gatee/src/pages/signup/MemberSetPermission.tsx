@@ -13,6 +13,8 @@ const SignupMemberSetPermission = () => {
   const goToMemberSetFinish = () => {
     // 회원 정보 등록
     // axios.post
+    // 푸시알림 권한 요청 함수
+    requestPermission()
     navigate("/signup/member-set/finish");
   }
 
@@ -46,8 +48,6 @@ const SignupMemberSetPermission = () => {
   // 푸시 알림 동의 체크 버튼
   const handlePushChecked = () => {
     setPushChecked(!pushChecked);
-    // 푸시알림 권한 요청 함수
-    requestPermission()
   }
 
   // 카메라 권한 동의 체크 버튼

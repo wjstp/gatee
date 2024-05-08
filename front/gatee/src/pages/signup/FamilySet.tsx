@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { IoIosCamera } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import basicFamily from "@assets/images/signup/basic.svg"
@@ -8,10 +8,10 @@ const SignupFamilySet = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { familyName, setFamilyName, familyImage, setFamilyImage } = useFamilyStore();
 
   const [errorMessage, setErrorMessage] = useState<string>("");
-
-  const { familyName, setFamilyName, familyImage, setFamilyImage } = useFamilyStore();
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   // 입력값
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -22,15 +22,51 @@ const SignupFamilySet = () => {
     }
   }
 
+  // useEffect(() => {
+  //   if (selectedFile) {
+  //     // useResizer Hook을 여기서 호출
+  //     const resize_file = useResizer(selectedFile);
+  //     // 처리된 파일을 상태에 저장하거나 다른 처리를 수행
+  //     console.log(resize_file);
+  //   }
+  // }, [selectedFile]); // selectedFile이 변경될 때마다 실행
+
+
   // 이미지 선택 처리
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const file = e.target.files ? e.target.files[0] : null;
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setFamilyImage(reader.result);
-      };
-      reader.readAsDataURL(file);
+      // const reader: FileReader = new FileReader();
+      setSelectedFile(file);
+
+      // reader.onloadend = (e: ProgressEvent<FileReader>) => {
+      //   const image = new Image();
+      //   console.log(e);
+      //   if (e.target?.result) {
+      //     image.src = e.target.result as string
+      //   }
+      //
+      //   image.onload = () => {
+      //     // 캔버스 생성
+      //     const canvas = document.createElement("canvas");
+      //     const ctx = canvas.getContext('2d');
+      //     if (!ctx) {
+      //       console.error('캔버스 생성 불가')
+      //       return;
+      //     }
+      //
+      //     canvas.width = image.width;
+      //     canvas.height = image.height;
+      //     ctx.drawImage(image, 0, 0, image.width, image.height);
+      //
+      //     // JPG 변환
+      //     const jpgUrl = canvas.toDataURL('image/jpeg', 1.0);
+      //     // setFamilyImage(jpgUrl);
+      //     setFamilyImage(reader.result);
+      //     console.log('jpgUrl', jpgUrl);
+      //   }
+      //   console.log('image',image);
+      // };
     }
   }
 
@@ -58,6 +94,7 @@ const SignupFamilySet = () => {
   }
   return (
     <div className="signup-family-set">
+
       {/*제목*/}
       <div className="signup-family-set__title">
         <span className="title__part--01">가족을 소개</span>
@@ -66,26 +103,28 @@ const SignupFamilySet = () => {
       
       {/*가족 이미지*/}
       <div className="signup-family-set__img-box">
-        <img
-          className="img-box__img"
-          src={familyImage ? familyImage.toString() : basicFamily}
-          alt="family-image"
-        />
-        <input
-          type="file"
-          accept="image/*"
-          style={{display: 'none'}}
-          ref={fileInputRef}
-          onChange={handleImageChange}
-        />
         <button
           className="img-box__btn"
           onClick={handleCameraButtonClick}
         >
-          <IoIosCamera
-            className="btn__icon"
-            size={25}
+          <img
+            className="btn--img"
+            src={familyImage ? familyImage.toString() : basicFamily}
+            alt="family-image"
           />
+          <input
+            type="file"
+            accept="image/*"
+            style={{display: 'none'}}
+            ref={fileInputRef}
+            onChange={handleImageChange}
+          />
+          <div className="btn--icon">
+            <IoIosCamera
+              className="icon"
+              size={25}
+            />
+          </div>
         </button>
       </div>
 
@@ -115,6 +154,7 @@ const SignupFamilySet = () => {
           <span className="btn-next__text">소개하기</span>
         </button>
       </div>
+
     </div>
   );
 };

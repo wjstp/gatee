@@ -75,15 +75,17 @@
 
 // 가족 생성 페이지
 .signup-family-set {
+  @include flex_center;
+
   height: 100%;
   width: 100%;
   display: flex;
   align-items: center;
   flex-direction: column;
 
+  // 제목
   &__title {
-    margin-top: 12%;
-    font-size: 30px;
+    font-size: 180%;
 
     .title__part--01 {
       font-weight: bold;
@@ -93,43 +95,67 @@
     }
   }
 
+  // 이미지 상자
   &__img-box {
-    @extend %circular-profile-image;
-
-    margin-top: 4%;
+    margin-top: 10%;
     height: 155px;
     width: 155px;
-    border-radius: 100%;
     position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    .img-box__img {
-      height: 155px;
-      width: 155px;
-      border-radius: 100%;
-      object-fit: cover;
-    }
 
     .img-box__btn {
       @extend %circular-profile-image;
 
-      position: absolute;
-      border-radius: 100%;
-      height: 33px;
-      width: 33px;
-      background-color: $gray100;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      right: 5px;
-      bottom: 5px;
+      height: 155px;
+      width: 155px;
+      border: 1px solid $gray75;
 
-      .btn__icon {
-        fill: white;
+      .btn--img {
+
+      }
+
+      .btn--icon {
+          position: absolute;
+          border-radius: 100%;
+          height: 33px;
+          width: 33px;
+          background-color: $gray100;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          right: 5px;
+          bottom: 5px;
+
+        .icon {
+          fill: white;
+        }
       }
     }
+
+    //.img-box__img {
+    //  height: 155px;
+    //  width: 155px;
+    //  border-radius: 100%;
+    //  object-fit: cover;
+    //}
+    //
+    //.img-box__btn {
+    //  @extend %circular-profile-image;
+    //
+    //  position: absolute;
+    //  border-radius: 100%;
+    //  height: 33px;
+    //  width: 33px;
+    //  background-color: $gray100;
+    //  display: flex;
+    //  justify-content: center;
+    //  align-items: center;
+    //  right: 5px;
+    //  bottom: 5px;
+    //
+    //  .btn__icon {
+    //    fill: white;
+    //  }
+    //}
   }
 
   &__input-box {

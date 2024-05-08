@@ -29,8 +29,8 @@
       "@hooks/*": [
         "src/hooks/*"
       ],
-      "@helpers/*": [
-        "src/helpers/*"
+      "@utils/*": [
+        "src/utils/*"
       ]
     }
   }
