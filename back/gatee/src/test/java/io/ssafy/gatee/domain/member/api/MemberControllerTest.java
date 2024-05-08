@@ -1,6 +1,7 @@
 package io.ssafy.gatee.domain.member.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.ssafy.gatee.config.restdocs.RestDocsTestSupport;
 import io.ssafy.gatee.config.security.CustomWithMockUser;
 import io.ssafy.gatee.domain.member.application.MemberService;
 import io.ssafy.gatee.domain.member.dto.request.MemberEditMoodReq;
@@ -35,12 +36,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+
+
 @Slf4j
 @ActiveProfiles({"common, prod"})
 @AutoConfigureRestDocs
 @WebMvcTest({MemberController.class, SecurityConfig.class})
 @MockBean(JpaMetamodelMappingContext.class)
-class MemberControllerTest {
+class MemberControllerTest extends RestDocsTestSupport {
 
     @Autowired
     private MockMvc mockMvc;
@@ -69,6 +74,29 @@ class MemberControllerTest {
     @MockBean
     private CustomAuthenticationEntryPointHandler customAuthenticationEntryPointHandler;
 
+//    @Test
+//    @DisplayName("회원 정보 등록 테스트")
+//    @CustomWithMockUser(role = "ANONYMOUS")
+//    void saveInfo() throws Exception {
+//        MemberSaveReq memberSaveReq = MemberSaveReq.builder()
+//                .name("name")
+//                .nickname("nicknamne")
+//                .birth("2000-01-01")
+//                .birthType("SOLAR")
+//                .role("FATHER")
+//                .familyId("1")
+//                .build();
+//
+//        String memberSaveJson = objectMapper.writeValueAsString(memberSaveReq);
+//
+//        mockMvc.perform(patch("/api/members")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(memberSaveJson))
+//                .andDo(MockMvcResultHandlers.print())
+//                .andDo(MockMvcRestDocumentation.document("회원 정보 등록"))
+//                .andExpect(status().isOk());
+//
+//    }
     @Test
     @DisplayName("회원 정보 등록 테스트")
     @CustomWithMockUser(role = "ANONYMOUS")
@@ -80,17 +108,31 @@ class MemberControllerTest {
                 .birthType("SOLAR")
                 .role("FATHER")
                 .familyId("1")
+                .phoneNumber("010-1111-1111")
                 .build();
 
         String memberSaveJson = objectMapper.writeValueAsString(memberSaveReq);
 
+    //        mockMvc.perform(patch("/api/members")
+    //                        .contentType(MediaType.APPLICATION_JSON)
+    //                        .content(memberSaveJson))
+    //                .andDo(MockMvcResultHandlers.print())
+    //                .andDo(MockMvcRestDocumentation.document("회원 정보 등록"))
+    //                .andExpect(status().isOk());
         mockMvc.perform(patch("/api/members")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(memberSaveJson))
-                .andDo(MockMvcResultHandlers.print())
-                .andDo(MockMvcRestDocumentation.document("회원 정보 등록"))
-                .andExpect(status().isOk());
-
+                .andExpect(status().isOk())
+                .andDo(restDocs.document(
+                        requestFields(
+                                fieldWithPath("name").type("string").description("회원 이름"),
+                                fieldWithPath("nickname").description("회원 별명"),
+                                fieldWithPath("birth").description("회원의 생년월일"),
+                                fieldWithPath("birthType").description("생년월일 유형 (SOLAR: 양력, LUNAR: 음력)"),
+                                fieldWithPath("role").description("회원의 역할 (예: FATHER)"),
+                                fieldWithPath("familyId").description("가족 구성원 ID"),
+                                fieldWithPath("phoneNumber").description("전화번호")
+                        )));
     }
 
 

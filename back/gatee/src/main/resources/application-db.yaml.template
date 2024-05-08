@@ -10,9 +10,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
-firebase:
-  database-url: ${FIREBASE_DATABASE_URL}
-  admin-sdk-path: ${FIREBASE_PATH}
+
 ---
 spring:
   config:
@@ -22,13 +20,13 @@ spring:
     show-sql: true
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${DATABASE_URL}
-    username: ${DATABASE_USERNAME}
-    password: ${DATABASE_PASSWORD}
+    url:
+    username:
+    password:
   data:
     redis:
-      host: ${REDIS_HOST}
-      port: ${REDIS_PORT}
+      host:
+      port:
 
 ---
 spring:
