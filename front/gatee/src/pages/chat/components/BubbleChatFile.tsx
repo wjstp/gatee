@@ -1,12 +1,18 @@
 import React from 'react';
-import { ChatMessage, ChatFile } from "@type/index";
+import { ChatFile } from "@type/index";
 
-const BubbleChatFile = ({chat}: { chat: ChatMessage }) => {
+interface ChatFileProps {
+  chat: ChatFile;
+}
+
+const BubbleChatFile = (props: ChatFileProps) => {
+  const { chat } = props;
+
   return (
     <div className={`bubble-file${chat.files && chat.files.length >= 2 ? '--multiple' : '--single'}`}>
-      {chat.files && chat.files.map((file: ChatFile, index: number) =>
+      {chat.files && chat.files.map((file: string, index: number) =>
         <div className="bubble-file__item" key={index}>
-          <img src={file.thumbnailUrl} alt={file.S3Id} />
+          <img src={file} alt={`chat_image_${index}`} />
         </div>
       )}
     </div>

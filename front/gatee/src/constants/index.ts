@@ -1,4 +1,16 @@
-import {Member, Mood, Question, Schedule, Chat, Emoji} from "src/types";
+import {
+  Member,
+  Mood,
+  Question,
+  Schedule,
+  ChatMessage,
+  Emoji,
+  ChatFile,
+  ChatAppointment,
+  ChatEmoji,
+  ChatDateLine,
+  ChatAlarm
+} from "@type/index";
 import EmojiDogOne from "@assets/images/emoji/emoji_dog1.png";
 import EmojiDogTwo from "@assets/images/emoji/emoji_dog2.png";
 import EmojiDogThree from "@assets/images/emoji/emoji_dog3.png";
@@ -269,93 +281,80 @@ export const ScheduleSample: Schedule[] = [
 ]
 
 // 채팅 임시 데이터
-export const ChatSample: Chat = {
-  chatList: [
-    {
-      chatId: 7,
-      type: "appointment",
-      sender: "asthyeon@gmail.com",
-      message: "추억 회상할 사람",
-      createdAt: "2024-05-02T12:50:00",
-      readingCount: 5,
-      participants: ["asthyeon@gmail.com"]
-    },
-    {
-      chatId: 6,
-      type: "appointment",
-      sender: "zyo0720@kakao.com",
-      message: "저녁 같이 먹을 사람",
-      createdAt: "2024-05-02T12:40:00",
-      readingCount: 4,
-      participants: ["zyo0720@kakao.com", "yebin4684@gmail.com"]
-    },
-    {
-      chatId: 5,
-      type: "file",
-      sender: "asthyeon@gmail.com",
-      files: [
-        {
-          S3Id: "2",
-          imgUrl: "https://i.pinimg.com/736x/39/48/76/394876e0e2129f959bd910b65da6f3f8.jpg",
-          thumbnailUrl: "https://i.pinimg.com/736x/39/48/76/394876e0e2129f959bd910b65da6f3f8.jpg"
-        },
-        {
-          S3Id: "3",
-          imgUrl: "https://i.pinimg.com/736x/39/48/76/394876e0e2129f959bd910b65da6f3f8.jpg",
-          thumbnailUrl: "https://i.pinimg.com/736x/39/48/76/394876e0e2129f959bd910b65da6f3f8.jpg"
-        },
-        {
-          S3Id: "4",
-          imgUrl: "https://i.pinimg.com/736x/39/48/76/394876e0e2129f959bd910b65da6f3f8.jpg",
-          thumbnailUrl: "https://i.pinimg.com/736x/39/48/76/394876e0e2129f959bd910b65da6f3f8.jpg"
-        },
-        {
-          S3Id: "5",
-          imgUrl: "https://i.pinimg.com/736x/39/48/76/394876e0e2129f959bd910b65da6f3f8.jpg",
-          thumbnailUrl: "https://i.pinimg.com/736x/39/48/76/394876e0e2129f959bd910b65da6f3f8.jpg"
-        },
-      ],
-      createdAt: "2024-05-02T12:30:00",
-      readingCount: 4,
-    },
-    {
-      chatId: 4,
-      type: "file",
-      sender: "wjstp14@gmail.com",
-      files: [
-        {
-          S3Id: "1",
-          imgUrl: "https://i.pinimg.com/564x/8b/a2/83/8ba283897b9ad414c929ca1a8630b4bd.jpg",
-          thumbnailUrl: "https://i.pinimg.com/564x/8b/a2/83/8ba283897b9ad414c929ca1a8630b4bd.jpg"
-        }
-      ],
-      createdAt: "2024-05-02T12:20:00",
-      readingCount: 3,
-    },
-    {
-      chatId: 3,
-      type: "message",
-      sender: "zyo0720@kakao.com",
-      message: "감사해요",
-      createdAt: "2024-05-02T12:10:00",
-      readingCount: 3,
-    },
-    {
-      chatId: 2,
-      type: "message",
-      sender: "yebin4684@gmail.com",
-      message: "ㅎㅎ",
-      createdAt: "2024-05-02T12:00:00",
-      readingCount: 2,
-    },
-    {
-      chatId: 1,
-      type: "message",
-      sender: "yebin4684@gmail.com",
-      message: "안녕하세요",
-      createdAt: "2024-05-02T12:00:00",
-      readingCount: 2,
-    },
-  ],
-  cursor: 1
-}
+export const ChatSample: (ChatMessage |  ChatFile | ChatAppointment | ChatEmoji | ChatDateLine | ChatAlarm)[] = [
+  {
+    type: "ALARM",
+    sender: "megar0829@gmail.com",
+    time: "2024-05-02T23:50:00",
+    unreadMember: ["megar0829@gmail.com"],
+    content: "띡이랑 놀 사람",
+  },
+  {
+    type: "APPOINTMENT",
+    sender: "asthyeon@gmail.com",
+    time: "2024-05-02T02:50:00",
+    unreadMember: ["megar0829@gmail.com"],
+    participants: ["asthyeon@gmail.com"],
+    content: "추억 회상할 사람"
+  },
+  {
+    type: "APPOINTMENT",
+    sender: "zyo0720@kakao.com",
+    time: "2024-05-02T02:40:00",
+    unreadMember: ["megar0829@gmail.com"],
+    participants: ["zyo0720@kakao.com", "yebin4684@gmail.com"],
+    content: "저녁 같이 먹을 사람"
+  },
+  {
+    type: "FILE",
+    sender: "asthyeon@gmail.com",
+    time: "2024-05-02T02:30:00",
+    unreadMember: ["megar0829@gmail.com"],
+    files: [
+      "https://i.pinimg.com/736x/39/48/76/394876e0e2129f959bd910b65da6f3f8.jpg",
+      "https://i.pinimg.com/736x/39/48/76/394876e0e2129f959bd910b65da6f3f8.jpg",
+      "https://i.pinimg.com/736x/39/48/76/394876e0e2129f959bd910b65da6f3f8.jpg",
+      "https://i.pinimg.com/736x/39/48/76/394876e0e2129f959bd910b65da6f3f8.jpg"
+    ],
+  },
+  {
+    type: "FILE",
+    sender: "wjstp14@gmail.com",
+    time: "2024-05-02T02:20:00",
+    unreadMember: ["megar0829@gmail.com"],
+    files: ["https://i.pinimg.com/564x/8b/a2/83/8ba283897b9ad414c929ca1a8630b4bd.jpg"],
+  },
+  {
+    type: "MESSAGE",
+    sender: "zyo0720@kakao.com",
+    time: "2024-05-02T02:10:00",
+    unreadMember: ["megar0829@gmail.com"],
+    content: "그러니까",
+  },
+  {
+    type: "MESSAGE",
+    sender: "yebin4684@gmail.com",
+    time: "2024-05-02T01:00:00",
+    unreadMember: ["megar0829@gmail.com"],
+    content: ";;",
+  },
+  {
+    type: "MESSAGE",
+    sender: "yebin4684@gmail.com",
+    time: "2024-05-02T01:00:00",
+    unreadMember: ["megar0829@gmail.com"],
+    content: "뭐야 저 사람",
+  },
+  {
+    type: "EMOJI",
+    sender: "megar0829@gmail.com",
+    time: "2024-05-02T00:00:00",
+    unreadMember: [],
+    content: "띡이 삐딤.",
+    emojiId: "dog4"
+  },
+  {
+    type: "DATE_LINE",
+    time: "2024-05-02T00:00:00",
+  },
+]

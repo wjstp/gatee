@@ -43,29 +43,23 @@ const ChatInput = () => {
   const handleSendMessage = () => {
     // 파일 전송
     if (inputFile) {
-      const formData = new FormData();
-
-      inputFile.forEach(file => {
+      inputFile.forEach((file: File) => {
+        // FormData 객체 생성
+        const formData = new FormData();
+        formData.append("fileType", "MESSAGE");
         formData.append('file', file);
-      });
 
-      formData.forEach((value: FormDataEntryValue) => {
-        console.log(value);
+        // 파일 업로드
+        uploadFileApi(
+          formData,
+          (res: AxiosResponse<any>) => {
+            console.log(res)
+          },
+          (err: AxiosError<any>) => {
+            console.log(err)
+          })
+          .then().catch();
       });
-
-      // 파일 업로드
-      uploadFileApi(
-        {
-          fileType: "MESSAGE",
-          file: formData
-        },
-        (res: AxiosResponse<any>) => {
-          console.log(res)
-        },
-        (err: AxiosError<any>) => {
-          console.log(err)
-        })
-        .then().catch();
 
     // 메시지 전송
     if (inputMessage) {
