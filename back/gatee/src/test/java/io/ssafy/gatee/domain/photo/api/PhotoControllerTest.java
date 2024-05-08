@@ -68,7 +68,7 @@ class PhotoControllerTest {
     @DisplayName("사진 목록 조회 테스트")
     void readPhotoList() throws Exception {
         PhotoListReq photoListReq = PhotoListReq.builder()
-                .familyId(1L)
+//                .familyId(1L)
                 .filter("MONTH")
                 .month("4")
                 .year("2024")
