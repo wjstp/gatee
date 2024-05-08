@@ -2,6 +2,7 @@ package io.ssafy.gatee.global.websocket.application;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import io.ssafy.gatee.domain.family.application.FamilyService;
 import io.ssafy.gatee.domain.family.dao.FamilyRepository;
 import io.ssafy.gatee.domain.member.dao.MemberRepository;
 import io.ssafy.gatee.domain.member.entity.Member;
@@ -52,6 +53,10 @@ public class ChatServiceImpl implements ChatService {
     public void sendMessage(ChatDto chatDto) throws ExecutionException, InterruptedException {
         // total Member 구하기
         UUID memberId = UUID.fromString(chatDto.sender());
+        Member proxyMember = memberRepository.getReferenceById(memberId);
+        MemberFamily memberFamily = memberFamilyRepository.findByMember(proxyMember)
+                .orElseThrow(() -> new MemberFamilyNotFoundException(MEMBER_FAMILY_NOT_FOUND));
+        UUID familyId = memberFamily.getFamily().getId();
         log.info("memberId: {}", memberId);
         Member member = memberRepository.getReferenceById(memberId);
         List<MemberFamily> memberFamilyList = memberFamilyRepository.findAllWithFamilyByMember(member)
@@ -67,10 +72,7 @@ public class ChatServiceImpl implements ChatService {
         log.info("unreadList" + unreadList);
 
         // Redis에서 online 가족 가져오기
-        List<Member> onlineMember = onlineRoomMemberRepository.findById(
-                        memberFamilyRepository.findByMember(member)
-                                .orElseThrow(() -> new MemberFamilyNotFoundException(MEMBER_FAMILY_NOT_FOUND))
-                                .getId())
+        List<Member> onlineMember = onlineRoomMemberRepository.findById(familyId)
                 .map(onlineRoomMember -> Optional.ofNullable(onlineRoomMember.getOnlineUsers()).orElseGet(Collections::emptySet)) // getOnlineUsers가 null이면 빈 Set을 반환
                 .orElseThrow()
                 .stream()
@@ -100,15 +102,7 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public Long getFamilyIdFromMemberId(UUID memberId) {
-        Member member = memberRepository.getReferenceById(memberId);
-        MemberFamily memberFamily = memberFamilyRepository.findByMember(member)
-                .orElseThrow(() -> new MemberFamilyNotFoundException(MEMBER_FAMILY_NOT_FOUND));
-        return memberFamily.getFamily().getId();
-    }
-
-    @Override
-    public void updateRead(UUID memberId, Long familyId) {
+    public void updateRead(UUID memberId, UUID familyId) {
 
     }
 
