@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
+import {useNavigate} from "react-router-dom";
 import {Member} from "@type/index";
 import ProfileModal from "@pages/main/components/ProfileModal";
 import useModal from "@hooks/useModal";
-import {useNavigate} from "react-router-dom";
+import getMoodEmoji from "@utils/getMoodEmoji";
 
 interface ProfileItemProps  { profileData: Member, handleClickProfile: (profileData: Member) => void }
 
@@ -11,7 +12,7 @@ const ProfileList = ({profileDataList}: { profileDataList: Member[] }) => {
   const [clickedProfile, setClickedProfile] = useState<Member | null>(null);
   const navigate = useNavigate()
 
-  // 프로필 클릭했을때
+  // 프로필 클릭했을 때
   const handleClickProfile = (profileData:Member) => {
     // 상태 업데이트, 모달 켜주고, 모달 store 업데이트
     setClickedProfile(profileData)
@@ -54,29 +55,13 @@ const ProfileItem = ({ profileData, handleClickProfile }:ProfileItemProps) => {
 
   return (
     <div className="main-profile-list-item--container"
-    onClick={handleClickProfileItem}>
+         onClick={handleClickProfileItem}>
       <p>{profileData.nickname}</p>
-      <img className="main-profile-img" src={profileData.image} alt="프사"/>
-      <div className="main-profile-mood">
-        {profileData?.mood === "HAPPY" ?
-          <div>🥰</div>
-          :
-        profileData?.mood === "SAD" ?
-          <div>😥</div>
-          :
-        profileData?.mood === "ALONE" ?
-          <div>😑</div>
-          :
-        profileData?.mood === "ANGRY" ?
-          <div>🤬</div>
-          :
-        profileData?.mood === "FEAR" ?
-          <div>😱</div>
-          :
-        profileData?.mood === "SLEEPY" ?
-          <div>😪</div>
-          : null
-        }
+      <div className="main-profile-wrapper">
+        <img className="main-profile-img" src={profileData.image} alt="프사"/>
+        <div className="main-profile-mood">
+          {getMoodEmoji(profileData.mood)}
+        </div>
       </div>
     </div>
   );

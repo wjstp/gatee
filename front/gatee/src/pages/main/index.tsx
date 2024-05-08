@@ -6,7 +6,7 @@ import Lottie from "lottie-react";
 import { PiTarget } from "react-icons/pi";
 import {FamilyPoint} from "@pages/main/components/FamilyPoint";
 import ProfileList from "@pages/main/components/ProfileList";
-import {FamilyMemberInfoSample} from "../../constants";
+import {FamilyMemberInfoSample} from "@constants/index";
 
 
 const MainIndex = () => {

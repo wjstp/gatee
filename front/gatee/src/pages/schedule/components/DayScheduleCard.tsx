@@ -1,5 +1,5 @@
 import React from 'react';
-import { Schedule } from '../../../types';
+import { Schedule } from '@type/index';
 
 
 export enum ScheduleType {

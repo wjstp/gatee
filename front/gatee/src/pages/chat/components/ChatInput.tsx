@@ -1,35 +1,19 @@
 import React, { useEffect, useState, useRef, ChangeEvent } from 'react';
 import { HiOutlinePlus } from "react-icons/hi";
-import { PiPaperPlaneRightFill } from "react-icons/pi";
+import { PiPaperPlaneRightFill}  from "react-icons/pi";
 import { SlEmotsmile } from "react-icons/sl";
 import { IoIosCamera } from "react-icons/io";
 import { HiSpeakerphone } from "react-icons/hi";
 import { IoCloseOutline } from "react-icons/io5";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import TextField from '@mui/material/TextField';
-import { Emoji } from "@constants/index"
-import { EmojiItem } from "@type/index"
+import { EMOJI } from "@constants/index";
+import { EmojiItem } from "@type/index";
+import { uploadFileApi } from "@api/file";
+import { AxiosError, AxiosResponse } from "axios";
+
 
 const ChatInput = () => {
-  const muiFocusCustom = {
-    '& label.Mui-focused': {
-      color: '#00ff0000',
-    },
-    '& .MuiInput-underline:after': {
-      borderBottomColor: '#00ff0000',
-    },
-    '& .MuiOutlinedInput-root': {
-      '& fieldset': {
-        borderColor: '#00ff0000',
-      },
-      '&:hover fieldset': {
-        borderColor: '#00ff0000',
-      },
-      '&.Mui-focused fieldset': {
-        borderColor: '#00ff0000',
-      },
-    },
-  }
   const [inputMessage, setInputMessage] = useState<string>("");
   const [inputFile, setInputFile] = useState<File[] | null>(null);
   const [inputEmoji, setInputEmoji] = useState<EmojiItem | null>(null);
@@ -40,7 +24,7 @@ const ChatInput = () => {
   const [isOpenEmojiPreview, setIsOpenEmojiPreview] = useState<boolean>(false);
   const [isOpenEmoji, setIsOpenEmoji] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [selectedEmojiCategory, SetSelectedEmojiCategory] = useState<string>(Emoji[0].name);
+  const [selectedEmojiCategory, SetSelectedEmojiCategory] = useState<string>(EMOJI[0].name);
   const buttonWrapperRef = useRef<HTMLDivElement>(null);
 
   // 변수 초기화
@@ -57,26 +41,46 @@ const ChatInput = () => {
 
   // 메시지 전송 핸들러
   const handleSendMessage = () => {
-    // FILE & MESSAGE
-    if (inputFile && inputMessage) {
-      console.log("Send file: ", inputFile);
-      console.log("Send message: ", inputMessage);
-    }
-    // FILE
-    else if (inputFile) {
-      console.log("Send file: ", inputFile);
-    }
-    else if (inputMessage) {
-      // APPOINTMENT
+    // 파일 전송
+    if (inputFile) {
+      const formData = new FormData();
+
+      inputFile.forEach(file => {
+        formData.append('file', file);
+      });
+
+      formData.forEach((value: FormDataEntryValue) => {
+        console.log(value);
+      });
+
+      // 파일 업로드
+      uploadFileApi(
+        {
+          fileType: "MESSAGE",
+          file: formData
+        },
+        (res: AxiosResponse<any>) => {
+          console.log(res)
+        },
+        (err: AxiosError<any>) => {
+          console.log(err)
+        })
+        .then().catch();
+
+    // 메시지 전송
+    if (inputMessage) {
+      // 약속 메시지
       if (isOpenAppointment) {
-        console.log("Send appointment: ", inputMessage);
+        console.log("약속 전송: ", inputMessage);
       }
-      // MESSAGE
+      // 일반 메시지
       else {
-        console.log("Send message: ", inputMessage);
+        console.log("메시지 전송: ", inputMessage);
       }
     }
-    reset();
+
+      reset();
+    }
   }
 
   // 메시지 입력 핸들러
@@ -98,10 +102,10 @@ const ChatInput = () => {
   }
 
   // 파일 선택 핸들러
-  const handleSetFile = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleSetFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       setInputFile(Array.from(event.target.files))
-
+      console.log(event.target.files)
       // 미리보기 렌더링
       setIsOpenFilePreview(true);
 
@@ -170,6 +174,8 @@ const ChatInput = () => {
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
+
+    // 언마운트 시 이벤트리스너 해제
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -185,7 +191,7 @@ const ChatInput = () => {
             {inputFile && inputFile.map((file: File, index: number) => (
               <div className="chat-input__preview__file-item" key={index}>
                 {/*이미지*/}
-                <img src={URL.createObjectURL(file)} alt={file.name} />
+                <img src={URL.createObjectURL(file)} alt={file.name}/>
 
                 {/*삭제 버튼*/}
                 <button className="chat-input__preview__button" onClick={() => handlePreviewImageDeleteClick(index)}>
@@ -211,6 +217,26 @@ const ChatInput = () => {
         )}
       </div>
     )
+  }
+
+  const muiFocusCustom = {
+    '& label.Mui-focused': {
+      color: '#00ff0000',
+    },
+    '& .MuiInput-underline:after': {
+      borderBottomColor: '#00ff0000',
+    },
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        borderColor: '#00ff0000',
+      },
+      '&:hover fieldset': {
+        borderColor: '#00ff0000',
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: '#00ff0000',
+      },
+    },
   }
 
   return (
@@ -246,7 +272,7 @@ const ChatInput = () => {
             type="file"
             accept="image/*"
             ref={fileInputRef}
-            style={{ display: 'none' }}
+            style={{display: 'none'}}
             onChange={handleSetFile}
             multiple
           />
@@ -261,7 +287,7 @@ const ChatInput = () => {
             value={inputMessage}
             onChange={handleSetMessage}
             placeholder={inputPlaceholder}
-            inputProps={isOpenAppointment? { maxLength: 20 } : { maxLength: 1000 }}
+            inputProps={isOpenAppointment ? {maxLength: 20} : {maxLength: 1000}}
             sx={muiFocusCustom}
             size="small"
             className="chat-input__input"
@@ -270,7 +296,7 @@ const ChatInput = () => {
           {isOpenAppointment ? (
             // 약속 잡기 취소 버튼
             <button className="chat-input__button-cancel" onClick={reset}>
-              <IoCloseCircleOutline size={30} />
+              <IoCloseCircleOutline size={30}/>
             </button>
           ) : (
             // 이모티콘 버튼
@@ -278,7 +304,7 @@ const ChatInput = () => {
               className={`chat-input__button-emoji${isOpenEmoji ? "--active" : ""}`}
               onClick={() => setIsOpenEmoji(!isOpenEmoji)}
             >
-              <SlEmotsmile size={24} />
+              <SlEmotsmile size={24}/>
             </button>
           )}
 
@@ -287,7 +313,7 @@ const ChatInput = () => {
             className={`chat-input__button-send${isOpenAppointment ? "--appointment" : ""}`}
             onClick={handleSendMessage}
           >
-            {isOpenAppointment ? <HiSpeakerphone size={20} /> : <PiPaperPlaneRightFill size={20} />}
+            {isOpenAppointment ? <HiSpeakerphone size={20}/> : <PiPaperPlaneRightFill size={20}/>}
           </button>
         </div>
 
@@ -303,22 +329,26 @@ const ChatInput = () => {
       {isOpenEmoji && (
         <div className="chat-input__emoji">
           <div className="chat-input__emoji-tabs">
-            {Emoji.map(category => (
+            {EMOJI.map((category, index: number) => (
               <div
-                key={category.name}
+                key={index}
                 className={`chat-input__emoji-tab${selectedEmojiCategory === category.name ? '--active' : ''}`}
                 onClick={() => SetSelectedEmojiCategory(category.name)}>
-                {category.name}
+                <div className="chat-input__emoji-tab-icon">
+                  <img src={category.image} alt=""/>
+                </div>
+
               </div>
             ))}
           </div>
 
-          {Emoji.map(category => (
+          {EMOJI.map((category, index: number) => (
             <div
-              key={category.name} className={`chat-input__emoji-items${category.name === selectedEmojiCategory ? '--active' : ''}`}>
-              {category.item.map(emoji => (
+              key={index}
+              className={`chat-input__emoji-items${category.name === selectedEmojiCategory ? '--active' : ''}`}>
+              {category.item.map((emoji, index: number) => (
                 <div className="chat-input__emoji-item" onClick={() => handleSetEmoji(emoji)}>
-                  <img key={emoji.id} src={emoji.image} alt={emoji.id} />
+                  <img key={index} src={emoji.image} alt={emoji.id}/>
                 </div>
               ))}
             </div>
@@ -328,5 +358,4 @@ const ChatInput = () => {
     </div>
   )
 }
-
 export default ChatInput;
