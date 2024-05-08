@@ -57,8 +57,8 @@ const Router = () => {
         <Route path="/exam/taking" element={<ExamTaking/>}/>
 
         {/*채팅 페이지*/}
-        <Route path="/chat" element={<ChatIndex/>}/>
-        <Route path="/chat/photo" element={<ChatPhoto/>}/>
+        <Route path="/chatting" element={<ChatIndex/>}/>
+        <Route path="/chatting/photo" element={<ChatPhoto/>}/>
 
         {/*알림 페이지*/}
         <Route path="/notification" element={<NotificationIndex/>}/>
