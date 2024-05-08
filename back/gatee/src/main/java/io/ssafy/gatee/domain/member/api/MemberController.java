@@ -71,7 +71,7 @@ public class MemberController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public MemberInfoRes readInfo(
-            @RequestParam Long familyId, @AuthenticationPrincipal CustomUserDetails customUserDetails
+            @RequestParam UUID familyId, @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {
         return memberService.readMemberInfo(familyId, customUserDetails.getMemberId());
     }

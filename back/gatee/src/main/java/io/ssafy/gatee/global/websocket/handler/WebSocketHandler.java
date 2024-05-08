@@ -1,6 +1,7 @@
 package io.ssafy.gatee.global.websocket.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.ssafy.gatee.domain.family.application.FamilyService;
 import io.ssafy.gatee.global.exception.error.not_found.FamilyNotFoundException;
 import io.ssafy.gatee.global.exception.message.ExceptionMessage;
 import io.ssafy.gatee.global.jwt.application.JwtService;
@@ -29,8 +30,8 @@ public class WebSocketHandler extends TextWebSocketHandler {
 
     private final ObjectMapper objectMapper;
     private final ChatService chatService;
+    private final FamilyService familyService;
     private final OnlineRoomMemberRepository onlineRoomMemberRepository;
-    private final JwtService jwtService;
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
@@ -49,23 +50,26 @@ public class WebSocketHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         log.info("연결 성공");
-        // 연결된 사용자 가족방 온라인 관리
         UUID memberId = UUID.fromString(session.getPrincipal().getName());
-        Long familyId = chatService.getFamilyIdFromMemberId(memberId);
+        UUID familyId = familyService.getFamilyIdByMemberId(memberId);
+
+        // redis에 chattingRoompk를 인덱스로 online user 관리, online user에 넣기
         OnlineRoomMember onlineRoomMember = onlineRoomMemberRepository.findById(familyId)
                 .orElseThrow(() -> new FamilyNotFoundException(FAMILY_NOT_FOUND));
         if (onlineRoomMember.getOnlineUsers() == null) {
             onlineRoomMember.setOnlineUsers(new HashSet<>());
         }
 
-        onlineRoomMember.getOnlineUsers().add(memberId);
+//        onlineRoomMember.getOnlineUsers().add(memberId);
         onlineRoomMemberRepository.save(onlineRoomMember);
         // 안읽었던 메세지들 읽기
+        // family id에서 chattroomid로 교체
         chatService.updateRead(memberId, familyId);
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+        // 회원
         log.info("연결 종료");
     }
 }

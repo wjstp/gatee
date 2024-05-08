@@ -1,5 +1,5 @@
 package io.ssafy.gatee.global.websocket.dto;
 
 public enum MessageType {
-    MESSAGE, PICTURE, DATE_LINE, ALARM, PLAN
+    MESSAGE, FILE, DATE_LINE, ALARM, APPOINTMENT, EMOJI
 }

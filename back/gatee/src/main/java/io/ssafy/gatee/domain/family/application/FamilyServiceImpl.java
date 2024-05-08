@@ -95,6 +95,14 @@ public class FamilyServiceImpl implements FamilyService {
                 .build();
     }
 
+    @Override
+    public UUID getFamilyIdByMemberId(UUID memberId) {
+        Member proxyMember = memberRepository.getReferenceById(memberId);
+        MemberFamily memberFamily = memberFamilyRepository.findByMember(proxyMember)
+                .orElseThrow(() -> new MemberFamilyNotFoundException(MEMBER_FAMILY_NOT_FOUND));
+        return memberFamily.getFamily().getId();
+    }
+
     // 가족 합류
     @Override
     @Transactional

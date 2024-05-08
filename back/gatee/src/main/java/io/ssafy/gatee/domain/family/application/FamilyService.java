@@ -15,6 +15,8 @@ public interface FamilyService {
 
     FamilyCodeRes createFamilyCode(Long familyId);
 
+    UUID getFamilyIdByMemberId(UUID memberId);
+
     void joinFamily(String familyCode, UUID memberId) throws ExpiredCodeException;
 
     FamilyInfoRes readFamily(Long familyId) throws FamilyNotFoundException;

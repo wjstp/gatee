@@ -8,7 +8,5 @@ import java.util.concurrent.ExecutionException;
 public interface ChatService {
     void sendMessage(ChatDto chatDto) throws ExecutionException, InterruptedException;
 
-    Long getFamilyIdFromMemberId(UUID memberId);
-
-    void updateRead(UUID memberId, Long familyId);
+    void updateRead(UUID memberId, UUID familyId);
 }
