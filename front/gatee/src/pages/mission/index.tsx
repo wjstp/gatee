@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import MissionItem from "@pages/mission/components/MissionItem";
 import Slider from "react-slick";
 import Improvement from "@pages/mission/components/Improvement";
-import {useFamilyStore} from "../../store/useFamilyStore";
+import {useFamilyStore} from "@store/useFamilyStore";
 
 interface KoreanMentType {
   [key: string]: string;
