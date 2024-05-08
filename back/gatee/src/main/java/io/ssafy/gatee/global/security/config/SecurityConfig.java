@@ -65,6 +65,7 @@ public class SecurityConfig {
                                 // 회원가입 후 정보 등록 페이지는 anonymous만 접근 가능, 정보등록을 하지 않은 유저는 다른 페이지에 접근 불가
                                 .requestMatchers(HttpMethod.PATCH, "/api/members").hasRole("ANONYMOUS")
                                 .requestMatchers(HttpMethod.POST, "/api/family").hasAnyRole("ANONYMOUS", "USER")
+                                .requestMatchers(HttpMethod.POST, "/api/family/join").hasAnyRole("ANONYMOUS", "USER")
                                 .anyRequest().hasRole("USER")
                         )
 
