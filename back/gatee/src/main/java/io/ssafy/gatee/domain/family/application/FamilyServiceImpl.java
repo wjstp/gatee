@@ -77,7 +77,7 @@ public class FamilyServiceImpl implements FamilyService {
 
     // 가족 코드 생성
     @Override
-    public FamilyCodeRes createFamilyCode(Long familyId) {
+    public FamilyCodeRes createFamilyCode(String familyId) {
         int leftLimit = 48; // num '0'
         int rightLimit = 122; // alp 'z'
         int targetStringLength = 8;
@@ -91,7 +91,7 @@ public class FamilyServiceImpl implements FamilyService {
 
         ValueOperations<String, String> redisValueOperation = redisTemplate.opsForValue();
 
-        redisValueOperation.set(randomCode, String.valueOf(familyId), 3, TimeUnit.MINUTES);
+        redisValueOperation.set(randomCode, familyId, 3, TimeUnit.MINUTES);
 
         return FamilyCodeRes.builder()
                 .familyCode(randomCode)
