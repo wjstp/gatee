@@ -1,6 +1,6 @@
 import React from 'react';
 import dayjs from 'dayjs';
-import calculateWeekday from "@helpers/calculateWeekday";
+import calculateWeekday from "../../../utils/calculateWeekday";
 
 
 const ChatDate = ({ date }: { date: string }) => {

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {Member} from "../../../types/index";
-import {FamilyMemberInfoSample} from "../../../constants";
+import {Member} from "@type/index";
+import {FamilyMemberInfoSample} from "@constants/index";
 import ProfileModal from "@pages/main/components/ProfileModal";
 import {useModalStore} from "@store/useModalStore";
 import useModal from "@hooks/useModal";

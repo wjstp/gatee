@@ -10,7 +10,7 @@ import { DateValidationError } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from 'dayjs';
 
 import { FamilyMemberInfoSample } from "@constants/index";
-import calculateWeekday from "@helpers/calculateWeekday";
+import calculateWeekday from "../../utils/calculateWeekday";
 import ProfileImage from '@assets/images/logo/app_icon_orange.png'
 
 

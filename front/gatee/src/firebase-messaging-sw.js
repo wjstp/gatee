@@ -1,7 +1,7 @@
 // v9
 // import {initializeApp} from "firebase/app";
 // import {getMessaging, getToken,isSupported} from "firebase/messaging";
-// import {getPushAlarmByLocalStorage} from "@api/FirebaseAxios";
+// import {getPushAlarmByLocalStorageApi} from "@api/FirebaseAxios";
 // import {firebaseConfig,VALID_KEY} from "./config";
 //
 // let messaging
@@ -14,19 +14,17 @@
 
 import firebase from 'firebase/app';
 import 'firebase/messaging';
-import { getPushAlarmByLocalStorage } from "@api/FirebaseAxios";
-import { firebaseConfig, VALID_KEY, app } from "./config";
+import { getPushAlarmByLocalStorageApi } from "@api/firebase";
+import { VALID_KEY, app } from "./config";
 
 let messaging
 // 브라우저 문제로 오류나서 추가한 것
 if (firebase.messaging.isSupported()) {
-  // const app = firebase.initializeApp(firebaseConfig);
   messaging = firebase.messaging(app)
 }
 
 export async function requestPermission() {
   if (firebase.messaging.isSupported()) {
-    console.log("FCM 알림 권한 요청 시작");
     const permission = await Notification.requestPermission();
     if (permission === "denied") {
       console.log("FCM 알림 권한이 거부되었습니다. 앱 설정 -> 가티 -> 알림 허용해 주세요.");
@@ -48,16 +46,15 @@ export async function requestPermission() {
 
     // 토큰 조회한 뒤, 서버로 토큰 구독
     if (token) {
-      alert(`FCM device token: ${token}`);
       // 스토어에 저장
       localStorage.setItem('fcmDeviceToken', token);
       // 서버로 토큰 구독하기
-      getPushAlarmByLocalStorage()
-      try {
-        console.log("FCM device token 업데이트 api 요청");
-      } catch (error) {
-        console.error("FCM device token 업데이트 api 실패" + error);
-      }
+      getPushAlarmByLocalStorageApi()
+      // try {
+      //   console.log("FCM device token 업데이트 api 요청");
+      // } catch (error) {
+      //   console.error("FCM device token 업데이트 api 실패" + error);
+      // }
     } else {
       console.log("FCM device token을 얻지 못함");
     }
