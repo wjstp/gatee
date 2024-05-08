@@ -47,9 +47,9 @@ public class FamilyController {
     public void joinFamily(
             @Valid
             @RequestParam String familyCode,
-            @RequestParam String memberId
+            @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) throws ExpiredCodeException {
-        familyService.joinFamily(familyCode, UUID.fromString(memberId));
+        familyService.joinFamily(familyCode, customUserDetails.getMemberId());
     }
 
     // 가족 정보 조회
