@@ -4,31 +4,49 @@ import {Member} from "@type/index";
 import ProfileModal from "@pages/main/components/ProfileModal";
 import useModal from "@hooks/useModal";
 import getMoodEmoji from "@utils/getMoodEmoji";
+import {naggingApi} from "@api/member";
 
-interface ProfileItemProps  { profileData: Member, handleClickProfile: (profileData: Member) => void }
+interface ProfileItemProps {
+  profileData: Member,
+  handleClickProfile: (profileData: Member) => void
+}
 
+// 프로필 리스트
 const ProfileList = ({profileDataList}: { profileDataList: Member[] }) => {
   const {isOpen, openModal, closeModal} = useModal();
   const [clickedProfile, setClickedProfile] = useState<Member | null>(null);
   const navigate = useNavigate()
 
   // 프로필 클릭했을 때
-  const handleClickProfile = (profileData:Member) => {
+  const handleClickProfile = (profileData: Member) => {
     // 상태 업데이트, 모달 켜주고, 모달 store 업데이트
     setClickedProfile(profileData)
     openModal()
   }
 
   // 모달 이벤트
-  const handleModalEvent = (type:string,content:string) => {
+  const handleModalEvent = (type: string, content: string) => {
     // 모달 종료
     closeModal()
+    
     // 프로필로 가기일 때
-    if ( type === "gotoProfile" ) {
+    if (type === "gotoProfile") {
       navigate(`/profile/${clickedProfile?.nickname}`)
+
+    //  한마디 보내기 일 때
     } else if (type === "sendMessage") {
-      // 메세지 보내기일 때
-      console.log(content,"보내기 api")
+      console.log(content)
+      // 한마디 보내기 api
+      naggingApi(
+        {
+          receiverId: "53b0d760-303a-4e4b-90e6-77ea121375a1"
+          , message: content
+        }, res => {
+          console.log(res)
+        }, err => {
+          console.log(err)
+        }
+      )
     }
   }
 
@@ -48,7 +66,8 @@ const ProfileList = ({profileDataList}: { profileDataList: Member[] }) => {
   );
 };
 
-const ProfileItem = ({ profileData, handleClickProfile }:ProfileItemProps) => {
+// 프로필 아이템 
+const ProfileItem = ({profileData, handleClickProfile}: ProfileItemProps) => {
   const handleClickProfileItem = () => {
     handleClickProfile(profileData)
   }

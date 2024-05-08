@@ -147,3 +147,10 @@ export interface FileReq {
   fileType: string;
   file: FormData;
 }
+
+// 잔소리 보내기 api request
+export interface NaggingApiReq{
+  // 멤버 아이디
+  "receiverId": string,
+  "message": string
+}
