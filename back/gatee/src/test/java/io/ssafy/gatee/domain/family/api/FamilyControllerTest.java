@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import java.util.UUID;
@@ -83,23 +84,7 @@ class FamilyControllerTest extends RestDocsTestSupport {
     @CustomWithMockUser
     void readFamily() throws Exception {
 
-//        Member member = Member.builder()
-//                .name("member1")
-//                .email("member1@gmail.com")
-//                .nickname("member1")
-//                .birth(LocalDate.parse("2000-07-20"))
-//                .birthType(BirthType.SOLAR)
-//                .mood("happy")
-//                .phoneNumber("010-1010-1010")
-//                .build();
-
-//        List<MemberFamilyInfoRes> memberFamilyList = new ArrayList<>();
-//
-//        memberFamilyList.add(MemberFamilyInfoRes.toDto(MemberFamily.builder()
-//                .member(any(Member.class))
-//                .family(any(Family.class))
-//                .build()));
-
+        // given
         given(familyService.readFamily(any()))
                 .willReturn(FamilyInfoRes.builder()
                         .name("세진이네")
@@ -107,10 +92,14 @@ class FamilyControllerTest extends RestDocsTestSupport {
                         .memberFamilyInfoList(any())
                         .build());
 
-
-        mockMvc.perform(get("/api/family/{familyId}", 1L)
+        // when
+        ResultActions result = mockMvc.perform(get("/api/family/{familyId}", UUID.randomUUID())
                         .contentType(MediaType.APPLICATION_JSON)
-                ).andExpect(status().isOk())
+                        .accept(MediaType.APPLICATION_JSON)
+                );
+
+        // then
+        result.andExpect(status().isOk())
                 .andDo(restDocs.document(
                         pathParameters(
                                 parameterWithName("familyId").description("가족 ID")
