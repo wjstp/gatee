@@ -135,7 +135,7 @@ public class FamilyServiceImpl implements FamilyService {
 
     // 가족 정보 및 구성원 조회
     @Override
-    public FamilyInfoRes readFamily(Long familyId) throws FamilyNotFoundException {
+    public FamilyInfoRes readFamily(UUID familyId) throws FamilyNotFoundException {
         Family family = familyRepository.findById(familyId)
                 .orElseThrow(() -> new FamilyNotFoundException(FAMILY_NOT_FOUND));
 
@@ -155,7 +155,7 @@ public class FamilyServiceImpl implements FamilyService {
     // 가족 이름 수정
     @Override
     @Transactional
-    public void editFamilyName(Long familyId, FamilyNameReq familyNameReq) throws FamilyNotFoundException {
+    public void editFamilyName(UUID familyId, FamilyNameReq familyNameReq) throws FamilyNotFoundException {
         Family family = familyRepository.findById(familyId)
                 .orElseThrow(() -> new FamilyNotFoundException(FAMILY_NOT_FOUND));
 

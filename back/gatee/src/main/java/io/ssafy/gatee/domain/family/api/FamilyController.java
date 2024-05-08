@@ -57,7 +57,7 @@ public class FamilyController {
     @ResponseStatus(HttpStatus.OK)
     public FamilyInfoRes readFamily(@PathVariable("familyId") String familyId) throws FamilyNotFoundException {
         log.info(familyId);
-        return familyService.readFamily(Long.valueOf(familyId));
+        return familyService.readFamily(UUID.fromString(familyId));
     }
 
     // 가족 이름 수정
@@ -68,6 +68,6 @@ public class FamilyController {
             @RequestBody FamilyNameReq familyNameReq
     ) throws FamilyNotFoundException {
         log.info(familyId);
-        familyService.editFamilyName(Long.valueOf(familyId), familyNameReq);
+        familyService.editFamilyName(UUID.fromString(familyId), familyNameReq);
     }
 }

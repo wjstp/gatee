@@ -98,7 +98,7 @@ class AlbumControllerTest {
     @DisplayName("앨범 생성 테스트")
     void saveAlbum() throws Exception {
         AlbumSaveReq albumSaveReq = AlbumSaveReq.builder()
-                .familyId(1L)
+//                .familyId(1L)
                 .name("앨범 생성 테스트")
                 .build();
 
