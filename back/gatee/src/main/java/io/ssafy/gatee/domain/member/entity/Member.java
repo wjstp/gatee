@@ -39,6 +39,7 @@ public class Member extends BaseEntity {
 
     private LocalDate birth;
 
+    @Enumerated(EnumType.STRING)
     private BirthType birthType;
 
     private String mood;

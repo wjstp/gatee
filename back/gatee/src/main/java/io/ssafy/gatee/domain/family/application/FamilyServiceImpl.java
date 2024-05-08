@@ -5,6 +5,7 @@ import io.ssafy.gatee.domain.family.dto.request.FamilyNameReq;
 import io.ssafy.gatee.domain.family.dto.request.FamilySaveReq;
 import io.ssafy.gatee.domain.family.dto.response.FamilyCodeRes;
 import io.ssafy.gatee.domain.family.dto.response.FamilyInfoRes;
+import io.ssafy.gatee.domain.family.dto.response.FamilySaveRes;
 import io.ssafy.gatee.domain.family.entity.Family;
 import io.ssafy.gatee.domain.member.dao.MemberRepository;
 import io.ssafy.gatee.domain.member.entity.Member;
@@ -48,7 +49,7 @@ public class FamilyServiceImpl implements FamilyService {
     // 가족 생성
     @Override
     @Transactional
-    public void saveFamily(FamilySaveReq familySaveReq, UUID memberId) {
+    public FamilySaveRes saveFamily(FamilySaveReq familySaveReq, UUID memberId) {
         Member member = Member.builder()
                 .id(memberId)
                 .build();
@@ -70,6 +71,8 @@ public class FamilyServiceImpl implements FamilyService {
                 .id(family.getId())
                 .onlineUsers(usersSet)
                 .build());
+
+        return FamilySaveRes.builder().familyId(family.getId()).build();
     }
 
     // 가족 코드 생성
