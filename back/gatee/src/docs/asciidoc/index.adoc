@@ -21,6 +21,17 @@ include::{snippets}/회원 정보 등록/http-request.adoc[]
 include::{snippets}/회원 정보 등록/http-response.adoc[]
 
 
+== 회원 FCM 토큰 저장
+
+- Request
+
+include::{snippets}/회원 FCM 토큰 저장/http-request.adoc[]
+
+- Response
+
+include::{snippets}/회원 FCM 토큰 저장/http-response.adoc[]
+
+
 == 회원 정보 수정
 
 - Request
@@ -257,6 +268,22 @@ include::{snippets}/사진 상호작용 삭제/http-request.adoc[]
 - Response
 
 include::{snippets}/사진 상호작용 삭제/http-response.adoc[]
+
+
+---
+---
+
+= Push Notification
+
+== 한마디 보내기
+
+- Request
+
+include::{snippets}/한마디 보내기 및 FCM알림 전송/http-request.adoc[]
+
+- Response
+
+include::{snippets}/한마디 보내기 및 FCM알림 전송/http-response.adoc[]
 
 
 ---

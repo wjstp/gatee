@@ -5,6 +5,7 @@ import io.ssafy.gatee.domain.family.dto.request.FamilyNameReq;
 import io.ssafy.gatee.domain.family.dto.request.FamilySaveReq;
 import io.ssafy.gatee.domain.family.dto.response.FamilyCodeRes;
 import io.ssafy.gatee.domain.family.dto.response.FamilyInfoRes;
+import io.ssafy.gatee.domain.family.dto.response.FamilySaveRes;
 import io.ssafy.gatee.global.exception.error.bad_request.ExpiredCodeException;
 import io.ssafy.gatee.global.exception.error.not_found.FamilyNotFoundException;
 import io.ssafy.gatee.global.security.user.CustomUserDetails;
@@ -29,8 +30,8 @@ public class FamilyController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public void saveFamily(@RequestBody FamilySaveReq familySaveReq, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        familyService.saveFamily(familySaveReq, UUID.fromString(customUserDetails.getUsername()));
+    public FamilySaveRes saveFamily(@RequestBody FamilySaveReq familySaveReq, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        return familyService.saveFamily(familySaveReq, UUID.fromString(customUserDetails.getUsername()));
     }
 
     // 가족 코드 생성
