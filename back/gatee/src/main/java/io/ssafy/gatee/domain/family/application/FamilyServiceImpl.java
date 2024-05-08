@@ -5,6 +5,7 @@ import io.ssafy.gatee.domain.family.dto.request.FamilyNameReq;
 import io.ssafy.gatee.domain.family.dto.request.FamilySaveReq;
 import io.ssafy.gatee.domain.family.dto.response.FamilyCodeRes;
 import io.ssafy.gatee.domain.family.dto.response.FamilyInfoRes;
+import io.ssafy.gatee.domain.family.dto.response.FamilySaveRes;
 import io.ssafy.gatee.domain.family.entity.Family;
 import io.ssafy.gatee.domain.member.dao.MemberRepository;
 import io.ssafy.gatee.domain.member.entity.Member;
@@ -48,7 +49,7 @@ public class FamilyServiceImpl implements FamilyService {
     // 가족 생성
     @Override
     @Transactional
-    public void saveFamily(FamilySaveReq familySaveReq, UUID memberId) {
+    public FamilySaveRes saveFamily(FamilySaveReq familySaveReq, UUID memberId) {
         Member member = Member.builder()
                 .id(memberId)
                 .build();
@@ -70,11 +71,13 @@ public class FamilyServiceImpl implements FamilyService {
                 .id(family.getId())
                 .onlineUsers(usersSet)
                 .build());
+
+        return FamilySaveRes.builder().familyId(family.getId()).build();
     }
 
     // 가족 코드 생성
     @Override
-    public FamilyCodeRes createFamilyCode(Long familyId) {
+    public FamilyCodeRes createFamilyCode(String familyId) {
         int leftLimit = 48; // num '0'
         int rightLimit = 122; // alp 'z'
         int targetStringLength = 8;
@@ -88,11 +91,19 @@ public class FamilyServiceImpl implements FamilyService {
 
         ValueOperations<String, String> redisValueOperation = redisTemplate.opsForValue();
 
-        redisValueOperation.set(randomCode, String.valueOf(familyId), 3, TimeUnit.MINUTES);
+        redisValueOperation.set(randomCode, familyId, 3, TimeUnit.MINUTES);
 
         return FamilyCodeRes.builder()
                 .familyCode(randomCode)
                 .build();
+    }
+
+    @Override
+    public UUID getFamilyIdByMemberId(UUID memberId) {
+        Member proxyMember = memberRepository.getReferenceById(memberId);
+        MemberFamily memberFamily = memberFamilyRepository.findByMember(proxyMember)
+                .orElseThrow(() -> new MemberFamilyNotFoundException(MEMBER_FAMILY_NOT_FOUND));
+        return memberFamily.getFamily().getId();
     }
 
     // 가족 합류

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {useNavigate, useOutletContext} from "react-router-dom";
 import {FaPlus} from "react-icons/fa6";
-import {PhotoOutletInfoContext} from "../../types/index";
+import {PhotoOutletInfoContext} from "@type/index";
 import Checkbox from "@mui/material/Checkbox";
 import {AlbumNameInputModal} from "@pages/photo/components/CreateAlbumModal";
 import useModal from "@hooks/useModal";

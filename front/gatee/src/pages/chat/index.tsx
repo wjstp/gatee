@@ -3,7 +3,7 @@ import BubbleChat from "@pages/chat/components/BubbleChat";
 import ChatInput from "@pages/chat/components/ChatInput";
 import ChatDate from "@pages/chat/components/ChatDate";
 import { ChatSample } from "@constants/index";
-import { ChatMessage } from "@type/index"
+import { ChatMessage } from "@type/index";
 
 // import SockJS from "sockjs-client";
 
@@ -12,8 +12,6 @@ const ChatIndex = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [newMessage, setNewMessage] = useState<ChatMessage | null>(null);
   const [newMessageType, setNewMessageType] = useState<string>("");
-
-
 
 
   useEffect(() => {

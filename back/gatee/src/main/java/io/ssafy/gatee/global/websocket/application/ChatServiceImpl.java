@@ -1,29 +1,26 @@
 package io.ssafy.gatee.global.websocket.application;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.*;
+import io.ssafy.gatee.domain.family.application.FamilyService;
 import io.ssafy.gatee.domain.family.dao.FamilyRepository;
 import io.ssafy.gatee.domain.member.dao.MemberRepository;
 import io.ssafy.gatee.domain.member.entity.Member;
 import io.ssafy.gatee.domain.member_family.dao.MemberFamilyRepository;
 import io.ssafy.gatee.domain.member_family.entity.MemberFamily;
-import io.ssafy.gatee.global.exception.error.not_found.MemberFamilyNotFoundException;
 import io.ssafy.gatee.global.exception.error.not_found.MemberNotFoundException;
 import io.ssafy.gatee.global.firebase.FirebaseInit;
 import io.ssafy.gatee.global.redis.dao.OnlineRoomMemberRepository;
 import io.ssafy.gatee.global.websocket.dto.ChatDto;
 import io.ssafy.gatee.global.websocket.dto.FireStoreChatDto;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
-import static io.ssafy.gatee.global.exception.message.ExceptionMessage.MEMBER_FAMILY_NOT_FOUND;
 import static io.ssafy.gatee.global.exception.message.ExceptionMessage.MEMBER_NOT_FOUND;
 
 @Service
@@ -36,41 +33,34 @@ public class ChatServiceImpl implements ChatService {
     private final FamilyRepository familyRepository;
     private final DatabaseReference databaseReference;
 
+    private final FamilyService familyService;
     private final OnlineRoomMemberRepository onlineRoomMemberRepository;
 
-    public ChatServiceImpl(MemberRepository memberRepository, MemberFamilyRepository memberFamilyRepository, FamilyRepository familyRepository, OnlineRoomMemberRepository onlineRoomMemberRepository, FirebaseInit firebaseInit) {
+    public ChatServiceImpl(MemberRepository memberRepository, MemberFamilyRepository memberFamilyRepository, FamilyRepository familyRepository, OnlineRoomMemberRepository onlineRoomMemberRepository, FirebaseInit firebaseInit, FamilyService familyService) {
         this.memberRepository = memberRepository;
         this.memberFamilyRepository = memberFamilyRepository;
         this.familyRepository = familyRepository;
         firebaseInit.init(); // Firebase 초기화 메서드 호출
         this.databaseReference = FirebaseDatabase.getInstance().getReference();
         this.onlineRoomMemberRepository = onlineRoomMemberRepository;
-
+        this.familyService = familyService;
     }
 
     @Override
-    public void sendMessage(ChatDto chatDto) throws ExecutionException, InterruptedException {
-        // total Member 구하기
-        UUID memberId = UUID.fromString(chatDto.sender());
+    public void sendMessage(ChatDto chatDto, UUID memberId) throws ExecutionException, InterruptedException {
+        // 나중에 추상화
+        UUID familyId = familyService.getFamilyIdByMemberId(memberId);
+        Member proxyMember = memberRepository.getReferenceById(memberId);
         log.info("memberId: {}", memberId);
-        Member member = memberRepository.getReferenceById(memberId);
-        List<MemberFamily> memberFamilyList = memberFamilyRepository.findAllWithFamilyByMember(member)
-                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
-        log.info("memberFamilyList: {}", memberFamilyList);
-        // 가족 수 가져오기
-        Integer familyCount = memberFamilyList.size();
-
-        // 전체 가족 가져오기
-        List<Member> unreadList = memberFamilyList.stream()
+        List<Member> unreadList = memberFamilyRepository.findAllWithFamilyByMember(proxyMember)
+                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND))
+                .stream()
                 .map(MemberFamily::getMember)
                 .toList();
-        log.info("unreadList" + unreadList);
+        log.info("unreadList: {}", unreadList);
 
         // Redis에서 online 가족 가져오기
-        List<Member> onlineMember = onlineRoomMemberRepository.findById(
-                        memberFamilyRepository.findByMember(member)
-                                .orElseThrow(() -> new MemberFamilyNotFoundException(MEMBER_FAMILY_NOT_FOUND))
-                                .getId())
+        List<Member> onlineMember = onlineRoomMemberRepository.findById(familyId)
                 .map(onlineRoomMember -> Optional.ofNullable(onlineRoomMember.getOnlineUsers()).orElseGet(Collections::emptySet)) // getOnlineUsers가 null이면 빈 Set을 반환
                 .orElseThrow()
                 .stream()
@@ -78,43 +68,66 @@ public class ChatServiceImpl implements ChatService {
                 .toList();
         log.info("onlineMember" + onlineMember);
         // 온라인 멤버를 언리드에서 제거, 오프라인 멤버(안읽은 멤버)만 추가
-        List<Member> filteredUnreadList = unreadList.stream()
+        List<String> unReadMemberAsStringList = unreadList.stream()
                 .filter(offline -> !onlineMember.contains(offline))
-                .toList();
-        log.info("filteredUnreadList" + filteredUnreadList);
-
-        List<String> unReadMemberAsStringList = filteredUnreadList.stream()
-                .map(pk -> member.getId().toString()) // UUID를 String으로 변환
+                .toList()
+                .stream()
+                .map(offline -> offline.getId().toString())
                 .toList();
         log.info("unReadMemberAsStringList" + unReadMemberAsStringList);
-
-        FireStoreChatDto fireStoreChatDto = FireStoreChatDto.builder()
+        // 파이어스토어 전송
+        this.saveMessageToRealtimeDatabase(FireStoreChatDto.builder()
                 .messageType(chatDto.messageType())
                 .content(chatDto.content())
-                .totalMember(familyCount)
-                .sender(chatDto.sender())
+                .totalMember(unreadList.size())
+                .sender(memberId.toString())
                 .unReadMember(unReadMemberAsStringList)
-                .build();
-        // 파이어스토어 전송
-        saveMessageToRealtimeDatabase(fireStoreChatDto, chatDto.roomId());
+                .build(), familyId);
     }
 
     @Override
-    public Long getFamilyIdFromMemberId(UUID memberId) {
-        Member member = memberRepository.getReferenceById(memberId);
-        MemberFamily memberFamily = memberFamilyRepository.findByMember(member)
-                .orElseThrow(() -> new MemberFamilyNotFoundException(MEMBER_FAMILY_NOT_FOUND));
-        return memberFamily.getFamily().getId();
+    public void updateRead(UUID memberId, UUID familyId) {
+        DatabaseReference reference = databaseReference.child("chat").child(familyId.toString());
+
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
+                    DataSnapshot unreadMemberSnapshot = messageSnapshot.child("unreadMembers");
+                    if (unreadMemberSnapshot.exists()) {
+                        List<String> unreadMembers = (List<String>) unreadMemberSnapshot.getValue();
+                        if (unreadMembers.contains(memberId.toString())) {
+                            unreadMembers.remove(memberId.toString());
+
+                            // 여기서 변경사항을 동일한 데이터 스냅샷에 반영합니다.
+                            unreadMemberSnapshot.getRef().setValue(unreadMembers, new DatabaseReference.CompletionListener() {
+                                @Override
+                                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                    if(databaseError == null){
+                                        // 데이터 업데이트가 성공적으로 완료되었습니다.
+                                        System.out.println("데이터 업데이트 성공.");
+                                    } else {
+                                        // 데이터 업데이트 실패
+                                        System.err.println("데이터 업데이트 실패: " + databaseError.getMessage());
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                System.err.println("리스너가 취소되었습니다, 오류: " + databaseError.getMessage());
+            }
+        });
     }
 
-    @Override
-    public void updateRead(UUID memberId, Long familyId) {
 
-    }
-
-    public void saveMessageToRealtimeDatabase(FireStoreChatDto fireStoreChatDto, Long roomId) {
+    public void saveMessageToRealtimeDatabase(FireStoreChatDto fireStoreChatDto, UUID familyId) {
         // roomId를 사용하여 채팅방에 대한 참조를 가져옵니다.
-        DatabaseReference roomRef = databaseReference.child("chat").child(roomId.toString());
+        DatabaseReference roomRef = databaseReference.child("chat").child(familyId.toString());
 
         // 새 메시지를 생성하기 위한 고유 키를 생성합니다.
         String messageId = roomRef.push().getKey();

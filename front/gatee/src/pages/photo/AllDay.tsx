@@ -1,8 +1,8 @@
 import React from 'react';
 import PhotoList from "@components/PhotoList";
-import {photoGroup} from "../../constants";
+import {photoGroup} from "@constants/index";
 import { useOutletContext } from 'react-router-dom';
-import {PhotoOutletInfoContext} from "../../types/index";
+import {PhotoOutletInfoContext} from "@type/index";
 
 
 const AllDay = () => {

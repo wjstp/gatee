@@ -1,9 +1,9 @@
 import React from 'react';
-import { ScheduleSample } from "../../../constants"
-import { Schedule } from "../../../types";
+import { ScheduleSample } from "@constants/index"
+import { Schedule } from "@type/index";
 import DayScheduleCard from "@pages/schedule/components/DayScheduleCard";
 import dayjs, { Dayjs } from 'dayjs';
-import calculateWeekday from "../../../utils/calculateWeekday";
+import calculateWeekday from "@utils/calculateWeekday";
 
 interface DayToastProps {
   date: string;

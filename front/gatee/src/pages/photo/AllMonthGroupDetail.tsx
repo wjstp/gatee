@@ -1,8 +1,8 @@
 import React from 'react';
 import PhotoList from "@components/PhotoList";
 import {useOutletContext, useParams} from "react-router-dom";
-import {photoGroup} from "../../constants";
-import {PhotoOutletInfoContext} from "../../types/index";
+import {photoGroup} from "@constants/index";
+import {PhotoOutletInfoContext} from "@type/index";
 
 const PhotoAllMonthGroupDetail = () => {
 
