@@ -139,7 +139,7 @@ public class FamilyServiceImpl implements FamilyService {
         Family family = familyRepository.findById(familyId)
                 .orElseThrow(() -> new FamilyNotFoundException(FAMILY_NOT_FOUND));
 
-        List<MemberFamily> memberFamily = memberFamilyRepository.findAllById(familyId)
+        List<MemberFamily> memberFamily = memberFamilyRepository.findAllByFamily_Id(familyId)
                 .orElseThrow(() -> new MemberFamilyNotFoundException(MEMBER_FAMILY_NOT_FOUND));
 
         List<MemberFamilyInfoRes> memberFamilyInfoList = memberFamily.stream()
