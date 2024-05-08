@@ -175,8 +175,10 @@
           color: black;
           align-content: center;
 
+
           &__part--01 {
             margin-right: 5%;
+            margin-top: auto;
           }
 
           &__part--02 {
@@ -519,6 +521,7 @@
       }
 
       .info-box__birth {
+
         display: flex;
         align-items: center;
         height: 25%;
@@ -542,12 +545,16 @@
           color: black;
 
           &__part--01 {
+            display: flex;
+            align-items: center;
             margin-right: 5%;
             height: 100%;
             width: 60%;
             font-size: 18px;
             color: $gray200;
             text-decoration: underline;
+
+
           }
 
           .birthday-choice {
@@ -768,6 +775,87 @@
       }
 
       .part--02--text {
+      }
+    }
+  }
+}
+
+.modal__bg {
+  @extend %modal-overlay;
+
+  .modal__content {
+    @extend %modal-content;
+    @include mx-(3);
+
+
+    .role__container {
+      @include py-(1);
+      @include flex-row;
+      @include flex_center;
+
+      gap: 0.3rem;
+      row-gap: 1rem;
+      flex-wrap: wrap;
+
+      .role__btn {
+
+        font-weight: bold;
+        font-size: 1.2rem;
+        color: $gray100;
+        height: 3rem;
+        width: 8rem;
+        border: 2px solid $gray100;
+        border-radius: 30px;
+      }
+
+      .selected {
+        border: 2px solid $orange500;
+        color: $orange500;
+        background-color: $orange100;
+      }
+
+      .etc__container {
+        @include flex-row;
+        @include flex_center;
+
+        gap: 0.5rem;
+
+        .role__submit__btn {
+
+          background-color: $orange400;
+          color: white;
+          font-weight: bold;
+          font-size: 1.2rem;
+          @include p-(0.6);
+          @include px-(1);
+          @include m-(0);
+
+          border-radius: 1rem;
+
+          &:disabled {
+            background-color: $gray100;
+          }
+
+        }
+
+      }
+    }
+
+    .birth__container {
+      @include flex-center;
+      @include flex-col;
+      @include p-(1);
+
+      gap: 1rem;
+
+
+      .birthday-choice {
+        @include flex-center;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+
       }
     }
   }
