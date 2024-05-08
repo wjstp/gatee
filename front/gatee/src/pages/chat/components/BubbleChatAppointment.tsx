@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from 'react';
-
 import Card from '@mui/material/Card';
 import Avatar from '@mui/material/Avatar';
 import AvatarGroup from '@mui/material/AvatarGroup';
 import dayjs from "dayjs";
-
 import MegaphoneIcon from "@assets/images/icons/ic_megaphone.png";
 import { MemberInfoSample } from "@constants/index";
-import { ChatMessage } from "@type/index";
+import {ChatAppointment} from "@type/index";
 import getUserInfoByEmail from "@utils/getUserInfoByEmail";
 
+interface ChatAppointmentProps {
+  chat: ChatAppointment
+}
 
-const BubbleChatAppointment = ({chat}: { chat: ChatMessage }) => {
+const BubbleChatAppointment = (props: ChatAppointmentProps) => {
+  const { chat } = props;
   const [isUserParticipant, setUserParticipant] = useState<boolean>(false);
+  const [unreadMemberCount, setUnreadMemberCount] = useState<number>(chat.unreadMember.length);
 
   useEffect(() => {
     // 유저 이메일이 참여자 리스트에 있는지 확인
@@ -40,7 +43,7 @@ const BubbleChatAppointment = ({chat}: { chat: ChatMessage }) => {
         <div className="bubble-appointment__info-wrapper">
           {/*날짜*/}
           <div className="bubble-appointment__date">
-            { dayjs(chat.createdAt).format("M월 D일") }
+            { dayjs(chat.time).format("M월 D일") }
           </div>
 
           {/*참여자 리스트*/}
@@ -52,7 +55,7 @@ const BubbleChatAppointment = ({chat}: { chat: ChatMessage }) => {
 
       {/*내용*/}
       <div className="bubble-appointment__message">
-        { chat.message }
+        { chat.content }
       </div>
 
       {/* 참여자 여부 또는 버튼 렌더링 */}

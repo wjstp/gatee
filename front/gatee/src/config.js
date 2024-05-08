@@ -1,8 +1,7 @@
 import firebase from 'firebase/app';
-import 'firebase/messaging';
 
 /* eslint-disable no-undef */
-export const firebaseConfig = {
+const firebaseConfig = {
   apiKey: process.env.REACT_APP_FCM_API_KEY,
   authDomain: process.env.REACT_APP_FCM_AUTH_DOMAIN,
   projectId: process.env.REACT_APP_FCM_PROJECT_ID,
@@ -13,6 +12,6 @@ export const firebaseConfig = {
   databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
 }
 
-export const VALID_KEY = process.env.REACT_APP_FCM_VAPID_KEY;
+firebase.initializeApp(firebaseConfig);
 
-export const app = firebase.initializeApp(firebaseConfig);
+export default firebase;

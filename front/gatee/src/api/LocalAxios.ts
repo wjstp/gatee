@@ -2,7 +2,7 @@ import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 
 
 const REACT_APP_API_URL: string | undefined = process.env.REACT_APP_API_URL;
 
-export default function localAxios() {
+export default function localAxios(type?: string) {
   const accessToken: string | null = localStorage.getItem("accessToken");
 
   // axios 인스턴스 생성
@@ -15,7 +15,11 @@ export default function localAxios() {
     async (config: InternalAxiosRequestConfig) => {
       try {
         // Request 발생 시 적용할 axios 요청의 설정 config
-        config.headers["Content-Type"] = "application/json";
+        if (type === "file") {
+          config.headers["Content-Type"] = "multipart/form-data";
+        } else {
+          config.headers["Content-Type"] = "application/json";
+        }
         config.headers["Access-Control-Allow-Origin"] = REACT_APP_API_URL;
         config.headers["Access-Control-Allow-Credentials"] = true;
 

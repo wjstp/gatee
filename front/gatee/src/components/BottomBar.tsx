@@ -20,7 +20,7 @@ const BottomBar = () => {
       </NavLink>
 
       {/*채팅*/}
-      <NavLink to="/chat" className={({isActive}) =>
+      <NavLink to="/chatting" className={({isActive}) =>
         isActive ? 'bottom-bar__item--active' : 'bottom-bar__item'
       }>
         <PiChatCenteredDots size={25}/>

@@ -24,7 +24,7 @@ const Improvement = ({type}: any) => {
     },
     hello: {
       content: ["가벼운 인사 한마디", "건네봐요"],
-      destination: "/chat",
+      destination: "/chatting",
       buttonComment: "채팅하기",
       icon: GoalIcon
     },

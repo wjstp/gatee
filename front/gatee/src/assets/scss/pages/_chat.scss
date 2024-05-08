@@ -40,7 +40,7 @@ $chat-input-height: 3rem;
   &__yours-chat {
     @include flex-row;
 
-    margin: 0.2rem 0;
+    margin: 0.5rem 0;
 
     &__profile {
       @extend %circular-profile-image;
@@ -53,6 +53,7 @@ $chat-input-height: 3rem;
       @include flex-col;
       @include ml-(0.5);
 
+      align-items: start;
       gap: 0.5rem;
     }
 
@@ -98,7 +99,9 @@ $chat-input-height: 3rem;
 .bubble-chat {
   padding: 9px 16px;
   min-height: 30px;
+  max-width: 60dvw;
   border-radius: 15px;
+  word-wrap: break-word;
 
   &__my {
     @extend .bubble-chat;
@@ -112,6 +115,15 @@ $chat-input-height: 3rem;
 
     background-color: $gray75;
     border-top-left-radius: 0;
+  }
+
+  &__emoji {
+    @include mb-(0.5);
+    @include flex_center;
+
+    img {
+      width: 30dvw;
+    }
   }
 }
 
@@ -208,6 +220,14 @@ $chat-input-height: 3rem;
       }
       color: $orange500;
     }
+  }
+
+  &__sub-text {
+    width: 100%;
+    text-align: center;
+    font-size: $font-size-small;
+    color: $subtext-color;
+    text-decoration: underline $subtext-color;
   }
 
   &__button {
