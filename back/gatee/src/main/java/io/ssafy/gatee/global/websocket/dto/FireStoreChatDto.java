@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -13,9 +14,16 @@ import java.util.UUID;
 @Getter
 @Builder
 public final class FireStoreChatDto {
+
     private final MessageType messageType;
+
     private final String content;
+
     private final String sender;
+
     private final Integer totalMember;
+
     private final List<String> unReadMember;
+
+    private LocalDateTime currentTime;
 }
