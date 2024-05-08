@@ -107,7 +107,7 @@ declare global {
 export type ChatContent =  ChatMessage | ChatFile | ChatAppointment | ChatEmoji | ChatAlarm;
 
 export interface ChatMessage {  // MESSAGE
-  type: string;
+  messageType: string;
   sender: string;
   time: string;
   unreadMember: string[];
@@ -115,7 +115,7 @@ export interface ChatMessage {  // MESSAGE
 }
 
 export interface ChatFile { // FILE
-  type: string;
+  messageType: string;
   sender: string;
   time: string;
   unreadMember: string[];
@@ -123,7 +123,7 @@ export interface ChatFile { // FILE
 }
 
 export interface ChatAppointment {  // APPOINTMENT
-  type: string;
+  messageType: string;
   sender: string;
   time: string;
   unreadMember: string[];
@@ -132,7 +132,7 @@ export interface ChatAppointment {  // APPOINTMENT
 }
 
 export interface ChatEmoji {  // EMOJI
-  type: string;
+  messageType: string;
   sender: string;
   time: string;
   unreadMember: string[];
@@ -141,12 +141,12 @@ export interface ChatEmoji {  // EMOJI
 }
 
 export interface ChatDateLine { // DATE_LINE
-  type: string;
+  messageType: string;
   time: string;
 }
 
 export interface ChatAlarm {  // ALARM
-  type: string;
+  messageType: string;
   sender: string;
   time: string;
   unreadMember: string[];

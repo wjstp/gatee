@@ -6,21 +6,23 @@
 //
 // let messaging
 // if (isSupported()) {
-//   // const app = initializeApp(firebaseConfig);
 //   // messaging = getMessaging(app)
 // }
 
 // v8
 
-import firebase from 'firebase/app';
+// import firebase from 'firebase/app';
 import 'firebase/messaging';
 import { getPushAlarmByLocalStorageApi } from "@api/firebase";
-import { VALID_KEY, app } from "./config";
+import firebase from "./config";
 
-let messaging
+const VALID_KEY = process.env.REACT_APP_FCM_VAPID_KEY;
+
+let messaging;
+
 // 브라우저 문제로 오류나서 추가한 것
 if (firebase.messaging.isSupported()) {
-  messaging = firebase.messaging(app)
+  messaging = firebase.messaging();
 }
 
 export async function requestPermission() {

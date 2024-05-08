@@ -99,7 +99,9 @@ $chat-input-height: 3rem;
 .bubble-chat {
   padding: 9px 16px;
   min-height: 30px;
+  max-width: 60dvw;
   border-radius: 15px;
+  word-wrap: break-word;
 
   &__my {
     @extend .bubble-chat;
@@ -117,11 +119,10 @@ $chat-input-height: 3rem;
 
   &__emoji {
     @include mb-(0.5);
-
-    width: 30dvw;
+    @include flex_center;
 
     img {
-      width: 100%;
+      width: 30dvw;
     }
   }
 }

@@ -325,24 +325,23 @@ const ChatInput = () => {
           <div className="chat-input__emoji-tabs">
             {EMOJI.map((category, index: number) => (
               <div
-                key={index}
+                key={category.name}
                 className={`chat-input__emoji-tab${selectedEmojiCategory === category.name ? '--active' : ''}`}
                 onClick={() => SetSelectedEmojiCategory(category.name)}>
                 <div className="chat-input__emoji-tab-icon">
                   <img src={category.image} alt=""/>
                 </div>
-
               </div>
             ))}
           </div>
 
           {EMOJI.map((category, index: number) => (
             <div
-              key={index}
+              key={category.name} // 여기에서도 category.name을 고유한 키로 사용합니다.
               className={`chat-input__emoji-items${category.name === selectedEmojiCategory ? '--active' : ''}`}>
               {category.item.map((emoji, index: number) => (
-                <div className="chat-input__emoji-item" onClick={() => handleSetEmoji(emoji)}>
-                  <img key={index} src={emoji.image} alt={emoji.id}/>
+                <div key={emoji.id} className="chat-input__emoji-item" onClick={() => handleSetEmoji(emoji)}>
+                  <img src={emoji.image} alt={emoji.id}/>
                 </div>
               ))}
             </div>

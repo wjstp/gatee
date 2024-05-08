@@ -283,14 +283,14 @@ export const ScheduleSample: Schedule[] = [
 // 채팅 임시 데이터
 export const ChatSample: (ChatMessage |  ChatFile | ChatAppointment | ChatEmoji | ChatDateLine | ChatAlarm)[] = [
   {
-    type: "ALARM",
+    messageType: "ALARM",
     sender: "megar0829@gmail.com",
     time: "2024-05-02T23:50:00",
     unreadMember: ["megar0829@gmail.com"],
     content: "띡이랑 놀 사람",
   },
   {
-    type: "APPOINTMENT",
+    messageType: "APPOINTMENT",
     sender: "asthyeon@gmail.com",
     time: "2024-05-02T02:50:00",
     unreadMember: ["megar0829@gmail.com"],
@@ -298,7 +298,7 @@ export const ChatSample: (ChatMessage |  ChatFile | ChatAppointment | ChatEmoji 
     content: "추억 회상할 사람"
   },
   {
-    type: "APPOINTMENT",
+    messageType: "APPOINTMENT",
     sender: "zyo0720@kakao.com",
     time: "2024-05-02T02:40:00",
     unreadMember: ["megar0829@gmail.com"],
@@ -306,7 +306,7 @@ export const ChatSample: (ChatMessage |  ChatFile | ChatAppointment | ChatEmoji 
     content: "저녁 같이 먹을 사람"
   },
   {
-    type: "FILE",
+    messageType: "FILE",
     sender: "asthyeon@gmail.com",
     time: "2024-05-02T02:30:00",
     unreadMember: ["megar0829@gmail.com"],
@@ -318,35 +318,35 @@ export const ChatSample: (ChatMessage |  ChatFile | ChatAppointment | ChatEmoji 
     ],
   },
   {
-    type: "FILE",
+    messageType: "FILE",
     sender: "wjstp14@gmail.com",
     time: "2024-05-02T02:20:00",
     unreadMember: ["megar0829@gmail.com"],
     files: ["https://i.pinimg.com/564x/8b/a2/83/8ba283897b9ad414c929ca1a8630b4bd.jpg"],
   },
   {
-    type: "MESSAGE",
+    messageType: "MESSAGE",
     sender: "zyo0720@kakao.com",
     time: "2024-05-02T02:10:00",
     unreadMember: ["megar0829@gmail.com"],
     content: "그러니까",
   },
   {
-    type: "MESSAGE",
+    messageType: "MESSAGE",
     sender: "yebin4684@gmail.com",
     time: "2024-05-02T01:00:00",
     unreadMember: ["megar0829@gmail.com"],
     content: ";;",
   },
   {
-    type: "MESSAGE",
+    messageType: "MESSAGE",
     sender: "yebin4684@gmail.com",
     time: "2024-05-02T01:00:00",
     unreadMember: ["megar0829@gmail.com"],
     content: "뭐야 저 사람",
   },
   {
-    type: "EMOJI",
+    messageType: "EMOJI",
     sender: "megar0829@gmail.com",
     time: "2024-05-02T00:00:00",
     unreadMember: [],
@@ -354,7 +354,7 @@ export const ChatSample: (ChatMessage |  ChatFile | ChatAppointment | ChatEmoji 
     emojiId: "dog4"
   },
   {
-    type: "DATE_LINE",
+    messageType: "DATE_LINE",
     time: "2024-05-02T00:00:00",
   },
 ]

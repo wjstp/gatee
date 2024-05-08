@@ -7,7 +7,7 @@ import BubbleChatAlarm from "@pages/chat/components/BubbleChatAlarm";
 
 // type에 따라 다른 컴포넌트를 반환하는 함수
 const renderBubbleComponent = (chat: ChatMessage | ChatFile | ChatAppointment)  => {
-  switch (chat.type) {
+  switch (chat.messageType) {
     case ChatType.MESSAGE:
       return <BubbleChatMessage chat={chat as ChatMessage} />;
     case ChatType.FILE:
