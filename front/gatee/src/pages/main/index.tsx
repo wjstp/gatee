@@ -3,34 +3,58 @@ import {Link} from "react-router-dom";
 import {ReactComponent as House} from "@assets/images/main/main_home.svg";
 import HeartAnimation from "@assets/images/animation/heart_animation.json"
 import Lottie from "lottie-react";
-import { PiTarget } from "react-icons/pi";
+import {PiTarget} from "react-icons/pi";
 import {FamilyPoint} from "@pages/main/components/FamilyPoint";
 import ProfileList from "@pages/main/components/ProfileList";
 import {FamilyMemberInfoSample} from "@constants/index";
-import {getMyDataApi} from "@api/member";
+import {getFamilyMemberApi, getMyDataApi} from "@api/member";
 import {useMemberStore} from "@store/useMemberStore";
 import {useFamilyStore} from "@store/useFamilyStore";
 
 
 const MainIndex = () => {
-  const {name,setName,setBirthDay,setBirthType,setMemberId,setMood,setNickName,setRole} = useMemberStore()
-  const {setFamilyId} = useFamilyStore()
+  const {myInfo,setMyInfo} = useMemberStore()
+  const {familyInfo,setFamilyId, setFamilyInfo, setFamilyName, setFamilyScore} = useFamilyStore()
+
+  // 가족 데이터 저장 Api
+  const saveFamilyData = (familyId:string) => {
+    getFamilyMemberApi(familyId,
+      (res) => {
+        console.log("가족 정보 조회",res.data);
+        setFamilyInfo(res.data.memberFamilyInfoList);
+        setFamilyName(res.data.name);
+        setFamilyScore(res.data.familyScore);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+
+  // 정보 불러오기 Api
+  const saveMemberData = () => {
+    getMyDataApi(
+      (res) => {
+        console.log("내 정보 조회",res.data)
+        // 스토어에 저장
+        setMyInfo(res.data)
+        setFamilyId(res.data.familyId)
+
+        // 가족 데이터 저장 Api
+        saveFamilyData(res.data.familyId)
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+
   useEffect(() => {
-    // getMyDataApi(res => {
-    //   setBirthDay(res.data.birth)
-    //   setBirthType(res.data.birthType)
-    //   setFamilyId(res.data.familyId)
-    //   setMemberId(res.data.memberId)
-    //   setMood(res.data.mood)
-    //   setName(res.data.name)
-    //   setNickName(res.data.nickname)
-    //   setRole(res.data.role)
-    //   console.log(res.data)
-    // },err => {
-    //   console.log(err)
-    // })
+    // 나 + 가족 데이터 가져오기 주석처리
+    // saveMemberData()
   }, []);
-console.log(name)
+
+
   return (
     <div className="main-container">
 
