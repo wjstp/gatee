@@ -104,26 +104,67 @@ declare global {
 }
 
 //chat
-export interface Chat {
-  chatList: ChatMessage[];
-  cursor: number;
-}
+export type ChatContent =  ChatMessage | ChatFile | ChatAppointment | ChatEmoji | ChatAlarm;
 
-export interface ChatMessage {
-  chatId: number;
-  type: string;
+export interface ChatMessage {  // MESSAGE
+  messageType: string;
   sender: string;
-  message?: string;
-  files?: ChatFile[];
-  createdAt: string;
-  readingCount: number;
-  participants?: string[];
+  time: string;
+  unreadMember: string[];
+  content: string;
 }
 
-export interface ChatFile {
-  S3Id: string;
-  imgUrl: string;
-  thumbnailUrl: string;
+export interface ChatFile { // FILE
+  messageType: string;
+  sender: string;
+  time: string;
+  unreadMember: string[];
+  files: string[];
+}
+
+export interface ChatAppointment {  // APPOINTMENT
+  messageType: string;
+  sender: string;
+  time: string;
+  unreadMember: string[];
+  content: string;
+  participants: string[];
+}
+
+export interface ChatEmoji {  // EMOJI
+  messageType: string;
+  sender: string;
+  time: string;
+  unreadMember: string[];
+  emojiId: string;
+  content: string;
+}
+
+export interface ChatDateLine { // DATE_LINE
+  messageType: string;
+  time: string;
+}
+
+export interface ChatAlarm {  // ALARM
+  messageType: string;
+  sender: string;
+  time: string;
+  unreadMember: string[];
+  content: string;
+}
+
+export enum SenderType {
+  YOURS = "yours",
+  MY = "my"
+}
+
+export enum ChatType {
+  MESSAGE = "MESSAGE",
+  FILE = "FILE",
+  APPOINTMENT = "APPOINTMENT",
+  EMOJI = "EMOJI",
+  DATE_LINE = "DATE_LINE",
+  ALARM = "ALARM"
 }
 
 export interface Emoji {
@@ -135,15 +176,4 @@ export interface Emoji {
 export interface EmojiItem {
   id: string;
   image: string;
-}
-
-export enum SenderType {
-  YOURS = "yours",
-  MY = "my"
-}
-
-// file
-export interface FileReq {
-  fileType: string;
-  file: FormData;
 }
