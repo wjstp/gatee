@@ -3,6 +3,7 @@ package io.ssafy.gatee.config.restdocs;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.util.StandardCharset;
 import io.micrometer.core.instrument.util.IOUtils;
+import io.ssafy.gatee.domain.file.application.FileService;
 import io.ssafy.gatee.global.jwt.application.JwtService;
 import io.ssafy.gatee.global.security.application.AuthService;
 import io.ssafy.gatee.global.security.config.SecurityConfig;
@@ -51,6 +52,9 @@ public class RestDocsTestSupport {
 
     @MockBean
     protected AuthService authService;
+
+    @MockBean
+    protected FileService fileService;
 
     @MockBean
     protected CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
