@@ -4,12 +4,9 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
 @Builder
-public record FamilySaveReq(
+public record FamilyJoinReq(
 
         @NotNull
-        String name
-
-//        Long fileId
-
+        String familyCode
 ) {
 }

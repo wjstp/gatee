@@ -23,6 +23,7 @@ import io.ssafy.gatee.global.redis.dto.OnlineRoomMember;
 import jodd.util.StringUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
@@ -57,14 +58,14 @@ public class FamilyServiceImpl implements FamilyService {
     @Override
     @Transactional
     public FamilySaveRes saveFamily(FamilySaveReq familySaveReq, UUID memberId) {
-        Long fileId = familySaveReq.fileId();
-
-        if (Objects.nonNull(familySaveReq.fileId())) {
-            fileId = findDefaultFamilyImageId(DEFAULT_FAMILY_IMAGE_URL);
-        }
-
-        File familyImgFile = fileRepository.findById(fileId)
-                .orElseThrow(() -> new FileNotFoundException(FIlE_NOT_FOUND));
+//        Long fileId = familySaveReq.fileId();
+//
+//        if (Objects.nonNull(familySaveReq.fileId())) {
+//            fileId = findDefaultFamilyImageId(DEFAULT_FAMILY_IMAGE_URL);
+//        }
+//
+//        File familyImgFile = fileRepository.findById(fileId)
+//                .orElseThrow(() -> new FileNotFoundException(FIlE_NOT_FOUND));
 
         Member member = Member.builder()
                 .id(memberId)
@@ -72,7 +73,7 @@ public class FamilyServiceImpl implements FamilyService {
 
         Family family = familyRepository.save(Family.builder()
                 .name(familySaveReq.name())
-                .file(familyImgFile)
+//                .file(familyImgFile)
                 .score(0)
                 .build());
 
@@ -81,6 +82,7 @@ public class FamilyServiceImpl implements FamilyService {
                 .family(family)
                 .isLeader(true)
                 .build();
+
         HashSet<UUID> usersSet = new HashSet<>();
 
         memberFamilyRepository.save(memberFamily);
@@ -158,18 +160,30 @@ public class FamilyServiceImpl implements FamilyService {
 
     // 가족 정보 및 구성원 조회
     @Override
-    public FamilyInfoRes readFamily(UUID familyId) throws FamilyNotFoundException {
-        Family family = familyRepository.findById(familyId)
-                .orElseThrow(() -> new FamilyNotFoundException(FAMILY_NOT_FOUND));
+    public FamilyInfoRes readFamily(String familyId) throws FamilyNotFoundException {
+        Family family = familyRepository.findById(UUID.fromString(familyId)).orElseThrow(()-> new FamilyNotFoundException(FAMILY_NOT_FOUND));
+        List<MemberFamily> memberFamilies = memberFamilyRepository.findAllByFamily_Id(UUID.fromString(familyId));
+        // 예외
+        if (! memberFamilies.isEmpty()) {
+            List<MemberFamilyInfoRes> memberFamilyInfoList = memberFamilies.stream().map(memberFamily -> MemberFamilyInfoRes.builder()
+                    .memberId(memberFamily.getMember().getId())
+                    .fileUrl(memberFamily.getMember().getFile().getUrl())
+                    .birth(memberFamily.getMember().getBirth())
+                    .name(memberFamily.getFamily().getName())
+                    .role(memberFamily.getRole())
+                    .email(memberFamily.getMember().getEmail())
+                    .mood(memberFamily.getMember().getMood())
+                    .isLeader(memberFamily.isLeader())
+                    .birthType(memberFamily.getMember().getBirthType())
+                    .build()).toList();
+            return FamilyInfoRes.builder()
+                    .name(family.getName())
+                    .familyScore(family.getScore())
+                    .memberFamilyInfoList(memberFamilyInfoList)
+                    .build();
+        }
+        throw new FamilyNotFoundException(FAMILY_NOT_FOUND);
 
-        List<MemberFamilyInfoRes> memberFamilyInfoList = memberFamilyRepository.findMemberFamilyByFamilyId(familyId);
-        System.out.println(memberFamilyInfoList);
-
-        return FamilyInfoRes.builder()
-                .name(family.getName())
-                .familyScore(family.getScore())
-                .memberFamilyInfoList(memberFamilyInfoList)
-                .build();
     }
 
     // 가족 이름 수정

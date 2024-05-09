@@ -74,19 +74,22 @@ class FamilyControllerTest extends RestDocsTestSupport {
     void createFamilyCode() throws Exception {
 
         // given
-        given(familyService.createFamilyCode(any()))
+        given(familyService.createFamilyCode(any(String.class)))
                 .willReturn(FamilyCodeRes.builder()
                         .familyCode("B2A3D1F4")
                         .build());
 
         // when
-        ResultActions result = mockMvc.perform(get("/api/family/{familyId}/code", UUID.randomUUID()));
+        ResultActions result = mockMvc.perform(get("/api/family/code")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(readJson("json/family/createFamilyCode.json"))
+                .accept(MediaType.APPLICATION_JSON));
 
         // then
         result.andExpect(status().isOk())
                 .andDo(restDocs.document(
-                        pathParameters(
-                                parameterWithName("familyId").description("가족 ID")
+                        queryParameters(
+                                parameterWithName("familyId").description("가족 ID").optional()
                         ),
                         responseFields(
                                 fieldWithPath("familyCode").type(JsonFieldType.STRING).description("가족 초대 코드")
@@ -103,7 +106,10 @@ class FamilyControllerTest extends RestDocsTestSupport {
 
         // when
         ResultActions result = mockMvc.perform(post("/api/family/join")
-                        .param("familyCode", "A1B2C3D4"));
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(readJson("json/family/joinFamily.json"))
+                        .accept(MediaType.APPLICATION_JSON)
+        );
 
         // then
         result.andExpect(status().isOk())
@@ -119,7 +125,7 @@ class FamilyControllerTest extends RestDocsTestSupport {
     void readFamily() throws Exception {
 
         // given
-        given(familyService.readFamily(any()))
+        given(familyService.readFamily(any(String.class)))
                 .willReturn(FamilyInfoRes.builder()
                         .name("세진이네")
                         .familyScore(0)
@@ -127,16 +133,17 @@ class FamilyControllerTest extends RestDocsTestSupport {
                         .build());
 
         // when
-        ResultActions result = mockMvc.perform(get("/api/family/{familyId}", UUID.randomUUID())
+        ResultActions result = mockMvc.perform(get("/api/family")
                         .contentType(MediaType.APPLICATION_JSON)
+                        .content(readJson("json/family/readFamily.json"))
                         .accept(MediaType.APPLICATION_JSON)
                 );
 
         // then
         result.andExpect(status().isOk())
                 .andDo(restDocs.document(
-                        pathParameters(
-                                parameterWithName("familyId").description("가족 ID")
+                        queryParameters(
+                          parameterWithName("familyId").description("가족 ID").optional()
                         ),
                         responseFields(
                                 fieldWithPath("name").type(JsonFieldType.STRING).description("가족 이름"),
