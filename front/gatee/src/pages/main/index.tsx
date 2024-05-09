@@ -51,7 +51,7 @@ const MainIndex = () => {
 
   useEffect(() => {
     // 나 + 가족 데이터 가져오기 주석처리
-    // saveMemberData()
+    saveMemberData()
   }, []);
 
 
