@@ -87,7 +87,7 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public void updateRead(UUID memberId, UUID familyId) {
-        DatabaseReference reference = databaseReference.child("chat").child(familyId.toString());
+        DatabaseReference reference = databaseReference.child("chat").child(familyId.toString()).child("message");
 
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -95,6 +95,7 @@ public class ChatServiceImpl implements ChatService {
                 for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
                     DataSnapshot unreadMemberSnapshot = messageSnapshot.child("unreadMembers");
                     if (unreadMemberSnapshot.exists()) {
+                        log.info("스냅샷" + unreadMemberSnapshot.toString());
                         List<String> unreadMembers = (List<String>) unreadMemberSnapshot.getValue();
                         if (unreadMembers.contains(memberId.toString())) {
                             unreadMembers.remove(memberId.toString());
@@ -103,7 +104,7 @@ public class ChatServiceImpl implements ChatService {
                             unreadMemberSnapshot.getRef().setValue(unreadMembers, new DatabaseReference.CompletionListener() {
                                 @Override
                                 public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                                    if(databaseError == null){
+                                    if (databaseError == null) {
                                         // 데이터 업데이트가 성공적으로 완료되었습니다.
                                         System.out.println("데이터 업데이트 성공.");
                                     } else {
