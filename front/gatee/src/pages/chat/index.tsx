@@ -21,7 +21,7 @@ const ChatIndex = () => {
   const firestore = firebase.database();
 
   const WS_URL: string = `${REACT_APP_API_URL}/chat`
-  const ws = new SockJS(`${WS_URL}?Authorization=${localStorage.getItem('accessToken')}`);
+  const ws = new SockJS(`${WS_URL}?Token=${localStorage.getItem('accessToken')}`);
 
   const MAX_RETRY_COUNT: number = 5;
   const retryCount = useRef<number>(0);
