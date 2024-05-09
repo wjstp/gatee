@@ -8,12 +8,12 @@ const SignupAuth = () => {
   const tokenUrl: string = `https://kauth.kakao.com/oauth/token`
   const kakaoJavaScriptApiKey: string | undefined = process.env.REACT_APP_KAKAO_JAVASCRIPT_KEY;
   // 로컬로 할때는 이거 켜기
-  const web: string = "http://localhost:3000/auth"
+  // const web: string = "http://localhost:3000/auth"
   const mobile_home: string = "http://192.168.35.47:3000/auth"
   const mobile_yebin: string = "http://192.168.137.1:3000/auth"
   const mobile_taehyeon: string = "http://70.12.247.24:3000/auth"
   // 서버로 할땐 이거 켜기
-  // const web: string = "https://gaty.duckdns.org/auth"
+  const web: string = "https://gaty.duckdns.org/auth"
 
   // 인가 코드 받기
   const code: string | null = new URL(window.location.href).searchParams.get('code');
