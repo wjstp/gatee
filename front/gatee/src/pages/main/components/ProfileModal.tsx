@@ -2,7 +2,9 @@ import React, {useState} from 'react';
 import {Member} from "@type/index";
 import TextField from "@mui/material/TextField";
 import {IoSend} from "react-icons/io5";
-import { InputAdornment } from "@mui/material";
+import {InputAdornment} from "@mui/material";
+import getMoodEmoji from "@utils/getMoodEmoji";
+import getMoodContent from "@utils/getMoodContent";
 
 interface ProfileModalProps {
   profileData: Member | null,
@@ -23,16 +25,12 @@ const ProfileModal = ({profileData, handleModalEvent}: ProfileModalProps) => {
     event.stopPropagation();
 
     if (type === "gotoProfile") {
-      console.log('프로필로 가기');
       handleModalEvent(type, "");
     } else if (type === "openMessage") {
-      console.log("한마디 보내기 선택")
       setIsSendBtnClicked(!isSendBtnClicked);
-
     } else if (type === "sendMessage") {
       handleModalEvent(type, messageInput);
     } else if (type === "close") {
-      // console.log('백드롭 이벤트');
       handleModalEvent(type, "");
     }
   };
@@ -65,84 +63,79 @@ const ProfileModal = ({profileData, handleModalEvent}: ProfileModalProps) => {
         <div className="profile-nickname">{profileData?.nickname}</div>
 
         {/* 기분 */}
-        <div className="profile-mood">
-          {
-            profileData?.mood === "HAPPY" ?
-              <div>오늘 행복해요 🥰</div>
-              :
-              profileData?.mood === "SAD" ?
-                <div>오늘 슬퍼요 😥</div>
-                :
-                profileData?.mood === "ALONE" ?
-                  <div>오늘 혼자 있고 싶어요 😑</div>
-                  :
-                  profileData?.mood === "ANGRY" ?
-                    <div>오늘 화나요 🤬</div>
-                    : <div>오늘 기분을 설정하지 않았어요 😶</div>
-          }
-        </div>
-
-        {/* 버튼 */}
-        <div className="profile-modal--button--container">
-
-          <button className="profile-modal-go-to-detail"
-                  onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
-                    handleProfileEvent(event, "gotoProfile")
-                  }}>
-            프로필
-          </button>
-
-          <button className="profile-modal-open-message"
-                  onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
-                    handleProfileEvent(event, "openMessage")
-                  }}>
-            한마디 보내기
-          </button>
-        </div>
-
-        {/* 메세지 인풋 창 */}
-        {isSendBtnClicked ?
-          <div className="message-input--container">
-
-            {
-              messageInput.length > 23 ?
-                <p className="message-input--warning">최대 25자 가능해요!</p>
-                :
-                <p className="message-input--no--seen">최대 25자 가능해요!</p>
-            }
-
-            {/* 입력 필드  + 보내기 버튼 */}
-            <TextField value={messageInput} onChange={handleMessageInput} type="text"
-                       className="message-input"
-                       multiline={true}
-                       placeholder="예) 설거지 해줘!" sx={muiFocusCustom}
-
-                       onClick={(event) => event.stopPropagation()}
-                       inputProps={{maxLength: 25}}
-                       InputProps={{
-                         endAdornment: (
-                           <InputAdornment position="end">
-
-                             {/* 메세지 입력값 없으면 비활성화 */}
-                             <button className="send-message-button"
-                                     onClick={(event) => handleProfileEvent(event, "sendMessage")}
-                                     disabled={messageInput.trim() === ""}>
-                               <IoSend size={18} color="white"/>
-                             </button>
-
-                           </InputAdornment>
-                         ),
-                       }}
-            />
-
-            <p className="message-input--explain">가티가 여러분의 말을 순화시켜 보내요!</p>
-            {/* 보내기 버튼 */}
+        {profileData?.mood ?
+          <div className="profile-mood">
+            오늘 {getMoodContent(profileData?.mood)} {getMoodEmoji(profileData?.mood)}
           </div>
-          : null
+          :
+          <div className="profile-mood">
+            오늘 기분을 설정하지 않았어요 😶
+          </div>
         }
+
+
+      {/* 버튼 */}
+      <div className="profile-modal--button--container">
+
+        <button className="profile-modal-go-to-detail"
+                onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
+                  handleProfileEvent(event, "gotoProfile")
+                }}>
+          프로필
+        </button>
+
+        <button className="profile-modal-open-message"
+                onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
+                  handleProfileEvent(event, "openMessage")
+                }}>
+          한마디 보내기
+        </button>
       </div>
+
+      {/* 메세지 인풋 창 */}
+      {isSendBtnClicked ?
+        <div className="message-input--container">
+
+          {
+            messageInput.length > 23 ?
+              <p className="message-input--warning">최대 25자 가능해요!</p>
+              :
+              <p className="message-input--no--seen">최대 25자 가능해요!</p>
+          }
+
+          {/* 입력 필드  + 보내기 버튼 */}
+          <TextField value={messageInput} onChange={handleMessageInput} type="text"
+                     className="message-input"
+                     multiline={true}
+                     placeholder="예) 설거지 해줘!" sx={muiFocusCustom}
+
+                     onClick={(event) => event.stopPropagation()}
+                     inputProps={{maxLength: 25}}
+                     InputProps={{
+                       endAdornment: (
+                         <InputAdornment position="end">
+
+                           {/* 메세지 입력값 없으면 비활성화 */}
+                           <button className="send-message-button"
+                                   onClick={(event) => handleProfileEvent(event, "sendMessage")}
+                                   disabled={messageInput.trim() === ""}>
+                             <IoSend size={18} color="white"/>
+                           </button>
+
+                         </InputAdornment>
+                       ),
+                     }}
+          />
+
+          <p className="message-input--explain">가티가 여러분의 말을 순화시켜 보내요!</p>
+          {/* 보내기 버튼 */}
+        </div>
+        : null
+      }
     </div>
-  );
+</div>
+)
+  ;
 };
 
 export default ProfileModal;

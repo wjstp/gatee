@@ -108,7 +108,7 @@ const SignupMemberSetBirth = () => {
               className="btn-lunar__input"
               type="radio"
               name="calendarType"
-              value="lunar"
+              value="LUNAR"
               checked={birthType === "LUNAR"}
               onChange={(e) => setBirthType(e.target.value)}
             />
