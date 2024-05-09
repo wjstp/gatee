@@ -3,6 +3,7 @@ package io.ssafy.gatee.domain.family.api;
 import io.ssafy.gatee.config.restdocs.RestDocsTestSupport;
 import io.ssafy.gatee.config.security.CustomWithMockUser;
 import io.ssafy.gatee.domain.family.application.FamilyService;
+import io.ssafy.gatee.domain.family.dto.request.FamilyIdReq;
 import io.ssafy.gatee.domain.family.dto.request.FamilyNameReq;
 import io.ssafy.gatee.domain.family.dto.request.FamilySaveReq;
 import io.ssafy.gatee.domain.family.dto.response.FamilyCodeRes;
@@ -119,7 +120,7 @@ class FamilyControllerTest extends RestDocsTestSupport {
     void readFamily() throws Exception {
 
         // given
-        given(familyService.readFamily(any()))
+        given(familyService.readFamily(any(String.class)))
                 .willReturn(FamilyInfoRes.builder()
                         .name("세진이네")
                         .familyScore(0)

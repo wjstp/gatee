@@ -1,6 +1,7 @@
 package io.ssafy.gatee.domain.family.api;
 
 import io.ssafy.gatee.domain.family.application.FamilyService;
+import io.ssafy.gatee.domain.family.dto.request.FamilyIdReq;
 import io.ssafy.gatee.domain.family.dto.request.FamilyNameReq;
 import io.ssafy.gatee.domain.family.dto.request.FamilySaveReq;
 import io.ssafy.gatee.domain.family.dto.response.FamilyCodeRes;
@@ -40,8 +41,8 @@ public class FamilyController {
     // 가족 코드 생성
     @GetMapping("/{familyId}/code")
     @ResponseStatus(HttpStatus.OK)
-    public FamilyCodeRes createFamilyCode(@PathVariable("familyId") String familyId) {
-        return familyService.createFamilyCode(familyId);
+    public FamilyCodeRes createFamilyCode(@RequestBody FamilyIdReq familyIdReq) {
+        return familyService.createFamilyCode(familyIdReq.familyId());
     }
 
     // 가족 합류
@@ -56,11 +57,11 @@ public class FamilyController {
     }
 
     // 가족 정보 조회
-    @GetMapping("/{familyId}")
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public FamilyInfoRes readFamily(@PathVariable("familyId") String familyId) throws FamilyNotFoundException {
-        log.info(familyId);
-        return familyService.readFamily(UUID.fromString(familyId));
+    public FamilyInfoRes readFamily(@RequestBody FamilyIdReq familyIdReq) throws FamilyNotFoundException {
+        log.info(familyIdReq.familyId());
+        return familyService.readFamily(familyIdReq.familyId());
     }
 
     // 가족 이름 수정

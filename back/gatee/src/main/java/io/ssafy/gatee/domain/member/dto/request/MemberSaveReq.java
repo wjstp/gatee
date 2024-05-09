@@ -1,5 +1,6 @@
 package io.ssafy.gatee.domain.member.dto.request;
 
+import io.ssafy.gatee.domain.member_family.entity.Role;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
@@ -21,7 +22,6 @@ public record MemberSaveReq (
         @NotNull
         String role,
 
-        // file - 회원 프로필 이미지 추가
 
         @NotNull
         String familyId,

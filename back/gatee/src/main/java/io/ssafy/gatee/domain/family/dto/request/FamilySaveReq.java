@@ -7,9 +7,9 @@ import lombok.Builder;
 public record FamilySaveReq(
 
         @NotNull
-        String name,
+        String name
 
-        Long fileId
+//        Long fileId
 
 ) {
 }
