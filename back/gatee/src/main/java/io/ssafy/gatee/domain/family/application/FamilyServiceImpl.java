@@ -18,7 +18,6 @@ import io.ssafy.gatee.global.exception.error.bad_request.ExpiredCodeException;
 import io.ssafy.gatee.global.exception.error.not_found.FamilyNotFoundException;
 import io.ssafy.gatee.global.exception.error.not_found.FileNotFoundException;
 import io.ssafy.gatee.global.exception.error.not_found.MemberFamilyNotFoundException;
-import io.ssafy.gatee.global.exception.message.ExceptionMessage;
 import io.ssafy.gatee.global.redis.dao.OnlineRoomMemberRepository;
 import io.ssafy.gatee.global.redis.dto.OnlineRoomMember;
 import jodd.util.StringUtil;
@@ -60,12 +59,12 @@ public class FamilyServiceImpl implements FamilyService {
     public FamilySaveRes saveFamily(FamilySaveReq familySaveReq, UUID memberId) {
         Long fileId = familySaveReq.fileId();
 
-        if (Objects.nonNull(familySaveReq.fileId())){
+        if (Objects.nonNull(familySaveReq.fileId())) {
             fileId = findDefaultFamilyImageId(DEFAULT_FAMILY_IMAGE_URL);
         }
 
-        File familyImgFile =fileRepository.findById(fileId)
-                .orElseThrow(()->new FileNotFoundException(FIlE_NOT_FOUND));
+        File familyImgFile = fileRepository.findById(fileId)
+                .orElseThrow(() -> new FileNotFoundException(FIlE_NOT_FOUND));
 
         Member member = Member.builder()
                 .id(memberId)
@@ -118,7 +117,7 @@ public class FamilyServiceImpl implements FamilyService {
 
     @Override
     public Long findDefaultFamilyImageId(String url) {
-        return fileRepository.findByUrl(url).orElseThrow(()->
+        return fileRepository.findByUrl(url).orElseThrow(() ->
                 new FileNotFoundException(FIlE_NOT_FOUND)).getId();
     }
 
@@ -163,11 +162,8 @@ public class FamilyServiceImpl implements FamilyService {
         Family family = familyRepository.findById(familyId)
                 .orElseThrow(() -> new FamilyNotFoundException(FAMILY_NOT_FOUND));
 
-        List<MemberFamily> memberFamily = memberFamilyRepository.findAllByFamily_Id(familyId)
-                .orElseThrow(() -> new MemberFamilyNotFoundException(MEMBER_FAMILY_NOT_FOUND));
-
-        List<MemberFamilyInfoRes> memberFamilyInfoList = memberFamily.stream()
-                .map(MemberFamilyInfoRes::toDto).toList();
+        List<MemberFamilyInfoRes> memberFamilyInfoList = memberFamilyRepository.findMemberFamilyByFamilyId(familyId);
+        System.out.println(memberFamilyInfoList);
 
         return FamilyInfoRes.builder()
                 .name(family.getName())
