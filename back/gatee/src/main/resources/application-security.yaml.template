@@ -57,5 +57,5 @@ spring:
             redirect-uri: https://gaty.duckdns.org/login/oauth2/code/kakao
 
 jwt:
-  access-token-validity-in-seconds: 1800
+  access-token-validity-in-seconds: 180000
   refresh-token-validity-in-seconds: 180000

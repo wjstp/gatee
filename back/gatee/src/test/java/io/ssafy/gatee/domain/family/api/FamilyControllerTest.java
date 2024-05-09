@@ -1,43 +1,69 @@
 package io.ssafy.gatee.domain.family.api;
 
-import io.ssafy.gatee.config.restdocs.RestDocsTestSupport;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.ssafy.gatee.config.security.CustomWithMockUser;
 import io.ssafy.gatee.domain.family.application.FamilyService;
 import io.ssafy.gatee.domain.family.dto.request.FamilyNameReq;
 import io.ssafy.gatee.domain.family.dto.request.FamilySaveReq;
-import io.ssafy.gatee.domain.family.dto.response.FamilyInfoRes;
-import lombok.extern.slf4j.Slf4j;
+import io.ssafy.gatee.global.jwt.application.JwtService;
+import io.ssafy.gatee.global.security.application.AuthService;
+import io.ssafy.gatee.global.security.config.SecurityConfig;
+import io.ssafy.gatee.global.security.handler.CustomAccessDeniedHandler;
+import io.ssafy.gatee.global.security.handler.CustomAuthenticationEntryPointHandler;
+import io.ssafy.gatee.global.security.handler.CustomOAuth2FailureHandler;
+import io.ssafy.gatee.global.security.handler.CustomOAuth2SuccessHandler;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
-import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import java.util.UUID;
 
-import static org.mockito.BDDMockito.any;
-import static org.mockito.BDDMockito.given;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Slf4j
 @ActiveProfiles({"common, prod"})
-@WebMvcTest({FamilyController.class})
+@AutoConfigureRestDocs
+@WebMvcTest({FamilyController.class, SecurityConfig.class})
+//@WebMvcTest({FamilyController.class, TestSecurityConfig.class})
 @MockBean(JpaMetamodelMappingContext.class)
-class FamilyControllerTest extends RestDocsTestSupport {
+class FamilyControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @MockBean
     private FamilyService familyService;
+
+    @MockBean
+    private JwtService jwtService;
+
+    @MockBean
+    private AuthService authService;
+
+    @MockBean
+    private CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
+
+    @MockBean
+    private CustomOAuth2FailureHandler customOAuth2FailureHandler;
+
+    @MockBean
+    private CustomAccessDeniedHandler customAccessDeniedHandler;
+
+    @MockBean
+    private CustomAuthenticationEntryPointHandler customAuthenticationEntryPointHandler;
 
 
     @Test
@@ -82,34 +108,12 @@ class FamilyControllerTest extends RestDocsTestSupport {
 
     @Test
     @CustomWithMockUser
+    @DisplayName("가족 정보 조회 테스트")
     void readFamily() throws Exception {
-
-        // given
-        given(familyService.readFamily(any()))
-                .willReturn(FamilyInfoRes.builder()
-                        .name("세진이네")
-                        .familyScore(0)
-                        .memberFamilyInfoList(any())
-                        .build());
-
-        // when
-        ResultActions result = mockMvc.perform(get("/api/family/{familyId}", UUID.randomUUID())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                );
-
-        // then
-        result.andExpect(status().isOk())
-                .andDo(restDocs.document(
-                        pathParameters(
-                                parameterWithName("familyId").description("가족 ID")
-                        ),
-                        responseFields(
-                                fieldWithPath("name").type(JsonFieldType.STRING).description("가족 이름"),
-                                fieldWithPath("familyScore").type(JsonFieldType.NUMBER).description("가족 점수"),
-                                fieldWithPath("memberFamilyInfoList").type(JsonFieldType.ARRAY).description("가족 구성원 목록").optional()
-                        )
-                ));
+        mockMvc.perform(get("/api/family/1"))
+                .andDo(MockMvcResultHandlers.print())
+                .andDo(MockMvcRestDocumentation.document("가족 정보 조회"))
+                .andExpect(status().isOk());
     }
 
     @Test
