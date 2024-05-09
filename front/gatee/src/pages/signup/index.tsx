@@ -35,7 +35,7 @@ const SignupIndex = () => {
           onClick={goToFamilySet}
         >
           <span className="btn-family-set__text">
-            내 가족 생성하기
+            새로운 가족 만들기
           </span>
         </button>
 
@@ -45,7 +45,7 @@ const SignupIndex = () => {
           onClick={goToFamilyJoin}
         >
           <span className="btn-family-join__text">
-            초대 코드 입력
+            가족의 일원이 되기
           </span>
         </button>
       </div>

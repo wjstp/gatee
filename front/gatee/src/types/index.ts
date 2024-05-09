@@ -126,14 +126,22 @@ export interface HolidayStore {
   setHolidays: (newSchedules: Holiday[]) => void;
 }
 
-// kakao
+// kakao를 전역에서 실행하기 위함
 declare global {
     interface Window {
         Kakao: any;
     }
 }
 
-//chat
+// kakao
+export interface KaKaoLoginReq {
+  grant_type: string;
+  client_id: string | undefined;
+  redirect_uri: string | undefined;
+  code: string | null;
+}
+
+// chat
 export type ChatContent =  ChatMessage | ChatFile | ChatAppointment | ChatEmoji | ChatAlarm;
 
 export interface ChatMessage {  // MESSAGE

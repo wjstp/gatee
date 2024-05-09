@@ -38,6 +38,7 @@
     "react-helmet": "^6.1.0",
     "react-helmet-async": "^2.0.4",
     "react-icons": "^5.1.0",
+    "react-image-file-resizer": "^0.4.8",
     "react-mobile-datepicker": "^4.0.2",
     "react-mobile-picker": "^1.0.0",
     "react-modal": "^3.16.1",

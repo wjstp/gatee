@@ -1,17 +1,12 @@
 import React from 'react';
 import { BiCopy } from "react-icons/bi";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import SampleFamily from "@assets/images/signup/sample.svg"
 import { ReactComponent as KaKaoMessage } from "@assets/images/signup/kakao_message.svg";
-import axios from "axios";
 import { useFamilyStore } from "@store/useFamilyStore";
-import homeIcon from "@assets/images/logo/app_icon_orange.svg"
 
 const SignupFamilySetShare = () => {
   const navigate = useNavigate();
-  const web: string = "http://localhost:3000"
-  const mobile_home: string = "http://192.168.35.47:3000"
-  const mobile_ssafy: string = "http://70.12.247.24:3000"
 
   // 가족 조회하기
   // axios.get
