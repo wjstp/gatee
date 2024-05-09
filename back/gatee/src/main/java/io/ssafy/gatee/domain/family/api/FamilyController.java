@@ -6,6 +6,8 @@ import io.ssafy.gatee.domain.family.dto.request.FamilySaveReq;
 import io.ssafy.gatee.domain.family.dto.response.FamilyCodeRes;
 import io.ssafy.gatee.domain.family.dto.response.FamilyInfoRes;
 import io.ssafy.gatee.domain.family.dto.response.FamilySaveRes;
+import io.ssafy.gatee.domain.file.application.FileService;
+import io.ssafy.gatee.domain.file.entity.type.FileType;
 import io.ssafy.gatee.global.exception.error.bad_request.ExpiredCodeException;
 import io.ssafy.gatee.global.exception.error.not_found.FamilyNotFoundException;
 import io.ssafy.gatee.global.security.user.CustomUserDetails;
@@ -16,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @RestController
@@ -25,9 +28,9 @@ import java.util.UUID;
 public class FamilyController {
 
     private final FamilyService familyService;
+    private final FileService fileService;
 
     // 가족 생성
-
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public FamilySaveRes saveFamily(@RequestBody FamilySaveReq familySaveReq, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
