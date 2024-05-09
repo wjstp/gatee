@@ -56,12 +56,15 @@ public class WebSocketHandler extends TextWebSocketHandler {
         UUID familyId = familyService.getFamilyIdByMemberId(memberId);
 
         // redis에 chattingRoompk를 인덱스로 online user 관리, online user에 넣기
-        OnlineRoomMember onlineRoomMember = Optional.ofNullable(onlineRoomMemberRepository.findById(familyId)
-                        .orElseThrow(() -> new FamilyNotFoundException(FAMILY_NOT_FOUND)))
+        OnlineRoomMember onlineRoomMember = onlineRoomMemberRepository.findById(familyId)
                 .map(orm -> {
                     orm.setOnlineUsers(Optional.ofNullable(orm.getOnlineUsers()).orElseGet(HashSet::new));
                     return orm;
-                }).get();
+                })
+                .orElseGet(() -> OnlineRoomMember.builder()
+                        .id(familyId)
+                        .onlineUsers(new HashSet<>())
+                        .build());
         // 온라인 유저로 관리
         onlineRoomMember.getOnlineUsers().add(memberId);
         onlineRoomMemberRepository.save(onlineRoomMember);
