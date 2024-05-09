@@ -5,29 +5,29 @@ import io.ssafy.gatee.config.security.CustomWithMockUser;
 import io.ssafy.gatee.domain.family.application.FamilyService;
 import io.ssafy.gatee.domain.family.dto.request.FamilyNameReq;
 import io.ssafy.gatee.domain.family.dto.request.FamilySaveReq;
+import io.ssafy.gatee.domain.family.dto.response.FamilyCodeRes;
 import io.ssafy.gatee.domain.family.dto.response.FamilyInfoRes;
+import io.ssafy.gatee.domain.family.dto.response.FamilySaveRes;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
-import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
+import java.util.List;
 import java.util.UUID;
 
 import static org.mockito.BDDMockito.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Slf4j
@@ -42,42 +42,76 @@ class FamilyControllerTest extends RestDocsTestSupport {
 
     @Test
     @CustomWithMockUser
-    @DisplayName("가족 생성 테스트")
     void saveFamily() throws Exception {
-        FamilySaveReq familySaveReq = FamilySaveReq.builder()
-                .name("우리집")
-                .build();
 
-        String familySaveJson = objectMapper.writeValueAsString(familySaveReq);
+        // given
+        given(familyService.saveFamily(any(FamilySaveReq.class), any(UUID.class)))
+                .willReturn(FamilySaveRes.builder()
+                        .familyId(UUID.randomUUID())
+                        .build());
 
-        mockMvc.perform(post("/api/family")
+        // when
+        ResultActions result = mockMvc.perform(post("/api/family")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(familySaveJson))
-                .andDo(MockMvcResultHandlers.print())
-                .andDo(MockMvcRestDocumentation.document("가족 생성"))
-                .andExpect(status().isOk());
+                        .content(readJson("json/family/saveFamily.json"))
+                        .accept(MediaType.APPLICATION_JSON)
+                );
+
+        // then
+        result.andExpect(status().isOk())
+                .andDo(restDocs.document(
+                        queryParameters(
+                                parameterWithName("name").description("가족 이름").optional()
+                        ),
+                        responseFields(
+                                fieldWithPath("familyId").type(JsonFieldType.STRING).description("가족 ID")
+                        )
+                ));
     }
 
     @Test
     @CustomWithMockUser
-    @DisplayName("가족 코드 생성 테스트")
     void createFamilyCode() throws Exception {
-        mockMvc.perform(get("/api/family/1/code"))
-                .andDo(MockMvcResultHandlers.print())
-                .andDo(MockMvcRestDocumentation.document("가족 코드 생성"))
-                .andExpect(status().isOk());
+
+        // given
+        given(familyService.createFamilyCode(any()))
+                .willReturn(FamilyCodeRes.builder()
+                        .familyCode("B2A3D1F4")
+                        .build());
+
+        // when
+        ResultActions result = mockMvc.perform(get("/api/family/{familyId}/code", UUID.randomUUID()));
+
+        // then
+        result.andExpect(status().isOk())
+                .andDo(restDocs.document(
+                        pathParameters(
+                                parameterWithName("familyId").description("가족 ID")
+                        ),
+                        responseFields(
+                                fieldWithPath("familyCode").type(JsonFieldType.STRING).description("가족 초대 코드")
+                        )
+                ));
     }
 
     @Test
     @CustomWithMockUser
-    @DisplayName("가족 합류 테스트")
     void joinFamily() throws Exception {
-        mockMvc.perform(post("/api/family/join")
-                        .param("familyCode", "A1B2C3D4")
-                        .param("memberId", String.valueOf(UUID.randomUUID())))
-                .andDo(MockMvcResultHandlers.print())
-                .andDo(MockMvcRestDocumentation.document("가족 합류"))
-                .andExpect(status().isOk());
+
+        // given
+        doNothing().when(familyService).joinFamily(any(String.class), any(UUID.class));
+
+        // when
+        ResultActions result = mockMvc.perform(post("/api/family/join")
+                        .param("familyCode", "A1B2C3D4"));
+
+        // then
+        result.andExpect(status().isOk())
+                .andDo(restDocs.document(
+                        queryParameters(
+                                parameterWithName("familyCode").description("가족 초대 코드").optional()
+                        )
+                ));
     }
 
     @Test
@@ -89,7 +123,7 @@ class FamilyControllerTest extends RestDocsTestSupport {
                 .willReturn(FamilyInfoRes.builder()
                         .name("세진이네")
                         .familyScore(0)
-                        .memberFamilyInfoList(any())
+                        .memberFamilyInfoList(any(List.class))
                         .build());
 
         // when
@@ -114,19 +148,24 @@ class FamilyControllerTest extends RestDocsTestSupport {
 
     @Test
     @CustomWithMockUser
-    @DisplayName("가족 이름 수정 테스트")
     void editFamilyName() throws Exception {
-        FamilyNameReq familyNameReq = FamilyNameReq.builder()
-                .name("우리집")
-                .build();
 
-        String editFamilyNameJson = objectMapper.writeValueAsString(familyNameReq);
+        // given
+        doNothing().when(familyService).editFamilyName(any(UUID.class), any(FamilyNameReq.class));
 
-        mockMvc.perform(patch("/api/family/1")
+        // when
+        ResultActions result = mockMvc.perform(patch("/api/family/{familyId}", UUID.randomUUID())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(editFamilyNameJson))
-                .andDo(MockMvcResultHandlers.print())
-                .andDo(MockMvcRestDocumentation.document("가족 이름 수정"))
-                .andExpect(status().isOk());
+                        .content(readJson("json/family/editFamilyName.json"))
+                        .accept(MediaType.APPLICATION_JSON)
+                );
+
+        // then
+        result.andExpect(status().isOk())
+                .andDo(restDocs.document(
+                        pathParameters(
+                                parameterWithName("familyId").description("가족 ID").optional()
+                        )
+                ));
     }
 }

@@ -76,11 +76,11 @@ include::{snippets}/member-controller-test/read-info/response-fields.adoc[]
 
 - Request
 
-include::{snippets}/가족 생성/http-request.adoc[]
+include::{snippets}/family-controller-test/save-family/http-request.adoc[]
 
 - Response
 
-include::{snippets}/가족 생성/http-response.adoc[]
+include::{snippets}/family-controller-test/save-family/http-response.adoc[]
 
 
 == 가족 정보 조회
@@ -102,33 +102,35 @@ include::{snippets}/family-controller-test/read-family/response-fields.adoc[]
 
 - Request
 
-include::{snippets}/가족 코드 생성/http-request.adoc[]
+include::{snippets}/family-controller-test/create-family-code/http-request.adoc[]
+include::{snippets}/family-controller-test/create-family-code/path-parameters.adoc[]
 
 - Response
 
-include::{snippets}/가족 코드 생성/http-response.adoc[]
+include::{snippets}/family-controller-test/create-family-code/http-response.adoc[]
 
 
 == 가족 합류
 
 - Request
 
-include::{snippets}/가족 합류/http-request.adoc[]
+include::{snippets}/family-controller-test/join-family/http-request.adoc[]
 
 - Response
 
-include::{snippets}/가족 합류/http-response.adoc[]
+include::{snippets}/family-controller-test/join-family/http-response.adoc[]
 
 
 == 가족 이름 수정
 
 - Request
 
-// include::{snippets}/가족 이름 수정/http-request.adoc[]
-//
-// - Response
-//
-// include::{snippets}/가족 이름 수정/http-response.adoc[]
+include::{snippets}/family-controller-test/edit-family-name/http-request.adoc[]
+include::{snippets}/family-controller-test/edit-family-name/path-parameters.adoc[]
+
+- Response
+
+include::{snippets}/family-controller-test/edit-family-name/http-response.adoc[]
 
 
 ---
