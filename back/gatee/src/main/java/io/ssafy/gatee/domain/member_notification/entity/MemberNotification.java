@@ -30,11 +30,13 @@ public class MemberNotification extends BaseEntity {
 
     private boolean scheduleNotification;
 
+    private boolean featureNotification;
 
     @PrePersist
     public void prePersist() {
         this.albumNotification = true;
         this.scheduleNotification = true;
         this.naggingNotification = true;
+        this.featureNotification = true;
     }
 }

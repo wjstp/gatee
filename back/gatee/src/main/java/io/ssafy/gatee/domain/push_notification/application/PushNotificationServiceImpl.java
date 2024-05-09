@@ -195,7 +195,7 @@ public class PushNotificationServiceImpl implements PushNotificationService {
                                     .build())
                             .build())
                     .build();
-            BatchResponse response = FirebaseMessaging.getInstance().sendMulticast(message);    // sendEachForMulticast
+            BatchResponse response = FirebaseMessaging.getInstance().sendEachForMulticast(message);    // sendMulticast
             if (response.getFailureCount() > 0) {
                 List<SendResponse> responses = response.getResponses();
                 List<String> failedTokens = new ArrayList<>();
