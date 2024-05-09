@@ -93,15 +93,18 @@ public class ChatServiceImpl implements ChatService {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
-                    DataSnapshot unreadMemberSnapshot = messageSnapshot.child("unreadMembers");
+                    DataSnapshot unreadMemberSnapshot = messageSnapshot.child("unreadMember");
                     if (unreadMemberSnapshot.exists()) {
                         log.info("스냅샷" + unreadMemberSnapshot.toString());
                         List<String> unreadMembers = (List<String>) unreadMemberSnapshot.getValue();
-                        if (unreadMembers.contains(memberId.toString())) {
+                        if (unreadMembers != null && unreadMembers.contains(memberId.toString())) {
                             unreadMembers.remove(memberId.toString());
 
-                            // 여기서 변경사항을 동일한 데이터 스냅샷에 반영합니다.
-                            unreadMemberSnapshot.getRef().setValue(unreadMembers, new DatabaseReference.CompletionListener() {
+                            // 여기서 특정 필드만 업데이트합니다.
+                            Map<String, Object> childUpdates = new HashMap<>();
+                            childUpdates.put("unreadMember", unreadMembers);
+
+                            messageSnapshot.getRef().updateChildren(childUpdates, new DatabaseReference.CompletionListener() {
                                 @Override
                                 public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                                     if (databaseError == null) {
