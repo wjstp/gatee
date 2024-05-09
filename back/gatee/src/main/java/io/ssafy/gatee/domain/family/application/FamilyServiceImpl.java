@@ -64,11 +64,9 @@ public class FamilyServiceImpl implements FamilyService {
                 .family(family)
                 .isLeader(true)
                 .build();
-
         HashSet<UUID> usersSet = new HashSet<>();
 
         memberFamilyRepository.save(memberFamily);
-
         onlineRoomMemberRepository.save(OnlineRoomMember.builder()
                 .id(family.getId())
                 .onlineUsers(usersSet)
