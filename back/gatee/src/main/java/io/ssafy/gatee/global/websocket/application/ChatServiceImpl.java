@@ -109,10 +109,10 @@ public class ChatServiceImpl implements ChatService {
                                 public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                                     if (databaseError == null) {
                                         // 데이터 업데이트가 성공적으로 완료되었습니다.
-                                        System.out.println("데이터 업데이트 성공.");
+                                        log.info("데이터 업데이트 성공.");
                                     } else {
                                         // 데이터 업데이트 실패
-                                        System.err.println("데이터 업데이트 실패: " + databaseError.getMessage());
+                                        log.info("데이터 업데이트 실패: " + databaseError.getMessage());
                                     }
                                 }
                             });
@@ -123,7 +123,7 @@ public class ChatServiceImpl implements ChatService {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                System.err.println("리스너가 취소되었습니다, 오류: " + databaseError.getMessage());
+                log.info("리스너가 취소되었습니다, 오류: " + databaseError.getMessage());
             }
         });
     }
