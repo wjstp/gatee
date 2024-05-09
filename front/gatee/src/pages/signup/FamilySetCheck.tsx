@@ -2,54 +2,46 @@ import React, {useEffect, useState} from 'react';
 import { useNavigate } from "react-router-dom";
 import { useFamilyStore } from "@store/useFamilyStore";
 import { createFamilyApi } from "@api/member";
-import { uploadFileApi } from "@api/file";
-import upLoadImage from "@assets/images/profile/family.jpg";
 import { AxiosError, AxiosResponse } from "axios";
 
 const SignupFamilySetCheck = () => {
   const navigate = useNavigate();
-  const { familyName, familyImage } = useFamilyStore();
-
-  const [showImage, setShowImage] = useState<string>("");
+  const { familyName, familyImage, stringImage } = useFamilyStore();
 
   // 초대 코드 공유 페이지로 가기
   const goToFamilySetShare = () => {
-    // 파일을 업로드했다면 같이 보내서 가족 생성하기
+    // 가족 생성하기
+    // createFamily();
+
+    navigate("/signup/family-set/share");
+  }
+
+  // 파일을 업로드했을 때
+  const createFamily = (): void => {
+    const formData = new FormData();
+    formData.append("name", familyName);
+    formData.append("fileType", "FAMILY_PROFILE");
+    // 파일이 업로드 되어있으면 파일 이어붙이기
     if (familyImage instanceof File) {
-      const formData = new FormData();
-      formData.append("fileType", "FAMILY_PROFILE");
       formData.append("file", familyImage);
-
-      uploadFileApi(
-        formData,
-        (res: AxiosResponse<any>) => {
-          console.log()
-        },
-        (err: AxiosError<any>) => {
-          console.log()
-        }
-      ).then().catch();
-
-    // 파일을 업로드하지 않았다면 null로 보내서 기본 이미지로 가족 생성하기
-    } else {
-
-    }
-
-    // navigate("/signup/family-set/share");
+    } 
+    
+    // 가족 생성 요청 보내기
+    createFamilyApi(
+      formData,
+      (res: AxiosResponse<any>) => {
+        console.log(res)
+      },
+      (err: AxiosError<any>) => {
+        console.log(err)
+      }
+    ).then().catch();
   }
 
   // 뒤로 가기
   const backTo = ():void => {
     navigate(-1);
   }
-
-  // familyImage를 설정할 때마다 보여줄 이미지 바꾸기
-  useEffect(() => {
-    if (familyImage instanceof File) {
-      const jpgUrl: string = URL.createObjectURL(familyImage);
-      setShowImage(jpgUrl)
-    }
-  }, []);
 
   return (
     <div className="signup-family-set-check">
@@ -67,7 +59,7 @@ const SignupFamilySetCheck = () => {
       <div className="signup-family-set-check__img">
         <img
           className="img"
-          src={showImage ? showImage : upLoadImage}
+          src={stringImage}
           alt="family-image"
         />
       </div>

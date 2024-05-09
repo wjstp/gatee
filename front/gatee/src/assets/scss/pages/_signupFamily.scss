@@ -181,7 +181,7 @@
 
   &__title {
     font-size: 30px;
-    margin-bottom: 10%;
+    margin-bottom: 5%;
 
     .title__part--01 {
     }
@@ -201,7 +201,7 @@
     justify-content: center;
     align-items: center;
     border: 1px solid $gray75;
-    margin-top: 5%;
+    margin-top: 7%;
 
     .img {
       height: 200px;
@@ -212,7 +212,7 @@
   }
 
   &__name {
-    margin-top: 10%;
+    margin-top: 9%;
 
     .name {
       font-weight: bold;
@@ -223,7 +223,7 @@
   &__btn {
     @include flex_center;
 
-    margin-top: 10%;
+    margin-top: 7%;
     flex-direction: column;
 
     .btn-introduce {
@@ -246,14 +246,13 @@
 
 // 가족 코드 공유
 .signup-family-set-share {
-  display: flex;
-  align-items: center;
+  @include flex_center;
+
   height: 100%;
   width: 100%;
   flex-direction: column;
 
   &__title {
-    margin-top: 12%;
     font-size: 30px;
 
     .title__part--01 {
@@ -354,8 +353,6 @@
   &__btn-next {
     @include flex_center;
 
-    position: absolute;
-    bottom: 5%;
     margin-top: 5%;
     height: 10%;
     width: 100%;

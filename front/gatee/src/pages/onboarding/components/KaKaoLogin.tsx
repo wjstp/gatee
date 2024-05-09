@@ -9,7 +9,8 @@ const KaKaoLogin = () => {
   // 카카오 인가코드 발급
   // const loginWithKaKao = () => {
   //   window.Kakao.Auth.authorize({
-  //     redirectUri: `${redirectUri}/auth`,
+  //     // redirectUri: `${redirectUri}/auth`,
+  //     redirectUri: "http://localhost:3000/auth",
   //     scope: "profile_nickname, account_email",
   //   })
   // }

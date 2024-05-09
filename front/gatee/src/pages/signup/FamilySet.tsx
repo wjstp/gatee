@@ -3,16 +3,14 @@ import { IoIosCamera } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { useFamilyStore } from "@store/useFamilyStore";
 import { imageResizer } from "@utils/imageResizer"
-import upLoadImage from "@assets/images/profile/family.jpg";
 
 const SignupFamilySet = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { familyName, setFamilyName, familyImage, setFamilyImage } = useFamilyStore();
+  const { familyName, setFamilyName, setFamilyImage, stringImage, setStringImage } = useFamilyStore();
 
   const [errorMessage, setErrorMessage] = useState<string>("");
-  const [showImage, setShowImage] = useState<string>("");
 
   // 입력값
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -23,20 +21,14 @@ const SignupFamilySet = () => {
     }
   }
 
-  // familyImage를 설정할 때마다 보여줄 이미지 바꾸기
-  useEffect(() => {
-    if (familyImage instanceof File) {
-      const jpgUrl: string = URL.createObjectURL(familyImage);
-      setShowImage(jpgUrl)
-    }
-  }, [familyImage]);
-
   // 이미지 선택 처리
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>)=> {
     const file: File | null = e.target.files ? e.target.files[0] : null;
     if (file) {
-      const resizedFile: File = (await imageResizer(file)) as File;
+      const resizedFile: File = (await imageResizer(file, 1000, 1000)) as File;
+      const jpgUrl = URL.createObjectURL(resizedFile);
       setFamilyImage(resizedFile);
+      setStringImage(jpgUrl);
     }
   }
 
@@ -57,11 +49,13 @@ const SignupFamilySet = () => {
       if (inputRef.current) {
         inputRef.current.focus();
       }
-      return; // 함수 실행 중단
+      // 함수 실행 중단
+      return;
     } else {
       navigate("/signup/family-set/check");
     }
   }
+
   return (
     <div className="signup-family-set">
 
@@ -79,7 +73,7 @@ const SignupFamilySet = () => {
         >
           <img
             className="btn--img"
-            src={showImage ? showImage : upLoadImage}
+            src={stringImage}
             alt="family-image"
           />
           <input
