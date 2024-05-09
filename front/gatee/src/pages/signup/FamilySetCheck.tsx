@@ -1,23 +1,55 @@
-import React from 'react';
-import { useNavigate, useLocation } from "react-router-dom";
-import SampleFamily from "@assets/images/signup/sample.svg"
+import React, {useEffect, useState} from 'react';
+import { useNavigate } from "react-router-dom";
 import { useFamilyStore } from "@store/useFamilyStore";
-import axios from "axios";
+import { createFamilyApi } from "@api/member";
+import { uploadFileApi } from "@api/file";
+import upLoadImage from "@assets/images/profile/family.jpg";
+import { AxiosError, AxiosResponse } from "axios";
 
 const SignupFamilySetCheck = () => {
   const navigate = useNavigate();
   const { familyName, familyImage } = useFamilyStore();
 
+  const [showImage, setShowImage] = useState<string>("");
 
-  const goToFamilySetCheck = () => {
-    // 가족 생성하기
-    // axios.post
-    navigate("/signup/family-set/share");
+  // 초대 코드 공유 페이지로 가기
+  const goToFamilySetShare = () => {
+    // 파일을 업로드했다면 같이 보내서 가족 생성하기
+    if (familyImage instanceof File) {
+      const formData = new FormData();
+      formData.append("fileType", "FAMILY_PROFILE");
+      formData.append("file", familyImage);
+
+      uploadFileApi(
+        formData,
+        (res: AxiosResponse<any>) => {
+          console.log()
+        },
+        (err: AxiosError<any>) => {
+          console.log()
+        }
+      ).then().catch();
+
+    // 파일을 업로드하지 않았다면 null로 보내서 기본 이미지로 가족 생성하기
+    } else {
+
+    }
+
+    // navigate("/signup/family-set/share");
   }
 
+  // 뒤로 가기
   const backTo = ():void => {
     navigate(-1);
   }
+
+  // familyImage를 설정할 때마다 보여줄 이미지 바꾸기
+  useEffect(() => {
+    if (familyImage instanceof File) {
+      const jpgUrl: string = URL.createObjectURL(familyImage);
+      setShowImage(jpgUrl)
+    }
+  }, []);
 
   return (
     <div className="signup-family-set-check">
@@ -35,7 +67,7 @@ const SignupFamilySetCheck = () => {
       <div className="signup-family-set-check__img">
         <img
           className="img"
-          src={familyImage?.toString() || SampleFamily}
+          src={showImage ? showImage : upLoadImage}
           alt="family-image"
         />
       </div>
@@ -49,7 +81,7 @@ const SignupFamilySetCheck = () => {
         {/*가족 소개 버튼*/}
         <button
           className="btn-introduce"
-          onClick={goToFamilySetCheck}
+          onClick={goToFamilySetShare}
         >
           <span className="btn-introduce__text">
             소개하기

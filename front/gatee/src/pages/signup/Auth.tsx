@@ -13,7 +13,7 @@ const SignupAuth = () => {
   // 인가코드를 받았을 때마다 실행
   useEffect(() => {
     if (code) {
-      navigate('/signup');
+      // navigate('/signup');
       // 카카오 로그인
       kakaoLoginAPI(
         {

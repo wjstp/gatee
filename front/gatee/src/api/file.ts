@@ -5,7 +5,7 @@ import { FileReq } from "@type/index";
 const local: AxiosInstance = localAxios();
 
 // 파일 업로드
-export const uploadFileApi = async function (data: FileReq,
+export const uploadFileApi = async function (data: FormData,
                                              success: (res: AxiosResponse<any>) => void,
                                              fail: (err: AxiosError<any>) => void) {
   await local.post("/files", data, {

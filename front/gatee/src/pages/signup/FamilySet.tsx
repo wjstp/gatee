@@ -1,8 +1,9 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { IoIosCamera } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
-import basicFamily from "@assets/images/signup/basic.svg"
 import { useFamilyStore } from "@store/useFamilyStore";
+import { imageResizer } from "@utils/imageResizer"
+import upLoadImage from "@assets/images/profile/family.jpg";
 
 const SignupFamilySet = () => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -11,7 +12,7 @@ const SignupFamilySet = () => {
   const { familyName, setFamilyName, familyImage, setFamilyImage } = useFamilyStore();
 
   const [errorMessage, setErrorMessage] = useState<string>("");
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [showImage, setShowImage] = useState<string>("");
 
   // 입력값
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -22,51 +23,20 @@ const SignupFamilySet = () => {
     }
   }
 
-  // useEffect(() => {
-  //   if (selectedFile) {
-  //     // useResizer Hook을 여기서 호출
-  //     const resize_file = useResizer(selectedFile);
-  //     // 처리된 파일을 상태에 저장하거나 다른 처리를 수행
-  //     console.log(resize_file);
-  //   }
-  // }, [selectedFile]); // selectedFile이 변경될 때마다 실행
-
+  // familyImage를 설정할 때마다 보여줄 이미지 바꾸기
+  useEffect(() => {
+    if (familyImage instanceof File) {
+      const jpgUrl: string = URL.createObjectURL(familyImage);
+      setShowImage(jpgUrl)
+    }
+  }, [familyImage]);
 
   // 이미지 선택 처리
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const file = e.target.files ? e.target.files[0] : null;
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>)=> {
+    const file: File | null = e.target.files ? e.target.files[0] : null;
     if (file) {
-      // const reader: FileReader = new FileReader();
-      setSelectedFile(file);
-
-      // reader.onloadend = (e: ProgressEvent<FileReader>) => {
-      //   const image = new Image();
-      //   console.log(e);
-      //   if (e.target?.result) {
-      //     image.src = e.target.result as string
-      //   }
-      //
-      //   image.onload = () => {
-      //     // 캔버스 생성
-      //     const canvas = document.createElement("canvas");
-      //     const ctx = canvas.getContext('2d');
-      //     if (!ctx) {
-      //       console.error('캔버스 생성 불가')
-      //       return;
-      //     }
-      //
-      //     canvas.width = image.width;
-      //     canvas.height = image.height;
-      //     ctx.drawImage(image, 0, 0, image.width, image.height);
-      //
-      //     // JPG 변환
-      //     const jpgUrl = canvas.toDataURL('image/jpeg', 1.0);
-      //     // setFamilyImage(jpgUrl);
-      //     setFamilyImage(reader.result);
-      //     console.log('jpgUrl', jpgUrl);
-      //   }
-      //   console.log('image',image);
-      // };
+      const resizedFile: File = (await imageResizer(file)) as File;
+      setFamilyImage(resizedFile);
     }
   }
 
@@ -109,7 +79,7 @@ const SignupFamilySet = () => {
         >
           <img
             className="btn--img"
-            src={familyImage ? familyImage.toString() : basicFamily}
+            src={showImage ? showImage : upLoadImage}
             alt="family-image"
           />
           <input
@@ -137,12 +107,14 @@ const SignupFamilySet = () => {
           placeholder="예) 길동이네"
           value={familyName}
           onChange={handleInputChange}
-          maxLength={6}
-          autoFocus
         />
       </div>
       <div className="signup-family-set__error-message">
-        {errorMessage ? errorMessage : null}
+        {errorMessage ? (
+          errorMessage
+        ) : (
+          '　'
+        )}
       </div>
 
       {/*다음 버튼*/}
