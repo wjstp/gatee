@@ -76,7 +76,8 @@ include::{snippets}/member-controller-test/read-info/response-fields.adoc[]
 
 - Request
 
-include::{snippets}/family-controller-test/save-family/http-request.adoc[]
+include::{snippets}/family-controller-test/save-family/curl-request.adoc[]
+include::{snippets}/family-controller-test/save-family/form-parameters.adoc[]
 
 - Response
 
@@ -88,7 +89,6 @@ include::{snippets}/family-controller-test/save-family/http-response.adoc[]
 - Request
 
 include::{snippets}/family-controller-test/read-family/http-request.adoc[]
-include::{snippets}/family-controller-test/read-family/path-parameters.adoc[]
 
 
 - Response
@@ -103,7 +103,6 @@ include::{snippets}/family-controller-test/read-family/response-fields.adoc[]
 - Request
 
 include::{snippets}/family-controller-test/create-family-code/http-request.adoc[]
-include::{snippets}/family-controller-test/create-family-code/path-parameters.adoc[]
 
 - Response
 
