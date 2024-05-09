@@ -39,6 +39,6 @@ public class ChatMessage extends BaseEntity {
     private Member member;
 
     @OneToMany
-    @JoinColumn(name = "file_id")
+    @JoinColumn(name = "chat_file_id")
     private List<File> file;
 }
