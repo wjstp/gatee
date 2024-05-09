@@ -3,7 +3,6 @@ import {FaCamera} from "react-icons/fa";
 import {useNavigate, useParams} from "react-router-dom";
 import {MemberInfoSample} from "@constants/index";
 import useModal from "@hooks/useModal";
-import TextField from "@mui/material/TextField";
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
 import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs, {Dayjs} from 'dayjs';
@@ -11,11 +10,13 @@ import {DateField} from '@mui/x-date-pickers/DateField';
 import {DemoContainer} from '@mui/x-date-pickers/internals/demo';
 import Checkbox from "@mui/material/Checkbox";
 import {FormControlLabel} from "@mui/material";
+import {useMemberStore} from "@store/useMemberStore";
 
 const ProfileModifyCopy = () => {
   const navigate = useNavigate();
   // 쿼리스트링으로 넘어온 이름을 확인하기 위함
   const {name} = useParams<{ name: string }>();
+  const {myInfo, setMyInfo} = useMemberStore()
   // 멤버 불러오기
   const member = MemberInfoSample;
 
@@ -23,22 +24,20 @@ const ProfileModifyCopy = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [memberImage, setMemberImage] = useState<string | ArrayBuffer | null>(member.image);
   // 닉네임 관련
-  const inputNicknameRef = useRef<HTMLInputElement>(null);
-  const [inputNickname, setInputNickname] = useState<string>(member.nickname);
+
+  const [inputNickname, setInputNickname] = useState<string>(myInfo?.nickname);
   // 이름 관련
-  const [inputName, setInputName] = useState(member.name);
+  const [inputName, setInputName] = useState(myInfo?.name);
 
   // 역할 관련
-  const [inputRole, setInputRole] = useState<string>(member.role);
+  const [inputRole, setInputRole] = useState<string>(myInfo?.role);
   // 생일 관련
-  const inputBirthDayRef = useRef<HTMLInputElement>(null);
-  // const {birthDay, birthType} = useMemberStore();
-  const [inputBirthDay, setInputBirthDay] = useState<string>(member.birth);
+  const [inputBirthDay, setInputBirthDay] = useState<string>(myInfo?.birth);
   const [birthDayErrorMessage, setBirthDayErrorMessage] = useState<string>("");
   // 캘린더타입
-  const [inputBirthType, setInputBirthType] = useState<string>(member.birthType)
+  const [inputBirthType, setInputBirthType] = useState<string>(myInfo?.birthType)
   // 전화번호 관련
-  const [inputPhoneNumber, setInputPhoneNumber] = useState<string>(member.phoneNumber === null ? "" : member.phoneNumber)
+  const [inputPhoneNumber, setInputPhoneNumber] = useState<string>(myInfo?.phoneNumber === null ? "" : myInfo?.phoneNumber)
 
   // 모달 관련
   const {isOpen: isNameModalOpen, openModal: openNameModal, closeModal: closeNameModal} = useModal();
@@ -50,7 +49,16 @@ const ProfileModifyCopy = () => {
   // 수정 버튼
   const goToModified = () => {
     // 회원 정보 수정
-    // axios.patch
+    setMyInfo(
+      {
+        name: inputName,
+        nickname: inputNickname,
+        role: inputRole,
+        birth: inputBirthDay,
+        birthType: inputBirthType,
+        phoneNumber: inputPhoneNumber,
+      }
+    )
     navigate(`/profile/${name}`)
   }
 
@@ -91,6 +99,7 @@ const ProfileModifyCopy = () => {
     }
   }
 
+  // 모달 핸들러
   const handleNameModal = (name: string): void => {
     setInputName(name);
     closeNameModal()
@@ -147,7 +156,6 @@ const ProfileModifyCopy = () => {
         <div className="profile__nickname">
           <input
             className="profile__nickname__part--01"
-            ref={inputNicknameRef}
             type="text"
             placeholder="닉네임"
             value={inputNickname}
@@ -215,7 +223,14 @@ const ProfileModifyCopy = () => {
             </div>
             <div className="phone__body"
                  onClick={() => openPhoneModal()}>
-              <div className="phone__body__part--01"> {inputPhoneNumber} </div>
+              {inputPhoneNumber === null || inputPhoneNumber=== "" ?
+                <button className="phone__plus__btn">추가하기</button>
+                :
+                <div className="phone__body__part--01"> {inputPhoneNumber}
+                </div>
+
+              }
+
             </div>
           </div>
         </div>
@@ -282,6 +297,7 @@ const NameModal = ({handleNameModal, name}: { handleNameModal: (name: string) =>
              onChange={handleChange}
              placeholder="실명"
              autoFocus
+             onBlur={()=>handleNameModal(inputValue)}
              onClick={(event) => event.stopPropagation()}/>
 
     </div>
@@ -294,18 +310,17 @@ const NameModal = ({handleNameModal, name}: { handleNameModal: (name: string) =>
 const RoleModal = ({handleRoleModal, role}: { handleRoleModal: (role: string) => void, role: string }) => {
   const roles = ["엄마", "아빠", "아들", "딸"];
   const [inputRole, setInputRole] = useState<string>(role);
-  const [isClickedEtc, setIsClickedEtc] = useState<boolean>(roles.includes(inputRole) ? false : true);
+  const [isClickedEtc, setIsClickedEtc] = useState<boolean>(!roles.includes(inputRole) );
 
 // 입력값이 변경될 때 호출되는 함수
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputRole(event.target.value);
   };
 
-
   return (
     <div className="modal__bg" onClick={() => {
-      if (inputRole!==null && inputRole.trim().length!==0)
-      handleRoleModal(inputRole)
+      if (inputRole !== null && inputRole.trim().length !== 0)
+        handleRoleModal(inputRole)
     }}>
       <div className="modal__content">
         {/*역할*/}
@@ -409,7 +424,8 @@ const BirthModal = ({handleBirthModal, birth, birthType}: {
   const [inputBirthType, setInputBirthType] = useState(birthType)
   const dateFieldCustom = {
     "& .MuiOutlinedInput-root": {
-      color: "#000",
+      color: "#fff",
+      backgroundColor: "#7f7f7f",
       "&.Mui-focused": {
         "& .MuiOutlinedInput-notchedOutline": {
           borderColor: "#FFBE5C",
@@ -467,11 +483,16 @@ const BirthModal = ({handleBirthModal, birth, birthType}: {
               </DemoContainer>
             </LocalizationProvider>
           </div>
+          
+          {/*음력 양력*/}
           <div className="birthday-choice">
-            <FormControlLabel control={
-              <Checkbox checked={inputBirthType === "SOLAR" ? false : true}
+            <FormControlLabel
+            style={{color:"#fff", fontWeight: "bold"}}
+              control={
+              <Checkbox checked={inputBirthType !== "SOLAR"}
                         onChange={() => setInputBirthType(inputBirthType === "SOLAR" ? "LUNAR" : "SOLAR")}
                         sx={{
+                          color: "#fff",
                           '&.Mui-checked': {
                             color: "#FFBE5C",
                           },
@@ -518,6 +539,9 @@ const PhoneModal = ({handlePhoneModal, phone}: { handlePhoneModal: (phone: strin
              onChange={handleChange}
              placeholder="전화번호"
              autoFocus
+             onBlur ={() => {
+               handlePhoneModal(inputPhone)
+             }}
              onClick={(event) => event.stopPropagation()}/>
 
     </div>
