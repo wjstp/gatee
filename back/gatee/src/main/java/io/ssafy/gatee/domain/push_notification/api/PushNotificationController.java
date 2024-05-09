@@ -4,6 +4,7 @@ import com.google.firebase.messaging.FirebaseMessagingException;
 import io.ssafy.gatee.domain.push_notification.application.PushNotificationService;
 import io.ssafy.gatee.domain.push_notification.dto.request.NaggingReq;
 import io.ssafy.gatee.domain.push_notification.dto.request.TokenReq;
+import io.ssafy.gatee.domain.push_notification.dto.response.NaggingRes;
 import io.ssafy.gatee.global.security.user.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -29,7 +30,7 @@ public class PushNotificationController {
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/nagging")
-    public void sendNagging(@RequestBody NaggingReq naggingReq, @AuthenticationPrincipal CustomUserDetails customUserDetails) throws FirebaseMessagingException {
-        notificationService.sendNagging(naggingReq, customUserDetails.getMemberId());
+    public NaggingRes sendNagging(@RequestBody NaggingReq naggingReq, @AuthenticationPrincipal CustomUserDetails customUserDetails) throws FirebaseMessagingException {
+        return notificationService.sendNagging(naggingReq, customUserDetails.getMemberId());
     }
 }

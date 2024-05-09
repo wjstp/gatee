@@ -94,7 +94,7 @@ const ProfileModify = () => {
       setNameErrorMessage("");
     }
   }
-  
+
   // // 역할 핸들러
   // const handleRoleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
   //   const selectedRole = e.target.value;
@@ -145,7 +145,7 @@ const ProfileModify = () => {
     <div className="profile-modify">
       {/*프로필 섹션*/}
       <div className="profile-modify__profile">
-        
+
         {/*프로필 이미지*/}
         <div className="profile__img-box">
           <img
@@ -209,7 +209,7 @@ const ProfileModify = () => {
             </span>
           </button>
         </div>
-        
+
         {/*정보 박스*/}
         <div className="profile__info-box">
           <div className="info-box__name">
@@ -357,4 +357,14 @@ const ProfileModify = () => {
   );
 }
 
+
+const RoleModal = () => {
+
+  return (
+    <div>
+
+    </div>
+  )
+
+}
 export default ProfileModify;

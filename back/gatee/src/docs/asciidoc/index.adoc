@@ -14,44 +14,56 @@
 
 - Request
 
-include::{snippets}/회원 정보 등록/http-request.adoc[]
+include::{snippets}/member-controller-test/save-info/http-request.adoc[]
 
 - Response
 
-include::{snippets}/회원 정보 등록/http-response.adoc[]
+include::{snippets}/member-controller-test/save-info/http-response.adoc[]
+
+
+== 회원 FCM 토큰 저장
+
+- Request
+
+include::{snippets}/member-controller-test/save-notification-token/http-request.adoc[]
+
+- Response
+
+include::{snippets}/member-controller-test/save-notification-token/http-response.adoc[]
 
 
 == 회원 정보 수정
 
 - Request
 
-include::{snippets}/회원 정보 수정/http-request.adoc[]
+include::{snippets}/member-controller-test/edit-info/http-request.adoc[]
 
 - Response
 
-include::{snippets}/회원 정보 수정/http-response.adoc[]
+include::{snippets}/member-controller-test/edit-info/http-response.adoc[]
 
 
 == 기분 상태 수정
 
 - Request
 
-include::{snippets}/기분 상태 수정/http-request.adoc[]
+include::{snippets}/member-controller-test/edit-mood/http-request.adoc[]
 
 - Response
 
-include::{snippets}/기분 상태 수정/http-response.adoc[]
+include::{snippets}/member-controller-test/edit-mood/http-response.adoc[]
 
 
 == 회원 정보 조회
 
 - Request
 
-include::{snippets}/회원 정보 조회/http-request.adoc[]
+include::{snippets}/member-controller-test/read-info/http-request.adoc[]
 
 - Response
 
-include::{snippets}/회원 정보 조회/http-response.adoc[]
+include::{snippets}/member-controller-test/read-info/http-response.adoc[]
+include::{snippets}/member-controller-test/read-info/response-fields.adoc[]
 
 
 ---
@@ -64,55 +76,61 @@ include::{snippets}/회원 정보 조회/http-response.adoc[]
 
 - Request
 
-include::{snippets}/가족 생성/http-request.adoc[]
+include::{snippets}/family-controller-test/save-family/http-request.adoc[]
 
 - Response
 
-include::{snippets}/가족 생성/http-response.adoc[]
+include::{snippets}/family-controller-test/save-family/http-response.adoc[]
 
 
 == 가족 정보 조회
 
 - Request
 
-include::{snippets}/가족 정보 조회/http-request.adoc[]
+include::{snippets}/family-controller-test/read-family/http-request.adoc[]
+include::{snippets}/family-controller-test/read-family/path-parameters.adoc[]
+
 
 - Response
 
-include::{snippets}/가족 정보 조회/http-response.adoc[]
+include::{snippets}/family-controller-test/read-family/response-body.adoc[]
+include::{snippets}/family-controller-test/read-family/response-fields.adoc[]
+
 
 
 == 가족 코드 생성
 
 - Request
 
-include::{snippets}/가족 코드 생성/http-request.adoc[]
+include::{snippets}/family-controller-test/create-family-code/http-request.adoc[]
+include::{snippets}/family-controller-test/create-family-code/path-parameters.adoc[]
 
 - Response
 
-include::{snippets}/가족 코드 생성/http-response.adoc[]
+include::{snippets}/family-controller-test/create-family-code/http-response.adoc[]
 
 
 == 가족 합류
 
 - Request
 
-include::{snippets}/가족 합류/http-request.adoc[]
+include::{snippets}/family-controller-test/join-family/http-request.adoc[]
 
 - Response
 
-include::{snippets}/가족 합류/http-response.adoc[]
+include::{snippets}/family-controller-test/join-family/http-response.adoc[]
 
 
 == 가족 이름 수정
 
 - Request
 
-include::{snippets}/가족 이름 수정/http-request.adoc[]
+include::{snippets}/family-controller-test/edit-family-name/http-request.adoc[]
+include::{snippets}/family-controller-test/edit-family-name/path-parameters.adoc[]
 
 - Response
 
-include::{snippets}/가족 이름 수정/http-response.adoc[]
+include::{snippets}/family-controller-test/edit-family-name/http-response.adoc[]
 
 
 ---
@@ -257,6 +275,22 @@ include::{snippets}/사진 상호작용 삭제/http-request.adoc[]
 - Response
 
 include::{snippets}/사진 상호작용 삭제/http-response.adoc[]
+
+
+---
+---
+
+= Push Notification
+
+== 한마디 보내기
+
+- Request
+
+include::{snippets}/한마디 보내기 및 FCM알림 전송/http-request.adoc[]
+
+- Response
+
+include::{snippets}/한마디 보내기 및 FCM알림 전송/http-response.adoc[]
 
 
 ---

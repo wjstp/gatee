@@ -2,6 +2,7 @@ package io.ssafy.gatee.domain.member_family.dao;
 
 import io.ssafy.gatee.domain.family.entity.Family;
 import io.ssafy.gatee.domain.member.entity.Member;
+import io.ssafy.gatee.domain.member_family.dto.response.MemberFamilyInfoRes;
 import io.ssafy.gatee.domain.member_family.entity.MemberFamily;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,9 +16,23 @@ import java.util.UUID;
 @Repository
 public interface MemberFamilyRepository extends JpaRepository<MemberFamily, Long> {
 
-    Optional<MemberFamily> findByMemberAndFamily_Id(Member member, Long familyId);
+    Optional<MemberFamily> findByMemberAndFamilyId(Member member, UUID familyId);
     Optional<MemberFamily> findByMemberAndFamily(Member member, Family family);
-    Optional<List<MemberFamily>> findAllById(Long familyId);
+    Optional<List<MemberFamily>> findAllByFamily_Id(UUID familyId);
+    @Query(
+            """
+                select new io.ssafy.gatee.domain.member_family.dto.response.MemberFamilyInfoRes(
+                        m.id, m.name, m.email, m.nickname,
+                        m.birth, m.birthType,
+                        mf.isLeader, m.mood,
+                        mf.role, m.file.url
+                       )
+                from MemberFamily mf
+                join Member m on mf.member.id = m.id
+                where mf.family.id = :familyId
+                """
+    )
+    List<MemberFamilyInfoRes> findMemberFamilyByFamilyId(UUID familyId);
     Optional<MemberFamily> findByMember(Member member);
     @Query("SELECT mf FROM MemberFamily mf WHERE mf.family = (SELECT m.family FROM MemberFamily m WHERE m.member = :member)")
     Optional<List<MemberFamily>> findAllWithFamilyByMember(Member member);

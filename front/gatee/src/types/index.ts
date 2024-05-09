@@ -13,6 +13,36 @@ export interface Member {
   phoneNumber: string | null;
 }
 
+// 가족 api 정보
+export interface MemberApiReq {
+  birth: string
+  birthType: string;
+  email: string;
+  memberId: string;
+  mood: string;
+  name: string;
+  nickname: string;
+  role: string;
+  phoneNumber: string|null;
+  fileUrl:string;
+}
+
+// 가족 api 정보
+export interface MyMemberApiReq {
+  birth: string
+  birthType: string;
+  email: string;
+  memberId: string;
+  mood: string;
+  name: string;
+  nickname: string;
+  role: string;
+  familyId: string;
+  phoneNumber: string|null;
+  fileUrl:string;
+}
+
+
 export interface MemberApiReq {
   name: string;
   nickname: string;
@@ -96,14 +126,22 @@ export interface HolidayStore {
   setHolidays: (newSchedules: Holiday[]) => void;
 }
 
-// kakao
+// kakao를 전역에서 실행하기 위함
 declare global {
     interface Window {
         Kakao: any;
     }
 }
 
-//chat
+// kakao
+export interface KaKaoLoginReq {
+  grant_type: string;
+  client_id: string | undefined;
+  redirect_uri: string | undefined;
+  code: string | null;
+}
+
+// chat
 export type ChatContent =  ChatMessage | ChatFile | ChatAppointment | ChatEmoji | ChatAlarm;
 
 export interface ChatMessage {  // MESSAGE
@@ -176,4 +214,11 @@ export interface Emoji {
 export interface EmojiItem {
   id: string;
   image: string;
+}
+
+// 잔소리 보내기 api request
+export interface NaggingApiReq{
+  // 멤버 아이디
+  "receiverId": string,
+  "message": string
 }

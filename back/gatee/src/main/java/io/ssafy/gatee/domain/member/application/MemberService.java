@@ -25,7 +25,7 @@ public interface MemberService {
 
     void editMood(MemberEditMoodReq memberEditMoodReq, UUID memberId);
 
-    MemberInfoRes readMemberInfo(Long familyId, UUID memberId);
+    MemberInfoRes readMemberInfo(UUID memberId);
 
     void modifyMemberToken(Member member, HttpServletResponse response);
 }

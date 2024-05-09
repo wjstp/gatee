@@ -41,6 +41,7 @@ import org.joda.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.rmi.server.UID;
 import java.util.List;
 import java.util.UUID;
 
@@ -78,7 +79,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     // 전체 일정 조회
     @Override
-    public ScheduleListRes readSchedule(Long familyId) throws FamilyNotFoundException {
+    public ScheduleListRes readSchedule(UUID familyId) throws FamilyNotFoundException {
         Family family = familyRepository.getReferenceById(familyId);
 
         return ScheduleListRes.builder()
@@ -89,7 +90,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     // 일정 상세 조회
     @Override
-    public ScheduleInfoRes readScheduleDetail(Long scheduleId, Long familyId) throws ScheduleNotFoundException, FamilyScheduleNotFoundException, MemberFamilyScheduleNotFoundException {
+    public ScheduleInfoRes readScheduleDetail(Long scheduleId, UUID familyId) throws ScheduleNotFoundException, FamilyScheduleNotFoundException, MemberFamilyScheduleNotFoundException {
         Schedule schedule = scheduleRepository.getReferenceById(scheduleId);
 
         Family family = familyRepository.getReferenceById(familyId);
@@ -122,7 +123,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         Member member = memberRepository.getReferenceById(memberId);
 
-        Family family = familyRepository.getReferenceById(Long.valueOf(scheduleSaveReq.familyId()));
+        Family family = familyRepository.getReferenceById(UUID.fromString(scheduleSaveReq.familyId()));
 
         FamilySchedule familySchedule = FamilySchedule.builder()
                 .schedule(schedule)
@@ -158,7 +159,7 @@ public class ScheduleServiceImpl implements ScheduleService {
             throws DoNotHavePermissionException, FamilyScheduleNotFoundException, MemberFamilyScheduleNotFoundException, FamilyNotFoundException {
         Member member = memberRepository.getReferenceById(memberId);
 
-        Family family = familyRepository.getReferenceById(Long.valueOf(scheduleEditReq.familyId()));
+        Family family = familyRepository.getReferenceById(UUID.fromString(scheduleEditReq.familyId()));
 
         Schedule schedule = scheduleRepository.getReferenceById(scheduleId);
 
@@ -183,7 +184,7 @@ public class ScheduleServiceImpl implements ScheduleService {
             throws FamilyScheduleNotFoundException {
         Member member = memberRepository.getReferenceById(memberId);
 
-        Family family = familyRepository.getReferenceById(Long.valueOf(scheduleParticipateReq.familyId()));
+        Family family = familyRepository.getReferenceById(UUID.fromString(scheduleParticipateReq.familyId()));
 
         Schedule schedule = scheduleRepository.getReferenceById(scheduleId);
 

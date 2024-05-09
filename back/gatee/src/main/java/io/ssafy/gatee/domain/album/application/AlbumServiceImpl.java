@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 import static io.ssafy.gatee.global.exception.message.ExceptionMessage.ALBUM_NOT_FOUND;
 
@@ -42,7 +43,7 @@ public class AlbumServiceImpl implements AlbumService {
 
 //    앨범 목록 조회
     @Override
-    public List<AlbumListRes> readAlbumList(Long familyId) throws AlbumNotFoundException {
+    public List<AlbumListRes> readAlbumList(UUID familyId) throws AlbumNotFoundException {
         Family family = familyRepository.getReferenceById(familyId);
 
         List<Album> albumList = albumRepository.findAllByFamily(family)

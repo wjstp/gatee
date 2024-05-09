@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/albums")
@@ -27,7 +28,7 @@ public class AlbumController {
     @ResponseStatus(HttpStatus.OK)
     public List<AlbumListRes> readAlbumList(
             @Valid
-            @RequestParam Long familyId
+            @RequestParam UUID familyId
     ) throws AlbumNotFoundException {
         return albumService.readAlbumList(familyId);
     }

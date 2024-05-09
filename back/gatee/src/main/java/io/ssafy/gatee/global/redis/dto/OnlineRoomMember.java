@@ -18,7 +18,7 @@ import java.util.UUID;
 public class OnlineRoomMember {
 
     @Id
-    private Long id;
+    private UUID id;
 
     @Setter
     private Set<UUID> onlineUsers;

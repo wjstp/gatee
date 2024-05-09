@@ -22,6 +22,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Currency;
+import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -36,9 +37,9 @@ public class ScheduleController {
     @ResponseStatus(HttpStatus.OK)
     public ScheduleListRes readSchedule(
             @Valid
-            @RequestParam Long familyId
+            @RequestParam String familyId
     ) throws FamilyNotFoundException {
-        return scheduleService.readSchedule(familyId);
+        return scheduleService.readSchedule(UUID.fromString(familyId));
     }
 
     // 일정 상세 조회
@@ -46,7 +47,7 @@ public class ScheduleController {
     @ResponseStatus(HttpStatus.OK)
     public ScheduleInfoRes readScheduleDetail(
             @PathVariable("scheduleId") Long scheduleId,
-            @RequestParam Long familyId
+            @RequestParam UUID familyId
     ) throws ScheduleNotFoundException, FamilyScheduleNotFoundException, MemberFamilyScheduleNotFoundException {
         return scheduleService.readScheduleDetail(scheduleId, familyId);
     }

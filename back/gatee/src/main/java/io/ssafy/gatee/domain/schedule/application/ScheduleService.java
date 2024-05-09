@@ -16,8 +16,8 @@ import io.ssafy.gatee.global.exception.error.not_found.ScheduleNotFoundException
 import java.util.UUID;
 
 public interface ScheduleService {
-    ScheduleListRes readSchedule(Long familyId) throws FamilyNotFoundException;
-    ScheduleInfoRes readScheduleDetail(Long scheduleId, Long familyId) throws ScheduleNotFoundException, FamilyScheduleNotFoundException, MemberFamilyScheduleNotFoundException;
+    ScheduleListRes readSchedule(UUID familyId) throws FamilyNotFoundException;
+    ScheduleInfoRes readScheduleDetail(Long scheduleId, UUID familyId) throws ScheduleNotFoundException, FamilyScheduleNotFoundException, MemberFamilyScheduleNotFoundException;
     void saveSchedule(ScheduleSaveReq scheduleSaveReq, UUID memberId) throws FamilyNotFoundException, FirebaseMessagingException;
     void editSchedule(ScheduleEditReq scheduleEditReq, UUID memberId, Long scheduleId) throws ScheduleNotFoundException, DoNotHavePermissionException, FamilyScheduleNotFoundException, MemberFamilyScheduleNotFoundException, FamilyNotFoundException;
     void participateSchedule(ScheduleParticipateReq scheduleParticipateReq, UUID memberId, Long scheduleId) throws FamilyScheduleNotFoundException, MemberFamilyScheduleNotFoundException;
