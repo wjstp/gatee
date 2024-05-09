@@ -22,15 +22,17 @@
     }
 
     h1 {
-      font-size:2rem;
+      font-size: 2rem;
     }
 
     .mb {
       margin-bottom: 10px;
     }
+
     .mb-large {
       margin-bottom: 30px;
     }
+
     .explain {
       @include flex-col;
       @include flex_center;
@@ -39,12 +41,15 @@
       padding-top: 3rem;
       //border: 3px solid red;
     }
+
     .pb {
       padding-bottom: 3rem;
     }
-    .emptyBox{
+
+    .emptyBox {
       height: 100px;
     }
+
     .textFlex {
       display: flex;
       align-items: center;
@@ -54,6 +59,7 @@
     img {
       object-fit: cover;
     }
+
     ////카카오 버튼
     //.kakaoLoginButton {
     //  height: 80px;
@@ -106,7 +112,7 @@
 // 표시줄
 .onboarding__dotContainer {
   display: flex;
-  gap:10px;
+  gap: 10px;
   justify-content: center;
   width: 100vw;
   margin-top: 10dvh;
@@ -119,6 +125,7 @@
     border-radius: 50%;
     background-color: $gray100;
   }
+
   .activeDot {
     width: 0.7rem;
     height: 0.7rem;

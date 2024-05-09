@@ -1,6 +1,4 @@
 import {create} from "zustand";
-import {persist} from "zustand/middleware";
-import upLoadImage from "@assets/images/profile/family.jpg"
 
 type FamilyStore = {
     familyId: string;
@@ -13,8 +11,7 @@ type FamilyStore = {
     setFamilyCode: (newCode: string) => void;
 }
 
-export const useFamilyStore = create<FamilyStore>()(
-    persist(
+export const useFamilyStore = create<FamilyStore>(
     (set) => ({
         familyId: "",
         setFamilyId: (newId: string) => set({ familyId: newId }),
@@ -24,9 +21,5 @@ export const useFamilyStore = create<FamilyStore>()(
         setFamilyImage: (newImage: File | null) => set({familyImage: newImage}),
         familyCode: "",
         setFamilyCode: (newCode: string) => set({ familyCode: newCode }),
-    }),
-    {
-        name: "family",
-    }
-)
+    })
 );

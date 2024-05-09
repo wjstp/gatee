@@ -1,13 +1,19 @@
 import React from 'react';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import calculateWeekday from "@utils/calculateWeekday";
+import { ChatDateLine } from "@type/index";
 
+interface ChatDateProps {
+  chat: ChatDateLine;
+}
 
-const ChatDate = ({ date }: { date: string }) => {
+const ChatDate = (props: ChatDateProps) => {
+  const { chat } = props;
+  const date: Dayjs = dayjs(chat.time);
   return (
     <div className="chat__date">
       <div className="chat__date__main">
-        { dayjs(date).format("YYYY년 MM월 DD일") } ({calculateWeekday(dayjs(date))})
+        { date.format("YYYY년 MM월 DD일") } ({calculateWeekday(date)})
       </div>
     </div>
   )

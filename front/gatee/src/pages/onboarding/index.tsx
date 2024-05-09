@@ -24,7 +24,7 @@ const OnboardingIndex = () => {
   // const [activeSlide2, setActiveSlide2] = useState(0);
   const navigate = useNavigate();
 
-  const { accessToken } = useMemberStore();
+  const accessToken = localStorage.getItem("accessToken");
 
   //토큰이 있는 경우
   useEffect(() => {
@@ -87,7 +87,6 @@ const OnboardingIndex = () => {
   const toggleDrawer =
     (anchor: Anchor, open: boolean) =>
       (event: React.KeyboardEvent | React.MouseEvent) => {
-        console.log(anchor)
         if (open === true){
           setShowModal(true)
         } else {

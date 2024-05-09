@@ -16,11 +16,13 @@ public interface FamilyService {
 
     FamilyCodeRes createFamilyCode(String familyId);
 
+    Long findDefaultFamilyImageId(String url);
+
     UUID getFamilyIdByMemberId(UUID memberId);
 
     void joinFamily(String familyCode, UUID memberId) throws ExpiredCodeException;
 
-    FamilyInfoRes readFamily(Long familyId) throws FamilyNotFoundException;
+    FamilyInfoRes readFamily(UUID familyId) throws FamilyNotFoundException;
 
-    void editFamilyName(Long familyId, FamilyNameReq familyNameReq) throws FamilyNotFoundException;
+    void editFamilyName(UUID familyId, FamilyNameReq familyNameReq) throws FamilyNotFoundException;
 }

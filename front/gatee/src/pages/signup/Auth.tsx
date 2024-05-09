@@ -42,7 +42,7 @@ const SignupAuth = () => {
               // 우리 토큰 로컬 스토리지 저장
               const access_token = res.headers.authorization.split(' ')[1];
               localStorage.setItem("accessToken", access_token);
-              
+
               // 회원가입 페이지로 이동
               navigate('/signup');
             },
@@ -66,12 +66,12 @@ const SignupAuth = () => {
 
   return (
     <div className="signup-auth">
-      
+
       {/*문구 표시*/}
       <span className="signup-auth__title">
-        로딩중
+        로딩중...
       </span>
-      
+
     </div>
   );
 };
