@@ -31,6 +31,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 @Log4j2
@@ -78,10 +79,6 @@ public class FeatureNotificationBatchConfig {
             if (Objects.isNull(member.getNotificationToken())) {
                 return null;
             }
-            if (!memberNotificationRepository.findByMember(member).isFeatureNotification()) {
-                // todo: 무조건 수정!!!
-                return null;
-            }
             return member;
         };
     }
@@ -90,7 +87,7 @@ public class FeatureNotificationBatchConfig {
         // 가족 특징들 랜덤으로
         // 나랑 같은 가족
         return member -> {
-            List<UUID> familyMemberIds = memberFamilyRepository.findMyFamily(member.getId());
+            List<UUID> familyMemberIds = memberFamilyRepository.findMyFamily(member);
             if (familyMemberIds.isEmpty()) {
                 return null;
             }
@@ -100,7 +97,8 @@ public class FeatureNotificationBatchConfig {
                     .question(randomMemberFeature.getFeature().getQuestion())
                     .answer(randomMemberFeature.getAnswer());
             pushNotificationService.sendPushOneToOne(PushNotificationFCMReq.builder()
-                    .title(Type.FEATURE.name())
+                    .title(Type.FEATURE.korean)
+                    .receiverId(member)
                     .content(randomMemberFeature.getFeature().getQuestion() + "은 " + randomMemberFeature.getAnswer() + "이랍니다?")
                     .dataFCMReq(DataFCMReq.builder().build())
                     .build());

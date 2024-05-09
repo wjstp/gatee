@@ -1,7 +1,7 @@
 package io.ssafy.gatee.domain.push_notification.entity;
 
 public enum Type {
-    CHATTING("채팅"), NAGGING("한마디 하기"),
+    CHATTING("채팅"), NAGGING("한마디 하기"), FEATURE("가족에 대해 알아보기"),
     SCHEDULE("일정 등록"), APPOINTMENT("약속 잡기"), ALBUM("앨범 등록");
 
     public String korean;
