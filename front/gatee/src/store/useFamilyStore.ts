@@ -1,17 +1,20 @@
-import {create} from "zustand";
-import {MemberApiReq} from "@type/index";
+import { create } from "zustand";
+import basicFamily from "@assets/images/profile/family.jpg"
+import { MemberApiReq } from "@type/index";
 
 type FamilyStore = {
   familyId: string;
   setFamilyId: (newId: string) => void;
   familyName: string;
   setFamilyName: (newName: string) => void;
-  familyImage: string | ArrayBuffer | null;
-  setFamilyImage: (newImage: string | ArrayBuffer | null) => void;
-  familyScore: number;
-  setFamilyScore: (newScore: number) => void;
+  familyImage: File | null;
+  setFamilyImage: (newImage: File | null) => void;
+  stringImage: string;
+  setStringImage: (newStringImage: string) => void;
   familyCode: string;
   setFamilyCode: (newCode: string) => void;
+  familyScore: number;
+  setFamilyScore: (newScore: number) => void;
   familyInfo: MemberApiReq[]|[];
   setFamilyInfo: (newInfo: MemberApiReq[]) => void;
 }
@@ -23,7 +26,9 @@ export const useFamilyStore = create<FamilyStore>(
     familyName: "예빈이네",
     setFamilyName: (newName: string) => set({familyName: newName}),
     familyImage: null,
-    setFamilyImage: (newImage: string | ArrayBuffer | null) => set({familyImage: newImage}),
+    setFamilyImage: (newImage: File | null) => set({familyImage: newImage}),
+    stringImage: basicFamily,
+    setStringImage: (newStringImage: string) => set({stringImage: newStringImage}),
     familyScore: 0,
     setFamilyScore: (newScore: number) => set({familyScore: newScore}),
     familyCode: "",
