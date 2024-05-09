@@ -88,7 +88,7 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public void updateRead(UUID memberId, UUID familyId) {
         DatabaseReference reference = databaseReference.child("chat").child(familyId.toString()).child("message");
-
+        log.info("디비" + reference.toString());
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
