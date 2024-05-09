@@ -112,7 +112,10 @@ public class PhotoServiceImpl implements PhotoService {
     @Override
     @Transactional
     public Long savePhoto(PhotoSaveReq photoSaveReq, UUID memberId) throws FirebaseMessagingException {
-        MemberFamily memberFamily = memberFamilyRepository.getReferenceById(photoSaveReq.memberFamilyId());
+        Member member = memberRepository.getReferenceById(memberId);
+
+        MemberFamily memberFamily = memberFamilyRepository.findByMember(member)
+                .orElseThrow(() -> new MemberFamilyNotFoundException(MEMBER_FAMILY_NOT_FOUND));
 
         File file = fileRepository.getReferenceById(photoSaveReq.fileId());
 
