@@ -7,6 +7,8 @@ import io.ssafy.gatee.domain.family.dto.response.FamilyCodeRes;
 import io.ssafy.gatee.domain.family.dto.response.FamilyInfoRes;
 import io.ssafy.gatee.domain.family.dto.response.FamilySaveRes;
 import io.ssafy.gatee.domain.family.entity.Family;
+import io.ssafy.gatee.domain.file.dao.FileRepository;
+import io.ssafy.gatee.domain.file.entity.File;
 import io.ssafy.gatee.domain.member.dao.MemberRepository;
 import io.ssafy.gatee.domain.member.entity.Member;
 import io.ssafy.gatee.domain.member_family.dao.MemberFamilyRepository;
@@ -14,7 +16,9 @@ import io.ssafy.gatee.domain.member_family.dto.response.MemberFamilyInfoRes;
 import io.ssafy.gatee.domain.member_family.entity.MemberFamily;
 import io.ssafy.gatee.global.exception.error.bad_request.ExpiredCodeException;
 import io.ssafy.gatee.global.exception.error.not_found.FamilyNotFoundException;
+import io.ssafy.gatee.global.exception.error.not_found.FileNotFoundException;
 import io.ssafy.gatee.global.exception.error.not_found.MemberFamilyNotFoundException;
+import io.ssafy.gatee.global.exception.message.ExceptionMessage;
 import io.ssafy.gatee.global.redis.dao.OnlineRoomMemberRepository;
 import io.ssafy.gatee.global.redis.dto.OnlineRoomMember;
 import jodd.util.StringUtil;
@@ -46,16 +50,30 @@ public class FamilyServiceImpl implements FamilyService {
 
     private final OnlineRoomMemberRepository onlineRoomMemberRepository;
 
+    private final FileRepository fileRepository;
+
+    private final String DEFAULT_FAMILY_IMAGE_URL = "https://spring-learning.s3.ap-southeast-2.amazonaws.com/default/family.jpg";
+
     // 가족 생성
     @Override
     @Transactional
     public FamilySaveRes saveFamily(FamilySaveReq familySaveReq, UUID memberId) {
+        Long fileId = familySaveReq.fileId();
+
+        if (Objects.nonNull(familySaveReq.fileId())){
+            fileId = findDefaultFamilyImageId(DEFAULT_FAMILY_IMAGE_URL);
+        }
+
+        File familyImgFile =fileRepository.findById(fileId)
+                .orElseThrow(()->new FileNotFoundException(FIlE_NOT_FOUND));
+
         Member member = Member.builder()
                 .id(memberId)
                 .build();
 
         Family family = familyRepository.save(Family.builder()
                 .name(familySaveReq.name())
+                .file(familyImgFile)
                 .score(0)
                 .build());
 
@@ -96,6 +114,12 @@ public class FamilyServiceImpl implements FamilyService {
         return FamilyCodeRes.builder()
                 .familyCode(randomCode)
                 .build();
+    }
+
+    @Override
+    public Long findDefaultFamilyImageId(String url) {
+        return fileRepository.findByUrl(url).orElseThrow(()->
+                new FileNotFoundException(FIlE_NOT_FOUND)).getId();
     }
 
     @Override
