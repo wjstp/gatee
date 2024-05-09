@@ -103,7 +103,6 @@ class PhotoControllerTest {
     void savePhoto() throws Exception {
         PhotoSaveReq photoSaveReq = PhotoSaveReq.builder()
                 .fileId(1L)
-                .memberFamilyId(1L)
                 .build();
 
         String photoSaveReqJson = objectMapper.writeValueAsString(photoSaveReq);
