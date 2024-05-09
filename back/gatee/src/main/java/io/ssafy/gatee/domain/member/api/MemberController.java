@@ -34,6 +34,8 @@ public class MemberController {
     @ResponseStatus(HttpStatus.OK)
     public void saveInfo(HttpServletResponse response,
                          @Valid @RequestBody MemberSaveReq memberSaveReq, @AuthenticationPrincipal CustomUserDetails customUserDetails) throws ParseException {
+        log.info(customUserDetails.getUsername());
+        log.info(customUserDetails.getPrivilege());
         memberService.saveMemberInfo(memberSaveReq, customUserDetails.getMemberId(), response);
     }
 

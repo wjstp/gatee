@@ -7,10 +7,13 @@ import io.ssafy.gatee.domain.chatgpt.service.GptService;
 import io.ssafy.gatee.domain.member.dao.MemberRepository;
 import io.ssafy.gatee.domain.member.entity.Member;
 import io.ssafy.gatee.domain.member_notification.dao.MemberNotificationRepository;
+import io.ssafy.gatee.domain.member_notification.entity.MemberNotification;
 import io.ssafy.gatee.domain.push_notification.dto.request.DataFCMReq;
 import io.ssafy.gatee.domain.push_notification.dto.request.NaggingReq;
+import io.ssafy.gatee.domain.push_notification.dto.request.NotificationAgreementReq;
 import io.ssafy.gatee.domain.push_notification.dto.request.PushNotificationFCMReq;
 import io.ssafy.gatee.domain.push_notification.dto.response.NaggingRes;
+import io.ssafy.gatee.domain.push_notification.dto.response.NotificationAgreementRes;
 import io.ssafy.gatee.domain.push_notification.dto.response.PushNotificationRes;
 import io.ssafy.gatee.domain.push_notification.entity.PushNotification;
 import io.ssafy.gatee.domain.push_notification.entity.Type;
@@ -34,8 +37,21 @@ public class PushNotificationServiceImpl implements PushNotificationService {
     private final MemberNotificationRepository memberNotificationRepository;
 
     @Override
-    public List<PushNotificationRes> readNotifications(UUID memberId) {
-        return null;
+    public NotificationAgreementRes readNotifications(UUID memberId) {
+        Member member = memberRepository.getReferenceById(memberId);
+        return NotificationAgreementRes.toDto(memberNotificationRepository.findByMember(member)
+                .orElse(MemberNotification.builder()
+                        .albumNotification(false)
+                        .naggingNotification(false)
+                        .scheduleNotification(false)
+                        .build()));
+    }
+
+    @Override
+    public void modifyNotificationAgreements(UUID memberId, NotificationAgreementReq agreementReq) {
+        Member member = memberRepository.getReferenceById(memberId);
+        MemberNotification memberNotification = memberNotificationRepository.findByMember(member).orElseThrow();    // todo: 예외 추가
+        
     }
 
     @Override
@@ -79,12 +95,13 @@ public class PushNotificationServiceImpl implements PushNotificationService {
     @Override
     public boolean checkAgreement(Type type, UUID memberId) {
         Member proxyMember = memberRepository.getReferenceById(memberId);
-        return switch (type) {
-            case NAGGING -> memberNotificationRepository.findByMember(proxyMember).isNaggingNotification();
-            case SCHEDULE -> memberNotificationRepository.findByMember(proxyMember).isScheduleNotification();
-            case ALBUM -> memberNotificationRepository.findByMember(proxyMember).isAlbumNotification();
-            default -> false;
-        };
+        return memberNotificationRepository.findByMember(proxyMember)
+                .map(memberNotification -> switch (type) {
+                    case NAGGING -> memberNotification.isNaggingNotification();
+                    case SCHEDULE -> memberNotification.isScheduleNotification();
+                    case ALBUM -> memberNotification.isAlbumNotification();
+                    default -> false;
+        }).orElse(false);
     }
 
     @Override
@@ -106,7 +123,7 @@ public class PushNotificationServiceImpl implements PushNotificationService {
         PushNotificationFCMReq pushNotification = PushNotificationFCMReq.builder()
                 .receiverId(Collections.singletonList(naggingReq.receiverId()))
                 .senderId(memberId)
-                .title(Type.NAGGING.toString())
+                .title(Type.NAGGING.korean)
                 .content(result.answer())
                 .dataFCMReq(DataFCMReq.builder()
                         .type(Type.NAGGING)
@@ -214,4 +231,6 @@ public class PushNotificationServiceImpl implements PushNotificationService {
         }
 
     }
+
+
 }
