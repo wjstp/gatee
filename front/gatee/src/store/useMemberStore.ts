@@ -1,11 +1,7 @@
 import {create} from "zustand";
-import {MemberApiReq, MyMemberApiReq} from "@type/index";
+import {MyMemberApiReq} from "@type/index";
 
-// 나중에 type 폴더로 빼야될듯
-type BirthInfo = {
-  birthDay: string | null;
-  birthType: string;
-};
+
 
 type MemberStore = {
   memberId: string | null;

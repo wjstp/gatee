@@ -9,7 +9,7 @@ import dayjs, {Dayjs} from 'dayjs';
 import {DateField} from '@mui/x-date-pickers/DateField';
 import {DemoContainer} from '@mui/x-date-pickers/internals/demo';
 import Checkbox from "@mui/material/Checkbox";
-import {buttonClasses, FormControlLabel} from "@mui/material";
+import {FormControlLabel} from "@mui/material";
 import {useMemberStore} from "@store/useMemberStore";
 
 const ProfileModifyCopy = () => {
@@ -310,7 +310,7 @@ const NameModal = ({handleNameModal, name}: { handleNameModal: (name: string) =>
 const RoleModal = ({handleRoleModal, role}: { handleRoleModal: (role: string) => void, role: string }) => {
   const roles = ["엄마", "아빠", "아들", "딸"];
   const [inputRole, setInputRole] = useState<string>(role);
-  const [isClickedEtc, setIsClickedEtc] = useState<boolean>(roles.includes(inputRole) ? false : true);
+  const [isClickedEtc, setIsClickedEtc] = useState<boolean>(!roles.includes(inputRole) );
 
 // 입력값이 변경될 때 호출되는 함수
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -489,7 +489,7 @@ const BirthModal = ({handleBirthModal, birth, birthType}: {
             <FormControlLabel
             style={{color:"#fff", fontWeight: "bold"}}
               control={
-              <Checkbox checked={inputBirthType === "SOLAR" ? false : true}
+              <Checkbox checked={inputBirthType !== "SOLAR"}
                         onChange={() => setInputBirthType(inputBirthType === "SOLAR" ? "LUNAR" : "SOLAR")}
                         sx={{
                           color: "#fff",
@@ -539,7 +539,7 @@ const PhoneModal = ({handlePhoneModal, phone}: { handlePhoneModal: (phone: strin
              onChange={handleChange}
              placeholder="전화번호"
              autoFocus
-             onBlur ={(event) => {
+             onBlur ={() => {
                handlePhoneModal(inputPhone)
              }}
              onClick={(event) => event.stopPropagation()}/>

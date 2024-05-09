@@ -13,8 +13,8 @@ import {useFamilyStore} from "@store/useFamilyStore";
 
 
 const MainIndex = () => {
-  const {myInfo,setMyInfo} = useMemberStore()
-  const {familyInfo,setFamilyId, setFamilyInfo, setFamilyName, setFamilyScore} = useFamilyStore()
+  const {setMyInfo} = useMemberStore()
+  const {setFamilyId, setFamilyInfo, setFamilyName, setFamilyScore} = useFamilyStore()
 
   // 가족 데이터 저장 Api
   const saveFamilyData = (familyId:string) => {
