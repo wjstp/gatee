@@ -48,8 +48,6 @@ public class MemberController {
     @PatchMapping("/profile")
     @ResponseStatus(HttpStatus.OK)
     public void editInfo(@Valid @RequestBody MemberEditReq memberEditReq, @AuthenticationPrincipal CustomUserDetails customUserDetails) throws ParseException {
-        log.info(customUserDetails.getUsername());
-        log.info(customUserDetails.getPrivilege());
         memberService.editMemberInfo(memberEditReq, customUserDetails.getMemberId());
     }
 
