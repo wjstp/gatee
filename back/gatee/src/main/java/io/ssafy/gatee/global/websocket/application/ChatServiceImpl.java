@@ -92,6 +92,7 @@ public class ChatServiceImpl implements ChatService {
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                log.info("onDataChange start!!");
                 for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
                     DataSnapshot unreadMemberSnapshot = messageSnapshot.child("unreadMember");
                     if (unreadMemberSnapshot.exists()) {
