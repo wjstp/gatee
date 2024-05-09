@@ -1,7 +1,10 @@
 package io.ssafy.gatee.domain.member.application;
 
 import io.ssafy.gatee.domain.member.dao.MemberRepository;
-import io.ssafy.gatee.domain.member.dto.request.*;
+import io.ssafy.gatee.domain.member.dto.request.MemberEditMoodReq;
+import io.ssafy.gatee.domain.member.dto.request.MemberEditReq;
+import io.ssafy.gatee.domain.member.dto.request.MemberSaveReq;
+import io.ssafy.gatee.domain.member.dto.request.MemberTokenReq;
 import io.ssafy.gatee.domain.member.dto.response.MemberInfoRes;
 import io.ssafy.gatee.domain.member.entity.Member;
 import io.ssafy.gatee.domain.member.entity.Privilege;
