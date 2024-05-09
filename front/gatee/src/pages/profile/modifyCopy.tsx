@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {IoIosCamera} from "react-icons/io";
+import {FaCamera} from "react-icons/fa";
 import {useNavigate, useParams} from "react-router-dom";
 import {MemberInfoSample} from "@constants/index";
 import useModal from "@hooks/useModal";
@@ -9,8 +9,6 @@ import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs, {Dayjs} from 'dayjs';
 import {DateField} from '@mui/x-date-pickers/DateField';
 import {DemoContainer} from '@mui/x-date-pickers/internals/demo';
-
-import {useMemberStore} from "@store/useMemberStore";
 import Checkbox from "@mui/material/Checkbox";
 import {FormControlLabel} from "@mui/material";
 
@@ -27,32 +25,26 @@ const ProfileModifyCopy = () => {
   // 닉네임 관련
   const inputNicknameRef = useRef<HTMLInputElement>(null);
   const [inputNickname, setInputNickname] = useState<string>(member.nickname);
-  const [nicknameErrorMessage, setNicknameErrorMessage] = useState<string>("");
   // 이름 관련
-  const inputNameRef = useRef<HTMLInputElement>(null);
   const [inputName, setInputName] = useState(member.name);
-  const [nameErrorMessage, setNameErrorMessage] = useState<string>("");
 
   // 역할 관련
-  const roles = ["엄마", "아빠", "아들", "딸", "입력"];
-  const inputRoleRef = useRef<HTMLInputElement>(null);
   const [inputRole, setInputRole] = useState<string>(member.role);
-  const [customRole, setCustomRole] = useState<string>("");
-  const [isCustomRole, setIsCustomRole] = useState<boolean>(false);
-  const [roleErrorMessage, setRoleErrorMessage] = useState<string>("");
   // 생일 관련
   const inputBirthDayRef = useRef<HTMLInputElement>(null);
-  const [inputBirthDay, setInputBirthDay] = useState<string | null>(member.birth);
+  // const {birthDay, birthType} = useMemberStore();
+  const [inputBirthDay, setInputBirthDay] = useState<string>(member.birth);
   const [birthDayErrorMessage, setBirthDayErrorMessage] = useState<string>("");
   // 캘린더타입
   const [inputBirthType, setInputBirthType] = useState<string>(member.birthType)
   // 전화번호 관련
-  const [inputPhoneNumber, setInputPhoneNumber] = useState<string | null>(member.phoneNumber)
+  const [inputPhoneNumber, setInputPhoneNumber] = useState<string>(member.phoneNumber === null ? "" : member.phoneNumber)
 
   // 모달 관련
   const {isOpen: isNameModalOpen, openModal: openNameModal, closeModal: closeNameModal} = useModal();
   const {isOpen: isRoleModalOpen, openModal: openRoleModal, closeModal: closeRoleModal} = useModal();
   const {isOpen: isBirthModalOpen, openModal: openBirthModal, closeModal: closeBirthModal} = useModal();
+  const {isOpen: isPhoneModalOpen, openModal: openPhoneModal, closeModal: closePhoneModal} = useModal();
 
 
   // 수정 버튼
@@ -96,7 +88,6 @@ const ProfileModifyCopy = () => {
     const value: string = e.target.value;
     if (value.length <= 8) {
       setInputNickname(value);
-      setNicknameErrorMessage("");
     }
   }
 
@@ -110,9 +101,15 @@ const ProfileModifyCopy = () => {
     closeRoleModal()
   }
 
-  const handleBirthModal = (birth: string): void => {
+  const handleBirthModal = (birth: string, birthType: string): void => {
     setInputBirthDay(birth);
+    setInputBirthType(birthType)
     closeBirthModal()
+  }
+
+  const handlePhoneModal = (phone: string): void => {
+    setInputPhoneNumber(phone);
+    closePhoneModal()
   }
 
 
@@ -139,9 +136,9 @@ const ProfileModifyCopy = () => {
             className="img-box__btn"
             onClick={handleCameraButtonClick}
           >
-            <IoIosCamera
+            <FaCamera
               className="btn__icon"
-              size={25}
+              size={20}
             />
           </button>
         </div>
@@ -165,7 +162,7 @@ const ProfileModifyCopy = () => {
           <div className="info-box__name">
             <div className="name__title">
               <span className="name__title--text">
-                이름
+                실명
               </span>
             </div>
             <div className="name__body"
@@ -203,9 +200,8 @@ const ProfileModifyCopy = () => {
             <div className="birth__body" onClick={() => openBirthModal()}>
               <div
                 className="birth__body__part--01">
-                {inputBirthDay}{inputBirthType==="SOLAR"? "양":"음"}
+                {inputBirthDay} ({inputBirthType === "SOLAR" ? "양력" : "음력"})
               </div>
-              {/*양력 음력*/}
 
             </div>
           </div>
@@ -217,7 +213,8 @@ const ProfileModifyCopy = () => {
                 전화번호
               </span>
             </div>
-            <div className="phone__body">
+            <div className="phone__body"
+                 onClick={() => openPhoneModal()}>
               <div className="phone__body__part--01"> {inputPhoneNumber} </div>
             </div>
           </div>
@@ -238,7 +235,7 @@ const ProfileModifyCopy = () => {
 
       {/*모달*/}
       {isNameModalOpen ?
-        <NameModal handleNameModal={(name: string) => handleNameModal(name)}/> : null
+        <NameModal handleNameModal={(name: string) => handleNameModal(name)} name={inputName}/> : null
       }
 
       {isRoleModalOpen ?
@@ -246,7 +243,17 @@ const ProfileModifyCopy = () => {
       }
 
       {isBirthModalOpen ?
-        <BirthModal handleBirthModal={(birth: string) => handleBirthModal(birth)} birth={inputBirthDay}/> : null
+        <BirthModal handleBirthModal={(birth: string, birthType: string) => handleBirthModal(birth, birthType)}
+                    birth={inputBirthDay}
+                    birthType={inputBirthType}/>
+        :
+        null
+      }
+
+      {isPhoneModalOpen ?
+        <PhoneModal handlePhoneModal={(phone: string) => handlePhoneModal(phone)} phone={inputPhoneNumber}/>
+        :
+        null
       }
 
     </div>
@@ -255,19 +262,10 @@ const ProfileModifyCopy = () => {
 
 
 // 이름 모달
-const NameModal = ({handleNameModal}: { handleNameModal: (name: string) => void }) => {
-  const muiFocusCustom = {
-    "& .MuiOutlinedInput-root": {
-      "&.Mui-focused": {
-        "& .MuiOutlinedInput-notchedOutline": {
-          borderColor: "#FFBE5C",
-          borderWidth: "2px",
-        },
-      }
-    }
-  };
+const NameModal = ({handleNameModal, name}: { handleNameModal: (name: string) => void, name: string }) => {
+
   // 입력상태 - 스토어로 변경할것
-  const [inputValue, setInputValue] = useState("안유진");
+  const [inputValue, setInputValue] = useState(name);
 
 // 입력값이 변경될 때 호출되는 함수
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -277,14 +275,15 @@ const NameModal = ({handleNameModal}: { handleNameModal: (name: string) => void 
     <div className="modal__bg" onClick={() => {
       if (inputValue.trim().length) {
         handleNameModal(inputValue)
-
       }
     }}>
-      <div className="modal__content">
-        <TextField value={inputValue} onChange={handleChange} type="text" placeholder="실명을 입력해주세요" sx={muiFocusCustom}
-                   onClick={(event) => event.stopPropagation()}
-                   autoFocus/>
-      </div>
+      <input type="text" value={inputValue}
+             className="name__input"
+             onChange={handleChange}
+             placeholder="실명"
+             autoFocus
+             onClick={(event) => event.stopPropagation()}/>
+
     </div>
   )
 
@@ -293,19 +292,9 @@ const NameModal = ({handleNameModal}: { handleNameModal: (name: string) => void 
 
 // 역할 모달
 const RoleModal = ({handleRoleModal, role}: { handleRoleModal: (role: string) => void, role: string }) => {
-  // 스토어랑 연결할것
+  const roles = ["엄마", "아빠", "아들", "딸"];
   const [inputRole, setInputRole] = useState<string>(role);
-  const [isClickedEtc, setIsClickedEtc] = useState<boolean>(false);
-  const muiFocusCustom = {
-    "& .MuiOutlinedInput-root": {
-      "&.Mui-focused": {
-        "& .MuiOutlinedInput-notchedOutline": {
-          borderColor: "#FFBE5C",
-          borderWidth: "2px",
-        },
-      }
-    }
-  };
+  const [isClickedEtc, setIsClickedEtc] = useState<boolean>(roles.includes(inputRole) ? false : true);
 
 // 입력값이 변경될 때 호출되는 함수
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -315,13 +304,18 @@ const RoleModal = ({handleRoleModal, role}: { handleRoleModal: (role: string) =>
 
   return (
     <div className="modal__bg" onClick={() => {
+      if (inputRole!==null && inputRole.trim().length!==0)
+      handleRoleModal(inputRole)
     }}>
       <div className="modal__content">
         {/*역할*/}
         <div className="role__container">
           <button
             className={inputRole === "엄마" ? "role__btn selected" : "role__btn"}
-            onClick={() => handleRoleModal("엄마")}
+            onClick={(event) => {
+              event.stopPropagation()
+              handleRoleModal("엄마")
+            }}
           >
           <span className="btn-mom--text">
             엄마
@@ -329,7 +323,10 @@ const RoleModal = ({handleRoleModal, role}: { handleRoleModal: (role: string) =>
           </button>
           <button
             className={inputRole === "딸" ? "role__btn selected" : "role__btn"}
-            onClick={() => handleRoleModal("딸")}
+            onClick={(event) => {
+              event.stopPropagation()
+              handleRoleModal("딸")
+            }}
           >
           <span className="btn-daughter--text">
             딸
@@ -337,7 +334,10 @@ const RoleModal = ({handleRoleModal, role}: { handleRoleModal: (role: string) =>
           </button>
           <button
             className={inputRole === "아빠" ? "role__btn selected" : "role__btn"}
-            onClick={() => handleRoleModal("아빠")}
+            onClick={(event) => {
+              event.stopPropagation()
+              handleRoleModal("아빠")
+            }}
           >
           <span className="btn-mom--text">
             아빠
@@ -345,7 +345,10 @@ const RoleModal = ({handleRoleModal, role}: { handleRoleModal: (role: string) =>
           </button>
           <button
             className={inputRole === "아들" ? "role__btn selected" : "role__btn"}
-            onClick={() => handleRoleModal("아들")}
+            onClick={(event) => {
+              event.stopPropagation()
+              handleRoleModal("아들")
+            }}
           >
           <span className="btn-mom--text">
             아들
@@ -355,7 +358,8 @@ const RoleModal = ({handleRoleModal, role}: { handleRoleModal: (role: string) =>
           {!isClickedEtc ?
             <button
               className={isClickedEtc ? "role__btn selected" : "role__btn"}
-              onClick={() => {
+              onClick={(event) => {
+                event.stopPropagation()
                 setIsClickedEtc(true)
                 setInputRole("")
               }}
@@ -367,12 +371,18 @@ const RoleModal = ({handleRoleModal, role}: { handleRoleModal: (role: string) =>
             : null}
           {isClickedEtc ?
             <div className="etc__container">
-              <TextField value={inputRole} onChange={handleChange} type="text" placeholder="역할" sx={muiFocusCustom}
-                         onClick={(event) => event.stopPropagation()}
-                         autoFocus/>
+              <input type="text" value={inputRole}
+                     className="role__input"
+                     onChange={handleChange}
+                     placeholder="역할"
+                     autoFocus
+                     onClick={(event) => event.stopPropagation()}/>
               <button disabled={inputRole.trim().length === 0}
                       className="role__submit__btn"
-                      onClick={() => handleRoleModal(inputRole)}
+                      onClick={(event) => {
+                        event.stopPropagation()
+                        handleRoleModal(inputRole)
+                      }}
               >완료
               </button>
             </div>
@@ -389,10 +399,14 @@ const RoleModal = ({handleRoleModal, role}: { handleRoleModal: (role: string) =>
 
 
 // 생년월일
-const BirthModal = ({handleBirthModal, birth}: { handleBirthModal: (birth: string) => void, birth: string | null }) => {
+const BirthModal = ({handleBirthModal, birth, birthType}: {
+  handleBirthModal: (birth: string, birthType: string) => void,
+  birth: string,
+  birthType: string
+}) => {
 
-  const {birthDay, birthType, gender, setBirthDay, setBirthType} = useMemberStore();
-
+  const [birthday, setBirthday] = useState(birth)
+  const [inputBirthType, setInputBirthType] = useState(birthType)
   const dateFieldCustom = {
     "& .MuiOutlinedInput-root": {
       color: "#000",
@@ -418,21 +432,20 @@ const BirthModal = ({handleBirthModal, birth}: { handleBirthModal: (birth: strin
 
 // 날짜 핸들러
   const handleSetSelectedDateChange = (date: Dayjs | null) => {
-    setBirthDay(date ? date.format("YYYY-MM-DD") : "");
+    setBirthday(date ? date.format("YYYY-MM-DD") : "");
   };
-
-
 
   return (
     <div className="modal__bg" onClick={() => {
-      if (birthDay !== null){
-        handleBirthModal(birthDay)
-      }}}>
+      if (birthday !== null && isValidDateFormat(birthday)) {
+        handleBirthModal(birthday, inputBirthType)
+      }
+    }}>
       <div className="modal__content">
 
         {/*생일 선택*/}
         <div className="birth__container"
-        onClick={(event)=>event.stopPropagation()}>
+             onClick={(event) => event.stopPropagation()}>
           <div className="birthday-date-field">
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer
@@ -442,7 +455,7 @@ const BirthModal = ({handleBirthModal, birth}: { handleBirthModal: (birth: strin
                   className="birthday-datefield__input"
                   format="YYYY / MM / DD"
                   autoFocus={true}
-                  value={birthDay ? dayjs(birthDay) : null}
+                  value={birthday ? dayjs(birthday) : null}
                   onChange={handleSetSelectedDateChange}
                   inputProps={{
                     style: {
@@ -455,11 +468,14 @@ const BirthModal = ({handleBirthModal, birth}: { handleBirthModal: (birth: strin
             </LocalizationProvider>
           </div>
           <div className="birthday-choice">
-            <FormControlLabel control={<Checkbox defaultChecked sx={{
-              '&.Mui-checked': {
-                color: "#FFBE5C",
-              },
-            }}/>} label="음력" />
+            <FormControlLabel control={
+              <Checkbox checked={inputBirthType === "SOLAR" ? false : true}
+                        onChange={() => setInputBirthType(inputBirthType === "SOLAR" ? "LUNAR" : "SOLAR")}
+                        sx={{
+                          '&.Mui-checked': {
+                            color: "#FFBE5C",
+                          },
+                        }}/>} label="음력"/>
           </div>
 
         </div>
@@ -469,6 +485,43 @@ const BirthModal = ({handleBirthModal, birth}: { handleBirthModal: (birth: strin
     </div>
   )
 
+}
+
+const PhoneModal = ({handlePhoneModal, phone}: { handlePhoneModal: (phone: string) => void, phone: string }) => {
+  // 입력상태 - 스토어로 변경할것
+  const [inputPhone, setInputValue] = useState(phone);
+
+// 입력값이 변경될 때 호출되는 함수
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const input = event.target.value;
+    // 숫자만 남기도록 입력값 필터링
+    const filteredInput = input.replace(/\D/g, '');
+    // 전화번호 형식에 맞게 포맷팅
+    const formattedInput = filteredInput.replace(/(\d{3})(\d{1,4})?(\d{1,4})?/, function (_, p1, p2, p3) {
+      let formatted = '';
+      if (p2) formatted += `-${p2}`;
+      if (p3) formatted += `-${p3}`;
+      return p1 + formatted;
+    });
+    setInputValue(formattedInput);
+  };
+
+  return (
+    <div className="modal__bg" onClick={() => {
+      if (inputPhone !== null && inputPhone.trim().length) {
+        handlePhoneModal(inputPhone)
+      }
+    }}>
+      <input type="tel"
+             value={inputPhone}
+             className="phone__input"
+             onChange={handleChange}
+             placeholder="전화번호"
+             autoFocus
+             onClick={(event) => event.stopPropagation()}/>
+
+    </div>
+  )
 }
 
 export default ProfileModifyCopy;

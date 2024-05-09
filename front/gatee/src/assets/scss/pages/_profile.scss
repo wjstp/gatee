@@ -171,13 +171,13 @@
 
         .birth__body {
           height: 100%;
-          width: 70%;
+          //width: 70%;
           color: black;
           align-content: center;
 
 
           &__part--01 {
-            margin-right: 5%;
+            //margin-right: 5%;
             margin-top: auto;
           }
 
@@ -348,7 +348,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 68%;
+    height: 57%;
     width: 100%;
 
     .profile__img-box {
@@ -362,12 +362,12 @@
 
       .img-box__img {
 
-        height: 200px;
-        width: 200px;
+        height: 150px;
+        width: 150px;
         border-radius: 100%;
         object-fit: cover;
         opacity: 0.7;
-        border: 1px solid black;
+        //border: 1px solid black;
       }
 
       .img-box__btn {
@@ -380,11 +380,10 @@
         }
 
         .btn__icon {
-          height: 100px;
-          width: 100px;
-          stroke: black;
-          stroke-width: 4px;
-          fill: none;
+          height: 60px;
+          width: 60px;
+          fill: $gray300;
+          opacity: 0.3;
         }
       }
     }
@@ -549,7 +548,7 @@
             align-items: center;
             margin-right: 5%;
             height: 100%;
-            width: 60%;
+            width: 100%;
             font-size: 18px;
             color: $gray200;
             text-decoration: underline;
@@ -783,9 +782,26 @@
 .modal__bg {
   @extend %modal-overlay;
 
-  .modal__content {
-    @extend %modal-content;
-    @include mx-(3);
+  .name__input {
+   font-size: 2rem;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    //border-bottom: 1.5px solid white;
+    display: inline-block;
+    width: 50%;
+  }
+
+  .phone__input {
+    font-size: 2rem;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    //border-bottom: 1.5px solid white;
+    display: inline-block;
+
+  }
+
 
 
     .role__container {
@@ -800,11 +816,12 @@
       .role__btn {
 
         font-weight: bold;
-        font-size: 1.2rem;
-        color: $gray100;
+        font-size: 1.5rem;
+        color: white;
         height: 3rem;
         width: 8rem;
-        border: 2px solid $gray100;
+        border: 2px solid white;
+        //background-color: $gray200;
         border-radius: 30px;
       }
 
@@ -817,9 +834,20 @@
       .etc__container {
         @include flex-row;
         @include flex_center;
-
+        color: white;
         gap: 0.5rem;
 
+        .role__input {
+          font-size: 1.5rem;
+          padding: 0.5rem;
+          text-align: center;
+          color: white;
+          font-weight: bold;
+          border: 2px solid white;
+          border-radius: 1rem;
+          width: 46%;
+          display: inline-block;
+        }
         .role__submit__btn {
 
           background-color: $orange400;
@@ -833,7 +861,8 @@
           border-radius: 1rem;
 
           &:disabled {
-            background-color: $gray100;
+            background-color: white;
+            color: $gray100;
           }
 
         }
@@ -856,7 +885,7 @@
         align-items: center;
 
 
-      }
+
     }
   }
 }
