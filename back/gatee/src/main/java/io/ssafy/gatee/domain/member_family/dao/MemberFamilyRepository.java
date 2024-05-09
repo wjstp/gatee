@@ -15,9 +15,9 @@ import java.util.UUID;
 @Repository
 public interface MemberFamilyRepository extends JpaRepository<MemberFamily, Long> {
 
-    Optional<MemberFamily> findByMemberAndFamily_Id(Member member, Long familyId);
+    Optional<MemberFamily> findByMemberAndFamilyId(Member member, UUID familyId);
     Optional<MemberFamily> findByMemberAndFamily(Member member, Family family);
-    Optional<List<MemberFamily>> findAllById(Long familyId);
+    Optional<List<MemberFamily>> findAllByFamily_Id(UUID familyId);
     Optional<MemberFamily> findByMember(Member member);
     @Query("SELECT mf FROM MemberFamily mf WHERE mf.family = (SELECT m.family FROM MemberFamily m WHERE m.member = :member)")
     Optional<List<MemberFamily>> findAllWithFamilyByMember(Member member);

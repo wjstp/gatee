@@ -1,11 +1,28 @@
-import React from "react";
-import { ChatMessage, SenderType } from "@type/index";
+import React, {useState} from "react";
+import { ChatMessage, SenderType, ChatContent } from "@type/index";
 import { MemberInfoSample } from "@constants/index";
 import getUserInfoByEmail from "@utils/getUserInfoByEmail";
 import convertToAMPMTime from "@utils/convertToAMPMTime";
 import renderBubbleComponent from "@utils/renderBubbleComponent";
 
-const YoursChat = ({ chat, isPrevSender }: { chat: ChatMessage, isPrevSender: boolean}) => {
+interface ChatMessageProps {
+ chat: ChatContent;
+  isPrevSender: boolean;
+}
+
+interface MyChatMessageProps {
+  chat: ChatMessage;
+  unreadMemberCount: number;
+}
+
+interface YourChatMessageProps {
+  chat: ChatMessage;
+  isPrevSender: boolean;
+  unreadMemberCount: number;
+}
+
+const YoursChat = (props: YourChatMessageProps) => {
+  const { chat, isPrevSender, unreadMemberCount } = props;
   const senderInfo = getUserInfoByEmail(chat.sender);
 
   return (
@@ -30,35 +47,36 @@ const YoursChat = ({ chat, isPrevSender }: { chat: ChatMessage, isPrevSender: bo
       <div className="chat__time-count-wrapper">
         {/*리딩 카운트*/}
         <div className="chat__count">
-        {chat.readingCount > 0 && (
-          <span>{chat.readingCount}</span>
+        {unreadMemberCount > 0 && (
+          <span>{unreadMemberCount}</span>
         )}
         </div>
 
         {/*시간*/}
         <div className="chat__time">
-          { convertToAMPMTime(chat.createdAt) }
+          { convertToAMPMTime(chat.time) }
         </div>
       </div>
-
     </div>
   );
 };
 
-const MyChat = ({ chat }: { chat: ChatMessage }) => {
+const MyChat = (props: MyChatMessageProps) => {
+  const { chat, unreadMemberCount } = props;
+
   return (
     <div className="chat__my-chat">
       <div className="chat__time-count-wrapper">
         {/*리딩 카운트*/}
         <div className="chat__count--right">
-          {chat.readingCount > 0 && (
-            <span>{chat.readingCount}</span>
+          {unreadMemberCount > 0 && (
+            <span>{unreadMemberCount}</span>
           )}
         </div>
 
         {/*시간*/}
         <div className="chat__time">
-          {convertToAMPMTime(chat.createdAt)}
+          {convertToAMPMTime(chat.time)}
         </div>
       </div>
 
@@ -68,8 +86,10 @@ const MyChat = ({ chat }: { chat: ChatMessage }) => {
   );
 };
 
-const BubbleChat = ({ chat, isPrevSender }: { chat: ChatMessage, isPrevSender: boolean}) => {
+const BubbleChat = (props: ChatMessageProps) => {
+  const { chat, isPrevSender } = props;
   const myEmail: string = MemberInfoSample.email;
+  const [unreadMemberCount, setUnreadMemberCount] = useState<number>(chat.unreadMember.length);
 
   // senderType 반환 함수
   const getSenderType = (value: string): string => {
@@ -78,9 +98,9 @@ const BubbleChat = ({ chat, isPrevSender }: { chat: ChatMessage, isPrevSender: b
 
   switch (getSenderType(chat.sender)) {
     case SenderType.YOURS:
-      return <YoursChat chat={chat} isPrevSender={isPrevSender}/>;
+      return <YoursChat chat={chat as ChatMessage} isPrevSender={isPrevSender} unreadMemberCount={unreadMemberCount}/>;
     case SenderType.MY:
-      return <MyChat chat={chat}/>;
+      return <MyChat chat={chat as ChatMessage} unreadMemberCount={unreadMemberCount} />;
     default:
       return null;
   }

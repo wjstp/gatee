@@ -5,6 +5,7 @@ import io.ssafy.gatee.domain.family.dto.request.FamilyNameReq;
 import io.ssafy.gatee.domain.family.dto.request.FamilySaveReq;
 import io.ssafy.gatee.domain.family.dto.response.FamilyCodeRes;
 import io.ssafy.gatee.domain.family.dto.response.FamilyInfoRes;
+import io.ssafy.gatee.domain.family.dto.response.FamilySaveRes;
 import io.ssafy.gatee.global.exception.error.bad_request.ExpiredCodeException;
 import io.ssafy.gatee.global.exception.error.not_found.FamilyNotFoundException;
 import io.ssafy.gatee.global.security.user.CustomUserDetails;
@@ -29,15 +30,15 @@ public class FamilyController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public void saveFamily(@RequestBody FamilySaveReq familySaveReq, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        familyService.saveFamily(familySaveReq, UUID.fromString(customUserDetails.getUsername()));
+    public FamilySaveRes saveFamily(@RequestBody FamilySaveReq familySaveReq, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        return familyService.saveFamily(familySaveReq, UUID.fromString(customUserDetails.getUsername()));
     }
 
     // 가족 코드 생성
     @GetMapping("/{familyId}/code")
     @ResponseStatus(HttpStatus.OK)
     public FamilyCodeRes createFamilyCode(@PathVariable("familyId") String familyId) {
-        return familyService.createFamilyCode(Long.valueOf(familyId));
+        return familyService.createFamilyCode(familyId);
     }
 
     // 가족 합류
@@ -46,9 +47,9 @@ public class FamilyController {
     public void joinFamily(
             @Valid
             @RequestParam String familyCode,
-            @RequestParam String memberId
+            @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) throws ExpiredCodeException {
-        familyService.joinFamily(familyCode, UUID.fromString(memberId));
+        familyService.joinFamily(familyCode, customUserDetails.getMemberId());
     }
 
     // 가족 정보 조회
@@ -56,7 +57,7 @@ public class FamilyController {
     @ResponseStatus(HttpStatus.OK)
     public FamilyInfoRes readFamily(@PathVariable("familyId") String familyId) throws FamilyNotFoundException {
         log.info(familyId);
-        return familyService.readFamily(Long.valueOf(familyId));
+        return familyService.readFamily(UUID.fromString(familyId));
     }
 
     // 가족 이름 수정
@@ -67,6 +68,6 @@ public class FamilyController {
             @RequestBody FamilyNameReq familyNameReq
     ) throws FamilyNotFoundException {
         log.info(familyId);
-        familyService.editFamilyName(Long.valueOf(familyId), familyNameReq);
+        familyService.editFamilyName(UUID.fromString(familyId), familyNameReq);
     }
 }

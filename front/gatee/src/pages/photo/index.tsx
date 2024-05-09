@@ -16,7 +16,7 @@ const PhotoIndex = () => {
   const location = useLocation();
   const navigate = useNavigate()
   // 상단 탭 상태 관리 -> 모든 사진 / 앨범사진
-  const [activeTab, setActiveTab] = useState("all"); // 현재 경로를 기본값으로 설정
+  const [activeTab, setActiveTab] = useState("album"); // 현재 경로를 기본값으로 설정
   // 모든 사진의 하단 탭 상태 관리 -> 일 / 월 / 연
   const [allPhotoTab, setAllPhotoTab] = useState("day");
   // 모달 상태
@@ -213,7 +213,7 @@ const PhotoIndex = () => {
     } else if (location.pathname.includes("/photo/album")) {
       setActiveTab("album")
     } else if (location.pathname === "/photo") {
-      navigate("day")
+      navigate("album")
     } else {
       setActiveTab("detail")
     }

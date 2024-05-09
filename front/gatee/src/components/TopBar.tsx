@@ -41,8 +41,8 @@ const TopBar = () => {
         {/*)}*/}
 
         {/*채팅 앨범 - 채팅 페이지 */}
-        {['/chat', '/chat/photo'].includes(currentPage) && (
-          <NavLink to="/chat/photo" className={({isActive}) =>
+        {['/chatting', '/chatting/photo'].includes(currentPage) && (
+          <NavLink to="/chatting/photo" className={({isActive}) =>
             isActive ? 'top-bar__right--active': ''}>
             <PiSquaresFour size={24}/>
           </NavLink>

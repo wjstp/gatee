@@ -60,7 +60,7 @@ public class PhotoServiceImpl implements PhotoService {
     // 사진 목록 조회
     @Override
     public List<PhotoListRes> readPhotoList(PhotoListReq photoListReq) throws WrongTypeFilterException {
-        Family family = familyRepository.getReferenceById(photoListReq.familyId());
+        Family family = familyRepository.getReferenceById(UUID.fromString(photoListReq.familyId()));
 
         List<MemberFamily> memberFamilyList = memberFamilyRepository.findAllByFamily(family)
                 .orElseThrow(() -> new MemberFamilyNotFoundException(MEMBER_FAMILY_NOT_FOUND));
