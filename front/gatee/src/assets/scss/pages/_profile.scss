@@ -644,6 +644,12 @@
           position: relative;
           align-content: center;
 
+          .phone__plus__btn {
+            font-size: 1rem;
+            color: $gray200;
+            text-decoration: underline;
+          }
+
           &__part--01 {
             font-size: 18px;
             color: $gray200;
@@ -799,6 +805,8 @@
     font-weight: bold;
     //border-bottom: 1.5px solid white;
     display: inline-block;
+
+
 
   }
 
