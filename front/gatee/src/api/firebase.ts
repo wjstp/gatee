@@ -7,10 +7,9 @@ const local: AxiosInstance = localAxios();
 export const getPushAlarmByLocalStorageApi = async () => {
   try {
     const fcmDeviceToken: string | null = localStorage.getItem('fcmDeviceToken');
-    // 로컬 Axios 적용 코드 주석처리
-    local.post(`/notifications/test`, {token: fcmDeviceToken})
+    local.patch(`/members/notifications`,
+      {notificationToken: fcmDeviceToken})
       .then(res => {
-        console.log(res.data)
       })
       .catch(err => console.log(err))
   } catch (error) {

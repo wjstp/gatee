@@ -44,6 +44,7 @@ import AllYear from "@pages/photo/AllYear";
 import PhotoIndex from "@pages/photo";
 import PhotoDetail from "@pages/photo/PhotoDetail";
 import PhotoAlbumGroupDetail from "@pages/photo/AlbumGroupDetail";
+import ProfileModifyCopy from "@pages/profile/modifyCopy";
 
 
 const Router = () => {
@@ -65,7 +66,7 @@ const Router = () => {
 
         {/*프로필 페이지*/}
         <Route path="/profile/:name" element={<ProfileIndex/>}/>
-        <Route path="/profile/:name/modify" element={<ProfileModify/>}/>
+        <Route path="/profile/:name/modify" element={<ProfileModifyCopy/>}/>
 
         {/*메인 페이지*/}
         <Route path="/main" element={<MainIndex/>}/>

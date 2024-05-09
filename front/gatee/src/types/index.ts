@@ -177,3 +177,10 @@ export interface EmojiItem {
   id: string;
   image: string;
 }
+
+// 잔소리 보내기 api request
+export interface NaggingApiReq{
+  // 멤버 아이디
+  "receiverId": string,
+  "message": string
+}

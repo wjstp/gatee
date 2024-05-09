@@ -2,9 +2,8 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { Holiday, HolidayStore } from "../types"
 
-export const useHolidayStore = create<HolidayStore>()(
-  persist(
-    (set) => ({
+export const useHolidayStore = create<HolidayStore>(
+  (set) => ({
       years: [],
       setYears: (newYears: string[]) => {
         set((prevYears) => ({
@@ -17,9 +16,5 @@ export const useHolidayStore = create<HolidayStore>()(
           holidays: [...prevHolidays.holidays, ...newHolidays]
         }));
       }
-    }),
-    {
-      name: "__holidays"
-    }
-  )
+    })
 );

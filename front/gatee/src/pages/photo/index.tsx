@@ -16,11 +16,10 @@ const PhotoIndex = () => {
   const location = useLocation();
   const navigate = useNavigate()
   // 상단 탭 상태 관리 -> 모든 사진 / 앨범사진
-  const [activeTab, setActiveTab] = useState("all"); // 현재 경로를 기본값으로 설정
+  const [activeTab, setActiveTab] = useState("album"); // 현재 경로를 기본값으로 설정
   // 모든 사진의 하단 탭 상태 관리 -> 일 / 월 / 연
   const [allPhotoTab, setAllPhotoTab] = useState("day");
   // 모달 상태
-  const {setShowModal} = useModalStore()
   // 편집모드 고르기 모달 상태
   const {isOpen: showEditModeModal, openModal: openEditModal, closeModal: closeEditModeModal} = useModal();
   // 생성할 앨범 이름 입력 모달 상태
@@ -84,7 +83,6 @@ const PhotoIndex = () => {
   // 편집 모달 보이기 이벤트
   const handleOpenEditModal = () => {
     openEditModal();
-    setShowModal(true)
   }
 
   // 앨범 이름 입력 모달 닫기 이벤트
@@ -93,14 +91,12 @@ const PhotoIndex = () => {
     if (inputValue === "") {
       // console.log('백드롭 이벤트')
       closeAlbumNameInputModal()
-      setShowModal(false)
       setEditMode("normal")
 
     } else {
       setAlbumName(inputValue)
       console.log(inputValue, "앨범 생성 axios")
       closeAlbumNameInputModal()
-      setShowModal(false)
     }
 
   }
@@ -113,12 +109,10 @@ const PhotoIndex = () => {
     if (mode === "normal") {
       // 일반 모드 선택 => 모달을 모두 끈다
       console.log('백드롭 이벤트')
-      setShowModal(false)
       closeEditModeModal()
 
     } else if (mode === "delete") {
       // 사진 삭제 모드 선택 => 모달을 끄고 편집 모드로 들어간다
-      setShowModal(false)
       closeEditModeModal()
 
     } else if (mode === "makeAlbum") {
@@ -146,7 +140,6 @@ const PhotoIndex = () => {
 
   // 앨범 고르기
   const handleSelectAlbum = (name: string, id: number) => {
-    setShowModal(false)
     closeSelectMoveAlbumModal()
 
     // 백드롭 이벤트
@@ -206,7 +199,6 @@ const PhotoIndex = () => {
   useEffect(() => {
     // 이동될때마다 데이터 청소
     setEditMode("normal")
-    setShowModal(false)
     editPhotoIdList.clear()
 
     if (location.pathname.includes("/photo/month")) {
@@ -221,7 +213,7 @@ const PhotoIndex = () => {
     } else if (location.pathname.includes("/photo/album")) {
       setActiveTab("album")
     } else if (location.pathname === "/photo") {
-      navigate("day")
+      navigate("album")
     } else {
       setActiveTab("detail")
     }
