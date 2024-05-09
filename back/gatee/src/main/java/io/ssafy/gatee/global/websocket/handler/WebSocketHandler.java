@@ -56,12 +56,15 @@ public class WebSocketHandler extends TextWebSocketHandler {
         UUID familyId = familyService.getFamilyIdByMemberId(memberId);
 
         // redis에 chattingRoompk를 인덱스로 online user 관리, online user에 넣기
-        OnlineRoomMember onlineRoomMember = Optional.ofNullable(onlineRoomMemberRepository.findById(familyId)
-                        .orElseThrow(() -> new FamilyNotFoundException(FAMILY_NOT_FOUND)))
+        OnlineRoomMember onlineRoomMember = onlineRoomMemberRepository.findById(familyId)
                 .map(orm -> {
                     orm.setOnlineUsers(Optional.ofNullable(orm.getOnlineUsers()).orElseGet(HashSet::new));
                     return orm;
-                }).get();
+                })
+                .orElseGet(() -> OnlineRoomMember.builder()
+                        .id(familyId)
+                        .onlineUsers(new HashSet<>())
+                        .build());
         // 온라인 유저로 관리
         onlineRoomMember.getOnlineUsers().add(memberId);
         onlineRoomMemberRepository.save(onlineRoomMember);
@@ -73,5 +76,19 @@ public class WebSocketHandler extends TextWebSocketHandler {
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         // 회원
         log.info("연결 종료");
+        UUID memberId = UUID.fromString(session.getPrincipal().getName());
+        UUID familyId = familyService.getFamilyIdByMemberId(memberId);
+        OnlineRoomMember onlineRoomMember = onlineRoomMemberRepository.findById(familyId)
+                .map(orm -> {
+                    orm.setOnlineUsers(Optional.ofNullable(orm.getOnlineUsers()).orElseGet(HashSet::new));
+                    return orm;
+                })
+                .orElseGet(() -> OnlineRoomMember.builder()
+                        .id(familyId)
+                        .onlineUsers(new HashSet<>())
+                        .build());
+        log.info("유저 {} 오프라인 전환", memberId);
+        onlineRoomMember.getOnlineUsers().remove(memberId);
+        onlineRoomMemberRepository.save(onlineRoomMember);
     }
 }

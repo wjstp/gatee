@@ -16,6 +16,8 @@ public interface FamilyService {
 
     FamilyCodeRes createFamilyCode(String familyId);
 
+    Long findDefaultFamilyImageId(String url);
+
     UUID getFamilyIdByMemberId(UUID memberId);
 
     void joinFamily(String familyCode, UUID memberId) throws ExpiredCodeException;

@@ -44,6 +44,7 @@ import AllYear from "@pages/photo/AllYear";
 import PhotoIndex from "@pages/photo";
 import PhotoDetail from "@pages/photo/PhotoDetail";
 import PhotoAlbumGroupDetail from "@pages/photo/AlbumGroupDetail";
+import ProfileModifyCopy from "@pages/profile/modifyCopy";
 
 
 const Router = () => {
@@ -57,15 +58,15 @@ const Router = () => {
         <Route path="/exam/taking" element={<ExamTaking/>}/>
 
         {/*채팅 페이지*/}
-        <Route path="/chat" element={<ChatIndex/>}/>
-        <Route path="/chat/photo" element={<ChatPhoto/>}/>
+        <Route path="/chatting" element={<ChatIndex/>}/>
+        <Route path="/chatting/photo" element={<ChatPhoto/>}/>
 
         {/*알림 페이지*/}
         <Route path="/notification" element={<NotificationIndex/>}/>
 
         {/*프로필 페이지*/}
         <Route path="/profile/:name" element={<ProfileIndex/>}/>
-        <Route path="/profile/:name/modify" element={<ProfileModify/>}/>
+        <Route path="/profile/:name/modify" element={<ProfileModifyCopy/>}/>
 
         {/*메인 페이지*/}
         <Route path="/main" element={<MainIndex/>}/>
