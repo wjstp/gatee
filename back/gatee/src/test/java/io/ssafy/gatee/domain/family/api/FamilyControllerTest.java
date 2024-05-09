@@ -5,6 +5,7 @@ import io.ssafy.gatee.config.security.CustomWithMockUser;
 import io.ssafy.gatee.domain.family.application.FamilyService;
 import io.ssafy.gatee.domain.family.dto.request.FamilyNameReq;
 import io.ssafy.gatee.domain.family.dto.request.FamilySaveReq;
+import io.ssafy.gatee.domain.file.application.FileService;
 import io.ssafy.gatee.global.jwt.application.JwtService;
 import io.ssafy.gatee.global.security.application.AuthService;
 import io.ssafy.gatee.global.security.config.SecurityConfig;
@@ -52,6 +53,9 @@ class FamilyControllerTest {
 
     @MockBean
     private AuthService authService;
+
+    @MockBean
+    private FileService fileService;
 
     @MockBean
     private CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
