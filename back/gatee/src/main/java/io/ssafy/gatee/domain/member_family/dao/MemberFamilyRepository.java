@@ -18,7 +18,7 @@ public interface MemberFamilyRepository extends JpaRepository<MemberFamily, Long
 
     Optional<MemberFamily> findByMemberAndFamilyId(Member member, UUID familyId);
     Optional<MemberFamily> findByMemberAndFamily(Member member, Family family);
-    Optional<List<MemberFamily>> findAllByFamily_Id(UUID familyId);
+    List<MemberFamily> findAllByFamily_Id(UUID familyId);
     @Query(
             """
                 select new io.ssafy.gatee.domain.member_family.dto.response.MemberFamilyInfoRes(

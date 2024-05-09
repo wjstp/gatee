@@ -22,7 +22,7 @@ public interface FamilyService {
 
     void joinFamily(String familyCode, UUID memberId) throws ExpiredCodeException;
 
-    FamilyInfoRes readFamily(UUID familyId) throws FamilyNotFoundException;
+    FamilyInfoRes readFamily(String s) throws FamilyNotFoundException;
 
     void editFamilyName(UUID familyId, FamilyNameReq familyNameReq) throws FamilyNotFoundException;
 }
