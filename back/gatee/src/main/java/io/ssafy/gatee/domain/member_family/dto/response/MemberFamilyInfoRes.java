@@ -1,23 +1,24 @@
 package io.ssafy.gatee.domain.member_family.dto.response;
 
-import io.ssafy.gatee.domain.member.dto.response.MemberDetailRes;
-import io.ssafy.gatee.domain.member.dto.response.MemberInfoRes;
-import io.ssafy.gatee.domain.member_family.entity.MemberFamily;
+import io.ssafy.gatee.domain.member.entity.BirthType;
+import io.ssafy.gatee.domain.member_family.entity.Role;
 import lombok.Builder;
+
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.UUID;
 
 @Builder
 public record MemberFamilyInfoRes(
-        MemberDetailRes member,
-        String role,
-        boolean isLeader,
-        Integer score
+        UUID memberId,
+        String name,
+        String email,
+        String nickname,
+        LocalDate birth,
+        BirthType birthType,
+        Boolean isLeader,
+        String mood,
+        Role role,
+        String fileUrl
 ) {
-    public static MemberFamilyInfoRes toDto(MemberFamily memberFamily) {
-        return MemberFamilyInfoRes.builder()
-                .member(MemberDetailRes.toDto(memberFamily.getMember()))
-                .role(String.valueOf(memberFamily.getRole()))
-                .isLeader(memberFamily.isLeader())
-                .score(memberFamily.getScore())
-                .build();
-    }
 }

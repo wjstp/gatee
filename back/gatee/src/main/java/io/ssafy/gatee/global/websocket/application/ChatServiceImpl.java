@@ -87,44 +87,30 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public void updateRead(UUID memberId, UUID familyId) {
-        DatabaseReference reference = databaseReference.child("chat").child(familyId.toString()).child("message");
-
+        DatabaseReference reference = databaseReference.child("chat").child(familyId.toString()).child("messages");
+        log.info("디비" + reference.toString());
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                log.info("onDataChange start!!");
                 for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
-                    DataSnapshot unreadMemberSnapshot = messageSnapshot.child("unreadMembers");
+                    DataSnapshot unreadMemberSnapshot = messageSnapshot.child("unreadMember");
+                    log.info("스냅샷" + unreadMemberSnapshot.toString());
                     if (unreadMemberSnapshot.exists()) {
-                        log.info("스냅샷" + unreadMemberSnapshot.toString());
-                        List<String> unreadMembers = (List<String>) unreadMemberSnapshot.getValue();
-                        if (unreadMembers.contains(memberId.toString())) {
-                            unreadMembers.remove(memberId.toString());
-
-                            // 여기서 변경사항을 동일한 데이터 스냅샷에 반영합니다.
-                            unreadMemberSnapshot.getRef().setValue(unreadMembers, new DatabaseReference.CompletionListener() {
-                                @Override
-                                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                                    if (databaseError == null) {
-                                        // 데이터 업데이트가 성공적으로 완료되었습니다.
-                                        System.out.println("데이터 업데이트 성공.");
-                                    } else {
-                                        // 데이터 업데이트 실패
-                                        System.err.println("데이터 업데이트 실패: " + databaseError.getMessage());
-                                    }
-                                }
-                            });
+                        if (unreadMemberSnapshot.hasChild(memberId.toString())) {
+                            // 특정 memberId 제거
+                            unreadMemberSnapshot.getRef().child(memberId.toString()).removeValueAsync();
                         }
                     }
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                System.err.println("리스너가 취소되었습니다, 오류: " + databaseError.getMessage());
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
             }
         });
     }
-
 
     public void saveMessageToRealtimeDatabase(FireStoreChatDto fireStoreChatDto, UUID familyId) {
         // roomId를 사용하여 채팅방에 대한 참조를 가져옵니다.

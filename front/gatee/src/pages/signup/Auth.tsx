@@ -6,7 +6,10 @@ import { kakaoLoginAPI, kakaoTokenAPI } from "@api/kakao";
 const SignupAuth = () => {
   const navigate = useNavigate();
   const kakaoJavaScriptKey: string | undefined = process.env.REACT_APP_KAKAO_JAVASCRIPT_KEY;
-  const redirectUri: string | undefined = process.env.REACT_APP_API_URL;
+  const redirectUri: string | undefined = `${process.env.REACT_APP_API_URL}/auth`
+  const web: string = "http://localhost:3000/auth"
+  const mobile_yebin: string = "http://192.168.137.1:3000/auth"
+  const mobile_taehyeon: string = "http://70.12.247.24:3000/auth"
   // 인가 코드 가져오기
   const code: string | null = new URL(window.location.href).searchParams.get('code');
 
@@ -24,8 +27,7 @@ const SignupAuth = () => {
       {
         grant_type: "authorization_code",
         client_id: kakaoJavaScriptKey,
-        // redirect_uri: `${redirectUri}/auth`,
-        redirect_uri: "http://localhost:3000/auth",
+        redirect_uri: redirectUri,
         code: code
       },
       {

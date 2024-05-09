@@ -24,6 +24,14 @@ export const createMemberApi = async function (data: MemberApiReq,
   await local.post("/members", data).then(success).catch(fail);
 };
 
+
+// 내 정보 조회
+export const getMyDataApi = async function (success: (res: AxiosResponse<any>) => void,
+                                            fail: (err: AxiosError<any>) => void) {
+  await local.get("/members").then(success).catch(fail);
+}
+
+
 // 가족 정보 가져오기
 export const getFamilyMemberApi = async function (data: string,
                                                   success: (res: AxiosResponse<any>) => void,
@@ -37,13 +45,3 @@ export const naggingApi = async function (data: NaggingApiReq,
                                           fail: (err: AxiosError<any>) => void) {
   await local.post("/notifications/nagging", data).then(success).catch(fail);
 };
-
-// 내 정보 조회
-export const getMyDataApi = async function (success: (res: AxiosResponse<any>) => void,
-                                            fail: (err: AxiosError<any>) => void) {
-  await local.get("/members").then(success).catch(fail);
-}
-
-
-
-

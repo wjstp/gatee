@@ -1,10 +1,7 @@
 import {create} from "zustand";
+import {MyMemberApiReq} from "@type/index";
 
-// 나중에 type 폴더로 빼야될듯
-type BirthInfo = {
-  birthDay: string | null;
-  birthType: string;
-};
+
 
 type MemberStore = {
   memberId: string | null;
@@ -28,7 +25,9 @@ type MemberStore = {
   icon: string;
   setIcon: (newIcon: string) => void;
   memberImage: string | ArrayBuffer | null;
-  setMemberImage: (newImage: string | ArrayBuffer | null) => void
+  setMemberImage: (newImage: string | ArrayBuffer | null) => void;
+  myInfo : MyMemberApiReq;
+  setMyInfo: (newMyInfo: Partial<MyMemberApiReq>) => void;
 };
 
 export const useMemberStore = create<MemberStore>()(
@@ -55,5 +54,32 @@ export const useMemberStore = create<MemberStore>()(
     setIcon: (newIcon: string) => set({icon: newIcon}),
     memberImage: null,
     setMemberImage: (newImage: string | ArrayBuffer | null) => set({memberImage: newImage}),
+
+    // 내 정보 객체
+    myInfo : {
+      birth: "2000-07-20",
+      birthType: "SOLAR",
+      email: "******@gmail.com",
+      memberId: "123123",
+      mood: "default",
+      name: "이윤정",
+      nickname: "쌒유진",
+      role: "딸",
+      phoneNumber: null,
+      familyId:"ㅁㄴㅇ",
+      fileUrl:""
+    },
+    // 정보 수정 방법 : setMyInfo 함수를 호출할 때 변경하려는 속성을 포함하는 객체를 전달
+    // ex) 이름과 닉네임을 변경하려면 다음과 같이 호출
+    // setMyInfo({ name: '새로운 이름', nickname: '새로운 닉네임' });
+    setMyInfo: (newMyInfo: Partial<MyMemberApiReq>) => {
+      set((state) => ({
+        ...state,
+        myInfo: {
+          ...state.myInfo,
+          ...newMyInfo,
+        },
+      }));
+    },
   })
 );
