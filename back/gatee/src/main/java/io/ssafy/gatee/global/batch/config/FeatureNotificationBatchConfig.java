@@ -57,8 +57,8 @@ public class FeatureNotificationBatchConfig {
     public Step sendFeatureNotificationStep(JobRepository jobRepository, PlatformTransactionManager platformTransactionManager) {
         return new StepBuilder("notificationStep", jobRepository)
                 .chunk(CHUNK_SIZE, platformTransactionManager)
-                .reader(loadMemberData())
-                .writer()
+//                .reader(loadMemberData())
+//                .writer()
                 .build();
     }
 
