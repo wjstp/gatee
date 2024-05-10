@@ -2,6 +2,7 @@ package io.ssafy.gatee.domain.photo.api;
 
 import com.google.firebase.messaging.FirebaseMessagingException;
 import io.ssafy.gatee.domain.photo.application.PhotoService;
+import io.ssafy.gatee.domain.photo.dto.request.PhotoDeleteReq;
 import io.ssafy.gatee.domain.photo.dto.request.PhotoListReq;
 import io.ssafy.gatee.domain.photo.dto.request.PhotoSaveReq;
 import io.ssafy.gatee.domain.photo.dto.response.PhotoDetailRes;
@@ -16,7 +17,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/photos")
@@ -47,7 +47,11 @@ public class PhotoController {
     // 사진 등록
     @PostMapping("/save")
     @ResponseStatus(HttpStatus.OK)
-    public Long savePhoto(@Valid @RequestBody PhotoSaveReq photoSaveReq, @AuthenticationPrincipal CustomUserDetails customUserDetails) throws FirebaseMessagingException {
+    public Long savePhoto(
+            @Valid
+            @RequestBody PhotoSaveReq photoSaveReq,
+            @AuthenticationPrincipal CustomUserDetails customUserDetails
+    ) throws FirebaseMessagingException {
         return photoService.savePhoto(photoSaveReq, customUserDetails.getMemberId());
     }
 
@@ -56,10 +60,11 @@ public class PhotoController {
     @ResponseStatus(HttpStatus.OK)
     public void deletePhoto(
             @Valid
-            @RequestParam Long memberFamilyId,
-            @PathVariable("photoId") Long photoId
+            @RequestBody PhotoDeleteReq photoDeleteReq,
+            @PathVariable("photoId") Long photoId,
+            @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) throws DoNotHavePermissionException {
-        photoService.deletePhoto(memberFamilyId, photoId);
+        photoService.deletePhoto(photoDeleteReq, photoId, customUserDetails.getMemberId());
     }
 
     // 사진 상호작용 생성
