@@ -6,8 +6,10 @@ import io.ssafy.gatee.domain.photo.application.PhotoService;
 import io.ssafy.gatee.domain.photo.dto.request.PhotoDeleteReq;
 import io.ssafy.gatee.domain.photo.dto.request.PhotoListReq;
 import io.ssafy.gatee.domain.photo.dto.request.PhotoSaveReq;
+import io.ssafy.gatee.domain.photo.dto.response.PhotoDetailRes;
 import io.ssafy.gatee.domain.photo.dto.response.PhotoListRes;
 import io.ssafy.gatee.domain.photo.dto.response.PhotoSaveRes;
+import io.ssafy.gatee.domain.photo.dto.response.PhotoThumbnailRes;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -94,8 +96,60 @@ class PhotoControllerTest extends RestDocsTestSupport {
 
     @Test
     @CustomWithMockUser
-    @DisplayName("사진 상세 조회 테스트")
+    void readPhotoThumbnailList() throws Exception {
+
+        // given
+        PhotoThumbnailRes photoThumbnailRes1 = PhotoThumbnailRes.builder()
+                .photoId(1L)
+                .imageUrl("https://www.gaty.duckdns.org/s3-image-url-1")
+                .build();
+
+        PhotoThumbnailRes photoThumbnailRes2 = PhotoThumbnailRes.builder()
+                .photoId(2L)
+                .imageUrl("https://www.gaty.duckdns.org/s3-image-url-2")
+                .build();
+
+        List<PhotoThumbnailRes> photoThumbnailResList = new ArrayList<>();
+
+        photoThumbnailResList.add(photoThumbnailRes1);
+        photoThumbnailResList.add(photoThumbnailRes2);
+
+        given(photoService.readPhotoThumbnailList(any(String.class), any(UUID.class), any(UUID.class)))
+                .willReturn(photoThumbnailResList);
+
+        // when
+        ResultActions result = mockMvc.perform(get("/api/photos/thumbnails")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("filter", "MONTH")
+                .param("familyId", String.valueOf(UUID.randomUUID()))
+                .accept(MediaType.APPLICATION_JSON)
+        );
+
+        // then
+        result.andExpect(status().isOk())
+                .andDo(restDocs.document(
+                        queryParameters(
+                                parameterWithName("filter").description("MONTH / YEAR").optional(),
+                                parameterWithName("familyId").description("가족 ID").optional()
+                        ),
+                        responseFields(
+                                 fieldWithPath("[].photoId").type(JsonFieldType.NUMBER).description("사진 ID"),
+                                fieldWithPath("[].imageUrl").type(JsonFieldType.STRING).description("사진 URL")
+                        )
+                ));
+    }
+
+    @Test
+    @CustomWithMockUser
     void readPhotoDetail() throws Exception {
+
+        // given
+        given(photoService.readPhotoDetail(any(Long.class), any(UUID.class)))
+                .willReturn(PhotoDetailRes.builder()
+                        .photoId(1L)
+                        .imageUrl("https:/")
+                        .build()
+                );
         long photoId = 1L;
 
         mockMvc.perform(get("/api/photos/" + photoId)
