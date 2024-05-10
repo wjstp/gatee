@@ -31,7 +31,7 @@ const ProfileList = ({profileDataList}: { profileDataList: Member[] }) => {
     
     // 프로필로 가기일 때
     if (type === "gotoProfile") {
-      navigate(`/profile/${clickedProfile?.nickname}`)
+      navigate(`/profile/${clickedProfile?.email}`)
 
     //  한마디 보내기 일 때
     } else if (type === "sendMessage") {
@@ -77,7 +77,7 @@ const ProfileItem = ({profileData, handleClickProfile}: ProfileItemProps) => {
          onClick={handleClickProfileItem}>
       <p>{profileData.nickname}</p>
       <div className="main-profile-wrapper">
-        <img className="main-profile-img" src={profileData.image} alt="프사"/>
+        <img className="main-profile-img" src={profileData.fileUrl} alt="프사"/>
         <div className="main-profile-mood">
           {getMoodEmoji(profileData.mood)}
         </div>

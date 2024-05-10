@@ -30,7 +30,10 @@ public class FileController {
 
     @GetMapping("/{fileId}")
     @ResponseStatus(HttpStatus.OK)
-    public void downloadFile(@PathVariable Long fileId, HttpServletResponse response) throws Exception {
+    public void downloadFile(
+            @PathVariable Long fileId,
+            HttpServletResponse response
+    ) throws Exception {
         Object[] object = fileService.getObject(fileId);
         byte[] fileContent = (byte[]) object[0];
 

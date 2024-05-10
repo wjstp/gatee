@@ -65,8 +65,8 @@ const Router = () => {
         <Route path="/notification" element={<NotificationIndex/>}/>
 
         {/*프로필 페이지*/}
-        <Route path="/profile/:name" element={<ProfileIndex/>}/>
-        <Route path="/profile/:name/modify" element={<ProfileModifyCopy/>}/>
+        <Route path="/profile/:email" element={<ProfileIndex/>}/>
+        <Route path="/profile/:email/modify" element={<ProfileModifyCopy/>}/>
 
         {/*메인 페이지*/}
         <Route path="/main" element={<MainIndex/>}/>

@@ -8,7 +8,7 @@ export interface Member {
   role: string;
   birth: string;
   birthType: string;
-  image: string;
+  fileUrl: string;
   mood: string | null;
   phoneNumber: string | null;
 }
@@ -25,6 +25,7 @@ export interface MemberApiReq {
   role: string;
   phoneNumber: string|null;
   fileUrl:string;
+  isLeader:boolean;
 }
 
 // 가족 api 정보
@@ -40,6 +41,7 @@ export interface MyMemberApiReq {
   familyId: string;
   phoneNumber: string|null;
   fileUrl:string;
+  isLeader:boolean;
 }
 
 
@@ -148,6 +150,7 @@ export interface ChatMessage {  // MESSAGE
   messageType: string;
   sender: string;
   time: string;
+  totalMember: number;
   unreadMember: string[];
   content: string;
 }
@@ -156,6 +159,7 @@ export interface ChatFile { // FILE
   messageType: string;
   sender: string;
   time: string;
+  totalMember: number;
   unreadMember: string[];
   files: string[];
 }
@@ -164,6 +168,7 @@ export interface ChatAppointment {  // APPOINTMENT
   messageType: string;
   sender: string;
   time: string;
+  totalMember: number;
   unreadMember: string[];
   content: string;
   participants: string[];
@@ -173,6 +178,7 @@ export interface ChatEmoji {  // EMOJI
   messageType: string;
   sender: string;
   time: string;
+  totalMember: number;
   unreadMember: string[];
   emojiId: string;
   content: string;
@@ -187,6 +193,7 @@ export interface ChatAlarm {  // ALARM
   messageType: string;
   sender: string;
   time: string;
+  totalMember: number;
   unreadMember: string[];
   content: string;
 }

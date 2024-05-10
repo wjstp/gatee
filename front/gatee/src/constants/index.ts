@@ -70,7 +70,7 @@ export const MemberInfoSample: Member = {
   role: "딸",
   birth: "2000-07-20",
   birthType: "SOLAR",
-  image: "https://cdn.citytimes.co.kr/news/photo/202310/mn_19685_20231014093033_1.jpg",
+  fileUrl: "https://cdn.citytimes.co.kr/news/photo/202310/mn_19685_20231014093033_1.jpg",
   mood: "HAPPY",
   phoneNumber: "010-8806-8489"
 }
@@ -84,7 +84,7 @@ export const FamilyMemberInfoSample: Member[] = [
     role: "딸",
     birth: "2000-07-20",
     birthType: "SOLAR",
-    image: "https://image.xportsnews.com/contents/images/upload/article/2023/1013/mb_1697156860596868.jpg",
+    fileUrl: "https://image.xportsnews.com/contents/images/upload/article/2023/1013/mb_1697156860596868.jpg",
     mood: null,
     phoneNumber: "010-8806-8489"
   },
@@ -95,7 +95,7 @@ export const FamilyMemberInfoSample: Member[] = [
     role: "엄마",
     birth: "1999-11-03",
     birthType: "SOLAR",
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRW4C8mlEPUiWYuROJ0llF7eFg9Bs9TtMqV8KfdxLV-hg&s",
+    fileUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRW4C8mlEPUiWYuROJ0llF7eFg9Bs9TtMqV8KfdxLV-hg&s",
     mood: "HAPPY",
     phoneNumber: "010-8806-8489"
   },
@@ -106,7 +106,7 @@ export const FamilyMemberInfoSample: Member[] = [
     role: "아빠",
     birth: "1998-02-14",
     birthType: "SOLAR",
-    image: "https://image.newdaily.co.kr/site/data/img/2023/09/15/2023091500117_2.jpg",
+    fileUrl: "https://image.newdaily.co.kr/site/data/img/2023/09/15/2023091500117_2.jpg",
     mood: "",
     phoneNumber: "010-8806-8489"
   },
@@ -117,7 +117,7 @@ export const FamilyMemberInfoSample: Member[] = [
     role: "할머니",
     birth: "1994-03-04",
     birthType: "SOLAR",
-    image: "https://yt3.googleusercontent.com/QBR8DJ3RJIgjrnsye7IPBDXAYkIK3G-rNolklMPlq7ndsXg4sWWVcS8oHVPrfyt7ApQ3BzNnVMQ=s900-c-k-c0x00ffffff-no-rj",
+    fileUrl: "https://yt3.googleusercontent.com/QBR8DJ3RJIgjrnsye7IPBDXAYkIK3G-rNolklMPlq7ndsXg4sWWVcS8oHVPrfyt7ApQ3BzNnVMQ=s900-c-k-c0x00ffffff-no-rj",
     mood: "HAPPY",
     phoneNumber: ""
   },
@@ -128,7 +128,7 @@ export const FamilyMemberInfoSample: Member[] = [
     role: "아들",
     birth: "1997-08-29",
     birthType: "SOLAR",
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkaX7TOkcE7W_5R0WXYy8N5Dbh-fcI23Dy7_g6HFREWw&s",
+    fileUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkaX7TOkcE7W_5R0WXYy8N5Dbh-fcI23Dy7_g6HFREWw&s",
     mood: "ALONE",
     phoneNumber: "",
   },
@@ -139,7 +139,7 @@ export const FamilyMemberInfoSample: Member[] = [
     role: "할아버지",
     birth: "1994-06-22",
     birthType: "SOLAR",
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0cTfgWus0RScvjQpx8zAGe-F0-U0W2s960N2AZmfPSA&s",
+    fileUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0cTfgWus0RScvjQpx8zAGe-F0-U0W2s960N2AZmfPSA&s",
     mood: "ANGRY",
     phoneNumber: ""
   }
@@ -286,6 +286,7 @@ export const ChatSample: (ChatMessage |  ChatFile | ChatAppointment | ChatEmoji 
     messageType: "ALARM",
     sender: "megar0829@gmail.com",
     time: "2024-05-02T23:50:00",
+    totalMember: 6,
     unreadMember: ["megar0829@gmail.com"],
     content: "띡이랑 놀 사람",
   },
@@ -293,6 +294,7 @@ export const ChatSample: (ChatMessage |  ChatFile | ChatAppointment | ChatEmoji 
     messageType: "APPOINTMENT",
     sender: "asthyeon@gmail.com",
     time: "2024-05-02T02:50:00",
+    totalMember: 6,
     unreadMember: ["megar0829@gmail.com"],
     participants: ["asthyeon@gmail.com"],
     content: "추억 회상할 사람"
@@ -301,6 +303,7 @@ export const ChatSample: (ChatMessage |  ChatFile | ChatAppointment | ChatEmoji 
     messageType: "APPOINTMENT",
     sender: "zyo0720@kakao.com",
     time: "2024-05-02T02:40:00",
+    totalMember: 6,
     unreadMember: ["megar0829@gmail.com"],
     participants: ["zyo0720@kakao.com", "yebin4684@gmail.com"],
     content: "저녁 같이 먹을 사람"
@@ -309,6 +312,7 @@ export const ChatSample: (ChatMessage |  ChatFile | ChatAppointment | ChatEmoji 
     messageType: "FILE",
     sender: "asthyeon@gmail.com",
     time: "2024-05-02T02:30:00",
+    totalMember: 6,
     unreadMember: ["megar0829@gmail.com"],
     files: [
       "https://i.pinimg.com/736x/39/48/76/394876e0e2129f959bd910b65da6f3f8.jpg",
@@ -321,6 +325,7 @@ export const ChatSample: (ChatMessage |  ChatFile | ChatAppointment | ChatEmoji 
     messageType: "FILE",
     sender: "wjstp14@gmail.com",
     time: "2024-05-02T02:20:00",
+    totalMember: 6,
     unreadMember: ["megar0829@gmail.com"],
     files: ["https://i.pinimg.com/564x/8b/a2/83/8ba283897b9ad414c929ca1a8630b4bd.jpg"],
   },
@@ -328,6 +333,7 @@ export const ChatSample: (ChatMessage |  ChatFile | ChatAppointment | ChatEmoji 
     messageType: "MESSAGE",
     sender: "zyo0720@kakao.com",
     time: "2024-05-02T02:10:00",
+    totalMember: 6,
     unreadMember: ["megar0829@gmail.com"],
     content: "그러니까",
   },
@@ -335,6 +341,7 @@ export const ChatSample: (ChatMessage |  ChatFile | ChatAppointment | ChatEmoji 
     messageType: "MESSAGE",
     sender: "yebin4684@gmail.com",
     time: "2024-05-02T01:00:00",
+    totalMember: 6,
     unreadMember: ["megar0829@gmail.com"],
     content: ";;",
   },
@@ -342,6 +349,7 @@ export const ChatSample: (ChatMessage |  ChatFile | ChatAppointment | ChatEmoji 
     messageType: "MESSAGE",
     sender: "yebin4684@gmail.com",
     time: "2024-05-02T01:00:00",
+    totalMember: 6,
     unreadMember: ["megar0829@gmail.com"],
     content: "뭐야 저 사람",
   },
@@ -349,6 +357,7 @@ export const ChatSample: (ChatMessage |  ChatFile | ChatAppointment | ChatEmoji 
     messageType: "EMOJI",
     sender: "megar0829@gmail.com",
     time: "2024-05-02T00:00:00",
+    totalMember: 6,
     unreadMember: [],
     content: "띡이 삐딤.",
     emojiId: "dog4"

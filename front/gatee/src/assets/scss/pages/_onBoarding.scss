@@ -159,24 +159,21 @@
   }
 
   .ios-header__part--02 {
+    @include flex_center;
+
     font-weight: bold;
     font-size: 17px;
     height: 30px;
     width: 100%;
 
     .text--01 {
+      @include flex-row;
+      @include px-(0.7);
+      @include py-(0.3);
+
+      align-items: center;
       border: 1px solid black;
       border-radius: 5px;
-      padding: 6px;
-
-      .icon {
-      }
-
-      .text {
-      }
-    }
-
-    .text--02 {
     }
   }
 }
@@ -206,15 +203,21 @@
   }
 
   .android-header__part--02 {
+    @include flex-center;
+
     font-weight: bold;
     font-size: 17px;
     height: 30px;
     width: 100%;
 
     .text--01 {
+      @include flex-row;
+      @include px-(0.7);
+      @include py-(0.3);
+
+      align-items: center;
       border: 1px solid black;
       border-radius: 5px;
-      padding: 6px;
 
       .icon {
       }

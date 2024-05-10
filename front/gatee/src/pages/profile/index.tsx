@@ -1,6 +1,5 @@
 import React, { useRef, useState } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
-import { FamilyMemberInfoSample } from "@constants/index";
 import { FaPhone } from "react-icons/fa";
 import { ReactComponent as PencilIcon } from "@assets/images/icons/ic_pencil.svg";
 import { QuestionSample } from "@constants/index";
@@ -10,6 +9,7 @@ import Box from '@mui/material/Box';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import FeelingToast from "@pages/profile/components/FeelingToast";
 import { useMemberStore } from "@store/useMemberStore";
+import {useFamilyStore} from "@store/useFamilyStore";
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
@@ -17,6 +17,7 @@ const ProfileIndex = () => {
   // 모달 상태 적용
   const { setShowModal } = useModalStore();
   const { mood } = useMemberStore();
+  const { familyInfo } = useFamilyStore();
   // 열린지 닫힌지 상태 확인 가능
   const [state, setState] = React.useState({
     bottom: false,
@@ -63,20 +64,19 @@ const ProfileIndex = () => {
     </Box>
   );
 
-
   const navigate = useNavigate();
   // 쿼리스트링으로 넘어온 이름을 확인하기 위함
-  const { name } = useParams<{ name: string }>();
-  // 백과사전이 있는지 조회하기용
+  const { email } = useParams<{ email: string }>();
+  // 백과사전이 있는지 조회하기 용
   const [createdCharacter, setCreateCharacter] = useState<boolean>(false);
 
   const goToModify = () => {
-    navigate(`/profile/${name}/modify`)
+    navigate(`/profile/${email}/modify`)
   }
 
   // 멤버 확인 -> 나중에는 조회로 가져오기
-  const familyMember = FamilyMemberInfoSample.find(member => member.nickname === name);
-  
+  const familyMember = familyInfo.find(member => member.email === email);
+
   // 내 프로필일 때만 프로필 정보와 기분을 수정할 수 있음
 
   // 날짜 형식 변환 함수
@@ -106,7 +106,7 @@ const ProfileIndex = () => {
         <div className="profile__img-box">
           <img
             className="img-box__img"
-            src={familyMember?.image}
+            src={familyMember?.fileUrl}
             alt="profile-image"
           />
         </div>

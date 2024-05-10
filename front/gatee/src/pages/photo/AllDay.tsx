@@ -16,8 +16,8 @@ const AllDay = () => {
     const payload = {
       familyId: familyId,
       filter: "DAY",
-      year: null,
-      month: null
+      year: "",
+      month: ""
     }
     getListPhotoApi(payload,
       res => {

@@ -1,17 +1,13 @@
 package io.ssafy.gatee.domain.photo.dao;
 
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.JPQLQueryFactory;
 import io.ssafy.gatee.domain.member_family.entity.MemberFamily;
 import io.ssafy.gatee.domain.photo.entity.Photo;
 import io.ssafy.gatee.domain.photo.entity.QPhoto;
 import lombok.RequiredArgsConstructor;
-import org.joda.time.Days;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
-import java.time.Month;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -51,6 +47,32 @@ public class PhotoRepositoryCustomImpl implements PhotoRepositoryCustom {
                 .where(photo.memberFamily.in(memberFamilyList))
                 .where(photo.createdAt.year().eq(Integer.valueOf(year)))
                 .orderBy(photo.createdAt.desc())
+                .fetch();
+    }
+
+    @Override
+    public List<Photo> findPhotoThumbnailListByMonth(List<MemberFamily> memberFamilyList) {
+        QPhoto photo = QPhoto.photo;
+
+        return jpqlQueryFactory.selectFrom(photo)
+                .where(photo.createdAt.in(
+                        JPAExpressions.select(photo.createdAt.min())
+                                .from(photo)
+                                .groupBy(photo.createdAt.year(), photo.createdAt.month())
+                ))
+                .fetch();
+    }
+
+    @Override
+    public List<Photo> findPhotoThumbnailListByYear(List<MemberFamily> memberFamilyList) {
+        QPhoto photo = QPhoto.photo;
+
+        return jpqlQueryFactory.selectFrom(photo)
+                .where(photo.createdAt.in(
+                        JPAExpressions.select(photo.createdAt.min())
+                                .from(photo)
+                                .groupBy(photo.createdAt.year())
+                ))
                 .fetch();
     }
 }

@@ -4,10 +4,12 @@ import ChatInput from "@pages/chat/components/ChatInput";
 import ChatDate from "@pages/chat/components/ChatDate";
 import { ChatSample } from "@constants/index";
 import { ChatContent, ChatDateLine, ChatType } from "@type/index";
+import { useFamilyStore } from "@store/useFamilyStore";
+import { NavLink } from "react-router-dom";
+import { PiSquaresFour } from "react-icons/pi";
 
 import SockJS from "sockjs-client";
-import firebase from "../../config";
-import 'firebase/auth';
+import firebase from "../../firebase-config";
 import 'firebase/database';
 
 const ChatIndex = () => {
@@ -16,9 +18,8 @@ const ChatIndex = () => {
   const { REACT_APP_API_URL, VALID_KEY } = process.env;
 
   const [data, setData] = useState<any>([]);
-  const familyId = "1";
-  const chatRef = firebase.database().ref(`chat/${familyId}`)
-  const firestore = firebase.database();
+  const { familyId } = useFamilyStore();
+  const chatRef = firebase.database().ref(`chat/${familyId}/messages`);
 
   const WS_URL: string = `${REACT_APP_API_URL}/chat`
   const ws = new SockJS(`${WS_URL}?Token=${localStorage.getItem('accessToken')}`);
@@ -27,35 +28,56 @@ const ChatIndex = () => {
   const retryCount = useRef<number>(0);
 
   useEffect(() => {
+    // 소켓 연결
     connect();
 
+    // 채팅 데이터 조회 및 채팅 추가 이벤트 수신
+    // 처음에 모든 리스트가 동기화되며 그 후에는 새로 추가된 부분만 동기화
+    chatRef.on(
+      "value",
+        snap => handleAddChatData(snap)
+    );
+
+    // 채팅 데이터 변경 이벤트 수신
+    chatRef.on(
+      "child_changed",
+      snap => handleUpdateChatData(snap)
+    );
+
     return () => {
+      // 언마운트 시 소켓 연결 해제
       disconnect();
     };
   }, []);
 
+  // 소켓 연결
   const connect = () => {
-     ws.onopen = () => {
+    ws.onopen = () => {
       console.log("<<< CONNECT");
-    };
+    }
   }
-
+  // 언마운트 시 소켓 연결 해제
   const disconnect = () => {
     ws.onclose = () => {
       console.log(">>> DISCONNECT");
     };
   }
 
-  const getData = () => {
-
+  const send = () => {
+    ws.send(JSON.stringify({
+      "messageType": "MESSAGE",
+      "content": "띠기의 꿈은 공주님이야\n방해하면 모조리 죽여 버리겠어"
+    }))
   }
-  // useEffect(() => {
-  //   userRef.on('value', snapshot => {
-  //     const users = snapshot.val();
-  //     console.log(users)
-  //     const usersData = [];
-  //   })
-  // }, []);
+
+  // 채팅 내역 조회/추가 이벤트 수신 핸들러
+  const handleAddChatData = (snap: any) => {
+    console.log(snap.val());
+  }
+
+  // 채팅 내역 수정 이벤트 수신 핸들러
+  const handleUpdateChatData = (snap: any) => {
+  }
 
   // 이전 채팅과 현재 채팅의 보낸 사람이 같은지 여부에 따라 props 설정
   const setPrevProps = (prevChat: ChatContent, currentChat: ChatContent) => {
@@ -90,9 +112,23 @@ const ChatIndex = () => {
 
   return (
     <div className="chat">
+      <div className="chat__header">
+        <div onClick={() => {
+          send();
+          console.log("전송 시도");
+          console.log(familyId);
+        }}>
+          수다방
+        </div>
+        <NavLink to="/chatting/photo" className="chat__header__photo">
+          <PiSquaresFour size={24}/>
+        </NavLink>
+      </div>
+
       <div className="chat__main">
         {renderChatBubble}
       </div>
+
       <ChatInput />
     </div>
   );
