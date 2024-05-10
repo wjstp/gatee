@@ -100,6 +100,9 @@ public class ChatServiceImpl implements ChatService {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 log.info("onDataChange start!!");
                 for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
+                    if (Objects.isNull(dataSnapshot)) {
+                        continue;
+                    }
                     DataSnapshot unreadMemberSnapshot = messageSnapshot.child("unReadMember");
                     if (unreadMemberSnapshot.exists()) {
                         if (unreadMemberSnapshot.hasChild(memberId.toString())) {
