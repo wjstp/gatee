@@ -13,46 +13,9 @@ import {useFamilyStore} from "@store/useFamilyStore";
 
 
 const MainIndex = () => {
-  const {setMyInfo} = useMemberStore()
-  const {setFamilyId, setFamilyInfo, setFamilyName, setFamilyScore} = useFamilyStore()
+  // const {setMyInfo} = useMemberStore()
+  const {familyInfo} = useFamilyStore()
 
-  // 가족 데이터 저장 Api
-  const saveFamilyData = (familyId:string) => {
-    getFamilyMemberApi({familyId:familyId},
-      (res) => {
-        console.log("가족 정보 조회",res.data);
-        setFamilyInfo(res.data.memberFamilyInfoList);
-        setFamilyName(res.data.name);
-        setFamilyScore(res.data.familyScore);
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
-  }
-
-  // 정보 불러오기 Api
-  const saveMemberData = () => {
-    getMyDataApi(
-      (res) => {
-        console.log("내 정보 조회",res.data)
-        // 스토어에 저장
-        setMyInfo(res.data)
-        setFamilyId(res.data.familyId)
-
-        // 가족 데이터 저장 Api
-        saveFamilyData(res.data.familyId)
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
-  }
-
-  useEffect(() => {
-    // 나 + 가족 데이터 가져오기 주석처리
-    saveMemberData()
-  }, []);
 
 
   return (
@@ -62,7 +25,7 @@ const MainIndex = () => {
       <FamilyPoint/>
 
       {/* 프로필 리스트 */}
-      <ProfileList profileDataList={FamilyMemberInfoSample}/>
+      <ProfileList profileDataList={familyInfo}/>
 
       {/* 미션 탭으로 가기 */}
       <Link to="/main/mission" className="go-to-mission__button-event">

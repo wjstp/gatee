@@ -8,7 +8,7 @@ export interface Member {
   role: string;
   birth: string;
   birthType: string;
-  image: string;
+  fileUrl: string;
   mood: string | null;
   phoneNumber: string | null;
 }
@@ -25,6 +25,7 @@ export interface MemberApiReq {
   role: string;
   phoneNumber: string|null;
   fileUrl:string;
+  isLeader:boolean;
 }
 
 // 가족 api 정보
@@ -40,6 +41,7 @@ export interface MyMemberApiReq {
   familyId: string;
   phoneNumber: string|null;
   fileUrl:string;
+  isLeader:boolean;
 }
 
 
