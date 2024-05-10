@@ -100,10 +100,10 @@ public class ChatServiceImpl implements ChatService {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 log.info("onDataChange start!!");
                 for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
-                    log.info("메세지 스냅샷 {}", messageSnapshot.toString());
-                    log.info("getvalue " + messageSnapshot.getValue().toString());
+                    if (Objects.isNull(dataSnapshot)) {
+                        continue;
+                    }
                     DataSnapshot unreadMemberSnapshot = messageSnapshot.child("unReadMember");
-                    log.info("스냅샷" + unreadMemberSnapshot.toString());
                     if (unreadMemberSnapshot.exists()) {
                         if (unreadMemberSnapshot.hasChild(memberId.toString())) {
                             // 특정 memberId 제거
