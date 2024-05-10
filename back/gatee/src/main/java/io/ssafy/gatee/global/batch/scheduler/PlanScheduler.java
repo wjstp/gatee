@@ -32,13 +32,13 @@ public class PlanScheduler {
     private final PushNotificationService pushNotificationService;
     private Map<String, ScheduledFuture<?>> scheduledTasks = new HashMap<>();
 
-    public void registerSchedule(String memberId, Long scheduleId, LocalDateTime planTime) {
+    public void registerSchedule(UUID memberId, Long scheduleId, LocalDateTime planTime) {
         ScheduledFuture<?> scheduledTask = taskScheduler.schedule(() -> sendPlanNotification(scheduleId),
                 Instant.from(planTime.plusMinutes(10)));    // tood: 수정
         scheduledTasks.put(memberId + "_" + scheduleId.toString(), scheduledTask);
     }
 
-    public void deleteSchedule(String memberId, Long scheduleId) {
+    public void deleteSchedule(UUID memberId, Long scheduleId) {
         ScheduledFuture<?> scheduledTask = scheduledTasks.get(memberId + "_" + scheduleId.toString());
         if (Objects.nonNull(scheduledTask)) {
             scheduledTask.cancel(true);

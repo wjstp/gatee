@@ -37,10 +37,11 @@ import io.ssafy.gatee.global.exception.error.bad_request.DoNotHavePermissionExce
 import io.ssafy.gatee.global.exception.error.not_found.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.joda.time.LocalDateTime;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -164,7 +165,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                         .typeId(schedule.getId()).build())
                 .build());
 
-        planScheduler.registerSchedule();
+        planScheduler.registerSchedule(memberId, schedule.getId(), LocalDateTime.parse(scheduleSaveReq.endDate()));
 
     }
 
@@ -172,7 +173,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     @Transactional
     public void editSchedule(ScheduleEditReq scheduleEditReq, UUID memberId, Long scheduleId)
-            throws DoNotHavePermissionException, FamilyScheduleNotFoundException, MemberFamilyScheduleNotFoundException, FamilyNotFoundException {
+            throws DoNotHavePermissionException, FamilyScheduleNotFoundException, MemberFamilyScheduleNotFoundException, FamilyNotFoundException, FirebaseMessagingException {
         Member member = memberRepository.getReferenceById(memberId);
 
         Family family = familyRepository.getReferenceById(UUID.fromString(scheduleEditReq.familyId()));
@@ -191,6 +192,21 @@ public class ScheduleServiceImpl implements ScheduleService {
         } else {
             throw new DoNotHavePermissionException(DO_NOT_HAVE_REQUEST);
         }
+
+        // 알림발송
+        pushNotificationService.sendPushOneToMany(PushNotificationFCMReq.builder()
+                .senderId(memberId)
+                .receiverId(memberFamilyRepository.findMyFamily(memberId))
+                .title(Type.SCHEDULE.korean)
+                .content(member.getName() + "님이 일정을 변경하였습니다.")
+                .dataFCMReq(DataFCMReq.builder()
+                        .type(Type.SCHEDULE)
+                        .typeId(schedule.getId()).build())
+                .build());
+
+        // 일정 완료 알림 일정 변경
+        planScheduler.deleteSchedule(memberId, scheduleId);
+        planScheduler.registerSchedule(memberId, scheduleId, LocalDateTime.parse(scheduleEditReq.endDate()));
     }
 
     // 일정 참여
