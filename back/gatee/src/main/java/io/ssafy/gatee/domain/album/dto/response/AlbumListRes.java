@@ -13,10 +13,8 @@ public record AlbumListRes(
         @NotNull
         String name,
 
-        @NotNull
         Long PhotoId,
 
-        @NotNull
         String imageUrl
 ) {
         public static AlbumListRes toDto(PhotoAlbum photoAlbum) {
