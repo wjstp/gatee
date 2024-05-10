@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
@@ -88,6 +89,7 @@ public class ChatServiceImpl implements ChatService {
                 .totalMember(unreadList.size())
                 .sender(memberId.toString())
                 .unReadMember(unReadMemberAsStringList)
+                .currentTime(LocalDateTime.now())
                 .build(), familyId);
     }
 
