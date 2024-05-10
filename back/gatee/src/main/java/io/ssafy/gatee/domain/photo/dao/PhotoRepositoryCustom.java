@@ -11,4 +11,6 @@ public interface PhotoRepositoryCustom {
     List<Photo> findPhotoListByDay(List<MemberFamily> memberFamilyList);
     List<Photo> findPhotoListByMonth(List<MemberFamily> memberFamilyList,String year , String month);
     List<Photo> findPhotoListByYear(List<MemberFamily> memberFamilyList, String year);
+    List<Photo> findPhotoThumbnailListByMonth(List<MemberFamily> memberFamilyList);
+    List<Photo> findPhotoThumbnailListByYear(List<MemberFamily> memberFamilyList);
 }
