@@ -106,7 +106,7 @@ const ProfileIndex = () => {
         <div className="profile__img-box">
           <img
             className="img-box__img"
-            src={familyMember?.image}
+            src={familyMember?.fileUrl}
             alt="profile-image"
           />
         </div>
