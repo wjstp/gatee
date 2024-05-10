@@ -27,7 +27,7 @@ const SignupAuth = () => {
       {
         grant_type: "authorization_code",
         client_id: kakaoJavaScriptKey,
-        redirect_uri: redirectUri,
+        redirect_uri: mobile_taehyeon,
         code: code
       },
       {

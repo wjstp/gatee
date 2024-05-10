@@ -5,8 +5,8 @@ import AvatarGroup from '@mui/material/AvatarGroup';
 import dayjs from "dayjs";
 import MegaphoneIcon from "@assets/images/icons/ic_megaphone.png";
 import { MemberInfoSample } from "@constants/index";
-import {ChatAppointment} from "@type/index";
-import getUserInfoByEmail from "@utils/getUserInfoByEmail";
+import { ChatAppointment } from "@type/index";
+import getUserInfo from "@utils/getUserInfo";
 
 interface ChatAppointmentProps {
   chat: ChatAppointment
@@ -26,7 +26,7 @@ const BubbleChatAppointment = (props: ChatAppointmentProps) => {
 
   // 참여자 정보 콜백 함수
   const getParticipantsInfo = (email: string, index: number) => {
-    const userInfo = getUserInfoByEmail(email);
+    const userInfo = getUserInfo(email);
 
     return <Avatar src={userInfo.image} alt={userInfo.nickname} key={index}/>;
   }

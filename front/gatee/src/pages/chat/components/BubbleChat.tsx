@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import { ChatMessage, SenderType, ChatContent } from "@type/index";
 import { MemberInfoSample } from "@constants/index";
-import getUserInfoByEmail from "@utils/getUserInfoByEmail";
+import getUserInfo from "@utils/getUserInfo";
 import convertToAMPMTime from "@utils/convertToAMPMTime";
 import renderBubbleComponent from "@utils/renderBubbleComponent";
 
@@ -23,7 +23,7 @@ interface YourChatMessageProps {
 
 const YoursChat = (props: YourChatMessageProps) => {
   const { chat, isPrevSender, unreadMemberCount } = props;
-  const senderInfo = getUserInfoByEmail(chat.sender);
+  const senderInfo = getUserInfo(chat.sender);
 
   return (
     <div className="chat__yours-chat">

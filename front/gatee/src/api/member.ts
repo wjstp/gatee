@@ -13,6 +13,26 @@ export const createFamilyApi = async function (data: FormData,
   }).then(success).catch(fail);
 };
 
+// 가족 코드 생성
+interface CreateFamilyCodeApiReq {
+  familyId: string
+}
+export const createFamilyCodeApi = async function (data: CreateFamilyCodeApiReq,
+                                                   success: (res: AxiosResponse<any>) => void,
+                                                   fail: (err: AxiosError<any>) => void) {
+  await local.get(`/family/code?familyId=${data.familyId}`).then(success).catch(fail);
+}
+
+// 가족 정보 가져오기
+interface GetFamilyMemberApiReq {
+  familyId: string
+}
+export const getFamilyMemberApi = async function (data: GetFamilyMemberApiReq,
+                                                  success: (res: AxiosResponse<any>) => void,
+                                                  fail: (err: AxiosError<any>) => void) {
+  await local.get("/family", {params:data}).then(success).catch(fail);
+}
+
 // 회원 생성
 export const createMemberApi = async function (data: MemberApiReq,
                                                success: (res: AxiosResponse<any>) => void,
@@ -20,21 +40,11 @@ export const createMemberApi = async function (data: MemberApiReq,
   await local.post("/members", data).then(success).catch(fail);
 };
 
-
 // 내 정보 조회
+
 export const getMyDataApi = async function (success: (res: AxiosResponse<any>) => void,
                                             fail: (err: AxiosError<any>) => void) {
   await local.get("/members").then(success).catch(fail);
-}
-
-interface GetFamilyMemberApiReq {
-  familyId:string
-}
-// 가족 정보 가져오기
-export const getFamilyMemberApi = async function (data: GetFamilyMemberApiReq,
-                                                  success: (res: AxiosResponse<any>) => void,
-                                                  fail: (err: AxiosError<any>) => void) {
-  await local.get("/family", {params:data}).then(success).catch(fail);
 }
 
 // 잔소리 보내기

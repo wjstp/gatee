@@ -36,12 +36,18 @@ const SignupFamilyJoin = () => {
     }
   };
 
+  // 가족 생성 버튼 클릭 처리
+  const goToFamilySet = (): void => {
+    navigate("/signup/family-set");
+  }
+
   return (
     <div className="signup-family-join">
+
       {/*제목*/}
       <div className="signup-family-join__title">
         <span className="title__part--01">
-          가족코드를 입력
+          초대 코드를 입력
         </span>
         <span className="title__part--02">
             해 주세요
@@ -58,11 +64,14 @@ const SignupFamilyJoin = () => {
           placeholder="예) A43959FE "
           value={familyCode}
           onChange={handleInputChange}
-          autoFocus
         />
       </div>
       <div className="signup-family-set__error-message">
-        {errorMessage ? errorMessage : null}
+        {errorMessage ? (
+          errorMessage
+        ) : (
+          "　"
+        )}
       </div>
 
       {/*입력하기 버튼*/}
@@ -77,6 +86,19 @@ const SignupFamilyJoin = () => {
             </span>
         </button>
       </div>
+
+      {/*가족 생성*/}
+      <div className="signup-family-join__create">
+        <button
+          className="btn-create"
+          onClick={goToFamilySet}
+        >
+          <span className="btn-create__text">
+            초대 코드를 받지 못했나요?
+          </span>
+        </button>
+      </div>
+
     </div>
   );
 };

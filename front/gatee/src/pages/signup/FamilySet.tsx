@@ -117,7 +117,9 @@ const SignupFamilySet = () => {
           onClick={goToFamilySetCheck}
           disabled={!familyName}
         >
-          <span className="btn-next__text">소개하기</span>
+          <span className="btn-next__text">
+            소개하기
+          </span>
         </button>
       </div>
 

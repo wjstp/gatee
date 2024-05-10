@@ -766,231 +766,130 @@
   }
 }
 
-// 권한 설정 페이지
-.signup-member-set-permission {
+// 가족 코드 공유
+.member-family-set-share {
   @include flex_center;
-  flex-direction: column;
 
   height: 100%;
   width: 100%;
+  flex-direction: column;
 
   &__title {
-    @include flex_center;
-
-    flex-direction: column;
     font-size: 30px;
-    font-weight: bold;
 
     .title__part--01 {
+      font-weight: bold;
     }
 
     .title__part--02 {
     }
   }
 
-  &__checkbox {
-    width: 80%;
-    font-size: 17px;
-    margin-top: 10%;
+  &__img {
+    @extend %circular-profile-image;
 
-    .checkbox-all {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      margin-left: 4%;
+    margin-top: 5%;
+    height: 200px;
+    width: 200px;
+    border-radius: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid $gray75;
 
-      &__input {
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-        height: 30px;
-        width: 30px;
-        border: 2px solid $gray200;
-        border-radius: 30%;
-        cursor: default;
+    .img {
+      height: 200px;
+      width: 200px;
+      border-radius: 100%;
+      object-fit: cover;
+    }
+  }
 
-        &:checked {
-          background-color: $orange400;
-          border-color: $orange400;
-          cursor: default;
-        }
+  &__name {
+    margin-top: 5%;
+    height: 7%;
 
-        &:checked::after {
-          content: '\2713';
-          font-size: 30px;
-          color: white;
-          line-height: 27px;
-        }
+    .name {
+      font-weight: bold;
+      font-size: 30px;
+    }
+  }
+
+  &__code-box {
+    @include flex_center;
+
+    position: relative;
+    height: 18%;
+    width: 70%;
+    background-color: $gray50;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+
+    .code-box {
+
+      &__text {
+        font-size: 20px;
       }
 
-      &__label {
-        margin-left: 5%;
-        font-size: 25px;
+      &__code {
+        margin-top: 5%;
+        display: block;
+        font-size: 30px;
         font-weight: bold;
-
-        .label__text {
-
-        }
-      }
-    }
-
-    .checkbox-privacy {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      margin-top: 10%;
-      margin-left: 5%;
-
-      &__input {
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-        height: 25px;
-        width: 25px;
-        border: 2px solid $gray200;
-        border-radius: 30%;
-        cursor: default;
-
-        &:checked {
-          background-color: $orange400;
-          border-color: $orange400;
-          cursor: default;
-        }
-
-        &:checked::after {
-          content: '\2713';
-          font-size: 25px;
-          color: white;
-          line-height: 24px;
-        }
       }
 
-      &__label {
-        width: 80%;
-        display: flex;
-        flex-direction: column;
-        margin-left: 5%;
+      &__btn {
+        height: 20px;
+        width: 20px;
+        position: absolute;
+        top: 55%;
+        right: 10%;
 
-        .label__part--01 {
-          font-weight: bold;
-        }
+        .btn-copy {
+          height: 100%;
+          width: 100%;
 
-        .label__part--02 {
-          color: $gray300;
-        }
-      }
-    }
-
-    .checkbox-push {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      margin-top: 5%;
-      margin-left: 5%;
-
-      &__input {
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-        height: 25px;
-        width: 25px;
-        border: 2px solid $gray200;
-        border-radius: 30%;
-        cursor: default;
-
-        &:checked {
-          background-color: $orange400;
-          border-color: $orange400;
-          cursor: default;
-        }
-
-        &:checked::after {
-          content: '\2713';
-          font-size: 25px;
-          color: white;
-          line-height: 24px;
-        }
-      }
-
-      &__label {
-        width: 80%;
-        display: flex;
-        flex-direction: column;
-        margin-left: 5%;
-
-        .label__part--01 {
-          font-weight: bold;
-        }
-
-        .label__part--02 {
-          color: $gray300;
-        }
-      }
-    }
-
-    .checkbox-camera {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      margin-top: 5%;
-      margin-left: 5%;
-
-      &__input {
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-        height: 25px;
-        width: 25px;
-        border: 2px solid $gray200;
-        border-radius: 30%;
-        cursor: default;
-
-        &:checked {
-          background-color: $orange400;
-          border-color: $orange400;
-          cursor: default;
-        }
-
-        &:checked::after {
-          content: '\2713';
-          font-size: 25px;
-          color: white;
-          line-height: 24px;
-        }
-      }
-
-      &__label {
-        width: 80%;
-        display: flex;
-        flex-direction: column;
-        margin-left: 5%;
-
-        .label__part--01 {
-          font-weight: bold;
-        }
-
-        .label__part--02 {
-          color: $gray300;
+          &__icon {
+            color: black;
+          }
         }
       }
     }
   }
 
-  &__btn {
+  &__message {
+    margin-top: 1%;
+
+    .message--text {
+      color: red;
+    }
+  }
+
+  &__btn-kakao {
+
+    margin-top: 5%;
+    margin-bottom: 1%;
+
+    .btn-kakao__btn {
+
+    }
+
+    .btn-kakao__logo {
+
+    }
+  }
+
+  &__btn-next {
     @include flex_center;
 
-    width: 100%;
-    margin-top: 10%;
+    height: 10%;
+    width: 80%;
 
-    .btn-next {
+    .btn-next__btn {
       @extend %orange-button-large;
 
-      &__text {
-      }
-
-      &:disabled {
-        background-color: $gray75;
-      }
     }
   }
 }

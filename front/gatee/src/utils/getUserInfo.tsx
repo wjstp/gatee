@@ -5,7 +5,7 @@ import { Member } from "@type/index";
 // 1. 함수 이름 getUserInfo로 바꾸기
 // 2. UID로 회원의 모든 정보 반환
 
-const getUserInfoByEmail = (email: string) => {
+const getUserInfo = (email: string) => {
   const userInfo: Member | undefined = FamilyMemberInfoSample.find(member => member.email === email);
 
   if (!userInfo) {
@@ -21,4 +21,4 @@ const getUserInfoByEmail = (email: string) => {
   };
 };
 
-export default getUserInfoByEmail;
+export default getUserInfo;
