@@ -7,7 +7,6 @@ import io.ssafy.gatee.domain.family.dto.response.FamilyCodeRes;
 import io.ssafy.gatee.domain.family.dto.response.FamilyInfoRes;
 import io.ssafy.gatee.domain.family.dto.response.FamilySaveRes;
 import io.ssafy.gatee.domain.file.application.FileService;
-import io.ssafy.gatee.domain.file.dto.FileUrlRes;
 import io.ssafy.gatee.domain.file.entity.type.FileType;
 import io.ssafy.gatee.global.exception.error.bad_request.ExpiredCodeException;
 import io.ssafy.gatee.global.exception.error.not_found.FamilyNotFoundException;
@@ -20,6 +19,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.UUID;
 
@@ -37,16 +37,15 @@ public class FamilyController {
     @ResponseStatus(HttpStatus.OK)
     public FamilySaveRes saveFamily(
             @RequestParam("name") String name,
-            @RequestParam("fileType") FileType fileType,
-            @RequestParam("file") MultipartFile file,
+            @RequestParam("fileType") @Nullable FileType fileType,
+            @RequestParam("file") @Nullable MultipartFile file,
             @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) throws IOException {
-        FileUrlRes fileUrlRes = fileService.uploadFile(fileType, file);
-
         return familyService.saveFamily(
                 name,
                 UUID.fromString(customUserDetails.getUsername()),
-                fileUrlRes
+                fileType,
+                file
         );
     }
 

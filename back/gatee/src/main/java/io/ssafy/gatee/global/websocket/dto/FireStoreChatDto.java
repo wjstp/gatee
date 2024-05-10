@@ -13,7 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Getter
 @Builder
-public final class FireStoreChatDto {
+public class FireStoreChatDto {
 
     private final MessageType messageType;
 
@@ -25,5 +25,5 @@ public final class FireStoreChatDto {
 
     private final List<String> unReadMember;
 
-    private LocalDateTime currentTime;
+    private final String currentTime;
 }
