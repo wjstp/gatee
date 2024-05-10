@@ -169,7 +169,7 @@ public class FamilyServiceImpl implements FamilyService {
                     .memberId(memberFamily.getMember().getId())
                     .fileUrl(memberFamily.getMember().getFile().getUrl())
                     .birth(memberFamily.getMember().getBirth())
-                    .name(memberFamily.getFamily().getName())
+                    .name(memberFamily.getMember().getName())
                     .role(memberFamily.getRole())
                     .email(memberFamily.getMember().getEmail())
                     .mood(memberFamily.getMember().getMood())

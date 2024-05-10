@@ -101,15 +101,8 @@ public class MemberServiceImpl implements MemberService{
                 .originalName("default_image")
                 .build());
 
-        memberRepository.save(Member.builder().id(memberId)
-                .name(memberSaveReq.name())
-                        .name(memberSaveReq.name())
-                        .nickname(memberSaveReq.nickname())
-                        .privilege(Privilege.USER)
-                        .birth(LocalDate.parse(memberSaveReq.birth()))
-                        .birthType(BirthType.valueOf(memberSaveReq.birthType()))
-                        .file(file).build());
-;
+
+        member.saveInfo(memberSaveReq, file);
         MemberFamily memberFamily = memberFamilyRepository.findByMemberAndFamilyId(member, UUID.fromString(memberSaveReq.familyId()))
                 .orElseThrow(() -> new MemberFamilyNotFoundException(MEMBER_FAMILY_NOT_FOUND));
 
