@@ -4,7 +4,6 @@ import io.ssafy.gatee.domain.family.application.FamilyService;
 import io.ssafy.gatee.domain.family.dto.request.FamilyIdReq;
 import io.ssafy.gatee.domain.family.dto.request.FamilyJoinReq;
 import io.ssafy.gatee.domain.family.dto.request.FamilyNameReq;
-import io.ssafy.gatee.domain.family.dto.request.FamilySaveReq;
 import io.ssafy.gatee.domain.family.dto.response.FamilyCodeRes;
 import io.ssafy.gatee.domain.family.dto.response.FamilyInfoRes;
 import io.ssafy.gatee.domain.family.dto.response.FamilySaveRes;
@@ -80,9 +79,9 @@ public class FamilyController {
     @ResponseStatus(HttpStatus.OK)
     public FamilyInfoRes readFamily(
             @Valid
-            @RequestBody FamilyIdReq familyIdReq
+            @RequestParam String familyId
     ) throws FamilyNotFoundException {
-        return familyService.readFamily(familyIdReq.familyId());
+        return familyService.readFamily(familyId);
     }
 
     // 가족 이름 수정
