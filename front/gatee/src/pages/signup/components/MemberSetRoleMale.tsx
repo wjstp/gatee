@@ -1,8 +1,8 @@
 import React from 'react';
 import SignupMemberSetRoleEtc from "@pages/signup/components/MemberSetRoleEtc";
-import { ReactComponent as Kid } from "@assets/images/signup/son.svg";
-import { ReactComponent as Young } from "@assets/images/signup/dad.svg";
-import { ReactComponent as Old } from "@assets/images/signup/grandpa.svg";
+import { ReactComponent as Boy } from "@assets/images/signup/profile_boy.svg";
+import { ReactComponent as Man } from "@assets/images/signup/profile_man.svg";
+import { ReactComponent as OldMan } from "@assets/images/signup/profile_old_man.svg";
 import { useMemberStore } from "@store/useMemberStore";
 
 const SignupMemberSetRoleMale = (props: {
@@ -16,6 +16,7 @@ const SignupMemberSetRoleMale = (props: {
 
   return (
     <div className="signup-member-set-role-male">
+
       {/*역할 제목*/}
       <div className="signup-member-set-role-male__title-role">
         <span className="title__part--01">
@@ -66,8 +67,14 @@ const SignupMemberSetRoleMale = (props: {
           null
         )}
       </div>
+      
+      {/*에러 메시지*/}
       <div className="signup-member-set-role-male__error-message">
-        {errorMessage ? errorMessage : null}
+        {errorMessage ? (
+          errorMessage
+        ) : (
+          '　'
+        )}
       </div>
 
       {/*아이콘 제목*/}
@@ -84,31 +91,32 @@ const SignupMemberSetRoleMale = (props: {
       <div className="signup-member-set-role-male__icon">
         <div className="icon-box">
           <button
-            className={icon === "kid" ? "icon-box__btn-kid--selected" : "icon-box__btn-kid"}
-            onClick={() => setIcon("kid")}
+            className={icon === "Boy" ? "icon-box__btn-kid--selected" : "icon-box__btn-kid"}
+            onClick={() => setIcon("Boy")}
           >
-            <Kid
-              className={icon === "kid" ? "btn-kid--icon--selected" : "btn-kid--icon"}
+            <Boy
+              className={icon === "Boy" ? "btn-kid--icon--selected" : "btn-kid--icon"}
             />
           </button>
           <button
-            className={icon === "young" ? "icon-box__btn-young--selected" : "icon-box__btn-young"}
-            onClick={() => setIcon("young")}
+            className={icon === "Man" ? "icon-box__btn-young--selected" : "icon-box__btn-young"}
+            onClick={() => setIcon("Man")}
           >
-            <Young
-              className={icon === "young" ? "btn-young--icon--selected" : "btn-young--icon"}
+            <Man
+              className={icon === "Man" ? "btn-young--icon--selected" : "btn-young--icon"}
             />
           </button>
           <button
-            className={icon === "old" ? "icon-box__btn-old--selected" : "icon-box__btn-old"}
-            onClick={() => setIcon("old")}
+            className={icon === "OldMan" ? "icon-box__btn-old--selected" : "icon-box__btn-old"}
+            onClick={() => setIcon("OldMan")}
           >
-            <Old
-              className={icon === "old" ? "btn-old--icon--selected" : "btn-old--icon"}
+            <OldMan
+              className={icon === "OldMan" ? "btn-old--icon--selected" : "btn-old--icon"}
             />
           </button>
         </div>
       </div>
+
     </div>
   );
 };

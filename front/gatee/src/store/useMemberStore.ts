@@ -14,8 +14,8 @@ type MemberStore = {
   setBirthDay: (newBirthDay: string) => void;
   birthType: string;
   setBirthType: (newBirthType: string) => void;
-  role: string;
-  setRole: (newRole: string) => void;
+  role: string | null;
+  setRole: (newRole: string | null) => void;
   mood: string;
   setMood: (newMood: string) => void;
   phoneNumber: string;
@@ -24,8 +24,10 @@ type MemberStore = {
   setGender: (newGender: string) => void;
   icon: string;
   setIcon: (newIcon: string) => void;
-  memberImage: string | ArrayBuffer | null;
-  setMemberImage: (newImage: string | ArrayBuffer | null) => void;
+  memberImage: File | null
+  setMemberImage: (newImage: File | null) => void;
+  stringMemberImage: string;
+  setStringMemberImage: (newStringMemberImage: string) => void;
   myInfo : MyMemberApiReq;
   setMyInfo: (newMyInfo: Partial<MyMemberApiReq>) => void;
 };
@@ -34,7 +36,7 @@ export const useMemberStore = create<MemberStore>()(
   (set) => ({
     memberId: null,
     setMemberId: (newMemberId: string) => set({memberId: newMemberId}),
-    name: "예빈",
+    name: "",
     setName: (newName: string) => set({name: newName}),
     nickname: null,
     setNickName: (newNickname: string) => set({nickname: newNickname}),
@@ -42,8 +44,8 @@ export const useMemberStore = create<MemberStore>()(
     setBirthDay: (newBirthDay: string) => set({birthDay: newBirthDay}),
     birthType: "SOLAR",
     setBirthType: (newBirthType: string) => set({birthType: newBirthType}),
-    role: "",
-    setRole: (newRole: string) => set({role: newRole}),
+    role: null,
+    setRole: (newRole: string | null) => set({role: newRole}),
     mood: "default",
     setMood: (newMood: string) => set({mood: newMood}),
     phoneNumber: "",
@@ -53,7 +55,10 @@ export const useMemberStore = create<MemberStore>()(
     icon: "",
     setIcon: (newIcon: string) => set({icon: newIcon}),
     memberImage: null,
-    setMemberImage: (newImage: string | ArrayBuffer | null) => set({memberImage: newImage}),
+    setMemberImage: (newImage: File | null) => set({memberImage: newImage}),
+    stringMemberImage: "",
+    setStringMemberImage: (newStringMemberImage: string) => set({stringMemberImage: newStringMemberImage}),
+
 
     // 내 정보 객체
     myInfo : {

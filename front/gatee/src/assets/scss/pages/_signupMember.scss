@@ -3,15 +3,15 @@
 
 // 멤버 이름 설정 페이지
 .signup-member-set {
+  @include flex_center;
+
   height: 100%;
   width: 100%;
   display: flex;
-  align-items: center;
   flex-direction: column;
 
   &__title {
-    margin-top: 30%;
-    font-size: 30px;
+    font-size: 28px;
 
     .title__part--01 {
       font-weight: bold;
@@ -45,8 +45,7 @@
   &__btn {
     @include flex_center;
 
-    width: 100%;
-    margin-top: 5%;
+    width: 80%;
 
     .btn-next {
       @extend %orange-button-large;
@@ -63,6 +62,8 @@
 
 // 멤버 생일과 성별 입력 페이지
 .signup-member-set-birth {
+  @include flex_center;
+
   height: 100%;
   width: 100%;
   display: flex;
@@ -71,7 +72,7 @@
 
   &__title-birth {
     margin-top: 10%;
-    font-size: 30px;
+    font-size: 28px;
 
     .title-birth__part--01 {
       font-weight: bold;
@@ -84,75 +85,70 @@
   &__birthday {
     @include flex_center;
 
-    width: 85%;
     margin-top: 5%;
+    width: 100%;
+    align-items: center;
 
     .birthday-date-field {
       height: 100%;
-      width: 100%;
 
       &__input {
       }
     }
 
     .birthday-choice {
-      @include flex_center;
-
-      width: 100%;
+      height: 90%;
+      width: 20%;
       margin-left: 3%;
-      margin-top: 3%;
+      margin-top: 2%;
 
-      &__btn-solar, &__btn-lunar {
-        @include flex_center;
+      &__solar, &__lunar {
+        height: 50%;
 
-        width: 50%;
-        font-size: 18px;
+        .btn-solar, .btn-lunar {
+          @include flex_center;
 
-        .btn-solar__input, .btn-lunar__input {
-          margin-top: 3%;
-          margin-right: 3%;
-          appearance: none;
-          background-color: #fff;
-          color: $gray200;
-          width: 1.6em;
-          height: 1.6em;
-          border: 1px solid $gray200;
-          border-radius: 50%;
-          transform: translateY(-0.075em);
-          display: grid;
-          place-content: center;
+          font-size: 18px;
+          width: 100%;
+          height: 100%;
 
-          &:checked {
-            color: orange;
-            border-color: orange;
-          }
-
-          &:checked::before {
-            content: "";
-            width: 1em;
-            height: 1em;
+          .btn-solar__input, .btn-lunar__input {
+            appearance: none;
+            background-color: #fff;
+            color: $gray200;
+            width: 1.4em;
+            height: 1.4em;
+            border: 1px solid $gray200;
             border-radius: 50%;
-            background: orange;
-          }
+            transform: translateY(-0.075em);
+            position: relative;
+            margin-top: 3px;
 
-          &--label {
-            color: $gray100;
-            margin-left: 5%;
-          }
+            &:checked {
+              color: orange;
+              border-color: orange;
+            }
 
-          &--label--selected {
-            color: $orange400;
-            margin-left: 5%;
-          }
-        }
+            &:checked::before {
+              content: "";
+              width: 0.8em;
+              height: 0.8em;
+              border-radius: 50%;
+              background: orange;
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+            }
 
-        .btn-solar__input {
+            &--label {
+              color: $gray200;
+              margin-left: 5%;
+            }
 
-          &--label {
-            margin-right: 5%;
-
-            &--selected {
-              margin-right: 5%;
+            &--label--selected {
+              color: $orange400;
+              margin-left: 5%;
             }
           }
         }
@@ -162,7 +158,7 @@
 
   &__title-gender {
     margin-top: 10%;
-    font-size: 30px;
+    font-size: 28px;
 
     .title-gender__part--01 {
       font-weight: bold;
@@ -253,7 +249,7 @@
   &__btn {
     @include flex_center;
 
-    width: 100%;
+    width: 80%;
     margin-top: 5%;
 
     .btn-next {
@@ -271,24 +267,24 @@
 
 // 멤버 역할 및 아이콘 설정 페이지
 .signup-member-set-role {
+  @include flex_center;
+
   height: 100%;
   width: 100%;
-  display: flex;
-  align-items: center;
   flex-direction: column;
 
   &__choice {
     @include flex_center;
 
-    height: 75%;
+    height: 62%;
     width: 100%;
   }
 
   &__btn {
     @include flex_center;
 
-    width: 100%;
-    margin-top: 5%;
+    width: 80%;
+    margin-top: 3%;
 
     .btn-next {
       @extend %orange-button-large;
@@ -314,8 +310,7 @@
   &__title-role {
     @include flex_center;
 
-    margin-top: 7%;
-    font-size: 30px;
+    font-size: 28px;
 
     .title__part--01 {
       font-weight: bold;
@@ -334,20 +329,20 @@
     .btn-dad, .btn-son, .btn-etc {
       margin-top: 5%;
       font-weight: bold;
-      font-size: 25px;
+      font-size: 24px;
       color: $gray100;
       height: 60px;
-      width: 200px;
+      width: 180px;
       border: 2px solid $gray100;
       border-radius: 30px;
 
       &--selected {
         margin-top: 5%;
         font-weight: bold;
-        font-size: 25px;
+        font-size: 24px;
         color: $orange400;
         height: 60px;
-        width: 200px;
+        width: 180px;
         border: 2px solid $orange400;
         border-radius: 30px;
       }
@@ -357,19 +352,21 @@
   &__role-etc {
     @include flex_center;
 
-    height: 15%;
+    height: 8%;
     width: 80%;
+    margin-top: 1%;
   }
 
   &__error-message {
     color: red;
+    margin-top: 1%;
   }
 
   &__title-icon {
     @include flex_center;
 
-    font-size: 30px;
-    margin-top: 5%;
+    font-size: 28px;
+    margin-top: 3%;
 
     .title__part--01 {
       font-weight: bold;
@@ -383,14 +380,14 @@
     @include flex_center;
 
     width: 100%;
-    margin-top: 10%;
+    margin-top: 7%;
 
     .icon-box {
       @include flex_center;
 
       width: 100%;
       height: 100%;
-      gap: 20px;
+      gap: 15px;
 
       &__btn-kid, &__btn-young, &__btn-old {
         @include flex_center;
@@ -411,30 +408,13 @@
       .btn-kid--icon, .btn-young--icon, .btn-old--icon {
         height: 100%;
         width: 100%;
-
-        g {
-          circle {
-            fill: $gray100;
-          }
-        }
-
-        circle {
-          stroke: $gray100;
-        }
+        border-radius: 100%;
+        opacity: 0.3;
 
         &--selected {
           height: 100%;
           width: 100%;
-
-          g {
-            circle {
-              fill: $orange400;
-            }
-          }
-
-          circle {
-            stroke: $orange400;
-          }
+          border-radius: 100%;
         }
       }
     }
@@ -452,8 +432,7 @@
   &__title-role {
     @include flex_center;
 
-    margin-top: 7%;
-    font-size: 30px;
+    font-size: 28px;
 
     .title__part--01 {
       font-weight: bold;
@@ -472,20 +451,20 @@
     .btn-mom, .btn-daughter, .btn-etc {
       margin-top: 5%;
       font-weight: bold;
-      font-size: 25px;
+      font-size: 24px;
       color: $gray100;
       height: 60px;
-      width: 200px;
+      width: 180px;
       border: 2px solid $gray100;
       border-radius: 30px;
 
       &--selected {
         margin-top: 5%;
         font-weight: bold;
-        font-size: 25px;
+        font-size: 24px;
         color: $orange400;
         height: 60px;
-        width: 200px;
+        width: 180px;
         border: 2px solid $orange400;
         border-radius: 30px;
       }
@@ -495,19 +474,21 @@
   &__role-etc {
     @include flex_center;
 
-    height: 15%;
+    height: 8%;
     width: 80%;
+    margin-top: 1%;
   }
 
   &__error-message {
     color: red;
+    margin-top: 1%;
   }
 
   &__title-icon {
     @include flex_center;
 
-    font-size: 30px;
-    margin-top: 5%;
+    font-size: 28px;
+    margin-top: 3%;
 
     .title__part--01 {
       font-weight: bold;
@@ -521,14 +502,14 @@
     @include flex_center;
 
     width: 100%;
-    margin-top: 10%;
+    margin-top: 7%;
 
     .icon-box {
       @include flex_center;
 
       width: 100%;
       height: 100%;
-      gap: 20px;
+      gap: 15px;
 
       &__btn-kid, &__btn-young, &__btn-old {
         @include flex_center;
@@ -536,6 +517,7 @@
         width: 80px;
         height: 80px;
         border-radius: 100%;
+        opacity: 0.3;
 
         &--selected {
           @include flex_center;
@@ -549,30 +531,12 @@
       .btn-kid--icon, .btn-young--icon, .btn-old--icon {
         height: 100%;
         width: 100%;
-
-        g {
-          circle {
-            fill: $gray100;
-          }
-        }
-
-        circle {
-          stroke: $gray100;
-        }
+        border-radius: 100%;
 
         &--selected {
           height: 100%;
           width: 100%;
-
-          g {
-            circle {
-              fill: $orange400;
-            }
-          }
-
-          circle {
-            stroke: $orange400;
-          }
+          border-radius: 100%;
         }
       }
     }
@@ -582,19 +546,21 @@
 // 멤버 역할 - 기타
 .signup-member-set-role-etc {
   @include flex_center;
+
   height: 100%;
+  width: 100%;
+  margin-top: 2%;
 
   &__input {
+    @include flex_center;
 
-    height: 50%;
-    width: 55%;
-    margin-top: 5%;
+    height: 90%;
+    width: 50%;
     border-bottom: 1px solid $gray100;
 
     .input {
-      height: 100%;
       width: 100%;
-      font-size: 30px;
+      font-size: 22px;
       text-align: center;
       justify-content: center;
     }
@@ -603,18 +569,16 @@
 
 // 멤버 정보 확인 페이지
 .signup-member-set-check {
+  @include flex_center;
+
   height: 100%;
   width: 100%;
-  display: flex;
-  align-items: center;
   flex-direction: column;
 
   &__title {
-    margin-top: 30%;
-    font-size: 30px;
+    font-size: 28px;
 
     .title__text {
-      font-weight: bold;
     }
   }
 
@@ -735,22 +699,6 @@
     }
   }
 
-  &__btn-back {
-    @include flex_center;
-
-    margin-top: 5%;
-
-    .btn-back__btn {
-      width: 100%;
-
-      .btn__text {
-        font-size: 120%;
-        color: $gray200;
-        text-decoration: underline;
-      }
-    }
-  }
-
   &__btn-next {
     @include flex_center;
 
@@ -758,9 +706,22 @@
     margin-top: 5%;
 
     .btn-next__btn {
-      @extend %orange-button-large;
+      @extend %orange-button-medium;
 
       .btn__text {
+      }
+    }
+  }
+
+  &__btn-back {
+    @include flex_center;
+
+    .btn-back__btn {
+
+      .btn__text {
+        font-size: 120%;
+        color: $gray200;
+        text-decoration: underline;
       }
     }
   }

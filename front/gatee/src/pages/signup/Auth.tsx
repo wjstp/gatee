@@ -27,7 +27,7 @@ const SignupAuth = () => {
       {
         grant_type: "authorization_code",
         client_id: kakaoJavaScriptKey,
-        redirect_uri: mobile_taehyeon,
+        redirect_uri: web,
         code: code
       },
       {
@@ -61,6 +61,7 @@ const SignupAuth = () => {
         // 우리 토큰 로컬 스토리지 저장
         const access_token = res.headers.authorization.split(' ')[1];
         localStorage.setItem("accessToken", access_token);
+        console.log(res)
 
         // 회원가입 페이지로 이동
         navigate('/signup');

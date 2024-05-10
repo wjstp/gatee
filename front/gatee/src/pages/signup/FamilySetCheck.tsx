@@ -40,8 +40,6 @@ const SignupFamilySetCheck = () => {
     ).then().catch();
   }
 
-  //
-
   // 뒤로 가기
   const backTo = ():void => {
     navigate(-1);
