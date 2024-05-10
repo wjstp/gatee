@@ -37,7 +37,6 @@ public class PushNotificationController {
         return notificationService.readNotifications(customUserDetails.getMemberId());
     }
 
-
     // 동의목록 변경
     @ResponseStatus(HttpStatus.OK)
     @PatchMapping

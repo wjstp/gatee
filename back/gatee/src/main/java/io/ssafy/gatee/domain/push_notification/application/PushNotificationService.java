@@ -12,8 +12,6 @@ import java.util.UUID;
 
 public interface PushNotificationService {
 
-    NotificationAgreementRes readNotifications(UUID memberId);
-
     void sendTestPush(String token) throws FirebaseMessagingException;
 
     String findTokenByMemberId(UUID memberId);
@@ -31,4 +29,6 @@ public interface PushNotificationService {
     void sendPushOneToMany(PushNotificationFCMReq pushNotificationFCMReq) throws FirebaseMessagingException;
 
     void modifyNotificationAgreements(UUID memberId, NotificationAgreementReq agreementReq);
+
+    NotificationAgreementRes readNotifications(UUID memberId);
 }
