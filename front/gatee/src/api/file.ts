@@ -9,10 +9,6 @@ const REACT_APP_API_URL = process.env.REACT_APP_API_URL;
 export const uploadFileApi = async function (data: FormData,
                                              success: (res: AxiosResponse<any>) => void,
                                              fail: (err: AxiosError<any>) => void) {
-  await axios.post(`${REACT_APP_API_URL}/api/files`, data, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      'Content-Type': 'multipart/form-data'
-    }
+  await local.post(`${REACT_APP_API_URL}/api/files`, data, {
   }).then(success).catch(fail);
 }

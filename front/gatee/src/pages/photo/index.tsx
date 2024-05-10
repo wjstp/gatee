@@ -9,12 +9,17 @@ import useModal from "@hooks/useModal";
 import {AlbumNameInputModal} from "@pages/photo/components/CreateAlbumModal";
 import {EditModal} from "@pages/photo/components/EditModeModal";
 import {SelectAlbumModal} from "@pages/photo/components/SelectAlbum";
-
+import {uploadPhotoApi} from "@api/photo";
+import {AxiosResponse} from "axios";
+import {imageResizer} from "@utils/imageResizer";
+import {uploadFileApi} from "@api/file";
+import {useFamilyStore} from "@store/useFamilyStore";
 
 
 const PhotoIndex = () => {
   const location = useLocation();
   const navigate = useNavigate()
+  const {familyId} = useFamilyStore()
   // 상단 탭 상태 관리 -> 모든 사진 / 앨범사진
   const [activeTab, setActiveTab] = useState("album"); // 현재 경로를 기본값으로 설정
   // 모든 사진의 하단 탭 상태 관리 -> 일 / 월 / 연
@@ -44,7 +49,7 @@ const PhotoIndex = () => {
   const [albumId, setAlbumId] = useState(0);
   const [albumName, setAlbumName] = useState("");
   // 추가될 사진
-  // const inputRef = useRef<HTMLInputElement>(null);
+  const [inputFile, setInputFile] = useState<File[] | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   // const [selectedImage, setSelectedImage] = useState<string | ArrayBuffer | null>(null);
 
@@ -70,7 +75,7 @@ const PhotoIndex = () => {
       // 편집 모드가 앨범으로 이동일때
     } else if (editMode === "moveAlbum") {
       console.log('선택 사진 앨범으로 이동')
-      console.log(editPhotoIdList, albumName,'으로 이동',)
+      console.log(editPhotoIdList, albumName, '으로 이동',)
       editPhotoIdList.clear()
       navigate(`/photo/album/${albumId}`)
     }
@@ -164,27 +169,48 @@ const PhotoIndex = () => {
   };
 
 // 이미지 선택 처리
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const files = e.target.files;
-    if (files) {
-      // 여러 파일을 업로드할 수 있도록 multiple 속성이 설정된 경우
-      const formData = new FormData();
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        // 선택된 각 파일을 FormData에 추가
-        formData.append("images[]", file);
+  const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
+    if (event.target.files && event.target.files.length > 0) {
+      const files: File[] = Array.from(event.target.files);
+      if (files) {
+        // 여러 파일을 업로드할 수 있도록 multiple 속성이 설정
+        for (const file of files) {
+          const resizedFile: File = (await imageResizer(file, 1000, 1000)) as File;
+          console.log(resizedFile);
+          const formData = new FormData();
+          formData.append("fileType", "MESSAGE");
+          formData.append('file', resizedFile);
+          uploadImages(formData);
+        }
       }
-      // 서버로 선택된 모든 파일을 업로드
-      uploadImages(formData);
     }
   };
 
 // 선택된 파일들을 서버에 업로드하는 함수
   const uploadImages = (formData: FormData): void => {
-    console.log('서버 업로드')
-    console.log(formData)
-    // 서버로 HTTP 요청을 보내는 코드 작성
-
+    // 파일 올리기
+    uploadFileApi(formData,
+      res => {
+        console.log(res)
+        // 보내줄 사진 데이터
+        const payload = {
+          familyId: familyId,
+          fileId: res.data.fileId
+        }
+        // 사진 등록하기
+        uploadPhotoApi(
+          payload,
+          res => {
+            console.log(res)
+          }
+          , err => {
+            console.log(err)
+          }
+        )
+      },
+      err => {
+        console.log(err)
+      })
   };
 
 

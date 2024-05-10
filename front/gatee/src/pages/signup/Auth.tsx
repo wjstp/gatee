@@ -36,11 +36,11 @@ const SignupAuth = () => {
         }
       },
       (res: AxiosResponse<any>): void => {
+        console.log(res.data.access_token)
         // 카카오 토큰으로 우리 서버 토큰 발급하기
         tokenChange(res.data.access_token);
       },
       (err: AxiosError<any>): void => {
-        alert(err)
         // 로그인 실패
         alert('다시 로그인을 시도해보세요');
         navigate('/kakao');

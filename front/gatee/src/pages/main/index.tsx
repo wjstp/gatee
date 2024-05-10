@@ -18,7 +18,7 @@ const MainIndex = () => {
 
   // 가족 데이터 저장 Api
   const saveFamilyData = (familyId:string) => {
-    getFamilyMemberApi(familyId,
+    getFamilyMemberApi({familyId:familyId},
       (res) => {
         console.log("가족 정보 조회",res.data);
         setFamilyInfo(res.data.memberFamilyInfoList);
@@ -51,7 +51,7 @@ const MainIndex = () => {
 
   useEffect(() => {
     // 나 + 가족 데이터 가져오기 주석처리
-    // saveMemberData()
+    saveMemberData()
   }, []);
 
 

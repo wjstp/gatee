@@ -19,13 +19,13 @@ const SignupFamilySetCheck = () => {
   // 파일을 업로드했을 때
   const createFamily = (): void => {
     const formData = new FormData();
-    formData.append("name", familyName);
-    formData.append("fileType", "FAMILY_PROFILE");
     // 파일이 업로드 되어있으면 파일 이어붙이기
     if (familyImage instanceof File) {
       formData.append("file", familyImage);
-    } 
-    
+    }
+    formData.append("name", familyName);
+    formData.append("fileType", "FAMILY_PROFILE");
+
     // 가족 생성 요청 보내기
     createFamilyApi(
       formData,
