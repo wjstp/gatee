@@ -9,9 +9,9 @@ import java.util.UUID;
 public record PhotoSaveReq(
 
         @NotNull
-        Long memberFamilyId,
+        Long fileId,
 
         @NotNull
-        Long fileId
+        UUID familyId
 ) {
 }

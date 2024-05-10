@@ -69,6 +69,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
         onlineRoomMember.getOnlineUsers().add(memberId);
         onlineRoomMemberRepository.save(onlineRoomMember);
         // 안읽었던 메세지들 읽기
+        log.info("내가 안읽은 메세지 읽기 {}", memberId);
         chatService.updateRead(memberId, familyId);
     }
 
@@ -76,5 +77,19 @@ public class WebSocketHandler extends TextWebSocketHandler {
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         // 회원
         log.info("연결 종료");
+        UUID memberId = UUID.fromString(session.getPrincipal().getName());
+        UUID familyId = familyService.getFamilyIdByMemberId(memberId);
+        OnlineRoomMember onlineRoomMember = onlineRoomMemberRepository.findById(familyId)
+                .map(orm -> {
+                    orm.setOnlineUsers(Optional.ofNullable(orm.getOnlineUsers()).orElseGet(HashSet::new));
+                    return orm;
+                })
+                .orElseGet(() -> OnlineRoomMember.builder()
+                        .id(familyId)
+                        .onlineUsers(new HashSet<>())
+                        .build());
+        log.info("유저 {} 오프라인 전환", memberId);
+        onlineRoomMember.getOnlineUsers().remove(memberId);
+        onlineRoomMemberRepository.save(onlineRoomMember);
     }
 }

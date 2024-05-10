@@ -14,7 +14,7 @@ const ProfileModify = () => {
 
   // 이미지 관련
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [memberImage, setMemberImage] = useState<string | ArrayBuffer | null>(member.image);
+  const [memberImage, setMemberImage] = useState<string | ArrayBuffer | null>(member.fileUrl);
   // 닉네임 관련
   const inputNicknameRef = useRef<HTMLInputElement>(null);
   const [inputNickname, setInputNickname] = useState<string>(member.nickname);
@@ -94,7 +94,7 @@ const ProfileModify = () => {
       setNameErrorMessage("");
     }
   }
-  
+
   // // 역할 핸들러
   // const handleRoleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
   //   const selectedRole = e.target.value;
@@ -145,12 +145,12 @@ const ProfileModify = () => {
     <div className="profile-modify">
       {/*프로필 섹션*/}
       <div className="profile-modify__profile">
-        
+
         {/*프로필 이미지*/}
         <div className="profile__img-box">
           <img
             className="img-box__img"
-            src={memberImage ? memberImage.toString() : member.image}
+            src={memberImage ? memberImage.toString() : member.fileUrl}
             alt="profile-image"
           />
           <input
@@ -209,7 +209,7 @@ const ProfileModify = () => {
             </span>
           </button>
         </div>
-        
+
         {/*정보 박스*/}
         <div className="profile__info-box">
           <div className="info-box__name">
@@ -357,4 +357,14 @@ const ProfileModify = () => {
   );
 }
 
+
+const RoleModal = () => {
+
+  return (
+    <div>
+
+    </div>
+  )
+
+}
 export default ProfileModify;

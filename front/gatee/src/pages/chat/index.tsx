@@ -5,7 +5,7 @@ import ChatDate from "@pages/chat/components/ChatDate";
 import { ChatSample } from "@constants/index";
 import { ChatContent, ChatDateLine, ChatType } from "@type/index";
 
-// import SockJS from "sockjs-client";
+import SockJS from "sockjs-client";
 import firebase from "../../config";
 import 'firebase/auth';
 import 'firebase/database';
@@ -17,61 +17,45 @@ const ChatIndex = () => {
 
   const [data, setData] = useState<any>([]);
   const familyId = "1";
-  const userRef = firebase.database().ref(`chat/${familyId}`)
+  const chatRef = firebase.database().ref(`chat/${familyId}`)
   const firestore = firebase.database();
 
+  const WS_URL: string = `${REACT_APP_API_URL}/chat`
+  const ws = new SockJS(`${WS_URL}?Token=${localStorage.getItem('accessToken')}`);
+
+  const MAX_RETRY_COUNT: number = 5;
+  const retryCount = useRef<number>(0);
+
   useEffect(() => {
-    // userRef.push({content: "안녕"})
+    connect();
 
-    firebase.auth().currentUser?.getIdToken(
-      true
-    ).then((idToken) => {
-      console.log(idToken);
-    }).catch((error) => {
-      console.log(error)
-    })
-
-    // userRef.on('value', snapshot => {
-    //   const users = snapshot.val();
-    //   console.log(users)
-    //   const usersData = [];
-    //   for(let id in users) {
-    //     usersData.push({ ...users[id], id });
-    //   }
-    //   console.log(usersData);
-    //   setData(usersData);
-    // })
+    return () => {
+      disconnect();
+    };
   }, []);
 
+  const connect = () => {
+     ws.onopen = () => {
+      console.log("<<< CONNECT");
+    };
+  }
 
-  // let sock = new SockJS(`${REACT_APP_API_URL}/chat`);
+  const disconnect = () => {
+    ws.onclose = () => {
+      console.log(">>> DISCONNECT");
+    };
+  }
+
+  const getData = () => {
+
+  }
   // useEffect(() => {
-  //   // connect();
-  //
-  //   return () => {
-  //     // disconnect();
-  //   };
+  //   userRef.on('value', snapshot => {
+  //     const users = snapshot.val();
+  //     console.log(users)
+  //     const usersData = [];
+  //   })
   // }, []);
-  //
-  // useEffect(() => {
-  //   // send();
-  // }, [newMessage]);
-
-  // const connect = () => {
-  //   sock.onopen = () => {
-  //     console.log('WebSocket connection opened');
-  //   };
-  // }
-  //
-  // const disconnect = () => {
-  //   sock.onclose = () => {
-  //     console.log('WebSocket connection closed');
-  //   };
-  // }
-
-  // const send = () => {
-  //
-  // }
 
   // 이전 채팅과 현재 채팅의 보낸 사람이 같은지 여부에 따라 props 설정
   const setPrevProps = (prevChat: ChatContent, currentChat: ChatContent) => {

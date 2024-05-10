@@ -10,10 +10,8 @@ import io.ssafy.gatee.domain.member_notification.dao.MemberNotificationRepositor
 import io.ssafy.gatee.domain.member_notification.entity.MemberNotification;
 import io.ssafy.gatee.domain.push_notification.dto.request.DataFCMReq;
 import io.ssafy.gatee.domain.push_notification.dto.request.NaggingReq;
-import io.ssafy.gatee.domain.push_notification.dto.request.NotificationAgreementReq;
 import io.ssafy.gatee.domain.push_notification.dto.request.PushNotificationFCMReq;
 import io.ssafy.gatee.domain.push_notification.dto.response.NaggingRes;
-import io.ssafy.gatee.domain.push_notification.dto.response.NotificationAgreementRes;
 import io.ssafy.gatee.domain.push_notification.dto.response.PushNotificationRes;
 import io.ssafy.gatee.domain.push_notification.entity.PushNotification;
 import io.ssafy.gatee.domain.push_notification.entity.Type;
@@ -37,21 +35,8 @@ public class PushNotificationServiceImpl implements PushNotificationService {
     private final MemberNotificationRepository memberNotificationRepository;
 
     @Override
-    public NotificationAgreementRes readNotifications(UUID memberId) {
-        Member member = memberRepository.getReferenceById(memberId);
-        return NotificationAgreementRes.toDto(memberNotificationRepository.findByMember(member)
-                .orElse(MemberNotification.builder()
-                        .albumNotification(false)
-                        .naggingNotification(false)
-                        .scheduleNotification(false)
-                        .build()));
-    }
-
-    @Override
-    public void modifyNotificationAgreements(UUID memberId, NotificationAgreementReq agreementReq) {
-        Member member = memberRepository.getReferenceById(memberId);
-        MemberNotification memberNotification = memberNotificationRepository.findByMember(member).orElseThrow();    // todo: 예외 추가
-        
+    public List<PushNotificationRes> readNotifications(UUID memberId) {
+        return null;
     }
 
     @Override
@@ -95,13 +80,13 @@ public class PushNotificationServiceImpl implements PushNotificationService {
     @Override
     public boolean checkAgreement(Type type, UUID memberId) {
         Member proxyMember = memberRepository.getReferenceById(memberId);
-        return memberNotificationRepository.findByMember(proxyMember)
-                .map(memberNotification -> switch (type) {
-                    case NAGGING -> memberNotification.isNaggingNotification();
-                    case SCHEDULE -> memberNotification.isScheduleNotification();
-                    case ALBUM -> memberNotification.isAlbumNotification();
-                    default -> false;
-        }).orElse(false);
+        MemberNotification memberNotification = memberNotificationRepository.findByMember(proxyMember).orElse(null);
+        return switch (type) {
+            case NAGGING -> Objects.nonNull(memberNotification) && memberNotification.isNaggingNotification();
+            case SCHEDULE -> Objects.nonNull(memberNotification) && memberNotification.isScheduleNotification();
+            case ALBUM -> Objects.nonNull(memberNotification) && memberNotification.isAlbumNotification();
+            default -> false;
+        };
     }
 
     @Override
@@ -123,7 +108,7 @@ public class PushNotificationServiceImpl implements PushNotificationService {
         PushNotificationFCMReq pushNotification = PushNotificationFCMReq.builder()
                 .receiverId(Collections.singletonList(naggingReq.receiverId()))
                 .senderId(memberId)
-                .title(Type.NAGGING.korean)
+                .title(Type.NAGGING.toString())
                 .content(result.answer())
                 .dataFCMReq(DataFCMReq.builder()
                         .type(Type.NAGGING)
@@ -212,7 +197,7 @@ public class PushNotificationServiceImpl implements PushNotificationService {
                                     .build())
                             .build())
                     .build();
-            BatchResponse response = FirebaseMessaging.getInstance().sendEachForMulticast(message);    // sendMulticast
+            BatchResponse response = FirebaseMessaging.getInstance().sendMulticast(message);    // sendEachForMulticast
             if (response.getFailureCount() > 0) {
                 List<SendResponse> responses = response.getResponses();
                 List<String> failedTokens = new ArrayList<>();
@@ -231,6 +216,4 @@ public class PushNotificationServiceImpl implements PushNotificationService {
         }
 
     }
-
-
 }

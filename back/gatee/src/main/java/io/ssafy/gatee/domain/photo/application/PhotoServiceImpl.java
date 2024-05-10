@@ -16,11 +16,10 @@ import io.ssafy.gatee.domain.photo.dto.request.PhotoListReq;
 import io.ssafy.gatee.domain.photo.dto.request.PhotoSaveReq;
 import io.ssafy.gatee.domain.photo.dto.response.PhotoDetailRes;
 import io.ssafy.gatee.domain.photo.dto.response.PhotoListRes;
+import io.ssafy.gatee.domain.photo.dto.response.PhotoSaveRes;
+import io.ssafy.gatee.domain.photo.dto.response.PhotoThumbnailRes;
 import io.ssafy.gatee.domain.photo.entity.Photo;
 import io.ssafy.gatee.domain.push_notification.application.PushNotificationService;
-import io.ssafy.gatee.domain.push_notification.dto.request.DataFCMReq;
-import io.ssafy.gatee.domain.push_notification.dto.request.PushNotificationFCMReq;
-import io.ssafy.gatee.domain.push_notification.entity.Type;
 import io.ssafy.gatee.domain.reaction.dao.ReactionRepository;
 import io.ssafy.gatee.domain.reaction.dto.response.ReactionMemberRes;
 import io.ssafy.gatee.domain.reaction.entity.Reaction;
@@ -82,6 +81,29 @@ public class PhotoServiceImpl implements PhotoService {
         return photoList.stream().map(PhotoListRes::toDto).toList();
     }
 
+    // 사진 썸네일 목록 조회
+    @Override
+    public List<PhotoThumbnailRes> readPhotoThumbnailList(String filter, UUID familyId, UUID memberId) {
+        Family family = familyRepository.getReferenceById(familyId);
+
+        List<MemberFamily> memberFamilyList = memberFamilyRepository.findAllByFamily(family)
+                .orElseThrow(() -> new MemberFamilyNotFoundException(MEMBER_FAMILY_NOT_FOUND));
+
+        Filter filterType = Filter.valueOf(filter);
+
+        List<Photo> photoList;
+
+        if (Filter.MONTH.equals(filterType)) {
+            photoList = photoRepositoryCustom.findPhotoThumbnailListByMonth(memberFamilyList);
+        } else if (Filter.YEAR.equals(filterType)) {
+            photoList = photoRepositoryCustom.findPhotoThumbnailListByYear(memberFamilyList);
+        } else {
+            throw new WrongTypeFilterException(WRONG_TYPE_FILTER);
+        }
+
+        return photoList.stream().map(PhotoThumbnailRes::toDto).toList();
+    }
+
     // 사진 상세 조회
     @Override
     public PhotoDetailRes readPhotoDetail(Long photoId, UUID memberId) {
@@ -111,8 +133,13 @@ public class PhotoServiceImpl implements PhotoService {
     // 사진 등록
     @Override
     @Transactional
-    public Long savePhoto(PhotoSaveReq photoSaveReq, UUID memberId) throws FirebaseMessagingException {
-        MemberFamily memberFamily = memberFamilyRepository.getReferenceById(photoSaveReq.memberFamilyId());
+    public PhotoSaveRes savePhoto(PhotoSaveReq photoSaveReq, UUID memberId) throws FirebaseMessagingException {
+        Member member = memberRepository.getReferenceById(memberId);
+
+        Family family = familyRepository.getReferenceById(photoSaveReq.familyId());
+
+        MemberFamily memberFamily = memberFamilyRepository.findByMemberAndFamily(member, family)
+                .orElseThrow(() -> new MemberFamilyNotFoundException(MEMBER_FAMILY_NOT_FOUND));
 
         File file = fileRepository.getReferenceById(photoSaveReq.fileId());
 
@@ -125,28 +152,37 @@ public class PhotoServiceImpl implements PhotoService {
 
 
         
-        // 사진 등록시 가족들에게 알림
-        pushNotificationService.sendPushOneToMany(PushNotificationFCMReq.builder()
-                        .title(Type.ALBUM.korean)
-                        .content(memberFamily.getMember().getName() + "님이 사진을 등록하셨습니다.")
-                        .receiverId(memberFamilyRepository.findMyFamily(memberId))
-                        .senderId(memberFamily.getMember().getId())
-                        .dataFCMReq(DataFCMReq.builder()
-                                .type(Type.ALBUM)
-                                .typeId(photo.getId())
-                                .build())
-                        .build());
+//        // 사진 등록시 가족들에게 알림
+//        pushNotificationService.sendPushOneToMany(PushNotificationFCMReq.builder()
+//                        .title("앨범 사진 등록")
+//                        .content(memberFamily.getMember().getName() + "님이 사진을 등록하셨습니다.")
+//                        .receiverId(memberFamilyRepository.findMyFamily(memberId))
+//                        .senderId(memberFamily.getMember().getId())
+//                        .dataFCMReq(DataFCMReq.builder()
+//                                .type(Type.ALBUM)
+//                                .typeId(photo.getId())
+//                                .build())
+//                        .build());
 
-        return photo.getId();
+        return PhotoSaveRes.builder()
+                .photoId(photo.getId())
+                .build();
     }
 
     // 사진 삭제
     @Override
     @Transactional
-    public void deletePhoto(Long memberFamilyId, Long photoId) throws DoNotHavePermissionException {
+    public void deletePhoto(UUID familyId, Long photoId, UUID memberId) throws DoNotHavePermissionException {
         Photo photo = photoRepository.getReferenceById(photoId);
 
-        if (photo.getMemberFamily().getId().equals(memberFamilyId)) {
+        Member member = memberRepository.getReferenceById(memberId);
+
+        Family family = familyRepository.getReferenceById(familyId);
+
+        MemberFamily memberFamily = memberFamilyRepository.findByMemberAndFamily(member, family)
+                .orElseThrow(() -> new MemberFamilyNotFoundException(MEMBER_FAMILY_NOT_FOUND));
+
+        if (photo.getMemberFamily().equals(memberFamily)) {
             photo.deleteData();
         } else {
             throw new DoNotHavePermissionException(DO_NOT_HAVE_REQUEST);

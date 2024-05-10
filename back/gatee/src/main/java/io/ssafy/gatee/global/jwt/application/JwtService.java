@@ -69,20 +69,24 @@ public class JwtService {
     }
 
     public String parseJwt(HttpServletRequest request) {
-        // request에서 Authorization헤더를 찾음
-        String authorization = request.getHeader(ACCESS_HEADER_AUTHORIZATION);
+        if (! request.getRequestURI().startsWith("/chat")) {
+            // request에서 Authorization헤더를 찾음
+            String authorization = request.getHeader(ACCESS_HEADER_AUTHORIZATION);
 
-        // Authorization 헤더 검증
-        if (Objects.isNull(authorization)) {
-            log.info("토큰이 존재하지 않습니다.");
-            return null;
+            // Authorization 헤더 검증
+            if (Objects.isNull(authorization)) {
+                log.info("토큰이 존재하지 않습니다.");
+                return null;
+            }
+            if (!authorization.startsWith(TOKEN_PREFIX)) {
+                log.info("접두사가 일치하지 않습니다.");
+                return null;
+            }
+            // Bearer 제거 후 순수 토큰 획득
+            return authorization.split(" ")[1];
         }
-        if (!authorization.startsWith(TOKEN_PREFIX)) {
-            log.info("접두사가 일치하지 않습니다.");
-            return null;
-        }
-        // Bearer 제거 후 순수 토큰 획득
-        return authorization.split(" ")[1];
+
+        return request.getParameter("Token");
     }
 
     // token 갱신

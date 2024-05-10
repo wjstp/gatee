@@ -1,0 +1,8 @@
+@use '../abstracts/index' as *;
+
+// mui 라이브러리 CSS 수정 파일
+
+// 탑 drawer 그림자 없에기 속성
+.css-1nvnyqx-MuiPaper-root-MuiDrawer-paper {
+  box-shadow: none !important;
+}

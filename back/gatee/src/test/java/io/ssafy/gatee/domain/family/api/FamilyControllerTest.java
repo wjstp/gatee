@@ -1,136 +1,205 @@
 package io.ssafy.gatee.domain.family.api;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import io.ssafy.gatee.config.restdocs.RestDocsTestSupport;
 import io.ssafy.gatee.config.security.CustomWithMockUser;
 import io.ssafy.gatee.domain.family.application.FamilyService;
 import io.ssafy.gatee.domain.family.dto.request.FamilyNameReq;
-import io.ssafy.gatee.domain.family.dto.request.FamilySaveReq;
-import io.ssafy.gatee.global.jwt.application.JwtService;
-import io.ssafy.gatee.global.security.application.AuthService;
-import io.ssafy.gatee.global.security.config.SecurityConfig;
-import io.ssafy.gatee.global.security.handler.CustomAccessDeniedHandler;
-import io.ssafy.gatee.global.security.handler.CustomAuthenticationEntryPointHandler;
-import io.ssafy.gatee.global.security.handler.CustomOAuth2FailureHandler;
-import io.ssafy.gatee.global.security.handler.CustomOAuth2SuccessHandler;
-import org.junit.jupiter.api.DisplayName;
+import io.ssafy.gatee.domain.family.dto.response.FamilyCodeRes;
+import io.ssafy.gatee.domain.family.dto.response.FamilyInfoRes;
+import io.ssafy.gatee.domain.family.dto.response.FamilySaveRes;
+import io.ssafy.gatee.domain.file.dto.FileUrlRes;
+import io.ssafy.gatee.domain.file.entity.type.FileType;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
-import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.ResultActions;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.List;
 import java.util.UUID;
 
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.mockito.BDDMockito.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@Slf4j
 @ActiveProfiles({"common, prod"})
-@AutoConfigureRestDocs
-@WebMvcTest({FamilyController.class, SecurityConfig.class})
-//@WebMvcTest({FamilyController.class, TestSecurityConfig.class})
+@WebMvcTest({FamilyController.class})
 @MockBean(JpaMetamodelMappingContext.class)
-class FamilyControllerTest {
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
+class FamilyControllerTest extends RestDocsTestSupport {
 
     @MockBean
     private FamilyService familyService;
 
-    @MockBean
-    private JwtService jwtService;
-
-    @MockBean
-    private AuthService authService;
-
-    @MockBean
-    private CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
-
-    @MockBean
-    private CustomOAuth2FailureHandler customOAuth2FailureHandler;
-
-    @MockBean
-    private CustomAccessDeniedHandler customAccessDeniedHandler;
-
-    @MockBean
-    private CustomAuthenticationEntryPointHandler customAuthenticationEntryPointHandler;
-
 
     @Test
     @CustomWithMockUser
-    @DisplayName("가족 생성 테스트")
     void saveFamily() throws Exception {
-        FamilySaveReq familySaveReq = FamilySaveReq.builder()
-                .name("우리집")
-                .build();
 
-        String familySaveJson = objectMapper.writeValueAsString(familySaveReq);
+        // given
 
-        mockMvc.perform(post("/api/family")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(familySaveJson))
-                .andDo(MockMvcResultHandlers.print())
-                .andDo(MockMvcRestDocumentation.document("가족 생성"))
-                .andExpect(status().isOk());
+        // Mock 파일 생성
+        MockMultipartFile file = new MockMultipartFile(
+                "file", // 파일의 파라미터 이름
+                "testImage1.jpg", // 실제 파일 이름
+                "image/jpg", // 파일의 확장자 타입
+                new FileInputStream(new File("src/test/resources/image/testImage1.jpg")) // 실제 파일
+        );
+
+        given(fileService.uploadFile(any(FileType.class), any(MockMultipartFile.class)))
+                .willReturn(FileUrlRes.builder()
+                        .fileId(1L)
+                        .imageUrl("https://www.gaty.duckdns.org/image-url")
+                        .build());
+
+        given(familyService.saveFamily(any(String.class), any(UUID.class), any(FileUrlRes.class)))
+                .willReturn(FamilySaveRes.builder()
+                        .familyId(UUID.randomUUID())
+                        .fileUrl(FileUrlRes.builder()
+                                .fileId(1L)
+                                .imageUrl("https://www.gaty.duckdns.org/image-url")
+                                .build())
+                        .build());
+
+        // when
+        ResultActions result = mockMvc.perform(multipart("/api/family")
+                        .file(file)
+                        .param("name", "family name")
+                        .param("fileType", "FAMILY_PROFILE")
+                        .contentType(MediaType.MULTIPART_FORM_DATA)
+                        .accept(MediaType.APPLICATION_JSON)
+                );
+
+        // then
+        result.andExpect(status().isOk())
+                .andDo(restDocs.document(
+                        formParameters(
+                                parameterWithName("file").description("이미지 파일").optional(),
+                                parameterWithName("name").description("가족 이름").optional(),
+                                parameterWithName("fileType").description("파일 타입").optional()
+                        ),
+                        responseFields(
+                                fieldWithPath("familyId").type(JsonFieldType.STRING).description("가족 ID").optional(),
+                                fieldWithPath("fileUrl.fileId").type(JsonFieldType.NUMBER).description("파일 ID").optional(),
+                                fieldWithPath("fileUrl.imageUrl").type(JsonFieldType.STRING).description("파일 URL").optional()
+                        )
+                ));
     }
 
     @Test
     @CustomWithMockUser
-    @DisplayName("가족 코드 생성 테스트")
     void createFamilyCode() throws Exception {
-        mockMvc.perform(get("/api/family/1/code"))
-                .andDo(MockMvcResultHandlers.print())
-                .andDo(MockMvcRestDocumentation.document("가족 코드 생성"))
-                .andExpect(status().isOk());
+
+        // given
+        given(familyService.createFamilyCode(any(String.class)))
+                .willReturn(FamilyCodeRes.builder()
+                        .familyCode("B2A3D1F4")
+                        .build());
+
+        // when
+        ResultActions result = mockMvc.perform(get("/api/family/code")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("familyId", String.valueOf(UUID.randomUUID()))
+                .accept(MediaType.APPLICATION_JSON));
+
+        // then
+        result.andExpect(status().isOk())
+                .andDo(restDocs.document(
+                        queryParameters(
+                                parameterWithName("familyId").description("가족 ID").optional()
+                        ),
+                        responseFields(
+                                fieldWithPath("familyCode").type(JsonFieldType.STRING).description("가족 초대 코드")
+                        )
+                ));
     }
 
     @Test
     @CustomWithMockUser
-    @DisplayName("가족 합류 테스트")
     void joinFamily() throws Exception {
-        mockMvc.perform(post("/api/family/join")
-                        .param("familyCode", "A1B2C3D4")
-                        .param("memberId", String.valueOf(UUID.randomUUID())))
-                .andDo(MockMvcResultHandlers.print())
-                .andDo(MockMvcRestDocumentation.document("가족 합류"))
-                .andExpect(status().isOk());
-    }
 
-    @Test
-    @CustomWithMockUser
-    @DisplayName("가족 정보 조회 테스트")
-    void readFamily() throws Exception {
-        mockMvc.perform(get("/api/family/1"))
-                .andDo(MockMvcResultHandlers.print())
-                .andDo(MockMvcRestDocumentation.document("가족 정보 조회"))
-                .andExpect(status().isOk());
-    }
+        // given
+        doNothing().when(familyService).joinFamily(any(String.class), any(UUID.class));
 
-    @Test
-    @CustomWithMockUser
-    @DisplayName("가족 이름 수정 테스트")
-    void editFamilyName() throws Exception {
-        FamilyNameReq familyNameReq = FamilyNameReq.builder()
-                .name("우리집")
-                .build();
-
-        String editFamilyNameJson = objectMapper.writeValueAsString(familyNameReq);
-
-        mockMvc.perform(patch("/api/family/1")
+        // when
+        ResultActions result = mockMvc.perform(post("/api/family/join")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(editFamilyNameJson))
-                .andDo(MockMvcResultHandlers.print())
-                .andDo(MockMvcRestDocumentation.document("가족 이름 수정"))
-                .andExpect(status().isOk());
+                        .content(readJson("json/family/joinFamily.json"))
+                        .accept(MediaType.APPLICATION_JSON)
+        );
+
+        // then
+        result.andExpect(status().isOk())
+                .andDo(restDocs.document(
+                        queryParameters(
+                                parameterWithName("familyCode").description("가족 초대 코드").optional()
+                        )
+                ));
+    }
+
+    @Test
+    @CustomWithMockUser
+    void readFamily() throws Exception {
+
+        // given
+        given(familyService.readFamily(any(String.class)))
+                .willReturn(FamilyInfoRes.builder()
+                        .name("세진이네")
+                        .familyScore(0)
+                        .memberFamilyInfoList(any(List.class))
+                        .build());
+
+        // when
+        ResultActions result = mockMvc.perform(get("/api/family")
+                .param("familyId", String.valueOf(UUID.randomUUID()))
+        );
+
+        // then
+        result.andExpect(status().isOk())
+                .andDo(restDocs.document(
+                        queryParameters(
+                          parameterWithName("familyId").description("가족 ID").optional()
+                        ),
+                        responseFields(
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("가족 이름"),
+                                fieldWithPath("familyScore").type(JsonFieldType.NUMBER).description("가족 점수"),
+                                fieldWithPath("memberFamilyInfoList").type(JsonFieldType.ARRAY).description("가족 구성원 목록").optional()
+                        )
+                ));
+    }
+
+    @Test
+    @CustomWithMockUser
+    void editFamilyName() throws Exception {
+
+        // given
+        doNothing().when(familyService).editFamilyName(any(UUID.class), any(FamilyNameReq.class));
+
+        // when
+        ResultActions result = mockMvc.perform(patch("/api/family/{familyId}", UUID.randomUUID())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(readJson("json/family/editFamilyName.json"))
+                        .accept(MediaType.APPLICATION_JSON)
+                );
+
+        // then
+        result.andExpect(status().isOk())
+                .andDo(restDocs.document(
+                        pathParameters(
+                                parameterWithName("familyId").description("가족 ID").optional()
+                        )
+                ));
     }
 }

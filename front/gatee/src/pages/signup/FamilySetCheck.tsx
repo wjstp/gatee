@@ -1,20 +1,44 @@
-import React from 'react';
-import { useNavigate, useLocation } from "react-router-dom";
-import SampleFamily from "@assets/images/signup/sample.svg"
+import React, {useEffect, useState} from 'react';
+import { useNavigate } from "react-router-dom";
 import { useFamilyStore } from "@store/useFamilyStore";
-import axios from "axios";
+import { createFamilyApi } from "@api/member";
+import { AxiosError, AxiosResponse } from "axios";
 
 const SignupFamilySetCheck = () => {
   const navigate = useNavigate();
-  const { familyName, familyImage } = useFamilyStore();
+  const { familyName, familyImage, stringImage } = useFamilyStore();
 
-
-  const goToFamilySetCheck = () => {
+  // 초대 코드 공유 페이지로 가기
+  const goToFamilySetShare = () => {
     // 가족 생성하기
-    // axios.post
+    // createFamily();
+
     navigate("/signup/family-set/share");
   }
 
+  // 파일을 업로드했을 때
+  const createFamily = (): void => {
+    const formData = new FormData();
+    // 파일이 업로드 되어있으면 파일 이어붙이기
+    if (familyImage instanceof File) {
+      formData.append("file", familyImage);
+    }
+    formData.append("name", familyName);
+    formData.append("fileType", "FAMILY_PROFILE");
+
+    // 가족 생성 요청 보내기
+    createFamilyApi(
+      formData,
+      (res: AxiosResponse<any>) => {
+        console.log(res)
+      },
+      (err: AxiosError<any>) => {
+        console.log(err)
+      }
+    ).then().catch();
+  }
+
+  // 뒤로 가기
   const backTo = ():void => {
     navigate(-1);
   }
@@ -35,7 +59,7 @@ const SignupFamilySetCheck = () => {
       <div className="signup-family-set-check__img">
         <img
           className="img"
-          src={familyImage?.toString() || SampleFamily}
+          src={stringImage}
           alt="family-image"
         />
       </div>
@@ -49,7 +73,7 @@ const SignupFamilySetCheck = () => {
         {/*가족 소개 버튼*/}
         <button
           className="btn-introduce"
-          onClick={goToFamilySetCheck}
+          onClick={goToFamilySetShare}
         >
           <span className="btn-introduce__text">
             소개하기

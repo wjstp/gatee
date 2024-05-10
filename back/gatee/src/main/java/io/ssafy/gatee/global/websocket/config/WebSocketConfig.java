@@ -1,5 +1,6 @@
 package io.ssafy.gatee.global.websocket.config;
 
+import io.ssafy.gatee.global.websocket.interceptor.CustomHandshakeInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.WebSocketHandler;
@@ -17,6 +18,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry.addHandler(webSocketHandler, "/chat")
-                .setAllowedOrigins("*");
+                .setAllowedOrigins("http://localhost:3000")
+                .withSockJS();
     }
 }

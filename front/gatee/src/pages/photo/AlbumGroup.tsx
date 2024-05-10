@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigate, useOutletContext} from "react-router-dom";
 import {FaPlus} from "react-icons/fa6";
 import {PhotoOutletInfoContext} from "@type/index";
@@ -6,6 +6,8 @@ import Checkbox from "@mui/material/Checkbox";
 import {AlbumNameInputModal} from "@pages/photo/components/CreateAlbumModal";
 import useModal from "@hooks/useModal";
 import {useModalStore} from "@store/useModalStore";
+import {getAlbumListPhotoApi} from "@api/photo";
+import {useFamilyStore} from "@store/useFamilyStore";
 
 interface GroupPhotoItemProps {
   groupPhotoData: {
@@ -25,6 +27,7 @@ const PhotoAlbum = () => {
   const {editMode, handleChecked} = useOutletContext<PhotoOutletInfoContext>();
   // 모달 상태
   const {setShowModal} = useModalStore()
+  const {familyId} = useFamilyStore()
   // 월별 대표 사진 샘플 데이터
   const groupPhotoDatas = [
     {id: 1, title: "툔", dateTime: "2024-01-31T12:00:00", src: "https://i.pinimg.com/736x/39/48/76/394876e0e2129f959bd910b65da6f3f8.jpg"},
@@ -51,6 +54,18 @@ const PhotoAlbum = () => {
     setShowModal(false)
     console.log('앨범 만들기')
   }
+
+  useEffect(() => {
+    getAlbumListPhotoApi(
+      {familyId:familyId},
+      res => {
+        console.log(res)
+      },
+      err => {
+        console.log(err)
+      }
+    )
+  }, []);
 
   return (
     <div className="photo-group--container">

@@ -22,15 +22,17 @@
     }
 
     h1 {
-      font-size:2rem;
+      font-size: 2rem;
     }
 
     .mb {
       margin-bottom: 10px;
     }
+
     .mb-large {
       margin-bottom: 30px;
     }
+
     .explain {
       @include flex-col;
       @include flex_center;
@@ -39,12 +41,15 @@
       padding-top: 3rem;
       //border: 3px solid red;
     }
+
     .pb {
       padding-bottom: 3rem;
     }
-    .emptyBox{
+
+    .emptyBox {
       height: 100px;
     }
+
     .textFlex {
       display: flex;
       align-items: center;
@@ -54,6 +59,7 @@
     img {
       object-fit: cover;
     }
+
     ////카카오 버튼
     //.kakaoLoginButton {
     //  height: 80px;
@@ -76,8 +82,6 @@
 
       height: 10%;
       width: 100vw;
-      position: absolute;
-      bottom: 5%;
 
       .kakaoLoginImage {
         height: 100%;
@@ -108,7 +112,7 @@
 // 표시줄
 .onboarding__dotContainer {
   display: flex;
-  gap:10px;
+  gap: 10px;
   justify-content: center;
   width: 100vw;
   margin-top: 10dvh;
@@ -121,6 +125,7 @@
     border-radius: 50%;
     background-color: $gray100;
   }
+
   .activeDot {
     width: 0.7rem;
     height: 0.7rem;
@@ -138,16 +143,41 @@
   padding-top: 30px;
   border-bottom-left-radius: 2rem;
   border-bottom-right-radius: 2rem;
+  height: 100%;
+  width: 100%;
+
+  .ios-header {
+    @include flex_center;
+
+    width: 100%;
+    flex-direction: column;
+  }
 
   .ios-header__part--01 {
     font-size: 20px;
-    margin-bottom: 2%;
+    margin-bottom: 5%;
   }
 
   .ios-header__part--02 {
     font-weight: bold;
     font-size: 17px;
-    margin-bottom: 2%;
+    height: 30px;
+    width: 100%;
+
+    .text--01 {
+      border: 1px solid black;
+      border-radius: 5px;
+      padding: 6px;
+
+      .icon {
+      }
+
+      .text {
+      }
+    }
+
+    .text--02 {
+    }
   }
 }
 
@@ -160,15 +190,40 @@
   padding-top: 30px;
   border-bottom-left-radius: 2rem;
   border-bottom-right-radius: 2rem;
+  height: 100%;
+  width: 100%;
+
+  .android-header {
+    @include flex_center;
+
+    width: 100%;
+    flex-direction: column;
+  }
 
   .android-header__part--01 {
     font-size: 20px;
-    margin-bottom: 2%;
+    margin-bottom: 5%;
   }
 
   .android-header__part--02 {
     font-weight: bold;
     font-size: 17px;
-    margin-bottom: 2%;
+    height: 30px;
+    width: 100%;
+
+    .text--01 {
+      border: 1px solid black;
+      border-radius: 5px;
+      padding: 6px;
+
+      .icon {
+      }
+
+      .text {
+      }
+    }
+
+    .text--02 {
+    }
   }
 }

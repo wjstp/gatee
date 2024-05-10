@@ -1,5 +1,6 @@
 package io.ssafy.gatee.global.websocket.application;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.database.*;
 import io.ssafy.gatee.domain.family.application.FamilyService;
 import io.ssafy.gatee.domain.family.dao.FamilyRepository;
@@ -17,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
@@ -36,7 +38,12 @@ public class ChatServiceImpl implements ChatService {
     private final FamilyService familyService;
     private final OnlineRoomMemberRepository onlineRoomMemberRepository;
 
-    public ChatServiceImpl(MemberRepository memberRepository, MemberFamilyRepository memberFamilyRepository, FamilyRepository familyRepository, OnlineRoomMemberRepository onlineRoomMemberRepository, FirebaseInit firebaseInit, FamilyService familyService) {
+    public ChatServiceImpl(MemberRepository memberRepository,
+                           MemberFamilyRepository memberFamilyRepository,
+                           FamilyRepository familyRepository,
+                           OnlineRoomMemberRepository onlineRoomMemberRepository,
+                           FirebaseInit firebaseInit,
+                           FamilyService familyService) {
         this.memberRepository = memberRepository;
         this.memberFamilyRepository = memberFamilyRepository;
         this.familyRepository = familyRepository;
@@ -82,44 +89,40 @@ public class ChatServiceImpl implements ChatService {
                 .totalMember(unreadList.size())
                 .sender(memberId.toString())
                 .unReadMember(unReadMemberAsStringList)
+                .currentTime(LocalDateTime.now())
                 .build(), familyId);
     }
 
     @Override
     public void updateRead(UUID memberId, UUID familyId) {
-        DatabaseReference reference = databaseReference.child("chat").child(familyId.toString());
-
+        DatabaseReference reference = databaseReference.child("chat").child(familyId.toString()).child("messages");
+        log.info("디비" + reference.toString());
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                log.info("onDataChange start!!");
                 for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
-                    DataSnapshot unreadMemberSnapshot = messageSnapshot.child("unreadMembers");
-                    if (unreadMemberSnapshot.exists()) {
-                        List<String> unreadMembers = (List<String>) unreadMemberSnapshot.getValue();
-                        if (unreadMembers.contains(memberId.toString())) {
-                            unreadMembers.remove(memberId.toString());
-
-                            // 여기서 변경사항을 동일한 데이터 스냅샷에 반영합니다.
-                            unreadMemberSnapshot.getRef().setValue(unreadMembers, new DatabaseReference.CompletionListener() {
-                                @Override
-                                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                                    if(databaseError == null){
-                                        // 데이터 업데이트가 성공적으로 완료되었습니다.
-                                        System.out.println("데이터 업데이트 성공.");
-                                    } else {
-                                        // 데이터 업데이트 실패
-                                        System.err.println("데이터 업데이트 실패: " + databaseError.getMessage());
-                                    }
-                                }
-                            });
+                    log.info("messageSnapshot" + messageSnapshot.toString());
+                    DataSnapshot unreadMemberSnapshot = messageSnapshot.child("unReadMember");
+                    if (unreadMemberSnapshot.getValue() != null) { // 널 체크 추가
+                        log.info("unreadMember는 " + unreadMemberSnapshot.toString());
+                        String unReadMemberStr = unreadMemberSnapshot.getValue().toString();
+                        unReadMemberStr = unReadMemberStr.substring(1, unReadMemberStr.length() - 1);
+                        String[] items = unReadMemberStr.split(", ");
+                        log.info("어레이 : " + Arrays.toString(items));
+                        List<String> newList = new ArrayList<>(Arrays.asList(items)); // 수정 가능한 리스트 생성
+                        if (newList.contains(memberId.toString())) {
+                            newList.remove(memberId.toString()); // 특정 memberId 제거
+                            // 리스트를 다시 문자열 형태로 변환해야 할 수도 있음
+                            unreadMemberSnapshot.getRef().setValueAsync(newList, "unReadMember"); // 올바른 파라미터 사용
                         }
                     }
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                System.err.println("리스너가 취소되었습니다, 오류: " + databaseError.getMessage());
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
             }
         });
     }
@@ -137,6 +140,9 @@ public class ChatServiceImpl implements ChatService {
     }
 
     private Member findMemberById(UUID id) {
-        return memberRepository.findById(id).orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
+        return memberRepository.findById(id)
+                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
     }
+
+
 }

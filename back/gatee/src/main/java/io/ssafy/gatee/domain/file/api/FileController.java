@@ -21,8 +21,10 @@ public class FileController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public FileUrlRes uploadFile(@RequestParam FileType fileType,
-                                 @RequestParam MultipartFile file) throws IOException {
+    public FileUrlRes uploadFile(
+            @RequestParam("fileType") FileType fileType,
+            @RequestParam("file") MultipartFile file
+    ) throws IOException {
         return fileService.uploadFile(fileType, file);
     }
 
