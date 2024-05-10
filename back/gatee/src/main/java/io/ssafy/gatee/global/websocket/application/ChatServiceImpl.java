@@ -102,7 +102,7 @@ public class ChatServiceImpl implements ChatService {
                 for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
                     log.info("메세지 스냅샷 {}", messageSnapshot.toString());
                     log.info("getvalue " + messageSnapshot.getValue().toString());
-                    DataSnapshot unreadMemberSnapshot = messageSnapshot.child("unreadMember");
+                    DataSnapshot unreadMemberSnapshot = messageSnapshot.child("unReadMember");
                     log.info("스냅샷" + unreadMemberSnapshot.toString());
                     if (unreadMemberSnapshot.exists()) {
                         if (unreadMemberSnapshot.hasChild(memberId.toString())) {
