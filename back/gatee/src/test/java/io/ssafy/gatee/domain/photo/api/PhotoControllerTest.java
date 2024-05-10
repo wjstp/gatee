@@ -3,6 +3,7 @@ package io.ssafy.gatee.domain.photo.api;
 import io.ssafy.gatee.config.restdocs.RestDocsTestSupport;
 import io.ssafy.gatee.config.security.CustomWithMockUser;
 import io.ssafy.gatee.domain.photo.application.PhotoService;
+import io.ssafy.gatee.domain.photo.dto.request.PhotoListDeleteReq;
 import io.ssafy.gatee.domain.photo.dto.request.PhotoListReq;
 import io.ssafy.gatee.domain.photo.dto.request.PhotoSaveReq;
 import io.ssafy.gatee.domain.photo.dto.response.PhotoDetailRes;
@@ -244,6 +245,29 @@ class PhotoControllerTest extends RestDocsTestSupport {
                         ),
                         queryParameters(
                                 parameterWithName("familyId").description("가족 ID").optional()
+                        )
+                ));
+    }
+
+    @Test
+    @CustomWithMockUser
+    void deletePhotoList() throws Exception {
+
+        // given
+        doNothing().when(photoService).deletePhotoList(any(PhotoListDeleteReq.class));
+
+        // when
+        ResultActions result = mockMvc.perform(post("/api/photos/delete")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(readJson("json/photo/deletePhotoList.json"))
+                .accept(MediaType.APPLICATION_JSON)
+        );
+
+        // then
+        result.andExpect(status().isOk())
+                .andDo(restDocs.document(
+                        queryParameters(
+                                parameterWithName("photoIdList").description("사진 ID 목록").optional()
                         )
                 ));
     }
