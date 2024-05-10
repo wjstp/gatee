@@ -2,37 +2,41 @@ package io.ssafy.gatee.domain.family.application;
 
 import io.ssafy.gatee.domain.family.dao.FamilyRepository;
 import io.ssafy.gatee.domain.family.dto.request.FamilyNameReq;
-import io.ssafy.gatee.domain.family.dto.request.FamilySaveReq;
 import io.ssafy.gatee.domain.family.dto.response.FamilyCodeRes;
 import io.ssafy.gatee.domain.family.dto.response.FamilyInfoRes;
 import io.ssafy.gatee.domain.family.dto.response.FamilySaveRes;
 import io.ssafy.gatee.domain.family.entity.Family;
-import io.ssafy.gatee.domain.file.application.FileService;
 import io.ssafy.gatee.domain.file.dao.FileRepository;
 import io.ssafy.gatee.domain.file.dto.FileUrlRes;
 import io.ssafy.gatee.domain.file.entity.File;
+import io.ssafy.gatee.domain.file.entity.type.FileType;
 import io.ssafy.gatee.domain.member.dao.MemberRepository;
 import io.ssafy.gatee.domain.member.entity.Member;
 import io.ssafy.gatee.domain.member_family.dao.MemberFamilyRepository;
 import io.ssafy.gatee.domain.member_family.dto.response.MemberFamilyInfoRes;
 import io.ssafy.gatee.domain.member_family.entity.MemberFamily;
-import io.ssafy.gatee.domain.member_family.entity.Role;
+import io.ssafy.gatee.global.exception.error.bad_request.ExistsFamilyException;
 import io.ssafy.gatee.global.exception.error.bad_request.ExpiredCodeException;
 import io.ssafy.gatee.global.exception.error.not_found.FamilyNotFoundException;
 import io.ssafy.gatee.global.exception.error.not_found.FileNotFoundException;
 import io.ssafy.gatee.global.exception.error.not_found.MemberFamilyNotFoundException;
 import io.ssafy.gatee.global.redis.dao.OnlineRoomMemberRepository;
 import io.ssafy.gatee.global.redis.dto.OnlineRoomMember;
+import io.ssafy.gatee.global.s3.util.S3Util;
 import jodd.util.StringUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.*;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import static io.ssafy.gatee.global.exception.message.ExceptionMessage.*;
@@ -55,22 +59,45 @@ public class FamilyServiceImpl implements FamilyService {
 
     private final FileRepository fileRepository;
 
+    private final S3Util s3Util;
+
     private final String DEFAULT_FAMILY_IMAGE_URL = "https://spring-learning.s3.ap-southeast-2.amazonaws.com/default/family.jpg";
 
     // 가족 생성
     @Override
     @Transactional
-    public FamilySaveRes saveFamily(String name, UUID memberId, FileUrlRes fileUrlRes) {
+    public FamilySaveRes saveFamily(String name, UUID memberId, FileType fileType, MultipartFile file) throws IOException {
 
         Member member = Member.builder()
                 .id(memberId)
                 .build();
 
-        File file = fileRepository.getReferenceById(fileUrlRes.fileId());
+        if (memberFamilyRepository.existsByMember(member)) {
+            throw new ExistsFamilyException(EXISTS_FAMILY);
+        }
+
+        File imageFile;
+
+        if (StringUtil.isEmpty(fileType.toString()) || file.isEmpty()) {
+            File defaultFile = File.builder()
+                    .name("family")
+                    .originalName("family.jpg")
+                    .url(DEFAULT_FAMILY_IMAGE_URL)
+                    .dir("/default")
+                    .fileType(FileType.FAMILY_PROFILE)
+                    .build();
+
+            imageFile = fileRepository.findByUrl(DEFAULT_FAMILY_IMAGE_URL)
+                    .orElse(fileRepository.save(defaultFile));
+        } else {
+            imageFile = s3Util.upload(fileType, file);
+
+            fileRepository.save(imageFile);
+        }
 
         Family family = familyRepository.save(Family.builder()
                 .name(name)
-                .file(file)
+                .file(imageFile)
                 .score(0)
                 .build());
 
@@ -91,7 +118,7 @@ public class FamilyServiceImpl implements FamilyService {
 
         return FamilySaveRes.builder()
                 .familyId(family.getId())
-                .fileUrl(fileUrlRes)
+                .fileUrl(FileUrlRes.toDto(imageFile))
                 .build();
     }
 
