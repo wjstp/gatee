@@ -27,7 +27,6 @@ import io.ssafy.gatee.domain.schedule.dto.request.ScheduleParticipateReq;
 import io.ssafy.gatee.domain.schedule.dto.request.ScheduleSaveRecordReq;
 import io.ssafy.gatee.domain.schedule.dto.request.ScheduleSaveReq;
 import io.ssafy.gatee.domain.schedule.dto.response.ScheduleInfoRes;
-import io.ssafy.gatee.domain.schedule.dto.response.ScheduleListInfoRes;
 import io.ssafy.gatee.domain.schedule.dto.response.ScheduleListRes;
 import io.ssafy.gatee.domain.schedule.entity.Category;
 import io.ssafy.gatee.domain.schedule.entity.Schedule;
@@ -41,7 +40,6 @@ import org.joda.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.rmi.server.UID;
 import java.util.List;
 import java.util.UUID;
 
@@ -139,6 +137,18 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .build();
 
         memberFamilyScheduleRepository.save(memberFamilySchedule);
+
+        List<Member> memberList = scheduleSaveReq.memberIdList().stream().map(memberRepository::getReferenceById).toList();
+
+        List<MemberFamilySchedule> memberFamilyScheduleList = memberList.stream().map((member1) -> {
+            return MemberFamilySchedule.builder()
+                    .member(member1)
+                    .familySchedule(familySchedule)
+                    .isCreater(false)
+                    .build();
+        }).toList();
+
+        memberFamilyScheduleRepository.saveAll(memberFamilyScheduleList);
 
         // 알림발송
         pushNotificationService.sendPushOneToMany(PushNotificationFCMReq.builder()
