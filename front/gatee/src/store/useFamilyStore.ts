@@ -15,7 +15,7 @@ type FamilyStore = {
   setFamilyCode: (newCode: string) => void;
   familyScore: number;
   setFamilyScore: (newScore: number) => void;
-  familyInfo: MemberApiReq[]|[];
+  familyInfo: MemberApiReq[];
   setFamilyInfo: (newInfo: MemberApiReq[]) => void;
 }
 

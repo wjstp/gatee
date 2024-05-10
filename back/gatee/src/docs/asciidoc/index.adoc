@@ -296,6 +296,19 @@ include::{snippets}/photo-controller-test/delete-photo/query-parameters.adoc[]
 include::{snippets}/photo-controller-test/delete-photo/http-response.adoc[]
 
 
+== 사진 삭제 (리스트)
+
+- Request
+
+include::{snippets}/photo-controller-test/delete-photo-list/http-request.adoc[]
+include::{snippets}/photo-controller-test/delete-photo-list/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/photo-controller-test/delete-photo-list/http-response.adoc[]
+
+
+
 == 사진 상호작용 생성
 
 - Request

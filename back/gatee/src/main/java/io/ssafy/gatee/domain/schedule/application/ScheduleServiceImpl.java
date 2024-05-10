@@ -139,6 +139,18 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         memberFamilyScheduleRepository.save(memberFamilySchedule);
 
+        List<Member> memberList = scheduleSaveReq.memberIdList().stream().map(memberRepository::getReferenceById).toList();
+
+        List<MemberFamilySchedule> memberFamilyScheduleList = memberList.stream().map((member1) -> {
+            return MemberFamilySchedule.builder()
+                    .member(member1)
+                    .familySchedule(familySchedule)
+                    .isCreater(false)
+                    .build();
+        }).toList();
+
+        memberFamilyScheduleRepository.saveAll(memberFamilyScheduleList);
+
         // 알림발송
         pushNotificationService.sendPushOneToMany(PushNotificationFCMReq.builder()
                 .senderId(memberId)

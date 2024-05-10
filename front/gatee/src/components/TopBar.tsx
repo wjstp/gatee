@@ -1,20 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import {useNavigate, NavLink, useLocation} from "react-router-dom";
+import { useNavigate, NavLink, useLocation } from "react-router-dom";
 import { PiCaretLeft } from "react-icons/pi";
 import { PiBell } from "react-icons/pi";
 import { PiUserCircle } from "react-icons/pi";
-import { PiSquaresFour } from "react-icons/pi";
-// import { PiGearSix } from "react-icons/pi";
 import { PiTarget } from "react-icons/pi";
-// import NotificationBadge from "@components/NotificationBadge";
 import { useMemberStore } from "@store/useMemberStore";
-import { MemberInfoSample } from "@constants/index";
 
 const TopBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  // 이름 조회해야함
-  const { name } = MemberInfoSample;
+  const { myInfo } = useMemberStore();
 
   const [currentPage, setCurrentPage] = useState('');
 
@@ -34,21 +29,6 @@ const TopBar = () => {
       </div>
 
       <div className="top-bar__right">
-        {/*/!*알림 설정 - 알림 페이지 *!/*/}
-        {/*{currentPage==="/notification" && (*/}
-        {/*  <button className={isSettingActive ? 'top-bar__right--active' : ''}>*/}
-        {/*    <PiGearSix size={24}/>*/}
-        {/*  </button>*/}
-        {/*)}*/}
-
-        {/*/!*채팅 앨범 - 채팅 페이지 *!/*/}
-        {/*{['/chatting', '/chatting/photo'].includes(currentPage) && (*/}
-        {/*  <NavLink to="/chatting/photo" className={({isActive}) =>*/}
-        {/*    isActive ? 'top-bar__right--active': ''}>*/}
-        {/*    <PiSquaresFour size={24}/>*/}
-        {/*  </NavLink>*/}
-        {/*)}*/}
-
         {/*미션*/}
         <NavLink to="main/mission" className={({isActive}) =>
           isActive ? 'top-bar__right--active' : ''
@@ -62,12 +42,11 @@ const TopBar = () => {
           isActive ? 'top-bar__right--active' : ''
         }>
           <PiBell size={24}/>
-          {/*<NotificationBadge />*/}
         </NavLink>
 
         {/*프로필*/}
         <NavLink
-          to={`/profile/${name}`}
+          to={`/profile/${myInfo.email}`}
           className={({isActive}) =>
           isActive ? 'top-bar__right--active' : ''
         }>
