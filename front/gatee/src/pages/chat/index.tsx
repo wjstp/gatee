@@ -4,6 +4,7 @@ import ChatInput from "@pages/chat/components/ChatInput";
 import ChatDate from "@pages/chat/components/ChatDate";
 import { ChatSample } from "@constants/index";
 import { ChatContent, ChatDateLine, ChatType } from "@type/index";
+import { useFamilyStore } from "@store/useFamilyStore";
 import { NavLink } from "react-router-dom";
 import { PiSquaresFour } from "react-icons/pi";
 
@@ -17,7 +18,7 @@ const ChatIndex = () => {
   const { REACT_APP_API_URL, VALID_KEY } = process.env;
 
   const [data, setData] = useState<any>([]);
-  const familyId = "5f4d1c88-62ad-4b1d-a27f-644efe70de31";
+  const { familyId } = useFamilyStore();
   const chatRef = firebase.database().ref(`chat/${familyId}/messages`);
 
   const WS_URL: string = `${REACT_APP_API_URL}/chat`
@@ -65,12 +66,13 @@ const ChatIndex = () => {
   const send = () => {
     ws.send(JSON.stringify({
       "messageType": "MESSAGE",
-      "content": "띠기의 꿈은 공주님이야"
+      "content": "띠기의 꿈은 공주님이야\n방해하면 모조리 죽여 버리겠어"
     }))
   }
 
   // 채팅 내역 조회/추가 이벤트 수신 핸들러
   const handleAddChatData = (snap: any) => {
+    console.log(snap.val());
   }
 
   // 채팅 내역 수정 이벤트 수신 핸들러
@@ -111,7 +113,13 @@ const ChatIndex = () => {
   return (
     <div className="chat">
       <div className="chat__header">
-        수다방
+        <div onClick={() => {
+          send();
+          console.log("전송 시도");
+          console.log(familyId);
+        }}>
+          수다방
+        </div>
         <NavLink to="/chatting/photo" className="chat__header__photo">
           <PiSquaresFour size={24}/>
         </NavLink>

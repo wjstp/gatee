@@ -1,9 +1,10 @@
 import React, {useState} from "react";
-import { ChatMessage, SenderType, ChatContent } from "@type/index";
-import { MemberInfoSample } from "@constants/index";
-import getUserInfoByEmail from "@utils/getUserInfoByEmail";
+import {ChatMessage, SenderType, ChatContent, MemberApiReq} from "@type/index";
+import getUserInfo from "@utils/getUserInfo";
 import convertKrTime from "@utils/convertKrTime";
 import renderBubbleComponent from "@utils/renderBubbleComponent";
+import { useFamilyStore } from "@store/useFamilyStore";
+import { useMemberStore } from "@store/useMemberStore";
 
 interface ChatMessageProps {
  chat: ChatContent;
@@ -23,21 +24,23 @@ interface YourChatMessageProps {
 
 const YoursChat = (props: YourChatMessageProps) => {
   const { chat, isPrevSender, unreadMemberCount } = props;
-  const senderInfo = getUserInfoByEmail(chat.sender);
+  const { familyInfo } = useFamilyStore();
+  const { myInfo } = useMemberStore();
+  const senderInfo: null | MemberApiReq = getUserInfo(familyInfo, chat.sender);
 
   return (
     <div className="chat__yours-chat">
       {/*프로필*/}
       <div className="chat__yours-chat__profile">
         {!isPrevSender && (
-          <img src={senderInfo.image} alt={senderInfo.nickname}/>
+          <img src={senderInfo?.fileUrl} alt={senderInfo?.nickname}/>
         )}
       </div>
 
       <div className="chat__yours-chat__container">
         {/*닉네임*/}
         {!isPrevSender && (
-          <div className="chat__yours-chat__nickname">{ senderInfo.nickname }</div>
+          <div className="chat__yours-chat__nickname">{ senderInfo?.nickname }</div>
         )}
 
         {/*내용*/}
@@ -63,6 +66,8 @@ const YoursChat = (props: YourChatMessageProps) => {
 
 const MyChat = (props: MyChatMessageProps) => {
   const { chat, unreadMemberCount } = props;
+  const { familyInfo } = useFamilyStore();
+  const { myInfo } = useMemberStore();
 
   return (
     <div className="chat__my-chat">
@@ -88,12 +93,12 @@ const MyChat = (props: MyChatMessageProps) => {
 
 const BubbleChat = (props: ChatMessageProps) => {
   const { chat, isPrevSender } = props;
-  const myEmail: string = MemberInfoSample.email;
+  const { myInfo } = useMemberStore();
   const [unreadMemberCount, setUnreadMemberCount] = useState<number>(chat.unreadMember.length);
 
   // senderType 반환 함수
   const getSenderType = (value: string): string => {
-    return value === myEmail ? "my" : "yours";
+    return value === myInfo.memberId ? "my" : "yours";
   };
 
   switch (getSenderType(chat.sender)) {
