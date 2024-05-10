@@ -1,9 +1,6 @@
 package io.ssafy.gatee.global.jwt.util;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
 import io.ssafy.gatee.domain.member.entity.Privilege;
 import io.ssafy.gatee.global.jwt.exception.AccessTokenException;
@@ -52,6 +49,26 @@ public class JwtClaimsParser {
         } catch (SignatureException signatureException) {
             throw new AccessTokenException(AccessTokenException.ACCESS_TOKEN_ERROR.BAD_SIGN);
         }
+    }
+
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parser()
+                    .setSigningKey(secretKey)
+                    .build()
+                    .parseClaimsJws(token);
+            return true;
+        } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
+            log.debug("잘못된 JWT 서명입니다.");
+        } catch (ExpiredJwtException e) {
+            log.debug("만료된 JWT 토큰입니다.");
+        } catch (UnsupportedJwtException e) {
+            log.debug("지원되지 않는 JWT 토큰입니다.");
+        } catch (IllegalArgumentException e) {
+            log.debug("JWT 토큰이 비어있습니다.");
+        }
+
+        return false;
     }
 
     public Authentication getAuthentication(String token) {
