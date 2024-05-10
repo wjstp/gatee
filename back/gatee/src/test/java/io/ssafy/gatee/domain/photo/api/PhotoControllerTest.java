@@ -1,87 +1,94 @@
 package io.ssafy.gatee.domain.photo.api;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import io.ssafy.gatee.config.restdocs.RestDocsTestSupport;
 import io.ssafy.gatee.config.security.CustomWithMockUser;
 import io.ssafy.gatee.domain.photo.application.PhotoService;
+import io.ssafy.gatee.domain.photo.dto.request.PhotoDeleteReq;
 import io.ssafy.gatee.domain.photo.dto.request.PhotoListReq;
 import io.ssafy.gatee.domain.photo.dto.request.PhotoSaveReq;
-import io.ssafy.gatee.global.jwt.application.JwtService;
-import io.ssafy.gatee.global.security.application.AuthService;
-import io.ssafy.gatee.global.security.config.SecurityConfig;
-import io.ssafy.gatee.global.security.handler.CustomAccessDeniedHandler;
-import io.ssafy.gatee.global.security.handler.CustomAuthenticationEntryPointHandler;
-import io.ssafy.gatee.global.security.handler.CustomOAuth2FailureHandler;
-import io.ssafy.gatee.global.security.handler.CustomOAuth2SuccessHandler;
+import io.ssafy.gatee.domain.photo.dto.response.PhotoListRes;
+import io.ssafy.gatee.domain.photo.dto.response.PhotoSaveRes;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.mockito.BDDMockito.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+@Slf4j
 @ActiveProfiles({"common, prod"})
-@AutoConfigureRestDocs
-@WebMvcTest({PhotoController.class, SecurityConfig.class})
+@WebMvcTest({PhotoController.class})
 @MockBean(JpaMetamodelMappingContext.class)
-class PhotoControllerTest {
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper objectMapper;
+class PhotoControllerTest extends RestDocsTestSupport {
 
     @MockBean
     private PhotoService photoService;
 
-    @MockBean
-    private JwtService jwtService;
-
-    @MockBean
-    private AuthService authService;
-
-    @MockBean
-    private CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
-
-    @MockBean
-    private CustomOAuth2FailureHandler customOAuth2FailureHandler;
-
-    @MockBean
-    private CustomAccessDeniedHandler customAccessDeniedHandler;
-
-    @MockBean
-    private CustomAuthenticationEntryPointHandler customAuthenticationEntryPointHandler;
-
     @Test
     @CustomWithMockUser
-    @DisplayName("사진 목록 조회 테스트")
     void readPhotoList() throws Exception {
-        PhotoListReq photoListReq = PhotoListReq.builder()
-//                .familyId(1L)
-                .filter("MONTH")
-                .month("4")
-                .year("2024")
+
+        // given
+        PhotoListRes photoListRes1 = PhotoListRes.builder()
+                .photoId(1L)
+                .fileId(1L)
+                .imageUrl("https://www.gaty.duckdns.org/s3-image-url-1")
                 .build();
 
-        String photoListReqJson = objectMapper.writeValueAsString(photoListReq);
+        PhotoListRes photoListRes2 = PhotoListRes.builder()
+                .photoId(2L)
+                .fileId(2L)
+                .imageUrl("https://www.gaty.duckdns.org/s3-image-url-2")
+                .build();
 
-        mockMvc.perform(get("/api/photos")
+        List<PhotoListRes> photoListResList = new ArrayList<>();
+
+        photoListResList.add(photoListRes1);
+        photoListResList.add(photoListRes2);
+
+        given(photoService.readPhotoList(any(PhotoListReq.class)))
+                .willReturn(photoListResList);
+
+        // where
+        ResultActions result = mockMvc.perform(get("/api/photos")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(photoListReqJson))
-                .andDo(MockMvcResultHandlers.print())
-                .andDo(MockMvcRestDocumentation.document("사진 목록 조회"))
-                .andExpect(status().isOk());
+                        .content(readJson("json/photo/readPhotoList.json"))
+                        .accept(MediaType.APPLICATION_JSON)
+                );
+
+        //then
+        result.andExpect(status().isOk())
+                .andDo(restDocs.document(
+                        queryParameters(
+                                parameterWithName("familyId").description("가족 ID").optional(),
+                                parameterWithName("filter").description("년 / 월 / 일").optional(),
+                                parameterWithName("month").description("조회 기준 월").optional(),
+                                parameterWithName("year").description("조회 기준 년").optional()
+                        ),
+                        responseFields(
+                                fieldWithPath("[].photoId").type(JsonFieldType.NUMBER).description("사진 ID").optional(),
+                                fieldWithPath("[].fileId").type(JsonFieldType.NUMBER).description("파일 ID").optional(),
+                                fieldWithPath("[].imageUrl").type(JsonFieldType.STRING).description("사진 URL").optional()
+                        )
+                ));
     }
 
     @Test
@@ -99,33 +106,58 @@ class PhotoControllerTest {
 
     @Test
     @CustomWithMockUser
-    @DisplayName("사진 등록 테스트")
     void savePhoto() throws Exception {
-        PhotoSaveReq photoSaveReq = PhotoSaveReq.builder()
-                .fileId(1L)
-                .build();
 
-        String photoSaveReqJson = objectMapper.writeValueAsString(photoSaveReq);
+        // given
+        given(photoService.savePhoto(any(PhotoSaveReq.class), any(UUID.class)))
+                .willReturn(PhotoSaveRes.builder()
+                        .photoId(1L)
+                        .build());
 
-        mockMvc.perform(post("/api/photos/save")
+        // when
+        ResultActions result = mockMvc.perform(post("/api/photos/save")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(photoSaveReqJson))
-                .andDo(MockMvcResultHandlers.print())
-                .andDo(MockMvcRestDocumentation.document("사진 등록"))
-                .andExpect(status().isOk());
+                        .content(readJson("json/photo/savePhoto.json"))
+                        .accept(MediaType.APPLICATION_JSON)
+                );
+
+        // then
+        result.andExpect(status().isOk())
+                .andDo(restDocs.document(
+                        queryParameters(
+                                parameterWithName("fileId").description("파일 ID").optional(),
+                                parameterWithName("familyId").description("가족 ID").optional()
+                        ),
+                        responseFields(
+                                fieldWithPath("photoId").type(JsonFieldType.NUMBER).description("사진 ID")
+                        )
+                ));
     }
 
     @Test
     @CustomWithMockUser
-    @DisplayName("사진 삭제 테스트")
     void deletePhoto() throws Exception {
-        long photoId = 1L;
 
-        mockMvc.perform(delete("/api/photos/" + photoId)
-                        .param("memberFamilyId", "1"))
-                .andDo(MockMvcResultHandlers.print())
-                .andDo(MockMvcRestDocumentation.document("사진 삭제"))
-                .andExpect(status().isOk());
+        // given
+        doNothing().when(photoService).deletePhoto(any(PhotoDeleteReq.class), any(Long.class), any(UUID.class));
+
+        // when
+        ResultActions result = mockMvc.perform(delete("/api/photos/{photoId}", 1L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(readJson("json/photo/deletePhoto.json"))
+                        .accept(MediaType.APPLICATION_JSON)
+                );
+
+        // then
+        result.andExpect(status().isOk())
+                .andDo(restDocs.document(
+                        pathParameters(
+                                parameterWithName("photoId").description("사진 ID").optional()
+                        ),
+                        queryParameters(
+                                parameterWithName("familyId").description("가족 ID").optional()
+                        )
+                ));
     }
 
     @Test
