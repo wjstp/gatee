@@ -12,12 +12,12 @@ import io.ssafy.gatee.domain.member_family.entity.MemberFamily;
 import io.ssafy.gatee.domain.photo.dao.PhotoRepository;
 import io.ssafy.gatee.domain.photo.dao.PhotoRepositoryCustom;
 import io.ssafy.gatee.domain.photo.dto.request.Filter;
-import io.ssafy.gatee.domain.photo.dto.request.PhotoDeleteReq;
 import io.ssafy.gatee.domain.photo.dto.request.PhotoListReq;
 import io.ssafy.gatee.domain.photo.dto.request.PhotoSaveReq;
 import io.ssafy.gatee.domain.photo.dto.response.PhotoDetailRes;
 import io.ssafy.gatee.domain.photo.dto.response.PhotoListRes;
 import io.ssafy.gatee.domain.photo.dto.response.PhotoSaveRes;
+import io.ssafy.gatee.domain.photo.dto.response.PhotoThumbnailRes;
 import io.ssafy.gatee.domain.photo.entity.Photo;
 import io.ssafy.gatee.domain.push_notification.application.PushNotificationService;
 import io.ssafy.gatee.domain.reaction.dao.ReactionRepository;
@@ -79,6 +79,29 @@ public class PhotoServiceImpl implements PhotoService {
         }
 
         return photoList.stream().map(PhotoListRes::toDto).toList();
+    }
+
+    // 사진 썸네일 목록 조회
+    @Override
+    public List<PhotoThumbnailRes> readPhotoThumbnailList(String filter, UUID familyId, UUID memberId) {
+        Family family = familyRepository.getReferenceById(familyId);
+
+        List<MemberFamily> memberFamilyList = memberFamilyRepository.findAllByFamily(family)
+                .orElseThrow(() -> new MemberFamilyNotFoundException(MEMBER_FAMILY_NOT_FOUND));
+
+        Filter filterType = Filter.valueOf(filter);
+
+        List<Photo> photoList;
+
+        if (Filter.MONTH.equals(filterType)) {
+            photoList = photoRepositoryCustom.findPhotoThumbnailListByMonth(memberFamilyList);
+        } else if (Filter.YEAR.equals(filterType)) {
+            photoList = photoRepositoryCustom.findPhotoThumbnailListByYear(memberFamilyList);
+        } else {
+            throw new WrongTypeFilterException(WRONG_TYPE_FILTER);
+        }
+
+        return photoList.stream().map(PhotoThumbnailRes::toDto).toList();
     }
 
     // 사진 상세 조회
@@ -149,12 +172,12 @@ public class PhotoServiceImpl implements PhotoService {
     // 사진 삭제
     @Override
     @Transactional
-    public void deletePhoto(PhotoDeleteReq photoDeleteReq, Long photoId, UUID memberId) throws DoNotHavePermissionException {
+    public void deletePhoto(UUID familyId, Long photoId, UUID memberId) throws DoNotHavePermissionException {
         Photo photo = photoRepository.getReferenceById(photoId);
 
         Member member = memberRepository.getReferenceById(memberId);
 
-        Family family = familyRepository.getReferenceById(photoDeleteReq.familyId());
+        Family family = familyRepository.getReferenceById(familyId);
 
         MemberFamily memberFamily = memberFamilyRepository.findByMemberAndFamily(member, family)
                 .orElseThrow(() -> new MemberFamilyNotFoundException(MEMBER_FAMILY_NOT_FOUND));

@@ -104,6 +104,7 @@ include::{snippets}/family-controller-test/read-family/response-fields.adoc[]
 - Request
 
 include::{snippets}/family-controller-test/create-family-code/http-request.adoc[]
+include::{snippets}/family-controller-test/create-family-code/query-parameters.adoc[]
 
 - Response
 
@@ -224,15 +225,30 @@ include::{snippets}/photo-controller-test/read-photo-list/http-response.adoc[]
 include::{snippets}/photo-controller-test/read-photo-list/response-fields.adoc[]
 
 
+== 사진 목록 썸네일 조회
+
+- Request
+
+include::{snippets}/photo-controller-test/read-photo-thumbnail-list/http-request.adoc[]
+include::{snippets}/photo-controller-test/read-photo-thumbnail-list/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/photo-controller-test/read-photo-thumbnail-list/http-response.adoc[]
+include::{snippets}/photo-controller-test/read-photo-thumbnail-list/response-fields.adoc[]
+
+
 == 사진 상세 조회
 
 - Request
 
-include::{snippets}/사진 상세 조회/http-request.adoc[]
+include::{snippets}/photo-controller-test/read-photo-detail/http-request.adoc[]
+include::{snippets}/photo-controller-test/read-photo-detail/path-parameters.adoc[]
 
 - Response
 
-include::{snippets}/사진 상세 조회/http-response.adoc[]
+include::{snippets}/photo-controller-test/read-photo-detail/http-response.adoc[]
+include::{snippets}/photo-controller-test/read-photo-detail/response-fields.adoc[]
 
 
 == 사진 등록
@@ -265,22 +281,24 @@ include::{snippets}/photo-controller-test/delete-photo/http-response.adoc[]
 
 - Request
 
-include::{snippets}/사진 상호작용 생성/http-request.adoc[]
+include::{snippets}/photo-controller-test/save-photo-reaction/http-request.adoc[]
+include::{snippets}/photo-controller-test/save-photo-reaction/path-parameters.adoc[]
 
 - Response
 
-include::{snippets}/사진 상호작용 생성/http-response.adoc[]
+include::{snippets}/photo-controller-test/save-photo-reaction/http-response.adoc[]
 
 
 == 사진 상호작용 삭제
 
 - Request
 
-include::{snippets}/사진 상호작용 삭제/http-request.adoc[]
+include::{snippets}/photo-controller-test/delete-photo-reaction/http-request.adoc[]
+include::{snippets}/photo-controller-test/delete-photo-reaction/path-parameters.adoc[]
 
 - Response
 
-include::{snippets}/사진 상호작용 삭제/http-response.adoc[]
+include::{snippets}/photo-controller-test/delete-photo-reaction/http-response.adoc[]
 
 
 ---
