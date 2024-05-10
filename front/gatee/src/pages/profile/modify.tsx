@@ -14,7 +14,7 @@ const ProfileModify = () => {
 
   // 이미지 관련
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [memberImage, setMemberImage] = useState<string | ArrayBuffer | null>(member.image);
+  const [memberImage, setMemberImage] = useState<string | ArrayBuffer | null>(member.fileUrl);
   // 닉네임 관련
   const inputNicknameRef = useRef<HTMLInputElement>(null);
   const [inputNickname, setInputNickname] = useState<string>(member.nickname);
@@ -150,7 +150,7 @@ const ProfileModify = () => {
         <div className="profile__img-box">
           <img
             className="img-box__img"
-            src={memberImage ? memberImage.toString() : member.image}
+            src={memberImage ? memberImage.toString() : member.fileUrl}
             alt="profile-image"
           />
           <input

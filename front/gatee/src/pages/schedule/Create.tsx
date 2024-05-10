@@ -351,7 +351,7 @@ const ScheduleCreate = () => {
             {/*가족 프로필*/}
             <div className="create-schedule-participant__profile">
               {FamilyMemberInfoSample.map((member, index: number) => (
-                renderProfile(member.email, member.nickname, member.image)
+                renderProfile(member.email, member.nickname, member.fileUrl)
               ))}
             </div>
           </div>
