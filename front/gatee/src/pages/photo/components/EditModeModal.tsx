@@ -3,6 +3,7 @@ import {useLocation} from "react-router-dom";
 import {FiFolderPlus} from "react-icons/fi";
 import {MdDriveFileMoveOutline} from "react-icons/md";
 import {RiDeleteBin6Line} from "react-icons/ri";
+import { TbPencilMinus } from "react-icons/tb";
 
 interface handleSetEditMode {
   handleSetEditMode: (mode: string) => void
@@ -41,7 +42,16 @@ export const EditModal = ({handleSetEditMode}: handleSetEditMode) => {
                  onClick={(event) => handleBtn(event, "delete")}>
               <RiDeleteBin6Line size={30} color="gray"/>
               <div>
-                앨범에서 사진 삭제
+                사진 삭제
+              </div>
+            </div>
+
+            {/*앨범 이름 수정*/}
+            <div className="icon-title-center"
+                 onClick={(event) => handleBtn(event, "editName")}>
+              <TbPencilMinus size={30} color="gray"/>
+              <div>
+                이름 수정
               </div>
             </div>
           </div>

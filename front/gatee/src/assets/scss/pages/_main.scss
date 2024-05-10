@@ -89,48 +89,60 @@
     }
   }
 
-  .main-profile-list--container {
-    @include flex_center;
-    align-content: start;
+  .main-profile-list--container--outside {
+    @include m-(3);
     flex: 1;
-    flex-wrap: wrap;
-    gap: 2rem;
-    margin-bottom: 10dvw;
 
-    .main-profile-list-item--container {
-      @include flex_center;
+    .main-profile-list--container {
+      @include flex_row;
 
-      position: relative;
-      flex-direction: column;
-      gap: 0.2rem;
-      width: 20dvw;
-      height: 25dvw;
-      border-radius: 10px;
-      box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
-      background-color: white;
-      font-weight: bold;
-      color: $gray200;
+      align-content: start;
+      flex-wrap: wrap;
+      margin-bottom: 10dvw;
 
-      .main-profile-wrapper {
-        @include flex_center;
+      .main-profile-list-item--box {
+        @include mb-(1);
+        @include px-(0.5);
 
-        width: 15dvw;
-        height: 13dvw;
-        position: relative;
-      }
+        width: 33.3%;
+        height: 25dvw;
 
-      .main-profile-img {
-        width: 13dvw;
-        height: 13dvw;
-        object-fit: cover;
-        border-radius: 10rem;
-        box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
-      }
+        .main-profile-list-item--container {
+          @include flex_center;
 
-      .main-profile-mood {
-        position: absolute;
-        bottom: 0;
-        right: 0;
+          position: relative;
+          flex-direction: column;
+          gap: 0.2rem;
+          width: 100%;
+          height: 100%;
+          border-radius: 10px;
+          box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+          background-color: white;
+          font-weight: bold;
+          color: $gray200;
+
+          .main-profile-wrapper {
+            @include flex_center;
+
+            width: 15dvw;
+            height: 13dvw;
+            position: relative;
+          }
+
+          .main-profile-img {
+            width: 13dvw;
+            height: 13dvw;
+            object-fit: cover;
+            border-radius: 10rem;
+            box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+          }
+
+          .main-profile-mood {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+          }
+        }
       }
     }
   }
@@ -222,6 +234,7 @@
         border-radius: 10rem;
         background-color: $orange400;
       }
+
       :disabled {
         background-color: $orange100;
       }
