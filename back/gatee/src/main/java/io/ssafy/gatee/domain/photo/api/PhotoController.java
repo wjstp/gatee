@@ -2,6 +2,7 @@ package io.ssafy.gatee.domain.photo.api;
 
 import com.google.firebase.messaging.FirebaseMessagingException;
 import io.ssafy.gatee.domain.photo.application.PhotoService;
+import io.ssafy.gatee.domain.photo.dto.request.PhotoListDeleteReq;
 import io.ssafy.gatee.domain.photo.dto.request.PhotoListReq;
 import io.ssafy.gatee.domain.photo.dto.request.PhotoSaveReq;
 import io.ssafy.gatee.domain.photo.dto.response.PhotoDetailRes;
@@ -86,6 +87,16 @@ public class PhotoController {
             @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) throws DoNotHavePermissionException {
         photoService.deletePhoto(UUID.fromString(familyId), photoId, customUserDetails.getMemberId());
+    }
+
+    // 사진 삭제 (리스트)
+    @PostMapping("/delete")
+    @ResponseStatus(HttpStatus.OK)
+    public void deletePhotoList(
+            @Valid
+            @RequestBody PhotoListDeleteReq photoListDeleteReq
+    ) {
+        photoService.deletePhotoList(photoListDeleteReq);
     }
 
     // 사진 상호작용 생성

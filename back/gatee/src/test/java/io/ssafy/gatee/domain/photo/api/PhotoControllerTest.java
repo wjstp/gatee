@@ -3,6 +3,7 @@ package io.ssafy.gatee.domain.photo.api;
 import io.ssafy.gatee.config.restdocs.RestDocsTestSupport;
 import io.ssafy.gatee.config.security.CustomWithMockUser;
 import io.ssafy.gatee.domain.photo.application.PhotoService;
+import io.ssafy.gatee.domain.photo.dto.request.PhotoListDeleteReq;
 import io.ssafy.gatee.domain.photo.dto.request.PhotoListReq;
 import io.ssafy.gatee.domain.photo.dto.request.PhotoSaveReq;
 import io.ssafy.gatee.domain.photo.dto.response.PhotoDetailRes;
@@ -20,6 +21,7 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -102,11 +104,13 @@ class PhotoControllerTest extends RestDocsTestSupport {
         PhotoThumbnailRes photoThumbnailRes1 = PhotoThumbnailRes.builder()
                 .photoId(1L)
                 .imageUrl("https://www.gaty.duckdns.org/s3-image-url-1")
+                .createdAt(LocalDateTime.now())
                 .build();
 
         PhotoThumbnailRes photoThumbnailRes2 = PhotoThumbnailRes.builder()
                 .photoId(2L)
                 .imageUrl("https://www.gaty.duckdns.org/s3-image-url-2")
+                .createdAt(LocalDateTime.now())
                 .build();
 
         List<PhotoThumbnailRes> photoThumbnailResList = new ArrayList<>();
@@ -133,8 +137,9 @@ class PhotoControllerTest extends RestDocsTestSupport {
                                 parameterWithName("familyId").description("가족 ID").optional()
                         ),
                         responseFields(
-                                 fieldWithPath("[].photoId").type(JsonFieldType.NUMBER).description("사진 ID"),
-                                fieldWithPath("[].imageUrl").type(JsonFieldType.STRING).description("사진 URL")
+                                fieldWithPath("[].photoId").type(JsonFieldType.NUMBER).description("사진 ID"),
+                                fieldWithPath("[].imageUrl").type(JsonFieldType.STRING).description("사진 URL"),
+                                fieldWithPath("[].createdAt").type(JsonFieldType.STRING).description("사진 생성 시간")
                         )
                 ));
     }
@@ -240,6 +245,29 @@ class PhotoControllerTest extends RestDocsTestSupport {
                         ),
                         queryParameters(
                                 parameterWithName("familyId").description("가족 ID").optional()
+                        )
+                ));
+    }
+
+    @Test
+    @CustomWithMockUser
+    void deletePhotoList() throws Exception {
+
+        // given
+        doNothing().when(photoService).deletePhotoList(any(PhotoListDeleteReq.class));
+
+        // when
+        ResultActions result = mockMvc.perform(post("/api/photos/delete")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(readJson("json/photo/deletePhotoList.json"))
+                .accept(MediaType.APPLICATION_JSON)
+        );
+
+        // then
+        result.andExpect(status().isOk())
+                .andDo(restDocs.document(
+                        queryParameters(
+                                parameterWithName("photoIdList").description("사진 ID 목록").optional()
                         )
                 ));
     }

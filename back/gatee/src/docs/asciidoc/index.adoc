@@ -210,6 +210,25 @@ include::{snippets}/일정 후기 등록/http-response.adoc[]
 ---
 
 
+= File
+
+== S3 파일 등록
+
+- Request
+
+include::{snippets}/file-controller-test/upload-file/curl-request.adoc[]
+include::{snippets}/file-controller-test/upload-file/form-parameters.adoc[]
+
+- Response
+
+include::{snippets}/file-controller-test/upload-file/http-response.adoc[]
+include::{snippets}/file-controller-test/upload-file/response-fields.adoc[]
+
+
+---
+---
+
+
 = Photo
 
 == 사진 목록 조회
@@ -277,6 +296,19 @@ include::{snippets}/photo-controller-test/delete-photo/query-parameters.adoc[]
 include::{snippets}/photo-controller-test/delete-photo/http-response.adoc[]
 
 
+== 사진 삭제 (리스트)
+
+- Request
+
+include::{snippets}/photo-controller-test/delete-photo-list/http-request.adoc[]
+include::{snippets}/photo-controller-test/delete-photo-list/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/photo-controller-test/delete-photo-list/http-response.adoc[]
+
+
+
 == 사진 상호작용 생성
 
 - Request
@@ -324,7 +356,7 @@ include::{snippets}/한마디 보내기 및 FCM알림 전송/http-response.adoc[
 = Album
 
 
-== 월별 목록 조회
+== 앨범 목록 조회
 
 - Request
 
