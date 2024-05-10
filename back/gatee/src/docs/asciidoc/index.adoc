@@ -296,7 +296,7 @@ include::{snippets}/photo-controller-test/delete-photo/query-parameters.adoc[]
 include::{snippets}/photo-controller-test/delete-photo/http-response.adoc[]
 
 
-== 사진 삭제
+== 사진 삭제 (리스트)
 
 - Request
 
