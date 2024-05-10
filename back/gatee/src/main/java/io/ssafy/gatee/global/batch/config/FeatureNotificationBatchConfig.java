@@ -75,11 +75,11 @@ public class FeatureNotificationBatchConfig {
     }
 
     private ItemProcessor<? super Member, ? extends Member> checkMemberAgreement() {
-        return member -> {
-            if (Objects.isNull(member.getNotificationToken())) {
+        return members -> {
+            if (Objects.isNull(members.getNotificationToken())) {
                 return null;
             }
-            return member;
+            return members;
         };
     }
 
@@ -89,7 +89,7 @@ public class FeatureNotificationBatchConfig {
         return member -> {
             List<UUID> familyMemberIds = memberFamilyRepository.findMyFamily(member);
             if (familyMemberIds.isEmpty()) {
-                return null;
+                return ;
             }
             UUID randomId = familyMemberIds.get((int) (Math.random() * familyMemberIds.size()));
             MemberFeature randomMemberFeature = memberFeatureRepository.findByMember_Id(randomId).orElse(null);
