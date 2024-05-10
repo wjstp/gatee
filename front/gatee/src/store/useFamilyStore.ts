@@ -23,7 +23,7 @@ export const useFamilyStore = create<FamilyStore>(
   (set) => ({
     familyId: "",
     setFamilyId: (newId: string) => set({familyId: newId}),
-    familyName: "예빈이네",
+    familyName: "",
     setFamilyName: (newName: string) => set({familyName: newName}),
     familyImage: null,
     setFamilyImage: (newImage: File | null) => set({familyImage: newImage}),
