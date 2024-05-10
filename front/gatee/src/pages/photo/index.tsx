@@ -4,13 +4,11 @@ import {FiEdit} from "react-icons/fi";
 import {RiDeleteBin6Line} from "react-icons/ri";
 import {LuFolderInput} from "react-icons/lu";
 import {FaPlus} from "react-icons/fa6";
-import {useModalStore} from "@store/useModalStore";
 import useModal from "@hooks/useModal";
 import {AlbumNameInputModal} from "@pages/photo/components/CreateAlbumModal";
 import {EditModal} from "@pages/photo/components/EditModeModal";
 import {SelectAlbumModal} from "@pages/photo/components/SelectAlbum";
 import {deletePhotoApi, uploadPhotoApi} from "@api/photo";
-import {AxiosResponse} from "axios";
 import {imageResizer} from "@utils/imageResizer";
 import {uploadFileApi} from "@api/file";
 import {useFamilyStore} from "@store/useFamilyStore";
@@ -49,7 +47,7 @@ const PhotoIndex = () => {
   const [albumId, setAlbumId] = useState(0);
   const [albumName, setAlbumName] = useState("");
   // 추가될 사진
-  const [inputFile, setInputFile] = useState<File[] | null>(null);
+  // const [inputFile, setInputFile] = useState<File[] | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   // const [selectedImage, setSelectedImage] = useState<string | ArrayBuffer | null>(null);
 

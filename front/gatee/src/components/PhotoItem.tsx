@@ -39,6 +39,7 @@ const PhotoItem = ({photoDetailData}: { photoDetailData: PhotoDetailData }) => {
       createReactionPhotoApi(
         photoDetailData.photoId,
         res => {
+          console.log(res)
           setReactionList(prevReactionList => {
             // memberId가 12인 원소가 이미 있는지 확인
             const existingReaction = prevReactionList.find(reaction => reaction.memberId === myInfo.memberId);
@@ -58,6 +59,7 @@ const PhotoItem = ({photoDetailData}: { photoDetailData: PhotoDetailData }) => {
       deleteReactionPhotoApi(
         photoDetailData.photoId,
         res => {
+          console.log(res)
           // API 호출 성공 시 reactionList 업데이트
           setReactionList(prevReactionList => {
             // memberId가 12인 원소를 제외한 배열 반환

@@ -4,7 +4,7 @@ import {useOutletContext, useParams} from "react-router-dom";
 // import {photoGroup} from "@constants/index";
 import {PhotoOutletInfoContext} from "@type/index";
 import {useFamilyStore} from "@store/useFamilyStore";
-import {getAlbumDetailApi, getListPhotoApi} from "@api/photo";
+import {getListPhotoApi} from "@api/photo";
 
 interface RouteParams {
   [key: string]: string | undefined;
