@@ -89,7 +89,7 @@ public class ChatServiceImpl implements ChatService {
                 .totalMember(unreadList.size())
                 .sender(memberId.toString())
                 .unReadMember(unReadMemberAsStringList)
-                .currentTime(LocalDateTime.now())
+                .currentTime(chatDto.currentTime())
                 .build(), familyId);
     }
 

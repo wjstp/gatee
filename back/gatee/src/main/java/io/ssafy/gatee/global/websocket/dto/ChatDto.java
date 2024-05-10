@@ -4,6 +4,7 @@ import java.util.UUID;
 
 public record ChatDto(
     MessageType messageType,
-    String content
+    String content,
+    String currentTime
 ) {
 }
