@@ -16,6 +16,7 @@ import io.ssafy.gatee.domain.member.entity.Member;
 import io.ssafy.gatee.domain.member_family.dao.MemberFamilyRepository;
 import io.ssafy.gatee.domain.member_family.dto.response.MemberFamilyInfoRes;
 import io.ssafy.gatee.domain.member_family.entity.MemberFamily;
+import io.ssafy.gatee.domain.member_family.entity.Role;
 import io.ssafy.gatee.global.exception.error.bad_request.ExpiredCodeException;
 import io.ssafy.gatee.global.exception.error.not_found.FamilyNotFoundException;
 import io.ssafy.gatee.global.exception.error.not_found.FileNotFoundException;
@@ -169,8 +170,8 @@ public class FamilyServiceImpl implements FamilyService {
                     .memberId(memberFamily.getMember().getId())
                     .fileUrl(memberFamily.getMember().getFile().getUrl())
                     .birth(memberFamily.getMember().getBirth())
-                    .name(memberFamily.getFamily().getName())
-                    .role(memberFamily.getRole())
+                    .name(memberFamily.getMember().getName())
+                    .role(memberFamily.getRole().korean)
                     .email(memberFamily.getMember().getEmail())
                     .mood(memberFamily.getMember().getMood())
                     .isLeader(memberFamily.isLeader())

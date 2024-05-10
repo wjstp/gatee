@@ -5,7 +5,7 @@ public enum Role {
     GRANDMOTHER("할머니"), GRANDFATHER("할아버지")
     ;
 
-    private final String korean;
+    public final String korean;
 
     Role(String korean) {
         this.korean = korean;

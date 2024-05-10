@@ -16,7 +16,7 @@ const getUserInfoByEmail = (email: string) => {
   }
 
   return {
-    image: userInfo.image,
+    image: userInfo.fileUrl,
     nickname: userInfo.nickname,
   };
 };
