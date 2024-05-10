@@ -13,7 +13,7 @@ public record AlbumListRes(
         @NotNull
         String name,
 
-        Long PhotoId,
+        Long photoId,
 
         String imageUrl
 ) {
@@ -21,7 +21,7 @@ public record AlbumListRes(
                 return AlbumListRes.builder()
                         .albumId(photoAlbum.getAlbum().getId())
                         .name(photoAlbum.getAlbum().getName())
-                        .PhotoId(photoAlbum.getPhoto().getId())
+                        .photoId(photoAlbum.getPhoto().getId())
                         .imageUrl(photoAlbum.getPhoto().getFile().getUrl())
                         .build();
         }

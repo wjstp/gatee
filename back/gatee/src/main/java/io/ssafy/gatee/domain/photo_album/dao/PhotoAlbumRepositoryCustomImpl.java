@@ -51,7 +51,7 @@ public class PhotoAlbumRepositoryCustomImpl implements PhotoAlbumRepositoryCusto
                 return AlbumListRes.builder()
                         .albumId(photoAlbum1.getAlbum().getId())
                         .name(photoAlbum1.getAlbum().getName())
-                        .PhotoId(null)
+                        .photoId(null)
                         .imageUrl(null)
                         .build();
             } else {
