@@ -4,12 +4,12 @@ import com.querydsl.jpa.JPQLQueryFactory;
 import io.ssafy.gatee.domain.album.dto.response.AlbumListRes;
 import io.ssafy.gatee.domain.album.dto.response.AlbumPhotoListRes;
 import io.ssafy.gatee.domain.album.entity.Album;
-import io.ssafy.gatee.domain.photo.dto.response.PhotoListRes;
 import io.ssafy.gatee.domain.photo_album.entity.PhotoAlbum;
 import io.ssafy.gatee.domain.photo_album.entity.QPhotoAlbum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -23,15 +23,31 @@ public class PhotoAlbumRepositoryCustomImpl implements PhotoAlbumRepositoryCusto
 
         QPhotoAlbum photoAlbum = QPhotoAlbum.photoAlbum;
 
-        List<PhotoAlbum> photoAlbumList = albumList.stream().map((album) -> {
-            return jpqlQueryFactory.selectFrom(photoAlbum)
+        List<List<PhotoAlbum>> photoAlbumList = albumList.stream().map((album) -> {
+            List<PhotoAlbum> photoAlbumOne = jpqlQueryFactory.selectFrom(photoAlbum)
                     .where(photoAlbum.album.eq(album))
                     .orderBy(photoAlbum.createdAt.desc())
                     .limit(1)
-                    .fetch().get(0);
+                    .fetch();
+
+            if (photoAlbumOne.isEmpty()) {
+                List<PhotoAlbum> list = new ArrayList<>();
+
+                list.add(PhotoAlbum.builder()
+                        .album(album)
+                        .build());
+
+                return list;
+            } else {
+                return photoAlbumOne;
+            }
         }).toList();
 
-        return photoAlbumList.stream().map(AlbumListRes::toDto).toList();
+        return photoAlbumList.stream().map((photoAlbums) -> {
+            PhotoAlbum photoAlbum1 = photoAlbums.get(0);
+
+            return AlbumListRes.toDto(photoAlbum1);
+        }).toList();
     }
 
     // 특정 앨범에 포함되는 사진 리스트 조회
