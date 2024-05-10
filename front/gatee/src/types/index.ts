@@ -150,6 +150,7 @@ export interface ChatMessage {  // MESSAGE
   messageType: string;
   sender: string;
   time: string;
+  totalMember: number;
   unreadMember: string[];
   content: string;
 }
@@ -158,6 +159,7 @@ export interface ChatFile { // FILE
   messageType: string;
   sender: string;
   time: string;
+  totalMember: number;
   unreadMember: string[];
   files: string[];
 }
@@ -166,6 +168,7 @@ export interface ChatAppointment {  // APPOINTMENT
   messageType: string;
   sender: string;
   time: string;
+  totalMember: number;
   unreadMember: string[];
   content: string;
   participants: string[];
@@ -175,6 +178,7 @@ export interface ChatEmoji {  // EMOJI
   messageType: string;
   sender: string;
   time: string;
+  totalMember: number;
   unreadMember: string[];
   emojiId: string;
   content: string;
@@ -189,6 +193,7 @@ export interface ChatAlarm {  // ALARM
   messageType: string;
   sender: string;
   time: string;
+  totalMember: number;
   unreadMember: string[];
   content: string;
 }
