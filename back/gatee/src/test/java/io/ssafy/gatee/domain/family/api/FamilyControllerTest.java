@@ -58,13 +58,7 @@ class FamilyControllerTest extends RestDocsTestSupport {
                 new FileInputStream(new File("src/test/resources/image/testImage1.jpg")) // 실제 파일
         );
 
-        given(fileService.uploadFile(any(FileType.class), any(MockMultipartFile.class)))
-                .willReturn(FileUrlRes.builder()
-                        .fileId(1L)
-                        .imageUrl("https://www.gaty.duckdns.org/image-url")
-                        .build());
-
-        given(familyService.saveFamily(any(String.class), any(UUID.class), any(FileUrlRes.class)))
+        given(familyService.saveFamily(any(String.class), any(UUID.class), any(FileType.class), any(MockMultipartFile.class)))
                 .willReturn(FamilySaveRes.builder()
                         .familyId(UUID.randomUUID())
                         .fileUrl(FileUrlRes.builder()

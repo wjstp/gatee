@@ -1,6 +1,7 @@
 package io.ssafy.gatee.global.exception.advice;
 
 import io.ssafy.gatee.global.exception.error.bad_request.DoNotHavePermissionException;
+import io.ssafy.gatee.global.exception.error.bad_request.ExistsFamilyException;
 import io.ssafy.gatee.global.exception.error.bad_request.ExpiredCodeException;
 import io.ssafy.gatee.global.exception.error.bad_request.WrongTypeFilterException;
 import io.ssafy.gatee.global.exception.error.not_found.*;
@@ -30,7 +31,8 @@ public class ExceptionAdvice {
     @ExceptionHandler({
             DoNotHavePermissionException.class,
             ExpiredCodeException.class,
-            WrongTypeFilterException.class
+            WrongTypeFilterException.class,
+            ExistsFamilyException.class
     })
     public String handleBadRequest(RuntimeException e) {
         return e.getMessage();
