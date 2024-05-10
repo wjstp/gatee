@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Link, Outlet, useLocation, useNavigate} from "react-router-dom";
+import {Link, Outlet, useLocation, useNavigate, useParams} from "react-router-dom";
 import {FiEdit} from "react-icons/fi";
 import {RiDeleteBin6Line} from "react-icons/ri";
 import {LuFolderInput} from "react-icons/lu";
@@ -17,6 +17,7 @@ import {useFamilyStore} from "@store/useFamilyStore";
 const PhotoIndex = () => {
   const location = useLocation();
   const navigate = useNavigate()
+  const params = useParams()
   const {familyId} = useFamilyStore()
   // 상단 탭 상태 관리 -> 모든 사진 / 앨범사진
   const [activeTab, setActiveTab] = useState("album"); // 현재 경로를 기본값으로 설정
@@ -83,7 +84,7 @@ const PhotoIndex = () => {
   }
 
   // 사진 업로드
-  const upLoadPhotoApiFunc = () => {
+  const uploadPhotoApiFunc = () => {
     // 사진 업로드 api
     uploadAlbumPhotoApi(
       {
@@ -93,7 +94,7 @@ const PhotoIndex = () => {
       res => {
         console.log(res)
         editPhotoIdList.length = 0;
-        navigate(`/photo/album/${albumId}`)
+        navigate(`/photo/album/${albumId}/${albumName}`)
       },
       err => {
         console.log(err)
@@ -103,6 +104,7 @@ const PhotoIndex = () => {
 
   // 앨범 사진 삭제
   const deleteAlbumPhotoApiFunc = () => {
+    console.log("앨범 사진 삭제")
     deleteAlbumPhotoApi(
       {
         photoIdList: editPhotoIdList,
@@ -129,13 +131,13 @@ const PhotoIndex = () => {
         // 앨범 내 사진 삭제
       } else if (location.pathname.includes("/photo/album")) {
         deleteAlbumPhotoApiFunc()
-      } {
+      } else {
         // 사진 삭제
         deletePhotoApiFunc()
       }
       // 이동 모드일 때
     } else if (editMode === "makeAlbum" || editMode === "moveAlbum") {
-      upLoadPhotoApiFunc()
+      uploadPhotoApiFunc()
     }
     // 편집모드 초기화
     setEditMode("normal")
@@ -187,7 +189,7 @@ const PhotoIndex = () => {
     }
   }
 
-  // 편집할 사진 추가 및 삭제  => PhotoList 컴포넌트에서 받은 이벤트 실행 함수
+  // 편집할 사진 추가 및 삭제  => AlbumDetailPhotoList 컴포넌트에서 받은 이벤트 실행 함수
   const handleChecked = (photoId: number, type: string) => {
     if (type === "delete") {
       // 체크가 풀린 사진을 삭제한다
@@ -298,6 +300,10 @@ const PhotoIndex = () => {
       setActiveTab("all")
     } else if (location.pathname.includes("/photo/album")) {
       setActiveTab("album")
+      if (params?.id) {
+        setAlbumId(params?.id)
+
+      }
     } else if (location.pathname === "/photo") {
       navigate("album")
     } else {

@@ -1,22 +1,20 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {getAlbumListPhotoApi} from "@api/photo";
 import {useFamilyStore} from "@store/useFamilyStore";
+import {GroupPhotoData} from "@type/index";
+
 
 export const SelectAlbumModal = ({handleSelectAlbum}: { handleSelectAlbum?: (name: string, id: number) => void }) => {
   const {familyId} =useFamilyStore()
   // 앨범 리스트
-  const albumNameList = [
-    {albumId: 1, name: "툔"},
-    {albumId: 2, name: "예삐리리"},
-    {albumId: 3, name: "운덩"},
-  ]
+  const [albumNameList,setAlbumNameList] = useState<GroupPhotoData[]>([])
 
   const getAlbumListApiFunc = () => {
     getAlbumListPhotoApi(
       {familyId: familyId},
       res => {
         console.log(res)
-        // setGroupPhotoDatas(res.data)
+        setAlbumNameList(res.data)
       },
       err => {
         console.log(err)

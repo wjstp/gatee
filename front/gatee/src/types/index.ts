@@ -85,6 +85,12 @@ export interface PhotoListProps {
   handleChecked: ((photoId: number, type: string) => void) | null;
 }
 
+export interface AlbumPhotoListProps {
+  editMode: string,
+  photoGroup: AlbumGroupDetail[],
+  handleChecked: ((photoId: number, type: string) => void) | null;
+}
+
 export interface PhotoOutletInfoContext {
   editMode: string;
   handleChecked: (
@@ -97,6 +103,14 @@ export interface PhotoData {
   fileId: number;
   photoId:number;
   imageUrl: string;
+}
+
+export interface AlbumGroupDetail {
+  fileId:number;
+  imageUrl:string;
+  memberFamilyId:number;
+  photoAlbumId:number;
+  photoId:number;
 }
 
 // schedule
@@ -224,4 +238,60 @@ export interface NaggingApiReq{
   // 멤버 아이디
   "receiverId": string,
   "message": string
+}
+
+// 사진 api 관련 type
+export interface GroupPhotoData{
+  albumId: number,
+  name: string,
+  imageUrl: string | null,
+  PhotoId: number|null
+}
+
+export interface GroupPhotoItemProps {
+  groupPhotoData: GroupPhotoData
+}
+
+export interface PlusAlbumButton {
+  handleModal: () => void;
+}
+
+export interface UploadPhotoApiReq {
+  familyId: string,
+  fileId: number | string
+}
+
+export interface GetListPhotoApiReq {
+  familyId: string,
+  filter: string,
+  year: string | null,
+  month: string | null
+}
+
+export interface UpdateAlbumNameApiReq {
+  albumId: string,
+  name: string
+}
+
+export interface UploadAlbumPhotoApiReq {
+  albumId: string | number,
+  photoIdList: number[]
+}
+
+export interface CreateAlbumApiReq {
+  familyId: string,
+  name: string
+}
+
+export interface FamilyIdReq {
+  familyId: string,
+}
+
+export interface GetThumnailPhotoApiReq {
+  familyId: string,
+  filter:string
+}
+
+export interface DeletePhotoApiReq{
+  photoIdList:number[]
 }
