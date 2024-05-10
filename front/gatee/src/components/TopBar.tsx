@@ -41,13 +41,13 @@ const TopBar = () => {
         {/*  </button>*/}
         {/*)}*/}
 
-        {/*채팅 앨범 - 채팅 페이지 */}
-        {['/chatting', '/chatting/photo'].includes(currentPage) && (
-          <NavLink to="/chatting/photo" className={({isActive}) =>
-            isActive ? 'top-bar__right--active': ''}>
-            <PiSquaresFour size={24}/>
-          </NavLink>
-        )}
+        {/*/!*채팅 앨범 - 채팅 페이지 *!/*/}
+        {/*{['/chatting', '/chatting/photo'].includes(currentPage) && (*/}
+        {/*  <NavLink to="/chatting/photo" className={({isActive}) =>*/}
+        {/*    isActive ? 'top-bar__right--active': ''}>*/}
+        {/*    <PiSquaresFour size={24}/>*/}
+        {/*  </NavLink>*/}
+        {/*)}*/}
 
         {/*미션*/}
         <NavLink to="main/mission" className={({isActive}) =>
