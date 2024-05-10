@@ -3,9 +3,11 @@ package io.ssafy.gatee.domain.photo.api;
 import io.ssafy.gatee.config.restdocs.RestDocsTestSupport;
 import io.ssafy.gatee.config.security.CustomWithMockUser;
 import io.ssafy.gatee.domain.photo.application.PhotoService;
+import io.ssafy.gatee.domain.photo.dto.request.PhotoDeleteReq;
 import io.ssafy.gatee.domain.photo.dto.request.PhotoListReq;
 import io.ssafy.gatee.domain.photo.dto.request.PhotoSaveReq;
 import io.ssafy.gatee.domain.photo.dto.response.PhotoListRes;
+import io.ssafy.gatee.domain.photo.dto.response.PhotoSaveRes;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,6 +16,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -26,12 +29,13 @@ import static org.mockito.BDDMockito.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
-import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 @Slf4j
 @ActiveProfiles({"common, prod"})
-@WebMvcTest({{PhotoController.class})
+@WebMvcTest({PhotoController.class})
 @MockBean(JpaMetamodelMappingContext.class)
 class PhotoControllerTest extends RestDocsTestSupport {
 
@@ -80,7 +84,9 @@ class PhotoControllerTest extends RestDocsTestSupport {
                                 parameterWithName("year").description("조회 기준 년").optional()
                         ),
                         responseFields(
-                                fieldWithPath("")
+                                fieldWithPath("[].photoId").type(JsonFieldType.NUMBER).description("사진 ID").optional(),
+                                fieldWithPath("[].fileId").type(JsonFieldType.NUMBER).description("파일 ID").optional(),
+                                fieldWithPath("[].imageUrl").type(JsonFieldType.STRING).description("사진 URL").optional()
                         )
                 ));
     }
@@ -100,33 +106,58 @@ class PhotoControllerTest extends RestDocsTestSupport {
 
     @Test
     @CustomWithMockUser
-    @DisplayName("사진 등록 테스트")
     void savePhoto() throws Exception {
-        PhotoSaveReq photoSaveReq = PhotoSaveReq.builder()
-                .fileId(1L)
-                .build();
 
-        String photoSaveReqJson = objectMapper.writeValueAsString(photoSaveReq);
+        // given
+        given(photoService.savePhoto(any(PhotoSaveReq.class), any(UUID.class)))
+                .willReturn(PhotoSaveRes.builder()
+                        .photoId(1L)
+                        .build());
 
-        mockMvc.perform(post("/api/photos/save")
+        // when
+        ResultActions result = mockMvc.perform(post("/api/photos/save")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(photoSaveReqJson))
-                .andDo(MockMvcResultHandlers.print())
-                .andDo(MockMvcRestDocumentation.document("사진 등록"))
-                .andExpect(status().isOk());
+                        .content(readJson("json/photo/savePhoto.json"))
+                        .accept(MediaType.APPLICATION_JSON)
+                );
+
+        // then
+        result.andExpect(status().isOk())
+                .andDo(restDocs.document(
+                        queryParameters(
+                                parameterWithName("fileId").description("파일 ID").optional(),
+                                parameterWithName("familyId").description("가족 ID").optional()
+                        ),
+                        responseFields(
+                                fieldWithPath("photoId").type(JsonFieldType.NUMBER).description("사진 ID")
+                        )
+                ));
     }
 
     @Test
     @CustomWithMockUser
-    @DisplayName("사진 삭제 테스트")
     void deletePhoto() throws Exception {
-        long photoId = 1L;
 
-        mockMvc.perform(delete("/api/photos/" + photoId)
-                        .param("memberFamilyId", "1"))
-                .andDo(MockMvcResultHandlers.print())
-                .andDo(MockMvcRestDocumentation.document("사진 삭제"))
-                .andExpect(status().isOk());
+        // given
+        doNothing().when(photoService).deletePhoto(any(PhotoDeleteReq.class), any(Long.class), any(UUID.class));
+
+        // when
+        ResultActions result = mockMvc.perform(delete("/api/photos/{photoId}", 1L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(readJson("json/photo/deletePhoto.json"))
+                        .accept(MediaType.APPLICATION_JSON)
+                );
+
+        // then
+        result.andExpect(status().isOk())
+                .andDo(restDocs.document(
+                        pathParameters(
+                                parameterWithName("photoId").description("사진 ID").optional()
+                        ),
+                        queryParameters(
+                                parameterWithName("familyId").description("가족 ID").optional()
+                        )
+                ));
     }
 
     @Test

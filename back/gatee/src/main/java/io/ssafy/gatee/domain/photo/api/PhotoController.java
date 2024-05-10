@@ -7,6 +7,7 @@ import io.ssafy.gatee.domain.photo.dto.request.PhotoListReq;
 import io.ssafy.gatee.domain.photo.dto.request.PhotoSaveReq;
 import io.ssafy.gatee.domain.photo.dto.response.PhotoDetailRes;
 import io.ssafy.gatee.domain.photo.dto.response.PhotoListRes;
+import io.ssafy.gatee.domain.photo.dto.response.PhotoSaveRes;
 import io.ssafy.gatee.global.exception.error.bad_request.DoNotHavePermissionException;
 import io.ssafy.gatee.global.exception.error.bad_request.WrongTypeFilterException;
 import io.ssafy.gatee.global.security.user.CustomUserDetails;
@@ -47,7 +48,7 @@ public class PhotoController {
     // 사진 등록
     @PostMapping("/save")
     @ResponseStatus(HttpStatus.OK)
-    public Long savePhoto(
+    public PhotoSaveRes savePhoto(
             @Valid
             @RequestBody PhotoSaveReq photoSaveReq,
             @AuthenticationPrincipal CustomUserDetails customUserDetails

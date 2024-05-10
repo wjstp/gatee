@@ -17,6 +17,7 @@ import io.ssafy.gatee.domain.photo.dto.request.PhotoListReq;
 import io.ssafy.gatee.domain.photo.dto.request.PhotoSaveReq;
 import io.ssafy.gatee.domain.photo.dto.response.PhotoDetailRes;
 import io.ssafy.gatee.domain.photo.dto.response.PhotoListRes;
+import io.ssafy.gatee.domain.photo.dto.response.PhotoSaveRes;
 import io.ssafy.gatee.domain.photo.entity.Photo;
 import io.ssafy.gatee.domain.push_notification.application.PushNotificationService;
 import io.ssafy.gatee.domain.push_notification.dto.request.DataFCMReq;
@@ -112,7 +113,7 @@ public class PhotoServiceImpl implements PhotoService {
     // 사진 등록
     @Override
     @Transactional
-    public Long savePhoto(PhotoSaveReq photoSaveReq, UUID memberId) throws FirebaseMessagingException {
+    public PhotoSaveRes savePhoto(PhotoSaveReq photoSaveReq, UUID memberId) throws FirebaseMessagingException {
         Member member = memberRepository.getReferenceById(memberId);
 
         Family family = familyRepository.getReferenceById(photoSaveReq.familyId());
@@ -143,7 +144,9 @@ public class PhotoServiceImpl implements PhotoService {
                                 .build())
                         .build());
 
-        return photo.getId();
+        return PhotoSaveRes.builder()
+                .photoId(photo.getId())
+                .build();
     }
 
     // 사진 삭제
