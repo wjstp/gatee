@@ -31,7 +31,7 @@ const ProfileList = ({profileDataList}: { profileDataList: Member[] }) => {
     
     // 프로필로 가기일 때
     if (type === "gotoProfile") {
-      navigate(`/profile/${clickedProfile?.nickname}`)
+      navigate(`/profile/${clickedProfile?.email}`)
 
     //  한마디 보내기 일 때
     } else if (type === "sendMessage") {

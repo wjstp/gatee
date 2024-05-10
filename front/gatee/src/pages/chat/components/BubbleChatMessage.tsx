@@ -1,16 +1,18 @@
 import React from 'react';
 import { ChatEmoji, ChatMessage } from "@type/index";
-import { MemberInfoSample, EMOJI } from "@constants/index";
+import { EMOJI } from "@constants/index";
+import {useMemberStore} from "@store/useMemberStore";
 
 interface ChatMessageProps {
   chat: ChatMessage | ChatEmoji;
 }
 const BubbleChatMessage = (props: ChatMessageProps) => {
   const { chat } = props;
+  const { myInfo } = useMemberStore();
 
   // senderType 반환 함수
   const getSenderType = (value: string): string => {
-    return value === MemberInfoSample.email ? "my" : "yours";
+    return value === myInfo.memberId ? "my" : "yours";
   };
 
   // 이모티콘 반환 함수
