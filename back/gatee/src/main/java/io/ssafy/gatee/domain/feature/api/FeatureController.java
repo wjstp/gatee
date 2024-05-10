@@ -17,16 +17,6 @@ public class FeatureController {
 
     private final FeatureService featureService;
 
-//    // 백문백답 질문조회
-//    @GetMapping
-//    @ResponseStatus(HttpStatus.OK)
-//    public MemberInfoRes readFeatureQuestion(
-//            @PageableDefault
-//            @AuthenticationPrincipal CustomUserDetails customUserDetails
-//    ) {
-//
-//    }
-
     // 질문 답변 시 문제 생성
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
