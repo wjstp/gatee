@@ -8,7 +8,7 @@ import useModal from "@hooks/useModal";
 import {AlbumNameInputModal} from "@pages/photo/components/CreateAlbumModal";
 import {EditModal} from "@pages/photo/components/EditModeModal";
 import {SelectAlbumModal} from "@pages/photo/components/SelectAlbum";
-import {deletePhotoApi, uploadPhotoApi} from "@api/photo";
+import {deletePhotoApi, uploadAlbumPhotoApi, uploadPhotoApi} from "@api/photo";
 import {imageResizer} from "@utils/imageResizer";
 import {uploadFileApi} from "@api/file";
 import {useFamilyStore} from "@store/useFamilyStore";
@@ -44,12 +44,10 @@ const PhotoIndex = () => {
   // 수정 모드 선택
   const [editMode, setEditMode] = useState("normal")
   // 목적지가 될 앨범 Id
-  const [albumId, setAlbumId] = useState(0);
+  const [albumId, setAlbumId] = useState<string | number>(0);
   const [albumName, setAlbumName] = useState("");
   // 추가될 사진
-  // const [inputFile, setInputFile] = useState<File[] | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  // const [selectedImage, setSelectedImage] = useState<string | ArrayBuffer | null>(null);
 
   // 활성화된 상단 탭에 대한 상태 변경 => 모든 사진, 앨범 사진
   const handleTabClick = (path: string) => {
@@ -74,17 +72,23 @@ const PhotoIndex = () => {
       // 담아둔 id 리스트 비우기
       editPhotoIdList.length = 0;
 
-    } else if (editMode === "makeAlbum") {
-      console.log('선택 사진 앨범 생성')
-      navigate("/photo/album/1")
-      editPhotoIdList.length = 0;
+    } else if (editMode === "makeAlbum" || editMode === "moveAlbum") {
+      // 사진 업로드 api
+      uploadAlbumPhotoApi(
+        {
+          albumId: albumId,
+          photoIdList: editPhotoIdList
+        },
+        res => {
+          console.log(res)
+          editPhotoIdList.length = 0;
+          navigate(`/photo/album/${albumId}`)
+        },
+        err => {
+          console.log(err)
+        }
+      )
 
-      // 편집 모드가 앨범으로 이동일때
-    } else if (editMode === "moveAlbum") {
-      console.log('선택 사진 앨범으로 이동')
-      console.log(editPhotoIdList, albumName, '으로 이동',)
-      editPhotoIdList.length = 0;
-      navigate(`/photo/album/${albumId}`)
     }
 
     // 편집모드 변경
@@ -98,7 +102,7 @@ const PhotoIndex = () => {
   }
 
   // 앨범 이름 입력 모달 닫기 이벤트
-  const handleCloseAlbumNameInputModal = (inputValue: string) => {
+  const handleCloseAlbumNameInputModal = (inputValue: string, id: number | string) => {
     // 백드롭 클릭 이벤트로 닫힌다면, 모달도 닫고 편집모드도 normal로 돌아가기
     if (inputValue === "") {
       // console.log('백드롭 이벤트')
@@ -107,10 +111,9 @@ const PhotoIndex = () => {
 
     } else {
       setAlbumName(inputValue)
-      console.log(inputValue, "앨범 생성 axios")
+      setAlbumId(id)
       closeAlbumNameInputModal()
     }
-
   }
 
   // 편집 모드를 결정하는 함수 => EditModal에서 받은 이벤트 실행 함수

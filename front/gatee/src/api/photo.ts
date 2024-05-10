@@ -112,6 +112,7 @@ export const deleteAlbumApi = async function (data: string,
 export const updateAlbumNameApi = async function (data: UpdateAlbumNameApiReq,
                                                   success: (res: AxiosResponse<any>) => void,
                                                   fail: (err: AxiosError<any>) => void) {
+
   await local.patch(`albums/${data.albumId}`, {name: data.name}).then(success).catch(fail);
 }
 
@@ -119,6 +120,7 @@ export const updateAlbumNameApi = async function (data: UpdateAlbumNameApiReq,
 export const uploadAlbumPhotoApi = async function (data: UploadAlbumPhotoApiReq,
                                                    success: (res: AxiosResponse<any>) => void,
                                                    fail: (err: AxiosError<any>) => void) {
+  console.log(data)
   await local.patch(`albums/${data.albumId}`, {photoIdList: data.photoIdList}).then(success).catch(fail);
 }
 
