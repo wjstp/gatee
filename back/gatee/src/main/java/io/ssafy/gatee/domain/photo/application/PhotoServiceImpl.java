@@ -12,6 +12,7 @@ import io.ssafy.gatee.domain.member_family.entity.MemberFamily;
 import io.ssafy.gatee.domain.photo.dao.PhotoRepository;
 import io.ssafy.gatee.domain.photo.dao.PhotoRepositoryCustom;
 import io.ssafy.gatee.domain.photo.dto.request.Filter;
+import io.ssafy.gatee.domain.photo.dto.request.PhotoListDeleteReq;
 import io.ssafy.gatee.domain.photo.dto.request.PhotoListReq;
 import io.ssafy.gatee.domain.photo.dto.request.PhotoSaveReq;
 import io.ssafy.gatee.domain.photo.dto.response.PhotoDetailRes;
@@ -187,6 +188,17 @@ public class PhotoServiceImpl implements PhotoService {
         } else {
             throw new DoNotHavePermissionException(DO_NOT_HAVE_REQUEST);
         }
+    }
+
+    // 사진 삭제 (리스트)
+    @Override
+    @Transactional
+    public void deletePhotoList(PhotoListDeleteReq photoListDeleteReq) {
+        photoListDeleteReq.photoIdList().stream()
+                .map((photoId) -> {
+                    photoRepository.getReferenceById(photoId).deleteData();
+                    return null;
+                });
     }
 
     // 사진 상호작용 생성

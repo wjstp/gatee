@@ -58,7 +58,7 @@ public class Member extends BaseEntity {
     private Privilege privilege;
 
     // 회원 정보 저장 - file field 추가 예정
-    public void saveInfo(MemberSaveReq memberSaveReq) {
+    public void saveInfo(MemberSaveReq memberSaveReq, File file) {
         this.name = memberSaveReq.name();
         this.privilege = Privilege.USER;    // 추가 정보 저장시 권한 변경
         this.nickname = memberSaveReq.nickname();

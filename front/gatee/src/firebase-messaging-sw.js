@@ -14,7 +14,7 @@
 // import firebase from 'firebase/app';
 import 'firebase/messaging';
 import { getPushAlarmByLocalStorageApi } from "@api/firebase";
-import firebase from "./config";
+import firebase from "./firebase-config";
 
 const VALID_KEY = process.env.REACT_APP_FCM_VAPID_KEY;
 

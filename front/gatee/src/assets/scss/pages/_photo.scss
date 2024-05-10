@@ -3,10 +3,8 @@
 
 .photo {
   height: 100%;
-  position: relative;
 
   .photo-tab-container {
-
     @include flex_center;
     @include py-(1);
     justify-content: space-evenly;
@@ -37,13 +35,12 @@
   }
 
   .day-month-year-controller {
-
     @include flex_center;
 
     position: absolute;
-    bottom: 7dvw;
+    bottom: calc(7dvw + $bottomBar-height);
     left: 7dvw;
-    z-index: 10;
+    z-index: 20;
     font-size: 1.1rem;
     border-radius: 12rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -116,8 +113,6 @@
         //box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
       }
     }
-
-
   }
 
   .photo__button {
@@ -126,7 +121,7 @@
 
       position: absolute;
       z-index: 10;
-      bottom: 7dvw;
+      bottom: calc(7dvw + $bottomBar-height);
       right: 7dvw;
       background-color: $orange400;
       color: white;

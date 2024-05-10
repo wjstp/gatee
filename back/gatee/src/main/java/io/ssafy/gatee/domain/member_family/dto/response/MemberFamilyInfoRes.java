@@ -18,7 +18,7 @@ public record MemberFamilyInfoRes(
         BirthType birthType,
         Boolean isLeader,
         String mood,
-        Role role,
+        String role,
         String fileUrl
 ) {
 }
