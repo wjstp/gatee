@@ -14,7 +14,7 @@ const PhotoAlbumGroupDetail = () => {
       <div className="detail-tab--title">
         {albumName}
       </div>
-      <PhotoList editMode={editMode} photoGroup={photoGroup} handleChecked={handleChecked}/>
+      {/*<PhotoList editMode={editMode} photoGroup={photoGroup} handleChecked={handleChecked}/>*/}
     </div>
   );
 }

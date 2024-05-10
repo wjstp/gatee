@@ -81,11 +81,7 @@ export interface Character {
 // photo
 export interface PhotoListProps {
   editMode: string,
-  photoGroup: {
-    id: number,
-    dateTime: string,
-    src: string
-  }[],
+  photoGroup: PhotoData[],
   handleChecked: ((photoId: number, type: string) => void) | null;
 }
 
@@ -98,9 +94,9 @@ export interface PhotoOutletInfoContext {
 }
 
 export interface PhotoData {
-  id: number,
-  dateTime: string,
-  src: string
+  fileId: number;
+  photoId:number;
+  imageUrl: string;
 }
 
 // schedule

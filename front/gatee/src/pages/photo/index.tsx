@@ -9,7 +9,7 @@ import useModal from "@hooks/useModal";
 import {AlbumNameInputModal} from "@pages/photo/components/CreateAlbumModal";
 import {EditModal} from "@pages/photo/components/EditModeModal";
 import {SelectAlbumModal} from "@pages/photo/components/SelectAlbum";
-import {uploadPhotoApi} from "@api/photo";
+import {deletePhotoApi, uploadPhotoApi} from "@api/photo";
 import {AxiosResponse} from "axios";
 import {imageResizer} from "@utils/imageResizer";
 import {uploadFileApi} from "@api/file";
@@ -42,7 +42,7 @@ const PhotoIndex = () => {
   } = useModal();
 
   // 편집할 photoId들이 담긴 set
-  const editPhotoIdList: Set<number> = new Set();
+  const editPhotoIdList: number[] = [];
   // 수정 모드 선택
   const [editMode, setEditMode] = useState("normal")
   // 목적지가 될 앨범 Id
@@ -64,19 +64,28 @@ const PhotoIndex = () => {
 
     if (editMode === "delete") {
       console.log('선택 사진 삭제')
+      deletePhotoApi(
+        {photoIdList: editPhotoIdList},
+        res => {
+          console.log(res)
+        },
+        err => {
+          console.log(err)
+        }
+      )
       // 담아둔 id 리스트 비우기
-      editPhotoIdList.clear()
+      editPhotoIdList.length = 0;
 
     } else if (editMode === "makeAlbum") {
       console.log('선택 사진 앨범 생성')
       navigate("/photo/album/1")
-      editPhotoIdList.clear()
+      editPhotoIdList.length = 0;
 
       // 편집 모드가 앨범으로 이동일때
     } else if (editMode === "moveAlbum") {
       console.log('선택 사진 앨범으로 이동')
       console.log(editPhotoIdList, albumName, '으로 이동',)
-      editPhotoIdList.clear()
+      editPhotoIdList.length = 0;
       navigate(`/photo/album/${albumId}`)
     }
 
@@ -136,12 +145,17 @@ const PhotoIndex = () => {
   const handleChecked = (photoId: number, type: string) => {
     if (type === "delete") {
       // 체크가 풀린 사진을 삭제한다
-      editPhotoIdList.delete(photoId)
+      const index = editPhotoIdList.indexOf(photoId);
+      if (index !== -1) {
+        editPhotoIdList.splice(index, 1);
+      }
     } else {
       // 지금 체크된 사진을 추가한다
-      editPhotoIdList.add(photoId)
+      if (!editPhotoIdList.includes(photoId)) {
+        editPhotoIdList.push(photoId);
+      }
     }
-  }
+  };
 
   // 앨범 고르기
   const handleSelectAlbum = (name: string, id: number) => {
@@ -225,7 +239,7 @@ const PhotoIndex = () => {
   useEffect(() => {
     // 이동될때마다 데이터 청소
     setEditMode("normal")
-    editPhotoIdList.clear()
+    editPhotoIdList.length = 0;
 
     if (location.pathname.includes("/photo/month")) {
       setAllPhotoTab("month")

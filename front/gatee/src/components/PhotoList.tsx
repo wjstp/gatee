@@ -37,12 +37,12 @@ const PhotoItem = ({ photoData, editMode, handleChecked }: PhotoListProps & { ph
     if (handleChecked) {
       // 체크박스가 체크 되어있다면 리스트에서 id를 제거하고 체크를 푼다
       if (checked) {
-        handleChecked(photoData.id,"delete")
+        handleChecked(photoData.photoId,"delete")
         setChecked(false)
       }
       // 체크박스가 체크 되어있지 않다면, 리스트에 id를 추가하고 체크를 한다
       else {
-        handleChecked(photoData.id,"add")
+        handleChecked(photoData.photoId,"add")
         setChecked(true)
       }
     }
@@ -60,7 +60,7 @@ const PhotoItem = ({ photoData, editMode, handleChecked }: PhotoListProps & { ph
                   checked={checked}
                   onChange={() => handleCheckBox()}
         />}
-      <img src={photoData.src} alt={photoData.dateTime} />
+      <img src={photoData.imageUrl} alt={`${photoData.photoId}`}/>
     </div>
   );
 };
