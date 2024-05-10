@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, ChangeEvent } from 'react';
 import { HiOutlinePlus } from "react-icons/hi";
-import { PiPaperPlaneRightFill}  from "react-icons/pi";
+import { PiPaperPlaneRightFill, PiSquaresFour } from "react-icons/pi";
 import { SlEmotsmile } from "react-icons/sl";
 import { IoIosCamera } from "react-icons/io";
 import { HiSpeakerphone } from "react-icons/hi";
@@ -11,6 +11,7 @@ import { EMOJI } from "@constants/index";
 import { EmojiItem } from "@type/index";
 import { uploadFileApi } from "@api/file";
 import { AxiosError, AxiosResponse } from "axios";
+import { NavLink } from "react-router-dom";
 
 
 const ChatInput = () => {
@@ -260,6 +261,14 @@ const ChatInput = () => {
           >
             <IoIosCamera size={24}/>
           </button>
+
+          {/*앨범 버튼*/}
+          <NavLink
+            to="/chatting/photo"
+            className={`chat-input__button-album${isOpenPlus ? "--active" : ""}`}
+          >
+            <PiSquaresFour size={24}/>
+          </NavLink>
 
           {/* 파일 선택 */}
           <input

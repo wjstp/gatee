@@ -23,7 +23,7 @@ const BubbleChatAlarm = (props: ChatAlarmProps) => {
         {/*날짜*/}
         <div className="bubble-appointment__info-wrapper">
           <div className="bubble-appointment__date">
-            {dayjs(chat.time).format("M월 D일")}
+            {dayjs(chat.currentTime).format("M월 D일")}
           </div>
         </div>
       </div>
