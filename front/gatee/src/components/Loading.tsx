@@ -1,8 +1,8 @@
 import React from 'react';
-import { ReactComponent as LineLogo } from "@assets/logo/logo_line.svg"
+import { ReactComponent as LineLogo } from "@assets/images/logo/logo_line.svg"
 function Loading() {
     return (
-        <div style={{justifyContent: "center",alignContent:'center'}}>
+        <div className="loading-container">
             <LineLogo/>
         </div>
     );

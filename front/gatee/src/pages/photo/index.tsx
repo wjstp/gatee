@@ -12,6 +12,7 @@ import {deleteAlbumApi, deleteAlbumPhotoApi, deletePhotoApi, uploadAlbumPhotoApi
 import {imageResizer} from "@utils/imageResizer";
 import {uploadFileApi} from "@api/file";
 import {useFamilyStore} from "@store/useFamilyStore";
+import Loading from "@components/Loading";
 
 
 const PhotoIndex = () => {
@@ -19,6 +20,7 @@ const PhotoIndex = () => {
   const navigate = useNavigate()
   const params = useParams()
   const {familyId} = useFamilyStore()
+  const [loading, setLoading] = useState(true)
   // 상단 탭 상태 관리 -> 모든 사진 / 앨범사진
   const [activeTab, setActiveTab] = useState("album"); // 현재 경로를 기본값으로 설정
   // 모든 사진의 하단 탭 상태 관리 -> 일 / 월 / 연
@@ -311,116 +313,127 @@ const PhotoIndex = () => {
     }
   }, [location.pathname]);
 
+  useEffect(() => {
+    setTimeout(()=>
+    setLoading(false),500)
+  }, []);
   return (
     <div className="photo">
-      <div className="photo-tab-container">
+      {loading?
+      <Loading/>
+      :
+      <>
+        <div className="photo-tab-container">
 
-        { /* 모든 사진 탭 */}
-        <Link to="/photo/day"
-              className={activeTab === "all" ? "photo-tab-container__button active" : "photo-tab-container__button"}
-              onClick={() => handleTabClick("all")}>모든 사진</Link>
-
-        { /* 앨범 사진 탭 */}
-        <Link to="/photo/album"
-              className={activeTab === "album" ? "photo-tab-container__button active" : "photo-tab-container__button"}
-              onClick={() => handleTabClick("album")}>앨범 사진</Link>
-
-        { /* 편집 버튼은 월, 년 탭에서만 보이지 않음*/}
-        {(activeTab === "all" && allPhotoTab === "day") || activeTab === "album" || countSlashes(location.pathname) > 2 ?
-          editMode === "delete" ?
-
-            <RiDeleteBin6Line className="photo-tab-container__plus-button" size={25}
-                              onClick={handleEndEditMode}/>
-
-            : editMode === "makeAlbum" || editMode === "moveAlbum" ?
-
-              <LuFolderInput className="photo-tab-container__plus-button" size={22}
-                             onClick={handleEndEditMode}/>
-              :
-              <FiEdit className="photo-tab-container__plus-button" size={20}
-                      onClick={handleOpenEditModal}/>
-          :
-          null
-        }
-
-      </div>
-
-      { /* 모든 사진 탭에서만 하단 탭이 보임 */}
-      {activeTab === "all" ?
-        (<div className="day-month-year-controller">
+          { /* 모든 사진 탭 */}
           <Link to="/photo/day"
-                className={allPhotoTab === "day" ? "day-btn active-btn" : "day-btn"}
-                onClick={() => setAllPhotoTab("day")}
-          >일
-          </Link>
-          <Link to="/photo/month"
-                className={allPhotoTab === "month" ? "month-btn active-btn" : "month-btn"}
-                onClick={() => setAllPhotoTab("month")}
-          >월
-          </Link>
-          <Link to="/photo/year"
-                className={allPhotoTab === "year" ? "year-btn active-btn" : "year-btn"}
-                onClick={() => setAllPhotoTab("year")}
-          >연
-          </Link>
-        </div>)
-        :
-        null}
+                className={activeTab === "all" ? "photo-tab-container__button active" : "photo-tab-container__button"}
+                onClick={() => handleTabClick("all")}>모든 사진</Link>
 
-      <Outlet context={{editMode: editMode, handleChecked: handleChecked}}/>
+          { /* 앨범 사진 탭 */}
+          <Link to="/photo/album"
+                className={activeTab === "album" ? "photo-tab-container__button active" : "photo-tab-container__button"}
+                onClick={() => handleTabClick("album")}>앨범 사진</Link>
 
-      {/* 실질적으로 사진 입력을 받는 요소 - 여러장 */}
-      <input
-        type="file"
-        accept="image/*"
-        style={{display: 'none'}}
-        ref={fileInputRef}
-        onChange={handleImageChange}
-        multiple={true}
-      />
+          { /* 편집 버튼은 월, 년 탭에서만 보이지 않음*/}
+          {(activeTab === "all" && allPhotoTab === "day") || activeTab === "album" || countSlashes(location.pathname) > 2 ?
+            editMode === "delete" ?
 
-      { /* 사진 추가 / 제출 이벤트 버튼 */}
-      {editMode === "delete" ?
-        <button className="photo__button-add-event">
-          <RiDeleteBin6Line className="photo-tab-container__plus-button" size={25}
-                            onClick={handleEndEditMode}/>
-        </button>
-        : editMode === "makeAlbum" || editMode === "moveAlbum" ?
-          <button className="photo__button-add-event">
-            <LuFolderInput className="photo-tab-container__plus-button" size={25}
-                           onClick={handleEndEditMode}/>
-          </button>
-          :
-          activeTab === "all" && editMode === "normal" ?
-            <button className="photo__button-add-event">
-              <FaPlus size={22} onClick={handleCameraButtonClick}/>
-            </button>
+              <RiDeleteBin6Line className="photo-tab-container__plus-button" size={25}
+                                onClick={handleEndEditMode}/>
+
+              : editMode === "makeAlbum" || editMode === "moveAlbum" ?
+
+                <LuFolderInput className="photo-tab-container__plus-button" size={22}
+                               onClick={handleEndEditMode}/>
+                :
+                <FiEdit className="photo-tab-container__plus-button" size={20}
+                        onClick={handleOpenEditModal}/>
             :
             null
-      }
+          }
 
+        </div>
 
-      { /* 모달 */}
-      {
-        showEditModeModal ?
-          <EditModal handleSetEditMode={handleSetEditMode}/>
+        { /* 모든 사진 탭에서만 하단 탭이 보임 */}
+        {activeTab === "all" ?
+          (<div className="day-month-year-controller">
+            <Link to="/photo/day"
+                  className={allPhotoTab === "day" ? "day-btn active-btn" : "day-btn"}
+                  onClick={() => setAllPhotoTab("day")}
+            >일
+            </Link>
+            <Link to="/photo/month"
+                  className={allPhotoTab === "month" ? "month-btn active-btn" : "month-btn"}
+                  onClick={() => setAllPhotoTab("month")}
+            >월
+            </Link>
+            <Link to="/photo/year"
+                  className={allPhotoTab === "year" ? "year-btn active-btn" : "year-btn"}
+                  onClick={() => setAllPhotoTab("year")}
+            >연
+            </Link>
+          </div>)
           :
-          null
+          null}
+
+        <Outlet context={{editMode: editMode, handleChecked: handleChecked}}/>
+
+        {/* 실질적으로 사진 입력을 받는 요소 - 여러장 */}
+        <input
+          type="file"
+          accept="image/*"
+          style={{display: 'none'}}
+          ref={fileInputRef}
+          onChange={handleImageChange}
+          multiple={true}
+        />
+
+        { /* 사진 추가 / 제출 이벤트 버튼 */}
+        {editMode === "delete" ?
+          <button className="photo__button-add-event">
+            <RiDeleteBin6Line className="photo-tab-container__plus-button" size={25}
+                              onClick={handleEndEditMode}/>
+          </button>
+          : editMode === "makeAlbum" || editMode === "moveAlbum" ?
+            <button className="photo__button-add-event">
+              <LuFolderInput className="photo-tab-container__plus-button" size={25}
+                             onClick={handleEndEditMode}/>
+            </button>
+            :
+            activeTab === "all" && editMode === "normal" ?
+              <button className="photo__button-add-event">
+                <FaPlus size={22} onClick={handleCameraButtonClick}/>
+              </button>
+              :
+              null
+        }
+
+
+        { /* 모달 */}
+        {
+          showEditModeModal ?
+            <EditModal handleSetEditMode={handleSetEditMode}/>
+            :
+            null
+        }
+
+        {
+          showAlbumNameInputModal ?
+            <AlbumNameInputModal handleCloseAlbumNameInputModal={handleCloseAlbumNameInputModal}/>
+            :
+            null
+        }
+
+        {
+          showSelectMoveAlbumModal ?
+            <SelectAlbumModal handleSelectAlbum={handleSelectAlbum}/>
+            :
+            null
+        }
+      </>
       }
 
-      {
-        showAlbumNameInputModal ?
-          <AlbumNameInputModal handleCloseAlbumNameInputModal={handleCloseAlbumNameInputModal}/>
-          :
-          null
-      }
-
-      {
-        showSelectMoveAlbumModal ?
-          <SelectAlbumModal handleSelectAlbum={handleSelectAlbum}/>
-          :
-          null
-      }
     </div>
   );
 }
