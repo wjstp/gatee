@@ -111,7 +111,7 @@ class FamilyControllerTest extends RestDocsTestSupport {
         // when
         ResultActions result = mockMvc.perform(get("/api/family/code")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(readJson("json/family/createFamilyCode.json"))
+                .param("familyId", String.valueOf(UUID.randomUUID()))
                 .accept(MediaType.APPLICATION_JSON));
 
         // then

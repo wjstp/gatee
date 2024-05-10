@@ -1,7 +1,6 @@
 package io.ssafy.gatee.domain.family.api;
 
 import io.ssafy.gatee.domain.family.application.FamilyService;
-import io.ssafy.gatee.domain.family.dto.request.FamilyIdReq;
 import io.ssafy.gatee.domain.family.dto.request.FamilyJoinReq;
 import io.ssafy.gatee.domain.family.dto.request.FamilyNameReq;
 import io.ssafy.gatee.domain.family.dto.response.FamilyCodeRes;
@@ -37,8 +36,6 @@ public class FamilyController {
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public FamilySaveRes saveFamily(
-            @Valid
-//            @RequestBody FamilySaveReq familySaveReq,
             @RequestParam("name") String name,
             @RequestParam("fileType") FileType fileType,
             @RequestParam("file") MultipartFile file,
@@ -57,10 +54,9 @@ public class FamilyController {
     @GetMapping("/code")
     @ResponseStatus(HttpStatus.OK)
     public FamilyCodeRes createFamilyCode(
-            @Valid
-            @RequestBody FamilyIdReq familyIdReq
+            @RequestParam String familyId
     ) {
-        return familyService.createFamilyCode(familyIdReq.familyId());
+        return familyService.createFamilyCode(familyId);
     }
 
     // 가족 합류
@@ -78,7 +74,6 @@ public class FamilyController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public FamilyInfoRes readFamily(
-            @Valid
             @RequestParam String familyId
     ) throws FamilyNotFoundException {
         return familyService.readFamily(familyId);
