@@ -8,6 +8,7 @@ import io.ssafy.gatee.domain.photo.dto.request.PhotoSaveReq;
 import io.ssafy.gatee.domain.photo.dto.response.PhotoDetailRes;
 import io.ssafy.gatee.domain.photo.dto.response.PhotoListRes;
 import io.ssafy.gatee.domain.photo.dto.response.PhotoSaveRes;
+import io.ssafy.gatee.domain.photo.dto.response.PhotoThumbnailRes;
 import io.ssafy.gatee.global.exception.error.bad_request.DoNotHavePermissionException;
 import io.ssafy.gatee.global.exception.error.bad_request.WrongTypeFilterException;
 import io.ssafy.gatee.global.security.user.CustomUserDetails;
@@ -18,6 +19,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/photos")
@@ -33,6 +35,17 @@ public class PhotoController {
             @RequestBody PhotoListReq photoListReq
     ) throws WrongTypeFilterException {
         return photoService.readPhotoList(photoListReq);
+    }
+
+    // 월별 썸네일 이미지 조회
+    @GetMapping("/thumbnails")
+    @ResponseStatus(HttpStatus.OK)
+    public List<PhotoThumbnailRes> readPhotoThumbnailList(
+            @RequestParam("filter") String filter,
+            @RequestParam("familyId") String familyId,
+            @AuthenticationPrincipal CustomUserDetails customUserDetails
+    ) {
+        return photoService.readPhotoThumbnailList(filter, UUID.fromString(familyId), customUserDetails.getMemberId());
     }
 
     // 사진 상세 조회

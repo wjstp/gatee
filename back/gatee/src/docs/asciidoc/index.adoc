@@ -224,6 +224,19 @@ include::{snippets}/photo-controller-test/read-photo-list/http-response.adoc[]
 include::{snippets}/photo-controller-test/read-photo-list/response-fields.adoc[]
 
 
+== 사진 목록 썸네일 조회
+
+- Request
+
+include::{snippets}/photo-controller-test/read-photo-thumbnail-list/http-request.adoc[]
+include::{snippets}/photo-controller-test/read-photo-thumbnail-list/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/photo-controller-test/read-photo-thumbnail-list/http-response.adoc[]
+include::{snippets}/photo-controller-test/read-photo-thumbnail-list/response-fields.adoc[]
+
+
 == 사진 상세 조회
 
 - Request
