@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import { ChatMessage, SenderType, ChatContent } from "@type/index";
 import { MemberInfoSample } from "@constants/index";
 import getUserInfoByEmail from "@utils/getUserInfoByEmail";
-import convertToAMPMTime from "@utils/convertToAMPMTime";
+import convertKrTime from "@utils/convertKrTime";
 import renderBubbleComponent from "@utils/renderBubbleComponent";
 
 interface ChatMessageProps {
@@ -54,7 +54,7 @@ const YoursChat = (props: YourChatMessageProps) => {
 
         {/*시간*/}
         <div className="chat__time">
-          { convertToAMPMTime(chat.time) }
+          { convertKrTime(chat.time) }
         </div>
       </div>
     </div>
@@ -76,7 +76,7 @@ const MyChat = (props: MyChatMessageProps) => {
 
         {/*시간*/}
         <div className="chat__time">
-          {convertToAMPMTime(chat.time)}
+          {convertKrTime(chat.time)}
         </div>
       </div>
 
