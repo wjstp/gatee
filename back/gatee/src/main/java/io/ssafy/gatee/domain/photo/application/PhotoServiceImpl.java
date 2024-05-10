@@ -20,9 +20,6 @@ import io.ssafy.gatee.domain.photo.dto.response.PhotoListRes;
 import io.ssafy.gatee.domain.photo.dto.response.PhotoSaveRes;
 import io.ssafy.gatee.domain.photo.entity.Photo;
 import io.ssafy.gatee.domain.push_notification.application.PushNotificationService;
-import io.ssafy.gatee.domain.push_notification.dto.request.DataFCMReq;
-import io.ssafy.gatee.domain.push_notification.dto.request.PushNotificationFCMReq;
-import io.ssafy.gatee.domain.push_notification.entity.Type;
 import io.ssafy.gatee.domain.reaction.dao.ReactionRepository;
 import io.ssafy.gatee.domain.reaction.dto.response.ReactionMemberRes;
 import io.ssafy.gatee.domain.reaction.entity.Reaction;
@@ -132,17 +129,17 @@ public class PhotoServiceImpl implements PhotoService {
 
 
         
-        // 사진 등록시 가족들에게 알림
-        pushNotificationService.sendPushOneToMany(PushNotificationFCMReq.builder()
-                        .title("앨범 사진 등록")
-                        .content(memberFamily.getMember().getName() + "님이 사진을 등록하셨습니다.")
-                        .receiverId(memberFamilyRepository.findMyFamily(memberId))
-                        .senderId(memberFamily.getMember().getId())
-                        .dataFCMReq(DataFCMReq.builder()
-                                .type(Type.ALBUM)
-                                .typeId(photo.getId())
-                                .build())
-                        .build());
+//        // 사진 등록시 가족들에게 알림
+//        pushNotificationService.sendPushOneToMany(PushNotificationFCMReq.builder()
+//                        .title("앨범 사진 등록")
+//                        .content(memberFamily.getMember().getName() + "님이 사진을 등록하셨습니다.")
+//                        .receiverId(memberFamilyRepository.findMyFamily(memberId))
+//                        .senderId(memberFamily.getMember().getId())
+//                        .dataFCMReq(DataFCMReq.builder()
+//                                .type(Type.ALBUM)
+//                                .typeId(photo.getId())
+//                                .build())
+//                        .build());
 
         return PhotoSaveRes.builder()
                 .photoId(photo.getId())
