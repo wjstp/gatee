@@ -3,17 +3,13 @@ import axios, { AxiosError, AxiosResponse, AxiosInstance } from "axios";
 import { MemberApiReq, CreateFamilyApiReq, NaggingApiReq } from "@type/index";
 
 const local: AxiosInstance = localAxios();
-const REACT_APP_API_URL: string | undefined = process.env.REACT_APP_API_URL;
+const local_file: AxiosInstance = localAxios("file");
 
 // 가족 생성
 export const createFamilyApi = async function (data: FormData,
                                                success: (res: AxiosResponse<any>) => void,
                                                fail: (err: AxiosError<any>) => void) {
-  await axios.post(`${REACT_APP_API_URL}/api/family`, data, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      'Content-Type': 'multipart/form-data'
-    }
+  await local_file.post(`/family`, data, {
   }).then(success).catch(fail);
 };
 
