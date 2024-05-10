@@ -102,12 +102,17 @@ public class ChatServiceImpl implements ChatService {
                 for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
                     log.info("messageSnapshot" + messageSnapshot.toString());
                     DataSnapshot unreadMemberSnapshot = messageSnapshot.child("unReadMember");
-                    log.info("unreadMember" + unreadMemberSnapshot.toString());
-                    if (unreadMemberSnapshot.exists()) {
-                        log.info("unreadRef " + unreadMemberSnapshot.getRef());
-                        if (unreadMemberSnapshot.hasChild(memberId.toString())) {
-                            // 특정 memberId 제거
-                            unreadMemberSnapshot.getRef().child(memberId.toString()).removeValueAsync();
+                    if (unreadMemberSnapshot.getValue() != null) { // 널 체크 추가
+                        log.info("unreadMember는 " + unreadMemberSnapshot.toString());
+                        String unReadMemberStr = unreadMemberSnapshot.getValue().toString();
+                        unReadMemberStr = unReadMemberStr.substring(1, unReadMemberStr.length() - 1);
+                        String[] items = unReadMemberStr.split(", ");
+                        log.info("어레이 : " + Arrays.toString(items));
+                        List<String> newList = new ArrayList<>(Arrays.asList(items)); // 수정 가능한 리스트 생성
+                        if (newList.contains(memberId.toString())) {
+                            newList.remove(memberId.toString()); // 특정 memberId 제거
+                            // 리스트를 다시 문자열 형태로 변환해야 할 수도 있음
+                            unreadMemberSnapshot.getRef().setValueAsync(newList, "unReadMember"); // 올바른 파라미터 사용
                         }
                     }
                 }
@@ -119,6 +124,7 @@ public class ChatServiceImpl implements ChatService {
             }
         });
     }
+
 
     public void saveMessageToRealtimeDatabase(FireStoreChatDto fireStoreChatDto, UUID familyId) {
         // roomId를 사용하여 채팅방에 대한 참조를 가져옵니다.
@@ -132,6 +138,9 @@ public class ChatServiceImpl implements ChatService {
     }
 
     private Member findMemberById(UUID id) {
-        return memberRepository.findById(id).orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
+        return memberRepository.findById(id)
+                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
     }
+
+
 }
