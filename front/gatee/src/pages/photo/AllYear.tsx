@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link} from "react-router-dom";
+import {useFamilyStore} from "@store/useFamilyStore";
 
 // import SamplePhoto from "@assets/images/schedule/calendarBanner1.jpg"
 
@@ -11,7 +12,7 @@ interface YearPhotoItemProps {
 }
 
 const AllYear = () => {
-
+  const {familyId} = useFamilyStore()
   // 월별 대표 사진 샘플 데이터
   const yearPhotoDatas = [
     {dateTime:"2024-01-31T12:00:00", src: "https://i.pinimg.com/736x/3f/53/fe/3f53fec5f0ff0426907978c6abe18c35.jpg"},

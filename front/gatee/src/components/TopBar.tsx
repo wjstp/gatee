@@ -5,6 +5,7 @@ import { PiBell } from "react-icons/pi";
 import { PiUserCircle } from "react-icons/pi";
 import { PiSquaresFour } from "react-icons/pi";
 // import { PiGearSix } from "react-icons/pi";
+import { PiTarget } from "react-icons/pi";
 // import NotificationBadge from "@components/NotificationBadge";
 import { useMemberStore } from "@store/useMemberStore";
 import { MemberInfoSample } from "@constants/index";
@@ -48,6 +49,14 @@ const TopBar = () => {
           </NavLink>
         )}
 
+        {/*미션*/}
+        <NavLink to="main/mission" className={({isActive}) =>
+          isActive ? 'top-bar__right--active' : ''
+        }>
+          <PiTarget size={24}/>
+          {/*<NotificationBadge />*/}
+        </NavLink>
+        
         {/*알림*/}
         <NavLink to="/notification" className={({isActive}) =>
           isActive ? 'top-bar__right--active' : ''
