@@ -35,6 +35,7 @@ public class PhotoAlbumRepositoryCustomImpl implements PhotoAlbumRepositoryCusto
 
                 list.add(PhotoAlbum.builder()
                         .album(album)
+                        .photo(null)
                         .build());
 
                 return list;
@@ -46,7 +47,16 @@ public class PhotoAlbumRepositoryCustomImpl implements PhotoAlbumRepositoryCusto
         return photoAlbumList.stream().map((photoAlbums) -> {
             PhotoAlbum photoAlbum1 = photoAlbums.get(0);
 
-            return AlbumListRes.toDto(photoAlbum1);
+            if (photoAlbum1.getPhoto() == null) {
+                return AlbumListRes.builder()
+                        .albumId(photoAlbum1.getAlbum().getId())
+                        .name(photoAlbum1.getAlbum().getName())
+                        .PhotoId(null)
+                        .imageUrl(null)
+                        .build();
+            } else {
+                return AlbumListRes.toDto(photoAlbum1);
+            }
         }).toList();
     }
 
