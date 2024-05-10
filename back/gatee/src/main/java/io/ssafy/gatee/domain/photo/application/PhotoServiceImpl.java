@@ -12,10 +12,12 @@ import io.ssafy.gatee.domain.member_family.entity.MemberFamily;
 import io.ssafy.gatee.domain.photo.dao.PhotoRepository;
 import io.ssafy.gatee.domain.photo.dao.PhotoRepositoryCustom;
 import io.ssafy.gatee.domain.photo.dto.request.Filter;
+import io.ssafy.gatee.domain.photo.dto.request.PhotoDeleteReq;
 import io.ssafy.gatee.domain.photo.dto.request.PhotoListReq;
 import io.ssafy.gatee.domain.photo.dto.request.PhotoSaveReq;
 import io.ssafy.gatee.domain.photo.dto.response.PhotoDetailRes;
 import io.ssafy.gatee.domain.photo.dto.response.PhotoListRes;
+import io.ssafy.gatee.domain.photo.dto.response.PhotoSaveRes;
 import io.ssafy.gatee.domain.photo.entity.Photo;
 import io.ssafy.gatee.domain.push_notification.application.PushNotificationService;
 import io.ssafy.gatee.domain.push_notification.dto.request.DataFCMReq;
@@ -111,10 +113,12 @@ public class PhotoServiceImpl implements PhotoService {
     // 사진 등록
     @Override
     @Transactional
-    public Long savePhoto(PhotoSaveReq photoSaveReq, UUID memberId) throws FirebaseMessagingException {
+    public PhotoSaveRes savePhoto(PhotoSaveReq photoSaveReq, UUID memberId) throws FirebaseMessagingException {
         Member member = memberRepository.getReferenceById(memberId);
 
-        MemberFamily memberFamily = memberFamilyRepository.findByMember(member)
+        Family family = familyRepository.getReferenceById(photoSaveReq.familyId());
+
+        MemberFamily memberFamily = memberFamilyRepository.findByMemberAndFamily(member, family)
                 .orElseThrow(() -> new MemberFamilyNotFoundException(MEMBER_FAMILY_NOT_FOUND));
 
         File file = fileRepository.getReferenceById(photoSaveReq.fileId());
@@ -140,16 +144,25 @@ public class PhotoServiceImpl implements PhotoService {
                                 .build())
                         .build());
 
-        return photo.getId();
+        return PhotoSaveRes.builder()
+                .photoId(photo.getId())
+                .build();
     }
 
     // 사진 삭제
     @Override
     @Transactional
-    public void deletePhoto(Long memberFamilyId, Long photoId) throws DoNotHavePermissionException {
+    public void deletePhoto(PhotoDeleteReq photoDeleteReq, Long photoId, UUID memberId) throws DoNotHavePermissionException {
         Photo photo = photoRepository.getReferenceById(photoId);
 
-        if (photo.getMemberFamily().getId().equals(memberFamilyId)) {
+        Member member = memberRepository.getReferenceById(memberId);
+
+        Family family = familyRepository.getReferenceById(photoDeleteReq.familyId());
+
+        MemberFamily memberFamily = memberFamilyRepository.findByMemberAndFamily(member, family)
+                .orElseThrow(() -> new MemberFamilyNotFoundException(MEMBER_FAMILY_NOT_FOUND));
+
+        if (photo.getMemberFamily().equals(memberFamily)) {
             photo.deleteData();
         } else {
             throw new DoNotHavePermissionException(DO_NOT_HAVE_REQUEST);

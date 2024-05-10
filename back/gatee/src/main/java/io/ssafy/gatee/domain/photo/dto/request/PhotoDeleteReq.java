@@ -6,10 +6,7 @@ import lombok.Builder;
 import java.util.UUID;
 
 @Builder
-public record PhotoSaveReq(
-
-        @NotNull
-        Long fileId,
+public record PhotoDeleteReq(
 
         @NotNull
         UUID familyId

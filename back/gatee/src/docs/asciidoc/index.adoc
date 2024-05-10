@@ -89,6 +89,7 @@ include::{snippets}/family-controller-test/save-family/http-response.adoc[]
 - Request
 
 include::{snippets}/family-controller-test/read-family/http-request.adoc[]
+include::{snippets}/family-controller-test/read-family/path-parameters.adoc[]
 
 
 - Response
@@ -237,6 +238,7 @@ include::{snippets}/사진 상세 조회/http-response.adoc[]
 - Request
 
 include::{snippets}/사진 등록/http-request.adoc[]
+
 
 - Response
 
