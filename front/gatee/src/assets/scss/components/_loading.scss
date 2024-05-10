@@ -1,6 +1,7 @@
 @use '../abstracts/index' as *;
 
 .loading-container {
+  @include flex-col;
   @include flex_center;
 
   position: fixed;
@@ -10,4 +11,11 @@
   height: 100%;
   z-index: 9999;
   background-color: white;
+
+  loading-app-icon {
+    width: 20dvw;
+  }
+  .loading-animation{
+    width: 30%;
+  }
 }
