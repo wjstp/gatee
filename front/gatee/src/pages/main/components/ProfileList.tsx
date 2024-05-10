@@ -28,12 +28,12 @@ const ProfileList = ({profileDataList}: { profileDataList: Member[] }) => {
   const handleModalEvent = (type: string, content: string) => {
     // 모달 종료
     closeModal()
-    
+
     // 프로필로 가기일 때
     if (type === "gotoProfile") {
       navigate(`/profile/${clickedProfile?.email}`)
 
-    //  한마디 보내기 일 때
+      //  한마디 보내기 일 때
     } else if (type === "sendMessage") {
       console.log(content)
       // 한마디 보내기 api
@@ -51,17 +51,20 @@ const ProfileList = ({profileDataList}: { profileDataList: Member[] }) => {
   }
 
   return (
-    <div className="main-profile-list--container">
-      {profileDataList.map((member: Member, index: number) => {
-        return <ProfileItem key={index} profileData={member} handleClickProfile={handleClickProfile}/>;
-      })}
+    <div className="main-profile-list--container--outside">
+      <div className="main-profile-list--container">
 
-      {
-        isOpen ?
-          <ProfileModal profileData={clickedProfile} handleModalEvent={handleModalEvent}/>
-          :
-          null
-      }
+        {profileDataList.map((member: Member, index: number) => {
+          return <ProfileItem key={index} profileData={member} handleClickProfile={handleClickProfile}/>;
+        })}
+
+        {
+          isOpen ?
+            <ProfileModal profileData={clickedProfile} handleModalEvent={handleModalEvent}/>
+            :
+            null
+        }
+      </div>
     </div>
   );
 };
@@ -73,13 +76,15 @@ const ProfileItem = ({profileData, handleClickProfile}: ProfileItemProps) => {
   }
 
   return (
-    <div className="main-profile-list-item--container"
-         onClick={handleClickProfileItem}>
-      <p>{profileData.nickname}</p>
-      <div className="main-profile-wrapper">
-        <img className="main-profile-img" src={profileData.fileUrl} alt="프사"/>
-        <div className="main-profile-mood">
-          {getMoodEmoji(profileData.mood)}
+    <div className="main-profile-list-item--box">
+      <div className="main-profile-list-item--container"
+           onClick={handleClickProfileItem}>
+        <p>{profileData.nickname}</p>
+        <div className="main-profile-wrapper">
+          <img className="main-profile-img" src={profileData.fileUrl} alt="프사"/>
+          <div className="main-profile-mood">
+            {getMoodEmoji(profileData.mood)}
+          </div>
         </div>
       </div>
     </div>
