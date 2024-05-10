@@ -14,7 +14,7 @@ export const kakaoLoginAPI = async function (data: KaKaoLoginReq,
 
 // 카카오 토큰으로 우리 서버 토큰을 받는 함수
 export const kakaoTokenAPI = async function (headers: object,
-                                        success: (res: AxiosResponse<any>) => void,
-                                        fail: (err: AxiosError<any>) => void) {
+                                             success: (res: AxiosResponse<any>) => void,
+                                             fail: (err: AxiosError<any>) => void) {
   await axios.post(`${REACT_APP_API_URL}/api/auth/kakao/login`, null, headers).then(success).catch(fail);
 }
