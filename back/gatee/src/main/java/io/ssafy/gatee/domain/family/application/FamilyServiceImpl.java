@@ -7,7 +7,9 @@ import io.ssafy.gatee.domain.family.dto.response.FamilyCodeRes;
 import io.ssafy.gatee.domain.family.dto.response.FamilyInfoRes;
 import io.ssafy.gatee.domain.family.dto.response.FamilySaveRes;
 import io.ssafy.gatee.domain.family.entity.Family;
+import io.ssafy.gatee.domain.file.application.FileService;
 import io.ssafy.gatee.domain.file.dao.FileRepository;
+import io.ssafy.gatee.domain.file.dto.FileUrlRes;
 import io.ssafy.gatee.domain.file.entity.File;
 import io.ssafy.gatee.domain.member.dao.MemberRepository;
 import io.ssafy.gatee.domain.member.entity.Member;
@@ -57,23 +59,17 @@ public class FamilyServiceImpl implements FamilyService {
     // 가족 생성
     @Override
     @Transactional
-    public FamilySaveRes saveFamily(FamilySaveReq familySaveReq, UUID memberId) {
-//        Long fileId = familySaveReq.fileId();
-//
-//        if (Objects.nonNull(familySaveReq.fileId())) {
-//            fileId = findDefaultFamilyImageId(DEFAULT_FAMILY_IMAGE_URL);
-//        }
-//
-//        File familyImgFile = fileRepository.findById(fileId)
-//                .orElseThrow(() -> new FileNotFoundException(FIlE_NOT_FOUND));
+    public FamilySaveRes saveFamily(String name, UUID memberId, FileUrlRes fileUrlRes) {
 
         Member member = Member.builder()
                 .id(memberId)
                 .build();
 
+        File file = fileRepository.getReferenceById(fileUrlRes.fileId());
+
         Family family = familyRepository.save(Family.builder()
-                .name(familySaveReq.name())
-//                .file(familyImgFile)
+                .name(name)
+                .file(file)
                 .score(0)
                 .build());
 
@@ -86,12 +82,16 @@ public class FamilyServiceImpl implements FamilyService {
         HashSet<UUID> usersSet = new HashSet<>();
 
         memberFamilyRepository.save(memberFamily);
+
         onlineRoomMemberRepository.save(OnlineRoomMember.builder()
                 .id(family.getId())
                 .onlineUsers(usersSet)
                 .build());
 
-        return FamilySaveRes.builder().familyId(family.getId()).build();
+        return FamilySaveRes.builder()
+                .familyId(family.getId())
+                .fileUrl(fileUrlRes)
+                .build();
     }
 
     // 가족 코드 생성

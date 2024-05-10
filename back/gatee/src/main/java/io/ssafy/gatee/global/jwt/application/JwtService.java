@@ -69,7 +69,7 @@ public class JwtService {
     }
 
     public String parseJwt(HttpServletRequest request) {
-        if (! request.getRequestURI().equals("/chat/info")) {
+        if (! request.getRequestURI().startsWith("/chat")) {
             // request에서 Authorization헤더를 찾음
             String authorization = request.getHeader(ACCESS_HEADER_AUTHORIZATION);
 

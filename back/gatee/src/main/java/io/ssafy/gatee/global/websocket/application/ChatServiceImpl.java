@@ -1,5 +1,6 @@
 package io.ssafy.gatee.global.websocket.application;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.database.*;
 import io.ssafy.gatee.domain.family.application.FamilyService;
 import io.ssafy.gatee.domain.family.dao.FamilyRepository;
@@ -36,7 +37,12 @@ public class ChatServiceImpl implements ChatService {
     private final FamilyService familyService;
     private final OnlineRoomMemberRepository onlineRoomMemberRepository;
 
-    public ChatServiceImpl(MemberRepository memberRepository, MemberFamilyRepository memberFamilyRepository, FamilyRepository familyRepository, OnlineRoomMemberRepository onlineRoomMemberRepository, FirebaseInit firebaseInit, FamilyService familyService) {
+    public ChatServiceImpl(MemberRepository memberRepository,
+                           MemberFamilyRepository memberFamilyRepository,
+                           FamilyRepository familyRepository,
+                           OnlineRoomMemberRepository onlineRoomMemberRepository,
+                           FirebaseInit firebaseInit,
+                           FamilyService familyService) {
         this.memberRepository = memberRepository;
         this.memberFamilyRepository = memberFamilyRepository;
         this.familyRepository = familyRepository;
@@ -94,9 +100,11 @@ public class ChatServiceImpl implements ChatService {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 log.info("onDataChange start!!");
                 for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
-                    DataSnapshot unreadMemberSnapshot = messageSnapshot.child("unreadMember");
-                    log.info("스냅샷" + unreadMemberSnapshot.toString());
+                    log.info("messageSnapshot" + messageSnapshot.toString());
+                    DataSnapshot unreadMemberSnapshot = messageSnapshot.child("unReadMember");
+                    log.info("unreadMember" + unreadMemberSnapshot.toString());
                     if (unreadMemberSnapshot.exists()) {
+                        log.info("unreadRef " + unreadMemberSnapshot.getRef());
                         if (unreadMemberSnapshot.hasChild(memberId.toString())) {
                             // 특정 memberId 제거
                             unreadMemberSnapshot.getRef().child(memberId.toString()).removeValueAsync();

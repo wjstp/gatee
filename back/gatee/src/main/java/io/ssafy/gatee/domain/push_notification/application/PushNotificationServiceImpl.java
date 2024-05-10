@@ -7,6 +7,7 @@ import io.ssafy.gatee.domain.chatgpt.service.GptService;
 import io.ssafy.gatee.domain.member.dao.MemberRepository;
 import io.ssafy.gatee.domain.member.entity.Member;
 import io.ssafy.gatee.domain.member_notification.dao.MemberNotificationRepository;
+import io.ssafy.gatee.domain.member_notification.entity.MemberNotification;
 import io.ssafy.gatee.domain.push_notification.dto.request.DataFCMReq;
 import io.ssafy.gatee.domain.push_notification.dto.request.NaggingReq;
 import io.ssafy.gatee.domain.push_notification.dto.request.PushNotificationFCMReq;
@@ -79,10 +80,11 @@ public class PushNotificationServiceImpl implements PushNotificationService {
     @Override
     public boolean checkAgreement(Type type, UUID memberId) {
         Member proxyMember = memberRepository.getReferenceById(memberId);
+        MemberNotification memberNotification = memberNotificationRepository.findByMember(proxyMember).orElse(null);
         return switch (type) {
-            case NAGGING -> memberNotificationRepository.findByMember(proxyMember).isNaggingNotification();
-            case SCHEDULE -> memberNotificationRepository.findByMember(proxyMember).isScheduleNotification();
-            case ALBUM -> memberNotificationRepository.findByMember(proxyMember).isAlbumNotification();
+            case NAGGING -> Objects.nonNull(memberNotification) && memberNotification.isNaggingNotification();
+            case SCHEDULE -> Objects.nonNull(memberNotification) && memberNotification.isScheduleNotification();
+            case ALBUM -> Objects.nonNull(memberNotification) && memberNotification.isAlbumNotification();
             default -> false;
         };
     }
