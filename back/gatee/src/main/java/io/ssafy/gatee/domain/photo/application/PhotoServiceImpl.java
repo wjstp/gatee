@@ -12,7 +12,6 @@ import io.ssafy.gatee.domain.member_family.entity.MemberFamily;
 import io.ssafy.gatee.domain.photo.dao.PhotoRepository;
 import io.ssafy.gatee.domain.photo.dao.PhotoRepositoryCustom;
 import io.ssafy.gatee.domain.photo.dto.request.Filter;
-import io.ssafy.gatee.domain.photo.dto.request.PhotoDeleteReq;
 import io.ssafy.gatee.domain.photo.dto.request.PhotoListReq;
 import io.ssafy.gatee.domain.photo.dto.request.PhotoSaveReq;
 import io.ssafy.gatee.domain.photo.dto.response.PhotoDetailRes;
@@ -173,12 +172,12 @@ public class PhotoServiceImpl implements PhotoService {
     // 사진 삭제
     @Override
     @Transactional
-    public void deletePhoto(PhotoDeleteReq photoDeleteReq, Long photoId, UUID memberId) throws DoNotHavePermissionException {
+    public void deletePhoto(UUID familyId, Long photoId, UUID memberId) throws DoNotHavePermissionException {
         Photo photo = photoRepository.getReferenceById(photoId);
 
         Member member = memberRepository.getReferenceById(memberId);
 
-        Family family = familyRepository.getReferenceById(photoDeleteReq.familyId());
+        Family family = familyRepository.getReferenceById(familyId);
 
         MemberFamily memberFamily = memberFamilyRepository.findByMemberAndFamily(member, family)
                 .orElseThrow(() -> new MemberFamilyNotFoundException(MEMBER_FAMILY_NOT_FOUND));
