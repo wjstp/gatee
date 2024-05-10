@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
+import {createAlbumApi} from "@api/photo";
+import {useFamilyStore} from "@store/useFamilyStore";
 
 export const AlbumNameInputModal = ({ handleCloseAlbumNameInputModal }: { handleCloseAlbumNameInputModal: (inputValue: string) => void }) => {
   // 입력상태
   const [inputValue, setInputValue] = useState("");
+  const {familyId} = useFamilyStore()
   const muiFocusCustom = {
     "& .MuiOutlinedInput-root": {
       "&.Mui-focused": {
@@ -24,8 +27,21 @@ export const AlbumNameInputModal = ({ handleCloseAlbumNameInputModal }: { handle
   const handleCreateAlbum = (event: React.MouseEvent<HTMLButtonElement> | React.MouseEvent<HTMLDivElement>, type: string) => {
     // 백드롭 이벤트 방지
     event.stopPropagation();
+
     // 입력값이 비어있지 않을 때만 모달 닫기 함수 호출
     if (type === "input" && inputValue.trim() !== "") {
+
+      // 앨범 생성 Api
+      createAlbumApi({
+        familyId:familyId,
+        name: inputValue,
+      },
+          res=>{
+        console.log(res)
+          },
+          err=>{
+            console.log(err)
+          })
       handleCloseAlbumNameInputModal(inputValue);
     } else if (type === "close") {
       handleCloseAlbumNameInputModal("");
