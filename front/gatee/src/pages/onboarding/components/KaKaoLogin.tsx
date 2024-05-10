@@ -13,7 +13,7 @@ const KaKaoLogin = () => {
   // 카카오 인가코드 발급
   const loginWithKaKao = () => {
     window.Kakao.Auth.authorize({
-      redirectUri: web,
+      redirectUri: redirectUri,
       scope: "profile_nickname, account_email",
     })
     // navigate("/signup");
