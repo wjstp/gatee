@@ -171,7 +171,7 @@ public class FamilyServiceImpl implements FamilyService {
                     .fileUrl(memberFamily.getMember().getFile().getUrl())
                     .birth(memberFamily.getMember().getBirth())
                     .name(memberFamily.getMember().getName())
-                    .role(Role.valueOf(memberFamily.getRole().korean))
+                    .role(memberFamily.getRole().korean)
                     .email(memberFamily.getMember().getEmail())
                     .mood(memberFamily.getMember().getMood())
                     .isLeader(memberFamily.isLeader())
