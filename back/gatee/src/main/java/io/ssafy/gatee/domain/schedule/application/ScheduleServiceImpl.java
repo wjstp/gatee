@@ -32,6 +32,7 @@ import io.ssafy.gatee.domain.schedule.entity.Category;
 import io.ssafy.gatee.domain.schedule.entity.Schedule;
 import io.ssafy.gatee.domain.schedule_record.dao.ScheduleRecordRepository;
 import io.ssafy.gatee.domain.schedule_record.entity.ScheduleRecord;
+import io.ssafy.gatee.global.batch.scheduler.PlanScheduler;
 import io.ssafy.gatee.global.exception.error.bad_request.DoNotHavePermissionException;
 import io.ssafy.gatee.global.exception.error.not_found.*;
 import lombok.RequiredArgsConstructor;
@@ -75,6 +76,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     private final PushNotificationService pushNotificationService;
 
+    private final PlanScheduler planScheduler;
 
     // 전체 일정 조회
     @Override
@@ -162,7 +164,8 @@ public class ScheduleServiceImpl implements ScheduleService {
                         .typeId(schedule.getId()).build())
                 .build());
 
-        // todo: 일정 알림 인원 수정
+        planScheduler.registerSchedule();
+
     }
 
     // 일정 수정
