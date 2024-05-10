@@ -9,13 +9,15 @@ import {useModalStore} from "@store/useModalStore";
 import {getAlbumListPhotoApi} from "@api/photo";
 import {useFamilyStore} from "@store/useFamilyStore";
 
+interface GroupPhotoData{
+  albumId: number,
+  name: string,
+  imageUrl: string | null,
+  PhotoId: number|null
+}
+
 interface GroupPhotoItemProps {
-  groupPhotoData: {
-    id: number,
-    title: string,
-    dateTime: string,
-    src: string
-  }
+  groupPhotoData: GroupPhotoData
 }
 
 interface PlusAlbumButton {
@@ -28,12 +30,9 @@ const PhotoAlbum = () => {
   // 모달 상태
   const {setShowModal} = useModalStore()
   const {familyId} = useFamilyStore()
+  const [groupPhotoDatas,setGroupPhotoDatas] = useState<GroupPhotoData[]>([])
   // 월별 대표 사진 샘플 데이터
-  const groupPhotoDatas = [
-    {id: 1, title: "툔", dateTime: "2024-01-31T12:00:00", src: "https://i.pinimg.com/736x/39/48/76/394876e0e2129f959bd910b65da6f3f8.jpg"},
-    {id: 2, title: "예삐리리", dateTime: "2024-02-28T12:00:00", src: "https://i.pinimg.com/564x/6b/67/18/6b67189e1cc9cdc691bb32a5333b1360.jpg"},
-    {id: 3, title: "운덩", dateTime: "2024-03-31T12:00:00", src: "https://i.pinimg.com/564x/4f/17/d3/4f17d3b96676946c5bdbaaf5968bbd6b.jpg"},
-  ]
+
 // 앨범 이름 고르기 모달 상태
   const {
     isOpen: showAlbumNameInputModal,
@@ -57,9 +56,10 @@ const PhotoAlbum = () => {
 
   useEffect(() => {
     getAlbumListPhotoApi(
-      {familyId:familyId},
+      {familyId: familyId},
       res => {
         console.log(res)
+        setGroupPhotoDatas(res.data)
       },
       err => {
         console.log(err)
@@ -89,33 +89,35 @@ const GroupItem = ({editMode, handleChecked, groupPhotoData}: PhotoOutletInfoCon
   const [checked, setChecked] = useState(false);
   const gotoDetail = () => {
     if (editMode === 'normal') {
-      navigate(`/photo/album/${groupPhotoData.id}`);
+      navigate(`/photo/album/${groupPhotoData.albumId}`);
     }
   };
   // 체크박스 변동 함수
   const handleCheckBox = () => {
-    // 체크박스가 체크 되어있다면 리스트에서 id를 제거하고 체크를 푼다
+    // 체크박스가 체크 되어있다면 리스트에서 albumId를 제거하고 체크를 푼다
     if (checked) {
-      handleChecked(groupPhotoData.id, "delete")
+      handleChecked(groupPhotoData.albumId, "delete")
       setChecked(false)
     }
-    // 체크박스가 체크 되어있지 않다면, 리스트에 id를 추가하고 체크를 한다
+    // 체크박스가 체크 되어있지 않다면, 리스트에 albumId를 추가하고 체크를 한다
     else {
-      handleChecked(groupPhotoData.id, "add")
+      handleChecked(groupPhotoData.albumId, "add")
       setChecked(true)
     }
   }
   return (
     <div onClick={gotoDetail} className="photo-group--item--container">
       {/* 배경 사진 */}
-      <img className="photo-item" src={groupPhotoData.src} alt={`${groupPhotoData.id}`}/>
+      <img className="photo-item"
+           src={groupPhotoData.imageUrl === null ? "https://static.vecteezy.com/system/resources/thumbnails/004/141/669/small/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg" :
+             groupPhotoData.imageUrl} alt={`${groupPhotoData.albumId}`}/>
       {/* 삭제 모드일때만 체크모드 활성화 */}
       {editMode === 'delete' &&
         <Checkbox {...label} className="check-box"
                   checked={checked}
                   onChange={() => handleCheckBox()}
         />}
-      <p className="title">{groupPhotoData.title}</p>
+      <p className="name">{groupPhotoData.name}</p>
     </div>
   )
 }
@@ -129,7 +131,7 @@ const PlusAlbum = ({handleModal}: PlusAlbumButton) => {
       <div onClick={handleModal} className="plus-album--button-container">
         <FaPlus className="plus-button" size={50}/>
       </div>
-      <div className="title text-white">
+      <div className="name text-white">
         추가하기
       </div>
 

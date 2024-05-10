@@ -8,7 +8,7 @@ import useModal from "@hooks/useModal";
 import {AlbumNameInputModal} from "@pages/photo/components/CreateAlbumModal";
 import {EditModal} from "@pages/photo/components/EditModeModal";
 import {SelectAlbumModal} from "@pages/photo/components/SelectAlbum";
-import {deletePhotoApi, uploadAlbumPhotoApi, uploadPhotoApi} from "@api/photo";
+import {deleteAlbumApi, deleteAlbumPhotoApi, deletePhotoApi, uploadAlbumPhotoApi, uploadPhotoApi} from "@api/photo";
 import {imageResizer} from "@utils/imageResizer";
 import {uploadFileApi} from "@api/file";
 import {useFamilyStore} from "@store/useFamilyStore";
@@ -54,46 +54,91 @@ const PhotoIndex = () => {
     setActiveTab(path);
   };
 
+  // 앨범 삭제
+  const deleteAlbumApiFunc = (item: number | string) => {
+    deleteAlbumApi(item,
+      res => {
+        console.log(res)
+        // 담아둔 id 리스트 비우기
+        editPhotoIdList.length = 0;
+      },
+      err => {
+        console.log(err)
+      })
+  }
+
+  // 사진 삭제
+  const deletePhotoApiFunc = () => {
+    deletePhotoApi(
+      {photoIdList: editPhotoIdList},
+      res => {
+        console.log(res)
+        // 담아둔 id 리스트 비우기
+        editPhotoIdList.length = 0;
+      },
+      err => {
+        console.log(err)
+      }
+    )
+  }
+
+  // 사진 업로드
+  const upLoadPhotoApiFunc = () => {
+    // 사진 업로드 api
+    uploadAlbumPhotoApi(
+      {
+        albumId: albumId,
+        photoIdList: editPhotoIdList
+      },
+      res => {
+        console.log(res)
+        editPhotoIdList.length = 0;
+        navigate(`/photo/album/${albumId}`)
+      },
+      err => {
+        console.log(err)
+      }
+    )
+  }
+
+  // 앨범 사진 삭제
+  const deleteAlbumPhotoApiFunc = () => {
+    deleteAlbumPhotoApi(
+      {
+        photoIdList: editPhotoIdList,
+        albumId: albumId
+      },
+      res => {
+        console.log(res)
+      },
+      err => {
+        console.log(err)
+      }
+    )
+  }
+
   // 선택 모드 제출 이벤트
   const handleEndEditMode = () => {
-    console.log(editPhotoIdList)
-
+    // 삭제 모드일 때
     if (editMode === "delete") {
-      console.log('선택 사진 삭제')
-      deletePhotoApi(
-        {photoIdList: editPhotoIdList},
-        res => {
-          console.log(res)
-        },
-        err => {
-          console.log(err)
-        }
-      )
-      // 담아둔 id 리스트 비우기
-      editPhotoIdList.length = 0;
-
+      if (location.pathname === "/photo/album") {
+        // 앨범 삭제
+        editPhotoIdList.forEach((item) => {
+          deleteAlbumApiFunc(item)
+        })
+        // 앨범 내 사진 삭제
+      } else if (location.pathname.includes("/photo/album")) {
+        deleteAlbumPhotoApiFunc()
+      } {
+        // 사진 삭제
+        deletePhotoApiFunc()
+      }
+      // 이동 모드일 때
     } else if (editMode === "makeAlbum" || editMode === "moveAlbum") {
-      // 사진 업로드 api
-      uploadAlbumPhotoApi(
-        {
-          albumId: albumId,
-          photoIdList: editPhotoIdList
-        },
-        res => {
-          console.log(res)
-          editPhotoIdList.length = 0;
-          navigate(`/photo/album/${albumId}`)
-        },
-        err => {
-          console.log(err)
-        }
-      )
-
+      upLoadPhotoApiFunc()
     }
-
-    // 편집모드 변경
+    // 편집모드 초기화
     setEditMode("normal")
-
   }
 
   // 편집 모달 보이기 이벤트
@@ -105,10 +150,8 @@ const PhotoIndex = () => {
   const handleCloseAlbumNameInputModal = (inputValue: string, id: number | string) => {
     // 백드롭 클릭 이벤트로 닫힌다면, 모달도 닫고 편집모드도 normal로 돌아가기
     if (inputValue === "") {
-      // console.log('백드롭 이벤트')
       closeAlbumNameInputModal()
       setEditMode("normal")
-
     } else {
       setAlbumName(inputValue)
       setAlbumId(id)
@@ -135,6 +178,8 @@ const PhotoIndex = () => {
       closeEditModeModal()
       openAlbumNameInputModal()
 
+    } else if (mode === "editName") {
+      closeEditModeModal()
     } else {
       // 앨범으로 이동 모드 선택 => 편집 모달을 끄고, 앨범 선택 모달을 킨다
       closeEditModeModal()

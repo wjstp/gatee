@@ -238,12 +238,23 @@
   .detail-tab--title {
     @include mx-(1.5);
     @include my-(0.5);
+
     width: 85%;
     font-size: 1.3rem;
     font-weight: bold;
     color: $orange500;
   }
 
+  .detail-tab--title--edited {
+    @include mx-(1.5);
+    @include my-(0.5);
+
+    width: 85%;
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: $orange500;
+    text-decoration: underline;
+  }
   .edit-modal-bg {
     @extend %modal-overlay;
 

@@ -102,7 +102,7 @@ export const deletePhotoApi = async function (data: DeletePhotoApiReq,
 }
 
 // 앨범 삭제
-export const deleteAlbumApi = async function (data: string,
+export const deleteAlbumApi = async function (data: string|number,
                                               success: (res: AxiosResponse<any>) => void,
                                               fail: (err: AxiosError<any>) => void) {
   await local.delete(`albums/${data}`).then(success).catch(fail);

@@ -23,7 +23,8 @@ const PhotoItem = ({photoDetailData}: { photoDetailData: PhotoDetailData }) => {
   const {myInfo} = useMemberStore()
   const [isPressed, setIsPressed] = useState(photoDetailData.isReaction);
   const {familyInfo} = useFamilyStore()
-  const [reactionList,setReactionList] = useState(photoDetailData.reactionList)
+  const [reactionList, setReactionList] = useState(photoDetailData.reactionList)
+
   // 멤버 Id 받아서 아이콘 Url 반환하는 함수
   const findProfile = (memberId: string) => {
     if (familyInfo.length > 0) {
@@ -32,51 +33,61 @@ const PhotoItem = ({photoDetailData}: { photoDetailData: PhotoDetailData }) => {
       return ""
     }
   }
+  // 좋아요 누르기
+  const createReactionPhotoApiFunc = () => {
+    createReactionPhotoApi(
+      photoDetailData.photoId,
+      res => {
+        console.log(res)
+        setIsPressed(!isPressed);
+        setReactionList(prevReactionList => {
+          // memberId가 12인 원소가 이미 있는지 확인
+          const existingReaction = prevReactionList.find(reaction => reaction.memberId === myInfo.memberId);
+          if (!existingReaction) {
+            // memberId가 12인 원소가 없으면 추가
+            return [...prevReactionList, {memberId: myInfo.memberId, content: "heart"}];
+          }
+          return prevReactionList; // 이미 좋아요를 눌렀으면 변동 없음
+        });
+
+      },
+      err => {
+        console.log(err)
+      }
+    )
+  }
+
+  // 좋아요 취소하기
+  const deleteReactionPhotoApiFunc = () => {
+    deleteReactionPhotoApi(
+      photoDetailData.photoId,
+      res => {
+        console.log(res)
+        setIsPressed(!isPressed);
+        // API 호출 성공 시 reactionList 업데이트
+        setReactionList(prevReactionList => {
+          // memberId가 12인 원소를 제외한 배열 반환
+          return prevReactionList.filter(reaction => reaction.memberId !== myInfo.memberId);
+        });
+      },
+      err => {
+        console.log(err)
+      }
+    )
+  }
 
   // 좋아요 누르기 함수
   const pressHeart = () => {
     if (!isPressed) {
-      createReactionPhotoApi(
-        photoDetailData.photoId,
-        res => {
-          console.log(res)
-          setReactionList(prevReactionList => {
-            // memberId가 12인 원소가 이미 있는지 확인
-            const existingReaction = prevReactionList.find(reaction => reaction.memberId === myInfo.memberId);
-            if (!existingReaction) {
-              // memberId가 12인 원소가 없으면 추가
-              return [...prevReactionList, { memberId: myInfo.memberId, content: "heart" }];
-            }
-            return prevReactionList; // 이미 좋아요를 눌렀으면 변동 없음
-          });
-
-        },
-        err => {
-          console.log(err)
-        }
-      )
+      createReactionPhotoApiFunc()
     } else {
-      deleteReactionPhotoApi(
-        photoDetailData.photoId,
-        res => {
-          console.log(res)
-          // API 호출 성공 시 reactionList 업데이트
-          setReactionList(prevReactionList => {
-            // memberId가 12인 원소를 제외한 배열 반환
-            return prevReactionList.filter(reaction => reaction.memberId !== myInfo.memberId);
-          });
-        },
-        err => {
-          console.log(err)
-        }
-      )
+      deleteReactionPhotoApiFunc()
     }
-    setIsPressed(!isPressed);
   };
 
   // 사진 다운받기 => 서버 주소로 변경하기
   const downloadPhoto = () => {
-    fetch("https://images.pexels.com/photos/1458926/pexels-photo-1458926.jpeg?cs=srgb&dl=pexels-poodles2doodles-1458926.jpg&fm=jpg")
+    fetch(photoDetailData?.imageUrl)
       .then(response => {
         if (!response.ok) {
           throw new Error("Network response was not ok");

@@ -55,7 +55,7 @@ const PhotoItem = ({ photoData, editMode, handleChecked }: PhotoListProps & { ph
   
   return (
     <div onClick={clickPhotoItem} className="photo__item">
-      {editMode !== 'normal' &&
+      {editMode !== 'normal' && editMode !== 'editName' &&
         <Checkbox {...label} className="check-box"
                   checked={checked}
                   onChange={() => handleCheckBox()}
