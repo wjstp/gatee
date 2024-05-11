@@ -257,7 +257,7 @@ class PhotoControllerTest extends RestDocsTestSupport {
         doNothing().when(photoService).deletePhotoList(any(PhotoListDeleteReq.class));
 
         // when
-        ResultActions result = mockMvc.perform(post("/api/photos/delete")
+        ResultActions result = mockMvc.perform(patch("/api/photos/delete")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(readJson("json/photo/deletePhotoList.json"))
                 .accept(MediaType.APPLICATION_JSON)
