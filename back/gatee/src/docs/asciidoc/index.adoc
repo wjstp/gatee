@@ -210,6 +210,51 @@ include::{snippets}/일정 후기 등록/http-response.adoc[]
 ---
 
 
+= Exam
+
+== 시험 문제 조회
+
+- Request
+
+include::{snippets}/exam-controller-test/read-exam/http-request.adoc[]
+
+- Response
+
+include::{snippets}/exam-controller-test/read-exam/http-response.adoc[]
+
+== 시험 결과 리스트 조회
+
+- Request
+
+include::{snippets}/exam-controller-test/read-exam-results/http-request.adoc[]
+
+- Response
+
+include::{snippets}/exam-controller-test/read-exam-results/http-response.adoc[]
+
+== 시험 결과 상세 조회
+
+- Request
+
+include::{snippets}/exam-controller-test/read-exam-result-details/http-request.adoc[]
+
+- Response
+
+include::{snippets}/exam-controller-test/read-exam-result-details/http-response.adoc[]
+
+== 시험 결과 저장
+
+- Request
+
+include::{snippets}/exam-controller-test/save-exam-result/http-request.adoc[]
+
+- Response
+
+include::{snippets}/exam-controller-test/save-exam-result/http-response.adoc[]
+
+---
+---
+
 = File
 
 == S3 파일 등록
