@@ -2,7 +2,9 @@ package io.ssafy.gatee.domain.exam.application;
 
 import io.ssafy.gatee.domain.exam.dao.ExamRepository;
 import io.ssafy.gatee.domain.exam.dto.request.ExamReq;
+import io.ssafy.gatee.domain.exam.dto.response.ExamDetailRes;
 import io.ssafy.gatee.domain.exam.dto.response.ExamRes;
+import io.ssafy.gatee.domain.exam.dto.response.ExamResultRes;
 import io.ssafy.gatee.domain.exam.entity.Exam;
 import io.ssafy.gatee.domain.member.dao.MemberRepository;
 import io.ssafy.gatee.domain.member.entity.Member;
@@ -18,6 +20,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -45,6 +49,25 @@ public class ExamServiceImpl implements ExamService {
     }
 
     @Override
+    public List<ExamResultRes> readExamResults(UUID memberId) {
+        List<Exam> exams = examRepository.findByMemberId(memberId);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        if (! exams.isEmpty()) {
+            return exams.stream().map(exam -> ExamResultRes
+                    .builder()
+                    .createdAt(sdf.format(exam.getCreatedAt()))
+                    .score(exam.getScore()).build()).toList();
+        }
+        return new ArrayList<>();
+    }
+
+    @Override
+    public List<ExamDetailRes> readExamResultDetail(Long examId) {
+        List<MemberFamilyExam> memberFamilyExams = memberFamilyExamRepository.findByExam_Id(examId);
+        return memberFamilyExams.stream().map(ExamDetailRes::toDto).toList();
+    }
+
+    @Override
     @Transactional
     public void saveExamResult(ExamReq examReq, UUID memberId) {
         Member proxyMember = memberRepository.getReferenceById(memberId);
@@ -60,4 +83,6 @@ public class ExamServiceImpl implements ExamService {
                 .correctNumber(examResult.correctNumber()).build()).toList();
         memberFamilyExamRepository.saveAll(memberFamilyExams);
     }
+
+
 }
