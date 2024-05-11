@@ -30,13 +30,14 @@ import java.util.UUID;
 import static org.mockito.BDDMockito.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
-import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Slf4j
 @ActiveProfiles({"common, prod"})
-@AutoConfigureRestDocs
 @WebMvcTest({ExamController.class})
 @MockBean(JpaMetamodelMappingContext.class)
 class ExamControllerTest extends RestDocsTestSupport {
@@ -46,9 +47,10 @@ class ExamControllerTest extends RestDocsTestSupport {
 
     @Test
     @CustomWithMockUser
-    @DisplayName("모의고사 문제 조회")
     void readExam() throws Exception {
+
         // given
+        List<ExamRes> examResList = new ArrayList<>();
 
         ExamRes examRes1 = ExamRes.builder()
                 .questionWord("문제 핵심 단어")
@@ -62,86 +64,97 @@ class ExamControllerTest extends RestDocsTestSupport {
                 .nickname("차은우")
                 .wrongAnswers(Collections.singletonList("틀린 문장"))
                 .build();
-        List<ExamRes> examResList = new ArrayList<>();
+
         examResList.add(examRes1);
         examResList.add(examRes2);
 
-        given(examService.readExam(any(UUID.class))).willReturn(examResList);
-
+        given(examService.readExam(any(UUID.class)))
+                .willReturn(examResList);
 
         // where
-        ResultActions result = mockMvc.perform(RestDocumentationRequestBuilders.get("/api/exams")
+        ResultActions result = mockMvc.perform(get("/api/exams")
                 .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON));
+                .accept(MediaType.APPLICATION_JSON)
+        );
 
         //then
         result.andExpect(status().isOk())
                 .andDo(restDocs.document(
                         responseFields(
-                                fieldWithPath("[].nickname").type(JsonFieldType.STRING).description("닉네임").optional(),
-                                fieldWithPath("[].questionWord").type(JsonFieldType.STRING).description("질문").optional(),
-                                fieldWithPath("[].wrongAnswers").type(JsonFieldType.ARRAY).description("틀린 선지 리스트").optional(),
-                                fieldWithPath("[].correctAnswer").type(JsonFieldType.STRING).description("옳은 선지").optional()
+                                fieldWithPath("[].nickname").type(JsonFieldType.STRING).description("닉네임"),
+                                fieldWithPath("[].question").type(JsonFieldType.STRING).description("질문"),
+                                fieldWithPath("[].wrongAnswers").type(JsonFieldType.ARRAY).description("틀린 선지 리스트"),
+                                fieldWithPath("[].correctAnswer").type(JsonFieldType.STRING).description("옳은 선지")
                         )
                 ));
     }
 
     @Test
     @CustomWithMockUser
-    @DisplayName("모의고사 결과 리스트 조회")
     void readExamResults() throws Exception {
+
         // given
+        List<ExamResultRes> examResList = new ArrayList<>();
+
         ExamResultRes examRes1 = ExamResultRes.builder()
                 .score(100)
                 .createdAt("1999-01-01")
                 .build();
+
         ExamResultRes examRes2 = ExamResultRes.builder()
                 .score(100)
                 .createdAt("1999-01-01")
                 .build();
 
-        List<ExamResultRes> examResList = new ArrayList<>();
         examResList.add(examRes1);
         examResList.add(examRes2);
 
-        given(examService.readExamResults(any(UUID.class))).willReturn(examResList);
+        given(examService.readExamResults(any(UUID.class)))
+                .willReturn(examResList);
 
 
         // where
-        ResultActions result = mockMvc.perform(RestDocumentationRequestBuilders.get("/api/exams/results")
+        ResultActions result = mockMvc.perform(get("/api/exams/results")
                 .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON));
+                .accept(MediaType.APPLICATION_JSON)
+        );
 
         //then
         result.andExpect(status().isOk())
                 .andDo(restDocs.document(
                         responseFields(
-                                fieldWithPath("[].score").type(JsonFieldType.NUMBER).description("점수").optional(),
-                                fieldWithPath("[].createdAt").type(JsonFieldType.STRING).description("모의고사를 푼 날짜").optional()
+                                fieldWithPath("[].score").type(JsonFieldType.NUMBER).description("점수"),
+                                fieldWithPath("[].createdAt").type(JsonFieldType.STRING).description("모의고사를 푼 날짜")
                         )
                 ));
     }
 
     @Test
     @CustomWithMockUser
-    @DisplayName("모의고사 결과 상세 조회")
     void readExamResultDetails() throws Exception {
+
         // given
         List<String> answerList = new ArrayList<>();
+
         answerList.add("답변1");
         answerList.add("답변2");
+
+        List<ExamDetailRes> examResList = new ArrayList<>();
+
         ExamDetailRes examRes1 = ExamDetailRes.builder()
                 .question("문제")
                 .answerList(answerList)
                 .choiceNumber(1)
-                .correctNumber(2).build();
+                .correctNumber(2)
+                .build();
+
         ExamDetailRes examRes2 = ExamDetailRes.builder()
                 .question("문제")
                 .answerList(answerList)
                 .choiceNumber(1)
-                .correctNumber(2).build();
+                .correctNumber(2)
+                .build();
 
-        List<ExamDetailRes> examResList = new ArrayList<>();
         examResList.add(examRes1);
         examResList.add(examRes2);
 
@@ -150,9 +163,10 @@ class ExamControllerTest extends RestDocsTestSupport {
 
 
         // where
-        ResultActions result = mockMvc.perform(RestDocumentationRequestBuilders.get("/api/exams/{examId}/results", 1L)
+        ResultActions result = mockMvc.perform(get("/api/exams/{examId}/results", 1L)
                 .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON));
+                .accept(MediaType.APPLICATION_JSON)
+        );
 
         //then
         result.andExpect(status().isOk())
@@ -161,37 +175,38 @@ class ExamControllerTest extends RestDocsTestSupport {
                                 parameterWithName("examId").description("모의고사 id").optional()
                         ),
                         responseFields(
-                                fieldWithPath("[].question").type(JsonFieldType.STRING).description("질문").optional(),
-                                fieldWithPath("[].answerList").type(JsonFieldType.ARRAY).description("선지리스트").optional(),
-                                fieldWithPath("[].choiceNumber").type(JsonFieldType.NUMBER).description("선택했던번호").optional(),
-                                fieldWithPath("[].correctNumber").type(JsonFieldType.NUMBER).description("정답 번호").optional()
+                                fieldWithPath("[].question").type(JsonFieldType.STRING).description("질문"),
+                                fieldWithPath("[].answerList").type(JsonFieldType.ARRAY).description("선지리스트"),
+                                fieldWithPath("[].choiceNumber").type(JsonFieldType.NUMBER).description("선택했던번호"),
+                                fieldWithPath("[].correctNumber").type(JsonFieldType.NUMBER).description("정답 번호")
                         )
                 ));
     }
 
     @Test
     @CustomWithMockUser
-    @DisplayName("모의고사 결과 저장")
     void saveExamResult() throws Exception {
+
         // given
         doNothing().when(examService).saveExamResult(any(ExamReq.class), any(UUID.class));
 
         // when
-        ResultActions result = mockMvc.perform(RestDocumentationRequestBuilders.post("/api/exams")
+        ResultActions result = mockMvc.perform(post("/api/exams")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(readJson("json/exam/saveExamResult.json"))
-                .accept(MediaType.APPLICATION_JSON));
+                .accept(MediaType.APPLICATION_JSON)
+        );
 
         //then
         result.andExpect(status().isOk())
                 .andDo(restDocs.document(
-                       requestFields(
-                               fieldWithPath("examResults").description("문제 푼 내역 객체 리스트").type(JsonFieldType.ARRAY),
-                               fieldWithPath("examResults[].question").description("문제"),
-                               fieldWithPath("examResults[].answerList").description("답안 리스트"),
-                               fieldWithPath("examResults[].choiceNumber").description("선택 번호"),
-                               fieldWithPath("examResults[].correctNumber").description("정답 번호"),
-                               fieldWithPath("score").description("모의고사 점수").optional()
+                       queryParameters(
+                               parameterWithName("examResults").description("문제 푼 내역 객체 리스트").optional(),
+                               parameterWithName("examResults[].question").description("문제").optional(),
+                               parameterWithName("examResults[].answerList").description("답안 리스트").optional(),
+                               parameterWithName("examResults[].choiceNumber").description("선택 번호").optional(),
+                               parameterWithName("examResults[].correctNumber").description("정답 번호").optional(),
+                               parameterWithName("score").description("모의고사 점수").optional()
                        )
                 ));
     }
