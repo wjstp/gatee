@@ -78,7 +78,8 @@ class ExamControllerTest extends RestDocsTestSupport {
         result.andExpect(status().isOk())
                 .andDo(restDocs.document(
                         responseFields(
-                                fieldWithPath("[].question").type(JsonFieldType.STRING).description("질문").optional(),
+                                fieldWithPath("[].nickname").type(JsonFieldType.STRING).description("닉네임").optional(),
+                                fieldWithPath("[].questionWord").type(JsonFieldType.STRING).description("질문").optional(),
                                 fieldWithPath("[].wrongAnswers").type(JsonFieldType.ARRAY).description("틀린 선지 리스트").optional(),
                                 fieldWithPath("[].correctAnswer").type(JsonFieldType.STRING).description("옳은 선지").optional()
                         )
