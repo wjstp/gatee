@@ -56,7 +56,7 @@ public class ExamServiceImpl implements ExamService {
     public List<ExamResultRes> readExamResults(UUID memberId) {
         List<Exam> exams = examRepository.findByMemberId(memberId);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        if (! exams.isEmpty()) {
+        if (!exams.isEmpty()) {
             return exams.stream().map(exam -> ExamResultRes
                     .builder()
                     .examId(exam.getId())
@@ -68,9 +68,9 @@ public class ExamServiceImpl implements ExamService {
 
     @Override
     public ExamDetailRes readExamResultDetail(Long examId) {
-        Exam exam= examRepository.getReferenceById(examId);
+        Exam exam = examRepository.getReferenceById(examId);
         List<MemberFamilyExam> memberFamilyExams = memberFamilyExamRepository.findByExam_Id(examId);
-        return  ExamDetailRes.builder()
+        return ExamDetailRes.builder()
                 .score(exam.getScore())
                 .examData(memberFamilyExams.stream().map(ExamDetailListRes::toDto).toList()).build();
     }
@@ -80,7 +80,7 @@ public class ExamServiceImpl implements ExamService {
     public void saveExamResult(ExamReq examReq, UUID memberId) {
         Member proxyMember = memberRepository.getReferenceById(memberId);
         MemberFamily memberFamily = memberFamilyRepository.findByMember(proxyMember)
-                .orElseThrow(()-> new MemberFamilyNotFoundException(ExceptionMessage.MEMBER_FAMILY_NOT_FOUND));
+                .orElseThrow(() -> new MemberFamilyNotFoundException(ExceptionMessage.MEMBER_FAMILY_NOT_FOUND));
         Exam exam = examRepository.save(Exam.builder().score(examReq.score()).build());
         List<MemberFamilyExam> memberFamilyExams = examReq.examResults().stream().map(examResult -> MemberFamilyExam.builder()
                 .exam(exam)
@@ -91,6 +91,4 @@ public class ExamServiceImpl implements ExamService {
                 .correctNumber(examResult.correctNumber()).build()).toList();
         memberFamilyExamRepository.saveAll(memberFamilyExams);
     }
-
-
 }
