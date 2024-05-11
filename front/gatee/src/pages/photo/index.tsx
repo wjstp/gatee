@@ -13,6 +13,8 @@ import {imageResizer} from "@utils/imageResizer";
 import {uploadFileApi} from "@api/file";
 import {useFamilyStore} from "@store/useFamilyStore";
 import Loading from "@components/Loading";
+import {usePhotoStore} from "@store/usePhotoStore";
+import {useShallow} from "zustand/react/shallow";
 
 
 const PhotoIndex = () => {
@@ -21,6 +23,24 @@ const PhotoIndex = () => {
   const params = useParams()
   const {familyId} = useFamilyStore()
   const [loading, setLoading] = useState(true)
+  const {
+    detailPhotoGroup,
+    addDetailPhotoGroup,
+    removeDetailPhotos,
+    removeAlbum,
+    removeAlbumDetailPhotos,
+  } = usePhotoStore(
+    useShallow((state)=>({
+    detailPhotoGroup:state.detailPhotoGroup,
+    addDetailPhotoGroup:state.addDetailPhotoGroup,
+    removeDetailPhotos:state.removeDetailPhotos,
+    addAlbumList:state.addAlbumList,
+    removeAlbum:state.removeAlbum,
+    addDetailAlbumPhotoGroup:state.addDetailAlbumPhotoGroup,
+    removeAlbumDetailPhotos:state.removeAlbumDetailPhotos,
+  })))
+
+
   // 상단 탭 상태 관리 -> 모든 사진 / 앨범사진
   const [activeTab, setActiveTab] = useState("album"); // 현재 경로를 기본값으로 설정
   // 모든 사진의 하단 탭 상태 관리 -> 일 / 월 / 연
@@ -58,7 +78,8 @@ const PhotoIndex = () => {
   };
 
   // 앨범 삭제
-  const deleteAlbumApiFunc = (item: number | string) => {
+  const deleteAlbumApiFunc = (item: number) => {
+    removeAlbum(item)
     deleteAlbumApi(item,
       res => {
         console.log(res)
@@ -72,6 +93,7 @@ const PhotoIndex = () => {
 
   // 사진 삭제
   const deletePhotoApiFunc = () => {
+    removeDetailPhotos(editPhotoIdList)
     deletePhotoApi(
       {photoIdList: editPhotoIdList},
       res => {
@@ -107,6 +129,7 @@ const PhotoIndex = () => {
   // 앨범 사진 삭제
   const deleteAlbumPhotoApiFunc = () => {
     console.log("앨범 사진 삭제")
+    removeAlbumDetailPhotos(editPhotoIdList)
     deleteAlbumPhotoApi(
       {
         photoIdList: editPhotoIdList,
@@ -252,10 +275,17 @@ const PhotoIndex = () => {
 
 // 선택된 파일들을 서버에 업로드하는 함수
   const uploadImages = (formData: FormData): void => {
+    let addedPhoto = {
+      fileId:1,
+      photoId:1,
+      imageUrl:""
+    }
     // 파일 올리기
     uploadFileApi(formData,
       res => {
         console.log(res)
+        addedPhoto.fileId = res.data.fileId
+        addedPhoto.imageUrl = res.data.imageUrl
         // 보내줄 사진 데이터
         const payload = {
           familyId: familyId,
@@ -266,6 +296,8 @@ const PhotoIndex = () => {
           payload,
           res => {
             console.log(res)
+            addedPhoto.photoId = res.data.photoId
+            addDetailPhotoGroup(addedPhoto)
           }
           , err => {
             console.log(err)
@@ -276,8 +308,7 @@ const PhotoIndex = () => {
         console.log(err)
       })
   };
-
-
+  
   // 카메라 버튼 클릭 처리
   const handleCameraButtonClick = (): void => {
     if (fileInputRef.current) {
@@ -313,10 +344,13 @@ const PhotoIndex = () => {
     }
   }, [location.pathname]);
 
+
   useEffect(() => {
     setTimeout(()=>
     setLoading(false),500)
   }, []);
+  
+  
   return (
     <div className="photo">
       {loading?

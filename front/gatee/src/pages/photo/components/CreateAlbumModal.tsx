@@ -2,6 +2,8 @@ import React, {useState} from "react";
 import TextField from "@mui/material/TextField";
 import {createAlbumApi} from "@api/photo";
 import {useFamilyStore} from "@store/useFamilyStore";
+import {usePhotoStore} from "@store/usePhotoStore";
+import {useShallow} from "zustand/react/shallow";
 
 export const AlbumNameInputModal = ({handleCloseAlbumNameInputModal}: {
   handleCloseAlbumNameInputModal: (inputValue: string, id: string | number) => void
@@ -9,6 +11,13 @@ export const AlbumNameInputModal = ({handleCloseAlbumNameInputModal}: {
   // 입력상태
   const [inputValue, setInputValue] = useState("");
   const {familyId} = useFamilyStore()
+  const {
+    addAlbumList
+  } = usePhotoStore(
+    useShallow((state)=>({
+      addAlbumList:state.addAlbumList,
+    })))
+
   const muiFocusCustom = {
     "& .MuiOutlinedInput-root": {
       "&.Mui-focused": {
@@ -29,7 +38,6 @@ export const AlbumNameInputModal = ({handleCloseAlbumNameInputModal}: {
   const handleCreateAlbum = (event: React.MouseEvent<HTMLButtonElement> | React.MouseEvent<HTMLDivElement>, type: string) => {
     // 백드롭 이벤트 방지
     event.stopPropagation();
-
     // 입력값이 비어있지 않을 때만 모달 닫기 함수 호출
     if (type === "input" && inputValue.trim() !== "") {
 
@@ -40,6 +48,12 @@ export const AlbumNameInputModal = ({handleCloseAlbumNameInputModal}: {
         },
         res => {
           console.log(res)
+          addAlbumList({
+            albumId:res.data,
+            name:inputValue,
+            imageUrl:null,
+            PhotoId:null,
+          })
           handleCloseAlbumNameInputModal(inputValue, res.data);
         },
         err => {
@@ -50,6 +64,7 @@ export const AlbumNameInputModal = ({handleCloseAlbumNameInputModal}: {
       handleCloseAlbumNameInputModal("", "");
     }
   };
+
 
   return (
     <div className="input-modal-bg"

@@ -1,39 +1,36 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {Link} from "react-router-dom";
 import {useFamilyStore} from "@store/useFamilyStore";
 import {getThumnailPhotoApi} from "@api/photo";
+import {MonthYearPhotoTabProps} from "@type/index";
+import {usePhotoStore} from "@store/usePhotoStore";
 
 
-interface MonthYearThumbnailPhotoData {
-  createdAt: string,
-  imageUrl: string,
-  photoId: number
-}
 
-interface MonthYearPhotoTabProps {
-  yearPhotoData: MonthYearThumbnailPhotoData
-}
 
 const AllYear = () => {
   const {familyId} = useFamilyStore()
-  const [yearPhotoDatas, setYearPhotoDatas] = useState<MonthYearThumbnailPhotoData[]>([])
-
-  useEffect(() => {
+  const {yearThumbnailPhotoGroup,setYearThumbnailPhotoGroup} = usePhotoStore()
+  // 월별 불러오기
+  const getMonthThumnailPhotoApiFunc = () => {
     // 월별 사진 조회
     getThumnailPhotoApi({familyId: familyId, filter: "YEAR"},
       res => {
         console.log(res)
-        setYearPhotoDatas(res.data)
+        setYearThumbnailPhotoGroup(res.data)
       },
       err => {
         console.log(err)
       })
+  }
+  useEffect(() => {
+    getMonthThumnailPhotoApiFunc()
   }, [])
   return (
     <div className="year-photo-container">
       {/* 주어진 데이터 정렬로 return */}
-      {yearPhotoDatas.map((yearPhotoData, index) => {
-        return <YearItem key={index} yearPhotoData={yearPhotoData}/>
+      {yearThumbnailPhotoGroup.map((monthYearPhotoData, index) => {
+        return <YearItem key={index} monthYearPhotoData={monthYearPhotoData}/>
       })
       }
 
@@ -41,8 +38,8 @@ const AllYear = () => {
   );
 };
 
-const YearItem = ({yearPhotoData}: MonthYearPhotoTabProps) => {
-  const dateString = yearPhotoData.createdAt
+const YearItem = ({monthYearPhotoData}: MonthYearPhotoTabProps) => {
+  const dateString = monthYearPhotoData.createdAt
   const createdAt = new Date(dateString);
   // 현재의 년도 추출
   const year = createdAt.getFullYear();
@@ -52,7 +49,7 @@ const YearItem = ({yearPhotoData}: MonthYearPhotoTabProps) => {
       {/* 연 표시 */}
       <div className="year">{year}년</div>
       {/* 배경 사진 */}
-      <img className="photo" src={yearPhotoData.imageUrl} alt={`${yearPhotoData.photoId}`}/>
+      <img className="photo" src={monthYearPhotoData.imageUrl} alt={`${monthYearPhotoData.photoId}`}/>
     </Link>
   )
 }
