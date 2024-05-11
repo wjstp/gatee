@@ -14,7 +14,8 @@ public interface MemberFeatureRepository extends JpaRepository<MemberFeature, Lo
 
     @Query(value = """
         select mf from MemberFeature mf
-        where mf.member.id in :memberIdList
+        where mf.member.id in :memberIdList 
+        and mf.wrongAnswer is not null 
         order by rand()
         limit :questionQuantity
         """, nativeQuery = true)

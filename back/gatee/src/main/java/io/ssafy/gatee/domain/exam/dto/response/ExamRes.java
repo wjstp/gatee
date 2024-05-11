@@ -6,6 +6,8 @@ import java.util.List;
 
 @Builder
 public record ExamRes(
-        List<ExamQuestionRes> examQuestionRes
+        String question,
+        List<String> wrongAnswers,
+        String correctAnswer
 ) {
 }
