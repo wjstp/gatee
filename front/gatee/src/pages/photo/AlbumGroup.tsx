@@ -107,7 +107,7 @@ const GroupItem = ({editMode, handleChecked, groupPhotoData}: PhotoOutletInfoCon
                   checked={checked}
                   onChange={() => handleCheckBox()}
         />}
-      <p className="name">{groupPhotoData.name}</p>
+      <p  className="title">{groupPhotoData.name}</p>
     </div>
   )
 }
@@ -121,7 +121,7 @@ const PlusAlbum = ({handleModal}: PlusAlbumButton) => {
       <div onClick={handleModal} className="plus-album--button-container">
         <FaPlus className="plus-button" size={50}/>
       </div>
-      <div className="name text-white">
+      <div className="title text-white">
         추가하기
       </div>
 

@@ -35,7 +35,7 @@ export const usePhotoStore = create<PhotoStore>(
     // 사진 배열에 원소 추가하는 함수
     addDetailPhotoGroup: (newPhoto: PhotoData) => {
       set((state) => ({
-        detailPhotoGroup: [...state.detailPhotoGroup, newPhoto],
+        detailPhotoGroup: [newPhoto, ...state.detailPhotoGroup],
       }));
     },
     // 사진의 특정 photoId를 가지는 원소 삭제하는 함수

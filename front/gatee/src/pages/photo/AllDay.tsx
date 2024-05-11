@@ -6,12 +6,18 @@ import {PhotoOutletInfoContext} from "@type/index";
 import {getListPhotoApi} from "@api/photo";
 import {useFamilyStore} from "@store/useFamilyStore";
 import {usePhotoStore} from "@store/usePhotoStore";
+import {useShallow} from "zustand/react/shallow";
 
 
 const AllDay = () => {
   const {familyId} = useFamilyStore()
   const {editMode, handleChecked} = useOutletContext<PhotoOutletInfoContext>();
-  const {detailPhotoGroup,setDetailPhotoGroup} = usePhotoStore()
+  const {setDetailPhotoGroup} = usePhotoStore()
+  const { detailPhotoGroup } = usePhotoStore(
+    useShallow((state) => ({
+      detailPhotoGroup: state.detailPhotoGroup,
+    })),
+  )
   const getListPhotoApiFunc = () => {
     // 모든 사진 일별 조회
     const payload = {
@@ -29,9 +35,15 @@ const AllDay = () => {
         console.log(err)
       })
   }
+
+
   useEffect(() => {
     getListPhotoApiFunc()
   }, []);
+
+  useEffect(() => {
+    console.log(detailPhotoGroup)
+  }, [detailPhotoGroup]);
   return (
     <div className="day-tab--container">
       <PhotoList editMode={editMode} photoGroup={detailPhotoGroup} handleChecked={handleChecked}/>
