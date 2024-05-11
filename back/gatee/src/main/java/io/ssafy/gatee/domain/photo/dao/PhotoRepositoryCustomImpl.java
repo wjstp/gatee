@@ -2,6 +2,7 @@ package io.ssafy.gatee.domain.photo.dao;
 
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.JPQLQueryFactory;
+import io.ssafy.gatee.domain.family.entity.Family;
 import io.ssafy.gatee.domain.member_family.entity.MemberFamily;
 import io.ssafy.gatee.domain.photo.entity.Photo;
 import io.ssafy.gatee.domain.photo.entity.QPhoto;
@@ -73,6 +74,16 @@ public class PhotoRepositoryCustomImpl implements PhotoRepositoryCustom {
                                 .from(photo)
                                 .groupBy(photo.createdAt.year())
                 ))
+                .fetch();
+    }
+
+    @Override
+    public List<Photo> findAllPhotoByFamily(Family family) {
+        QPhoto photo = QPhoto.photo;
+
+        return jpqlQueryFactory.selectFrom(photo)
+                .where(photo.memberFamily.family.eq(family))
+                .where(photo.status.eq(true))
                 .fetch();
     }
 }

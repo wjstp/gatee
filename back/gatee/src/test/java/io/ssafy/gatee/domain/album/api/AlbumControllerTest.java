@@ -8,6 +8,8 @@ import io.ssafy.gatee.domain.album.dto.request.AlbumSaveReq;
 import io.ssafy.gatee.domain.album.dto.request.DeleteAlbumPhotoListReq;
 import io.ssafy.gatee.domain.album.dto.response.AlbumListRes;
 import io.ssafy.gatee.domain.album.dto.response.AlbumPhotoListRes;
+import io.ssafy.gatee.domain.album.dto.response.AlbumSaveRes;
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,6 +29,7 @@ import java.util.UUID;
 
 import static org.mockito.BDDMockito.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
@@ -91,9 +94,8 @@ class AlbumControllerTest extends RestDocsTestSupport {
 
     @Test
     @CustomWithMockUser
-    @DisplayName("앨범 상세 조회 테스트")
     void readAlbumDetail() throws Exception {
-        long albumId = 1L;
+
         // given
         List<AlbumPhotoListRes> albumPhotoListResList = new ArrayList<>();
 
@@ -129,109 +131,198 @@ class AlbumControllerTest extends RestDocsTestSupport {
                                 parameterWithName("albumId").description("앨범 ID").optional()
                         ),
                         responseFields(
-                                fieldWithPath("photoId").type(JsonFieldType.NUMBER).description("사진 ID"),
-                                fieldWithPath("fileId").type(JsonFieldType.NUMBER).description("파일 ID"),
-                                fieldWithPath("imageUrl").type(JsonFieldType.STRING).description("사진 URL"),
-                                fieldWithPath("memberFamilyId").type(JsonFieldType.NUMBER).description("가족 회원 ID"),
-                                fieldWithPath("photoAlbumId").type(JsonFieldType.NUMBER).description("앨범 사진 ID")
+                                fieldWithPath("[].photoId").type(JsonFieldType.NUMBER).description("사진 ID"),
+                                fieldWithPath("[].fileId").type(JsonFieldType.NUMBER).description("파일 ID"),
+                                fieldWithPath("[].imageUrl").type(JsonFieldType.STRING).description("사진 URL"),
+                                fieldWithPath("[].memberFamilyId").type(JsonFieldType.NUMBER).description("가족 회원 ID"),
+                                fieldWithPath("[].photoAlbumId").type(JsonFieldType.NUMBER).description("앨범 사진 ID")
                         )
                 ));
     }
 
     @Test
     @CustomWithMockUser
-    @DisplayName("앨범 생성 테스트")
     void saveAlbum() throws Exception {
-        AlbumSaveReq albumSaveReq = AlbumSaveReq.builder()
-//                .familyId(1L)
-                .name("앨범 생성 테스트")
-                .build();
 
-        String albumSaveReqJson = objectMapper.writeValueAsString(albumSaveReq);
+        // given
+        given(albumService.saveAlbum(any(AlbumSaveReq.class)))
+                .willReturn(AlbumSaveRes.builder()
+                        .albumId(1L)
+                        .build());
 
-        mockMvc.perform(post("/api/albums")
+        // when
+        ResultActions result = mockMvc.perform(post("/api/albums")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(albumSaveReqJson))
-                .andDo(MockMvcResultHandlers.print())
-                .andDo(MockMvcRestDocumentation.document("앨범 생성"))
-                .andExpect(status().isOk());
+                        .content(readJson("json/album/saveAlbum.json"))
+                        .accept(MediaType.APPLICATION_JSON)
+                );
+
+        // then
+        result.andExpect(status().isOk())
+                .andDo(restDocs.document(
+                        queryParameters(
+                                parameterWithName("familyId").description("가족 ID").optional(),
+                                parameterWithName("name").description("앨범 이름").optional()
+                        ),
+                        responseFields(
+                                fieldWithPath("albumId").type(JsonFieldType.NUMBER).description("앨범 ID")
+                        )
+                ));
+
     }
 
     @Test
     @CustomWithMockUser
-    @DisplayName("앨범 이름 수정 테스트")
     void editAlbumName() throws Exception {
-        long albumId = 1L;
-        String name = "이름 변경 테스트";
 
-        mockMvc.perform(patch("/api/albums/" + albumId)
-                        .param("name", name))
-                .andDo(MockMvcResultHandlers.print())
-                .andDo(MockMvcRestDocumentation.document("앨범 이름 수정"))
-                .andExpect(status().isOk());
+        // given
+        doNothing().when(albumService).editAlbumName(any(Long.class), any(String.class));
+
+        // when
+        ResultActions result = mockMvc.perform(patch("/api/albums/{albumId}", 1L)
+                        .param("name", "변경할 앨범 이름")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                );
+
+        // then
+        result.andExpect(status().isOk())
+                .andDo(restDocs.document(
+                        pathParameters(
+                                parameterWithName("albumId").description("앨범 ID").optional()
+                        ),
+                        queryParameters(
+                                parameterWithName("name").description("변경할 앨범 이름").optional()
+                        )
+                ));
     }
 
     @Test
     @CustomWithMockUser
-    @DisplayName("앨범 삭제 테스트")
     void deleteAlbum() throws Exception {
-        long albumId = 1L;
 
-        mockMvc.perform(delete("/api/albums/" + albumId))
-                .andDo(MockMvcResultHandlers.print())
-                .andDo(MockMvcRestDocumentation.document("앨범 삭제"))
-                .andExpect(status().isOk());
+        // given
+        doNothing().when(albumService).deleteAlbum(any(Long.class));
+
+        // when
+        ResultActions result = mockMvc.perform(delete("/api/albums/{albumId}", 1L));
+
+        // then
+        result.andExpect(status().isOk())
+                .andDo(restDocs.document(
+                        pathParameters(
+                                parameterWithName("albumId").description("앨범 ID").optional()
+                        )
+                ));
     }
 
     @Test
     @CustomWithMockUser
-    @DisplayName("앨범 내 사진 추가 테스트")
     void addAlbumPhotoList() throws Exception {
-        long albumId = 1L;
 
-        List<Long> photoIdList = new ArrayList<>();
+        // given
+        List<AlbumPhotoListRes> albumPhotoListResList = new ArrayList<>();
 
-        photoIdList.add(1L);
-        photoIdList.add(2L);
-        photoIdList.add(3L);
-
-        AddAlbumPhotoListReq addAlbumPhotoListReq = AddAlbumPhotoListReq.builder()
-                .photoIdList(photoIdList)
+        AlbumPhotoListRes albumPhotoListRes1 = AlbumPhotoListRes.builder()
+                .photoId(1L)
+                .fileId(1L)
+                .imageUrl("https://www.gaty.duckdns.org/s3-image-url-1")
+                .memberFamilyId(1L)
+                .photoAlbumId(1L)
                 .build();
 
-        String addAlbumPhotoListReqJson = objectMapper.writeValueAsString(addAlbumPhotoListReq);
+        AlbumPhotoListRes albumPhotoListRes2 = AlbumPhotoListRes.builder()
+                .photoId(2L)
+                .fileId(2L)
+                .imageUrl("https://www.gaty.duckdns.org/s3-image-url-2")
+                .memberFamilyId(2L)
+                .photoAlbumId(2L)
+                .build();
 
-        mockMvc.perform(post("/api/albums/" + albumId + "/photos")
+        albumPhotoListResList.add(albumPhotoListRes1);
+        albumPhotoListResList.add(albumPhotoListRes2);
+
+        given(albumService.addAlbumPhotoList(any(Long.class), any(AddAlbumPhotoListReq.class)))
+                .willReturn(albumPhotoListResList);
+
+        // when
+        ResultActions result = mockMvc.perform(post("/api/albums/{albumId}/photos", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(addAlbumPhotoListReqJson))
-                .andDo(MockMvcResultHandlers.print())
-                .andDo(MockMvcRestDocumentation.document("앨범 내 사진 추가"))
-                .andExpect(status().isOk());
+                        .content(readJson("json/album/addAlbumPhotoList.json"))
+                        .accept(MediaType.APPLICATION_JSON)
+                );
+
+        // then
+        result.andExpect(status().isOk())
+                .andDo(restDocs.document(
+                        pathParameters(
+                                parameterWithName("albumId").description("앨범 ID").optional()
+                        ),
+                        queryParameters(
+                                parameterWithName("photoIdList").description("사진 ID 목록").optional()
+                        ),
+                        responseFields(
+                                fieldWithPath("[].photoId").type(JsonFieldType.NUMBER).description("사진 ID"),
+                                fieldWithPath("[].fileId").type(JsonFieldType.NUMBER).description("파일 ID"),
+                                fieldWithPath("[].imageUrl").type(JsonFieldType.STRING).description("사진 URL"),
+                                fieldWithPath("[].memberFamilyId").type(JsonFieldType.NUMBER).description("가족 멤버 ID"),
+                                fieldWithPath("[].photoAlbumId").type(JsonFieldType.NUMBER).description("앨범 사진 ID")
+                        )
+                ));
     }
 
     @Test
     @CustomWithMockUser
-    @DisplayName("앨범 내 사진 삭제 테스트")
     void deleteAlbumPhotoList() throws Exception {
-        long albumId = 1L;
 
-        List<Long> photoAlbumId = new ArrayList<>();
+        // given
+        List<AlbumPhotoListRes> albumPhotoListResList = new ArrayList<>();
 
-        photoAlbumId.add(1L);
-        photoAlbumId.add(2L);
-        photoAlbumId.add(3L);
-
-        DeleteAlbumPhotoListReq deleteAlbumPhotoListReq = DeleteAlbumPhotoListReq.builder()
-                .photoAlbumId(photoAlbumId)
+        AlbumPhotoListRes albumPhotoListRes1 = AlbumPhotoListRes.builder()
+                .photoId(1L)
+                .fileId(1L)
+                .imageUrl("https://www.gaty.duckdns.org/s3-image-url-1")
+                .memberFamilyId(1L)
+                .photoAlbumId(1L)
                 .build();
 
-        String deleteAlbumPhotoListReqJson = objectMapper.writeValueAsString(deleteAlbumPhotoListReq);
+        AlbumPhotoListRes albumPhotoListRes2 = AlbumPhotoListRes.builder()
+                .photoId(2L)
+                .fileId(2L)
+                .imageUrl("https://www.gaty.duckdns.org/s3-image-url-2")
+                .memberFamilyId(2L)
+                .photoAlbumId(2L)
+                .build();
 
-        mockMvc.perform(delete("/api/albums/" + albumId + "/photos")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(deleteAlbumPhotoListReqJson))
-                .andDo(MockMvcResultHandlers.print())
-                .andDo(MockMvcRestDocumentation.document("앨범 내 사진 삭제"))
-                .andExpect(status().isOk());
+        albumPhotoListResList.add(albumPhotoListRes1);
+        albumPhotoListResList.add(albumPhotoListRes2);
+
+        given(albumService.deleteAlbumPhotoList(any(Long.class), any(DeleteAlbumPhotoListReq.class)))
+                .willReturn(albumPhotoListResList);
+
+        // when
+        ResultActions result = mockMvc.perform(patch("/api/albums/{albumId}/photos", 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(readJson("json/album/deleteAlbumPhotoList.json"))
+                .accept(MediaType.APPLICATION_JSON)
+        );
+
+        // then
+        result.andExpect(status().isOk())
+                .andDo(restDocs.document(
+                        pathParameters(
+                                parameterWithName("albumId").description("앨범 ID").optional()
+                        ),
+                        queryParameters(
+                                parameterWithName("photoAlbumIdList").description("사진 ID 목록").optional()
+                        ),
+                        responseFields(
+                                fieldWithPath("[].photoId").type(JsonFieldType.NUMBER).description("사진 ID"),
+                                fieldWithPath("[].fileId").type(JsonFieldType.NUMBER).description("파일 ID"),
+                                fieldWithPath("[].imageUrl").type(JsonFieldType.STRING).description("사진 URL"),
+                                fieldWithPath("[].memberFamilyId").type(JsonFieldType.NUMBER).description("가족 멤버 ID"),
+                                fieldWithPath("[].photoAlbumId").type(JsonFieldType.NUMBER).description("앨범 사진 ID")
+                        )
+                ));
     }
 }

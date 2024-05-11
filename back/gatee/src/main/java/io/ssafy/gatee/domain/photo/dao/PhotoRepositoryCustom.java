@@ -1,5 +1,6 @@
 package io.ssafy.gatee.domain.photo.dao;
 
+import io.ssafy.gatee.domain.family.entity.Family;
 import io.ssafy.gatee.domain.member_family.entity.MemberFamily;
 import io.ssafy.gatee.domain.photo.entity.Photo;
 import org.springframework.stereotype.Repository;
@@ -13,4 +14,5 @@ public interface PhotoRepositoryCustom {
     List<Photo> findPhotoListByYear(List<MemberFamily> memberFamilyList, String year);
     List<Photo> findPhotoThumbnailListByMonth(List<MemberFamily> memberFamilyList);
     List<Photo> findPhotoThumbnailListByYear(List<MemberFamily> memberFamilyList);
+    List<Photo> findAllPhotoByFamily(Family family);
 }
