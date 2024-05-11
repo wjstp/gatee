@@ -90,7 +90,7 @@ public class PhotoController {
     }
 
     // 사진 삭제 (리스트)
-    @PostMapping("/delete")
+    @PatchMapping("/delete")
     @ResponseStatus(HttpStatus.OK)
     public void deletePhotoList(
             @Valid

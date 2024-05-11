@@ -197,11 +197,9 @@ public class PhotoServiceImpl implements PhotoService {
     @Override
     @Transactional
     public void deletePhotoList(PhotoListDeleteReq photoListDeleteReq) {
-        photoListDeleteReq.photoIdList().stream()
-                .map((photoId) -> {
-                    photoRepository.getReferenceById(photoId).deleteData();
-                    return null;
-                });
+        List<Photo> photoList = photoListDeleteReq.photoIdList().stream().map(photoRepository::getReferenceById).toList();
+
+        photoRepository.deleteAll(photoList);
     }
 
     // 사진 상호작용 생성
