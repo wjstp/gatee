@@ -317,3 +317,58 @@
   }
 }
 
+.exam-loading-container {
+  @include flex_center;
+  @include flex-col;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background-color: #fff;
+
+}
+
+.exam-answer-sheet-container {
+  //width: 80%;
+  border: 1px solid $gray200;
+  @include mx-(1);
+  @include flex-row;
+  flex: 1;
+
+  .item-container {
+    @include flex-col;
+    @include flex_center;
+
+    font-size: 1.2rem;
+    flex: 1;
+
+    .index {
+      @include py-(1);
+      @include flex_center;
+      width: 100%;
+      background-color: $gray100;
+      border-bottom: 1px solid $gray200;
+    }
+
+    .answer {
+      @include my-(1);
+      @include flex_center;
+      width: 1.5rem;
+      height: 1.5rem;
+      border: 1px solid $gray200;
+      border-radius: 5rem;
+    }
+
+    .no-answer {
+      color: white;
+      border: 0 !important;
+    }
+
+
+  }
+  .item-right-line {
+    border-right: 0.2px solid $gray200;
+  }
+}

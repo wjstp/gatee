@@ -49,7 +49,7 @@ const MainLayout = () => {
 
   useEffect(() => {
     // 채팅이 아니고, 스토어가 비어있을때만
-    if (!location.pathname.includes("/chatting") && familyInfo.length === 0)
+    if (familyInfo.length === 0)
     saveMemberData()
   }, [location.pathname]);
 

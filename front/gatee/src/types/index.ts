@@ -313,3 +313,28 @@ export interface ExamResult {
   score: number;
   createdAt: string;
 }
+
+export interface TransformedQuestionData {
+  question: string;
+  answerList: string[];
+  correctNumber: number;
+  choiceNumber: number;
+}
+
+export interface QuestionData {
+  question: string;
+  wrongAnswers: string[];
+  correctAnswer: string;
+}
+
+export interface ExamProblem {
+  "question" : string,
+  "answerList" : string[],
+  "choiceNumber" : number|string,
+  "correctNumber" : number|string
+}
+
+export interface SaveExamResultApiReq {
+  examResults : ExamProblem[],
+  score:number
+}

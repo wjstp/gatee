@@ -1,19 +1,9 @@
 import localAxios from "@api/LocalAxios";
 import {AxiosError, AxiosResponse, AxiosInstance} from "axios";
-import {ExamResult} from "@type/index";
+import {ExamResult, SaveExamResultApiReq} from "@type/index";
 
 const local: AxiosInstance = localAxios("default");
 
-interface ExamProblem {
-  "question" : string,
-  "answerList" : string[],
-  "choiceNumber" : number|string,
-  "correctNumber" : number|string
-}
-interface SaveExamResultApiReq {
-  examresults : ExamProblem[],
-  score:number
-}
 
 // 시험 문제 조회
 export const getNewExamApi = async function (success: (res: AxiosResponse<any>) => void,
@@ -41,6 +31,7 @@ export const getDetailExamResultApi = async function (data:string|number,
 export const saveExamResultApi = async function (data: SaveExamResultApiReq,
                                               success: (res: AxiosResponse<any>) => void,
                                               fail: (err: AxiosError<any>) => void) {
+
   await local.post(`/exams`, data).then(success).catch(fail);
 }
 

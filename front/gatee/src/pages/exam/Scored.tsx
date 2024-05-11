@@ -4,7 +4,7 @@ import QuestionItem from "./components/QuestionItem";
 import getScoreImage from "@utils/getScoreImage";
 
 const ExamScored = () => {
-  const questions=[
+  const questions = [
     {
       questionId: 1,
       question: "어쩌고 저쩌고",
@@ -115,6 +115,21 @@ const ExamScored = () => {
     },
 
   ]
+  //
+  // const questionList = [
+  //   {
+  //     "question": "문제",
+  //     "wrongAnswers": ["틀린 문장","틀린 문장","틀린 문장"],
+  //     "correctAnswer": "정답 문장"
+  //   },
+  //   {
+  //     "question": "문제",
+  //     "wrongAnswers": ["틀린 문장","틀린 문장","틀린 문장"],
+  //     "correctAnswer": "정답 문장"
+  //   },
+  // ]
+
+
 
   return (
     <div className="exam__scored">
@@ -130,13 +145,17 @@ const ExamScored = () => {
                               myAnswerList={[0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}
                               handleNextIndex={() => console.log()}
                               handleBeforeIndex={() => console.log()}
-        />)
-      })}
+        />)})}
+
+      {/*<QuestionItemTaking*/}
+      {/*    questionItem={questionList[nowNumber]}*/}
+      {/*    type={"taking"} handleNextIndex={() => console.log()}*/}
+      {/*    handleBeforeIndex={() => console.log()}*/}
+      {/*    />*/}
 
       {/* 하단의 줄 두개 */}
       <div className="exam__scored-footer">
       </div>
-
 
 
     </div>
@@ -155,13 +174,13 @@ const ExamScored = () => {
 //
 // }
 
-const Grade=()=>{
-  const scoreState:number = 90
-  return(
+const Grade = () => {
+  const scoreState: number = 90
+  return (
     <div className="exam__scored-mark">
-    {/* 점수 */}
-    {getScoreImage(scoreState)}
-  </div>)
+      {/* 점수 */}
+      {getScoreImage(scoreState)}
+    </div>)
 
 }
 export default ExamScored;
