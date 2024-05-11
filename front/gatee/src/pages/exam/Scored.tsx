@@ -143,17 +143,17 @@ const ExamScored = () => {
   );
 }
 
-const ExamComment: React.FC<{ comment: { memberName:string, comment:string} }> = ({comment})=>{
-  return(
-    <div className="exam__scored-comment">
-    <img src="" alt="프사"/>
-    <div className="comment">
-      <p className="text-gray-100">{comment.memberName}</p>
-      <p>{comment.comment}</p>
-    </div>
-  </div>)
-
-}
+// const ExamComment: React.FC<{ comment: { memberName:string, comment:string} }> = ({comment})=>{
+//   return(
+//     <div className="exam__scored-comment">
+//     <img src="" alt="프사"/>
+//     <div className="comment">
+//       <p className="text-gray-100">{comment.memberName}</p>
+//       <p>{comment.comment}</p>
+//     </div>
+//   </div>)
+//
+// }
 
 const Grade=()=>{
   const scoreState:number = 90

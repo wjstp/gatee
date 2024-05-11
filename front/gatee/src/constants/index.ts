@@ -48,8 +48,8 @@ export const EMOJI: Emoji[] = [
 ];
 
 // 파일 제한 사항
-const ALLOW_FILE_EXTENSION: string = "jpg,jpeg,png";
-const FILE_SIZE_MAX_LIMIT: number = 5 * 1024 * 1024;
+// const ALLOW_FILE_EXTENSION: string = "jpg,jpeg,png";
+// const FILE_SIZE_MAX_LIMIT: number = 5 * 1024 * 1024;
 
 // 기분
 export const MOOD: Mood[] = [
