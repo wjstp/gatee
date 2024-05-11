@@ -265,7 +265,7 @@
 
   .exam__grade-body {
     border: 1px solid black;
-    border-bottom: 0px;
+    border-bottom: 0;
     @include mx-(1.5);
     @include my-(2);
 

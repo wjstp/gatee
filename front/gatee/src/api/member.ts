@@ -1,5 +1,5 @@
 import localAxios from "@api/LocalAxios";
-import axios, { AxiosError, AxiosResponse, AxiosInstance } from "axios";
+import { AxiosError, AxiosResponse, AxiosInstance } from "axios";
 import { MemberApiRes, CreateFamilyApiReq, NaggingApiReq } from "@type/index";
 
 const local: AxiosInstance = localAxios();
