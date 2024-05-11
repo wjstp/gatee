@@ -17,6 +17,7 @@ import io.ssafy.gatee.domain.member_feature.entity.MemberFeature;
 import io.ssafy.gatee.global.exception.error.not_found.MemberFamilyNotFoundException;
 import io.ssafy.gatee.global.exception.message.ExceptionMessage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,9 +41,11 @@ public class ExamServiceImpl implements ExamService {
     public List<ExamRes> readExam(UUID memberId) {
         List<UUID> familyMemberIdExcludeMe = memberFamilyRepository.findMyFamily(memberId);
 
-        List<MemberFeature> randomFeature = memberFeatureRepository.findRandomMemberFeature(familyMemberIdExcludeMe, 20L);
+        List<MemberFeature> randomFeature = memberFeatureRepository.findRandomMemberFeature(familyMemberIdExcludeMe, PageRequest.of(0, 20));
 
         return randomFeature.stream().map(memberFeature -> ExamRes.builder()
+                .nickname(memberFeature.getMember().getNickname())
+                .questionWord(memberFeature.getFeature().getMainPoint())
                 .correctAnswer(memberFeature.getAnswer())
                 .wrongAnswers(memberFeature.getWrongAnswer())
                 .build()).toList();

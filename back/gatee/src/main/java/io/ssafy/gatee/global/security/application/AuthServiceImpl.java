@@ -42,10 +42,10 @@ public class AuthServiceImpl implements AuthService {
         if (response.getStatusCode() == HttpStatus.OK) {
             httpServletResponse.setContentType("application/json");
             httpServletResponse.setCharacterEncoding("UTF-8");
-            httpServletResponse.getWriter().write("{\"message\":\"" + response.getBody().kakaoAccount().kakaoProfile().nickname() + "\"}");
+            httpServletResponse.getWriter().write("{\"name\":\"" + response.getBody().kakaoAccount().kakaoProfile().nickname() + "\"}");
             return response.getBody();
         }
-        throw new RuntimeException();   // todo : exception 수정
+        throw new RuntimeException();
     }
 
     @Override

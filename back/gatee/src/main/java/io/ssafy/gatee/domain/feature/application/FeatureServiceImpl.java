@@ -54,6 +54,8 @@ public class FeatureServiceImpl implements FeatureService{
                 "2. 같은 범주의 단어나 문장\n"+
                 "3. 시제(과거, 현재)가 일치\n"+
                 "4. \"" + question + "\"라는 질문에 대한 답으로 어색하지 않음"+
+                "5. 예시에는 문제는 포함되지 않음" +
+                "6. 하나의 단어나 문장" +
 //                "4. 비문이 아닌 단어나 문장\n"+
                 "이 예시 3개를 string type으로 해서 하나의 파이썬 리스트에 이 예시들이 담긴 형태로 만들어줘"+
                 "미사여구 없이 리스트 한개만 보여줘";
@@ -82,7 +84,7 @@ public class FeatureServiceImpl implements FeatureService{
         Member proxyMember = memberRepository.getReferenceById(memberId);
         MemberFamily memberFamily = memberFamilyRepository.findByMember(proxyMember)
                 .orElseThrow(()-> new MemberFamilyNotFoundException(ExceptionMessage.MEMBER_FAMILY_NOT_FOUND));
-        List<Feature> featureList = featureRepository.findMyQuestion(Type.getType(memberFamily.getRole()));
+        List<Feature> featureList = featureRepository.findMyQuestion(Type.getType(memberFamily.getRole()), memberId);
         return featureList.stream().map(FeatureRes::toDto).toList();
     }
 
