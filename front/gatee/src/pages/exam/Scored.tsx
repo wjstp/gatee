@@ -1,157 +1,40 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Header from "./components/Header";
 import QuestionItem from "./components/QuestionItem";
 import getScoreImage from "@utils/getScoreImage";
+import {transformedExamList} from "@constants/index";
+import {useParams} from "react-router-dom";
+import {getDetailExamResultApi} from "@api/exam";
+import {TransformedQuestionData} from "@type/index";
 
 const ExamScored = () => {
-  const questions = [
-    {
-      questionId: 1,
-      question: "어쩌고 저쩌고",
-      answer: "어쩌고 저쩌고",
-      answerList: [
-        {content: '안ㅇㄴ'},
-        {content: '안ㅇㄴ'},
-        {content: '안ㅇㄴ'},
-        {content: '안ㅇㄴ'}
-      ]
-    },
-    {
-      questionId: 2,
-      question: "어쩌고 저쩌고",
-      answer: "어쩌고 저쩌고",
-      answerList: [
-        {content: '안ㅇㄴ'},
-        {content: '안ㅇㄴ'},
-        {content: '안ㅇㄴ'},
-        {content: '안ㅇㄴ'}
-      ]
-    },
-    {
-      questionId: 3,
-      question: "어쩌고 저쩌고",
-      answer: "어쩌고 저쩌고",
-      answerList: [
-        {content: '안ㅇㄴ'},
-        {content: '안ㅇㄴ'},
-        {content: '안ㅇㄴ'},
-        {content: '안ㅇㄴ'}
-      ]
-    },
-    {
-      questionId: 4,
-      question: "어쩌고 저쩌고",
-      answer: "어쩌고 저쩌고",
-      answerList: [
-        {content: '안ㅇㄴ'},
-        {content: '안ㅇㄴ'},
-        {content: '안ㅇㄴ'},
-        {content: '안ㅇㄴ'}
-      ]
-    },
-    {
-      questionId: 5,
-      question: "어쩌고 저쩌고",
-      answer: "어쩌고 저쩌고",
-      answerList: [
-        {content: '안ㅇㄴ'},
-        {content: '안ㅇㄴ'},
-        {content: '안ㅇㄴ'},
-        {content: '안ㅇㄴ'}
-      ]
-    },
-    {
-      questionId: 6,
-      question: "어쩌고 저쩌고",
-      answer: "어쩌고 저쩌고",
-      answerList: [
-        {content: '안ㅇㄴ'},
-        {content: '안ㅇㄴ'},
-        {content: '안ㅇㄴ'},
-        {content: '안ㅇㄴ'}
-      ]
-    },
-    {
-      questionId: 7,
-      question: "어쩌고 저쩌고",
-      answer: "어쩌고 저쩌고",
-      answerList: [
-        {content: '안ㅇㄴ'},
-        {content: '안ㅇㄴ'},
-        {content: '안ㅇㄴ'},
-        {content: '안ㅇㄴ'}
-      ]
-    },
-    {
-      questionId: 8,
-      question: "어쩌고 저쩌고",
-      answer: "어쩌고 저쩌고",
-      answerList: [
-        {content: '안ㅇㄴ'},
-        {content: '안ㅇㄴ'},
-        {content: '안ㅇㄴ'},
-        {content: '안ㅇㄴ'}
-      ]
-    }, {
-      questionId: 9,
-      question: "어쩌고 저쩌고",
-      answer: "어쩌고 저쩌고",
-      answerList: [
-        {content: '안ㅇㄴ'},
-        {content: '안ㅇㄴ'},
-        {content: '안ㅇㄴ'},
-        {content: '안ㅇㄴ'}
-      ]
-    }, {
-      questionId: 10,
-      question: "어쩌고 저쩌고",
-      answer: "어쩌고 저쩌고",
-      answerList: [
-        {content: '안ㅇㄴ'},
-        {content: '안ㅇㄴ'},
-        {content: '안ㅇㄴ'},
-        {content: '안ㅇㄴ'}
-      ]
-    },
-
-  ]
-  //
-  // const questionList = [
-  //   {
-  //     "question": "문제",
-  //     "wrongAnswers": ["틀린 문장","틀린 문장","틀린 문장"],
-  //     "correctAnswer": "정답 문장"
-  //   },
-  //   {
-  //     "question": "문제",
-  //     "wrongAnswers": ["틀린 문장","틀린 문장","틀린 문장"],
-  //     "correctAnswer": "정답 문장"
-  //   },
-  // ]
-
-
-
+  const params = useParams()
+  const [examDetailResult,setExamDetailResult] = useState<TransformedQuestionData[]>(transformedExamList)
+  const [score,setScore] = useState(0)
+  useEffect(() => {
+    if (params.id){
+      getDetailExamResultApi(params.id,
+        res=>{
+        console.log(res)
+          setExamDetailResult(res.data.examData)
+          setScore(res.data.score)
+        },
+        err=>{
+        console.log(err)
+        })
+    }
+  }, [params]);
   return (
     <div className="exam__scored">
       <Header/>
 
       {/* 점수 */}
-      <Grade/>
+      <Grade score={score}/>
 
-      {/* 문제 컴포넌트
-          재사용성을 위해 이용되는 위치를 prop으로 내려줌*/}
-      {questions.map((item, index) => {
-        return (<QuestionItem key={ index } question={ questions[index] } type={ "scored" }
-                              myAnswerList={[0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}
-                              handleNextIndex={() => console.log()}
-                              handleBeforeIndex={() => console.log()}
+      {examDetailResult.map((item, index) => {
+        return (<QuestionItem key={ index } questionNumber={index} question={ item }
         />)})}
 
-      {/*<QuestionItemTaking*/}
-      {/*    questionItem={questionList[nowNumber]}*/}
-      {/*    type={"taking"} handleNextIndex={() => console.log()}*/}
-      {/*    handleBeforeIndex={() => console.log()}*/}
-      {/*    />*/}
 
       {/* 하단의 줄 두개 */}
       <div className="exam__scored-footer">
@@ -174,12 +57,12 @@ const ExamScored = () => {
 //
 // }
 
-const Grade = () => {
-  const scoreState: number = 90
+const Grade = ({score}: { score:number }) => {
+  // const score: number = 90
   return (
     <div className="exam__scored-mark">
       {/* 점수 */}
-      {getScoreImage(scoreState)}
+      {getScoreImage(score)}
     </div>)
 
 }
