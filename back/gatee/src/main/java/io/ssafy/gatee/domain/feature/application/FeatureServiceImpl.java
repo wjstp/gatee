@@ -68,7 +68,7 @@ public class FeatureServiceImpl implements FeatureService{
         // 응답이 배열 형태로 왔을 떄만 wronganswers 저장
         if (result.answer().startsWith("[")) {
             String answer = result.answer().substring(1, result.answer().length() - 1).replaceAll("\"", "");
-            wrongAnswers = Arrays.asList(answer.split(","));
+            wrongAnswers = Arrays.asList(answer.split(", "));
         }
         memberFeatureRepository.save(MemberFeature.builder()
                         .member(member)
