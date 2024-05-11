@@ -13,6 +13,7 @@ import {imageResizer} from "@utils/imageResizer";
 import {uploadFileApi} from "@api/file";
 import {useFamilyStore} from "@store/useFamilyStore";
 import Loading from "@components/Loading";
+import {usePhotoStore} from "@store/usePhotoStore";
 
 
 const PhotoIndex = () => {
@@ -21,6 +22,7 @@ const PhotoIndex = () => {
   const params = useParams()
   const {familyId} = useFamilyStore()
   const [loading, setLoading] = useState(true)
+  
   // 상단 탭 상태 관리 -> 모든 사진 / 앨범사진
   const [activeTab, setActiveTab] = useState("album"); // 현재 경로를 기본값으로 설정
   // 모든 사진의 하단 탭 상태 관리 -> 일 / 월 / 연

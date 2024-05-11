@@ -6,20 +6,20 @@ type PhotoStore = {
   setShowModal: (newShow: boolean) => void;
   detailPhotoGroup: PhotoData[];
   setDetailPhotoGroup: (newDetailPhotoGroup: PhotoData[]) => void,
-  addPhotoToDetailPhotoGroup: (newPhoto: PhotoData) => void;
-  removeDetailPhotosByPhotoIdList: (photoIdList: number[]) => void;
+  addDetailPhotoGroup: (newPhoto: PhotoData) => void;
+  removeDetailPhotos: (photoIdList: number[]) => void;
   monthThumbnailPhotoGroup: MonthYearThumbnailPhotoData[]
   setMonthThumbnailPhotoGroup: (newThumbnailPhotoGroup: MonthYearThumbnailPhotoData[]) => void,
   yearThumbnailPhotoGroup: MonthYearThumbnailPhotoData[]
   setYearThumbnailPhotoGroup: (newThumbnailPhotoGroup: MonthYearThumbnailPhotoData[]) => void,
   albumList: GroupPhotoData[];
   setAlbumList: (newAlbumList: GroupPhotoData[]) => void,
-  addPhotoToAlbumList: (newPhoto: GroupPhotoData) => void;
-  removePhotoByAlbumId: (albumIdToRemove: number) => void;
+  addAlbumList: (newPhoto: GroupPhotoData) => void;
+  removeAlbum: (albumIdToRemove: number) => void;
   detailAlbumPhotoGroup: AlbumGroupDetail[];
   setDetailAlbumPhotoGroup: (newDetailAlbumPhotoGroup: AlbumGroupDetail[]) => void,
-  addPhotoToDetailAlbumPhotoGroup: (newPhoto: AlbumGroupDetail) => void;
-  removeAlbumDetailPhotosByPhotoIdList: (photoAlbumIdToDelete: string | number) => void; // 예시로 string을 사용했습니다. 실제 타입에 맞게 수정해주세요.
+  addDetailAlbumPhotoGroup: (newPhoto: AlbumGroupDetail) => void;
+  removeAlbumDetailPhotos: (photoAlbumIdList: number[]) => void; // 예시로 string을 사용했습니다. 실제 타입에 맞게 수정해주세요.
 
 }
 
@@ -33,13 +33,13 @@ export const usePhotoStore = create<PhotoStore>(
     setDetailPhotoGroup: (newDetailPhotoGroup) => set({detailPhotoGroup: newDetailPhotoGroup}),
 
     // 사진 배열에 원소 추가하는 함수
-    addPhotoToDetailPhotoGroup: (newPhoto: PhotoData) => {
+    addDetailPhotoGroup: (newPhoto: PhotoData) => {
       set((state) => ({
         detailPhotoGroup: [...state.detailPhotoGroup, newPhoto],
       }));
     },
     // 사진의 특정 photoId를 가지는 원소 삭제하는 함수
-    removeDetailPhotosByPhotoIdList: (photoIdList: number[]) => {
+    removeDetailPhotos: (photoIdList: number[]) => {
       set((state) => ({
         detailPhotoGroup: state.detailPhotoGroup.filter((photo) => !photoIdList.includes(photo.photoId)),
       }));
@@ -55,14 +55,14 @@ export const usePhotoStore = create<PhotoStore>(
     setAlbumList: (newAlbumList) => set({albumList: newAlbumList}),
 
     // 앨범 목록 배열에 원소를 추가하는 함수
-    addPhotoToAlbumList: (newPhoto: GroupPhotoData) => {
+    addAlbumList: (newPhoto: GroupPhotoData) => {
       set((state) => ({
         albumList: [...state.albumList, newPhoto],
       }))
     },
 
     // 앨범 목록에서 특정 albumId를 가지는 원소들을 삭제하는 함수
-    removePhotoByAlbumId: (albumIdToDelete) =>
+    removeAlbum: (albumIdToDelete) =>
       set((state) => ({
         albumList: state.albumList.filter(
           (albumList) => albumList.albumId !== albumIdToDelete
@@ -73,17 +73,18 @@ export const usePhotoStore = create<PhotoStore>(
     detailAlbumPhotoGroup: [],
     setDetailAlbumPhotoGroup: (newDetailAlbumPhotoGroup) => set({detailAlbumPhotoGroup: newDetailAlbumPhotoGroup}),
     // 앨범의 상세 배열에 원소 추가하는 함수
-    addPhotoToDetailAlbumPhotoGroup: (newPhoto: AlbumGroupDetail) => {
+    addDetailAlbumPhotoGroup: (newPhoto: AlbumGroupDetail) => {
       set((state) => ({
         detailAlbumPhotoGroup: [...state.detailAlbumPhotoGroup, newPhoto],
       }));
     },
     // 앨범의 상세에서 특정 photoId를 가지는 원소 삭제하는 함수
-    removeAlbumDetailPhotosByPhotoIdList: (photoAlbumIdToDelete) =>
+    removeAlbumDetailPhotos: (photoAlbumIdList) =>
       set((state) => ({
         detailAlbumPhotoGroup: state.detailAlbumPhotoGroup.filter(
-          (detailAlbumPhotoGroup) => detailAlbumPhotoGroup.photoAlbumId !== photoAlbumIdToDelete
+          (photo) => !photoAlbumIdList.includes(photo.photoAlbumId)
         ),
       })),
+
   })
 );
