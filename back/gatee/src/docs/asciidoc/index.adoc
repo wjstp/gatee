@@ -212,15 +212,41 @@ include::{snippets}/일정 후기 등록/http-response.adoc[]
 
 = Feature
 
+
 == 백문백답 답변 저장 및 문제 저장
 
 - Request
 
 include::{snippets}/feature-controller-test/save-feature/http-request.adoc[]
+include::{snippets}/feature-controller-test/save-feature/query-parameters.adoc[]
 
 - Response
 
 include::{snippets}/feature-controller-test/save-feature/http-response.adoc[]
+
+
+== 백문백답 질문 리스트 조회
+
+- Request
+
+include::{snippets}/feature-controller-test/read-feature-list/http-request.adoc[]
+
+- Response
+
+include::{snippets}/feature-controller-test/read-feature-list/http-response.adoc[]
+include::{snippets}/feature-controller-test/read-feature-list/response-fields.adoc[]
+
+
+== 백문백답 질문 및 답변 조회
+
+- Request
+
+include::{snippets}/feature-controller-test/read-feature-result/http-request.adoc[]
+
+- Response
+
+include::{snippets}/feature-controller-test/read-feature-result/http-response.adoc[]
+include::{snippets}/feature-controller-test/read-feature-result/response-fields.adoc[]
 
 
 = Exam
@@ -234,6 +260,8 @@ include::{snippets}/exam-controller-test/read-exam/http-request.adoc[]
 - Response
 
 include::{snippets}/exam-controller-test/read-exam/http-response.adoc[]
+include::{snippets}/exam-controller-test/read-exam/response-fields.adoc[]
+
 
 == 시험 결과 리스트 조회
 
@@ -244,29 +272,37 @@ include::{snippets}/exam-controller-test/read-exam-results/http-request.adoc[]
 - Response
 
 include::{snippets}/exam-controller-test/read-exam-results/http-response.adoc[]
+include::{snippets}/exam-controller-test/read-exam-results/response-fields.adoc[]
+
 
 == 시험 결과 상세 조회
 
 - Request
 
 include::{snippets}/exam-controller-test/read-exam-result-details/http-request.adoc[]
+include::{snippets}/exam-controller-test/read-exam-result-details/path-parameters.adoc[]
 
 - Response
 
 include::{snippets}/exam-controller-test/read-exam-result-details/http-response.adoc[]
+include::{snippets}/exam-controller-test/read-exam-result-details/response-fields.adoc[]
+
 
 == 시험 결과 저장
 
 - Request
 
 include::{snippets}/exam-controller-test/save-exam-result/http-request.adoc[]
+include::{snippets}/exam-controller-test/save-exam-result/query-parameters.adoc[]
 
 - Response
 
 include::{snippets}/exam-controller-test/save-exam-result/http-response.adoc[]
 
+
 ---
 ---
+
 
 = File
 
@@ -400,11 +436,13 @@ include::{snippets}/photo-controller-test/delete-photo-reaction/http-response.ad
 
 - Request
 
-include::{snippets}/한마디 보내기 및 FCM알림 전송/http-request.adoc[]
+include::{snippets}/push-notification-controller-test/send-nagging/http-request.adoc[]
+include::{snippets}/push-notification-controller-test/send-nagging/query-parameters.adoc[]
 
 - Response
 
-include::{snippets}/한마디 보내기 및 FCM알림 전송/http-response.adoc[]
+include::{snippets}/push-notification-controller-test/send-nagging/http-response.adoc[]
+include::{snippets}/push-notification-controller-test/send-nagging/response-fields.adoc[]
 
 
 ---
@@ -418,77 +456,93 @@ include::{snippets}/한마디 보내기 및 FCM알림 전송/http-response.adoc[
 
 - Request
 
-include::{snippets}/월별 목록 조회/http-request.adoc[]
+include::{snippets}/album-controller-test/read-album-list/http-request.adoc[]
+include::{snippets}/album-controller-test/read-album-list/query-parameters.adoc[]
 
 - Response
 
-include::{snippets}/월별 목록 조회/http-response.adoc[]
+include::{snippets}/album-controller-test/read-album-list/http-response.adoc[]
+include::{snippets}/album-controller-test/read-album-list/response-fields.adoc[]
 
 
 == 앨범 상세 조회
 
 - Request
 
-include::{snippets}/앨범 상세 조회/http-request.adoc[]
+include::{snippets}/album-controller-test/read-album-detail/http-request.adoc[]
+include::{snippets}/album-controller-test/read-album-detail/path-parameters.adoc[]
 
 - Response
 
-include::{snippets}/앨범 상세 조회/http-response.adoc[]
+include::{snippets}/album-controller-test/read-album-detail/http-response.adoc[]
+include::{snippets}/album-controller-test/read-album-detail/response-fields.adoc[]
 
 
 == 앨범 생성
 
 - Request
 
-include::{snippets}/앨범 생성/http-request.adoc[]
+include::{snippets}/album-controller-test/save-album/http-request.adoc[]
+include::{snippets}/album-controller-test/save-album/query-parameters.adoc[]
 
 - Response
 
-include::{snippets}/앨범 생성/http-response.adoc[]
+include::{snippets}/album-controller-test/save-album/http-response.adoc[]
+include::{snippets}/album-controller-test/save-album/response-fields.adoc[]
 
 
 == 앨범 이름 수정
 
 - Request
 
-include::{snippets}/앨범 이름 수정/http-request.adoc[]
+include::{snippets}/album-controller-test/edit-album-name/http-request.adoc[]
+include::{snippets}/album-controller-test/edit-album-name/path-parameters.adoc[]
+include::{snippets}/album-controller-test/edit-album-name/query-parameters.adoc[]
+
 
 - Response
 
-include::{snippets}/앨범 이름 수정/http-response.adoc[]
+include::{snippets}/album-controller-test/edit-album-name/http-response.adoc[]
 
 
 == 앨범 삭제
 
 - Request
 
-include::{snippets}/앨범 삭제/http-request.adoc[]
+include::{snippets}/album-controller-test/delete-album/http-request.adoc[]
+include::{snippets}/album-controller-test/delete-album/path-parameters.adoc[]
 
 - Response
 
-include::{snippets}/앨범 삭제/http-response.adoc[]
+include::{snippets}/album-controller-test/delete-album/http-response.adoc[]
 
 
 == 앨범 내 사진 추가
 
 - Request
 
-include::{snippets}/앨범 내 사진 추가/http-request.adoc[]
+include::{snippets}/album-controller-test/add-album-photo-list/http-request.adoc[]
+include::{snippets}/album-controller-test/add-album-photo-list/path-parameters.adoc[]
+include::{snippets}/album-controller-test/add-album-photo-list/query-parameters.adoc[]
 
 - Response
 
-include::{snippets}/앨범 내 사진 추가/http-response.adoc[]
+include::{snippets}/album-controller-test/add-album-photo-list/http-response.adoc[]
+include::{snippets}/album-controller-test/add-album-photo-list/response-fields.adoc[]
 
 
 == 앨범 내 사진 삭제
 
 - Request
 
-include::{snippets}/앨범 내 사진 삭제/http-request.adoc[]
+include::{snippets}/album-controller-test/delete-album-photo-list/http-request.adoc[]
+include::{snippets}/album-controller-test/delete-album-photo-list/path-parameters.adoc[]
+include::{snippets}/album-controller-test/delete-album-photo-list/query-parameters.adoc[]
 
 - Response
 
-include::{snippets}/앨범 내 사진 삭제/http-response.adoc[]
+include::{snippets}/album-controller-test/delete-album-photo-list/http-response.adoc[]
+include::{snippets}/album-controller-test/delete-album-photo-list/response-fields.adoc[]
 
 
 ---
