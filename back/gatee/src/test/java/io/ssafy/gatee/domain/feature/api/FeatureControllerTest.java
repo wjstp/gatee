@@ -2,7 +2,6 @@ package io.ssafy.gatee.domain.feature.api;
 
 import io.ssafy.gatee.config.restdocs.RestDocsTestSupport;
 import io.ssafy.gatee.config.security.CustomWithMockUser;
-import io.ssafy.gatee.domain.exam.dto.response.ExamDetailRes;
 import io.ssafy.gatee.domain.feature.application.FeatureService;
 import io.ssafy.gatee.domain.feature.dto.request.FeatureReq;
 import io.ssafy.gatee.domain.feature.dto.response.FeatureRes;
@@ -28,8 +27,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Slf4j
@@ -68,7 +65,7 @@ class FeatureControllerTest extends RestDocsTestSupport {
     @Test
     @CustomWithMockUser
     @DisplayName("백문백답 질문 조회")
-    void readExamResultDetails() throws Exception {
+    void readFeatureList() throws Exception {
         // given
         FeatureRes featureRes1 = FeatureRes.builder()
                 .featureId(1L)
@@ -121,7 +118,7 @@ class FeatureControllerTest extends RestDocsTestSupport {
 
 
         // where
-        ResultActions result = mockMvc.perform(RestDocumentationRequestBuilders.get("/api/features")
+        ResultActions result = mockMvc.perform(RestDocumentationRequestBuilders.get("/api/features/results")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
 
