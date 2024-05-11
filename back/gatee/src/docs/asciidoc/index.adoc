@@ -212,6 +212,30 @@ include::{snippets}/일정 후기 등록/http-response.adoc[]
 
 = Feature
 
+== 백문백답 질문 리스트 조회
+
+- Request
+
+include::{snippets}/feature-controller-test/read-feature-list/http-request.adoc[]
+
+- Response
+
+include::{snippets}/feature-controller-test/read-feature-list/http-response.adoc[]
+
+- Response
+
+include::{snippets}/feature-controller-test/read-feature-result/http-response.adoc[]
+
+== 백문백답 질문 및 답변 조회
+
+- Request
+
+include::{snippets}/feature-controller-test/read-feature-result/http-request.adoc[]
+
+- Response
+
+include::{snippets}/feature-controller-test/read-feature-result/http-response.adoc[]
+
 == 백문백답 답변 저장 및 문제 저장
 
 - Request

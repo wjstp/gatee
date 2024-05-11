@@ -21,4 +21,5 @@ public interface MemberFeatureRepository extends JpaRepository<MemberFeature, Lo
         """, nativeQuery = true)
     List<MemberFeature> findRandomMemberFeature(@Param("memberIdList") List<UUID> memberIdList, @Param("questionQuantity") Long questionQuantity);
 
+    List<MemberFeature> findByMember_Id(UUID memberId);
 }

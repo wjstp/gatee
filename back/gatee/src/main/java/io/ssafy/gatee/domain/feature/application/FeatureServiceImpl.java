@@ -6,11 +6,18 @@ import io.ssafy.gatee.domain.chatgpt.dto.response.GptResponseDto;
 import io.ssafy.gatee.domain.chatgpt.service.GptService;
 import io.ssafy.gatee.domain.feature.dao.FeatureRepository;
 import io.ssafy.gatee.domain.feature.dto.request.FeatureReq;
+import io.ssafy.gatee.domain.feature.dto.response.FeatureRes;
+import io.ssafy.gatee.domain.feature.dto.response.FeatureResultRes;
 import io.ssafy.gatee.domain.feature.entity.Feature;
+import io.ssafy.gatee.domain.feature.entity.Type;
 import io.ssafy.gatee.domain.member.dao.MemberRepository;
 import io.ssafy.gatee.domain.member.entity.Member;
+import io.ssafy.gatee.domain.member_family.dao.MemberFamilyRepository;
+import io.ssafy.gatee.domain.member_family.entity.MemberFamily;
 import io.ssafy.gatee.domain.member_feature.dao.MemberFeatureRepository;
 import io.ssafy.gatee.domain.member_feature.entity.MemberFeature;
+import io.ssafy.gatee.global.exception.error.not_found.MemberFamilyNotFoundException;
+import io.ssafy.gatee.global.exception.message.ExceptionMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -30,6 +37,7 @@ public class FeatureServiceImpl implements FeatureService{
     private final GptService gptService;
     private final MemberRepository memberRepository;
     private final FeatureRepository featureRepository;
+    private final MemberFamilyRepository memberFamilyRepository;
     private final MemberFeatureRepository memberFeatureRepository;
 
     @Override
@@ -68,4 +76,21 @@ public class FeatureServiceImpl implements FeatureService{
                         .build());
 
     }
+
+    @Override
+    public List<FeatureRes> readFeatureQuestions(UUID memberId) {
+        Member proxyMember = memberRepository.getReferenceById(memberId);
+        MemberFamily memberFamily = memberFamilyRepository.findByMember(proxyMember)
+                .orElseThrow(()-> new MemberFamilyNotFoundException(ExceptionMessage.MEMBER_FAMILY_NOT_FOUND));
+        List<Feature> featureList = featureRepository.findMyQuestion(Type.getType(memberFamily.getRole()));
+        return featureList.stream().map(FeatureRes::toDto).toList();
+    }
+
+    @Override
+    public List<FeatureResultRes> readFeatureResults(UUID memberId) {
+        List<MemberFeature> memberFeatureList = memberFeatureRepository.findByMember_Id(memberId);
+        return memberFeatureList.stream().map(FeatureResultRes::toDto).toList();
+    }
+
+
 }
