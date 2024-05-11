@@ -1,56 +1,92 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Stamp from "@assets/images/icons/stamp_logo.png"
 import {useNavigate} from "react-router-dom";
-// import Pagination from '@mui/material/Pagination';
-// import Stack from '@mui/material/Stack';
+import {getExamResultApi} from "@api/exam";
+// import Lottie from "lottie-react";
+// import EmptyAnimation from "@assets/images/animation/empty_animation.json"
+import {ReactComponent as EmptySvg} from "@assets/images/examImg/empty.svg";
+import {ExamResult} from "@type/index";
+import getGradeSvg from "@utils/getGradeSvg";
 
 interface GradeData {
-  point: number;
-  date: string;
-  commentAmount: number; // 프로퍼티 이름 수정
+  score: number;
+  createdAt: string;
 }
-const ExamGrade = () =>{
-  const [avgGrade,setAvgGrade] = useState(1)
-  const [gradeDataList,setGradeDataList] = useState([
-    {point:80,date:"2024.04.16",commentAmount:3},
-    {point:60,date:"2024.03.22",commentAmount:2},
-    {point:40,date:"2024.03.20",commentAmount:2},
-    {point:10,date:"2024.03.12",commentAmount:2},
+
+const ExamGrade = () => {
+  const [avgGrade, setAvgGrade] = useState<null | number>(null)
+  const [gradeDataList, setGradeDataList] = useState<ExamResult[]>([
+    {score: 80, createdAt: "2024.04.16"},
+    {score: 60, createdAt: "2024.03.22"},
+    {score: 40, createdAt: "2024.03.20"},
+    {score: 10, createdAt: "2024.03.12"},
   ])
+
+  useEffect(() => {
+    getExamResultApi(
+      res => {
+        console.log(res)
+        setGradeDataList(res.data)
+        if (res.data?.length) {
+          // score 속성의 배열 추출
+          const scores = res.data.map(item => item.score)
+          // 점수의 합 계산
+          const scoreSum = scores.reduce((sum, score) => sum + score, 0);
+          // 배열의 원소 개수 계산
+          const count = scores.length;
+          // 평균 계산
+          const average = scoreSum / count;
+          setAvgGrade(average)
+        }
+      },
+      err => console.log(err)
+    )
+  }, []);
+
   return (
     <div className="exam-grade">
 
       {/* 상단 헤더 */}
-      <div className="exam__grade-header">
-        <div className="small">나의 평균 점수는?</div>
-        <div className="large">{avgGrade}등급</div>
-      </div>
-      <div className="exam__grade-body">
-
-        {/*표 제목 - 인덱스*/}
-        <div className="exam-grade-data">
-          <div className="flex-date bgGray">날짜</div>
-          <div className="flex-point bgGray">점수</div>
-          <div className="flex-comment bgGray">등급</div>
-          <div className="flex-comment bgGray">댓글</div>
+      {avgGrade !== null ?
+        <div className="exam__empty">
+          <div className="large">성적표가 없어요</div>
+          <EmptySvg className="exam__empty-icon"/>
         </div>
+        :
+        <>
 
-        {/*표 내용 */}
-        {gradeDataList.map((gradeData, index) => {
-          return <Table key={index} gradeData={gradeData}/>;
-        })}
-      </div>
+          <div className="exam__grade-header">
+            <div className="small">나의 평균 점수는?</div>
+            <div className="large">{avgGrade}등급</div>
+          </div>
+          <div className="exam__grade-body">
 
-      {/* 페이지 네이션 */}
-      {/*<Stack spacing={2}>*/}
-      {/*<Pagination count={10} />*/}
-      {/*</Stack>*/}
+            {/*표 제목 - 인덱스*/}
+            <div className="exam-grade-data">
+              <div className="flex-date bgGray">날짜</div>
+              <div className="flex-point bgGray">점수</div>
+              <div className="flex-comment bgGray">등급</div>
+            </div>
 
-      {/* 하단 도장 */}
-      <div className="exam__grade-footer">
-        <p>가족 퀴즈 모의고사 평가원장</p>
-        <img src={Stamp} alt=""/>
-      </div>
+            {/*표 내용 */}
+            {gradeDataList.map((gradeData, index) => {
+              return <Table key={index} gradeData={gradeData}/>;
+            })}
+          </div>
+          {/* 페이지 네이션 */}
+          {/*<Stack spacing={2}>*/}
+          {/*<Pagination count={10} />*/}
+          {/*</Stack>*/}
+
+          {/* 하단 도장 */}
+          <div className="exam__grade-footer">
+            <p>가족 퀴즈 모의고사 평가원장</p>
+            <img src={Stamp} alt=""/>
+          </div>
+        </>
+
+      }
+
     </div>
   );
 }
@@ -59,34 +95,13 @@ const ExamGrade = () =>{
 const Table = ({gradeData}: { gradeData: GradeData }) => {
   const navigate = useNavigate()
   // 등급
-  let grade = 0;
-  const point = gradeData.point;
-  if (point >= 90 && point <= 100) {
-    grade = 1;
-  } else if (point >= 80) {
-    grade = 2;
-  } else if (point >= 70) {
-    grade = 3;
-  } else if (point >= 60) {
-    grade = 4;
-  } else if (point >= 50) {
-    grade = 5;
-  } else if (point >= 40) {
-    grade = 6;
-  } else if (point >= 30) {
-    grade = 7;
-  } else if (point >= 10 && point <= 20) {
-    grade = 8;
-  } else if (point === 0) {
-    grade = 9;
-  }
-
+  const score = gradeData.score;
+  const grade = getGradeSvg(score);
   return (
-    <div className="exam-grade-data" onClick={()=>navigate("/exam/scored/1")}>
-      <div className="flex-date">{gradeData.date}</div>
-      <div className="flex-point">{gradeData.point}/100</div>
+    <div className="exam-grade-data" onClick={() => navigate("/exam/scored/1")}>
+      <div className="flex-date">{gradeData.createdAt}</div>
+      <div className="flex-point">{gradeData.score}/100</div>
       <div className="flex-comment">{grade}</div>
-      <div className="flex-comment">{gradeData.commentAmount}</div>
     </div>
   )
 }

@@ -1,24 +1,24 @@
 import React, {useState} from 'react';
 import {useNavigate} from "react-router-dom";
-import {Member} from "@type/index";
+import {MemberApiRes} from "@type/index";
 import ProfileModal from "@pages/main/components/ProfileModal";
 import useModal from "@hooks/useModal";
 import getMoodEmoji from "@utils/getMoodEmoji";
 import {naggingApi} from "@api/member";
 
 interface ProfileItemProps {
-  profileData: Member,
-  handleClickProfile: (profileData: Member) => void
+  profileData: MemberApiRes,
+  handleClickProfile: (profileData: MemberApiRes) => void
 }
 
 // 프로필 리스트
-const ProfileList = ({profileDataList}: { profileDataList: Member[] }) => {
+const ProfileList = ({profileDataList}: { profileDataList: MemberApiRes[] }) => {
   const {isOpen, openModal, closeModal} = useModal();
-  const [clickedProfile, setClickedProfile] = useState<Member | null>(null);
+  const [clickedProfile, setClickedProfile] = useState<MemberApiRes | null>(null);
   const navigate = useNavigate()
 
   // 프로필 클릭했을 때
-  const handleClickProfile = (profileData: Member) => {
+  const handleClickProfile = (profileData: MemberApiRes) => {
     // 상태 업데이트, 모달 켜주고, 모달 store 업데이트
     setClickedProfile(profileData)
     openModal()
@@ -37,9 +37,10 @@ const ProfileList = ({profileDataList}: { profileDataList: Member[] }) => {
     } else if (type === "sendMessage") {
       console.log(content)
       // 한마디 보내기 api
+      if (clickedProfile)
       naggingApi(
         {
-          receiverId: "53b0d760-303a-4e4b-90e6-77ea121375a1"
+          receiverId: clickedProfile?.memberId
           , message: content
         }, res => {
           console.log(res)
@@ -54,7 +55,7 @@ const ProfileList = ({profileDataList}: { profileDataList: Member[] }) => {
     <div className="main-profile-list--container--outside">
       <div className="main-profile-list--container">
 
-        {profileDataList.map((member: Member, index: number) => {
+        {profileDataList.map((member: MemberApiRes, index: number) => {
           return <ProfileItem key={index} profileData={member} handleClickProfile={handleClickProfile}/>;
         })}
 
