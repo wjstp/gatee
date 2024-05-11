@@ -6,6 +6,7 @@ import {getExamResultApi} from "@api/exam";
 // import EmptyAnimation from "@assets/images/animation/empty_animation.json"
 import {ReactComponent as EmptySvg} from "@assets/images/examImg/empty.svg";
 import {ExamResult} from "@type/index";
+import getGradeSvg from "@utils/getGradeSvg";
 
 interface GradeData {
   score: number;
@@ -46,7 +47,7 @@ const ExamGrade = () => {
     <div className="exam-grade">
 
       {/* 상단 헤더 */}
-      {avgGrade === null ?
+      {avgGrade !== null ?
         <div className="exam__empty">
           <div className="large">성적표가 없어요</div>
           <EmptySvg className="exam__empty-icon"/>
@@ -94,28 +95,8 @@ const ExamGrade = () => {
 const Table = ({gradeData}: { gradeData: GradeData }) => {
   const navigate = useNavigate()
   // 등급
-  let grade = 0;
   const score = gradeData.score;
-  if (score >= 90 && score <= 100) {
-    grade = 1;
-  } else if (score >= 80) {
-    grade = 2;
-  } else if (score >= 70) {
-    grade = 3;
-  } else if (score >= 60) {
-    grade = 4;
-  } else if (score >= 50) {
-    grade = 5;
-  } else if (score >= 40) {
-    grade = 6;
-  } else if (score >= 30) {
-    grade = 7;
-  } else if (score >= 10 && score <= 20) {
-    grade = 8;
-  } else if (score === 0) {
-    grade = 9;
-  }
-
+  const grade = getGradeSvg(score);
   return (
     <div className="exam-grade-data" onClick={() => navigate("/exam/scored/1")}>
       <div className="flex-date">{gradeData.createdAt}</div>

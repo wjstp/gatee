@@ -1,12 +1,57 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import TopBar from '@components/TopBar';
 import BottomBar from "@components/BottomBar";
-import { Outlet } from 'react-router-dom'
+import {Outlet, useLocation} from 'react-router-dom'
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import {useModalStore} from "@store/useModalStore";
+import {useMemberStore} from "@store/useMemberStore";
+import {useFamilyStore} from "@store/useFamilyStore";
+import {getFamilyMemberApi, getMyDataApi} from "@api/member";
 
 const MainLayout = () => {
+  const location = useLocation()
   const {showModal} = useModalStore()
+  const {setMyInfo} = useMemberStore()
+  const {familyInfo,setFamilyId, setFamilyInfo, setFamilyName, setFamilyScore} = useFamilyStore()
+
+
+  // 가족 데이터 저장 Api
+  const saveFamilyData = (familyId:string) => {
+    getFamilyMemberApi({familyId:familyId},
+      (res) => {
+        console.log("가족 정보 조회",res.data);
+        setFamilyInfo(res.data.memberFamilyInfoList);
+        setFamilyName(res.data.name);
+        setFamilyScore(res.data.familyScore);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+
+  // 정보 불러오기 Api
+  const saveMemberData = () => {
+    getMyDataApi(
+      (res) => {
+        console.log("내 정보 조회",res.data)
+        // 스토어에 저장
+        setMyInfo(res.data)
+        setFamilyId(res.data.familyId)
+        // 가족 데이터 저장 Api
+        saveFamilyData(res.data.familyId)
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+
+  useEffect(() => {
+    // 채팅이 아니고, 스토어가 비어있을때만
+    if (!location.pathname.includes("/chatting") && familyInfo.length === 0)
+    saveMemberData()
+  }, [location.pathname]);
 
 
   return (

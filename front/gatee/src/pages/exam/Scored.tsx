@@ -1,24 +1,14 @@
 import React from 'react';
 import Header from "./components/Header";
 import QuestionItem from "./components/QuestionItem";
-import {ReactComponent as Scored100} from "@assets/images/examImg/score100.svg"
-import {ReactComponent as Scored90} from "@assets/images/examImg/score90.svg"
-import {ReactComponent as Scored80} from "@assets/images/examImg/score80.svg"
-import {ReactComponent as Scored70} from "@assets/images/examImg/score70.svg"
-import {ReactComponent as Scored60} from "@assets/images/examImg/score60.svg"
-import {ReactComponent as Scored50} from "@assets/images/examImg/score50.svg"
-import {ReactComponent as Scored40} from "@assets/images/examImg/score40.svg"
-import {ReactComponent as Scored30} from "@assets/images/examImg/score30.svg"
-import {ReactComponent as Scored20} from "@assets/images/examImg/score20.svg"
-import {ReactComponent as Scored10} from "@assets/images/examImg/score10.svg"
-import {ReactComponent as Scored0} from "@assets/images/examImg/score0.svg"
+import getScoreImage from "@utils/getScoreImage";
+
 const ExamScored = () => {
   const questions=[
     {
       questionId: 1,
       question: "어쩌고 저쩌고",
       answer: "어쩌고 저쩌고",
-      // myanswer:,
       answerList: [
         {content: '안ㅇㄴ'},
         {content: '안ㅇㄴ'},
@@ -125,11 +115,7 @@ const ExamScored = () => {
     },
 
   ]
-  const comments=[
-    {memberName:"예삐",comment:"웃기네"},
-    {memberName:"엄마",comment:"이걸 틀리네"},
-    {memberName:"언니",comment:"야.."},
-  ]
+
   return (
     <div className="exam__scored">
       <Header/>
@@ -151,10 +137,7 @@ const ExamScored = () => {
       <div className="exam__scored-footer">
       </div>
 
-      {/* 댓글 */}
-      {comments.map(( comment : {memberName:string,comment:string}, index:number )=>{
-        return <ExamComment comment={ comment } key={ index }/>
-      })}
+
 
     </div>
   );
@@ -174,30 +157,10 @@ const ExamComment: React.FC<{ comment: { memberName:string, comment:string} }> =
 
 const Grade=()=>{
   const scoreState:number = 90
-  return(<div className="exam__scored-mark">
+  return(
+    <div className="exam__scored-mark">
     {/* 점수 */}
-    {scoreState===100 ?
-    <Scored100/>
-    : scoreState===90 ?
-    <Scored90/>
-    : scoreState===80 ?
-    <Scored80/>
-    : scoreState===70 ?
-    <Scored70/>
-    : scoreState===60 ?
-    <Scored60/>
-    : scoreState===50 ?
-    <Scored50/>
-    : scoreState===40 ?
-    <Scored40/>
-    : scoreState===30 ?
-    <Scored30/>
-    : scoreState===20 ?
-    <Scored20/>
-    : scoreState===10 ?
-    <Scored10/>
-    :<Scored0/>
-    }
+    {getScoreImage(scoreState)}
   </div>)
 
 }
