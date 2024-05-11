@@ -4,6 +4,7 @@ import {requestPermission} from "../../firebase-messaging-sw";
 
 const SignupPermission = () => {
   const navigate = useNavigate();
+
   const [allChecked, setAllChecked] = useState(false);
   const [privacyChecked, setPrivacyChecked] = useState(false);
   const [pushChecked, setPushChecked] = useState(false);

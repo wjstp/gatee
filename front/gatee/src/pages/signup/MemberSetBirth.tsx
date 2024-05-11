@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AiOutlineMan } from "react-icons/ai";
@@ -11,10 +11,18 @@ import { useMemberStore } from "@store/useMemberStore";
 
 const SignupMemberSetBirth = () => {
   const navigate = useNavigate();
+  const {
+    birthDay,
+    birthType,
+    gender,
+    setBirthDay,
+    setBirthType,
+    setGender,
+    setRole,
+  } = useMemberStore();
 
   const [errorMessage, setErrorMessage] = useState<string>("");
-  const { birthDay, birthType, gender, setBirthDay, setBirthType, setGender, setRole, setIcon } = useMemberStore();
-  
+
   // MUI 커스텀 스타일
   const dateFieldCustom = {
     "& .MuiOutlinedInput-root": {
@@ -56,10 +64,13 @@ const SignupMemberSetBirth = () => {
     }
   };
 
+  // 역할 초기화
+  useEffect(() => {
+    setRole(null)
+  }, [gender]);
+
   // 다음으로 가기
   const goToMemberSetRole = () => {
-    setRole(null);
-    setIcon("");
     navigate("/signup/member-set/role");
   }
 
@@ -104,6 +115,8 @@ const SignupMemberSetBirth = () => {
         
         {/*음력&양력 선택*/}
         <div className="birthday-choice">
+
+          {/*양력*/}
           <div className="birthday-choice__solar">
             <button
               className="btn-solar"
@@ -124,6 +137,8 @@ const SignupMemberSetBirth = () => {
               </label>
             </button>
           </div>
+
+          {/*음력*/}
           <div className="birthday-choice__lunar">
             <button
               className="btn-lunar"
@@ -144,6 +159,7 @@ const SignupMemberSetBirth = () => {
               </label>
             </button>
           </div>
+
         </div>
 
       </div>

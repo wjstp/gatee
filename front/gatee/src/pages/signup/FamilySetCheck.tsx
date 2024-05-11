@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import { useNavigate } from "react-router-dom";
 import { useFamilyStore } from "@store/useFamilyStore";
-import {createFamilyApi, createFamilyCodeApi} from "@api/member";
+import { createFamilyApi } from "@api/member";
 import { AxiosError, AxiosResponse } from "axios";
 
 const SignupFamilySetCheck = () => {
   const navigate = useNavigate();
-  const { familyName, familyImage, stringImage, setStringImage, familyId, setFamilyId, setFamilyCode } = useFamilyStore();
+  const { familyName, familyImage, stringImage, setStringImage, familyId, setFamilyId, setFamilyCode, setFamilyImage } = useFamilyStore();
 
   // 초대 코드 공유 페이지로 가기
   const goToFamilySetShare = () => {

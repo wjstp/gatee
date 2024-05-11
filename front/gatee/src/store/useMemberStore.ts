@@ -22,8 +22,6 @@ type MemberStore = {
   setPhoneNumber: (newPhoneNumber: string) => void;
   gender: string;
   setGender: (newGender: string) => void;
-  icon: string;
-  setIcon: (newIcon: string) => void;
   memberImage: File | null
   setMemberImage: (newImage: File | null) => void;
   stringMemberImage: string;
@@ -52,8 +50,6 @@ export const useMemberStore = create<MemberStore>()(
     setPhoneNumber: (newPhoneNumber: string) => set({phoneNumber: newPhoneNumber}),
     gender: "",
     setGender: (newGender: string) => set({gender: newGender}),
-    icon: "",
-    setIcon: (newIcon: string) => set({icon: newIcon}),
     memberImage: null,
     setMemberImage: (newImage: File | null) => set({memberImage: newImage}),
     stringMemberImage: "",

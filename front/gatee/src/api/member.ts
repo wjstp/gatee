@@ -1,6 +1,6 @@
 import localAxios from "@api/LocalAxios";
 import axios, { AxiosError, AxiosResponse, AxiosInstance } from "axios";
-import { MemberApiReq, CreateFamilyApiReq, NaggingApiReq } from "@type/index";
+import {MemberApiReq, CreateFamilyApiReq, NaggingApiReq, CreateMemberApiReq} from "@type/index";
 
 const local: AxiosInstance = localAxios();
 const local_file: AxiosInstance = localAxios("file");
@@ -34,7 +34,7 @@ export const getFamilyMemberApi = async function (data: GetFamilyMemberApiReq,
 }
 
 // 회원 생성
-export const createMemberApi = async function (data: MemberApiReq,
+export const createMemberApi = async function (data: CreateMemberApiReq,
                                                success: (res: AxiosResponse<any>) => void,
                                                fail: (err: AxiosError<any>) => void) {
   await local.post("/members", data).then(success).catch(fail);

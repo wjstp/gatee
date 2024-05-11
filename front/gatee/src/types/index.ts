@@ -13,6 +13,17 @@ export interface Member {
   phoneNumber: string | null;
 }
 
+// 멤버 create api 정보
+export interface CreateMemberApiReq {
+  name: string,
+  nickname: string,
+  birth: string,
+  birthType: string,
+  role: string,
+  familyId: string,
+  phoneNumber: string | null,
+}
+
 // 가족 api 정보
 export interface MemberApiReq {
   birth: string

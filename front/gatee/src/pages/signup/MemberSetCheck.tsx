@@ -1,26 +1,51 @@
-import React, { useRef, useState } from 'react';
-import { useNavigate, useLocation } from "react-router-dom";
-import { ReactComponent as MaleKid } from "@assets/images/signup/profile_boy.svg";
-import { ReactComponent as MaleYoung } from "@assets/images/signup/profile_man.svg";
-import { ReactComponent as MaleOld } from "@assets/images/signup/profile_old_man.svg";
-import { ReactComponent as FemaleKid } from "@assets/images/signup/profile_girl.svg";
-import { ReactComponent as FemaleYoung } from "@assets/images/signup/profile_woman.svg";
-import { ReactComponent as FemaleOld } from "@assets/images/signup/profile_old_woman.svg";
+import React, { useRef } from 'react';
+import { useNavigate } from "react-router-dom";
 import { IoIosCamera } from "react-icons/io";
 import { useMemberStore } from "@store/useMemberStore";
+import { imageResizer } from "@utils/imageResizer";
+import { createMemberApi } from "@api/member";
+import { AxiosResponse, AxiosError } from "axios";
 
 const SignupMemberSetCheck = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const gender = location.state?.gender || "male";
-  const selectedIcon = location.state?.selectedIcon || "kid";
+  const {
+    name,
+    role,
+    birthDay,
+    birthType,
+    memberImage,
+    setMemberImage,
+    stringMemberImage,
+    setStringMemberImage,
+  } = useMemberStore();
 
-  const { name, role, birthDay, memberImage,setMemberImage, icon } = useMemberStore();
+  // 회원 생성
+  const createMember = () => {
+    if (birthDay && role) {
+      createMemberApi(
+        {
+          name: name,
+          nickname: name,
+          birth: birthDay,
+          birthType: birthType,
+          role: role,
+          familyId: "2f3bf47b-c6ea-47fe-9c5e-03110009d1ae",
+          phoneNumber: null
+        },
+        (res: AxiosResponse<any>) => {
+          console.log(res);
+        },
+        (err: AxiosError<any>): void => {
+          console.log(err);
+        })
+    }
+  }
 
   // 다음 넘어가기
   const goToMemberSetPermission = () => {
-    navigate("/signup/member-set/permission");
+    createMember();
+    // navigate("/signup/member-set/permission");
   }
 
   // 뒤로 가기
@@ -29,17 +54,16 @@ const SignupMemberSetCheck = () => {
   }
 
   // 이미지 선택 처리
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    // const file = e.target.files ? e.target.files[0] : null;
-    // if (file) {
-    //   const reader = new FileReader();
-    //   reader.onloadend = () => {
-    //     setMemberImage(reader.result);
-    //   };
-    //   reader.readAsDataURL(file);
-    // }
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file: File | null = e.target.files ? e.target.files[0] : null;
+    if (file) {
+      const resizedFile: File = (await imageResizer(file, 1000, 1000)) as File;
+      const jpgUrl = URL.createObjectURL(resizedFile);
+      setMemberImage(resizedFile);
+      setStringMemberImage(jpgUrl);
+    }
   }
-
+  console.log(memberImage);
   // 카메라 버튼 클릭 처리
   const handleCameraButtonClick = (): void => {
     if (fileInputRef.current) {
@@ -73,36 +97,11 @@ const SignupMemberSetCheck = () => {
           className="img-box__btn"
           onClick={handleCameraButtonClick}
         >
-          {memberImage && (
-            <img
-              className="img-box__img"
-              src={memberImage.toString()}
-              alt="profile-image"
-            />
-          )}
-          {/*기본 이미지*/}
-          {!memberImage && (
-            <>
-              {icon &&
-                <MaleKid className="img-box__img" />
-              }
-              {gender === "male" && selectedIcon === "young" &&
-                <MaleYoung className="img-box__img-male-young" />
-              }
-              {gender === "male" && selectedIcon === "old" &&
-                <MaleOld className="img-box__img-male-old" />
-              }
-              {gender === "female" && selectedIcon === "kid" &&
-                <FemaleKid className="img-box__img-female-kid" />
-              }
-              {gender === "female" && selectedIcon === "young" &&
-                <FemaleYoung className="img-box__img-female-young" />
-              }
-              {gender === "female" && selectedIcon === "old" &&
-                <FemaleOld className="img-box__img-female-old" />
-              }
-            </>
-          )}
+          <img
+            className="btn__img"
+            src={stringMemberImage}
+            alt="member-image"
+          />
           <input
             type="file"
             accept="image/*"
@@ -110,16 +109,18 @@ const SignupMemberSetCheck = () => {
             ref={fileInputRef}
             onChange={handleImageChange}
           />
-          <IoIosCamera
-            className="btn__icon"
-            size={29}
-          />
+          <div className="btn--icon">
+            <IoIosCamera
+              className="icon"
+              size={25}
+            />
+          </div>
         </button>
       </div>
 
       {/*가입 정보*/}
       <div className="signup-member-set-check__info">
-        
+
         {/*이름*/}
         <div className="info-header">
           <div className="info-header__name">
@@ -166,7 +167,7 @@ const SignupMemberSetCheck = () => {
           onClick={goToMemberSetPermission}
         >
             <span className="btn__text">
-              다음
+              가입하기
             </span>
         </button>
       </div>
@@ -182,7 +183,6 @@ const SignupMemberSetCheck = () => {
           </span>
         </button>
       </div>
-
 
     </div>
   );

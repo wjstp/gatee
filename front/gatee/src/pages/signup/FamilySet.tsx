@@ -3,6 +3,7 @@ import { IoIosCamera } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { useFamilyStore } from "@store/useFamilyStore";
 import { imageResizer } from "@utils/imageResizer"
+import basicFamily from "@assets/images/profile/family.jpg";
 
 const SignupFamilySet = () => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -11,6 +12,12 @@ const SignupFamilySet = () => {
   const { familyName, setFamilyName, setFamilyImage, stringImage, setStringImage } = useFamilyStore();
 
   const [errorMessage, setErrorMessage] = useState<string>("");
+
+  // 사진초기화
+  useEffect(() => {
+    setFamilyImage(null);
+    setStringImage(basicFamily);
+  }, []);
 
   // 입력값
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
