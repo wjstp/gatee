@@ -2,22 +2,17 @@ package io.ssafy.gatee.domain.exam.api;
 
 import io.ssafy.gatee.config.restdocs.RestDocsTestSupport;
 import io.ssafy.gatee.config.security.CustomWithMockUser;
-import io.ssafy.gatee.domain.album.api.AlbumController;
 import io.ssafy.gatee.domain.exam.application.ExamService;
 import io.ssafy.gatee.domain.exam.dto.request.ExamReq;
 import io.ssafy.gatee.domain.exam.dto.response.ExamDetailRes;
 import io.ssafy.gatee.domain.exam.dto.response.ExamRes;
 import io.ssafy.gatee.domain.exam.dto.response.ExamResultRes;
-import io.ssafy.gatee.global.security.config.SecurityConfig;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
-import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.ResultActions;
@@ -30,7 +25,8 @@ import java.util.UUID;
 import static org.mockito.BDDMockito.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
@@ -125,11 +121,9 @@ class ExamControllerTest extends RestDocsTestSupport {
         result.andExpect(status().isOk())
                 .andDo(restDocs.document(
                         responseFields(
+                                fieldWithPath("[].examId").type(JsonFieldType.NUMBER).description("모의고사 id"),
                                 fieldWithPath("[].score").type(JsonFieldType.NUMBER).description("점수"),
                                 fieldWithPath("[].createdAt").type(JsonFieldType.STRING).description("모의고사를 푼 날짜")
-                                fieldWithPath("[].examId").type(JsonFieldType.NUMBER).description("모의고사 id").optional(),
-                                fieldWithPath("[].score").type(JsonFieldType.NUMBER).description("점수").optional(),
-                                fieldWithPath("[].createdAt").type(JsonFieldType.STRING).description("모의고사를 푼 날짜").optional()
                         )
                 ));
     }
@@ -205,14 +199,14 @@ class ExamControllerTest extends RestDocsTestSupport {
         //then
         result.andExpect(status().isOk())
                 .andDo(restDocs.document(
-                       queryParameters(
-                               parameterWithName("examResults").description("문제 푼 내역 객체 리스트").optional(),
-                               parameterWithName("examResults[].question").description("문제").optional(),
-                               parameterWithName("examResults[].answerList").description("답안 리스트").optional(),
-                               parameterWithName("examResults[].choiceNumber").description("선택 번호").optional(),
-                               parameterWithName("examResults[].correctNumber").description("정답 번호").optional(),
-                               parameterWithName("score").description("모의고사 점수").optional()
-                       )
+                        queryParameters(
+                                parameterWithName("examResults").description("문제 푼 내역 객체 리스트").optional(),
+                                parameterWithName("examResults[].question").description("문제").optional(),
+                                parameterWithName("examResults[].answerList").description("답안 리스트").optional(),
+                                parameterWithName("examResults[].choiceNumber").description("선택 번호").optional(),
+                                parameterWithName("examResults[].correctNumber").description("정답 번호").optional(),
+                                parameterWithName("score").description("모의고사 점수").optional()
+                        )
                 ));
     }
 
