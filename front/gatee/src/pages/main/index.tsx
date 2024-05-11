@@ -14,9 +14,8 @@ import Loading from "@components/Loading";
 
 const MainIndex = () => {
   // const {setMyInfo} = useMemberStore()
-  const {familyInfo} = useFamilyStore()
   const {setMyInfo} = useMemberStore()
-  const {setFamilyId, setFamilyInfo, setFamilyName, setFamilyScore} = useFamilyStore()
+  const {familyInfo,setFamilyId, setFamilyInfo, setFamilyName, setFamilyScore} = useFamilyStore()
   const [loading, setLoading] = useState(true)
   // 가족 데이터 저장 Api
   const saveFamilyData = (familyId:string) => {
@@ -41,7 +40,6 @@ const MainIndex = () => {
         // 스토어에 저장
         setMyInfo(res.data)
         setFamilyId(res.data.familyId)
-
         // 가족 데이터 저장 Api
         saveFamilyData(res.data.familyId)
       },

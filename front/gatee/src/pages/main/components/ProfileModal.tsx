@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Member} from "@type/index";
+import {MemberApiRes} from "@type/index";
 import TextField from "@mui/material/TextField";
 import {IoSend} from "react-icons/io5";
 import {InputAdornment} from "@mui/material";
@@ -7,7 +7,7 @@ import getMoodEmoji from "@utils/getMoodEmoji";
 import getMoodContent from "@utils/getMoodContent";
 
 interface ProfileModalProps {
-  profileData: Member | null,
+  profileData: MemberApiRes | null,
   handleModalEvent: (type: string, content: string) => void
 }
 
