@@ -81,10 +81,10 @@ class ExamControllerTest extends RestDocsTestSupport {
         result.andExpect(status().isOk())
                 .andDo(restDocs.document(
                         responseFields(
+                                fieldWithPath("[].questionWord").type(JsonFieldType.STRING).description("문제 핵심 단어"),
+                                fieldWithPath("[].correctAnswer").type(JsonFieldType.STRING).description("정답 문장"),
                                 fieldWithPath("[].nickname").type(JsonFieldType.STRING).description("닉네임"),
-                                fieldWithPath("[].question").type(JsonFieldType.STRING).description("질문"),
-                                fieldWithPath("[].wrongAnswers").type(JsonFieldType.ARRAY).description("틀린 선지 리스트"),
-                                fieldWithPath("[].correctAnswer").type(JsonFieldType.STRING).description("옳은 선지")
+                                fieldWithPath("[].wrongAnswers").type(JsonFieldType.ARRAY).description("틀린 문장 리스트")
                         )
                 ));
     }
