@@ -49,7 +49,7 @@ public class ExamController {
     @ResponseStatus(HttpStatus.OK)
     public void saveExamResult(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
-            ExamReq examReq
+            @RequestBody ExamReq examReq
     ) {
         examService.saveExamResult(examReq, customUserDetails.getMemberId());
     }
