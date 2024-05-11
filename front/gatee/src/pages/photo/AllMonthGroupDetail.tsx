@@ -1,16 +1,34 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import PhotoList from "@components/PhotoList";
 import {useOutletContext, useParams} from "react-router-dom";
-// import {photoGroup} from "@constants/index";
 import {PhotoOutletInfoContext} from "@type/index";
 import {getListPhotoApi} from "@api/photo";
 import {useFamilyStore} from "@store/useFamilyStore";
+import {usePhotoStore} from "@store/usePhotoStore";
 
 const PhotoAllMonthGroupDetail = () => {
   const {familyId} = useFamilyStore()
   const params = useParams()
   const {editMode, handleChecked} = useOutletContext<PhotoOutletInfoContext>();
-const [photoGroup,setPhotoGroup] = useState([])
+  const {detailPhotoGroup,setDetailPhotoGroup} = usePhotoStore()
+  // 상세 사진 불러오기
+  const getListPhotoApiFunc = (payload:{
+    familyId:string
+    filter:string
+    year:string
+    month:string}
+  ) => {
+    getListPhotoApi(
+      payload,
+      res => {
+        console.log(res)
+        setDetailPhotoGroup(res.data)
+      }, err => {
+        console.log(err)
+      }
+    );
+  }
+
   useEffect(() => {
     // params에서 년, 월 뽑아서 API 호출
     if (params.year && params.month) { // Check if params.year is defined
@@ -20,24 +38,17 @@ const [photoGroup,setPhotoGroup] = useState([])
         year: params.year,
         month: params.month
       };
-      getListPhotoApi(
-        payload,
-        res => {
-          console.log(res)
-          setPhotoGroup(res.data)
-        }, err => {
-          console.log(err)
-        }
-      );
+      getListPhotoApiFunc(payload)
+
     }
-  }, [params.year]); // Include params.year in the dependency array
+  }, [params.year]);
 
   return (
     <div>
       <div className="detail-tab--title">
         {params.year}년 {params.month}월
       </div>
-      <PhotoList editMode={editMode} photoGroup={photoGroup} handleChecked={handleChecked}/>
+      <PhotoList editMode={editMode} photoGroup={detailPhotoGroup} handleChecked={handleChecked}/>
     </div>
   );
 }

@@ -23,15 +23,14 @@ const PhotoItem = ({ photoData, editMode, handleChecked }: AlbumPhotoListProps &
   const navigate = useNavigate();
   const [checked, setChecked] = useState(false);
 
-  const clickPhotoItem = () => {
+  const clickPhotoItem = (id:string|number) => {
     if (editMode === 'normal') {
-      navigate("/photo/1");
+      navigate(`/photo/${id}`);
     } else {
       // 편집 모드에서는 체크박스 변동
       handleCheckBox()
     }
   };
-
   // 체크박스 변동 함수
   const handleCheckBox = () => {
     if (handleChecked) {
@@ -54,7 +53,7 @@ const PhotoItem = ({ photoData, editMode, handleChecked }: AlbumPhotoListProps &
   }, [editMode]);
   
   return (
-    <div onClick={clickPhotoItem} className="photo__item">
+    <div onClick={()=>clickPhotoItem(photoData.photoId)} className="photo__item">
       {editMode !== 'normal' && editMode !== 'editName' &&
         <Checkbox {...label} className="check-box"
                   checked={checked}
