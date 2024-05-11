@@ -198,10 +198,13 @@
       }
 
       .title {
-        @include mt-(0.2);
-        @include mb-(1);
-
+        @include mt-(0.5);
+        @include mb-(0.5);
+        font-size: 1.2rem;
         width: 80%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
       .text-white {
@@ -238,10 +241,22 @@
   .detail-tab--title {
     @include mx-(1.5);
     @include my-(0.5);
+
     width: 85%;
     font-size: 1.3rem;
     font-weight: bold;
     color: $orange500;
+  }
+
+  .detail-tab--title--edited {
+    @include mx-(1.5);
+    @include my-(0.5);
+
+    width: 85%;
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: $orange500;
+    text-decoration: underline;
   }
 
   .edit-modal-bg {
@@ -299,23 +314,39 @@
       @extend %modal-content;
       @include p-(2);
       @include flex-col;
+      @include flex_center;
+      width: 80dvw;
+      max-height: 80dvh;
 
-      max-height: 20rem;
-      overflow: scroll;
       gap: 1rem;
 
-      .album-name-item {
-        @include flex_center;
-
+      .album-name-list--container {
+        @include flex-row;
+        overflow: scroll;
+        flex-wrap: wrap;
         width: 100%;
-        border: 2px solid $orange500;
-        border-radius: 0.2rem;
-        padding: 0.5rem;
-        font-size: 1.2rem;
-        color: $orange500;
+        gap: 4%;
 
+        .album-name-item {
+          @include flex_center;
+          @include mb-(1);
+          width: 48%;
+          border: 2px solid $orange500;
+          border-radius: 0.2rem;
+          padding: 0.5rem;
+          font-size: 1.2rem;
+          color: $orange500;
+
+          .album-name-title{
+            max-width: 35dw;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+
+          }
+
+        }
       }
-
     }
   }
 
@@ -328,5 +359,5 @@
   height: 100%;
   justify-content: center;
   background-color: white;
-  
+
 }
