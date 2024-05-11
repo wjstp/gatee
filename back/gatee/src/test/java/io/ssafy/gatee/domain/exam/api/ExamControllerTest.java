@@ -4,6 +4,7 @@ import io.ssafy.gatee.config.restdocs.RestDocsTestSupport;
 import io.ssafy.gatee.config.security.CustomWithMockUser;
 import io.ssafy.gatee.domain.exam.application.ExamService;
 import io.ssafy.gatee.domain.exam.dto.request.ExamReq;
+import io.ssafy.gatee.domain.exam.dto.response.ExamDetailListRes;
 import io.ssafy.gatee.domain.exam.dto.response.ExamDetailRes;
 import io.ssafy.gatee.domain.exam.dto.response.ExamRes;
 import io.ssafy.gatee.domain.exam.dto.response.ExamResultRes;
@@ -138,16 +139,16 @@ class ExamControllerTest extends RestDocsTestSupport {
         answerList.add("답변1");
         answerList.add("답변2");
 
-        List<ExamDetailRes> examResList = new ArrayList<>();
+        List<ExamDetailListRes> examResList = new ArrayList<>();
 
-        ExamDetailRes examRes1 = ExamDetailRes.builder()
+        ExamDetailListRes examRes1 = ExamDetailListRes.builder()
                 .question("문제")
                 .answerList(answerList)
                 .choiceNumber(1)
                 .correctNumber(2)
                 .build();
 
-        ExamDetailRes examRes2 = ExamDetailRes.builder()
+        ExamDetailListRes examRes2 = ExamDetailListRes.builder()
                 .question("문제")
                 .answerList(answerList)
                 .choiceNumber(1)
@@ -157,9 +158,10 @@ class ExamControllerTest extends RestDocsTestSupport {
         examResList.add(examRes1);
         examResList.add(examRes2);
 
-        given(examService.readExamResultDetail(any(Long.class)))
-                .willReturn(examResList);
+        ExamDetailRes examDetailRes = ExamDetailRes.builder().examData(examResList).score(80).build();
 
+        given(examService.readExamResultDetail(any(Long.class)))
+                .willReturn(examDetailRes);
 
         // where
         ResultActions result = mockMvc.perform(get("/api/exams/{examId}/results", 1L)
@@ -174,10 +176,12 @@ class ExamControllerTest extends RestDocsTestSupport {
                                 parameterWithName("examId").description("모의고사 id").optional()
                         ),
                         responseFields(
-                                fieldWithPath("[].question").type(JsonFieldType.STRING).description("질문"),
-                                fieldWithPath("[].answerList").type(JsonFieldType.ARRAY).description("선지리스트"),
-                                fieldWithPath("[].choiceNumber").type(JsonFieldType.NUMBER).description("선택했던번호"),
-                                fieldWithPath("[].correctNumber").type(JsonFieldType.NUMBER).description("정답 번호")
+                                fieldWithPath("score").type(JsonFieldType.NUMBER).description("점수"),
+                                fieldWithPath("examData").type(JsonFieldType.ARRAY).description("모의고사 상세 정보"),
+                                fieldWithPath("examData.[].question").type(JsonFieldType.STRING).description("질문"),
+                                fieldWithPath("examData.[].answerList").type(JsonFieldType.ARRAY).description("선지리스트"),
+                                fieldWithPath("examData.[].choiceNumber").type(JsonFieldType.NUMBER).description("선택했던번호"),
+                                fieldWithPath("examData.[].correctNumber").type(JsonFieldType.NUMBER).description("정답 번호")
                         )
                 ));
     }

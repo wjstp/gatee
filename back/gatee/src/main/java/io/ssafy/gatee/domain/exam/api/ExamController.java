@@ -2,6 +2,7 @@ package io.ssafy.gatee.domain.exam.api;
 
 import io.ssafy.gatee.domain.exam.application.ExamService;
 import io.ssafy.gatee.domain.exam.dto.request.ExamReq;
+import io.ssafy.gatee.domain.exam.dto.response.ExamDetailListRes;
 import io.ssafy.gatee.domain.exam.dto.response.ExamDetailRes;
 import io.ssafy.gatee.domain.exam.dto.response.ExamRes;
 import io.ssafy.gatee.domain.exam.dto.response.ExamResultRes;
@@ -38,7 +39,7 @@ public class ExamController {
 
     @GetMapping("/{examId}/results")
     @ResponseStatus(HttpStatus.OK)
-    public List<ExamDetailRes> readExamResultDetails(
+    public ExamDetailRes readExamResultDetails(
             @PathVariable("examId") Long examId
     ) {
         return examService.readExamResultDetail(examId);
