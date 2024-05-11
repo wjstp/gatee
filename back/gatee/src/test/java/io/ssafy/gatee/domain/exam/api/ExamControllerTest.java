@@ -49,14 +49,17 @@ class ExamControllerTest extends RestDocsTestSupport {
     @DisplayName("모의고사 문제 조회")
     void readExam() throws Exception {
         // given
+
         ExamRes examRes1 = ExamRes.builder()
+                .questionWord("문제 핵심 단어")
                 .correctAnswer("정답 문장")
-                .question("문제")
+                .nickname("수지")
                 .wrongAnswers(Collections.singletonList("틀린 문장"))
                 .build();
         ExamRes examRes2 = ExamRes.builder()
+                .questionWord("문제 핵심 단어")
                 .correctAnswer("정답 문장")
-                .question("문제")
+                .nickname("차은우")
                 .wrongAnswers(Collections.singletonList("틀린 문장"))
                 .build();
         List<ExamRes> examResList = new ArrayList<>();
