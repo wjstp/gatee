@@ -11,6 +11,7 @@ import SockJS from "sockjs-client";
 import firebase from "../../firebase-config";
 import 'firebase/database';
 import {start} from "@craco/craco/dist/lib/cra";
+import Loading from "@components/Loading";
 
 
 const ChatIndex = () => {
@@ -214,6 +215,8 @@ const ChatIndex = () => {
 
   return (
     <div className="chat">
+      {isReconnecting? <Loading/> : null}
+
       <div className="chat__main">
         {renderChatBubble}
       </div>

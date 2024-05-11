@@ -114,7 +114,7 @@ export default function localAxios(type?: string) {
 
       // 403 FORBIDDEN
       } else if (status === 403) {
-        alert(error.response.data.message);
+        console.log(error.response.data.message);
       }
 
       return Promise.reject(error);
