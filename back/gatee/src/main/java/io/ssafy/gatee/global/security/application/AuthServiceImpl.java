@@ -5,6 +5,7 @@ import io.ssafy.gatee.domain.member.entity.Member;
 import io.ssafy.gatee.domain.member.entity.Privilege;
 import io.ssafy.gatee.global.security.dto.response.KakaoTokenRes;
 import io.ssafy.gatee.global.security.user.CustomUserDetails;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import static io.ssafy.gatee.global.security.user.CustomUserDetails.toCustomUserDetails;
@@ -31,17 +33,19 @@ public class AuthServiceImpl implements AuthService {
     private final MemberRepository memberRepository;
 
     @Override
-    public KakaoTokenRes requestKakaoUserInfo(String accessToken) {
+    public KakaoTokenRes requestKakaoUserInfo(String accessToken, HttpServletResponse httpServletResponse) throws IOException {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + accessToken);
         HttpEntity<String> entity = new HttpEntity<>(null, headers);
         ResponseEntity<KakaoTokenRes> response = restTemplate.postForEntity(KAKAO_USER_INFO_URL, entity, KakaoTokenRes.class);
-
         if (response.getStatusCode() == HttpStatus.OK) {
+            httpServletResponse.setContentType("application/json");
+            httpServletResponse.setCharacterEncoding("UTF-8");
+            httpServletResponse.getWriter().write("{\"name\":\"" + response.getBody().kakaoAccount().kakaoProfile().nickname() + "\"}");
             return response.getBody();
         }
-        throw new RuntimeException();   // todo : exception 수정
+        throw new RuntimeException();
     }
 
     @Override

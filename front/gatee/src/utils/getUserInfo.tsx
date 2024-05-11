@@ -1,7 +1,7 @@
-import { MemberApiReq } from "@type/index";
+import { MemberApiRes } from "@type/index";
 
-const getUserInfo = (familyInfo: MemberApiReq[], id: string) => {
-  const userInfo: MemberApiReq | undefined = familyInfo.find(member => member.memberId === id);
+const getUserInfo = (familyInfo: MemberApiRes[], id: string) => {
+  const userInfo: MemberApiRes | undefined = familyInfo.find(member => member.memberId === id);
 
   if (!userInfo) {
     return null;

@@ -6,6 +6,7 @@ import io.ssafy.gatee.domain.album.dto.request.AlbumSaveReq;
 import io.ssafy.gatee.domain.album.dto.request.DeleteAlbumPhotoListReq;
 import io.ssafy.gatee.domain.album.dto.response.AlbumListRes;
 import io.ssafy.gatee.domain.album.dto.response.AlbumPhotoListRes;
+import io.ssafy.gatee.domain.album.dto.response.AlbumSaveRes;
 import io.ssafy.gatee.domain.album.entity.Album;
 import io.ssafy.gatee.domain.family.dao.FamilyRepository;
 import io.ssafy.gatee.domain.family.entity.Family;
@@ -63,7 +64,7 @@ public class AlbumServiceImpl implements AlbumService {
     // 앨범 생성
     @Override
     @Transactional
-    public Long saveAlbum(AlbumSaveReq albumSaveReq) {
+    public AlbumSaveRes saveAlbum(AlbumSaveReq albumSaveReq) {
         Family family = familyRepository.getReferenceById(albumSaveReq.familyId());
 
         Album album = Album.builder()
@@ -73,7 +74,9 @@ public class AlbumServiceImpl implements AlbumService {
 
         albumRepository.save(album);
 
-        return album.getId();
+        return AlbumSaveRes.builder()
+                .albumId(album.getId())
+                .build();
     }
 
     // 앨범 이름 수정
@@ -116,13 +119,14 @@ public class AlbumServiceImpl implements AlbumService {
         return photoAlbumRepositoryCustom.findPhotoByAlbum(album);
     }
 
+    // 앨범 내 사진 삭제
     @Override
     @Transactional
     public List<AlbumPhotoListRes> deleteAlbumPhotoList(Long albumId, DeleteAlbumPhotoListReq deleteAlbumPhotoListReq) {
 
         Album album = albumRepository.getReferenceById(albumId);
 
-        photoAlbumRepository.deleteAllById(deleteAlbumPhotoListReq.photoAlbumId());
+        photoAlbumRepository.deleteAllById(deleteAlbumPhotoListReq.photoAlbumIdList());
 
         return photoAlbumRepositoryCustom.findPhotoByAlbum(album);
     }

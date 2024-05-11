@@ -32,14 +32,13 @@ public class MemberFamily extends BaseEntity {
     @JoinColumn(name = "family_id")
     private Family family;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    private String role;
 
     private boolean isLeader;
 
     private Integer score;
 
     public void editRole(String roleString) {
-        this.role = Role.valueOf(roleString);
+        this.role = roleString;
     }
 }

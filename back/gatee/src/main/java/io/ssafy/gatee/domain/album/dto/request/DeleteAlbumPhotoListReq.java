@@ -9,6 +9,6 @@ import java.util.List;
 public record DeleteAlbumPhotoListReq(
 
         @NotNull
-        List<Long> photoAlbumId
+        List<Long> photoAlbumIdList
 ) {
 }
