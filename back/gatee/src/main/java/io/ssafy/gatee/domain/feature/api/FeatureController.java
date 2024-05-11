@@ -20,7 +20,7 @@ public class FeatureController {
     // 질문 답변 시 문제 생성
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public void readFeatureQuestion(
+    public void saveFeature(
             @RequestBody FeatureReq featureReq,
             @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {

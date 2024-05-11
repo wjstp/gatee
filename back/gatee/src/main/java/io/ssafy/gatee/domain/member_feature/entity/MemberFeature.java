@@ -17,6 +17,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "member_feature")
 @SQLRestriction("status=TRUE")
 public class MemberFeature extends BaseEntity {
 

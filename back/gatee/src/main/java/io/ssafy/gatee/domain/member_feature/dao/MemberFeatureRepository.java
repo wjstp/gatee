@@ -13,7 +13,7 @@ import java.util.UUID;
 public interface MemberFeatureRepository extends JpaRepository<MemberFeature, Long> {
 
     @Query(value = """
-        select mf from MemberFeature mf
+        select * from member_feature mf
         where mf.member.id in :memberIdList 
         and mf.wrongAnswer is not null 
         order by rand()
