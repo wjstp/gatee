@@ -43,6 +43,8 @@ public class ExamServiceImpl implements ExamService {
         List<MemberFeature> randomFeature = memberFeatureRepository.findRandomMemberFeature(familyMemberIdExcludeMe, 20L);
 
         return randomFeature.stream().map(memberFeature -> ExamRes.builder()
+                .nickname(memberFeature.getMember().getNickname())
+                .questionWord(memberFeature.getFeature().getMainPoint())
                 .correctAnswer(memberFeature.getAnswer())
                 .wrongAnswers(memberFeature.getWrongAnswer())
                 .build()).toList();

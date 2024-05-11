@@ -30,8 +30,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.UUID;
 import java.util.List;
+import java.util.UUID;
 
 import static io.ssafy.gatee.global.exception.message.ExceptionMessage.MEMBER_FAMILY_NOT_FOUND;
 import static io.ssafy.gatee.global.exception.message.ExceptionMessage.MEMBER_NOT_FOUND;
@@ -40,7 +40,7 @@ import static io.ssafy.gatee.global.exception.message.ExceptionMessage.MEMBER_NO
 @RequiredArgsConstructor
 // 기본적으로 조회 로직이 많기 때문에 전체 read only 선언
 @Transactional(readOnly = true)
-public class MemberServiceImpl implements MemberService{
+public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
 
@@ -79,25 +79,24 @@ public class MemberServiceImpl implements MemberService{
     @Transactional  // transaction을 사용하기 위해 선언
     public void saveMemberInfo(MemberSaveReq memberSaveReq, UUID memberId, HttpServletResponse response) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(()-> new MemberNotFoundException(MEMBER_NOT_FOUND));
+                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
 
-        String defaultImage = switch (memberSaveReq.role()){
-            case "엄마" -> DEFAULT_MOTHER_IMAGE.get((int) (Math.random()*2));
-            case "아빠" -> DEFAULT_FATHER_IMAGE.get((int) (Math.random()*2));
-            case "딸" -> DEFAULT_DAUGHTER_IMAGE.get((int) (Math.random()*2));
+        String defaultImage = switch (memberSaveReq.role()) {
+            case "엄마" -> DEFAULT_MOTHER_IMAGE.get((int) (Math.random() * 2));
+            case "아빠" -> DEFAULT_FATHER_IMAGE.get((int) (Math.random() * 2));
+            case "딸" -> DEFAULT_DAUGHTER_IMAGE.get((int) (Math.random() * 2));
             case "할머니" -> DEFAULT_GRANDMOTHER_IMAGE.get(0);
             case "할아버지" -> DEFAULT_GRANDFATHER_IMAGE.get(0);
-            default -> DEFAULT_SON_IMAGE.get((int) (Math.random()*2));  // 아들, default
+            default -> DEFAULT_SON_IMAGE.get((int) (Math.random() * 2));  // 아들, default
         };
 
-        File file = fileRepository.save(File.builder()
+        File file = fileRepository.saveAndFlush(File.builder()
                 .fileType(FileType.MEMBER_PROFILE)
                 .url(defaultImage)
                 .dir("message")
                 .name("default_image")
                 .originalName("default_image")
                 .build());
-
 
         member.saveInfo(memberSaveReq, file);
         MemberFamily memberFamily = memberFamilyRepository.findByMemberAndFamilyId(member, UUID.fromString(memberSaveReq.familyId()))
@@ -112,11 +111,11 @@ public class MemberServiceImpl implements MemberService{
     @Transactional
     public void saveNotificationToken(MemberTokenReq memberTokenReq, UUID memberId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(()-> new MemberNotFoundException(MEMBER_NOT_FOUND));
+                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
         member.saveNotificationToken(memberTokenReq.notificationToken());
         memberNotificationRepository.save(MemberNotification.builder()
-                                                            .member(member)
-                                                            .build());
+                .member(member)
+                .build());
     }
 
     // 회원 정보 수정
