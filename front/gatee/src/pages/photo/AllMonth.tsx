@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {Link} from "react-router-dom";
 
 import {useFamilyStore} from "@store/useFamilyStore";
 import {getThumnailPhotoApi} from "@api/photo";
-import {MonthYearPhotoTabProps, MonthYearThumbnailPhotoData} from "@type/index";
+import {MonthYearPhotoTabProps} from "@type/index";
 import {usePhotoStore} from "@store/usePhotoStore";
 
 

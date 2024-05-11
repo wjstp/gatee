@@ -1,6 +1,5 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import PhotoList from "@components/PhotoList";
-// import {photoGroup} from "@constants/index";
 import {useOutletContext} from 'react-router-dom';
 import {PhotoOutletInfoContext} from "@type/index";
 import {getListPhotoApi} from "@api/photo";

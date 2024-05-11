@@ -297,6 +297,7 @@ const PhotoIndex = () => {
           res => {
             console.log(res)
             addedPhoto.photoId = res.data.photoId
+            addDetailPhotoGroup(addedPhoto)
           }
           , err => {
             console.log(err)
