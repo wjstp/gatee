@@ -7,6 +7,7 @@ import {TransformedQuestionData} from "@type/index";
 import {saveExamResultApi} from "@api/exam";
 import {getNewExamApi} from "@api/exam";
 import {transformQuestionData,getExamScore,setAnswerAtIndex} from "@utils/examHelpers"
+import {questionList} from "@constants/index";
 
 
 const ExamTaking = () => {
@@ -15,58 +16,7 @@ const ExamTaking = () => {
   const [myAnswerList, setMyAnswerList] = useState<number[]>([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
   const [startLoading, setStartLoading] = useState<boolean>(true);
   const [endLoading, setEndLoading] = useState<boolean>(false);
-  const questionList = [
-    {
-      "question": "문제",
-      "wrongAnswers": ["틀린 문장", "틀린 문장", "틀린 문장"],
-      "correctAnswer": "정답 문장"
-    },
-    {
-      "question": "문제",
-      "wrongAnswers": ["틀린 문장", "틀린 문장", "틀린 문장"],
-      "correctAnswer": "정답 문장"
-    },
-    {
-      "question": "문제",
-      "wrongAnswers": ["틀린 문장", "틀린 문장", "틀린 문장"],
-      "correctAnswer": "정답 문장"
-    },
-    {
-      "question": "문제",
-      "wrongAnswers": ["틀린 문장", "틀린 문장", "틀린 문장"],
-      "correctAnswer": "정답 문장"
-    },
-    {
-      "question": "문제",
-      "wrongAnswers": ["틀린 문장", "틀린 문장", "틀린 문장"],
-      "correctAnswer": "정답 문장"
-    },
-    {
-      "question": "문제",
-      "wrongAnswers": ["틀린 문장", "틀린 문장", "틀린 문장"],
-      "correctAnswer": "정답 문장"
-    },
-    {
-      "question": "문제",
-      "wrongAnswers": ["틀린 문장", "틀린 문장", "틀린 문장"],
-      "correctAnswer": "정답 문장"
-    },
-    {
-      "question": "문제",
-      "wrongAnswers": ["틀린 문장", "틀린 문장", "틀린 문장"],
-      "correctAnswer": "정답 문장"
-    },
-    {
-      "question": "문제",
-      "wrongAnswers": ["틀린 문장", "틀린 문장", "틀린 문장"],
-      "correctAnswer": "정답 문장"
-    },
-    {
-      "question": "문제",
-      "wrongAnswers": ["틀린 문장", "틀린 문장", "틀린 문장"],
-      "correctAnswer": "정답 문장"
-    },
-  ]
+
   // 정답
   const [correctAnswerSheet, setCorrectAnswerSheet] = useState<number[]>([]);
   // 변환 객체
@@ -124,6 +74,7 @@ const ExamTaking = () => {
         const {transformedData, answerNumArray} = transformQuestionData(questionList)
         setTransformedData(transformedData)
         setCorrectAnswerSheet(answerNumArray)
+
       },
       err => {
         console.log(err)
@@ -168,7 +119,6 @@ const ExamTaking = () => {
     }
   }, [transformedData]);
 
-
   return (
     <div>
       {startLoading ?
@@ -179,7 +129,6 @@ const ExamTaking = () => {
           :
           <>
             <Header/>
-
             <QuestionItemTaking myAnswerList={myAnswerList}
                                 handleNextIndex={handleNextIndex}
                                 handleBeforeIndex={handleBeforeIndex}

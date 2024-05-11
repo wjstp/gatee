@@ -296,3 +296,120 @@ export const ChatSample: (ChatMessage |  ChatFile | ChatAppointment | ChatEmoji 
     content: "2024-05-02T00:00:00",
   },
 ]
+
+
+export const questionList = [
+  {
+    "question": "문제",
+    "wrongAnswers": ["틀린 문장", "틀린 문장", "틀린 문장"],
+    "correctAnswer": "정답 문장"
+  },
+  {
+    "question": "문제",
+    "wrongAnswers": ["틀린 문장", "틀린 문장", "틀린 문장"],
+    "correctAnswer": "정답 문장"
+  },
+  {
+    "question": "문제",
+    "wrongAnswers": ["틀린 문장", "틀린 문장", "틀린 문장"],
+    "correctAnswer": "정답 문장"
+  },
+  {
+    "question": "문제",
+    "wrongAnswers": ["틀린 문장", "틀린 문장", "틀린 문장"],
+    "correctAnswer": "정답 문장"
+  },
+  {
+    "question": "문제",
+    "wrongAnswers": ["틀린 문장", "틀린 문장", "틀린 문장"],
+    "correctAnswer": "정답 문장"
+  },
+  {
+    "question": "문제",
+    "wrongAnswers": ["틀린 문장", "틀린 문장", "틀린 문장"],
+    "correctAnswer": "정답 문장"
+  },
+  {
+    "question": "문제",
+    "wrongAnswers": ["틀린 문장", "틀린 문장", "틀린 문장"],
+    "correctAnswer": "정답 문장"
+  },
+  {
+    "question": "문제",
+    "wrongAnswers": ["틀린 문장", "틀린 문장", "틀린 문장"],
+    "correctAnswer": "정답 문장"
+  },
+  {
+    "question": "문제",
+    "wrongAnswers": ["틀린 문장", "틀린 문장", "틀린 문장"],
+    "correctAnswer": "정답 문장"
+  },
+  {
+    "question": "문제",
+    "wrongAnswers": ["틀린 문장", "틀린 문장", "틀린 문장"],
+    "correctAnswer": "정답 문장"
+  },
+]
+
+export const transformedExamList = [
+  {
+    answerList: ['틀린 문장', '틀린 문장', '정답 문장', '틀린 문장'],
+    choiceNumber: 3,
+    correctNumber: 3,
+    question: "문제"
+  },
+  {
+    answerList: ['틀린 문장', '틀린 문장', '정답 문장', '틀린 문장'],
+    choiceNumber: 2,
+    correctNumber: 3,
+    question: "문제"
+  },
+  {
+    answerList: ['틀린 문장', '틀린 문장', '정답 문장', '틀린 문장'],
+    choiceNumber: 1,
+    correctNumber: 3,
+    question: "문제"
+  },
+  {
+    answerList: ['틀린 문장', '틀린 문장', '정답 문장', '틀린 문장'],
+    choiceNumber: 4,
+    correctNumber: 3,
+    question: "문제"
+  },
+  {
+    answerList: ['틀린 문장', '틀린 문장', '정답 문장', '틀린 문장'],
+    choiceNumber: 1,
+    correctNumber: 3,
+    question: "문제"
+  },
+  {
+    answerList: ['틀린 문장', '틀린 문장', '정답 문장', '틀린 문장'],
+    choiceNumber: 2,
+    correctNumber: 2,
+    question: "문제"
+  },
+  {
+    answerList: ['틀린 문장', '틀린 문장', '정답 문장', '틀린 문장'],
+    choiceNumber: 1,
+    correctNumber: 3,
+    question: "문제"
+  },
+  {
+    answerList: ['틀린 문장', '틀린 문장', '정답 문장', '틀린 문장'],
+    choiceNumber: 5,
+    correctNumber: 3,
+    question: "문제"
+  },
+  {
+    answerList: ['틀린 문장', '틀린 문장', '정답 문장', '틀린 문장'],
+    choiceNumber: 2,
+    correctNumber: 3,
+    question: "문제"
+  },
+  {
+    answerList: ['틀린 문장', '틀린 문장', '정답 문장', '틀린 문장'],
+    choiceNumber: 1,
+    correctNumber: 3,
+    question: "문제"
+  }
+]
