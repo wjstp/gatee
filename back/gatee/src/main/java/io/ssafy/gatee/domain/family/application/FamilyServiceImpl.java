@@ -138,7 +138,7 @@ public class FamilyServiceImpl implements FamilyService {
 
         ValueOperations<String, String> redisValueOperation = redisTemplate.opsForValue();
 
-        redisValueOperation.set(randomCode, familyId, 3, TimeUnit.MINUTES);
+        redisValueOperation.set(randomCode, familyId, 24, TimeUnit.HOURS);
 
         return FamilyCodeRes.builder()
                 .familyCode(randomCode)
