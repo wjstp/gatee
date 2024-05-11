@@ -1,15 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigate, useOutletContext} from "react-router-dom";
 import {FaPlus} from "react-icons/fa6";
-import {GroupPhotoData, GroupPhotoItemProps, PhotoOutletInfoContext, PlusAlbumButton} from "@type/index";
+import {GroupPhotoItemProps, PhotoOutletInfoContext, PlusAlbumButton} from "@type/index";
 import Checkbox from "@mui/material/Checkbox";
 import {AlbumNameInputModal} from "@pages/photo/components/CreateAlbumModal";
 import useModal from "@hooks/useModal";
 import {useModalStore} from "@store/useModalStore";
 import {getAlbumListPhotoApi} from "@api/photo";
 import {useFamilyStore} from "@store/useFamilyStore";
-
-
+import {usePhotoStore} from "@store/usePhotoStore";
 
 
 const PhotoAlbum = () => {
@@ -17,10 +16,9 @@ const PhotoAlbum = () => {
   // 모달 상태
   const {setShowModal} = useModalStore()
   const {familyId} = useFamilyStore()
-  const [groupPhotoDatas,setGroupPhotoDatas] = useState<GroupPhotoData[]>([])
-  // 월별 대표 사진 샘플 데이터
+  const {albumList, setAlbumList} = usePhotoStore()
 
-// 앨범 이름 고르기 모달 상태
+  // 앨범 이름 고르기 모달 상태
   const {
     isOpen: showAlbumNameInputModal,
     openModal: openAlbumNameInputModal,
@@ -41,22 +39,27 @@ const PhotoAlbum = () => {
     console.log('앨범 만들기')
   }
 
-  useEffect(() => {
+  // 앨범 목록 불러오기 api
+  const getAlbumListPhotoApiFunc = () => {
     getAlbumListPhotoApi(
       {familyId: familyId},
       res => {
         console.log(res)
-        setGroupPhotoDatas(res.data)
+        setAlbumList(res.data)
       },
       err => {
         console.log(err)
       }
     )
+  }
+
+  useEffect(() => {
+    getAlbumListPhotoApiFunc()
   }, []);
 
   return (
     <div className="photo-group--container">
-      {groupPhotoDatas.map((groupPhotoData, index) => {
+      {albumList.map((groupPhotoData, index) => {
         return <GroupItem key={index} groupPhotoData={groupPhotoData} editMode={editMode}
                           handleChecked={handleChecked}/>
       })}
@@ -104,7 +107,7 @@ const GroupItem = ({editMode, handleChecked, groupPhotoData}: PhotoOutletInfoCon
                   checked={checked}
                   onChange={() => handleCheckBox()}
         />}
-      <p className="name">{groupPhotoData.name}</p>
+      <p  className="title">{groupPhotoData.name}</p>
     </div>
   )
 }
@@ -118,7 +121,7 @@ const PlusAlbum = ({handleModal}: PlusAlbumButton) => {
       <div onClick={handleModal} className="plus-album--button-container">
         <FaPlus className="plus-button" size={50}/>
       </div>
-      <div className="name text-white">
+      <div className="title text-white">
         추가하기
       </div>
 

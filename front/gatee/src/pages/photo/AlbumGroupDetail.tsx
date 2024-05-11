@@ -1,19 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import {useOutletContext, useParams} from "react-router-dom";
-import {AlbumGroupDetail, GroupPhotoData, PhotoData, PhotoOutletInfoContext} from "@type/index";
+import {PhotoOutletInfoContext} from "@type/index";
 import {getAlbumDetailApi, updateAlbumNameApi} from "@api/photo";
 import {useFamilyStore} from "@store/useFamilyStore";
-import PhotoList from "@components/PhotoList";
 import AlbumDetailPhotoList from "@pages/photo/components/AlbumDetailPhotoList";
-// import {photoGroup} from "@constants/index";
+import {usePhotoStore} from "@store/usePhotoStore";
 
 
 const PhotoAlbumGroupDetail = () => {
   const params = useParams()
   const {familyId} = useFamilyStore()
   const {editMode, handleChecked} = useOutletContext<PhotoOutletInfoContext>();
-  const [albumName, setAlbumName] = useState<string>('예삐')
-  const [photoGroup, setPhotoGroup] = useState<AlbumGroupDetail[]>([])
+  const [albumName, setAlbumName] = useState<string>('')
+  const {detailAlbumPhotoGroup,setDetailAlbumPhotoGroup} = usePhotoStore()
   // 이름 변경 api
   const changeAlbumNameApiFunc = (newName: string) => {
     if (params?.id) {
@@ -33,22 +32,27 @@ const PhotoAlbumGroupDetail = () => {
 
   }
 
-  // 마운트 되자마자 앨범 상세 데이터 가져오기
+  // 앨범 상세 불러오기 api
+  const getAlbumDetailApiFunc = (id: string) => {
+    getAlbumDetailApi(
+      id,
+      {familyId: familyId},
+      res => {
+        console.log(res)
+        setDetailAlbumPhotoGroup(res.data);
+
+      },
+      err => {
+        console.log(err)
+      }
+    )
+  }
+
+  // 마운트 되자마자 앨범 이름과 앨범 상세 데이터 가져오기
   useEffect(() => {
     if (params?.id && params?.name) {
       setAlbumName(params?.name)
-      getAlbumDetailApi(
-        params?.id,
-        {familyId: familyId},
-        res => {
-          console.log(res)
-          setPhotoGroup(res.data);
-
-        },
-        err => {
-          console.log(err)
-        }
-      )
+      getAlbumDetailApiFunc(params.id)
     }
   }, [params]);
 
@@ -70,7 +74,7 @@ const PhotoAlbumGroupDetail = () => {
 
       }
 
-      <AlbumDetailPhotoList editMode={editMode} photoGroup={photoGroup} handleChecked={handleChecked}/>
+      <AlbumDetailPhotoList editMode={editMode} photoGroup={detailAlbumPhotoGroup} handleChecked={handleChecked}/>
     </div>
   );
 }

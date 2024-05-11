@@ -23,9 +23,9 @@ export interface MemberApiReq {
   name: string;
   nickname: string;
   role: string;
-  phoneNumber: string|null;
-  fileUrl:string;
-  isLeader:boolean;
+  phoneNumber: string | null;
+  fileUrl: string;
+  isLeader: boolean;
 }
 
 // 가족 api 정보
@@ -39,9 +39,9 @@ export interface MyMemberApiReq {
   nickname: string;
   role: string;
   familyId: string;
-  phoneNumber: string|null;
-  fileUrl:string;
-  isLeader:boolean;
+  phoneNumber: string | null;
+  fileUrl: string;
+  isLeader: boolean;
 }
 
 
@@ -78,40 +78,6 @@ export interface Character {
   answer: string;
 }
 
-// photo
-export interface PhotoListProps {
-  editMode: string,
-  photoGroup: PhotoData[],
-  handleChecked: ((photoId: number, type: string) => void) | null;
-}
-
-export interface AlbumPhotoListProps {
-  editMode: string,
-  photoGroup: AlbumGroupDetail[],
-  handleChecked: ((photoId: number, type: string) => void) | null;
-}
-
-export interface PhotoOutletInfoContext {
-  editMode: string;
-  handleChecked: (
-    photoId: number,
-    type: string,
-  ) => void;
-}
-
-export interface PhotoData {
-  fileId: number;
-  photoId:number;
-  imageUrl: string;
-}
-
-export interface AlbumGroupDetail {
-  fileId:number;
-  imageUrl:string;
-  memberFamilyId:number;
-  photoAlbumId:number;
-  photoId:number;
-}
 
 // schedule
 export interface Schedule {
@@ -140,9 +106,9 @@ export interface HolidayStore {
 
 // kakao를 전역에서 실행하기 위함
 declare global {
-    interface Window {
-        Kakao: any;
-    }
+  interface Window {
+    Kakao: any;
+  }
 }
 
 // kakao
@@ -154,7 +120,7 @@ export interface KaKaoLoginReq {
 }
 
 // chat
-export type ChatContent =  ChatMessage | ChatFile | ChatAppointment | ChatEmoji | ChatAlarm;
+export type ChatContent = ChatMessage | ChatFile | ChatAppointment | ChatEmoji | ChatAlarm;
 
 export interface ChatMessage {  // MESSAGE
   messageType: string;
@@ -234,20 +200,64 @@ export interface EmojiItem {
 }
 
 // 잔소리 보내기 api request
-export interface NaggingApiReq{
+export interface NaggingApiReq {
   // 멤버 아이디
   "receiverId": string,
   "message": string
 }
 
+// photo
+export interface PhotoListProps {
+  editMode: string,
+  photoGroup: PhotoData[],
+  handleChecked: ((photoId: number, type: string) => void) | null;
+}
+
+export interface AlbumPhotoListProps {
+  editMode: string,
+  photoGroup: AlbumGroupDetail[],
+  handleChecked: ((photoId: number, type: string) => void) | null;
+}
+
+export interface PhotoOutletInfoContext {
+  editMode: string;
+  handleChecked: (
+    photoId: number,
+    type: string,
+  ) => void;
+}
+
+export interface PhotoData {
+  fileId: number;
+  photoId: number;
+  imageUrl: string;
+}
+
+export interface AlbumGroupDetail {
+  fileId: number;
+  imageUrl: string;
+  memberFamilyId: number;
+  photoAlbumId: number;
+  photoId: number;
+}
+
 // 사진 api 관련 type
-export interface GroupPhotoData{
+
+export interface GroupPhotoData {
   albumId: number,
   name: string,
   imageUrl: string | null,
-  PhotoId: number|null
+  PhotoId: number | null
+}
+export interface MonthYearThumbnailPhotoData {
+  createdAt: string,
+  imageUrl: string,
+  photoId: number
 }
 
+export interface MonthYearPhotoTabProps {
+  monthYearPhotoData: MonthYearThumbnailPhotoData
+}
 export interface GroupPhotoItemProps {
   groupPhotoData: GroupPhotoData
 }
@@ -289,9 +299,9 @@ export interface FamilyIdReq {
 
 export interface GetThumnailPhotoApiReq {
   familyId: string,
-  filter:string
+  filter: string
 }
 
-export interface DeletePhotoApiReq{
-  photoIdList:number[]
+export interface DeletePhotoApiReq {
+  photoIdList: number[]
 }

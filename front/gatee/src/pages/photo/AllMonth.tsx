@@ -1,28 +1,21 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {Link} from "react-router-dom";
 
 import {useFamilyStore} from "@store/useFamilyStore";
 import {getThumnailPhotoApi} from "@api/photo";
+import {MonthYearPhotoTabProps} from "@type/index";
+import {usePhotoStore} from "@store/usePhotoStore";
 
-interface MonthYearThumbnailPhotoData {
-  createdAt: string,
-  imageUrl: string,
-  photoId: number
-}
-
-interface MonthYearPhotoTabProps {
-  monthPhotoData: MonthYearThumbnailPhotoData
-}
 
 const AllMonth = () => {
   const {familyId} = useFamilyStore()
-  const [monthPhotoDatas, setMonthPhotoDatas] = useState<MonthYearThumbnailPhotoData[]>([]);
+  const {monthThumbnailPhotoGroup,setMonthThumbnailPhotoGroup} = usePhotoStore()
   useEffect(() => {
     // 월별 사진 조회
     getThumnailPhotoApi({familyId: familyId, filter: "MONTH"},
       res => {
         console.log(res)
-        setMonthPhotoDatas(res.data)
+        setMonthThumbnailPhotoGroup(res.data)
       },
       err => {
         console.log(err)
@@ -33,7 +26,7 @@ const AllMonth = () => {
   const groupedByYear: { [year: string]: any[] } = {};
 
 // 데이터 배열을 년도별로 그룹화
-  monthPhotoDatas.forEach(item => {
+  monthThumbnailPhotoGroup.forEach(item => {
     const year = item?.createdAt?.substring(0, 4); // 년도 추출
     if (!groupedByYear[year]) {
       groupedByYear[year] = []; // 년도별 그룹이 없으면 배열을 생성
@@ -48,8 +41,8 @@ const AllMonth = () => {
         .map(year => (
           <React.Fragment key={year}>
             <div className="detail-tab--title">{year}년</div>
-            {groupedByYear[year].map((monthPhotoData) => (
-              <MonthItem key={monthPhotoData.createdAt} monthPhotoData={monthPhotoData}/>
+            {groupedByYear[year].map((monthYearPhotoData) => (
+              <MonthItem key={monthYearPhotoData.createdAt} monthYearPhotoData={monthYearPhotoData}/>
             ))}
           </React.Fragment>
         ))}
@@ -58,8 +51,8 @@ const AllMonth = () => {
   );
 };
 
-const MonthItem = ({monthPhotoData}: MonthYearPhotoTabProps) => {
-  const dateString = monthPhotoData.createdAt
+const MonthItem = ({monthYearPhotoData}: MonthYearPhotoTabProps) => {
+  const dateString = monthYearPhotoData.createdAt
   const createdAt = new Date(dateString);
   // 현재의 년도 추출
   const year = createdAt.getFullYear();
@@ -72,7 +65,7 @@ const MonthItem = ({monthPhotoData}: MonthYearPhotoTabProps) => {
       {/* 월 표시 */}
       <div className="month">{month}월</div>
       {/* 배경 사진 */}
-      <img className="photo" src={monthPhotoData.imageUrl} alt={`${monthPhotoData.photoId}`}/>
+      <img className="photo" src={monthYearPhotoData.imageUrl} alt={`${monthYearPhotoData.photoId}`}/>
     </Link>
   )
 }
