@@ -6,6 +6,7 @@ import {useMemberStore} from "@store/useMemberStore";
 interface ChatMessageProps {
   chat: ChatMessage | ChatEmoji;
 }
+
 const BubbleChatMessage = (props: ChatMessageProps) => {
   const { chat } = props;
   const { myInfo } = useMemberStore();

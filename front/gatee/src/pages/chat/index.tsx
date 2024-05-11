@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import {useNavigate} from "react-router-dom";
 import BubbleChat from "@pages/chat/components/BubbleChat";
 import ChatInput from "@pages/chat/components/ChatInput";
 import ChatDate from "@pages/chat/components/ChatDate";
@@ -9,89 +10,171 @@ import { useFamilyStore } from "@store/useFamilyStore";
 import SockJS from "sockjs-client";
 import firebase from "../../firebase-config";
 import 'firebase/database';
+import {start} from "@craco/craco/dist/lib/cra";
 
 
 const ChatIndex = () => {
-  const { REACT_APP_API_URL} = process.env;
+  const { REACT_APP_API_URL } = process.env;
+  const navigate = useNavigate();
 
-  const [messages, setMessages] = useState<(ChatContent | ChatDateLine)[]>([]);
-  const [newMessage, setNewMessage] = useState<ChatContent | null>(null);
-  const [isEntry, setIsEntry] = useState<boolean>(false);
+  const WS_URL: string = `${REACT_APP_API_URL}/chat`;
+  const ws = useRef<WebSocket | null>(null);
 
-  const { familyId, familyName } = useFamilyStore();
+  const MAX_TIME_INTERVAL: number = 1000;
+  const MAX_RECONNECT_ATTEMPTS: number = 5;
+  let reconnectTimeInterval: number = Math.random() * MAX_TIME_INTERVAL;
+  let reconnectAttempts: number = 0;
+  const [isReconnecting, setIsReconnecting] = useState<boolean>(false);
+
+  const { familyId } = useFamilyStore();
   const chatRef = firebase.database().ref(`chat/${familyId}/messages`);
 
-  const WS_URL: string = `${REACT_APP_API_URL}/chat`
-  const ws = new SockJS(`${WS_URL}?Token=${localStorage.getItem('accessToken')}`);
-
-  const MAX_RETRY_COUNT: number = 5;
-  const retryCount = useRef<number>(0);
+  const PAGE_SIZE: number = 3;
+  const [messages, setMessages] = useState<(ChatContent | ChatDateLine)[]>([]);
+  const [startKey, setStartKey] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    // 소켓 연결
     connect();
 
-    // 채팅 데이터 조회 및 채팅 추가 이벤트 수신
-    // 처음에 모든 리스트가 동기화되며 그 후에는 새로 추가된 부분만 동기화
-    chatRef.on(
-      "value",
-        snap => handleAddChatData(snap)
-    );
+    if (familyId) {
+      loadInitialMessages();
+    }
 
-    // 채팅 데이터 변경 이벤트 수신
-    chatRef.on(
-      "child_changed",
-      snap => handleUpdateChatData(snap)
-    );
+    // Firebase 실시간 이벤트 수신 등록
+    chatRef.limitToLast(1).on('child_added', handleAddChatData);
+    chatRef.on('child_changed', handleUpdateChatData);
 
     return () => {
-      // 언마운트 시 소켓 연결 해제
-      disconnect();
-    };
-  }, []);
+      if (ws.current) {
+        // WebSocket 연결 해제
+        ws.current.close();
+      }
+      // Firebase 실시간 이벤트 수신 해제
+      chatRef.off();
+    }
+  }, [ws.current]);
 
-  // 소켓 연결
+  // WebSocket 연결
   const connect = () => {
-    ws.onopen = () => {
-      console.log("<<< CONNECT");
+    ws.current = new SockJS(`${WS_URL}?Token=${localStorage.getItem('accessToken')}`);
+
+    // WebSocket 연결 상태 리스너
+    ws.current.onopen = handleWebSocketOpen;
+    ws.current.onclose = handleWebSocketClose;
+  }
+
+  // WebSocket 연결 이벤트 핸들러
+  const handleWebSocketOpen = () => {
+    console.log("<<< WS CONNECT");
+
+    // 연결 성공 시 변수 초기화
+    reconnectTimeInterval = Math.random() * MAX_TIME_INTERVAL;
+    reconnectAttempts = 0;
+    setIsReconnecting(false);
+  }
+
+  // WebSocket 연결 해제 이벤트 핸들러
+  const handleWebSocketClose = (e: CloseEvent) => {
+    // 소켓 정상 종료 여부 판별
+    if (e.wasClean) {
+      console.log(">>> WS DISCONNECT");
+      return;
     }
-  }
-  // 언마운트 시 소켓 연결 해제
-  const disconnect = () => {
-    ws.onclose = () => {
-      console.log(">>> DISCONNECT");
-    };
-  }
 
-  const send = () => {
-    ws.send(JSON.stringify({
-      "messageType": "MESSAGE",
-      "content": "방구 먹어라",
-      "currentTime": "2024-05-10 17:10:00"
-    }))
-  }
+    // 재연결 요청 횟수 증가
+    reconnectAttempts++;
+    
+    // 지수 백오프
+    reconnectTimeInterval *= 2;
 
-  // 채팅 내역 조회/추가 이벤트 수신 핸들러
-  const handleAddChatData = (snapshot: any) => {
-    // 채팅방에 들어와 있는 상태에서 새로운 메시지가 추가될 경우
-    if (isEntry) {
-      const newMessages: (ChatContent | ChatDateLine)[] = [snapshot[-1].child().val(), ...messages];
-      setMessages(newMessages);
+    if (!ws.current && !isReconnecting && reconnectAttempts <= MAX_RECONNECT_ATTEMPTS) {
+      console.log("WS RECONNECTING...");
+      setIsReconnecting(true);
+
+      setTimeout(() => {
+        // 재연결 시도 -
+        connect();
+      }, reconnectTimeInterval);
+    } else {
+      // 최대 횟수에 도달하면 재연결 시도를 중단하고 메인 페이지로 이동
+      console.log("Reached maximum reconnection attempts");
+      navigate("/main");
     }
-    // 새롭게 입장한 경우
-    else {
+  };
 
-      snapshot.forEach((message: any) => {
-        messages.unshift(message.val());
 
-        console.log(message.val().unReadMember)
+  // WebSocket 메시지 전송
+  const handleSendMessage = (newMessages: ChatContent) => {
+    if (ws.current) {
+      ws.current.send(JSON.stringify(newMessages));
+    } else {
+      console.log("WebSocket is not open or reconnecting");
+    }
+  };
+  
+  // 채팅 입장 시 이전 메시지 로드
+  const loadInitialMessages = () => {
+    chatRef
+      .orderByKey()
+      .limitToLast(PAGE_SIZE)
+      .once('value')
+      .then((snapshot) => {
+        const messagesArray: (ChatContent | ChatDateLine)[] = [];
+        let isFirst: boolean = true;
+
+        snapshot.forEach((childSnapshot) => {
+          // 첫 번째 메시지는 건너뜀
+          if (isFirst) {
+            isFirst = false;
+            return;
+          }
+          messagesArray.unshift(childSnapshot.val());
+        });
+
+        setMessages(messagesArray);
+        setStartKey(Object.keys(snapshot.val())[0]);
       })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
-      // 입장 상태 변경
-      setIsEntry(true);
-    }
+  // 스크롤 시 이전 메시지 로드
+  const loadMoreMessages = () => {
+    setIsLoading(true);
 
-    console.log(messages);
+    chatRef
+      .orderByKey()
+      .endAt(startKey)
+      .limitToLast(PAGE_SIZE + 1)
+      .once('value')
+      .then((snapshot) => {
+        const messagesArray: (ChatContent | ChatDateLine)[] = [];
+        let isFirst: boolean = true;
+
+        snapshot.forEach((childSnapshot) => {
+          if (isFirst) {
+            isFirst = false;
+            return;
+          }
+          messagesArray.unshift(childSnapshot.val());
+        });
+
+        setMessages((prevMessages) => [...prevMessages, ...messagesArray.slice(1)]);
+        setStartKey(Object.keys(snapshot.val())[0]);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        setIsLoading(false);
+      });
+  };
+
+  // 메시지 추가 이벤트 수신 핸들러
+  const handleAddChatData = (snapshot: any) => {
+    const newMessage = snapshot.val();
+    setMessages((prevMessages) => [newMessage, ...prevMessages]);
   }
 
   // 채팅 내역 수정 이벤트 수신 핸들러
@@ -108,7 +191,7 @@ const ChatIndex = () => {
 
   // 채팅 버블 렌더링
   const renderChatBubble = messages.map((chat: ChatContent | ChatDateLine, index: number) => {
-    const prevChat = index < ChatSample.length - 1 ? ChatSample[index + 1] : null;
+    const prevChat: ChatContent | ChatDateLine | null = index < ChatSample.length - 1 ? ChatSample[index + 1] : null;
 
     switch (chat.messageType) {
       case ChatType.DATE_LINE:
@@ -135,11 +218,7 @@ const ChatIndex = () => {
         {renderChatBubble}
       </div>
 
-      <div onClick={() => send()}>
-        전송 테스트
-      </div>
-
-      <ChatInput />
+      <ChatInput onSendMessage={handleSendMessage}/>
     </div>
   );
 }

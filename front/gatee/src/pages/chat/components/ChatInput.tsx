@@ -8,13 +8,17 @@ import { IoCloseOutline } from "react-icons/io5";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import TextField from '@mui/material/TextField';
 import { EMOJI } from "@constants/index";
-import { EmojiItem } from "@type/index";
+import { EmojiItem, ChatContent } from "@type/index";
 import { uploadFileApi } from "@api/file";
 import { AxiosError, AxiosResponse } from "axios";
 import { NavLink } from "react-router-dom";
 
+interface ChatInputProps {
+  onSendMessage: (newMessages: ChatContent) => void;
+}
 
-const ChatInput = () => {
+const ChatInput = (props: ChatInputProps) => {
+  const { onSendMessage } = props;
   const [inputMessage, setInputMessage] = useState<string>("");
   const [inputFile, setInputFile] = useState<File[] | null>(null);
   const [inputEmoji, setInputEmoji] = useState<EmojiItem | null>(null);
@@ -214,6 +218,7 @@ const ChatInput = () => {
     )
   }
 
+  // mui custom
   const muiFocusCustom = {
     '& label.Mui-focused': {
       color: '#00ff0000',
