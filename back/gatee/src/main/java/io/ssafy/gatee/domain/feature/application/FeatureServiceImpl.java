@@ -82,7 +82,7 @@ public class FeatureServiceImpl implements FeatureService{
         Member proxyMember = memberRepository.getReferenceById(memberId);
         MemberFamily memberFamily = memberFamilyRepository.findByMember(proxyMember)
                 .orElseThrow(()-> new MemberFamilyNotFoundException(ExceptionMessage.MEMBER_FAMILY_NOT_FOUND));
-        List<Feature> featureList = featureRepository.findMyQuestion(Type.getType(memberFamily.getRole()));
+        List<Feature> featureList = featureRepository.findMyQuestion(Type.getType(memberFamily.getRole()), memberId);
         return featureList.stream().map(FeatureRes::toDto).toList();
     }
 
