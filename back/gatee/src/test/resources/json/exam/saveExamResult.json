@@ -1,0 +1,23 @@
+{
+  "examResults" : [
+    {
+      "question" : "질문",
+      "answerList" : ["선지1", "선지2", "선지3", "선지4"],
+      "choiceNumber" : 1,
+      "correctNumber" : 2
+    },
+    {
+      "question" : "질문",
+      "answerList" : ["선지1", "선지2", "선지3", "선지4"],
+      "choiceNumber" : 1,
+      "correctNumber" : 2
+    },
+    {
+      "question" : "질문",
+      "answerList" : ["선지1", "선지2", "선지3", "선지4"],
+      "choiceNumber" : 1,
+      "correctNumber" : 2
+    }
+  ],
+  "score" : 80
+}

@@ -36,25 +36,21 @@ public class ExamController {
         return examService.readExamResults(customUserDetails.getMemberId());
     }
 
-    @GetMapping("/{exam-id}/results")
+    @GetMapping("/{examId}/results")
     @ResponseStatus(HttpStatus.OK)
     public List<ExamDetailRes> readExamResultDetails(
-            @PathVariable("exam-id") Long examId
+            @PathVariable("examId") Long examId
     ) {
         return examService.readExamResultDetail(examId);
     }
 
-
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public void saveExam(
+    public void saveExamResult(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             ExamReq examReq
     ) {
         examService.saveExamResult(examReq, customUserDetails.getMemberId());
     }
-
-
-
 
 }
