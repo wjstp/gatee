@@ -33,12 +33,12 @@ public class MemberFamilyExam extends BaseEntity {
     @JoinColumn(name = "exam_id")
     private Exam exam;
 
-    private String problem;
+    private String question;
 
-    private String answer;
+    @ElementCollection
+    private List<String> answerList;
 
-    @ElementCollection  // List 타입일 경우 선언
-    private List<String> wrongAnswer;
+    private Integer choiceNumber;
 
-    private String choice;
+    private Integer correctNumber;
 }

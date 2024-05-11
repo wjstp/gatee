@@ -9,7 +9,7 @@ import io.ssafy.gatee.domain.feature.dto.request.FeatureReq;
 import io.ssafy.gatee.domain.feature.entity.Feature;
 import io.ssafy.gatee.domain.member.dao.MemberRepository;
 import io.ssafy.gatee.domain.member.entity.Member;
-import io.ssafy.gatee.domain.member_feature.dto.MemberFeatureRepository;
+import io.ssafy.gatee.domain.member_feature.dao.MemberFeatureRepository;
 import io.ssafy.gatee.domain.member_feature.entity.MemberFeature;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

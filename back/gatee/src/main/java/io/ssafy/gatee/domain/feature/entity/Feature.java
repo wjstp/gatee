@@ -22,6 +22,8 @@ public class Feature extends BaseEntity {
 
     private String question;
 
+    private String mainPoint;
+
     @Enumerated(EnumType.STRING)
     private Type type;
 }
