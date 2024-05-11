@@ -53,7 +53,7 @@ const ChatIndex = () => {
       // Firebase 실시간 이벤트 수신 해제
       chatRef.off();
     }
-  }, [ws.current]);
+  }, []);
 
   // WebSocket 연결
   const connect = () => {
@@ -88,12 +88,12 @@ const ChatIndex = () => {
     // 지수 백오프
     reconnectTimeInterval *= 2;
 
-    if (!ws.current && !isReconnecting && reconnectAttempts <= MAX_RECONNECT_ATTEMPTS) {
+    if (!isReconnecting && reconnectAttempts <= MAX_RECONNECT_ATTEMPTS) {
       console.log("WS RECONNECTING...");
       setIsReconnecting(true);
 
       setTimeout(() => {
-        // 재연결 시도 -
+        // 재연결 시도
         connect();
       }, reconnectTimeInterval);
     } else {
