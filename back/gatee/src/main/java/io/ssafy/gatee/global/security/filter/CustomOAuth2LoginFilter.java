@@ -39,9 +39,8 @@ public class CustomOAuth2LoginFilter extends OncePerRequestFilter {
                 log.info("1. 로그인 또는 회원가입 시도");
 
                 // 유저 정보 kakao로부터 받아오기
-                KakaoTokenRes kakaoTokenRes = authService.requestKakaoUserInfo(request.getHeader("Kakao-Access-Token"));
+                KakaoTokenRes kakaoTokenRes = authService.requestKakaoUserInfo(request.getHeader("Kakao-Access-Token"), response);
                 log.info("2. 카카오 토큰 확인 및 회원 정보 로드 완료");
-
                 // 회원가입 또는 로그인 - OAuth2User 반환
                 CustomUserDetails customUserDetails = authService.loadUserSecurityDTO(kakaoTokenRes);
                 log.info("3. 회원가입 또는 로그인 완료");
@@ -52,7 +51,6 @@ public class CustomOAuth2LoginFilter extends OncePerRequestFilter {
                 SecurityContextHolder.setContext(securityContext);
                 log.info(securityContext.getAuthentication().getPrincipal().toString());
                 log.info("4. spring context 설정 완료");
-
                 // 로그인 성공 핸들러 호출
                 customOAuth2SuccessHandler.onAuthenticationSuccess(request, response, authentication);
                 log.info("5. 인증 작업 및 토큰 발급 완료");
