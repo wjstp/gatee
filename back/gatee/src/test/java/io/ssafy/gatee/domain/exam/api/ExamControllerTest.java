@@ -92,10 +92,12 @@ class ExamControllerTest extends RestDocsTestSupport {
     void readExamResults() throws Exception {
         // given
         ExamResultRes examRes1 = ExamResultRes.builder()
+                .examId(1L)
                 .score(100)
                 .createdAt("1999-01-01")
                 .build();
         ExamResultRes examRes2 = ExamResultRes.builder()
+                .examId(2L)
                 .score(100)
                 .createdAt("1999-01-01")
                 .build();
@@ -116,6 +118,7 @@ class ExamControllerTest extends RestDocsTestSupport {
         result.andExpect(status().isOk())
                 .andDo(restDocs.document(
                         responseFields(
+                                fieldWithPath("[].examId").type(JsonFieldType.NUMBER).description("모의고사 id").optional(),
                                 fieldWithPath("[].score").type(JsonFieldType.NUMBER).description("점수").optional(),
                                 fieldWithPath("[].createdAt").type(JsonFieldType.STRING).description("모의고사를 푼 날짜").optional()
                         )

@@ -58,6 +58,7 @@ public class ExamServiceImpl implements ExamService {
         if (! exams.isEmpty()) {
             return exams.stream().map(exam -> ExamResultRes
                     .builder()
+                    .examId(exam.getId())
                     .createdAt(sdf.format(exam.getCreatedAt()))
                     .score(exam.getScore()).build()).toList();
         }
