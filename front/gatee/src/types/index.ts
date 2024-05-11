@@ -125,27 +125,27 @@ export type ChatContent = ChatMessage | ChatFile | ChatAppointment | ChatEmoji |
 export interface ChatMessage {  // MESSAGE
   messageType: string;
   sender: string;
-  time: string;
+  currentTime: string;
   totalMember: number;
-  unreadMember: string[];
+  unReadMember: string[];
   content: string;
 }
 
 export interface ChatFile { // FILE
   messageType: string;
   sender: string;
-  time: string;
+  currentTime: string;
   totalMember: number;
-  unreadMember: string[];
+  unReadMember: string[];
   files: string[];
 }
 
 export interface ChatAppointment {  // APPOINTMENT
   messageType: string;
   sender: string;
-  time: string;
+  currentTime: string;
   totalMember: number;
-  unreadMember: string[];
+  unReadMember: string[];
   content: string;
   participants: string[];
 }
@@ -153,24 +153,24 @@ export interface ChatAppointment {  // APPOINTMENT
 export interface ChatEmoji {  // EMOJI
   messageType: string;
   sender: string;
-  time: string;
+  currentTime: string;
   totalMember: number;
-  unreadMember: string[];
+  unReadMember: string[];
   emojiId: string;
   content: string;
 }
 
 export interface ChatDateLine { // DATE_LINE
   messageType: string;
-  time: string;
+  content: string;
 }
 
 export interface ChatAlarm {  // ALARM
   messageType: string;
   sender: string;
-  time: string;
+  currentTime: string;
   totalMember: number;
-  unreadMember: string[];
+  unReadMember: string[];
   content: string;
 }
 

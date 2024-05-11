@@ -57,7 +57,7 @@ const YoursChat = (props: YourChatMessageProps) => {
 
         {/*시간*/}
         <div className="chat__time">
-          { convertKrTime(chat.time) }
+          { convertKrTime(chat.currentTime) }
         </div>
       </div>
     </div>
@@ -81,7 +81,7 @@ const MyChat = (props: MyChatMessageProps) => {
 
         {/*시간*/}
         <div className="chat__time">
-          {convertKrTime(chat.time)}
+          {convertKrTime(chat.currentTime)}
         </div>
       </div>
 
@@ -94,7 +94,7 @@ const MyChat = (props: MyChatMessageProps) => {
 const BubbleChat = (props: ChatMessageProps) => {
   const { chat, isPrevSender } = props;
   const { myInfo } = useMemberStore();
-  const [unreadMemberCount, setUnreadMemberCount] = useState<number>(chat.unreadMember.length);
+  const [unreadMemberCount, setUnreadMemberCount] = useState<number>(chat.unReadMember.length);
 
   // senderType 반환 함수
   const getSenderType = (value: string): string => {

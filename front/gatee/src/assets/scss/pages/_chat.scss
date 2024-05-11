@@ -325,6 +325,7 @@ $chat-input-height: 3rem;
     }
 
     &-appointment,
+    &-album,
     &-camera {
       @extend .chat-input__button;
       position: absolute;
@@ -335,7 +336,7 @@ $chat-input-height: 3rem;
     &-appointment--active {
       @extend .chat-input__button-appointment;
       background-color: #ff9595;
-      bottom: 4.7rem;
+      bottom: 2.2rem;
 
       &:focus,
       &:active {
@@ -346,13 +347,25 @@ $chat-input-height: 3rem;
     &-camera--active {
       @extend .chat-input__button-camera;
       background-color: #C1C4FF;
-      bottom: 2.2rem;
+      bottom: 4.7rem;
 
       &:focus,
       &:active {
         background-color: #afb2fb;
       }
     }
+
+    &-album--active {
+      @extend .chat-input__button-album;
+      background-color: #afdea3;
+      bottom: 7.4rem;
+
+      &:focus,
+      &:active {
+        background-color: #9cd78d;
+      }
+    }
+
     &-send {
       @extend .chat-input__button;
 
