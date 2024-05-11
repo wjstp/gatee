@@ -114,6 +114,7 @@
 
 .exam__item {
   position: relative;
+
   * {
     font-family: $ChosunGs;
   }
@@ -125,6 +126,7 @@
     width: 15dvh;
     //background-color: red;
   }
+
   .exam__item__question {
     font-size: 1.2rem;
     margin: 5vh 8vw 3vh 8vw;
@@ -168,26 +170,31 @@
     padding: 1vh 3vw;
   }
 }
+
 .exam__scored {
   position: relative;
-  .exam__scored-mark{
+
+  .exam__scored-mark {
     position: absolute;
-    top:0;
-    right:3dvw;
+    top: 0;
+    right: 3dvw;
     width: 13dvh;
     //background-color: #000000;
   }
+
   .exam__scored-footer {
     height: 1vh;
     border-top: 1px solid black;
     border-bottom: 1px solid black;
     margin: 5vh 7vw;
   }
+
   .exam__scored-comment {
     @include flex_row;
     align-items: center;
     @include mx-(1.5);
     @include mb-(1);
+
     img {
       width: $profile-icon-size;
       height: $profile-icon-size;
@@ -195,62 +202,98 @@
       border: 1px solid black;
 
     }
+
     .comment {
       @include flex_col;
-      gap:1dvw;
+      gap: 1dvw;
       @include ml-(1);
     }
+
     .text-gray-100 {
       color: $gray300;
     }
   }
 }
-.exam-grade{
-  *{
+
+.exam-grade {
+  @include flex-col;
+
+  * {
     font-family: $ChosunGs;
   }
 
-  //
-  @include flex-col;
+  height: 100%;
 
-  .exam__grade-header{
-    @include flex_row;
+  .exam__empty {
     @include flex_center;
+    @include flex-col;
+    margin: auto;
+
     .small {
       font-size: 1.3rem;
     }
+
+    .large {
+      font-size: 2rem;
+    }
+  }
+
+  .exam__empty-icon {
+    @include flex_center;
+    @include mt-(3);
+    width: 50%;
+    margin: auto auto;
+
+    path {
+      fill: $gray200;
+    }
+  }
+
+  .exam__grade-header {
+    @include flex_row;
+    @include flex_center;
+
+    .small {
+      font-size: 1.3rem;
+    }
+
     .large {
       font-size: 1.8rem;
     }
 
   }
-  .exam__grade-body{
+
+  .exam__grade-body {
     border: 1px solid black;
     border-bottom: 0px;
     @include mx-(1.5);
     @include my-(2);
 
-    .exam-grade-data{
+    .exam-grade-data {
       @include flex_row;
       @include flex_center;
       border-bottom: 1px solid black;
-      cursor:pointer;
+      cursor: pointer;
+
       .bgGray {
         background-color: $gray100;
       }
-      .flex-date{
+
+      .flex-date {
         flex: 1.3;
         @include flex_center;
         @include py-(0.7);
         border-right: 1px solid black;
       }
-      .flex-point{
+
+      .flex-point {
         flex: 1;
         @include flex_center;
         @include py-(0.7);
 
       }
-      .flex-comment{
+
+      .flex-comment {
         flex: 0.5;
         @include flex_center;
         border-left: 1px solid black;
@@ -260,9 +303,11 @@
     }
 
   }
-  .exam__grade-footer{
+
+  .exam__grade-footer {
     @include flex_center;
     font-size: 1.3rem;
+
     img {
       position: absolute;
       z-index: -1;

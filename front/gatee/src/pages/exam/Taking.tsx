@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Header from "@pages/exam/components/Header";
 import QuestionItem from "@pages/exam/components/QuestionItem";
 import {useNavigate} from "react-router-dom";
+import {getNewExamApi} from "@api/exam";
 
 const ExamTaking = () => {
   const navigate = useNavigate();
@@ -139,6 +140,14 @@ const ExamTaking = () => {
       setQuestionIndex(questionIndex - 1);
     }
   }
+
+
+  useEffect(() => {
+    getNewExamApi(
+      res => console.log(res),
+      err => console.log(err)
+    )
+  }, []);
   return (
     <div>
       <Header/>

@@ -19,7 +19,7 @@ export interface MemberApiReq {
   birthType: string;
   email: string;
   memberId: string;
-  mood: string;
+  mood: string|null;
   name: string;
   nickname: string;
   role: string;
@@ -28,13 +28,26 @@ export interface MemberApiReq {
   isLeader: boolean;
 }
 
-// 가족 api 정보
-export interface MyMemberApiReq {
+export interface MemberApiRes {
   birth: string
   birthType: string;
   email: string;
   memberId: string;
-  mood: string;
+  mood: string|null;
+  name: string;
+  nickname: string;
+  role: string;
+  phoneNumber: string | null;
+  fileUrl: string;
+  isLeader: boolean;
+}
+
+export interface MyMemberApiRes {
+  birth: string
+  birthType: string;
+  email: string;
+  memberId: string;
+  mood: string|null;
   name: string;
   nickname: string;
   role: string;
@@ -42,17 +55,6 @@ export interface MyMemberApiReq {
   phoneNumber: string | null;
   fileUrl: string;
   isLeader: boolean;
-}
-
-
-export interface MemberApiReq {
-  name: string;
-  nickname: string;
-  birth: string;
-  birthType: string;
-  role: string;
-  familyId: string;
-  phoneNumber: null | string;
 }
 
 export interface CreateFamilyApiReq {
@@ -304,4 +306,10 @@ export interface GetThumnailPhotoApiReq {
 
 export interface DeletePhotoApiReq {
   photoIdList: number[]
+}
+
+// 모의고사 api 관련
+export interface ExamResult {
+  score: number;
+  createdAt: string;
 }

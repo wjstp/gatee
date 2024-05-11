@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import basicFamily from "@assets/images/profile/family.jpg"
-import { MemberApiReq } from "@type/index";
+import { MemberApiRes } from "@type/index";
 
 type FamilyStore = {
   familyId: string;
@@ -15,8 +15,8 @@ type FamilyStore = {
   setFamilyCode: (newCode: string) => void;
   familyScore: number;
   setFamilyScore: (newScore: number) => void;
-  familyInfo: MemberApiReq[];
-  setFamilyInfo: (newInfo: MemberApiReq[]) => void;
+  familyInfo: MemberApiRes[];
+  setFamilyInfo: (newInfo: MemberApiRes[]) => void;
 }
 
 export const useFamilyStore = create<FamilyStore>(
@@ -34,6 +34,6 @@ export const useFamilyStore = create<FamilyStore>(
     familyCode: "",
     setFamilyCode: (newCode: string) => set({familyCode: newCode}),
     familyInfo: [],
-    setFamilyInfo: (newInfo: MemberApiReq[]) => set({familyInfo: newInfo}),
+    setFamilyInfo: (newInfo: MemberApiRes[]) => set({familyInfo: newInfo}),
   })
 );

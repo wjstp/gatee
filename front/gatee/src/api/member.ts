@@ -1,6 +1,6 @@
 import localAxios from "@api/LocalAxios";
 import axios, { AxiosError, AxiosResponse, AxiosInstance } from "axios";
-import { MemberApiReq, CreateFamilyApiReq, NaggingApiReq } from "@type/index";
+import { MemberApiRes, CreateFamilyApiReq, NaggingApiReq } from "@type/index";
 
 const local: AxiosInstance = localAxios();
 const local_file: AxiosInstance = localAxios("file");
@@ -14,7 +14,7 @@ export const createFamilyApi = async function (data: FormData,
 };
 
 // 회원 생성
-export const createMemberApi = async function (data: MemberApiReq,
+export const createMemberApi = async function (data: MemberApiRes,
                                                success: (res: AxiosResponse<any>) => void,
                                                fail: (err: AxiosError<any>) => void) {
   await local.post("/members", data).then(success).catch(fail);
@@ -27,11 +27,11 @@ export const getMyDataApi = async function (success: (res: AxiosResponse<any>) =
   await local.get("/members").then(success).catch(fail);
 }
 
-interface GetFamilyMemberApiReq {
+interface GetFamilyMemberApiRes {
   familyId:string
 }
 // 가족 정보 가져오기
-export const getFamilyMemberApi = async function (data: GetFamilyMemberApiReq,
+export const getFamilyMemberApi = async function (data: GetFamilyMemberApiRes,
                                                   success: (res: AxiosResponse<any>) => void,
                                                   fail: (err: AxiosError<any>) => void) {
   await local.get("/family", {params:data}).then(success).catch(fail);
