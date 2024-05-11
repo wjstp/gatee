@@ -210,6 +210,19 @@ include::{snippets}/일정 후기 등록/http-response.adoc[]
 ---
 
 
+= Feature
+
+== 백문백답 답변 저장 및 문제 저장
+
+- Request
+
+include::{snippets}/feature-controller-test/save-feature/http-request.adoc[]
+
+- Response
+
+include::{snippets}/feature-controller-test/save-feature/http-response.adoc[]
+
+
 = Exam
 
 == 시험 문제 조회
