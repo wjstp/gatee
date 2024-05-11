@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {ReactComponent as CorrectImg} from "@assets/images/examImg/correct.svg"
 import {ReactComponent as WrongImg} from "@assets/images/examImg/wrong.svg"
-import {useParams} from "react-router-dom";
+
 import {TransformedQuestionData} from "@type/index";
 
 interface QuestionScoredProps {
