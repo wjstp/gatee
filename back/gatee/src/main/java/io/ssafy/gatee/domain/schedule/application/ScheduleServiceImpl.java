@@ -109,7 +109,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Transactional
     public void saveSchedule(ScheduleSaveReq scheduleSaveReq, UUID memberId) throws FamilyNotFoundException, FirebaseMessagingException {
         Schedule schedule = Schedule.builder()
-                .category(Category.valueOf(scheduleSaveReq.category()))
+                .category(scheduleSaveReq.category())
                 .title(scheduleSaveReq.title())
                 .emoji(scheduleSaveReq.emoji())
                 .content(scheduleSaveReq.content())
@@ -185,6 +185,15 @@ public class ScheduleServiceImpl implements ScheduleService {
         } else {
             throw new DoNotHavePermissionException(DO_NOT_HAVE_REQUEST);
         }
+    }
+
+    //일정 삭제
+    @Override
+    @Transactional
+    public void deleteSchedule(Long scheduleId) {
+        Schedule schedule = scheduleRepository.getReferenceById(scheduleId);
+
+        schedule.deleteData();
     }
 
     // 일정 참여
