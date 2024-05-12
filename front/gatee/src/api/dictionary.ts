@@ -1,6 +1,6 @@
 import localAxios from "@api/LocalAxios";
 import {AxiosError, AxiosResponse, AxiosInstance} from "axios";
-import {ExamResult, SaveAskAnswerApiReq, SaveExamResultApiReq} from "@type/index";
+import { SaveAskAnswerApiReq} from "@type/index";
 
 const local: AxiosInstance = localAxios("default");
 

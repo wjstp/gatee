@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Link, useNavigate} from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 import {useDictStore} from "@store/useDictStore";
 import {sumbitAskAnswerApi} from "@api/dictionary";
 
@@ -7,8 +7,7 @@ const CharacterQuestion = () => {
   const navigate = useNavigate();
   const {askList, askIndex, setAskIndex} = useDictStore()
   const [inputValue, setInputValue] = useState('');
-  // 질문
-  const question: string = '못먹는 음식이 뭔가요?'
+
   // 건너뛰기 버튼
   const skip = () => {
     console.log("다음 질문");
