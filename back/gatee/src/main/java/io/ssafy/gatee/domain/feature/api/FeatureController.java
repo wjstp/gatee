@@ -44,5 +44,15 @@ public class FeatureController {
         featureService.saveFeature(customUserDetails.getMemberId(), featureReq);
     }
 
+    // 답변 수정
+    @PatchMapping
+    @ResponseStatus(HttpStatus.OK)
+    public void updateFeature(
+            @RequestBody FeatureReq featureReq,
+            @AuthenticationPrincipal CustomUserDetails customUserDetails
+    ) {
+        featureService.updateFeature(customUserDetails.getMemberId(), featureReq);
+    }
+
 
 }

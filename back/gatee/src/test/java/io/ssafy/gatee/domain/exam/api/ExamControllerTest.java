@@ -210,7 +210,8 @@ class ExamControllerTest extends RestDocsTestSupport {
                 .willReturn(examDetailRes);
 
         // where
-        ResultActions result = mockMvc.perform(get("/api/exams/{examId}/results", 1L)
+        ResultActions result = mockMvc.perform(get("/api/exams/results/details")
+                .param("examId","1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
         );
@@ -218,8 +219,8 @@ class ExamControllerTest extends RestDocsTestSupport {
         //then
         result.andExpect(status().isOk())
                 .andDo(restDocs.document(
-                        pathParameters(
-                                parameterWithName("examId").description("모의고사 id").optional()
+                        queryParameters(
+                                parameterWithName("examId").description("시험 ID")
                         ),
                         responseFields(
                                 fieldWithPath("score").type(JsonFieldType.NUMBER).description("점수"),
