@@ -60,27 +60,21 @@ const MainIndex = () => {
 
   return (
     <div className="main-container">
-      {loading?
-      <Loading/>:
-        <>
-          {/* 가족 온도 */}
-          <FamilyPoint/>
+      {loading? <Loading/> : null}
+        {/* 가족 온도 */}
+        <FamilyPoint/>
 
-          {/* 프로필 리스트 */}
-          <ProfileList profileDataList={familyInfo}/>
+        {/* 프로필 리스트 */}
+        <ProfileList profileDataList={familyInfo}/>
 
-          {/* 미션 탭으로 가기 */}
-          <Link to="/main/mission" className="go-to-mission__button-event">
-            <PiTarget size={35}/>
-            <p>미션</p>
-          </Link>
+        {/* 미션 탭으로 가기 */}
+        <Link to="/main/mission" className="go-to-mission__button-event">
+          <PiTarget size={35}/>
+          <p>미션</p>
+        </Link>
 
-          <Lottie className="main-heart-animation" animationData={HeartAnimation}/>
-          <House className="main-house-img"/>
-
-        </>
-      }
-
+        <Lottie className="main-heart-animation" animationData={HeartAnimation}/>
+        <House className="main-house-img"/>
     </div>
   );
 }

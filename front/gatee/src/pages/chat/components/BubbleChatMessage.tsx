@@ -6,6 +6,7 @@ import {useMemberStore} from "@store/useMemberStore";
 interface ChatMessageProps {
   chat: ChatMessage | ChatEmoji;
 }
+
 const BubbleChatMessage = (props: ChatMessageProps) => {
   const { chat } = props;
   const { myInfo } = useMemberStore();
@@ -25,7 +26,7 @@ const BubbleChatMessage = (props: ChatMessageProps) => {
     <div className={`bubble-chat__${ getSenderType(chat.sender) }`}>
       { "emojiId" in chat && (
        <div className="bubble-chat__emoji">
-         <img src={getEmoji(chat.emojiId)} alt="chat.emojiId"/>
+         <img src={getEmoji(chat.emojiId)} alt={chat.emojiId}/>
        </div>
       )}
       { chat.content }

@@ -2,13 +2,9 @@ import {
   Mood,
   Question,
   Schedule,
-  ChatMessage,
   Emoji,
-  ChatFile,
-  ChatAppointment,
-  ChatEmoji,
-  ChatDateLine,
-  ChatAlarm, MemberApiRes, MyMemberApiRes
+  MemberApiRes,
+  MyMemberApiRes
 } from "@type/index";
 import EmojiDogOne from "@assets/images/emoji/emoji_dog1.png";
 import EmojiDogTwo from "@assets/images/emoji/emoji_dog2.png";
@@ -208,95 +204,6 @@ export const ScheduleSample: Schedule[] = [
     participant: []
   }
 ]
-
-// 채팅 임시 데이터
-export const ChatSample: (ChatMessage |  ChatFile | ChatAppointment | ChatEmoji | ChatDateLine | ChatAlarm)[] = [
-  {
-    messageType: "ALARM",
-    sender: "megar0829@gmail.com",
-    time: "2024-05-02T23:50:00",
-    totalMember: 6,
-    unreadMember: ["megar0829@gmail.com"],
-    content: "띡이랑 놀 사람",
-  },
-  {
-    messageType: "APPOINTMENT",
-    sender: "asthyeon@gmail.com",
-    time: "2024-05-02T02:50:00",
-    totalMember: 6,
-    unreadMember: ["megar0829@gmail.com"],
-    participants: ["asthyeon@gmail.com"],
-    content: "추억 회상할 사람"
-  },
-  {
-    messageType: "APPOINTMENT",
-    sender: "zyo0720@kakao.com",
-    time: "2024-05-02T02:40:00",
-    totalMember: 6,
-    unreadMember: ["megar0829@gmail.com"],
-    participants: ["zyo0720@kakao.com", "yebin4684@gmail.com"],
-    content: "저녁 같이 먹을 사람"
-  },
-  {
-    messageType: "FILE",
-    sender: "asthyeon@gmail.com",
-    time: "2024-05-02T02:30:00",
-    totalMember: 6,
-    unreadMember: ["megar0829@gmail.com"],
-    files: [
-      "https://i.pinimg.com/736x/39/48/76/394876e0e2129f959bd910b65da6f3f8.jpg",
-      "https://i.pinimg.com/736x/39/48/76/394876e0e2129f959bd910b65da6f3f8.jpg",
-      "https://i.pinimg.com/736x/39/48/76/394876e0e2129f959bd910b65da6f3f8.jpg",
-      "https://i.pinimg.com/736x/39/48/76/394876e0e2129f959bd910b65da6f3f8.jpg"
-    ],
-  },
-  {
-    messageType: "FILE",
-    sender: "wjstp14@gmail.com",
-    time: "2024-05-02T02:20:00",
-    totalMember: 6,
-    unreadMember: ["megar0829@gmail.com"],
-    files: ["https://i.pinimg.com/564x/8b/a2/83/8ba283897b9ad414c929ca1a8630b4bd.jpg"],
-  },
-  {
-    messageType: "MESSAGE",
-    sender: "zyo0720@kakao.com",
-    time: "2024-05-02T02:10:00",
-    totalMember: 6,
-    unreadMember: ["megar0829@gmail.com"],
-    content: "그러니까",
-  },
-  {
-    messageType: "MESSAGE",
-    sender: "yebin4684@gmail.com",
-    time: "2024-05-02T01:00:00",
-    totalMember: 6,
-    unreadMember: ["megar0829@gmail.com"],
-    content: ";;",
-  },
-  {
-    messageType: "MESSAGE",
-    sender: "yebin4684@gmail.com",
-    time: "2024-05-02T01:00:00",
-    totalMember: 6,
-    unreadMember: ["megar0829@gmail.com"],
-    content: "뭐야 저 사람",
-  },
-  {
-    messageType: "EMOJI",
-    sender: "megar0829@gmail.com",
-    time: "2024-05-02T00:00:00",
-    totalMember: 6,
-    unreadMember: [],
-    content: "띡이 삐딤.",
-    emojiId: "dog4"
-  },
-  {
-    messageType: "DATE_LINE",
-    time: "2024-05-02T00:00:00",
-  },
-]
-
 
 export const questionList = [
   {
