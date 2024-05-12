@@ -1,12 +1,15 @@
 package io.ssafy.gatee.domain.family.application;
 
+import io.ssafy.gatee.domain.family.dto.request.FamilyJoinReq;
 import io.ssafy.gatee.domain.family.dto.request.FamilyNameReq;
+import io.ssafy.gatee.domain.family.dto.response.FamilyCheckRes;
 import io.ssafy.gatee.domain.family.dto.response.FamilyCodeRes;
 import io.ssafy.gatee.domain.family.dto.response.FamilyInfoRes;
 import io.ssafy.gatee.domain.family.dto.response.FamilySaveRes;
 import io.ssafy.gatee.domain.file.entity.type.FileType;
 import io.ssafy.gatee.global.exception.error.bad_request.ExpiredCodeException;
 import io.ssafy.gatee.global.exception.error.not_found.FamilyNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -22,9 +25,11 @@ public interface FamilyService {
 
     UUID getFamilyIdByMemberId(UUID memberId);
 
-    void joinFamily(String familyCode, UUID memberId) throws ExpiredCodeException;
+    void joinFamily(FamilyJoinReq familyCode, UUID memberId) throws ExpiredCodeException;
 
     FamilyInfoRes readFamily(String s) throws FamilyNotFoundException;
 
     void editFamilyName(UUID familyId, FamilyNameReq familyNameReq) throws FamilyNotFoundException;
+
+    FamilyCheckRes checkFamilyCode(String familyCode, UUID memberId);
 }
