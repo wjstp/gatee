@@ -295,6 +295,16 @@ include::{snippets}/exam-controller-test/read-exam/http-request.adoc[]
 include::{snippets}/exam-controller-test/read-exam/http-response.adoc[]
 include::{snippets}/exam-controller-test/read-exam/response-fields.adoc[]
 
+== 시험 결과 조회
+
+- Request
+
+include::{snippets}/exam-controller-test/read-family-exam-results/http-request.adoc[]
+
+- Response
+
+include::{snippets}/exam-controller-test/read-family-exam-results/http-response.adoc[]
+include::{snippets}/exam-controller-test/read-family-exam-results/response-fields.adoc[]
 
 == 자신의 시험 결과 리스트 조회
 

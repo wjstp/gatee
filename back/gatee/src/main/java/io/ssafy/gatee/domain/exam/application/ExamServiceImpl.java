@@ -2,10 +2,7 @@ package io.ssafy.gatee.domain.exam.application;
 
 import io.ssafy.gatee.domain.exam.dao.ExamRepository;
 import io.ssafy.gatee.domain.exam.dto.request.ExamReq;
-import io.ssafy.gatee.domain.exam.dto.response.ExamDetailListRes;
-import io.ssafy.gatee.domain.exam.dto.response.ExamDetailRes;
-import io.ssafy.gatee.domain.exam.dto.response.ExamRes;
-import io.ssafy.gatee.domain.exam.dto.response.ExamResultRes;
+import io.ssafy.gatee.domain.exam.dto.response.*;
 import io.ssafy.gatee.domain.exam.entity.Exam;
 import io.ssafy.gatee.domain.member.dao.MemberRepository;
 import io.ssafy.gatee.domain.member.entity.Member;
@@ -74,6 +71,11 @@ public class ExamServiceImpl implements ExamService {
         return ExamDetailRes.builder()
                 .score(exam.getScore())
                 .examData(memberFamilyExams.stream().map(ExamDetailListRes::toDto).toList()).build();
+    }
+
+    @Override
+    public List<ExamFamilyRes> readFamilyExamResults(UUID memberId) {
+        return memberFamilyExamRepository.findFamilyExamResults(memberId);
     }
 
     @Override
