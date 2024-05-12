@@ -2,8 +2,10 @@ package io.ssafy.gatee.domain.push_notification.application;
 
 import com.google.firebase.messaging.FirebaseMessagingException;
 import io.ssafy.gatee.domain.push_notification.dto.request.NaggingReq;
+import io.ssafy.gatee.domain.push_notification.dto.request.NotificationAgreementReq;
 import io.ssafy.gatee.domain.push_notification.dto.request.PushNotificationFCMReq;
 import io.ssafy.gatee.domain.push_notification.dto.response.NaggingRes;
+import io.ssafy.gatee.domain.push_notification.dto.response.NotificationAgreementRes;
 import io.ssafy.gatee.domain.push_notification.dto.response.PushNotificationRes;
 import io.ssafy.gatee.domain.push_notification.entity.Type;
 
@@ -29,4 +31,9 @@ public interface PushNotificationService {
     void sendPushOneToOne(PushNotificationFCMReq pushNotificationFCMReq) throws FirebaseMessagingException;
 
     void sendPushOneToMany(PushNotificationFCMReq pushNotificationFCMReq) throws FirebaseMessagingException;
+
+    NotificationAgreementRes readNotificationAgreements(UUID memberId);
+
+    void modifyNotificationAgreements(UUID memberId, NotificationAgreementReq agreementReq);
+
 }
