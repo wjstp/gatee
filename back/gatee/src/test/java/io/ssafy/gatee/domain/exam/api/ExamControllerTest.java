@@ -164,6 +164,9 @@ class ExamControllerTest extends RestDocsTestSupport {
         //then
         result.andExpect(status().isOk())
                 .andDo(restDocs.document(
+                        pathParameters(
+                                parameterWithName("memberId").description("멤버 id").optional()
+                        ),
                         responseFields(
                                 fieldWithPath("[].examId").type(JsonFieldType.NUMBER).description("모의고사 id"),
                                 fieldWithPath("[].score").type(JsonFieldType.NUMBER).description("점수"),
