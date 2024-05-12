@@ -98,7 +98,6 @@ include::{snippets}/family-controller-test/read-family/response-body.adoc[]
 include::{snippets}/family-controller-test/read-family/response-fields.adoc[]
 
 
-
 == 가족 코드 생성
 
 - Request
@@ -109,6 +108,16 @@ include::{snippets}/family-controller-test/create-family-code/query-parameters.a
 - Response
 
 include::{snippets}/family-controller-test/create-family-code/http-response.adoc[]
+
+== 가족 코드 확인
+
+- Request
+
+include::{snippets}/family-controller-test/check-family-code/http-request.adoc[]
+
+- Response
+
+include::{snippets}/family-controller-test/check-family-code/http-response.adoc[]
 
 
 == 가족 합류
@@ -295,6 +304,16 @@ include::{snippets}/exam-controller-test/read-exam/http-request.adoc[]
 include::{snippets}/exam-controller-test/read-exam/http-response.adoc[]
 include::{snippets}/exam-controller-test/read-exam/response-fields.adoc[]
 
+== 시험 결과 조회
+
+- Request
+
+include::{snippets}/exam-controller-test/read-family-exam-results/http-request.adoc[]
+
+- Response
+
+include::{snippets}/exam-controller-test/read-family-exam-results/http-response.adoc[]
+include::{snippets}/exam-controller-test/read-family-exam-results/response-fields.adoc[]
 
 == 자신의 시험 결과 리스트 조회
 

@@ -1,7 +1,9 @@
 package io.ssafy.gatee.domain.family.application;
 
 import io.ssafy.gatee.domain.family.dao.FamilyRepository;
+import io.ssafy.gatee.domain.family.dto.request.FamilyJoinReq;
 import io.ssafy.gatee.domain.family.dto.request.FamilyNameReq;
+import io.ssafy.gatee.domain.family.dto.response.FamilyCheckRes;
 import io.ssafy.gatee.domain.family.dto.response.FamilyCodeRes;
 import io.ssafy.gatee.domain.family.dto.response.FamilyInfoRes;
 import io.ssafy.gatee.domain.family.dto.response.FamilySaveRes;
@@ -23,6 +25,7 @@ import io.ssafy.gatee.global.exception.error.not_found.MemberFamilyNotFoundExcep
 import io.ssafy.gatee.global.redis.dao.OnlineRoomMemberRepository;
 import io.ssafy.gatee.global.redis.dto.OnlineRoomMember;
 import io.ssafy.gatee.global.s3.util.S3Util;
+import jakarta.validation.Valid;
 import jodd.util.StringUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -162,13 +165,13 @@ public class FamilyServiceImpl implements FamilyService {
     // 가족 합류
     @Override
     @Transactional
-    public void joinFamily(String familyCode, UUID memberId) throws ExpiredCodeException {
+    public void joinFamily(FamilyJoinReq familyJoinReq, UUID memberId) throws ExpiredCodeException {
         ValueOperations<String, String> redisValueOperation = redisTemplate.opsForValue();
 
-        if (StringUtil.isEmpty(redisValueOperation.get(familyCode))) {
+        if (StringUtil.isEmpty(redisValueOperation.get(familyJoinReq.familyCode()))) {
             throw new ExpiredCodeException(EXPIRED_CODE);
         } else {
-            String familyId = redisValueOperation.get(familyCode);
+            String familyId = redisValueOperation.get(familyJoinReq.familyCode());
 
             Member member = memberRepository.getReferenceById(memberId);
 
@@ -198,6 +201,7 @@ public class FamilyServiceImpl implements FamilyService {
                     .fileUrl(memberFamily.getMember().getFile().getUrl())
                     .birth(memberFamily.getMember().getBirth())
                     .name(memberFamily.getMember().getName())
+                    .nickname(memberFamily.getMember().getNickname())
                     .role(memberFamily.getRole())
                     .email(memberFamily.getMember().getEmail())
                     .mood(memberFamily.getMember().getMood())
@@ -222,5 +226,21 @@ public class FamilyServiceImpl implements FamilyService {
                 .orElseThrow(() -> new FamilyNotFoundException(FAMILY_NOT_FOUND));
 
         family.editFamilyName(familyNameReq.name());
+    }
+
+    @Override
+    public FamilyCheckRes checkFamilyCode(String familyCode, UUID memberId) {
+        ValueOperations<String, String> redisValueOperation = redisTemplate.opsForValue();
+
+        if (StringUtil.isEmpty(redisValueOperation.get(familyCode))) {
+            throw new ExpiredCodeException(EXPIRED_CODE);
+        } else {
+            String familyId = redisValueOperation.get(familyCode);
+            Family family = familyRepository.findById(UUID.fromString(familyId))
+                    .orElseThrow(()-> new FamilyNotFoundException(FAMILY_NOT_FOUND));
+            return FamilyCheckRes.builder()
+                    .familyId(familyId)
+                    .familyName(family.getName()).build();
+        }
     }
 }
