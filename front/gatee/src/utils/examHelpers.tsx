@@ -22,7 +22,8 @@ export const transformQuestionData = (data: QuestionData[]): {
     const correctNumber = answerList.findIndex(answer => answer === question.correctAnswer) + 1;
 
     transformedData.push({
-      question: question.question,
+      nickname: question.nickname,
+      question: question.questionWord,
       answerList,
       correctNumber,
       choiceNumber: 0
