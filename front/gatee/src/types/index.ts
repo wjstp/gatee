@@ -324,11 +324,13 @@ export interface DeletePhotoApiReq {
 
 // 모의고사 api 관련
 export interface ExamResult {
+  examId:string|number;
   score: number;
   createdAt: string;
 }
 
 export interface TransformedQuestionData {
+  nickname:string,
   question: string;
   answerList: string[];
   correctNumber: number;
@@ -336,7 +338,8 @@ export interface TransformedQuestionData {
 }
 
 export interface QuestionData {
-  question: string;
+  nickname:string;
+  questionWord: string;
   wrongAnswers: string[];
   correctAnswer: string;
 }
