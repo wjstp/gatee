@@ -286,7 +286,7 @@ include::{snippets}/exam-controller-test/read-exam/http-response.adoc[]
 include::{snippets}/exam-controller-test/read-exam/response-fields.adoc[]
 
 
-== 시험 결과 리스트 조회
+== 자신의 시험 결과 리스트 조회
 
 - Request
 
@@ -297,6 +297,18 @@ include::{snippets}/exam-controller-test/read-exam-results/http-request.adoc[]
 include::{snippets}/exam-controller-test/read-exam-results/http-response.adoc[]
 include::{snippets}/exam-controller-test/read-exam-results/response-fields.adoc[]
 
+
+== 다른 사람의 시험 결과 리스트 조회
+
+- Request
+
+include::{snippets}/exam-controller-test/read-other-exam-results/http-request.adoc[]
+include::{snippets}/exam-controller-test/read-other-exam-results/path-parameters.adoc[]
+
+- Response
+
+include::{snippets}/exam-controller-test/read-other-exam-results/http-response.adoc[]
+include::{snippets}/exam-controller-test/read-other-exam-results/response-fields.adoc[]
 
 == 시험 결과 상세 조회
 
