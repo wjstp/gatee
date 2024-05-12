@@ -37,7 +37,7 @@ export const getFamilyMemberApi = async function (data: GetFamilyMemberApiReq,
 export const createMemberApi = async function (data: CreateMemberApiReq,
                                                success: (res: AxiosResponse<any>) => void,
                                                fail: (err: AxiosError<any>) => void) {
-  await local.post("/members", data).then(success).catch(fail);
+  await local.patch("/members", data).then(success).catch(fail);
 };
 
 // 내 정보 조회

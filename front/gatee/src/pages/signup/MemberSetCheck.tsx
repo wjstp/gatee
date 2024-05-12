@@ -20,6 +20,11 @@ const SignupMemberSetCheck = () => {
     setStringMemberImage,
   } = useMemberStore();
 
+  console.log(name)
+  console.log(birthDay)
+  console.log(birthType)
+  console.log(role)
+
   // 회원 생성
   const createMember = () => {
     if (birthDay && role) {
@@ -29,9 +34,9 @@ const SignupMemberSetCheck = () => {
           nickname: name,
           birth: birthDay,
           birthType: birthType,
-          role: role,
+          role: "MOTHER",
           familyId: "2f3bf47b-c6ea-47fe-9c5e-03110009d1ae",
-          phoneNumber: null
+          phoneNumber: "010-8806-8489"
         },
         (res: AxiosResponse<any>) => {
           console.log(res);
