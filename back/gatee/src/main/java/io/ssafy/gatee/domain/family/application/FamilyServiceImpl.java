@@ -198,6 +198,7 @@ public class FamilyServiceImpl implements FamilyService {
                     .fileUrl(memberFamily.getMember().getFile().getUrl())
                     .birth(memberFamily.getMember().getBirth())
                     .name(memberFamily.getMember().getName())
+                    .nickname(memberFamily.getMember().getNickname())
                     .role(memberFamily.getRole())
                     .email(memberFamily.getMember().getEmail())
                     .mood(memberFamily.getMember().getMood())
