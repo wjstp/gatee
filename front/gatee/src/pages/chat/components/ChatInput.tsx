@@ -12,6 +12,7 @@ import { EmojiItem, ChatSendMessage } from "@type/index";
 import { uploadFileApi } from "@api/file";
 import { NavLink } from "react-router-dom";
 import dayjs from "dayjs";
+import { useChatStore } from "@store/useChatStore";
 
 interface ChatInputProps {
   onSendMessage: (newMessages: ChatSendMessage) => void;
@@ -31,7 +32,7 @@ const ChatInput = (props: ChatInputProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedEmojiCategory, SetSelectedEmojiCategory] = useState<string>(EMOJI[0].name);
   const buttonWrapperRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const { setShowBottomBar } = useChatStore();
 
   // 변수 초기화
   const reset = () => {
@@ -200,36 +201,20 @@ const ChatInput = (props: ChatInputProps) => {
     }
     document.addEventListener("mousedown", handleClickOutside);
 
-    // 언마운트 시 이벤트리스너 해제
+    // 언마운트 시 이벤트 리스너 해제
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
-  // Input 포커스 감지
-  useEffect(() => {
-    const handleFocus = () => {
-      console.log('Input에 포커스가 맞춰졌습니다.');
-    };
-
-    const handleBlur = () => {
-      console.log('Input에서 포커스가 해제되었습니다.');
-    };
-
-    // inputRef.current가 존재할 때만 이벤트 리스너를 추가합니다.
-    if (inputRef.current) {
-      inputRef.current.addEventListener('focus', handleFocus);
-      inputRef.current.addEventListener('blur', handleBlur);
+  // TextField 포커스 핸들러
+  const handleFocusInput = (isFocus: boolean) => {
+    if (isFocus) {
+      setShowBottomBar(false);
+    } else {
+      setShowBottomBar(true);
     }
-
-    // 컴포넌트가 unmount 될 때 이벤트 리스너를 제거합니다.
-    return () => {
-      if (inputRef.current) {
-        inputRef.current.removeEventListener('focus', handleFocus);
-        inputRef.current.removeEventListener('blur', handleBlur);
-      }
-    };
-  }, []);
+  }
 
   // 미리보기 조건부 렌더링
   const renderPreview = () => {
@@ -350,7 +335,8 @@ const ChatInput = (props: ChatInputProps) => {
             sx={muiFocusCustom}
             size="small"
             className="chat-input__input"
-            ref={inputRef}
+            onFocus={() => handleFocusInput(true)}
+            onBlur={() => handleFocusInput(false)}
           />
 
           {isOpenAppointment ? (

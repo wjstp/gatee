@@ -25,7 +25,7 @@ const BubbleChatAppointment = (props: ChatAppointmentProps) => {
     if (chat.participants) {
       setUserParticipant(chat.participants.includes(myInfo.memberId));
     }
-  }, [chat.participants]);
+  }, [chat.participants, myInfo.memberId]);
 
   // 참여자 정보 콜백 함수
   const getParticipantsInfo = (id: string, index: number) => {

@@ -28,19 +28,17 @@ const ChatIndex = () => {
   const { familyId } = useFamilyStore();
   const chatRef = firebase.database().ref(`chat/${familyId}/messages`);
 
-  const PAGE_SIZE: number = 10;
+  const PAGE_SIZE: number = 30;
   const [messages, setMessages] = useState<(ChatContent | ChatDateLine)[]>([]);
   const [startKey, setStartKey] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const chatMainRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // WebSocket 연결
     connect();
 
-    if (familyId) {
-      loadMessages();
-    }
-
-    // Firebase 실시간 이벤트 수신 등록
+    // Firebase 실시간 이벤트 리스너 등록
     chatRef.limitToLast(1).on('child_added', handleAddChatData);
     chatRef.on('child_changed', handleUpdateChatData);
 
@@ -49,10 +47,17 @@ const ChatIndex = () => {
         // WebSocket 연결 해제
         ws.current.close();
       }
-      // Firebase 실시간 이벤트 수신 해제
+      // Firebase 실시간 이벤트 리스너 해제
       chatRef.off();
     }
   }, []);
+
+  // 채팅방 입장 시 메시지 조회
+  useEffect(() => {
+    if (familyId) {
+      loadMessages();
+    }
+  }, [familyId]);
 
   // WebSocket 연결
   const connect = () => {
@@ -63,7 +68,7 @@ const ChatIndex = () => {
     ws.current.onclose = handleWebSocketClose;
   }
 
-  // WebSocket 연결 이벤트 핸들러
+  // WebSocket 연결 성공 이벤트 핸들러
   const handleWebSocketOpen = () => {
     console.log("<<< WS CONNECT");
 
@@ -98,7 +103,7 @@ const ChatIndex = () => {
     } else {
       // 최대 횟수에 도달하면 재연결 시도를 중단하고 메인 페이지로 이동
       console.log("Reached maximum reconnection attempts");
-      navigate("/main");
+      // navigate("/main");
     }
   };
 
@@ -163,6 +168,23 @@ const ChatIndex = () => {
     }));
   }
 
+  // 스크롤 이벤트 리스너 등록
+  useEffect(() => {
+    if (chatMainRef.current) {
+      chatMainRef.current.addEventListener('scroll', handleScroll);
+    }
+    return () => {
+      if (chatMainRef.current) {
+        chatMainRef.current.removeEventListener('scroll', handleScroll);
+      }
+    };
+  }, [chatMainRef.current]);
+
+  // 1/3 지점에 도달하면 추가 메시지 불러오기
+  const handleScroll = () => {
+
+  };
+
   // 이전 채팅과 현재 채팅의 보낸 사람이 같은지 여부에 따라 props 설정
   const setPrevProps = (prevChat: ChatContent, currentChat: ChatContent) => {
     if (prevChat) {
@@ -196,8 +218,8 @@ const ChatIndex = () => {
 
   return (
     <div className="chat">
-      {isReconnecting? <Loading/> : null}
-      <div className="chat__main">
+      {/*{isReconnecting? <Loading/> : null}*/}
+      <div className="chat__main" ref={chatMainRef}>
         {renderChatBubble}
       </div>
       <ChatInput onSendMessage={send}/>

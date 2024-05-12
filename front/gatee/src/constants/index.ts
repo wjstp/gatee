@@ -2,13 +2,9 @@ import {
   Mood,
   Question,
   Schedule,
-  ChatMessage,
   Emoji,
-  ChatFile,
-  ChatAppointment,
-  ChatEmoji,
-  ChatDateLine,
-  ChatAlarm, MemberApiRes, MyMemberApiRes
+  MemberApiRes,
+  MyMemberApiRes
 } from "@type/index";
 import EmojiDogOne from "@assets/images/emoji/emoji_dog1.png";
 import EmojiDogTwo from "@assets/images/emoji/emoji_dog2.png";

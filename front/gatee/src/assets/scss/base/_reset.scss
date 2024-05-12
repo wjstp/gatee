@@ -36,6 +36,12 @@ body {
     overflow-y: auto;
   }
 
+  #main-focus {
+    height: calc($container-height + $bottomBar-height);
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
   // 전체 영역 차지
   #sub {
     height: 100svh;
