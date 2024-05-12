@@ -41,21 +41,21 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
         log.info("test" + customUserDetails.getMemberId());
         jwtService.publishTokens(response, authentication);
-//        response.setStatus(200);
-        String name = memberRepository.findById(customUserDetails.getMemberId())
-                .orElseThrow(()-> new MemberNotFoundException(ExceptionMessage.MEMBER_NOT_FOUND)).getName();
-        
-        UriComponentsBuilder uriComponentsBuilder;
-        if (isAnonymousMember(customUserDetails)) {
-            log.info("회원 정보 기입 페이지로 이동");
-            uriComponentsBuilder = UriComponentsBuilder.fromUriString(REDIRECT_URI_ANONYMOUS).queryParam("name", name);
-        } else {
-            log.info("메인 페이지로 이동");
-            uriComponentsBuilder = UriComponentsBuilder.fromUriString(REDIRECT_URI_SUCCESS);
-        }
-        String redirectURI = uriComponentsBuilder.toUriString();
-
-        response.sendRedirect(redirectURI);
+        response.setStatus(200);
+//        String name =  smemberRepository.findById(customUserDetails.getMemberId())
+//                .orElseThrow(()-> new MemberNotFoundException(ExceptionMessage.MEMBER_NOT_FOUND)).getName();
+//
+//        UriComponentsBuilder uriComponentsBuilder;
+//        if (isAnonymousMember(customUserDetails)) {
+//            log.info("회원 정보 기입 페이지로 이동");
+//            uriComponentsBuilder = UriComponentsBuilder.fromUriString(REDIRECT_URI_ANONYMOUS).queryParam("name", name);
+//        } else {
+//            log.info("메인 페이지로 이동");
+//            uriComponentsBuilder = UriComponentsBuilder.fromUriString(REDIRECT_URI_SUCCESS);
+//        }
+//        String redirectURI = uriComponentsBuilder.toUriString();
+//
+//        response.sendRedirect(redirectURI);
     }
 
     public boolean isAnonymousMember(CustomUserDetails customUserDetails) {
