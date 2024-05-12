@@ -2,6 +2,7 @@ package io.ssafy.gatee.domain.exam.application;
 
 import io.ssafy.gatee.domain.exam.dto.request.ExamReq;
 import io.ssafy.gatee.domain.exam.dto.response.ExamDetailRes;
+import io.ssafy.gatee.domain.exam.dto.response.ExamFamilyRes;
 import io.ssafy.gatee.domain.exam.dto.response.ExamRes;
 import io.ssafy.gatee.domain.exam.dto.response.ExamResultRes;
 
@@ -17,4 +18,6 @@ public interface ExamService {
     List<ExamResultRes> readExamResults(UUID memberId);
 
     ExamDetailRes readExamResultDetail(Long examId);
+
+    List<ExamFamilyRes> readFamilyExamResults(UUID memberId);
 }

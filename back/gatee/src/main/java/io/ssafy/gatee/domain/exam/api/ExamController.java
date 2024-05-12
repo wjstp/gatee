@@ -3,6 +3,7 @@ package io.ssafy.gatee.domain.exam.api;
 import io.ssafy.gatee.domain.exam.application.ExamService;
 import io.ssafy.gatee.domain.exam.dto.request.ExamReq;
 import io.ssafy.gatee.domain.exam.dto.response.ExamDetailRes;
+import io.ssafy.gatee.domain.exam.dto.response.ExamFamilyRes;
 import io.ssafy.gatee.domain.exam.dto.response.ExamRes;
 import io.ssafy.gatee.domain.exam.dto.response.ExamResultRes;
 import io.ssafy.gatee.global.security.user.CustomUserDetails;
@@ -29,6 +30,13 @@ public class ExamController {
         return examService.readExam(customUserDetails.getMemberId());
     }
 
+    @GetMapping("/results/family")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ExamFamilyRes> readFamilyExamResults(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails
+    ) {
+        return examService.readFamilyExamResults(customUserDetails.getMemberId());
+    }
     @GetMapping("/results")
     @ResponseStatus(HttpStatus.OK)
     public List<ExamResultRes> readExamResults(
