@@ -3,7 +3,9 @@ package io.ssafy.gatee.domain.family.api;
 import io.ssafy.gatee.config.restdocs.RestDocsTestSupport;
 import io.ssafy.gatee.config.security.CustomWithMockUser;
 import io.ssafy.gatee.domain.family.application.FamilyService;
+import io.ssafy.gatee.domain.family.dto.request.FamilyJoinReq;
 import io.ssafy.gatee.domain.family.dto.request.FamilyNameReq;
+import io.ssafy.gatee.domain.family.dto.response.FamilyCheckRes;
 import io.ssafy.gatee.domain.family.dto.response.FamilyCodeRes;
 import io.ssafy.gatee.domain.family.dto.response.FamilyInfoRes;
 import io.ssafy.gatee.domain.family.dto.response.FamilySaveRes;
@@ -125,7 +127,7 @@ class FamilyControllerTest extends RestDocsTestSupport {
     void joinFamily() throws Exception {
 
         // given
-        doNothing().when(familyService).joinFamily(any(String.class), any(UUID.class));
+        doNothing().when(familyService).joinFamily(any(FamilyJoinReq.class), any(UUID.class));
 
         // when
         ResultActions result = mockMvc.perform(post("/api/family/join")
@@ -142,6 +144,35 @@ class FamilyControllerTest extends RestDocsTestSupport {
                         )
                 ));
     }
+
+    @Test
+    @CustomWithMockUser
+    void checkFamilyCode() throws Exception {
+
+        // given
+        given(familyService.checkFamilyCode(any(String.class), any(UUID.class)))
+                .willReturn(FamilyCheckRes.builder()
+                        .familyName("가족 이름")
+                        .familyId("가족 id")
+                        .build());
+
+        // when
+        ResultActions result = mockMvc.perform(post("/api/family/code")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(readJson("json/family/checkFamilyCode.json"))
+                .accept(MediaType.APPLICATION_JSON)
+
+        );
+
+        // then
+        result.andExpect(status().isOk())
+                .andDo(restDocs.document(
+                        responseFields(
+                                fieldWithPath("familyId").type(JsonFieldType.STRING).description("가족 id"),
+                                fieldWithPath("familyName").type(JsonFieldType.STRING).description("가족 이름"))
+        ));
+    }
+
 
     @Test
     @CustomWithMockUser
