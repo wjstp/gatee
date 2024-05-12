@@ -1,19 +1,19 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import TopBar from '@components/TopBar';
 import BottomBar from "@components/BottomBar";
-import {Outlet, useLocation} from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
 import { Helmet, HelmetProvider } from 'react-helmet-async';
-import {useModalStore} from "@store/useModalStore";
-import {useMemberStore} from "@store/useMemberStore";
-import {useFamilyStore} from "@store/useFamilyStore";
-import {getFamilyMemberApi, getMyDataApi} from "@api/member";
+import { useModalStore } from "@store/useModalStore";
+import { useMemberStore } from "@store/useMemberStore";
+import { useFamilyStore}  from "@store/useFamilyStore";
+import { getFamilyMemberApi, getMyDataApi } from "@api/member";
+import { useChatStore } from "@store/useChatStore";
 
 const MainLayout = () => {
-  const location = useLocation()
-  const {showModal} = useModalStore()
-  const {setMyInfo} = useMemberStore()
-  const {familyInfo,setFamilyId, setFamilyInfo, setFamilyName, setFamilyScore} = useFamilyStore()
-
+  const {showModal} = useModalStore();
+  const { setMyInfo } = useMemberStore();
+  const {familyInfo,setFamilyId, setFamilyInfo, setFamilyName, setFamilyScore} = useFamilyStore();
+  const { showBottomBar } = useChatStore();
 
   // 가족 데이터 저장 Api
   const saveFamilyData = (familyId:string) => {
@@ -48,15 +48,14 @@ const MainLayout = () => {
   }
 
   useEffect(() => {
-    // 채팅이 아니고, 스토어가 비어있을때만
+    // 스토어가 비어있을 때만
     if (familyInfo.length === 0)
-    saveMemberData()
-  }, [location.pathname]);
-
+    saveMemberData();
+  }, []);
 
   return (
     <>
-      {/* 모달이 띄워진 상태라면 상단바를 회색으로 만듬 */}
+      {/* 모달이 띄워진 상태라면 상단바를 회색으로 만듦 */}
       {
         showModal ?
           (
@@ -77,10 +76,10 @@ const MainLayout = () => {
       }
 
       <TopBar></TopBar>
-      <div id="main">
+      <div id={showBottomBar? "main" : "main-focus"}>
         <Outlet />
       </div>
-      <BottomBar></BottomBar>
+      { showBottomBar && <BottomBar></BottomBar> }
     </>
   )
 }

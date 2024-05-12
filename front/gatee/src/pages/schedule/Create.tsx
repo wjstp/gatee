@@ -29,16 +29,6 @@ const ScheduleCreate = () => {
   const [participants, setParticipants] = useState<string[]>(FamilyMemberInfoSample.map(member => member.email));
   const [isOpenColor, setIsOpenColor] = useState<boolean>(false)
   const colorList: string[] = ["pink", "yellow", "green", "blue", "purple"]
-  const muiFocusCustom = {
-    "& .MuiOutlinedInput-root": {
-      "&.Mui-focused": {
-        "& .MuiOutlinedInput-notchedOutline": {
-          borderColor: "#FFBE5C",
-          borderWidth: "2px",
-        },
-      }
-    }
-  }
   const [isTitleError, setIsTitleError] = useState<boolean>(false);
   const [isStartDateError, setIsStartDateError] = useState<boolean>(false);
   const [isEndDateError, setIsEndDateError] = useState<boolean>(false);
@@ -193,7 +183,9 @@ const ScheduleCreate = () => {
       </div>
     );
   }
-  
+
+
+  // 참여자 수 반환
   const getParticipantNumber = () : string => {
     if (participants.length === FamilyMemberInfoSample.length) {
       return "전원 참여"
@@ -213,6 +205,18 @@ const ScheduleCreate = () => {
       setIsTitleError(true);
     } else {
       navigate('/schedule');
+    }
+  }
+  
+  // mui custom
+  const muiFocusCustom = {
+    "& .MuiOutlinedInput-root": {
+      "&.Mui-focused": {
+        "& .MuiOutlinedInput-notchedOutline": {
+          borderColor: "#FFBE5C",
+          borderWidth: "2px",
+        },
+      }
     }
   }
 
