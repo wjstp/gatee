@@ -2,6 +2,8 @@ package io.ssafy.gatee.global.security.handler;
 
 import io.ssafy.gatee.domain.member.dao.MemberRepository;
 import io.ssafy.gatee.domain.member.entity.Privilege;
+import io.ssafy.gatee.global.exception.error.not_found.MemberNotFoundException;
+import io.ssafy.gatee.global.exception.message.ExceptionMessage;
 import io.ssafy.gatee.global.jwt.application.JwtService;
 import io.ssafy.gatee.global.jwt.exception.AccessTokenException;
 import io.ssafy.gatee.global.security.user.CustomUserDetails;
@@ -39,11 +41,16 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
         log.info("test" + customUserDetails.getMemberId());
         jwtService.publishTokens(response, authentication);
-        response.setStatus(200);
+//        response.setStatus(200);
+        String name = memberRepository.findById(customUserDetails.getMemberId())
+                .orElseThrow(()-> new MemberNotFoundException(ExceptionMessage.MEMBER_NOT_FOUND)).getName();
+        
         UriComponentsBuilder uriComponentsBuilder;
         if (isAnonymousMember(customUserDetails)) {
-            uriComponentsBuilder = UriComponentsBuilder.fromUriString(REDIRECT_URI_ANONYMOUS).queryParam("name");
+            log.info("회원 정보 기입 페이지로 이동");
+            uriComponentsBuilder = UriComponentsBuilder.fromUriString(REDIRECT_URI_ANONYMOUS).queryParam("name", name);
         } else {
+            log.info("메인 페이지로 이동");
             uriComponentsBuilder = UriComponentsBuilder.fromUriString(REDIRECT_URI_SUCCESS);
         }
         String redirectURI = uriComponentsBuilder.toUriString();
