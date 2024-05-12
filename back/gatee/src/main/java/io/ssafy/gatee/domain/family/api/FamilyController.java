@@ -44,7 +44,7 @@ public class FamilyController {
     ) throws IOException {
         return familyService.saveFamily(
                 name,
-                UUID.fromString(customUserDetails.getUsername()),
+                customUserDetails.getMemberId(),
                 fileType,
                 file
         );
