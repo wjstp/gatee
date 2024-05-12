@@ -41,7 +41,7 @@ const QuestionItemTaking = (
     <div className="exam__item">
       {/* 문제 */}
       <div className="exam__item__question">
-        {questionNumber+1}. {questionItem.question}
+        {questionNumber+1}. {questionItem.nickname}님의 {questionItem.question}은?
       </div>
 
       {/* 객관식 */}
