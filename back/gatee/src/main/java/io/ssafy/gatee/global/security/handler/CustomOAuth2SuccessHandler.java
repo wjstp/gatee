@@ -30,9 +30,9 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 
     private final MemberRepository memberRepository;
 
-    private final String REDIRECT_URI_SUCCESS = "https://gaty.duckdns.org/main";
+    private final String REDIRECT_URI_SUCCESS = "http://localhost:3000/main";
 
-    private final String REDIRECT_URI_ANONYMOUS = "https://gaty.duckdns.org/signup/family-set";
+    private final String REDIRECT_URI_ANONYMOUS = "http://localhost:3000/signup/family-set";
 
 
     @Override
