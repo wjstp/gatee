@@ -30,15 +30,15 @@ const PhotoIndex = () => {
     removeAlbum,
     removeAlbumDetailPhotos,
   } = usePhotoStore(
-    useShallow((state)=>({
-    detailPhotoGroup:state.detailPhotoGroup,
-    addDetailPhotoGroup:state.addDetailPhotoGroup,
-    removeDetailPhotos:state.removeDetailPhotos,
-    addAlbumList:state.addAlbumList,
-    removeAlbum:state.removeAlbum,
-    addDetailAlbumPhotoGroup:state.addDetailAlbumPhotoGroup,
-    removeAlbumDetailPhotos:state.removeAlbumDetailPhotos,
-  })))
+    useShallow((state) => ({
+      detailPhotoGroup: state.detailPhotoGroup,
+      addDetailPhotoGroup: state.addDetailPhotoGroup,
+      removeDetailPhotos: state.removeDetailPhotos,
+      addAlbumList: state.addAlbumList,
+      removeAlbum: state.removeAlbum,
+      addDetailAlbumPhotoGroup: state.addDetailAlbumPhotoGroup,
+      removeAlbumDetailPhotos: state.removeAlbumDetailPhotos,
+    })))
 
 
   // 상단 탭 상태 관리 -> 모든 사진 / 앨범사진
@@ -276,9 +276,9 @@ const PhotoIndex = () => {
 // 선택된 파일들을 서버에 업로드하는 함수
   const uploadImages = (formData: FormData): void => {
     let addedPhoto = {
-      fileId:1,
-      photoId:1,
-      imageUrl:""
+      fileId: 1,
+      photoId: 1,
+      imageUrl: ""
     }
     // 파일 올리기
     uploadFileApi(formData,
@@ -308,7 +308,7 @@ const PhotoIndex = () => {
         console.log(err)
       })
   };
-  
+
   // 카메라 버튼 클릭 처리
   const handleCameraButtonClick = (): void => {
     if (fileInputRef.current) {
@@ -346,25 +346,26 @@ const PhotoIndex = () => {
 
 
   useEffect(() => {
-    setTimeout(()=>
-    setLoading(false),500)
+    setTimeout(() =>
+      setLoading(false), 500)
   }, []);
-  
-  
+
+
   return (
     <div className="photo">
-      {loading? <Loading/> : null}
+      {loading ? <Loading/> : null}
 
       <div className="photo-tab-container">
-        { /* 모든 사진 탭 */}
-        <Link to="/photo/day"
-              className={activeTab === "all" ? "photo-tab-container__button active" : "photo-tab-container__button"}
-              onClick={() => handleTabClick("all")}>모든 사진</Link>
 
         { /* 앨범 사진 탭 */}
         <Link to="/photo/album"
               className={activeTab === "album" ? "photo-tab-container__button active" : "photo-tab-container__button"}
               onClick={() => handleTabClick("album")}>앨범 사진</Link>
+        { /* 모든 사진 탭 */}
+        <Link to="/photo/day"
+              className={activeTab === "all" ? "photo-tab-container__button active" : "photo-tab-container__button"}
+              onClick={() => handleTabClick("all")}>모든 사진</Link>
+
 
         { /* 편집 버튼은 월, 년 탭에서만 보이지 않음*/}
         {(activeTab === "all" && allPhotoTab === "day") || activeTab === "album" || countSlashes(location.pathname) > 2 ?

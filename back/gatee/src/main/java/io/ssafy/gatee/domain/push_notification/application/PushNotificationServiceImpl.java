@@ -10,17 +10,21 @@ import io.ssafy.gatee.domain.member_notification.dao.MemberNotificationRepositor
 import io.ssafy.gatee.domain.member_notification.entity.MemberNotification;
 import io.ssafy.gatee.domain.push_notification.dto.request.DataFCMReq;
 import io.ssafy.gatee.domain.push_notification.dto.request.NaggingReq;
+import io.ssafy.gatee.domain.push_notification.dto.request.NotificationAgreementReq;
 import io.ssafy.gatee.domain.push_notification.dto.request.PushNotificationFCMReq;
 import io.ssafy.gatee.domain.push_notification.dto.response.NaggingRes;
+import io.ssafy.gatee.domain.push_notification.dto.response.NotificationAgreementRes;
 import io.ssafy.gatee.domain.push_notification.dto.response.PushNotificationRes;
 import io.ssafy.gatee.domain.push_notification.entity.PushNotification;
 import io.ssafy.gatee.domain.push_notification.entity.Type;
 import io.ssafy.gatee.global.exception.error.not_found.MemberNotFoundException;
+import io.ssafy.gatee.global.exception.error.not_found.MemberNotificationNotFoundException;
 import io.ssafy.gatee.global.exception.message.ExceptionMessage;
 import io.ssafy.gatee.global.firebase.FirebaseInit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -215,5 +219,22 @@ public class PushNotificationServiceImpl implements PushNotificationService {
             log.info(response.getSuccessCount() + " messages were sent successfully");
         }
 
+    }
+
+    @Override
+    public NotificationAgreementRes readNotificationAgreements(UUID memberId) {
+        Member member = memberRepository.getReferenceById(memberId);
+        MemberNotification memberNotification = memberNotificationRepository.findByMember(member)
+                .orElseThrow(()-> new MemberNotificationNotFoundException(ExceptionMessage.MEMBER_NOTIFICATION_NOT_FOUND));
+        return NotificationAgreementRes.toDto(memberNotification);
+    }
+
+    @Override
+    @Transactional
+    public void modifyNotificationAgreements(UUID memberId, NotificationAgreementReq agreementReq) {
+        Member proxyMember = memberRepository.getReferenceById(memberId);
+        MemberNotification memberNotification = memberNotificationRepository.findByMember(proxyMember)
+                .orElseThrow(()-> new MemberNotFoundException(ExceptionMessage.MEMBER_NOTIFICATION_NOT_FOUND));
+        memberNotification.modifyMemberNotification(agreementReq);
     }
 }

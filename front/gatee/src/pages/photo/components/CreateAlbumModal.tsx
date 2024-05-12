@@ -54,7 +54,7 @@ export const AlbumNameInputModal = ({handleCloseAlbumNameInputModal}: {
             imageUrl:null,
             PhotoId:null,
           })
-          handleCloseAlbumNameInputModal(inputValue, res.data);
+          handleCloseAlbumNameInputModal(inputValue, res.data.albumId);
         },
         err => {
           console.log(err)

@@ -67,9 +67,16 @@ export const createAlbumApi = async function (data: CreateAlbumApiReq,
 export const deletePhotoApi = async function (data: DeletePhotoApiReq,
                                               success: (res: AxiosResponse<any>) => void,
                                               fail: (err: AxiosError<any>) => void) {
-  await local.post(`photos/delete`,data).then(success).catch(fail);
+  await local.patch(`photos/delete`,data).then(success).catch(fail);
 }
 
+// 사진 삭제
+export const deleteDetailPhotoApi = async function (data: string|number,
+                                              familyId:string,
+                                              success: (res: AxiosResponse<any>) => void,
+                                              fail: (err: AxiosError<any>) => void) {
+  await local.delete(`photos/${data}`,{params:familyId}).then(success).catch(fail);
+}
 // 앨범 삭제
 export const deleteAlbumApi = async function (data: string|number,
                                               success: (res: AxiosResponse<any>) => void,
@@ -89,7 +96,8 @@ export const updateAlbumNameApi = async function (data: UpdateAlbumNameApiReq,
 export const uploadAlbumPhotoApi = async function (data: UploadAlbumPhotoApiReq,
                                                    success: (res: AxiosResponse<any>) => void,
                                                    fail: (err: AxiosError<any>) => void) {
-  console.log(data)
+  console.log(`albums/${data.albumId}/photos`)
+  console.log(`photoIdList: ${data.photoIdList}`)
   await local.post(`albums/${data.albumId}/photos`, {photoIdList: data.photoIdList}).then(success).catch(fail);
 }
 
@@ -97,7 +105,7 @@ export const uploadAlbumPhotoApi = async function (data: UploadAlbumPhotoApiReq,
 export const deleteAlbumPhotoApi = async function (data: UploadAlbumPhotoApiReq,
                                                    success: (res: AxiosResponse<any>) => void,
                                                    fail: (err: AxiosError<any>) => void) {
-  await local.post(`albums/${data.albumId}/photos`, {photoAlbumId: data.photoIdList}).then(success).catch(fail);
+  await local.patch(`albums/${data.albumId}/photos`, {photoAlbumId: data.photoIdList}).then(success).catch(fail);
 }
 
 // 사진 상호작용 생성

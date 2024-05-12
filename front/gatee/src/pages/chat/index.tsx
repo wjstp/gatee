@@ -103,7 +103,7 @@ const ChatIndex = () => {
     } else {
       // 최대 횟수에 도달하면 재연결 시도를 중단하고 메인 페이지로 이동
       console.log("Reached maximum reconnection attempts");
-      // navigate("/main");
+      navigate("/main");
     }
   };
 
@@ -218,7 +218,7 @@ const ChatIndex = () => {
 
   return (
     <div className="chat">
-      {/*{isReconnecting? <Loading/> : null}*/}
+      {isReconnecting? <Loading/> : null}
       <div className="chat__main" ref={chatMainRef}>
         {renderChatBubble}
       </div>
