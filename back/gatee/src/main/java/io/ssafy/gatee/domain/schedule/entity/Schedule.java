@@ -40,7 +40,7 @@ public class Schedule extends BaseEntity {
     private ScheduleRecord scheduleRecord;
 
     public void editSchedule(ScheduleEditReq scheduleEditReq) {
-        this.category = Category.valueOf(scheduleEditReq.category());
+        this.category = scheduleEditReq.category();
         this.title = scheduleEditReq.title();
         this.emoji = scheduleEditReq.emoji();
         this.content = scheduleEditReq.content();

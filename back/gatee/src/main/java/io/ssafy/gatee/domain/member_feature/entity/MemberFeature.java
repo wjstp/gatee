@@ -37,4 +37,9 @@ public class MemberFeature extends BaseEntity {
 
     @ElementCollection
     private List<String> wrongAnswer;
+
+    public void editMemberFeature(String answer, List<String> wrongAnswer) {
+        this.answer = answer;
+        this.wrongAnswer = wrongAnswer;
+    }
 }

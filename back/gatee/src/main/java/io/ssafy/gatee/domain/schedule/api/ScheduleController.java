@@ -76,6 +76,13 @@ public class ScheduleController {
     }
 
     // 일정 삭제
+    @DeleteMapping("/{scheduleId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteSchedule(
+            @PathVariable("scheduleId") Long scheduleId
+    ) {
+        scheduleService.deleteSchedule(scheduleId);
+    }
 
     // 일정 참여
     @PostMapping("/{scheduleId}")

@@ -48,7 +48,6 @@ const ProfileModal = ({profileData, handleModalEvent}: ProfileModalProps) => {
         "& .MuiOutlinedInput-notchedOutline": {
           borderColor: "#FFBE5C",
           borderWidth: "2px",
-
         },
       }
     }

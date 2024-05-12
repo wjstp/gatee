@@ -2,6 +2,7 @@ package io.ssafy.gatee.domain.member_notification.entity;
 
 import io.ssafy.gatee.domain.base.BaseEntity;
 import io.ssafy.gatee.domain.member.entity.Member;
+import io.ssafy.gatee.domain.push_notification.dto.request.NotificationAgreementReq;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,11 +31,20 @@ public class MemberNotification extends BaseEntity {
 
     private boolean scheduleNotification;
 
+    private boolean featureNotification;
+
 
     @PrePersist
     public void prePersist() {
         this.albumNotification = true;
         this.scheduleNotification = true;
         this.naggingNotification = true;
+    }
+
+    public void modifyMemberNotification(NotificationAgreementReq notificationAgreementReq) {
+        this.albumNotification = notificationAgreementReq.albumNotification();
+        this.scheduleNotification = notificationAgreementReq.scheduleNotification();
+        this.naggingNotification = notificationAgreementReq.naggingNotification();
+        this.featureNotification = notificationAgreementReq.featureNotification();
     }
 }

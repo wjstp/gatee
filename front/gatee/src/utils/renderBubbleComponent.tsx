@@ -1,5 +1,5 @@
 import React from 'react';
-import {ChatAlarm, ChatAppointment, ChatEmoji, ChatFile, ChatMessage, ChatType} from "@type/index";
+import { ChatAlarm, ChatAppointment, ChatEmoji, ChatFile, ChatMessage, ChatType } from "@type/index";
 import BubbleChatMessage from "@pages/chat/components/BubbleChatMessage";
 import BubbleChatFile from "@pages/chat/components/BubbleChatFile";
 import BubbleChatAppointment from "@pages/chat/components/BubbleChatAppointment";

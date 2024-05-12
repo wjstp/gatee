@@ -21,7 +21,9 @@ public class ExceptionAdvice {
             ScheduleNotFoundException.class,
             FamilyScheduleNotFoundException.class,
             MemberFamilyScheduleNotFoundException.class,
-            AlbumNotFoundException.class
+            AlbumNotFoundException.class,
+            MemberFeatureNotFoundException.class,
+            MemberNotificationNotFoundException.class
     })
     public String handleNotFound(RuntimeException e) {
         return e.getMessage();

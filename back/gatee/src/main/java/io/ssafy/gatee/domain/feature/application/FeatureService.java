@@ -13,6 +13,9 @@ public interface FeatureService {
 
     List<FeatureRes> readFeatureQuestions(UUID memberId);
 
-
     List<FeatureResultRes> readFeatureResults(UUID memberId);
+
+    void updateFeature(UUID memberId, FeatureReq featureReq);
+
+    List<String> getWrongAnswersFromGPT(String question, String answer);
 }

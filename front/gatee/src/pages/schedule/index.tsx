@@ -21,8 +21,7 @@ const ScheduleIndex = () => {
   const [isOpenDayToast, setIsOpenDayToast] = useState<boolean>(false);
   const [selectedStartDate, setSelectedStartDate] = useState<string>(dayjs().format("YYYY-MM-DD"));
   const [selectedEndDate, setSelectedEndDate] = useState<string>(dayjs().format("YYYY-MM-DD"));
-  const REACT_APP_GOOGLE_API_KEY: string | undefined = process.env.REACT_APP_GOOGLE_API_KEY;
-  const REACT_APP_GOOGLE_CALENDAR_ID: string | undefined = process.env.REACT_APP_GOOGLE_CALENDAR_ID;
+  const { REACT_APP_GOOGLE_API_KEY, REACT_APP_GOOGLE_CALENDAR_ID } = process.env;
 
 
   useEffect(() => {

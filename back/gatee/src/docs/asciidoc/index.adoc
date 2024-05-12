@@ -140,70 +140,93 @@ include::{snippets}/family-controller-test/edit-family-name/http-response.adoc[]
 
 = Schedule
 
-== 가족 전체 일정 조회
+== 전체 일정 조회
 
 - Request
 
-include::{snippets}/가족 전체 일정 조회/http-request.adoc[]
+include::{snippets}/schedule-controller-test/read-schedule/http-request.adoc[]
+include::{snippets}/schedule-controller-test/read-schedule/query-parameters.adoc[]
 
 - Response
 
-include::{snippets}/가족 전체 일정 조회/http-response.adoc[]
+include::{snippets}/schedule-controller-test/read-schedule/http-response.adoc[]
+include::{snippets}/schedule-controller-test/read-schedule/response-fields.adoc[]
 
 
 == 일정 상세 조회
 
 - Request
 
-include::{snippets}/일정 상세 조회/http-request.adoc[]
+include::{snippets}/schedule-controller-test/read-schedule-detail/http-request.adoc[]
+include::{snippets}/schedule-controller-test/read-schedule-detail/query-parameters.adoc[]
 
 - Response
 
-include::{snippets}/일정 상세 조회/http-response.adoc[]
+include::{snippets}/schedule-controller-test/read-schedule-detail/http-response.adoc[]
+include::{snippets}/schedule-controller-test/read-schedule-detail/response-fields.adoc[]
 
 
 == 일정 등록
 
 - Request
 
-include::{snippets}/일정 등록/http-request.adoc[]
+include::{snippets}/schedule-controller-test/save-schedule/http-request.adoc[]
+include::{snippets}/schedule-controller-test/save-schedule/query-parameters.adoc[]
 
 - Response
 
-include::{snippets}/일정 등록/http-response.adoc[]
+include::{snippets}/schedule-controller-test/save-schedule/http-response.adoc[]
 
 
 == 일정 수정
 
 - Request
 
-include::{snippets}/일정 수정/http-request.adoc[]
+include::{snippets}/schedule-controller-test/edit-schedule/http-request.adoc[]
+include::{snippets}/schedule-controller-test/edit-schedule/path-parameters.adoc[]
+include::{snippets}/schedule-controller-test/edit-schedule/query-parameters.adoc[]
 
 - Response
 
-include::{snippets}/일정 수정/http-response.adoc[]
+include::{snippets}/schedule-controller-test/edit-schedule/http-response.adoc[]
+
+
+== 일정 삭제
+
+- Request
+
+include::{snippets}/schedule-controller-test/delete-schedule/http-request.adoc[]
+include::{snippets}/schedule-controller-test/delete-schedule/path-parameters.adoc[]
+
+- Response
+
+include::{snippets}/schedule-controller-test/delete-schedule/http-response.adoc[]
 
 
 == 일정 참여
 
 - Request
 
-include::{snippets}/일정 참여/http-request.adoc[]
+include::{snippets}/schedule-controller-test/participate-schedule/http-request.adoc[]
+include::{snippets}/schedule-controller-test/participate-schedule/path-parameters.adoc[]
+include::{snippets}/schedule-controller-test/participate-schedule/query-parameters.adoc[]
 
 - Response
 
-include::{snippets}/일정 참여/http-response.adoc[]
+include::{snippets}/schedule-controller-test/participate-schedule/http-response.adoc[]
 
 
 == 일정 후기 등록
 
 - Request
 
-include::{snippets}/일정 후기 등록/http-request.adoc[]
+include::{snippets}/schedule-controller-test/save-schedule-record/http-request.adoc[]
+include::{snippets}/schedule-controller-test/save-schedule-record/path-parameters.adoc[]
+include::{snippets}/schedule-controller-test/save-schedule-record/query-parameters.adoc[]
 
 - Response
 
-include::{snippets}/일정 후기 등록/http-response.adoc[]
+include::{snippets}/schedule-controller-test/save-schedule-record/http-response.adoc[]
 
 
 ---
@@ -223,6 +246,16 @@ include::{snippets}/feature-controller-test/save-feature/query-parameters.adoc[]
 - Response
 
 include::{snippets}/feature-controller-test/save-feature/http-response.adoc[]
+
+
+== 백문백답 답변 수정 및 문제 수정
+
+- Request
+include::{snippets}/feature-controller-test/update-feature/http-request.adoc[]
+include::{snippets}/feature-controller-test/update-feature/query-parameters.adoc[]
+
+- Response
+include::{snippets}/feature-controller-test/update-feature/http-response.adoc[]
 
 
 == 백문백답 질문 리스트 조회
@@ -263,7 +296,7 @@ include::{snippets}/exam-controller-test/read-exam/http-response.adoc[]
 include::{snippets}/exam-controller-test/read-exam/response-fields.adoc[]
 
 
-== 시험 결과 리스트 조회
+== 자신의 시험 결과 리스트 조회
 
 - Request
 
@@ -274,6 +307,18 @@ include::{snippets}/exam-controller-test/read-exam-results/http-request.adoc[]
 include::{snippets}/exam-controller-test/read-exam-results/http-response.adoc[]
 include::{snippets}/exam-controller-test/read-exam-results/response-fields.adoc[]
 
+
+== 다른 사람의 시험 결과 리스트 조회
+
+- Request
+
+include::{snippets}/exam-controller-test/read-other-exam-results/http-request.adoc[]
+include::{snippets}/exam-controller-test/read-other-exam-results/path-parameters.adoc[]
+
+- Response
+
+include::{snippets}/exam-controller-test/read-other-exam-results/http-response.adoc[]
+include::{snippets}/exam-controller-test/read-other-exam-results/response-fields.adoc[]
 
 == 시험 결과 상세 조회
 
@@ -444,6 +489,27 @@ include::{snippets}/push-notification-controller-test/send-nagging/query-paramet
 include::{snippets}/push-notification-controller-test/send-nagging/http-response.adoc[]
 include::{snippets}/push-notification-controller-test/send-nagging/response-fields.adoc[]
 
+== 알림 동의 여부 조회
+
+- Request
+
+include::{snippets}/push-notification-controller-test/read-notification-agreements/http-request.adoc[]
+
+- Response
+
+include::{snippets}/push-notification-controller-test/read-notification-agreements/http-response.adoc[]
+include::{snippets}/push-notification-controller-test/read-notification-agreements/response-fields.adoc[]
+
+== 알림 동의 변경
+
+- Request
+
+include::{snippets}/push-notification-controller-test/modify-notification-agreements/http-request.adoc[]
+include::{snippets}/push-notification-controller-test/modify-notification-agreements/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/push-notification-controller-test/modify-notification-agreements/http-response.adoc[]
 
 ---
 ---

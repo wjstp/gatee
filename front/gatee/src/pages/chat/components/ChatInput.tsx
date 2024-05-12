@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, ChangeEvent } from 'react';
 import { HiOutlinePlus } from "react-icons/hi";
-import { PiPaperPlaneRightFill}  from "react-icons/pi";
+import { PiPaperPlaneRightFill, PiSquaresFour } from "react-icons/pi";
 import { SlEmotsmile } from "react-icons/sl";
 import { IoIosCamera } from "react-icons/io";
 import { HiSpeakerphone } from "react-icons/hi";
@@ -8,12 +8,18 @@ import { IoCloseOutline } from "react-icons/io5";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import TextField from '@mui/material/TextField';
 import { EMOJI } from "@constants/index";
-import { EmojiItem } from "@type/index";
+import { EmojiItem, ChatSendMessage } from "@type/index";
 import { uploadFileApi } from "@api/file";
-import { AxiosError, AxiosResponse } from "axios";
+import { NavLink } from "react-router-dom";
+import dayjs from "dayjs";
+import { useChatStore } from "@store/useChatStore";
 
+interface ChatInputProps {
+  onSendMessage: (newMessages: ChatSendMessage) => void;
+}
 
-const ChatInput = () => {
+const ChatInput = (props: ChatInputProps) => {
+  const { onSendMessage } = props;
   const [inputMessage, setInputMessage] = useState<string>("");
   const [inputFile, setInputFile] = useState<File[] | null>(null);
   const [inputEmoji, setInputEmoji] = useState<EmojiItem | null>(null);
@@ -26,6 +32,7 @@ const ChatInput = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedEmojiCategory, SetSelectedEmojiCategory] = useState<string>(EMOJI[0].name);
   const buttonWrapperRef = useRef<HTMLDivElement>(null);
+  const { setShowBottomBar } = useChatStore();
 
   // 변수 초기화
   const reset = () => {
@@ -41,8 +48,12 @@ const ChatInput = () => {
 
   // 메시지 전송 핸들러
   const handleSendMessage = () => {
-    // 파일 전송
+    const currentTime: string = dayjs().format("YYYY-MM-DD HH:mm:ss");
+
+    // FILE
     if (inputFile) {
+      const files: string[] = [];
+
       inputFile.forEach((file: File) => {
         // FormData 객체 생성
         const formData = new FormData();
@@ -52,29 +63,51 @@ const ChatInput = () => {
         // 파일 업로드
         uploadFileApi(
           formData,
-          (res: AxiosResponse<any>) => {
-            console.log(res)
+          (res) => {
+            files.push(res.data.imageUrl);
           },
-          (err: AxiosError<any>) => {
-            console.log(err)
+          (error) => {
+            console.error(error)
           })
           .then().catch();
       });
 
-    // 메시지 전송
-    if (inputMessage) {
-      // 약속 메시지
-      if (isOpenAppointment) {
-        console.log("약속 전송: ", inputMessage);
-      }
-      // 일반 메시지
-      else {
-        console.log("메시지 전송: ", inputMessage);
-      }
+      onSendMessage({
+        messageType: "FILE",
+        files,
+        currentTime,
+      })
     }
 
-      reset();
+    // 메시지 전송
+    if (inputMessage) {
+      // APPOINTMENT
+      if (isOpenAppointment) {
+        onSendMessage({
+          messageType: "APPOINTMENT",
+          content: inputMessage,
+          currentTime,
+        })
+      }
+      // EMOJI
+      else if (inputEmoji) {
+        onSendMessage({
+          messageType: "EMOJI",
+          content: inputMessage,
+          emojiId: inputEmoji.id,
+          currentTime,
+        })
+      }
+      // MESSAGE
+      else {
+        onSendMessage({
+          messageType: "MESSAGE",
+          content: inputMessage,
+          currentTime,
+        })
+      }
     }
+    reset();
   }
 
   // 메시지 입력 핸들러
@@ -99,7 +132,6 @@ const ChatInput = () => {
   const handleSetFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       setInputFile(Array.from(event.target.files))
-      console.log(event.target.files)
       // 미리보기 렌더링
       setIsOpenFilePreview(true);
 
@@ -169,11 +201,20 @@ const ChatInput = () => {
     }
     document.addEventListener("mousedown", handleClickOutside);
 
-    // 언마운트 시 이벤트리스너 해제
+    // 언마운트 시 이벤트 리스너 해제
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  // TextField 포커스 핸들러
+  const handleFocusInput = (isFocus: boolean) => {
+    if (isFocus) {
+      setShowBottomBar(false);
+    } else {
+      setShowBottomBar(true);
+    }
+  }
 
   // 미리보기 조건부 렌더링
   const renderPreview = () => {
@@ -213,6 +254,7 @@ const ChatInput = () => {
     )
   }
 
+  // mui custom
   const muiFocusCustom = {
     '& label.Mui-focused': {
       color: '#00ff0000',
@@ -261,6 +303,14 @@ const ChatInput = () => {
             <IoIosCamera size={24}/>
           </button>
 
+          {/*앨범 버튼*/}
+          <NavLink
+            to="/chatting/photo"
+            className={`chat-input__button-album${isOpenPlus ? "--active" : ""}`}
+          >
+            <PiSquaresFour size={24}/>
+          </NavLink>
+
           {/* 파일 선택 */}
           <input
             type="file"
@@ -285,6 +335,8 @@ const ChatInput = () => {
             sx={muiFocusCustom}
             size="small"
             className="chat-input__input"
+            onFocus={() => handleFocusInput(true)}
+            onBlur={() => handleFocusInput(false)}
           />
 
           {isOpenAppointment ? (
