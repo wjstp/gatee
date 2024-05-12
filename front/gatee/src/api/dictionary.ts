@@ -25,3 +25,10 @@ export const sumbitAskAnswerApi = async function (data:SaveAskAnswerApiReq,
                                              fail: (err: AxiosError<any>) => void) {
   await local.post(`/features`,data).then(success).catch(fail);
 }
+
+// 답변 수정
+export const editAskAnswerApi = async function (data:SaveAskAnswerApiReq,
+                                                  success: (res: AxiosResponse<any>) => void,
+                                                  fail: (err: AxiosError<any>) => void) {
+  await local.patch(`/features`,data).then(success).catch(fail);
+}

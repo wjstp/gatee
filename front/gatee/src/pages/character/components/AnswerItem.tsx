@@ -1,11 +1,22 @@
 import React, {useState} from 'react';
 import { PiPencilSimpleBold } from "react-icons/pi";
 import {Answer} from "@type/index";
+import {editAskAnswerApi} from "@api/dictionary";
 
 const AnswerItem = ({question,index}:{question:Answer, index:number}) => {
     const [answer,setAnswer] = useState(question.answer);
     const [edit,setEdit] = useState(false);
     const submitEditAnswer = () => {
+      // editAskAnswerApi (
+      //   {
+      //     featureId:question.featureId,
+      //     answer:answer
+      //   },res=>{
+      //     console.log(res)
+      //   },err => {
+      //     console.log(err)
+      //   }
+      // )
       setEdit(false);
     }
     return (
@@ -20,7 +31,7 @@ const AnswerItem = ({question,index}:{question:Answer, index:number}) => {
             <div className="character__answer-item-container">
 
                 <div className="character__answer__item-index">
-                    #{index}
+                    #{question?.featureId}
                 </div>
                 <div>
                     {question.question}
@@ -34,7 +45,7 @@ const AnswerItem = ({question,index}:{question:Answer, index:number}) => {
                            className="edit__input"
                            onChange={(event:any) => {setAnswer(event.target.value)}}
                            autoFocus
-                           onKeyDown={()=>submitEditAnswer()}
+                           onBlur={()=>submitEditAnswer()}
                     />
                     :
                     <p>{answer}</p>

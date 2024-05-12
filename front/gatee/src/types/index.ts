@@ -346,6 +346,7 @@ export interface SaveAskAnswerApiReq {
 }
 
 export interface Answer {
+  featureId:number;
   question: string;
   answer: string;
 }
