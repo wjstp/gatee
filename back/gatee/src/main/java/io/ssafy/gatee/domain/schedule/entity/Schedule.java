@@ -9,7 +9,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLRestriction;
-import org.joda.time.LocalDateTime;
+
+import java.time.LocalDateTime;
+
 
 @Entity
 @Getter

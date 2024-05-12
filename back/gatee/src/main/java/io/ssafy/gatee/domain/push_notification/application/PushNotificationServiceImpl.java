@@ -10,8 +10,10 @@ import io.ssafy.gatee.domain.member_notification.dao.MemberNotificationRepositor
 import io.ssafy.gatee.domain.member_notification.entity.MemberNotification;
 import io.ssafy.gatee.domain.push_notification.dto.request.DataFCMReq;
 import io.ssafy.gatee.domain.push_notification.dto.request.NaggingReq;
+import io.ssafy.gatee.domain.push_notification.dto.request.NotificationAgreementReq;
 import io.ssafy.gatee.domain.push_notification.dto.request.PushNotificationFCMReq;
 import io.ssafy.gatee.domain.push_notification.dto.response.NaggingRes;
+import io.ssafy.gatee.domain.push_notification.dto.response.NotificationAgreementRes;
 import io.ssafy.gatee.domain.push_notification.dto.response.PushNotificationRes;
 import io.ssafy.gatee.domain.push_notification.entity.PushNotification;
 import io.ssafy.gatee.domain.push_notification.entity.Type;
@@ -21,6 +23,7 @@ import io.ssafy.gatee.global.firebase.FirebaseInit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -33,11 +36,6 @@ public class PushNotificationServiceImpl implements PushNotificationService {
     private final GptService gptService;
     private final MemberRepository memberRepository;
     private final MemberNotificationRepository memberNotificationRepository;
-
-    @Override
-    public List<PushNotificationRes> readNotifications(UUID memberId) {
-        return null;
-    }
 
     @Override
     public void sendTestPush(String token) throws FirebaseMessagingException {
@@ -215,5 +213,20 @@ public class PushNotificationServiceImpl implements PushNotificationService {
             log.info(response.getSuccessCount() + " messages were sent successfully");
         }
 
+    }
+
+    @Override
+    @Transactional
+    public void modifyNotificationAgreements(UUID memberId, NotificationAgreementReq agreementReq) {
+        Member proxyMember = memberRepository.getReferenceById(memberId);
+        MemberNotification memberNotification = memberNotificationRepository.findByMember(proxyMember)
+                .orElseThrow(()-> new MemberNotFoundException(ExceptionMessage.MEMBER_NOTIFICATION_NOT_FOUND));
+
+        memberNotification.modifyMemberNotification(agreementReq);  //todo: 확인
+    }
+
+    @Override
+    public NotificationAgreementRes readNotifications(UUID memberId) {
+        return null;
     }
 }
