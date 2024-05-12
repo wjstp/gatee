@@ -327,6 +327,11 @@
         width: 100%;
         gap: 4%;
 
+        .no-content {
+          @include flex_center;
+          margin: 1rem auto;
+          color: $gray200;
+        }
         .album-name-item {
           @include flex_center;
           @include mb-(1);

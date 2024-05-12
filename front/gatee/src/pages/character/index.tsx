@@ -1,8 +1,28 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Header from "@pages/character/components/Header";
-import {Link} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
+import {useDictStore} from "@store/useDictStore";
+import {getNewDictAskApi} from "@api/dictionary";
 
 const CharacterIndex = () => {
+  const navigate = useNavigate();
+  const {askList, setAskList} = useDictStore()
+  const handleGotoDictionary = () => {
+    getNewDictAskApi(res => {
+        console.log(res)
+        setAskList(res.data)
+      },
+      err => {
+        console.log(err)
+      }
+      )
+  }
+  useEffect(() => {
+    if (askList.length !== 0) {
+      navigate("/character/question")
+    }
+  }, [askList]);
+
   return (
     <div className="character__index">
 
@@ -22,10 +42,11 @@ const CharacterIndex = () => {
       </div>
 
       {/* 버튼 */}
-      <Link to="/character/question"
-            className="orangeButtonLarge">
-            백과사전 제작
-      </Link>
+      <div className="orangeButtonLarge"
+           onClick={() => handleGotoDictionary()}
+      >
+        백과사전 제작
+      </div>
 
     </div>
   );

@@ -121,9 +121,9 @@
 
   .exam__result__mark {
     position: absolute;
-    top: -3rem;
+    top: -2rem;
     left: -0.3rem;
-    width: 15dvh;
+    width: 10dvh;
     //background-color: red;
   }
 
@@ -136,7 +136,15 @@
   .exam__item__answerList {
     margin: 1vh 10vw 2vh 10vw;
     display: flex;
+    position: relative;
     gap: 2vw;
+
+    .exam__item__checkImg {
+      position: absolute;
+      width: 2rem;
+      top: -1.3rem;
+      left: 0;
+    }
 
     .deactivateIndex {
       border: 1px solid black;
@@ -183,10 +191,26 @@
   }
 
   .exam__scored-footer {
+    @include mx-(2);
+    @include mt-(2);
+    @include mb-(1);
+
     height: 1vh;
     border-top: 1px solid black;
     border-bottom: 1px solid black;
-    margin: 5vh 7vw;
+    //margin: 5vh 5vh 7vw 7vw;
+  }
+
+  .exam__scored--goto-grade {
+    @include flex_center;
+    @include my-(2);
+    @include mx-(2);
+    @include p-(1);
+
+    border: 1px solid black;
+    text-align: center;
+    font-size: 1.5rem;
+    font-family: $ChosunGs;
   }
 
   .exam__scored-comment {
@@ -224,30 +248,7 @@
 
   height: 100%;
 
-  .exam__empty {
-    @include flex_center;
-    @include flex-col;
-    margin: auto;
 
-    .small {
-      font-size: 1.3rem;
-    }
-
-    .large {
-      font-size: 2rem;
-    }
-  }
-
-  .exam__empty-icon {
-    @include flex_center;
-    @include mt-(3);
-    width: 50%;
-    margin: auto auto;
-
-    path {
-      fill: $gray200;
-    }
-  }
 
   .exam__grade-header {
     @include flex_row;
@@ -317,6 +318,32 @@
   }
 }
 
+.exam__empty {
+
+  @include flex_center;
+  @include flex-col;
+  margin: auto;
+
+  .small {
+    font-size: 1.3rem;
+  }
+
+  .large {
+    font-size: 2rem;
+  }
+}
+
+.exam__empty-icon {
+  @include flex_center;
+  @include mt-(3);
+  width: 50%;
+  margin: auto auto;
+
+  path {
+    fill: $gray200;
+  }
+}
+
 .exam-loading-container {
   @include flex_center;
   @include flex-col;
@@ -368,6 +395,7 @@
 
 
   }
+
   .item-right-line {
     border-right: 0.2px solid $gray200;
   }

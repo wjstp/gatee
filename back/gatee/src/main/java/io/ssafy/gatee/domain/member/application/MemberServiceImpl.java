@@ -53,11 +53,11 @@ public class MemberServiceImpl implements MemberService {
     private final FileRepository fileRepository;
 
     private static final List<String> DEFAULT_FATHER_IMAGE = List.of("https://spring-learning.s3.ap-southeast-2.amazonaws.com/message/910c8375-f2f7-487e-8adc-7695e04d5b55_profile_man1.PNG", "https://spring-learning.s3.ap-southeast-2.amazonaws.com/message/d136e934-6def-4ab4-8fa2-cbed4a571174_profile_man2.PNG");
-    private static final List<String> DEFAULT_MOTHER_IMAGE = List.of("https://spring-learning.s3.ap-southeast-2.amazonaws.com/message/d9c78647-80e6-458f-9fa3-604120dbc296_profile_woman1.PNG", "https://spring-learning.s3.ap-southeast-2.amazonaws.com/message/d9c78647-80e6-458f-9fa3-604120dbc296_profile_woman2.PNG");
+    private static final List<String> DEFAULT_MOTHER_IMAGE = List.of("https://spring-learning.s3.ap-southeast-2.amazonaws.com/message/d9c78647-80e6-458f-9fa3-604120dbc296_profile_woman1.PNG");
     private static final List<String> DEFAULT_GRANDFATHER_IMAGE = List.of("https://spring-learning.s3.ap-southeast-2.amazonaws.com/message/5a3ba20e-c813-467b-a227-fa27682777ec_profile_oldman.PNG");
     private static final List<String> DEFAULT_GRANDMOTHER_IMAGE = List.of("https://spring-learning.s3.ap-southeast-2.amazonaws.com/message/1b90ac50-c277-4994-81ba-75118b35f5ba_profile_oldwoman.PNG");
-    private static final List<String> DEFAULT_SON_IMAGE = List.of("https://spring-learning.s3.ap-southeast-2.amazonaws.com/message/21ecb0f2-8728-4eb1-8d54-316391dc2c1f_profile_boy1.PNG", "https://spring-learning.s3.ap-southeast-2.amazonaws.com/message/21ecb0f2-8728-4eb1-8d54-316391dc2c1f_profile_boy2.PNG");
-    private static final List<String> DEFAULT_DAUGHTER_IMAGE = List.of("https://spring-learning.s3.ap-southeast-2.amazonaws.com/message/3c1741ec-b401-4a8e-8827-7e2e374d601d_profile_girl1.PNG", "https://spring-learning.s3.ap-southeast-2.amazonaws.com/message/3c1741ec-b401-4a8e-8827-7e2e374d601d_profile_girl2.PNG");
+    private static final List<String> DEFAULT_SON_IMAGE = List.of("https://spring-learning.s3.ap-southeast-2.amazonaws.com/message/21ecb0f2-8728-4eb1-8d54-316391dc2c1f_profile_boy1.PNG", "https://spring-learning.s3.ap-southeast-2.amazonaws.com/message/6a35c2ab-82c0-4b15-ae00-3682308ab21a_profile_boy2.PNG");
+    private static final List<String> DEFAULT_DAUGHTER_IMAGE = List.of("https://spring-learning.s3.ap-southeast-2.amazonaws.com/message/3c1741ec-b401-4a8e-8827-7e2e374d601d_profile_girl1.PNG", "https://spring-learning.s3.ap-southeast-2.amazonaws.com/message/88030a78-4bfe-4f03-97dc-5eb4e0d253cd_profile_girl2.PNG");
 
     // 회원 가입
     @Override

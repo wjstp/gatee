@@ -1,63 +1,69 @@
 import React, {useEffect, useState} from 'react';
 import Stamp from "@assets/images/icons/stamp_logo.png"
-import {useNavigate} from "react-router-dom";
-import {getExamResultApi} from "@api/exam";
+import {useNavigate, useParams} from "react-router-dom";
+import {getFamilyExamResultApi, getMyExamResultApi} from "@api/exam";
 // import Lottie from "lottie-react";
 // import EmptyAnimation from "@assets/images/animation/empty_animation.json"
-import {ReactComponent as EmptySvg} from "@assets/images/examImg/empty.svg";
-import {ExamResult} from "@type/index";
-import getGradeSvg from "@utils/getGradeSvg";
 
-interface GradeData {
-  score: number;
-  createdAt: string;
-}
+import {ExamResult, MemberApiRes} from "@type/index";
+import getGradeSvg from "@utils/getGradeSvg";
+import {useFamilyStore} from "@store/useFamilyStore";
+import getUserInfo from "@utils/getUserInfo";
+import ExamNotFound from "@pages/exam/components/ExamNotFound";
+
 
 const ExamGrade = () => {
+  const params = useParams();
+  const {familyInfo} = useFamilyStore()
+  const [userInfo,setUserInfo] = useState<MemberApiRes|null>(null);
   const [avgGrade, setAvgGrade] = useState<null | number>(null)
+
   const [gradeDataList, setGradeDataList] = useState<ExamResult[]>([
-    {score: 80, createdAt: "2024.04.16"},
-    {score: 60, createdAt: "2024.03.22"},
-    {score: 40, createdAt: "2024.03.20"},
-    {score: 10, createdAt: "2024.03.12"},
+    // {examId:1,score: 80, createdAt: "2024.04.16"},
+    // {examId:2,score: 60, createdAt: "2024.03.22"},
+    // {examId:3,score: 40, createdAt: "2024.03.20"},
+    // {examId:4,score: 10, createdAt: "2024.03.12"},
   ])
 
+
   useEffect(() => {
-    getExamResultApi(
-      res => {
-        console.log(res)
-        setGradeDataList(res.data)
-        if (res.data?.length) {
-          // score 속성의 배열 추출
-          const scores = res.data.map(item => item.score)
-          // 점수의 합 계산
-          const scoreSum = scores.reduce((sum, score) => sum + score, 0);
-          // 배열의 원소 개수 계산
-          const count = scores.length;
-          // 평균 계산
-          const average = scoreSum / count;
-          setAvgGrade(average)
-        }
-      },
-      err => console.log(err)
-    )
-  }, []);
+    if (params.memberId) {
+      setUserInfo(getUserInfo(familyInfo,params.memberId))
+
+    }
+
+  }, [params]);
+
+  useEffect(() => {
+    if (userInfo?.memberId) {
+      getFamilyExamResultApi(userInfo?.memberId,
+        res => {
+          console.log("getFamilyExamResultApi",res)
+          setGradeDataList(res.data)
+          if (res.data?.length) {
+            const scores = res.data.map(item => item.score)
+            const scoreSum = scores.reduce((sum, score) => sum + score, 0);
+            const average = scoreSum / scores.length;
+            setAvgGrade(average)
+          }
+        }, err => {
+          console.log(err)
+        })
+    }
+  }, [userInfo]);
 
   return (
     <div className="exam-grade">
 
       {/* 상단 헤더 */}
-      {avgGrade !== null ?
-        <div className="exam__empty">
-          <div className="large">성적표가 없어요</div>
-          <EmptySvg className="exam__empty-icon"/>
-        </div>
+      {avgGrade === null ?
+        <ExamNotFound/>
         :
         <>
 
           <div className="exam__grade-header">
-            <div className="small">나의 평균 점수는?</div>
-            <div className="large">{avgGrade}등급</div>
+            <div className="small">{userInfo?.nickname}의 평균 점수는? </div>
+            <div className="large"> {avgGrade}등급</div>
           </div>
           <div className="exam__grade-body">
 
@@ -92,13 +98,13 @@ const ExamGrade = () => {
 }
 
 // 표
-const Table = ({gradeData}: { gradeData: GradeData }) => {
+const Table = ({gradeData}: { gradeData: ExamResult }) => {
   const navigate = useNavigate()
   // 등급
   const score = gradeData.score;
   const grade = getGradeSvg(score);
   return (
-    <div className="exam-grade-data" onClick={() => navigate("/exam/scored/1")}>
+    <div className="exam-grade-data" onClick={() => navigate(`/exam/scored/${gradeData.examId}`)}>
       <div className="flex-date">{gradeData.createdAt}</div>
       <div className="flex-point">{gradeData.score}/100</div>
       <div className="flex-comment">{grade}</div>

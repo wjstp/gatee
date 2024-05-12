@@ -3,6 +3,7 @@ package io.ssafy.gatee.domain.family.api;
 import io.ssafy.gatee.domain.family.application.FamilyService;
 import io.ssafy.gatee.domain.family.dto.request.FamilyJoinReq;
 import io.ssafy.gatee.domain.family.dto.request.FamilyNameReq;
+import io.ssafy.gatee.domain.family.dto.response.FamilyCheckRes;
 import io.ssafy.gatee.domain.family.dto.response.FamilyCodeRes;
 import io.ssafy.gatee.domain.family.dto.response.FamilyInfoRes;
 import io.ssafy.gatee.domain.family.dto.response.FamilySaveRes;
@@ -43,7 +44,7 @@ public class FamilyController {
     ) throws IOException {
         return familyService.saveFamily(
                 name,
-                UUID.fromString(customUserDetails.getUsername()),
+                customUserDetails.getMemberId(),
                 fileType,
                 file
         );
@@ -58,6 +59,16 @@ public class FamilyController {
         return familyService.createFamilyCode(familyId);
     }
 
+    // 가족 코드 확인
+    @PostMapping("/code")
+    @ResponseStatus(HttpStatus.OK)
+    public FamilyCheckRes checkFamilyCode(
+            @Valid @RequestBody FamilyJoinReq familyJoinReq,
+            @AuthenticationPrincipal CustomUserDetails customUserDetails
+    ) {
+        return familyService.checkFamilyCode(familyJoinReq.familyCode(), customUserDetails.getMemberId());
+    }
+
     // 가족 합류
     @PostMapping("/join")
     @ResponseStatus(HttpStatus.OK)
@@ -66,7 +77,7 @@ public class FamilyController {
             @RequestBody FamilyJoinReq familyJoinReq,
             @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) throws ExpiredCodeException {
-        familyService.joinFamily(familyJoinReq.familyCode(), customUserDetails.getMemberId());
+        familyService.joinFamily(familyJoinReq, customUserDetails.getMemberId());
     }
 
     // 가족 정보 조회
