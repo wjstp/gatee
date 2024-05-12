@@ -4,22 +4,26 @@
 .character__index {
 
   @include flex-col;
-  @include mt-(2);
+  @include my-(5);
   @include mx-(2);
+
+  height: 100%;
 
   .character__index__explain__title {
     @include my-(1);
-
   }
 
   .character__index__explain__content {
     @include flex-col;
+    @include mb-(1);
+
     color: $gray200;
     gap: 0.4rem;
   }
 
   .orangeButtonLarge {
     @extend %orange-button-large;
+
     width: 100%;
   }
 
@@ -54,6 +58,7 @@
     color: $gray200;
     @include mb-(1);
   }
+
 }
 
 .character__header {
@@ -65,13 +70,14 @@
 .character__answerList {
   @include mx-(2);
 
-
-
   .orangeButtonLarge {
+    @extend %orange-button-large;
+    @include mb-(1);
     width: 100%;
   }
+
   .character__answer__item-card {
-    @include p-(0.8);
+    @include p-(1);
     @include my-(1);
     border: 1px solid $gray100;
     border-radius: 0.5rem;
@@ -93,8 +99,8 @@
     .editPencil{
       color: $gray200;
       position: absolute;
-      top: 0.8rem;
-      right: 0.8rem;
+      top: 1rem;
+      right: 1rem;
     }
 
     .character__answer__item-content {

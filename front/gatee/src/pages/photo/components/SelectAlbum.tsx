@@ -23,6 +23,11 @@ export const SelectAlbumModal = ({handleSelectAlbum}: { handleSelectAlbum?: (nam
       <div className="album-name-select-modal-content">
         <h3>앨범으로 이동</h3>
         <div className="album-name-list--container">
+          {albumList.length===0 ?
+          <p className="no-content">앨범이 없습니다</p>
+            :
+            null
+          }
         {albumList.map((albumName, index) => {
           return (
             <button className="album-name-item"

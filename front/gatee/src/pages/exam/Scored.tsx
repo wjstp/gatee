@@ -1,21 +1,24 @@
 import React, {useEffect, useState} from 'react';
 import Header from "./components/Header";
-import QuestionItem from "./components/QuestionItem";
+import QuestionScored from "./components/QuestionItem";
 import getScoreImage from "@utils/getScoreImage";
 import {transformedExamList} from "@constants/index";
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {getDetailExamResultApi} from "@api/exam";
 import {TransformedQuestionData} from "@type/index";
+import {useMemberStore} from "@store/useMemberStore";
 
 const ExamScored = () => {
   const params = useParams()
   const [examDetailResult,setExamDetailResult] = useState<TransformedQuestionData[]>(transformedExamList)
   const [score,setScore] = useState(0)
+
   useEffect(() => {
-    if (params.id){
-      getDetailExamResultApi(params.id,
+    if (params.examId){
+      getDetailExamResultApi(params.examId,
         res=>{
-        console.log(res)
+        console.log("getDetailExamResultApi",res)
+
           setExamDetailResult(res.data.examData)
           setScore(res.data.score)
         },
@@ -24,6 +27,7 @@ const ExamScored = () => {
         })
     }
   }, [params]);
+
   return (
     <div className="exam__scored">
       <Header/>
@@ -32,7 +36,7 @@ const ExamScored = () => {
       <Grade score={score}/>
 
       {examDetailResult.map((item, index) => {
-        return (<QuestionItem key={ index } questionNumber={index} question={ item }
+        return (<QuestionScored key={ index } questionNumber={index} question={ item }
         />)})}
 
 
@@ -40,6 +44,9 @@ const ExamScored = () => {
       <div className="exam__scored-footer">
       </div>
 
+      <Link to="/exam/list" className="exam__scored--goto-grade">
+        가족 성적표 보러가기
+      </Link>
 
     </div>
   );

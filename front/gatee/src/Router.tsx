@@ -46,6 +46,7 @@ import PhotoDetail from "@pages/photo/PhotoDetail";
 import PhotoAlbumGroupDetail from "@pages/photo/AlbumGroupDetail";
 import ProfileModifyCopy from "@pages/profile/modifyCopy";
 import NotFound from "@components/NotFound";
+import ExamFamilyList from "@pages/exam/FamilyList";
 
 const Router = () => {
   return (
@@ -53,8 +54,9 @@ const Router = () => {
       <Route element={<MainLayout/>}>
         {/*모의고사 페이지*/}
         <Route path="/exam" element={<ExamIndex/>}/>
-        <Route path="/exam/grade" element={<ExamGrade/>}/>
-        <Route path="/exam/scored/:id" element={<ExamScored/>}/>
+        <Route path="/exam/list" element={<ExamFamilyList/>}/>
+        <Route path="/exam/grade/:memberId" element={<ExamGrade/>}/>
+        <Route path="/exam/scored/:examId" element={<ExamScored/>}/>
         <Route path="/exam/taking" element={<ExamTaking/>}/>
 
         {/*채팅 페이지*/}

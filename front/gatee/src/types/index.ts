@@ -396,11 +396,13 @@ export interface DeletePhotoApiReq {
 
 // 모의고사 api 관련
 export interface ExamResult {
+  examId:string|number;
   score: number;
   createdAt: string;
 }
 
 export interface TransformedQuestionData {
+  nickname:string,
   question: string;
   answerList: string[];
   correctNumber: number;
@@ -408,7 +410,8 @@ export interface TransformedQuestionData {
 }
 
 export interface QuestionData {
-  question: string;
+  nickname:string;
+  questionWord: string;
   wrongAnswers: string[];
   correctAnswer: string;
 }
@@ -423,4 +426,16 @@ export interface ExamProblem {
 export interface SaveExamResultApiReq {
   examResults : ExamProblem[],
   score:number
+}
+
+// 백문백답 api 관련
+export interface SaveAskAnswerApiReq {
+  featureId:number,
+  answer:string
+}
+
+export interface Answer {
+  featureId:number;
+  question: string;
+  answer: string;
 }

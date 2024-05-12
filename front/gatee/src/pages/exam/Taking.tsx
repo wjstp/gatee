@@ -67,14 +67,12 @@ const ExamTaking = () => {
 
   useEffect(() => {
 
-
     getNewExamApi(
       res => {
         console.log(res)
-        const {transformedData, answerNumArray} = transformQuestionData(questionList)
+        const {transformedData, answerNumArray} = transformQuestionData(res.data)
         setTransformedData(transformedData)
         setCorrectAnswerSheet(answerNumArray)
-
       },
       err => {
         console.log(err)
@@ -94,6 +92,7 @@ const ExamTaking = () => {
           setStartLoading(false)
         , 2000)
     } else if (endLoading === true) {
+
       saveExamResultApi({
         examResults: transformedData,
         score: getExamScore(myAnswerList, correctAnswerSheet)
