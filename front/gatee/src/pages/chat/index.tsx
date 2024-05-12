@@ -5,11 +5,15 @@ import ChatInput from "@pages/chat/components/ChatInput";
 import ChatDate from "@pages/chat/components/ChatDate";
 import { ChatContent, ChatDateLine, ChatType, ChatSendMessage } from "@type/index";
 import { useFamilyStore } from "@store/useFamilyStore";
+import { useMemberStore } from "@store/useMemberStore";
+import getUserInfo from "@utils/getUserInfo";
+import { FaArrowDown } from "react-icons/fa";
 
 import SockJS from "sockjs-client";
 import firebase from "../../firebase-config";
 import 'firebase/database';
 import Loading from "@components/Loading";
+import {useChatStore} from "@store/useChatStore";
 
 
 const ChatIndex = () => {
@@ -25,14 +29,19 @@ const ChatIndex = () => {
   let reconnectAttempts: number = 0;
   const [isReconnecting, setIsReconnecting] = useState<boolean>(false);
 
-  const { familyId } = useFamilyStore();
+  const { familyId, familyInfo } = useFamilyStore();
   const chatRef = firebase.database().ref(`chat/${familyId}/messages`);
 
   const PAGE_SIZE: number = 30;
   const [messages, setMessages] = useState<(ChatContent | ChatDateLine)[]>([]);
   const [startKey, setStartKey] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const chatMainRef = useRef<HTMLDivElement>(null);
+  const [isShowScrollDownButton, setIsShowScrollDownButton] = useState(false);
+  const [isShowPreviewMessage, setIsShowPreviewMessage] = useState<boolean>(false);
+  const [previewMessage, setPreviewMessage] = useState<{ sender: string | undefined, content: string } | null>(null);
+  const { myInfo } = useMemberStore();
 
   useEffect(() => {
     // WebSocket 연결
@@ -49,6 +58,7 @@ const ChatIndex = () => {
       }
       // Firebase 실시간 이벤트 리스너 해제
       chatRef.off();
+
     }
   }, []);
 
@@ -111,6 +121,7 @@ const ChatIndex = () => {
   const send = (newMessages: ChatSendMessage) => {
     if (ws.current) {
       ws.current.send(JSON.stringify(newMessages));
+      scrollToBottom();
     } else {
       console.log("WebSocket is not open or reconnecting");
     }
@@ -152,9 +163,37 @@ const ChatIndex = () => {
   const handleAddChatData = (snapshot: any) => {
     const newMessage: ChatContent | ChatDateLine = { id: snapshot.key, ...snapshot.val() };
     setMessages((prevMessages) => [newMessage, ...prevMessages]);
+
+    // 메시지 프리뷰 설정
+    handleShowPreview(newMessage);
   }
 
-  // 채팅 내역 수정 이벤트 수신 핸들러
+  const handleShowPreview = (newMessage: ChatContent | ChatDateLine) => {
+    if (newMessage.messageType === ChatType.DATE_LINE) return;
+    if ("sender" in newMessage && newMessage.sender === myInfo.memberId) return;
+
+    if ("sender" in newMessage) {
+      const sender: string | undefined = getUserInfo(familyInfo, newMessage.sender)?.nickname;
+      let content: string = "";
+
+      if (newMessage.messageType === ChatType.MESSAGE && "content" in newMessage) {
+        content = newMessage.content;
+      } else if (newMessage.messageType === ChatType.FILE) {
+        content = "(사진)";
+      } else if (newMessage.messageType === ChatType.EMOJI && "content" in newMessage) {
+        content = `(이모티콘) ${newMessage.content}`;
+      } else if (newMessage.messageType === ChatType.APPOINTMENT && "content" in newMessage) {
+        content = `[${newMessage.content}] 가 등록되었습니다.`;
+      } else if (newMessage.messageType === ChatType.ALARM && "content" in newMessage) {
+        content = `[${newMessage.content}] 가 종료되었습니다.`;
+      }
+      setPreviewMessage({sender, content});
+      setIsShowPreviewMessage(true);
+      setIsShowScrollDownButton(false);
+    }
+  }
+
+  // 메시지 수정 이벤트 수신 핸들러
   const handleUpdateChatData = (snapshot: any) => {
     const updatedMessage = { id: snapshot.key, ...snapshot.val() };
 
@@ -180,9 +219,34 @@ const ChatIndex = () => {
     };
   }, [chatMainRef.current]);
 
-  // 1/3 지점에 도달하면 추가 메시지 불러오기
+  // 스크롤 이벤트 핸들러
   const handleScroll = () => {
+    const ref = chatMainRef.current!;
+    if (Math.abs(ref.scrollTop) > ref.scrollHeight - ref.clientHeight - 100) {
+      // 스크롤이 맨 위인 경우 다음 페이지의 데이터 요청
+      loadMessages();
+    }
+    if (ref.scrollTop < -50) {
+      // 스크롤이 맨 아래가 아닌 경우 맨 아래로 이동하는 버튼 표시
+      setIsShowScrollDownButton(true);
+    }
+    if (ref.scrollTop > -50) {
+      // 스크롤이 맨 아래인 경우 프리뷰 제거
+      setIsShowScrollDownButton(false);
+      setIsShowPreviewMessage(false);
+      setPreviewMessage(null);
+    }
+  };
 
+  // 스크롤 맨 아래로 내리기
+  const scrollToBottom = () => {
+    setIsShowScrollDownButton(false);
+    setIsShowPreviewMessage(false);
+    setPreviewMessage(null);
+
+    if (chatMainRef.current) {
+      chatMainRef.current.scrollTop = chatMainRef.current.scrollHeight;
+    }
   };
 
   // 이전 채팅과 현재 채팅의 보낸 사람이 같은지 여부에 따라 props 설정
@@ -218,10 +282,36 @@ const ChatIndex = () => {
 
   return (
     <div className="chat">
+      {/*로딩*/}
       {isReconnecting? <Loading/> : null}
+      
+      {/*채팅 메인*/}
       <div className="chat__main" ref={chatMainRef}>
         {renderChatBubble}
+
+        {/*밑으로 이동 버튼*/}
+        <div className={isShowScrollDownButton && !isShowPreviewMessage? "chat__main__scroll-down--active" : "chat__main__scroll-down"}>
+          <button
+            className="chat__main__scroll-down-button"
+            onClick={scrollToBottom}
+            disabled={!isShowScrollDownButton}
+          >
+            <FaArrowDown size={17}/>
+          </button>
+        </div>
+        
+        {/*새로운 메시지 프리뷰*/}
+        <button
+          className={isShowPreviewMessage ? "chat__main__preview--active" : "chat__main__preview"}
+          onClick={scrollToBottom}
+          disabled={!isShowPreviewMessage}
+        >
+          <span className="chat__main__preview__sender">{previewMessage?.sender}</span>
+          <span className="chat__main__preview__content">{previewMessage?.content}</span>
+        </button>
       </div>
+
+      {/*채팅 입력*/}
       <ChatInput onSendMessage={send}/>
     </div>
   );
