@@ -489,6 +489,27 @@ include::{snippets}/push-notification-controller-test/send-nagging/query-paramet
 include::{snippets}/push-notification-controller-test/send-nagging/http-response.adoc[]
 include::{snippets}/push-notification-controller-test/send-nagging/response-fields.adoc[]
 
+== 알림 동의 여부 조회
+
+- Request
+
+include::{snippets}/push-notification-controller-test/read-notification-agreements/http-request.adoc[]
+
+- Response
+
+include::{snippets}/push-notification-controller-test/read-notification-agreements/http-response.adoc[]
+include::{snippets}/push-notification-controller-test/read-notification-agreements/response-fields.adoc[]
+
+== 알림 동의 변경
+
+- Request
+
+include::{snippets}/push-notification-controller-test/modify-notification-agreements/http-request.adoc[]
+include::{snippets}/push-notification-controller-test/modify-notification-agreements/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/push-notification-controller-test/modify-notification-agreements/http-response.adoc[]
 
 ---
 ---
