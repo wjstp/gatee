@@ -22,7 +22,7 @@ public class ExceptionAdvice {
             FamilyScheduleNotFoundException.class,
             MemberFamilyScheduleNotFoundException.class,
             AlbumNotFoundException.class,
-            MemberNotificationNotFoundException.class
+            MemberFeatureNotFoundException.class
     })
     public String handleNotFound(RuntimeException e) {
         return e.getMessage();

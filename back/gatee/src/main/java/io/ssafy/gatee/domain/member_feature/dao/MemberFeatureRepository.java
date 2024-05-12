@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -22,4 +23,6 @@ public interface MemberFeatureRepository extends JpaRepository<MemberFeature, Lo
     List<MemberFeature> findRandomMemberFeature(@Param("memberIdList") List<UUID> memberIdList, Pageable pageable);
 
     List<MemberFeature> findByMember_Id(UUID memberId);
+
+    Optional<MemberFeature> findByMember_IdAndFeature_Id(UUID memberId, Long featureId);
 }
