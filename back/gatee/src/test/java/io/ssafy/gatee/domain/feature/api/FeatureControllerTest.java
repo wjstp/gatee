@@ -139,10 +139,12 @@ class FeatureControllerTest extends RestDocsTestSupport {
         List<FeatureResultRes> featureResList = new ArrayList<>();
 
         FeatureResultRes featureRes1 = FeatureResultRes.builder()
+                .featureId(1L)
                 .question("가고 싶은 여행지")
                 .answer("중국").build();
 
         FeatureResultRes featureRes2 = FeatureResultRes.builder()
+                .featureId(2L)
                 .question("가고 싶은 여행지")
                 .answer("중국").build();
 
@@ -162,6 +164,7 @@ class FeatureControllerTest extends RestDocsTestSupport {
         result.andExpect(status().isOk())
                 .andDo(restDocs.document(
                         responseFields(
+                                fieldWithPath("[].featureId").type(JsonFieldType.NUMBER).description("백문백답 질문 id"),
                                 fieldWithPath("[].question").type(JsonFieldType.STRING).description("백문백답 질문"),
                                 fieldWithPath("[].answer").type(JsonFieldType.STRING).description("백문백답 답변")
                         )
