@@ -200,10 +200,13 @@ const ChatInput = (props: ChatInputProps) => {
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
-
-    // 언마운트 시 이벤트 리스너 해제
+    
     return () => {
+      // 언마운트 시 이벤트 리스너 해제
       document.removeEventListener("mousedown", handleClickOutside);
+
+      // 하단바 설정 초기화
+      setShowBottomBar(true);
     };
   }, []);
 
@@ -333,10 +336,17 @@ const ChatInput = (props: ChatInputProps) => {
             placeholder={inputPlaceholder}
             inputProps={isOpenAppointment ? {maxLength: 20} : {maxLength: 1000}}
             sx={muiFocusCustom}
+            spellCheck={false}
             size="small"
             className="chat-input__input"
             onFocus={() => handleFocusInput(true)}
             onBlur={() => handleFocusInput(false)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                handleSendMessage();
+              }
+            }}
           />
 
           {isOpenAppointment ? (
