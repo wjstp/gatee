@@ -68,6 +68,30 @@ class FeatureControllerTest extends RestDocsTestSupport {
 
     @Test
     @CustomWithMockUser
+    @DisplayName("백문백답 답변 수정")
+    void updateFeature() throws Exception {
+
+        // given
+        doNothing().when(featureService).updateFeature(any(UUID.class), any(FeatureReq.class));
+
+        // when
+        ResultActions result = mockMvc.perform(patch("/api/features")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(readJson("json/feature/saveFeature.json"))
+                .accept(MediaType.APPLICATION_JSON));
+
+        //then
+        result.andExpect(status().isOk())
+                .andDo(restDocs.document(
+                        queryParameters(
+                                parameterWithName("featureId").description("백문백답 id").optional(),
+                                parameterWithName("answer").description("답변").optional()
+                        )
+                ));
+    }
+
+    @Test
+    @CustomWithMockUser
     @DisplayName("백문백답 질문 조회")
     void readFeatureList() throws Exception {
 
