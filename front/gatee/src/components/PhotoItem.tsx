@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {IoHeart} from "react-icons/io5";
 import {IoHeartOutline} from "react-icons/io5";
-import {MdOutlineFileDownload} from "react-icons/md";
 import {useFamilyStore} from "@store/useFamilyStore";
-import {createReactionPhotoApi, deleteReactionPhotoApi} from "@api/photo";
+import {createReactionPhotoApi, deleteDetailPhotoApi, deleteReactionPhotoApi} from "@api/photo";
 import {useMemberStore} from "@store/useMemberStore";
+import {RiDeleteBin6Line} from "react-icons/ri";
+import {useNavigate} from "react-router-dom";
 
 interface MemberReaction {
   memberId: string;
@@ -22,9 +23,9 @@ interface PhotoDetailData {
 const PhotoItem = ({photoDetailData}: { photoDetailData: PhotoDetailData }) => {
   const {myInfo} = useMemberStore()
   const [isPressed, setIsPressed] = useState(photoDetailData.isReaction);
-  const {familyInfo} = useFamilyStore()
+  const {familyInfo,familyId} = useFamilyStore()
   const [reactionList, setReactionList] = useState(photoDetailData.reactionList)
-
+  const navigate = useNavigate();
   // 멤버 Id 받아서 아이콘 Url 반환하는 함수
   const findProfile = (memberId: string) => {
     if (familyInfo.length > 0) {
@@ -85,27 +86,39 @@ const PhotoItem = ({photoDetailData}: { photoDetailData: PhotoDetailData }) => {
     }
   };
 
+  const deletePhotoApiFunc = () => {
+    deleteDetailPhotoApi(
+      photoDetailData.photoId,familyId,
+      res => {
+        console.log(res)
+        navigate("/photo")
+      }, err => {
+        console.log(err)
+        navigate("/photo")
+      })
+  }
+
   // 사진 다운받기 => 서버 주소로 변경하기
-  const downloadPhoto = () => {
-    fetch(photoDetailData?.imageUrl)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.blob();
-      })
-      .then(blob => {
-        const type = blob.type.split("/")[1]; // 이미지의 MIME 타입에서 "image/"를 제거하여 확장자 추출
-        const url = window.URL.createObjectURL(new Blob([blob], {type}));
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute("download", `photo.${type}`); // 파일 이름에 이미지 확장자 추가
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      })
-      .catch(error => console.error("Error downloading photo:", error));
-  };
+  // const downloadPhoto = () => {
+  //   fetch(photoDetailData?.imageUrl)
+  //     .then(response => {
+  //       if (!response.ok) {
+  //         throw new Error("Network response was not ok");
+  //       }
+  //       return response.blob();
+  //     })
+  //     .then(blob => {
+  //       const type = blob.type.split("/")[1]; // 이미지의 MIME 타입에서 "image/"를 제거하여 확장자 추출
+  //       const url = window.URL.createObjectURL(new Blob([blob], {type}));
+  //       const link = document.createElement("a");
+  //       link.href = url;
+  //       link.setAttribute("download", `photo.${type}`); // 파일 이름에 이미지 확장자 추가
+  //       document.body.appendChild(link);
+  //       link.click();
+  //       document.body.removeChild(link);
+  //     })
+  //     .catch(error => console.error("Error downloading photo:", error));
+  // };
 
   useEffect(() => {
     setIsPressed(photoDetailData.isReaction);
@@ -132,7 +145,7 @@ const PhotoItem = ({photoDetailData}: { photoDetailData: PhotoDetailData }) => {
             })}
           </div>
         </div>
-        <MdOutlineFileDownload size={30} color="gray" onClick={downloadPhoto}/>
+        <RiDeleteBin6Line size={30} color="gray" onClick={deletePhotoApiFunc}/>
       </div>
     </div>
   );

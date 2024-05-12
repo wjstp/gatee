@@ -99,7 +99,7 @@ const GroupItem = ({editMode, handleChecked, groupPhotoData}: PhotoOutletInfoCon
     <div onClick={gotoDetail} className="photo-group--item--container">
       {/* 배경 사진 */}
       <img className="photo-item"
-           src={groupPhotoData.imageUrl === null ? "https://static.vecteezy.com/system/resources/thumbnails/004/141/669/small/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg" :
+           src={groupPhotoData.imageUrl === null ? "https://i.pinimg.com/736x/96/7d/c7/967dc78b80cd745b1ba0e6377048d692.jpg" :
              groupPhotoData.imageUrl} alt={`${groupPhotoData.albumId}`}/>
       {/* 삭제 모드일때만 체크모드 활성화 */}
       {editMode === 'delete' &&
