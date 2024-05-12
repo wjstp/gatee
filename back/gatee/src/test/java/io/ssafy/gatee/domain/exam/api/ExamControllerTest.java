@@ -131,6 +131,49 @@ class ExamControllerTest extends RestDocsTestSupport {
 
     @Test
     @CustomWithMockUser
+    void readOtherExamResults() throws Exception {
+
+        // given
+        List<ExamResultRes> examResList = new ArrayList<>();
+
+        ExamResultRes examRes1 = ExamResultRes.builder()
+                .examId(1L)
+                .score(100)
+                .createdAt("1999-01-01")
+                .build();
+
+        ExamResultRes examRes2 = ExamResultRes.builder()
+                .examId(2L)
+                .score(100)
+                .createdAt("1999-01-01")
+                .build();
+
+        examResList.add(examRes1);
+        examResList.add(examRes2);
+
+        given(examService.readExamResults(any(UUID.class)))
+                .willReturn(examResList);
+
+
+        // where
+        ResultActions result = mockMvc.perform(get("/api/exams/{memberId}/results", UUID.randomUUID())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+        );
+
+        //then
+        result.andExpect(status().isOk())
+                .andDo(restDocs.document(
+                        responseFields(
+                                fieldWithPath("[].examId").type(JsonFieldType.NUMBER).description("모의고사 id"),
+                                fieldWithPath("[].score").type(JsonFieldType.NUMBER).description("점수"),
+                                fieldWithPath("[].createdAt").type(JsonFieldType.STRING).description("모의고사를 푼 날짜")
+                        )
+                ));
+    }
+
+    @Test
+    @CustomWithMockUser
     void readExamResultDetails() throws Exception {
 
         // given

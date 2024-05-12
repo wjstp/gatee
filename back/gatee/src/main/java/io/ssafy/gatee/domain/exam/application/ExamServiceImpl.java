@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -55,12 +56,12 @@ public class ExamServiceImpl implements ExamService {
     @Override
     public List<ExamResultRes> readExamResults(UUID memberId) {
         List<Exam> exams = examRepository.findByMemberId(memberId);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         if (!exams.isEmpty()) {
             return exams.stream().map(exam -> ExamResultRes
                     .builder()
                     .examId(exam.getId())
-                    .createdAt(sdf.format(exam.getCreatedAt()))
+                    .createdAt(dateTimeFormatter.format(exam.getCreatedAt()))
                     .score(exam.getScore()).build()).toList();
         }
         return new ArrayList<>();
