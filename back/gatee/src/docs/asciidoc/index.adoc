@@ -98,7 +98,6 @@ include::{snippets}/family-controller-test/read-family/response-body.adoc[]
 include::{snippets}/family-controller-test/read-family/response-fields.adoc[]
 
 
-
 == 가족 코드 생성
 
 - Request
@@ -109,6 +108,16 @@ include::{snippets}/family-controller-test/create-family-code/query-parameters.a
 - Response
 
 include::{snippets}/family-controller-test/create-family-code/http-response.adoc[]
+
+== 가족 코드 확인
+
+- Request
+
+include::{snippets}/family-controller-test/check-family-code/http-request.adoc[]
+
+- Response
+
+include::{snippets}/family-controller-test/check-family-code/http-response.adoc[]
 
 
 == 가족 합류
