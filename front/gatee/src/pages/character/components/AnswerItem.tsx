@@ -1,10 +1,13 @@
 import React, {useState} from 'react';
 import { PiPencilSimpleBold } from "react-icons/pi";
-const AnswerItem = ({question}:any) => {
-    const index = "01";
-    const q = "일번 문제";
-    const [answer,setAnswer] = useState("정답");
+import {Answer} from "@type/index";
+
+const AnswerItem = ({question,index}:{question:Answer, index:number}) => {
+    const [answer,setAnswer] = useState(question.answer);
     const [edit,setEdit] = useState(false);
+    const submitEditAnswer = () => {
+      setEdit(false);
+    }
     return (
         <div className='character__answer__item-card'>
             {/* 수정 버튼 */}
@@ -20,7 +23,7 @@ const AnswerItem = ({question}:any) => {
                     #{index}
                 </div>
                 <div>
-                    {q}
+                    {question.question}
                 </div>
             </div>
             {/* 정답 */}
@@ -30,7 +33,9 @@ const AnswerItem = ({question}:any) => {
                     <input type="text" value={answer}
                            className="edit__input"
                            onChange={(event:any) => {setAnswer(event.target.value)}}
-                            autoFocus/>
+                           autoFocus
+                           onKeyDown={()=>submitEditAnswer()}
+                    />
                     :
                     <p>{answer}</p>
                 }

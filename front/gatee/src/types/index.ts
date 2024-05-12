@@ -338,3 +338,14 @@ export interface SaveExamResultApiReq {
   examResults : ExamProblem[],
   score:number
 }
+
+// 백문백답 api 관련
+export interface SaveAskAnswerApiReq {
+  featureId:number,
+  answer:string
+}
+
+export interface Answer {
+  question: string;
+  answer: string;
+}
