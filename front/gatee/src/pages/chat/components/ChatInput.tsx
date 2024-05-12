@@ -8,13 +8,13 @@ import { IoCloseOutline } from "react-icons/io5";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import TextField from '@mui/material/TextField';
 import { EMOJI } from "@constants/index";
-import { EmojiItem, ChatContent } from "@type/index";
+import { EmojiItem, ChatSendMessage } from "@type/index";
 import { uploadFileApi } from "@api/file";
-import { AxiosError, AxiosResponse } from "axios";
 import { NavLink } from "react-router-dom";
+import dayjs from "dayjs";
 
 interface ChatInputProps {
-  onSendMessage: (newMessages: ChatContent) => void;
+  onSendMessage: (newMessages: ChatSendMessage) => void;
 }
 
 const ChatInput = (props: ChatInputProps) => {
@@ -31,6 +31,7 @@ const ChatInput = (props: ChatInputProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedEmojiCategory, SetSelectedEmojiCategory] = useState<string>(EMOJI[0].name);
   const buttonWrapperRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   // 변수 초기화
   const reset = () => {
@@ -46,8 +47,12 @@ const ChatInput = (props: ChatInputProps) => {
 
   // 메시지 전송 핸들러
   const handleSendMessage = () => {
-    // 파일 전송
+    const currentTime: string = dayjs().format("YYYY-MM-DD HH:mm:ss");
+
+    // FILE
     if (inputFile) {
+      const files: string[] = [];
+
       inputFile.forEach((file: File) => {
         // FormData 객체 생성
         const formData = new FormData();
@@ -57,29 +62,51 @@ const ChatInput = (props: ChatInputProps) => {
         // 파일 업로드
         uploadFileApi(
           formData,
-          (res: AxiosResponse<any>) => {
-            console.log(res)
+          (res) => {
+            files.push(res.data.imageUrl);
           },
-          (err: AxiosError<any>) => {
-            console.log(err)
+          (error) => {
+            console.error(error)
           })
           .then().catch();
       });
 
-    // 메시지 전송
-    if (inputMessage) {
-      // 약속 메시지
-      if (isOpenAppointment) {
-        console.log("약속 전송: ", inputMessage);
-      }
-      // 일반 메시지
-      else {
-        console.log("메시지 전송: ", inputMessage);
-      }
+      onSendMessage({
+        messageType: "FILE",
+        files,
+        currentTime,
+      })
     }
 
-      reset();
+    // 메시지 전송
+    if (inputMessage) {
+      // APPOINTMENT
+      if (isOpenAppointment) {
+        onSendMessage({
+          messageType: "APPOINTMENT",
+          content: inputMessage,
+          currentTime,
+        })
+      }
+      // EMOJI
+      else if (inputEmoji) {
+        onSendMessage({
+          messageType: "EMOJI",
+          content: inputMessage,
+          emojiId: inputEmoji.id,
+          currentTime,
+        })
+      }
+      // MESSAGE
+      else {
+        onSendMessage({
+          messageType: "MESSAGE",
+          content: inputMessage,
+          currentTime,
+        })
+      }
     }
+    reset();
   }
 
   // 메시지 입력 핸들러
@@ -104,7 +131,6 @@ const ChatInput = (props: ChatInputProps) => {
   const handleSetFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       setInputFile(Array.from(event.target.files))
-      console.log(event.target.files)
       // 미리보기 렌더링
       setIsOpenFilePreview(true);
 
@@ -177,6 +203,31 @@ const ChatInput = (props: ChatInputProps) => {
     // 언마운트 시 이벤트리스너 해제
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  // Input 포커스 감지
+  useEffect(() => {
+    const handleFocus = () => {
+      console.log('Input에 포커스가 맞춰졌습니다.');
+    };
+
+    const handleBlur = () => {
+      console.log('Input에서 포커스가 해제되었습니다.');
+    };
+
+    // inputRef.current가 존재할 때만 이벤트 리스너를 추가합니다.
+    if (inputRef.current) {
+      inputRef.current.addEventListener('focus', handleFocus);
+      inputRef.current.addEventListener('blur', handleBlur);
+    }
+
+    // 컴포넌트가 unmount 될 때 이벤트 리스너를 제거합니다.
+    return () => {
+      if (inputRef.current) {
+        inputRef.current.removeEventListener('focus', handleFocus);
+        inputRef.current.removeEventListener('blur', handleBlur);
+      }
     };
   }, []);
 
@@ -299,6 +350,7 @@ const ChatInput = (props: ChatInputProps) => {
             sx={muiFocusCustom}
             size="small"
             className="chat-input__input"
+            ref={inputRef}
           />
 
           {isOpenAppointment ? (

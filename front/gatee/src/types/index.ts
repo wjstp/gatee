@@ -125,6 +125,7 @@ export interface KaKaoLoginReq {
 export type ChatContent = ChatMessage | ChatFile | ChatAppointment | ChatEmoji | ChatAlarm;
 
 export interface ChatMessage {  // MESSAGE
+  id: string;
   messageType: string;
   sender: string;
   currentTime: string;
@@ -134,6 +135,7 @@ export interface ChatMessage {  // MESSAGE
 }
 
 export interface ChatFile { // FILE
+  id: string;
   messageType: string;
   sender: string;
   currentTime: string;
@@ -143,6 +145,7 @@ export interface ChatFile { // FILE
 }
 
 export interface ChatAppointment {  // APPOINTMENT
+  id: string;
   messageType: string;
   sender: string;
   currentTime: string;
@@ -153,6 +156,7 @@ export interface ChatAppointment {  // APPOINTMENT
 }
 
 export interface ChatEmoji {  // EMOJI
+  id: string;
   messageType: string;
   sender: string;
   currentTime: string;
@@ -163,17 +167,27 @@ export interface ChatEmoji {  // EMOJI
 }
 
 export interface ChatDateLine { // DATE_LINE
+  id: string;
   messageType: string;
   content: string;
 }
 
 export interface ChatAlarm {  // ALARM
+  id: string;
   messageType: string;
   sender: string;
   currentTime: string;
   totalMember: number;
   unReadMember: string[];
   content: string;
+}
+
+export interface ChatSendMessage {
+  messageType: string;
+  currentTime: string;
+  content?: string;
+  emojiId?: string;
+  files?: string[];
 }
 
 export enum SenderType {

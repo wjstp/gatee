@@ -16,9 +16,9 @@ interface ChatAppointmentProps {
 const BubbleChatAppointment = (props: ChatAppointmentProps) => {
   const { chat } = props;
   const [isUserParticipant, setUserParticipant] = useState<boolean>(false);
-  const [unreadMemberCount, setUnreadMemberCount] = useState<number>(chat.unReadMember.length);
   const { familyInfo } = useFamilyStore();
   const { myInfo } = useMemberStore();
+
 
   useEffect(() => {
     // 유저 이메일이 참여자 리스트에 있는지 확인

@@ -354,8 +354,8 @@ const PhotoIndex = () => {
   return (
     <div className="photo">
       {loading? <Loading/> : null}
-      <div className="photo-tab-container">
 
+      <div className="photo-tab-container">
         { /* 모든 사진 탭 */}
         <Link to="/photo/day"
               className={activeTab === "all" ? "photo-tab-container__button active" : "photo-tab-container__button"}

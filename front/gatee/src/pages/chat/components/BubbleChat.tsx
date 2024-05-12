@@ -1,10 +1,11 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {ChatMessage, SenderType, ChatContent, MemberApiReq} from "@type/index";
 import getUserInfo from "@utils/getUserInfo";
 import convertKrTime from "@utils/convertKrTime";
 import renderBubbleComponent from "@utils/renderBubbleComponent";
 import { useFamilyStore } from "@store/useFamilyStore";
 import { useMemberStore } from "@store/useMemberStore";
+import {NavLink} from "react-router-dom";
 
 interface ChatMessageProps {
  chat: ChatContent;
@@ -13,29 +14,28 @@ interface ChatMessageProps {
 
 interface MyChatMessageProps {
   chat: ChatMessage;
-  unreadMemberCount: number;
+  unReadMemberCount: number;
 }
 
 interface YourChatMessageProps {
   chat: ChatMessage;
   isPrevSender: boolean;
-  unreadMemberCount: number;
+  unReadMemberCount: number;
 }
 
 const YoursChat = (props: YourChatMessageProps) => {
-  const { chat, isPrevSender, unreadMemberCount } = props;
+  const { chat, isPrevSender, unReadMemberCount } = props;
   const { familyInfo } = useFamilyStore();
-  const { myInfo } = useMemberStore();
   const senderInfo: null | MemberApiReq = getUserInfo(familyInfo, chat.sender);
 
   return (
     <div className="chat__yours-chat">
       {/*프로필*/}
-      <div className="chat__yours-chat__profile">
+      <NavLink to={`/profile/${senderInfo?.email}`} className="chat__yours-chat__profile">
         {!isPrevSender && (
           <img src={senderInfo?.fileUrl} alt={senderInfo?.nickname}/>
         )}
-      </div>
+      </NavLink>
 
       <div className="chat__yours-chat__container">
         {/*닉네임*/}
@@ -50,8 +50,8 @@ const YoursChat = (props: YourChatMessageProps) => {
       <div className="chat__time-count-wrapper">
         {/*리딩 카운트*/}
         <div className="chat__count">
-        {unreadMemberCount > 0 && (
-          <span>{unreadMemberCount}</span>
+        {unReadMemberCount > 0 && (
+          <span>{unReadMemberCount}</span>
         )}
         </div>
 
@@ -65,17 +65,15 @@ const YoursChat = (props: YourChatMessageProps) => {
 };
 
 const MyChat = (props: MyChatMessageProps) => {
-  const { chat, unreadMemberCount } = props;
-  const { familyInfo } = useFamilyStore();
-  const { myInfo } = useMemberStore();
+  const { chat, unReadMemberCount } = props;
 
   return (
     <div className="chat__my-chat">
       <div className="chat__time-count-wrapper">
         {/*리딩 카운트*/}
         <div className="chat__count--right">
-          {unreadMemberCount > 0 && (
-            <span>{unreadMemberCount}</span>
+          {unReadMemberCount > 0 && (
+            <span>{unReadMemberCount}</span>
           )}
         </div>
 
@@ -94,7 +92,13 @@ const MyChat = (props: MyChatMessageProps) => {
 const BubbleChat = (props: ChatMessageProps) => {
   const { chat, isPrevSender } = props;
   const { myInfo } = useMemberStore();
-  const [unreadMemberCount, setUnreadMemberCount] = useState<number>(chat.unReadMember.length);
+  const [unReadMemberCount, setUnReadMemberCount] = useState<number>(0);
+
+  useEffect(() => {
+    if (chat.unReadMember) {
+      setUnReadMemberCount(chat.unReadMember.length);
+    }
+  }, [chat.unReadMember]);
 
   // senderType 반환 함수
   const getSenderType = (value: string): string => {
@@ -103,9 +107,9 @@ const BubbleChat = (props: ChatMessageProps) => {
 
   switch (getSenderType(chat.sender)) {
     case SenderType.YOURS:
-      return <YoursChat chat={chat as ChatMessage} isPrevSender={isPrevSender} unreadMemberCount={unreadMemberCount}/>;
+      return <YoursChat chat={chat as ChatMessage} isPrevSender={isPrevSender} unReadMemberCount={unReadMemberCount}/>;
     case SenderType.MY:
-      return <MyChat chat={chat as ChatMessage} unreadMemberCount={unreadMemberCount} />;
+      return <MyChat chat={chat as ChatMessage} unReadMemberCount={unReadMemberCount} />;
     default:
       return null;
   }

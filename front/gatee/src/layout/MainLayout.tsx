@@ -9,10 +9,10 @@ import {useFamilyStore} from "@store/useFamilyStore";
 import {getFamilyMemberApi, getMyDataApi} from "@api/member";
 
 const MainLayout = () => {
-  const location = useLocation()
-  const {showModal} = useModalStore()
-  const {setMyInfo} = useMemberStore()
-  const {familyInfo,setFamilyId, setFamilyInfo, setFamilyName, setFamilyScore} = useFamilyStore()
+  const location = useLocation();
+  const {showModal} = useModalStore();
+  const {setMyInfo} = useMemberStore();
+  const {familyInfo,setFamilyId, setFamilyInfo, setFamilyName, setFamilyScore} = useFamilyStore();
 
 
   // 가족 데이터 저장 Api
@@ -48,9 +48,9 @@ const MainLayout = () => {
   }
 
   useEffect(() => {
-    // 채팅이 아니고, 스토어가 비어있을때만
+    // 스토어가 비어있을 때만
     if (familyInfo.length === 0)
-    saveMemberData()
+    saveMemberData();
   }, [location.pathname]);
 
 
