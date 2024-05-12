@@ -45,6 +45,7 @@ import PhotoIndex from "@pages/photo";
 import PhotoDetail from "@pages/photo/PhotoDetail";
 import PhotoAlbumGroupDetail from "@pages/photo/AlbumGroupDetail";
 import ProfileModifyCopy from "@pages/profile/modifyCopy";
+import NotFound from "@components/NotFound";
 
 const Router = () => {
   return (
@@ -95,6 +96,9 @@ const Router = () => {
           <Route path="album/:id/:name" element={<PhotoAlbumGroupDetail/>}/>
         </Route>
         <Route path="/photo/:id" element={<PhotoDetail/>}/>
+
+        {/*404 처리*/}
+        <Route path="*" element={<NotFound />} />
       </Route>
 
 
@@ -116,12 +120,9 @@ const Router = () => {
         <Route path="/signup/member-set/birth" element={<SignupMemberSetBirth/>}/>
         <Route path="/signup/member-set/role" element={<SignupMemberSetRole/>}/>
         <Route path="/signup/member-set/check" element={<SignupMemberSetCheck/>}/>
-        <Route path="/signup/member-set/share" element={<SignupMemberSetShare/>}/>
+        <Route path="/signup/member-set/permission" element={<SignupMemberSetPermission/>}/>
         <Route path="/signup/member-set/finish" element={<SignupMemberSetFinish/>}/>
       </Route>
-
-      {/*404 처리*/}
-      {/*<Route components={NotFount} />*/}
     </Routes>
   );
 }

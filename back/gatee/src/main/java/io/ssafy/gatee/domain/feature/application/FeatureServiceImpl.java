@@ -17,6 +17,7 @@ import io.ssafy.gatee.domain.member_family.entity.MemberFamily;
 import io.ssafy.gatee.domain.member_feature.dao.MemberFeatureRepository;
 import io.ssafy.gatee.domain.member_feature.entity.MemberFeature;
 import io.ssafy.gatee.global.exception.error.not_found.MemberFamilyNotFoundException;
+import io.ssafy.gatee.global.exception.error.not_found.MemberFeatureNotFoundException;
 import io.ssafy.gatee.global.exception.message.ExceptionMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -47,29 +48,7 @@ public class FeatureServiceImpl implements FeatureService{
         Feature feature = featureRepository.getReferenceById(featureReq.featureId());
         String question = featureRepository.findById(featureReq.featureId()).orElseThrow().getQuestion();
 
-        String content = "\""+question + "\"라는 질문에 대해 \"" + featureReq.answer() +"\"라는 답변을 했고, 이를 객관식 문제로 낼 거야. " +
-                "이 객관식 문제를 낼 때선지에 있을 만한 예시 3개를 만들어줘\n" +
-                "객관식 문제를 낼 떄 선지에 있을만한 예시의 조건 4가지를 모두 충족해야한다.\n" +
-                "1. 비슷한 길이의 단어나 문장\n" +
-                "2. 같은 범주의 단어나 문장\n"+
-                "3. 시제(과거, 현재)가 일치\n"+
-                "4. \"" + question + "\"라는 질문에 대한 답으로 어색하지 않음"+
-                "5. 예시에는 문제는 포함되지 않음" +
-                "6. 하나의 단어나 문장" +
-//                "4. 비문이 아닌 단어나 문장\n"+
-                "이 예시 3개를 string type으로 해서 하나의 파이썬 리스트에 이 예시들이 담긴 형태로 만들어줘"+
-                "미사여구 없이 리스트 한개만 보여줘";
-
-        GptResponseDto result = gptService.askQuestion(QuestionDto.builder().content(content).build());
-        // 파싱
-        log.info(question);
-        log.info(result);
-        List<String> wrongAnswers = new ArrayList<>();
-        // 응답이 배열 형태로 왔을 떄만 wronganswers 저장
-        if (result.answer().startsWith("[")) {
-            String answer = result.answer().substring(1, result.answer().length() - 1).replaceAll("\"", "");
-            wrongAnswers = Arrays.asList(answer.split(", "));
-        }
+        List<String> wrongAnswers = getWrongAnswersFromGPT(question, featureReq.answer());
         memberFeatureRepository.save(MemberFeature.builder()
                         .member(member)
                         .feature(feature)
@@ -94,5 +73,40 @@ public class FeatureServiceImpl implements FeatureService{
         return memberFeatureList.stream().map(FeatureResultRes::toDto).toList();
     }
 
+    @Override
+    @Transactional
+    public void updateFeature(UUID memberId, FeatureReq featureReq) {
+        MemberFeature memberFeature = memberFeatureRepository.findByMember_IdAndFeature_Id(memberId, featureReq.featureId())
+                .orElseThrow(()-> new MemberFeatureNotFoundException(ExceptionMessage.MEMBER_FEATURE_NOT_FOUND));
+        List<String> wrongAnswers = getWrongAnswersFromGPT(memberFeature.getFeature().getQuestion(), featureReq.answer());
+        memberFeature.editMemberFeature(featureReq.answer(), wrongAnswers);
+    }
 
+    @Override
+    public List<String> getWrongAnswersFromGPT(String question, String answer) {
+        String content = "\""+question + "\"라는 질문에 대해 \"" + answer +"\"라는 답변을 했고, 이를 객관식 문제로 낼 거야. " +
+                "이 객관식 문제를 낼 때선지에 있을 만한 예시 3개를 만들어줘\n" +
+                "객관식 문제를 낼 떄 선지에 있을만한 예시의 조건 4가지를 모두 충족해야한다.\n" +
+                "1. 비슷한 길이의 단어나 문장\n" +
+                "2. 같은 범주의 단어나 문장\n"+
+                "3. 시제(과거, 현재)가 일치\n"+
+                "4. \"" + question + "\"라는 질문에 대한 답으로 어색하지 않음"+
+                "5. 예시에는 문제는 포함되지 않음" +
+                "6. 하나의 단어나 문장" +
+//                "4. 비문이 아닌 단어나 문장\n"+
+                "이 예시 3개를 string type으로 해서 하나의 파이썬 리스트에 이 예시들이 담긴 형태로 만들어줘"+
+                "미사여구 없이 리스트 한개만 보여줘";
+
+        GptResponseDto result = gptService.askQuestion(QuestionDto.builder().content(content).build());
+        // 파싱
+        log.info(question);
+        log.info(result);
+        List<String> wrongAnswers = new ArrayList<>();
+        // 응답이 배열 형태로 왔을 떄만 wronganswers 저장
+        if (result.answer().startsWith("[") && result.answer().endsWith("]")) {
+            String wrongAnswer = result.answer().substring(1, result.answer().length() - 1).replaceAll("\"", "");
+            return Arrays.asList(wrongAnswer.split(", "));
+        }
+        return null;
+    }
 }

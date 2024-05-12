@@ -42,8 +42,8 @@ export interface MemberStore {
   setMemberImage: (newImage: File | null) => void;
   stringMemberImage: string;
   setStringMemberImage: (newStringMemberImage: string) => void;
-  myInfo : MyMemberApiReq;
-  setMyInfo: (newMyInfo: Partial<MyMemberApiReq>) => void;
+  myInfo : MemberApiReq;
+  setMyInfo: (newMyInfo: Partial<MemberApiReq>) => void;
 };
 
 // member
@@ -71,7 +71,7 @@ export interface CreateMemberApiReq {
 }
 
 // 가족 api 정보
-export interface MyMemberApiReq {
+export interface MemberApiReq {
   birth: string
   birthType: string;
   email: string;
@@ -197,55 +197,69 @@ export interface KaKaoLoginReq {
 export type ChatContent = ChatMessage | ChatFile | ChatAppointment | ChatEmoji | ChatAlarm;
 
 export interface ChatMessage {  // MESSAGE
+  id: string;
   messageType: string;
   sender: string;
-  time: string;
+  currentTime: string;
   totalMember: number;
-  unreadMember: string[];
+  unReadMember: string[];
   content: string;
 }
 
 export interface ChatFile { // FILE
+  id: string;
   messageType: string;
   sender: string;
-  time: string;
+  currentTime: string;
   totalMember: number;
-  unreadMember: string[];
+  unReadMember: string[];
   files: string[];
 }
 
 export interface ChatAppointment {  // APPOINTMENT
+  id: string;
   messageType: string;
   sender: string;
-  time: string;
+  currentTime: string;
   totalMember: number;
-  unreadMember: string[];
+  unReadMember: string[];
   content: string;
   participants: string[];
 }
 
 export interface ChatEmoji {  // EMOJI
+  id: string;
   messageType: string;
   sender: string;
-  time: string;
+  currentTime: string;
   totalMember: number;
-  unreadMember: string[];
+  unReadMember: string[];
   emojiId: string;
   content: string;
 }
 
 export interface ChatDateLine { // DATE_LINE
+  id: string;
   messageType: string;
-  time: string;
+  content: string;
 }
 
 export interface ChatAlarm {  // ALARM
+  id: string;
   messageType: string;
   sender: string;
-  time: string;
+  currentTime: string;
   totalMember: number;
-  unreadMember: string[];
+  unReadMember: string[];
   content: string;
+}
+
+export interface ChatSendMessage {
+  messageType: string;
+  currentTime: string;
+  content?: string;
+  emojiId?: string;
+  files?: string[];
 }
 
 export enum SenderType {

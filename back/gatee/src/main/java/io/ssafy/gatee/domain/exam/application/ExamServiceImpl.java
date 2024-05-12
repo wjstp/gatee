@@ -2,10 +2,7 @@ package io.ssafy.gatee.domain.exam.application;
 
 import io.ssafy.gatee.domain.exam.dao.ExamRepository;
 import io.ssafy.gatee.domain.exam.dto.request.ExamReq;
-import io.ssafy.gatee.domain.exam.dto.response.ExamDetailListRes;
-import io.ssafy.gatee.domain.exam.dto.response.ExamDetailRes;
-import io.ssafy.gatee.domain.exam.dto.response.ExamRes;
-import io.ssafy.gatee.domain.exam.dto.response.ExamResultRes;
+import io.ssafy.gatee.domain.exam.dto.response.*;
 import io.ssafy.gatee.domain.exam.entity.Exam;
 import io.ssafy.gatee.domain.member.dao.MemberRepository;
 import io.ssafy.gatee.domain.member.entity.Member;
@@ -23,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -55,12 +53,12 @@ public class ExamServiceImpl implements ExamService {
     @Override
     public List<ExamResultRes> readExamResults(UUID memberId) {
         List<Exam> exams = examRepository.findByMemberId(memberId);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         if (!exams.isEmpty()) {
             return exams.stream().map(exam -> ExamResultRes
                     .builder()
                     .examId(exam.getId())
-                    .createdAt(sdf.format(exam.getCreatedAt()))
+                    .createdAt(dateTimeFormatter.format(exam.getCreatedAt()))
                     .score(exam.getScore()).build()).toList();
         }
         return new ArrayList<>();
@@ -73,6 +71,11 @@ public class ExamServiceImpl implements ExamService {
         return ExamDetailRes.builder()
                 .score(exam.getScore())
                 .examData(memberFamilyExams.stream().map(ExamDetailListRes::toDto).toList()).build();
+    }
+
+    @Override
+    public List<ExamFamilyRes> readFamilyExamResults(UUID memberId) {
+        return memberFamilyExamRepository.findFamilyExamResults(memberId);
     }
 
     @Override

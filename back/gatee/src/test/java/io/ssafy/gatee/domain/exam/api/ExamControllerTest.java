@@ -4,10 +4,7 @@ import io.ssafy.gatee.config.restdocs.RestDocsTestSupport;
 import io.ssafy.gatee.config.security.CustomWithMockUser;
 import io.ssafy.gatee.domain.exam.application.ExamService;
 import io.ssafy.gatee.domain.exam.dto.request.ExamReq;
-import io.ssafy.gatee.domain.exam.dto.response.ExamDetailListRes;
-import io.ssafy.gatee.domain.exam.dto.response.ExamDetailRes;
-import io.ssafy.gatee.domain.exam.dto.response.ExamRes;
-import io.ssafy.gatee.domain.exam.dto.response.ExamResultRes;
+import io.ssafy.gatee.domain.exam.dto.response.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -88,6 +85,48 @@ class ExamControllerTest extends RestDocsTestSupport {
 
     @Test
     @CustomWithMockUser
+    void readFamilyExamResults() throws Exception {
+
+        // given
+        List<ExamFamilyRes> examResList = new ArrayList<>();
+
+        ExamFamilyRes examRes1 = ExamFamilyRes.builder()
+                .nickname("닉네임")
+                .memberId(UUID.randomUUID())
+                .averageScore(22.2)
+                .build();
+
+        ExamFamilyRes examRes2 = ExamFamilyRes.builder()
+                .nickname("닉네임")
+                .memberId(UUID.randomUUID())
+                .averageScore(22.2)
+                .build();
+
+        examResList.add(examRes1);
+        examResList.add(examRes2);
+
+        given(examService.readFamilyExamResults(any(UUID.class)))
+                .willReturn(examResList);
+
+
+        // where
+        ResultActions result = mockMvc.perform(get("/api/exams/results/family")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+        );
+
+        //then
+        result.andExpect(status().isOk())
+                .andDo(restDocs.document(
+                        responseFields(
+                                fieldWithPath("[].nickname").type(JsonFieldType.STRING).description("닉네임"),
+                                fieldWithPath("[].memberId").type(JsonFieldType.STRING).description("멤버 id"),
+                                fieldWithPath("[].averageScore").type(JsonFieldType.NUMBER).description("평균 점수")
+                        )
+                ));
+    }
+    @Test
+    @CustomWithMockUser
     void readExamResults() throws Exception {
 
         // given
@@ -131,6 +170,52 @@ class ExamControllerTest extends RestDocsTestSupport {
 
     @Test
     @CustomWithMockUser
+    void readOtherExamResults() throws Exception {
+
+        // given
+        List<ExamResultRes> examResList = new ArrayList<>();
+
+        ExamResultRes examRes1 = ExamResultRes.builder()
+                .examId(1L)
+                .score(100)
+                .createdAt("1999-01-01")
+                .build();
+
+        ExamResultRes examRes2 = ExamResultRes.builder()
+                .examId(2L)
+                .score(100)
+                .createdAt("1999-01-01")
+                .build();
+
+        examResList.add(examRes1);
+        examResList.add(examRes2);
+
+        given(examService.readExamResults(any(UUID.class)))
+                .willReturn(examResList);
+
+
+        // where
+        ResultActions result = mockMvc.perform(get("/api/exams/{memberId}/results", UUID.randomUUID())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+        );
+
+        //then
+        result.andExpect(status().isOk())
+                .andDo(restDocs.document(
+                        pathParameters(
+                                parameterWithName("memberId").description("멤버 id").optional()
+                        ),
+                        responseFields(
+                                fieldWithPath("[].examId").type(JsonFieldType.NUMBER).description("모의고사 id"),
+                                fieldWithPath("[].score").type(JsonFieldType.NUMBER).description("점수"),
+                                fieldWithPath("[].createdAt").type(JsonFieldType.STRING).description("모의고사를 푼 날짜")
+                        )
+                ));
+    }
+
+    @Test
+    @CustomWithMockUser
     void readExamResultDetails() throws Exception {
 
         // given
@@ -164,7 +249,8 @@ class ExamControllerTest extends RestDocsTestSupport {
                 .willReturn(examDetailRes);
 
         // where
-        ResultActions result = mockMvc.perform(get("/api/exams/{examId}/results", 1L)
+        ResultActions result = mockMvc.perform(get("/api/exams/results/details")
+                .param("examId","1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
         );
@@ -172,8 +258,8 @@ class ExamControllerTest extends RestDocsTestSupport {
         //then
         result.andExpect(status().isOk())
                 .andDo(restDocs.document(
-                        pathParameters(
-                                parameterWithName("examId").description("모의고사 id").optional()
+                        queryParameters(
+                                parameterWithName("examId").description("시험 ID")
                         ),
                         responseFields(
                                 fieldWithPath("score").type(JsonFieldType.NUMBER).description("점수"),
