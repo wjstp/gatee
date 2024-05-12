@@ -1,5 +1,6 @@
 package io.ssafy.gatee.domain.schedule.dto.request;
 
+import io.ssafy.gatee.domain.schedule.entity.Category;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
@@ -12,7 +13,7 @@ public record ScheduleEditReq(
         String familyId,
 
         @NotNull
-        String category,
+        Category category,
 
         @NotNull
         String title,
