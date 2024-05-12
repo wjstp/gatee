@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {IoHeart} from "react-icons/io5";
 import {IoHeartOutline} from "react-icons/io5";
-import {MdOutlineFileDownload} from "react-icons/md";
 import {useFamilyStore} from "@store/useFamilyStore";
 import {createReactionPhotoApi, deleteDetailPhotoApi, deleteReactionPhotoApi} from "@api/photo";
 import {useMemberStore} from "@store/useMemberStore";

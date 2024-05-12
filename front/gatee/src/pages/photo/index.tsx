@@ -24,7 +24,6 @@ const PhotoIndex = () => {
   const {familyId} = useFamilyStore()
   const [loading, setLoading] = useState(true)
   const {
-    detailPhotoGroup,
     addDetailPhotoGroup,
     removeDetailPhotos,
     removeAlbum,
