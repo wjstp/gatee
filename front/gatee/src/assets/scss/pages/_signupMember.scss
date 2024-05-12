@@ -97,15 +97,20 @@
     }
 
     .birthday-choice {
+      @include flex_center;
+
       height: 90%;
       width: 20%;
       margin-left: 3%;
       margin-top: 2%;
 
-      &__solar, &__lunar {
-        height: 50%;
+      &__lunar {
+        @include flex_center;
 
-        .btn-solar, .btn-lunar {
+        height: 50%;
+        width: 100%;
+
+        .btn-lunar {
           @include flex_center;
 
           font-size: 18px;
@@ -116,43 +121,38 @@
             opacity: 0.5;
           }
 
-          .btn-solar__input, .btn-lunar__input {
+          .btn-lunar__input {
+            -webkit-appearance: none;
+            -moz-appearance: none;
             appearance: none;
-            background-color: #fff;
-            color: $gray200;
-            width: 1.4em;
-            height: 1.4em;
-            border: 1px solid $gray200;
-            border-radius: 50%;
-            transform: translateY(-0.075em);
-            position: relative;
-            margin-top: 3px;
+            height: 28px;
+            width: 28px;
+            border: 1.5px solid $gray100;
+            border-radius: 10%;
+            cursor: default;
+            padding-left: 1px;
 
             &:checked {
-              color: orange;
-              border-color: orange;
-            }
+              background-color: $orange400;
+              border-color: $orange400;
+              cursor: default;
 
-            &:checked::before {
-              content: "";
-              width: 0.8em;
-              height: 0.8em;
-              border-radius: 50%;
-              background: orange;
-              position: absolute;
-              top: 50%;
-              left: 50%;
-              transform: translate(-50%, -50%);
+              &::after {
+                content: '\2713';
+                font-size: 28px;
+                color: white;
+                line-height: 27px;
+              }
             }
 
             &--label {
-              color: $gray200;
-              margin-left: 5%;
+              color: $gray100;
+              margin-left: 6%;
             }
 
             &--label--selected {
               color: $orange400;
-              margin-left: 5%;
+              margin-left: 6%;
             }
           }
         }
@@ -752,8 +752,8 @@
   }
 }
 
-// 가족 코드 공유
-.member-family-set-share {
+// 코드 공유
+.signup-member-set-share {
   @include flex_center;
 
   height: 100%;

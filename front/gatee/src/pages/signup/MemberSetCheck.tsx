@@ -1,45 +1,82 @@
-import React, { useRef } from 'react';
+import React, {useRef, useState} from 'react';
 import { useNavigate } from "react-router-dom";
 import { IoIosCamera } from "react-icons/io";
 import { useMemberStore } from "@store/useMemberStore";
 import { imageResizer } from "@utils/imageResizer";
-import { createMemberApi } from "@api/member";
+import { createMemberApi, createFamilyCodeApi } from "@api/member";
 import { AxiosResponse, AxiosError } from "axios";
+import { useFamilyStore } from "@store/useFamilyStore";
+import { uploadFileApi } from "@api/file";
+import dayjs from 'dayjs';
+import ProfileCropper from "@pages/profile/components/Cropper";
+import useModal from "@hooks/useModal";
 
 const SignupMemberSetCheck = () => {
   const navigate = useNavigate();
+  const sender: string = "member-set"
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { isOpen, openModal, closeModal } = useModal();
   const {
     name,
     role,
-    birthDay,
+    birth,
     birthType,
     memberImage,
     setMemberImage,
     stringMemberImage,
     setStringMemberImage,
   } = useMemberStore();
+  const { familyId, setFamilyCode } = useFamilyStore();
 
-  console.log(name)
-  console.log(birthDay)
-  console.log(birthType)
-  console.log(role)
+  const [cropImage, setCropImage] = useState<string>("");
+
+  // 다음 넘어가기
+  const goToMemberSetPermission = () => {
+    // uploadFile();
+    // createMember();
+    createFamilyCode();
+    // navigate("/signup/member-set/share");
+  }
+
+  // 멤버 프로필 파일 업로드
+  const uploadFile = () => {
+    const formData = new FormData;
+    if (memberImage) {
+      formData.append("file", memberImage);
+      formData.append("fileType", "MEMBER_PROFILE")
+    }
+    uploadFileApi(
+      formData,
+      (res: AxiosResponse<any>) => {
+        console.log(res)
+        // 이미지 저장
+        setStringMemberImage(res.data.imageUrl);
+
+        // 멤버 등록
+        // createMember();
+      },
+      (err: AxiosError<any>) => {
+        console.log(err)
+      }
+    )
+  }
 
   // 회원 생성
   const createMember = () => {
-    if (birthDay && role) {
+    if (birth && role) {
       createMemberApi(
         {
           name: name,
           nickname: name,
-          birth: birthDay,
+          birth: birth,
           birthType: birthType,
-          role: "MOTHER",
-          familyId: "2f3bf47b-c6ea-47fe-9c5e-03110009d1ae",
-          phoneNumber: "010-8806-8489"
+          role: role,
+          familyId: "71631a5a-f9b5-4c3f-9f4e-957a9f7b5a19",
+          phoneNumber: null
         },
         (res: AxiosResponse<any>) => {
           console.log(res);
+          createFamilyCode();
         },
         (err: AxiosError<any>): void => {
           console.log(err);
@@ -47,10 +84,22 @@ const SignupMemberSetCheck = () => {
     }
   }
 
-  // 다음 넘어가기
-  const goToMemberSetPermission = () => {
-    createMember();
-    // navigate("/signup/member-set/permission");
+  // 가족 코드 생성
+  const createFamilyCode = () => {
+    createFamilyCodeApi(
+      {
+        familyId: "71631a5a-f9b5-4c3f-9f4e-957a9f7b5a19"
+      },
+      (res: AxiosResponse<any>) => {
+        console.log(res);
+        // 가족 코드 집어넣기
+        setFamilyCode(res.data.familyCode);
+        navigate("/signup/member-set/share");
+      },
+      (err: AxiosError<any>): void => {
+        console.log(err);
+      }
+    )
   }
 
   // 뒤로 가기
@@ -62,13 +111,14 @@ const SignupMemberSetCheck = () => {
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file: File | null = e.target.files ? e.target.files[0] : null;
     if (file) {
-      const resizedFile: File = (await imageResizer(file, 1000, 1000)) as File;
-      const jpgUrl = URL.createObjectURL(resizedFile);
-      setMemberImage(resizedFile);
-      setStringMemberImage(jpgUrl);
+      // 크롭할 이미지 넣기
+      const jpgUrl = URL.createObjectURL(file);
+      setCropImage(jpgUrl);
+      // 모달 열기
+      openModal();
     }
   }
-  console.log(memberImage);
+
   // 카메라 버튼 클릭 처리
   const handleCameraButtonClick = (): void => {
     if (fileInputRef.current) {
@@ -78,12 +128,15 @@ const SignupMemberSetCheck = () => {
 
   // 날짜 형식 변환 함수
   const changeDate = (originalDate: string): string => {
-    const date = new Date(originalDate);
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
+    const formattedDate = dayjs(originalDate).format("YYYY.MM.DD");
 
-    return `${year}.${month}.${day}`;
+    return formattedDate;
+  }
+
+  // 모달 이벤트
+  const handleModalEvent = () => {
+    // 모달 종료
+    closeModal();
   }
 
   return (
@@ -123,6 +176,18 @@ const SignupMemberSetCheck = () => {
         </button>
       </div>
 
+      {/*크롭 모달*/}
+      {isOpen ? (
+        <ProfileCropper
+          cropImage={cropImage}
+          cropShape={"round"}
+          handleModalEvent={handleModalEvent}
+          sender={sender}
+        />
+      ) : (
+        null
+      )}
+
       {/*가입 정보*/}
       <div className="signup-member-set-check__info">
 
@@ -154,7 +219,7 @@ const SignupMemberSetCheck = () => {
           {/*생일*/}
           <div className="info-body__birth">
             <span className="birth__part--01">
-              {birthDay ? changeDate(birthDay) : null}
+              {birth ? changeDate(birth) : null}
             </span>
             <span className="birth__part--02">
               에 태어났어요

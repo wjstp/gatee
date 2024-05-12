@@ -1,5 +1,4 @@
 import {
-  Member,
   Mood,
   Question,
   Schedule,
@@ -9,7 +8,7 @@ import {
   ChatAppointment,
   ChatEmoji,
   ChatDateLine,
-  ChatAlarm
+  ChatAlarm, MemberApiRes, MyMemberApiRes
 } from "@type/index";
 import EmojiDogOne from "@assets/images/emoji/emoji_dog1.png";
 import EmojiDogTwo from "@assets/images/emoji/emoji_dog2.png";
@@ -49,8 +48,8 @@ export const EMOJI: Emoji[] = [
 ];
 
 // 파일 제한 사항
-const ALLOW_FILE_EXTENSION: string = "jpg,jpeg,png";
-const FILE_SIZE_MAX_LIMIT: number = 5 * 1024 * 1024;
+// const ALLOW_FILE_EXTENSION: string = "jpg,jpeg,png";
+// const FILE_SIZE_MAX_LIMIT: number = 5 * 1024 * 1024;
 
 // 기분
 export const MOOD: Mood[] = [
@@ -63,7 +62,7 @@ export const MOOD: Mood[] = [
 ]
 
 // 멤버 임시 데이터
-export const MemberInfoSample: Member = {
+export const MemberInfoSample: MyMemberApiRes = {
   name: "이윤정",
   nickname: "안유진",
   email: "zyo0720@kakao.com",
@@ -72,76 +71,26 @@ export const MemberInfoSample: Member = {
   birthType: "SOLAR",
   fileUrl: "https://cdn.citytimes.co.kr/news/photo/202310/mn_19685_20231014093033_1.jpg",
   mood: "HAPPY",
-  phoneNumber: "010-8806-8489"
+  phoneNumber: "010-8806-8489",
+  memberId:"asasd",
+  isLeader:true,
+  familyId:"asdasdasd"
 }
 
 // 가족 구성원 임시 데이터
-export const FamilyMemberInfoSample: Member[] = [
+export const FamilyMemberInfoSample: MemberApiRes[] = [
   {
-    name: "이윤정",
-    nickname: "이윤정",
-    email: "zyo0720@kakao.com",
-    role: "딸",
     birth: "2000-07-20",
     birthType: "SOLAR",
-    fileUrl: "https://image.xportsnews.com/contents/images/upload/article/2023/1013/mb_1697156860596868.jpg",
+    email: "zyo0720@kakao.com",
+    memberId: "asasd",
     mood: null,
-    phoneNumber: "010-8806-8489"
-  },
-  {
     name: "이윤정",
-    nickname: "윤예빈",
-    email: "yebin4684@gmail.com",
-    role: "엄마",
-    birth: "1999-11-03",
-    birthType: "SOLAR",
-    fileUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRW4C8mlEPUiWYuROJ0llF7eFg9Bs9TtMqV8KfdxLV-hg&s",
-    mood: "HAPPY",
-    phoneNumber: "010-8806-8489"
-  },
-  {
-    name: "이윤정",
-    nickname: "전세진",
-    email: "wjstp14@gmail.com",
-    role: "아빠",
-    birth: "1998-02-14",
-    birthType: "SOLAR",
-    fileUrl: "https://image.newdaily.co.kr/site/data/img/2023/09/15/2023091500117_2.jpg",
-    mood: "",
-    phoneNumber: "010-8806-8489"
-  },
-  {
-    name: "이윤정",
-    nickname: "김태현",
-    email: "asthyeon@gmail.com",
-    role: "할머니",
-    birth: "1994-03-04",
-    birthType: "SOLAR",
-    fileUrl: "https://yt3.googleusercontent.com/QBR8DJ3RJIgjrnsye7IPBDXAYkIK3G-rNolklMPlq7ndsXg4sWWVcS8oHVPrfyt7ApQ3BzNnVMQ=s900-c-k-c0x00ffffff-no-rj",
-    mood: "HAPPY",
-    phoneNumber: ""
-  },
-  {
-    name: "이윤정",
-    nickname: "배정식",
-    email: "megar0829@gmail.com",
-    role: "아들",
-    birth: "1997-08-29",
-    birthType: "SOLAR",
-    fileUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkaX7TOkcE7W_5R0WXYy8N5Dbh-fcI23Dy7_g6HFREWw&s",
-    mood: "ALONE",
-    phoneNumber: "",
-  },
-  {
-    name: "이윤정",
-    nickname: "이형우",
-    email: "dlguddn3024@gmail.com",
-    role: "할아버지",
-    birth: "1994-06-22",
-    birthType: "SOLAR",
-    fileUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0cTfgWus0RScvjQpx8zAGe-F0-U0W2s960N2AZmfPSA&s",
-    mood: "ANGRY",
-    phoneNumber: ""
+    nickname: "이윤정",
+    role: "딸",
+    phoneNumber: "010-8806-8489",
+    fileUrl: "https://image.xportsnews.com/contents/images/upload/article/2023/1013/mb_1697156860596868.jpg",
+    isLeader: false,
   }
 ]
 
@@ -346,4 +295,121 @@ export const ChatSample: (ChatMessage |  ChatFile | ChatAppointment | ChatEmoji 
     messageType: "DATE_LINE",
     time: "2024-05-02T00:00:00",
   },
+]
+
+
+export const questionList = [
+  {
+    "question": "문제",
+    "wrongAnswers": ["틀린 문장", "틀린 문장", "틀린 문장"],
+    "correctAnswer": "정답 문장"
+  },
+  {
+    "question": "문제",
+    "wrongAnswers": ["틀린 문장", "틀린 문장", "틀린 문장"],
+    "correctAnswer": "정답 문장"
+  },
+  {
+    "question": "문제",
+    "wrongAnswers": ["틀린 문장", "틀린 문장", "틀린 문장"],
+    "correctAnswer": "정답 문장"
+  },
+  {
+    "question": "문제",
+    "wrongAnswers": ["틀린 문장", "틀린 문장", "틀린 문장"],
+    "correctAnswer": "정답 문장"
+  },
+  {
+    "question": "문제",
+    "wrongAnswers": ["틀린 문장", "틀린 문장", "틀린 문장"],
+    "correctAnswer": "정답 문장"
+  },
+  {
+    "question": "문제",
+    "wrongAnswers": ["틀린 문장", "틀린 문장", "틀린 문장"],
+    "correctAnswer": "정답 문장"
+  },
+  {
+    "question": "문제",
+    "wrongAnswers": ["틀린 문장", "틀린 문장", "틀린 문장"],
+    "correctAnswer": "정답 문장"
+  },
+  {
+    "question": "문제",
+    "wrongAnswers": ["틀린 문장", "틀린 문장", "틀린 문장"],
+    "correctAnswer": "정답 문장"
+  },
+  {
+    "question": "문제",
+    "wrongAnswers": ["틀린 문장", "틀린 문장", "틀린 문장"],
+    "correctAnswer": "정답 문장"
+  },
+  {
+    "question": "문제",
+    "wrongAnswers": ["틀린 문장", "틀린 문장", "틀린 문장"],
+    "correctAnswer": "정답 문장"
+  },
+]
+
+export const transformedExamList = [
+  {
+    answerList: ['틀린 문장', '틀린 문장', '정답 문장', '틀린 문장'],
+    choiceNumber: 3,
+    correctNumber: 3,
+    question: "문제"
+  },
+  {
+    answerList: ['틀린 문장', '틀린 문장', '정답 문장', '틀린 문장'],
+    choiceNumber: 2,
+    correctNumber: 3,
+    question: "문제"
+  },
+  {
+    answerList: ['틀린 문장', '틀린 문장', '정답 문장', '틀린 문장'],
+    choiceNumber: 1,
+    correctNumber: 3,
+    question: "문제"
+  },
+  {
+    answerList: ['틀린 문장', '틀린 문장', '정답 문장', '틀린 문장'],
+    choiceNumber: 4,
+    correctNumber: 3,
+    question: "문제"
+  },
+  {
+    answerList: ['틀린 문장', '틀린 문장', '정답 문장', '틀린 문장'],
+    choiceNumber: 1,
+    correctNumber: 3,
+    question: "문제"
+  },
+  {
+    answerList: ['틀린 문장', '틀린 문장', '정답 문장', '틀린 문장'],
+    choiceNumber: 2,
+    correctNumber: 2,
+    question: "문제"
+  },
+  {
+    answerList: ['틀린 문장', '틀린 문장', '정답 문장', '틀린 문장'],
+    choiceNumber: 1,
+    correctNumber: 3,
+    question: "문제"
+  },
+  {
+    answerList: ['틀린 문장', '틀린 문장', '정답 문장', '틀린 문장'],
+    choiceNumber: 5,
+    correctNumber: 3,
+    question: "문제"
+  },
+  {
+    answerList: ['틀린 문장', '틀린 문장', '정답 문장', '틀린 문장'],
+    choiceNumber: 2,
+    correctNumber: 3,
+    question: "문제"
+  },
+  {
+    answerList: ['틀린 문장', '틀린 문장', '정답 문장', '틀린 문장'],
+    choiceNumber: 1,
+    correctNumber: 3,
+    question: "문제"
+  }
 ]

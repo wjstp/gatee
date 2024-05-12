@@ -1,6 +1,12 @@
 import localAxios from "@api/LocalAxios";
-import axios, { AxiosError, AxiosResponse, AxiosInstance } from "axios";
-import {MemberApiReq, CreateFamilyApiReq, NaggingApiReq, CreateMemberApiReq} from "@type/index";
+import { AxiosError, AxiosResponse, AxiosInstance } from "axios";
+import {
+  GetFamilyMemberApiReq,
+  CreateFamilyCodeApiReq,
+  NaggingApiReq,
+  CreateMemberApiReq,
+  JoinFamilyApiReq
+} from "@type/index";
 
 const local: AxiosInstance = localAxios();
 const local_file: AxiosInstance = localAxios("file");
@@ -9,28 +15,28 @@ const local_file: AxiosInstance = localAxios("file");
 export const createFamilyApi = async function (data: FormData,
                                                success: (res: AxiosResponse<any>) => void,
                                                fail: (err: AxiosError<any>) => void) {
-  await local_file.post(`/family`, data, {
-  }).then(success).catch(fail);
+  await local_file.post(`/family`, data).then(success).catch(fail);
 };
 
 // 가족 코드 생성
-interface CreateFamilyCodeApiReq {
-  familyId: string
-}
 export const createFamilyCodeApi = async function (data: CreateFamilyCodeApiReq,
                                                    success: (res: AxiosResponse<any>) => void,
                                                    fail: (err: AxiosError<any>) => void) {
-  await local.get(`/family/code?familyId=${data.familyId}`).then(success).catch(fail);
+  await local.get(`/family/code`, { params: data }).then(success).catch(fail);
 }
 
-// 가족 정보 가져오기
-interface GetFamilyMemberApiReq {
-  familyId: string
+// 가족 합류
+export const joinFamilyApi = async function (data: JoinFamilyApiReq,
+                                             success: (res: AxiosResponse<any>) => void,
+                                             fail: (err: AxiosError<any>) => void) {
+  await local.post(`/family/join`, data).then(success).catch(fail);
 }
+
+// 가족 정보 조회
 export const getFamilyMemberApi = async function (data: GetFamilyMemberApiReq,
                                                   success: (res: AxiosResponse<any>) => void,
                                                   fail: (err: AxiosError<any>) => void) {
-  await local.get("/family", {params:data}).then(success).catch(fail);
+  await local.get("/family", { params: data }).then(success).catch(fail);
 }
 
 // 회원 생성
@@ -41,7 +47,6 @@ export const createMemberApi = async function (data: CreateMemberApiReq,
 };
 
 // 내 정보 조회
-
 export const getMyDataApi = async function (success: (res: AxiosResponse<any>) => void,
                                             fail: (err: AxiosError<any>) => void) {
   await local.get("/members").then(success).catch(fail);

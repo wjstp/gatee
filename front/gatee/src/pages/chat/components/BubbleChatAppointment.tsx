@@ -4,7 +4,7 @@ import Avatar from '@mui/material/Avatar';
 import AvatarGroup from '@mui/material/AvatarGroup';
 import dayjs from "dayjs";
 import MegaphoneIcon from "@assets/images/icons/ic_megaphone.png";
-import { ChatAppointment, MemberApiReq } from "@type/index";
+import { ChatAppointment, MyMemberApiReq } from "@type/index";
 import getUserInfo from "@utils/getUserInfo";
 import { useFamilyStore } from "@store/useFamilyStore";
 import { useMemberStore } from "@store/useMemberStore";
@@ -29,7 +29,7 @@ const BubbleChatAppointment = (props: ChatAppointmentProps) => {
 
   // 참여자 정보 콜백 함수
   const getParticipantsInfo = (id: string, index: number) => {
-    const userInfo: null | MemberApiReq = getUserInfo(familyInfo, id);
+    const userInfo: null | MyMemberApiReq = getUserInfo(familyInfo, id);
 
     return <Avatar src={userInfo?.fileUrl} alt={userInfo?.nickname} key={index}/>;
   }

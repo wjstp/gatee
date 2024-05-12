@@ -8,12 +8,13 @@ const KaKaoLogin = () => {
   const web: string = "http://localhost:3000/auth"
   const mobile_yebin: string = "http://192.168.137.1:3000/auth"
   const mobile_taehyeon: string = "http://70.12.247.24:3000/auth"
+  const mobile_home_taehyeon: string = "http://192.168.35.47:3000/auth"
   const navigate = useNavigate();
 
   // 카카오 인가코드 발급
   const loginWithKaKao = () => {
     window.Kakao.Auth.authorize({
-      redirectUri: web,
+      redirectUri: mobile_home_taehyeon,
       scope: "profile_nickname, account_email",
     })
     // navigate("/signup");

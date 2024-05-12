@@ -1,6 +1,7 @@
 package io.ssafy.gatee.domain.schedule.dto.response;
 
 import io.ssafy.gatee.domain.member.entity.Member;
+import io.ssafy.gatee.domain.schedule.entity.Category;
 import io.ssafy.gatee.domain.schedule.entity.Schedule;
 import io.ssafy.gatee.domain.schedule_record.entity.ScheduleRecord;
 import jakarta.validation.constraints.NotNull;
@@ -14,7 +15,7 @@ public record ScheduleListInfoRes(
         Long scheduleId,
 
         @NotNull
-        String category,
+        Category category,
 
         @NotNull
         String title,
@@ -36,7 +37,7 @@ public record ScheduleListInfoRes(
     public static ScheduleListInfoRes toDto(Schedule schedule) {
         return ScheduleListInfoRes.builder()
                 .scheduleId(schedule.getId())
-                .category(String.valueOf(schedule.getCategory()))
+                .category(schedule.getCategory())
                 .title(schedule.getTitle())
                 .emoji(schedule.getEmoji())
                 .content(schedule.getContent())

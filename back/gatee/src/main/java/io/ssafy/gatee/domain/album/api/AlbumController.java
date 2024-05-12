@@ -6,6 +6,7 @@ import io.ssafy.gatee.domain.album.dto.request.AlbumSaveReq;
 import io.ssafy.gatee.domain.album.dto.request.DeleteAlbumPhotoListReq;
 import io.ssafy.gatee.domain.album.dto.response.AlbumListRes;
 import io.ssafy.gatee.domain.album.dto.response.AlbumPhotoListRes;
+import io.ssafy.gatee.domain.album.dto.response.AlbumSaveRes;
 import io.ssafy.gatee.domain.photo.dto.response.PhotoListRes;
 import io.ssafy.gatee.global.exception.error.not_found.AlbumNotFoundException;
 import jakarta.validation.Valid;
@@ -45,7 +46,7 @@ public class AlbumController {
     // 앨범 생성
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public Long saveAlbum(
+    public AlbumSaveRes saveAlbum(
             @Valid
             @RequestBody AlbumSaveReq albumSaveReq
     ) {
@@ -84,7 +85,7 @@ public class AlbumController {
     }
 
     // 앨범 내 사진 삭제
-    @DeleteMapping("/{albumId}/photos")
+    @PatchMapping("/{albumId}/photos")
     @ResponseStatus(HttpStatus.OK)
     public List<AlbumPhotoListRes> deleteAlbumPhotoList(
             @Valid

@@ -1,5 +1,51 @@
 /* 응답타입: Res, 요청타입: Req, props타입: Props 뒤에 붙이고 사용하기 */
 
+// 가족
+export interface FamilyStore {
+  familyId: string;
+  setFamilyId: (newId: string) => void;
+  familyName: string;
+  setFamilyName: (newName: string) => void;
+  familyImage: File | null;
+  setFamilyImage: (newImage: File | null) => void;
+  stringImage: string;
+  setStringImage: (newStringImage: string) => void;
+  familyCode: string;
+  setFamilyCode: (newCode: string) => void;
+  familyScore: number;
+  setFamilyScore: (newScore: number) => void;
+  familyInfo: MemberApiRes[];
+  setFamilyInfo: (newInfo: MemberApiRes[]) => void;
+}
+
+// 멤버
+export interface MemberStore {
+  memberId: string | null;
+  setMemberId: (newMemberId: string) => void;
+  name: string;
+  setName: (newName: string) => void;
+  nickname: string | null;
+  setNickName: (newNickname: string) => void;
+  birth: string | null;
+  setBirth: (newBirth: string) => void;
+  birthType: string;
+  setBirthType: (newBirthType: string) => void;
+  role: string | null;
+  setRole: (newRole: string | null) => void;
+  mood: string;
+  setMood: (newMood: string) => void;
+  phoneNumber: string;
+  setPhoneNumber: (newPhoneNumber: string) => void;
+  gender: string;
+  setGender: (newGender: string) => void;
+  memberImage: File | null
+  setMemberImage: (newImage: File | null) => void;
+  stringMemberImage: string;
+  setStringMemberImage: (newStringMemberImage: string) => void;
+  myInfo : MyMemberApiReq;
+  setMyInfo: (newMyInfo: Partial<MyMemberApiReq>) => void;
+};
+
 // member
 export interface Member {
   name: string;
@@ -25,27 +71,55 @@ export interface CreateMemberApiReq {
 }
 
 // 가족 api 정보
-export interface MemberApiReq {
-  birth: string
-  birthType: string;
-  email: string;
-  memberId: string;
-  mood: string;
-  name: string;
-  nickname: string;
-  role: string;
-  phoneNumber: string | null;
-  fileUrl: string;
-  isLeader: boolean;
-}
-
-// 가족 api 정보
 export interface MyMemberApiReq {
   birth: string
   birthType: string;
   email: string;
   memberId: string;
-  mood: string;
+  mood: string|null;
+  name: string;
+  nickname: string;
+  role: string;
+  phoneNumber: string | null;
+  fileUrl: string;
+  isLeader: boolean;
+}
+
+// 가족 코드 생성
+export interface CreateFamilyCodeApiReq {
+  familyId: string;
+}
+
+// 가족 합류
+export interface JoinFamilyApiReq {
+  familyCode: string;
+}
+
+// 가족 정보 조회
+export interface GetFamilyMemberApiReq {
+  familyId: string
+}
+
+export interface MemberApiRes {
+  birth: string
+  birthType: string;
+  email: string;
+  memberId: string;
+  mood: string|null;
+  name: string;
+  nickname: string;
+  role: string;
+  phoneNumber: string | null;
+  fileUrl: string;
+  isLeader: boolean;
+}
+
+export interface MyMemberApiRes {
+  birth: string
+  birthType: string;
+  email: string;
+  memberId: string;
+  mood: string|null;
   name: string;
   nickname: string;
   role: string;
@@ -53,17 +127,6 @@ export interface MyMemberApiReq {
   phoneNumber: string | null;
   fileUrl: string;
   isLeader: boolean;
-}
-
-
-export interface MemberApiReq {
-  name: string;
-  nickname: string;
-  birth: string;
-  birthType: string;
-  role: string;
-  familyId: string;
-  phoneNumber: null | string;
 }
 
 export interface CreateFamilyApiReq {
@@ -315,4 +378,35 @@ export interface GetThumnailPhotoApiReq {
 
 export interface DeletePhotoApiReq {
   photoIdList: number[]
+}
+
+// 모의고사 api 관련
+export interface ExamResult {
+  score: number;
+  createdAt: string;
+}
+
+export interface TransformedQuestionData {
+  question: string;
+  answerList: string[];
+  correctNumber: number;
+  choiceNumber: number;
+}
+
+export interface QuestionData {
+  question: string;
+  wrongAnswers: string[];
+  correctAnswer: string;
+}
+
+export interface ExamProblem {
+  "question" : string,
+  "answerList" : string[],
+  "choiceNumber" : number|string,
+  "correctNumber" : number|string
+}
+
+export interface SaveExamResultApiReq {
+  examResults : ExamProblem[],
+  score:number
 }

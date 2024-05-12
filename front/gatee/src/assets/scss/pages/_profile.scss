@@ -897,3 +897,54 @@
     }
   }
 }
+
+.profile-cropper {
+  @extend %modal-overlay;
+
+  height: 100%;
+  width: 100%;
+
+  &__content {
+    @extend %modal-content;
+
+    height: 60%;
+    width: 80%;
+    flex-direction: column;
+    border-radius: 12px;
+  }
+
+  &__btn {
+
+    height: 10%;
+    width: 100%;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+
+    .btn-cancel,
+    .btn-save {
+      height: 100%;
+      width: 50%;
+      color: black;
+
+      &:active {
+        opacity: 0.5;
+      }
+
+      &--text {
+        font-size: 22px;
+        font-weight: bold;
+      }
+    }
+
+    .btn-cancel {
+      border-bottom-left-radius: 12px;
+      background-color: white;
+    }
+
+    .btn-save {
+      background-color: $orange400;
+      border-bottom-right-radius: 12px;
+      color: white;
+    }
+  }
+}

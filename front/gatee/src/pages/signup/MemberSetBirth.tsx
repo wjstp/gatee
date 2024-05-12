@@ -12,10 +12,10 @@ import { useMemberStore } from "@store/useMemberStore";
 const SignupMemberSetBirth = () => {
   const navigate = useNavigate();
   const {
-    birthDay,
+    birth,
     birthType,
     gender,
-    setBirthDay,
+    setBirth,
     setBirthType,
     setGender,
     setRole,
@@ -56,13 +56,22 @@ const SignupMemberSetBirth = () => {
   // 날짜 핸들러
   const handleSetSelectedDateChange = (date: Dayjs | null) => {
     const formattedDate = date ? date.format("YYYY-MM-DD") : "";
-    setBirthDay(formattedDate);
+    setBirth(formattedDate);
     if (date && isFutureDate(formattedDate)) {
       setErrorMessage('유효한 날짜를 선택해주세요');
     } else {
       setErrorMessage('');
     }
   };
+
+  // 음력 양력 바꾸기
+  const changeBirthType = (birthType: string) => {
+    if (birthType === "SOLAR") {
+      setBirthType("LUNAR")
+    } else {
+      setBirthType("SOLAR")
+    }
+  }
 
   // 역할 초기화
   useEffect(() => {
@@ -100,7 +109,7 @@ const SignupMemberSetBirth = () => {
                 className="birthday-datefield__input"
                 format="YYYY / MM / DD"
                 autoFocus={true}
-                value={birthDay ? dayjs(birthDay) : null}
+                value={birth ? dayjs(birth) : null}
                 onChange={handleSetSelectedDateChange}
                 inputProps={{
                   style: {
@@ -112,45 +121,21 @@ const SignupMemberSetBirth = () => {
             </DemoContainer>
           </LocalizationProvider>
         </div>
-        
-        {/*음력&양력 선택*/}
+
+        {/*음력 선택*/}
         <div className="birthday-choice">
-
-          {/*양력*/}
-          <div className="birthday-choice__solar">
-            <button
-              className="btn-solar"
-              onClick={() => setBirthType("SOLAR")}
-            >
-              <input
-                className="btn-solar__input"
-                type="radio"
-                name="calendarType"
-                value="SOLAR"
-                checked={birthType === "SOLAR"}
-                onChange={(e) => setBirthType(e.target.value)}
-              />
-              <label
-                className={birthType === "SOLAR" ? "btn-solar__input--label--selected" : "btn-solar__input--label"}
-              >
-                양력
-              </label>
-            </button>
-          </div>
-
-          {/*음력*/}
           <div className="birthday-choice__lunar">
             <button
               className="btn-lunar"
-              onClick={() => setBirthType("LUNAR")}
+              onClick={() => changeBirthType(birthType)}
             >
               <input
                 className="btn-lunar__input"
-                type="radio"
+                type="checkbox"
                 name="calendarType"
                 value="LUNAR"
                 checked={birthType === "LUNAR"}
-                onChange={(e) => setBirthType(e.target.value)}
+                onClick={() => changeBirthType(birthType)}
               />
               <label
                 className={birthType === "LUNAR" ? "btn-lunar__input--label--selected" : "btn-lunar__input--label"}
@@ -159,7 +144,6 @@ const SignupMemberSetBirth = () => {
               </label>
             </button>
           </div>
-
         </div>
 
       </div>
@@ -211,10 +195,10 @@ const SignupMemberSetBirth = () => {
           className="btn-next"
           onClick={goToMemberSetRole}
           disabled={
-            !birthDay ||
+            !birth ||
             !gender ||
-            !isValidDateFormat(birthDay) ||
-            isFutureDate(birthDay)
+            !isValidDateFormat(birth) ||
+            isFutureDate(birth)
           }
         >
             <span className="btn-next__text">

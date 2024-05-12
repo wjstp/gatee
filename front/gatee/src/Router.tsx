@@ -46,7 +46,6 @@ import PhotoDetail from "@pages/photo/PhotoDetail";
 import PhotoAlbumGroupDetail from "@pages/photo/AlbumGroupDetail";
 import ProfileModifyCopy from "@pages/profile/modifyCopy";
 
-
 const Router = () => {
   return (
     <Routes>

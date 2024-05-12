@@ -1,8 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {Outlet, useLocation} from 'react-router-dom'
 import { Helmet, HelmetProvider } from 'react-helmet-async';
+import { useModalStore } from "@store/useModalStore";
 
 const SubLayout = () => {
+  const { showModal } = useModalStore();
   const [currentUrl, setcurrentUrl] = useState("");
   // 현재의 url을 추적
   const location = useLocation()
@@ -20,9 +22,12 @@ const SubLayout = () => {
           <Helmet>
             {currentUrl === "/signup" || currentUrl === "/auth" ? (
               <meta name="theme-color" id="theme-color" content="#FFBE5C"/>
-            ) : (
-              <meta name="theme-color" content="#FFFFFF"/>
-            )}
+            ) : (showModal ? (
+                <meta name="theme-color" id="theme-color" content="#808080"/>
+              ) : (
+                <meta name="theme-color" id="theme-color" content="#FFFFFF"/>
+              )
+              )}
           </Helmet>
         </HelmetProvider>
       <div id="sub">

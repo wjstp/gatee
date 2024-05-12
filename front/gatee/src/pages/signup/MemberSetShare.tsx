@@ -3,17 +3,15 @@ import { BiCopy } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { ReactComponent as KaKaoMessage } from "@assets/images/signup/kakao_message.svg";
 import { useFamilyStore } from "@store/useFamilyStore";
-import { createFamilyCodeApi } from "@api/member";
-import { AxiosResponse, AxiosError } from "axios";
 
 const SignupMemberSetShare = () => {
   const navigate = useNavigate();
   const server: string | undefined = process.env.REACT_APP_API_URL;
 
-  const { familyName, stringImage, familyId, familyCode, setFamilyCode } = useFamilyStore();
+  const { familyName, stringImage, familyCode } = useFamilyStore();
 
-  const goToMemberSet = () => {
-    navigate("/signup/member-set");
+  const goToMemberSetFininsh = () => {
+    navigate("/signup/member-set/finish");
   }
   
   // 카카오 공유하기 버튼
@@ -30,8 +28,7 @@ const SignupMemberSetShare = () => {
         },
       },
       itemContent: {
-        profileText: `${familyName} 가족에서 초대가 왔어요!`,
-        profileImageUrl: stringImage,
+        profileText: `${familyName} 가족에서 초대가 왔어요~`,
         titleImageText: '아래 코드를 복사해 들어오세요!',
       },
       buttons: [
@@ -46,11 +43,6 @@ const SignupMemberSetShare = () => {
     });
   }
 
-  // 가족 코드 생성하기
-  useEffect(() => {
-    // createFamilyCode();
-  }, []);
-
   // 초대 코드를 클립보드에 복사하는 함수
   const copyToClipboard = () => {
     navigator.clipboard.writeText(familyCode).then(() => {
@@ -61,16 +53,16 @@ const SignupMemberSetShare = () => {
   }
 
   return (
-    <div className="signup-family-set-share">
+    <div className="signup-member-set-share">
 
       {/*제목*/}
-      <div className="signup-family-set-share__title">
+      <div className="signup-member-set-share__title">
         <span className="title__part--01">가족을 초대</span>
         <span className="title__part--02">해 봐요</span>
       </div>
 
       {/*가족 이미지*/}
-      <div className="signup-family-set-share__img">
+      <div className="signup-member-set-share__img">
         <img
           className="img"
           src={stringImage}
@@ -79,14 +71,14 @@ const SignupMemberSetShare = () => {
       </div>
 
       {/*가족 이름*/}
-      <div className="signup-family-set-share__name">
+      <div className="signup-member-set-share__name">
         <span className="name">
           {familyName}
         </span>
       </div>
 
       {/*코드 박스*/}
-      <div className="signup-family-set-share__code-box">
+      <div className="signup-member-set-share__code-box">
         {/*코드 문구*/}
         <span className="code-box__text">
           초대 코드
@@ -110,14 +102,14 @@ const SignupMemberSetShare = () => {
       </div>
 
       {/*유효기간 메시지*/}
-      <div className="signup-family-set-share__message">
+      <div className="signup-member-set-share__message">
         <span className="message--text">
           초대 코드는 하루가 지나면 초기화돼요!
         </span>
       </div>
 
       {/*카카오톡 공유하기 버튼*/}
-      <div className="signup-family-set-share__btn-kakao">
+      <div className="signup-member-set-share__btn-kakao">
         <button
           className="btn-kakao__btn"
           onClick={kakaoMessage}
@@ -127,10 +119,10 @@ const SignupMemberSetShare = () => {
       </div>
 
       {/* 다음 버튼 */}
-      <div className="signup-family-set-share__btn-next">
+      <div className="signup-member-set-share__btn-next">
         <button
           className="btn-next__btn"
-          onClick={goToMemberSet}
+          onClick={goToMemberSetFininsh}
         >
           <span className="btn__text">
             다음

@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {ChatMessage, SenderType, ChatContent, MemberApiReq} from "@type/index";
+import {ChatMessage, SenderType, ChatContent, MyMemberApiReq} from "@type/index";
 import getUserInfo from "@utils/getUserInfo";
 import convertKrTime from "@utils/convertKrTime";
 import renderBubbleComponent from "@utils/renderBubbleComponent";
@@ -26,7 +26,7 @@ const YoursChat = (props: YourChatMessageProps) => {
   const { chat, isPrevSender, unreadMemberCount } = props;
   const { familyInfo } = useFamilyStore();
   const { myInfo } = useMemberStore();
-  const senderInfo: null | MemberApiReq = getUserInfo(familyInfo, chat.sender);
+  const senderInfo: null | MyMemberApiReq = getUserInfo(familyInfo, chat.sender);
 
   return (
     <div className="chat__yours-chat">

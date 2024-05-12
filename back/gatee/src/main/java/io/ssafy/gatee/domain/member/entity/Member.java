@@ -64,6 +64,7 @@ public class Member extends BaseEntity {
         this.nickname = memberSaveReq.nickname();
         this.birth = LocalDate.parse(memberSaveReq.birth(), DateTimeFormatter.ISO_DATE);
         this.birthType = BirthType.valueOf(memberSaveReq.birthType());
+        this.file = file;
     }
 
     // 회원 정보 수정

@@ -1,20 +1,23 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { AxiosResponse, AxiosError } from "axios";
 import { useFamilyStore } from "@store/useFamilyStore";
+import { getFamilyMemberApi, getMyDataApi } from "@api/member";
 
 const SignupFamilyJoin = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
-  const { familyCode, setFamilyCode } = useFamilyStore();
+  const { setFamilyCode } = useFamilyStore();
+  // localStorage.setItem("accessToken", "4PIPr7t5HjH_OAJe30I-WALNSMJ12K3hg-QKKw0gAAABj2ztS6ke0jm_MNo9Pw");
 
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [code, setCode] = useState<string>("");
 
   // 입력값
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const value: string = e.target.value.toUpperCase();
+    const value: string = e.target.value;
     if (value.length <= 8) {
-      setFamilyCode(value);
+      setCode(value);
       setErrorMessage("");
     }
   }
@@ -22,23 +25,51 @@ const SignupFamilyJoin = () => {
   // 입력하기 버튼 클릭 처리
   const goToFamilyJoinCheck = (): void => {
     // 입력값이 8글자의 대문자 영어와 숫자로 구성되어 있는지 확인
-    if (familyCode.length !== 8 || !/^[A-Z0-9]*$/.test(familyCode)) { // 조건을 올바르게 수정했습니다.
-      setErrorMessage('8글자의 대문자 영어와 숫자만 입력해주세요.');
+    if (code.length !== 8 || !/^[a-zA-Z0-9]*$/.test(code)) {
+      setErrorMessage('8글자의 영어와 숫자만 입력해주세요.');
       // 재포커싱
       if (inputRef.current) {
         inputRef.current.focus();
       }
       return; // 함수 실행 중단
     } else {
-      // 코드로 가족 조회하기
-      // axios.get()
-      navigate("/signup/family-join/check")
+      // getFamily();
+      getMyData();
+      // navigate("/signup/family-join/check");
     }
   };
+  
+  // 가족 정보 조회하기
+  const getFamily = () => {
+    getFamilyMemberApi(
+      {
+        familyId: "71631a5a-f9b5-4c3f-9f4e-957a9f7b5a19"
+      },
+      (res: AxiosResponse<any>) => {
+        console.log(res);
+        setFamilyCode(code);
+      },
+      (err: AxiosError<any>) => {
+        console.log(err);
+      }
+    )
+  }
 
   // 가족 생성 버튼 클릭 처리
   const goToFamilySet = (): void => {
     navigate("/signup/family-set");
+  }
+
+  // 멤버 조회
+  const getMyData = () => {
+    getMyDataApi(
+      (res: AxiosResponse<any>) => {
+        console.log(res)
+      },
+      (err: AxiosError<any>) => {
+        console.log(err)
+      }
+    )
   }
 
   return (
@@ -62,7 +93,7 @@ const SignupFamilyJoin = () => {
           type="text"
           pattern="[가-힣]*"
           placeholder="예) A43959FE "
-          value={familyCode}
+          value={code}
           onChange={handleInputChange}
         />
       </div>
@@ -79,7 +110,7 @@ const SignupFamilyJoin = () => {
         <button
           className="btn-input"
           onClick={goToFamilyJoinCheck}
-          disabled={!familyCode}
+          disabled={!code}
         >
             <span className="btn-input__text">
               입력하기
