@@ -1,0 +1,10 @@
+{
+  "familyId": "09ae5be3-5042-445a-a1ec-45ab188bf568",
+  "category": "GROUP",
+  "title": "첫 번째 일정",
+  "emoji": "red",
+  "content": "스케줄 생성 테스트",
+  "startDate": "2024-03-12",
+  "endDate": "2024-04-15",
+  "memberIdList": ["09ae5be3-5042-445a-a1ec-45ab188bf568", "09ae5be3-445a-a1ec-5042-45ab188bf568"]
+}

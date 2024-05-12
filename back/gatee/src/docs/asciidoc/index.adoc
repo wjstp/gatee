@@ -140,70 +140,93 @@ include::{snippets}/family-controller-test/edit-family-name/http-response.adoc[]
 
 = Schedule
 
-== 가족 전체 일정 조회
+== 전체 일정 조회
 
 - Request
 
-include::{snippets}/가족 전체 일정 조회/http-request.adoc[]
+include::{snippets}/schedule-controller-test/read-schedule/http-request.adoc[]
+include::{snippets}/schedule-controller-test/read-schedule/query-parameters.adoc[]
 
 - Response
 
-include::{snippets}/가족 전체 일정 조회/http-response.adoc[]
+include::{snippets}/schedule-controller-test/read-schedule/http-response.adoc[]
+include::{snippets}/schedule-controller-test/read-schedule/response-fields.adoc[]
 
 
 == 일정 상세 조회
 
 - Request
 
-include::{snippets}/일정 상세 조회/http-request.adoc[]
+include::{snippets}/schedule-controller-test/read-schedule-detail/http-request.adoc[]
+include::{snippets}/schedule-controller-test/read-schedule-detail/query-parameters.adoc[]
 
 - Response
 
-include::{snippets}/일정 상세 조회/http-response.adoc[]
+include::{snippets}/schedule-controller-test/read-schedule-detail/http-response.adoc[]
+include::{snippets}/schedule-controller-test/read-schedule-detail/response-fields.adoc[]
 
 
 == 일정 등록
 
 - Request
 
-include::{snippets}/일정 등록/http-request.adoc[]
+include::{snippets}/schedule-controller-test/save-schedule/http-request.adoc[]
+include::{snippets}/schedule-controller-test/save-schedule/query-parameters.adoc[]
 
 - Response
 
-include::{snippets}/일정 등록/http-response.adoc[]
+include::{snippets}/schedule-controller-test/save-schedule/http-response.adoc[]
 
 
 == 일정 수정
 
 - Request
 
-include::{snippets}/일정 수정/http-request.adoc[]
+include::{snippets}/schedule-controller-test/edit-schedule/http-request.adoc[]
+include::{snippets}/schedule-controller-test/edit-schedule/path-parameters.adoc[]
+include::{snippets}/schedule-controller-test/edit-schedule/query-parameters.adoc[]
 
 - Response
 
-include::{snippets}/일정 수정/http-response.adoc[]
+include::{snippets}/schedule-controller-test/edit-schedule/http-response.adoc[]
+
+
+== 일정 삭제
+
+- Request
+
+include::{snippets}/schedule-controller-test/delete-schedule/http-request.adoc[]
+include::{snippets}/schedule-controller-test/delete-schedule/path-parameters.adoc[]
+
+- Response
+
+include::{snippets}/schedule-controller-test/delete-schedule/http-response.adoc[]
 
 
 == 일정 참여
 
 - Request
 
-include::{snippets}/일정 참여/http-request.adoc[]
+include::{snippets}/schedule-controller-test/participate-schedule/http-request.adoc[]
+include::{snippets}/schedule-controller-test/participate-schedule/path-parameters.adoc[]
+include::{snippets}/schedule-controller-test/participate-schedule/query-parameters.adoc[]
 
 - Response
 
-include::{snippets}/일정 참여/http-response.adoc[]
+include::{snippets}/schedule-controller-test/participate-schedule/http-response.adoc[]
 
 
 == 일정 후기 등록
 
 - Request
 
-include::{snippets}/일정 후기 등록/http-request.adoc[]
+include::{snippets}/schedule-controller-test/save-schedule-record/http-request.adoc[]
+include::{snippets}/schedule-controller-test/save-schedule-record/path-parameters.adoc[]
+include::{snippets}/schedule-controller-test/save-schedule-record/query-parameters.adoc[]
 
 - Response
 
-include::{snippets}/일정 후기 등록/http-response.adoc[]
+include::{snippets}/schedule-controller-test/save-schedule-record/http-response.adoc[]
 
 
 ---
