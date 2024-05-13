@@ -279,6 +279,7 @@ include::{snippets}/feature-controller-test/read-feature-list/http-response.adoc
 include::{snippets}/feature-controller-test/read-feature-list/response-fields.adoc[]
 
 
+
 == 백문백답 질문 및 답변 조회
 
 - Request
@@ -289,6 +290,17 @@ include::{snippets}/feature-controller-test/read-feature-result/http-request.ado
 
 include::{snippets}/feature-controller-test/read-feature-result/http-response.adoc[]
 include::{snippets}/feature-controller-test/read-feature-result/response-fields.adoc[]
+
+== 다른 사람의 백문백답 질문 및 답변 조회
+
+- Request
+
+include::{snippets}/feature-controller-test/read-other-feature-result/http-request.adoc[]
+
+- Response
+
+include::{snippets}/feature-controller-test/read-other-feature-result/http-response.adoc[]
+include::{snippets}/feature-controller-test/read-other-feature-result/response-fields.adoc[]
 
 
 = Exam
@@ -362,7 +374,7 @@ include::{snippets}/exam-controller-test/save-exam-result/query-parameters.adoc[
 - Response
 
 include::{snippets}/exam-controller-test/save-exam-result/http-response.adoc[]
-
+include::{snippets}/exam-controller-test/save-exam-result/response-fields.adoc[]
 
 ---
 ---

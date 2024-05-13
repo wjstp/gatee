@@ -277,7 +277,8 @@ class ExamControllerTest extends RestDocsTestSupport {
     void saveExamResult() throws Exception {
 
         // given
-        doNothing().when(examService).saveExamResult(any(ExamReq.class), any(UUID.class));
+        given(examService.saveExamResult(any(ExamReq.class), any(UUID.class)))
+                .willReturn(ExamSaveRes.builder().examId(1L).build());
 
         // when
         ResultActions result = mockMvc.perform(post("/api/exams")
@@ -296,6 +297,9 @@ class ExamControllerTest extends RestDocsTestSupport {
                                 parameterWithName("examResults[].choiceNumber").description("선택 번호").optional(),
                                 parameterWithName("examResults[].correctNumber").description("정답 번호").optional(),
                                 parameterWithName("score").description("모의고사 점수").optional()
+                        ),
+                        responseFields(
+                                fieldWithPath("examId").type(JsonFieldType.NUMBER).description("모의고사 id")
                         )
                 ));
     }
