@@ -1,12 +1,15 @@
 import React, { useRef, useState } from 'react';
 import { IoIosCamera } from "react-icons/io";
-import {useNavigate, useParams} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { MemberInfoSample } from "@constants/index";
-import { FaPhone } from "react-icons/fa";
-import axios from "axios";
+import dayjs from "dayjs";
+import ProfileCropper from "@pages/profile/components/Cropper";
+import useModal from "@hooks/useModal";
 
 const ProfileModify = () => {
+  const sender: string = "member-set";
   const navigate = useNavigate();
+  const { isOpen, openModal, closeModal } = useModal();
   // 쿼리스트링으로 넘어온 이름을 확인하기 위함
   const { name } = useParams<{ name: string }>();
   // 멤버 불러오기
@@ -15,6 +18,7 @@ const ProfileModify = () => {
   // 이미지 관련
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [memberImage, setMemberImage] = useState<string | ArrayBuffer | null>(member.fileUrl);
+  const [cropImage, setCropImage] = useState<string>("");
   // 닉네임 관련
   const inputNicknameRef = useRef<HTMLInputElement>(null);
   const [inputNickname, setInputNickname] = useState<string>(member.nickname);
@@ -50,23 +54,20 @@ const ProfileModify = () => {
 
   // 날짜 형식 변환 함수
   const changeDate = (originalDate: string): string => {
-    const date = new Date(originalDate);
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
+    const formattedDate: string = dayjs(originalDate).format("YYYY.MM.DD");
 
-    return `${year}.${month}.${day}`;
+    return formattedDate;
   }
 
   // 이미지 선택 처리
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const file = e.target.files ? e.target.files[0] : null;
+    const file: File | null = e.target.files ? e.target.files[0] : null;
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setMemberImage(reader.result);
-      };
-      reader.readAsDataURL(file);
+      // 크롭할 이미지 넣기
+      const jpgUrl = URL.createObjectURL(file);
+      setCropImage(jpgUrl);
+      // 모달 열기
+      openModal();
     }
   }
 

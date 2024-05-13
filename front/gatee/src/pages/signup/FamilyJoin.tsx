@@ -52,7 +52,7 @@ const SignupFamilyJoin = () => {
       (err: AxiosError<any>) => {
         console.log(err);
       }
-    )
+    ).then().catch();
   }
 
   // 가족 생성 버튼 클릭 처리
@@ -69,7 +69,7 @@ const SignupFamilyJoin = () => {
       (err: AxiosError<any>) => {
         console.log(err)
       }
-    )
+    ).then().catch();
   }
 
   return (

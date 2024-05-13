@@ -87,6 +87,7 @@ export interface MemberApiReq {
 
 // 가족 코드 생성
 export interface CreateFamilyCodeApiReq {
+  headers: object;
   familyId: string;
 }
 
@@ -129,8 +130,19 @@ export interface MyMemberApiRes {
   isLeader: boolean;
 }
 
-export interface CreateFamilyApiReq {
+// 프로필 수정
+export interface ModifyProfileReq {
   name: string;
+  nickname: string;
+  birth: string;
+  birthType: string;
+  role: string;
+  phoneNumber: string | null;
+}
+
+// 기분 상태 수정
+export interface ModifyMoodReq {
+  mood: string;
 }
 
 export interface Mood {
@@ -151,7 +163,6 @@ export interface Character {
   question: string;
   answer: string;
 }
-
 
 // schedule
 export interface Schedule {

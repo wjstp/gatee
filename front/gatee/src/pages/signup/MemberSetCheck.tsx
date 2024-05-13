@@ -2,7 +2,6 @@ import React, {useRef, useState} from 'react';
 import { useNavigate } from "react-router-dom";
 import { IoIosCamera } from "react-icons/io";
 import { useMemberStore } from "@store/useMemberStore";
-import { imageResizer } from "@utils/imageResizer";
 import { createMemberApi, createFamilyCodeApi } from "@api/member";
 import { AxiosResponse, AxiosError } from "axios";
 import { useFamilyStore } from "@store/useFamilyStore";
@@ -34,7 +33,8 @@ const SignupMemberSetCheck = () => {
   const goToMemberSetPermission = () => {
     // uploadFile();
     // createMember();
-    createFamilyCode();
+    const accessToken: string | null = localStorage.getItem("accessToken");
+    createFamilyCode(accessToken);
     // navigate("/signup/member-set/share");
   }
 
@@ -53,14 +53,14 @@ const SignupMemberSetCheck = () => {
         setStringMemberImage(res.data.imageUrl);
 
         // 멤버 등록
-        // createMember();
+        createMember();
       },
       (err: AxiosError<any>) => {
         console.log(err)
       }
-    )
+    ).then().catch();
   }
-
+  console.log(familyId)
   // 회원 생성
   const createMember = () => {
     if (birth && role) {
@@ -71,35 +71,49 @@ const SignupMemberSetCheck = () => {
           birth: birth,
           birthType: birthType,
           role: role,
-          familyId: "71631a5a-f9b5-4c3f-9f4e-957a9f7b5a19",
+          // familyId: "3f5fdeb6-445c-4aaa-9e60-0da13dfc14e6",
+          familyId: familyId,
           phoneNumber: null
         },
         (res: AxiosResponse<any>) => {
           console.log(res);
-          createFamilyCode();
+          
+          // 토큰 갱신
+          const accessToken = res.headers.authorization.split(' ')[1];
+          localStorage.setItem("accessToken", accessToken);
+          
+          // 가족 코드 생성
+          createFamilyCode(accessToken);
         },
         (err: AxiosError<any>): void => {
           console.log(err);
-        })
+        }
+      ).then().catch();
     }
   }
 
   // 가족 코드 생성
-  const createFamilyCode = () => {
-    createFamilyCodeApi(
-      {
-        familyId: "71631a5a-f9b5-4c3f-9f4e-957a9f7b5a19"
-      },
-      (res: AxiosResponse<any>) => {
-        console.log(res);
-        // 가족 코드 집어넣기
-        setFamilyCode(res.data.familyCode);
-        navigate("/signup/member-set/share");
-      },
-      (err: AxiosError<any>): void => {
-        console.log(err);
-      }
-    )
+  const createFamilyCode = (accessToken: string | null) => {
+    if (accessToken) {
+      createFamilyCodeApi(
+        {
+          headers: {
+            Authorization: accessToken
+          },
+          // familyId: "3f5fdeb6-445c-4aaa-9e60-0da13dfc14e6",
+          familyId: familyId,
+        },
+        (res: AxiosResponse<any>) => {
+          console.log(res);
+          // 가족 코드 집어넣기
+          setFamilyCode(res.data.familyCode);
+          navigate("/signup/member-set/share");
+        },
+        (err: AxiosError<any>): void => {
+          console.log(err);
+        }
+      ).then().catch();
+    }
   }
 
   // 뒤로 가기

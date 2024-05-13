@@ -1,34 +1,37 @@
-import React, {useRef, useState} from 'react';
-import {FaCamera} from "react-icons/fa";
-import {useNavigate, useParams} from "react-router-dom";
-import {MemberInfoSample} from "@constants/index";
+import React, { useRef, useState } from 'react';
+import { FaCamera } from "react-icons/fa";
+import { useNavigate, useParams } from "react-router-dom";
+import { MemberInfoSample } from "@constants/index";
 import useModal from "@hooks/useModal";
-import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
-import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
-import dayjs, {Dayjs} from 'dayjs';
-import {DateField} from '@mui/x-date-pickers/DateField';
-import {DemoContainer} from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import dayjs, { Dayjs } from 'dayjs';
+import { DateField } from '@mui/x-date-pickers/DateField';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import Checkbox from "@mui/material/Checkbox";
-import {FormControlLabel} from "@mui/material";
-import {useMemberStore} from "@store/useMemberStore";
+import { FormControlLabel } from "@mui/material";
+import { useMemberStore } from "@store/useMemberStore";
+import ProfileCropper from "@pages/profile/components/Cropper";
+import { modifyProfileApi } from "@api/profile";
+import { AxiosResponse, AxiosError } from "axios";
 
 const ProfileModifyCopy = () => {
   const navigate = useNavigate();
+  const sender: string = "member-set"
   // 쿼리스트링으로 넘어온 이름을 확인하기 위함
-  const {name} = useParams<{ name: string }>();
-  const {myInfo, setMyInfo} = useMemberStore()
+  const { name } = useParams<{ name: string }>();
+  const { myInfo, setMyInfo, stringMemberImage } = useMemberStore()
   // 멤버 불러오기
   const member = MemberInfoSample;
 
   // 이미지 관련
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [memberImage, setMemberImage] = useState<string | ArrayBuffer | null>(member.fileUrl);
+  const [cropImage, setCropImage] = useState<string>("");
   // 닉네임 관련
-
   const [inputNickname, setInputNickname] = useState<string>(myInfo?.nickname);
   // 이름 관련
   const [inputName, setInputName] = useState(myInfo?.name);
-
   // 역할 관련
   const [inputRole, setInputRole] = useState<string>(myInfo?.role);
   // 생일 관련
@@ -40,10 +43,11 @@ const ProfileModifyCopy = () => {
   const [inputPhoneNumber, setInputPhoneNumber] = useState<string>(myInfo?.phoneNumber === null ? "" : myInfo?.phoneNumber)
 
   // 모달 관련
-  const {isOpen: isNameModalOpen, openModal: openNameModal, closeModal: closeNameModal} = useModal();
-  const {isOpen: isRoleModalOpen, openModal: openRoleModal, closeModal: closeRoleModal} = useModal();
-  const {isOpen: isBirthModalOpen, openModal: openBirthModal, closeModal: closeBirthModal} = useModal();
-  const {isOpen: isPhoneModalOpen, openModal: openPhoneModal, closeModal: closePhoneModal} = useModal();
+  const { isOpen: isImageModalOpen, openModal: openImageModal, closeModal: closeImageModal } = useModal();
+  const { isOpen: isNameModalOpen, openModal: openNameModal, closeModal: closeNameModal } = useModal();
+  const { isOpen: isRoleModalOpen, openModal: openRoleModal, closeModal: closeRoleModal } = useModal();
+  const { isOpen: isBirthModalOpen, openModal: openBirthModal, closeModal: closeBirthModal } = useModal();
+  const { isOpen: isPhoneModalOpen, openModal: openPhoneModal, closeModal: closePhoneModal } = useModal();
 
 
   // 수정 버튼
@@ -62,25 +66,35 @@ const ProfileModifyCopy = () => {
     navigate(`/profile/${name}`)
   }
 
+  // 수정 요청
+  const modifyProfile = () => {
+    modifyProfileApi(
+      myInfo,
+      (res: AxiosResponse<any>) => {
+        console.log(res);
+      },
+      (err: AxiosError<any>) => {
+        console.log(err)
+      },
+    ).then().catch();
+  }
+
   // 날짜 형식 변환 함수
   const changeDate = (originalDate: string): string => {
-    const date = new Date(originalDate);
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
+    const formattedDate = dayjs(originalDate).format("YYYY.MM.DD");
 
-    return `${year}.${month}.${day}`;
+    return formattedDate;
   }
 
   // 이미지 선택 처리
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const file = e.target.files ? e.target.files[0] : null;
+    const file: File | null = e.target.files ? e.target.files[0] : null;
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setMemberImage(reader.result);
-      };
-      reader.readAsDataURL(file);
+      // 크롭할 이미지 넣기
+      const jpgUrl = URL.createObjectURL(file);
+      setCropImage(jpgUrl);
+      // 모달 열기
+      openImageModal();
     }
   }
 
@@ -100,6 +114,10 @@ const ProfileModifyCopy = () => {
   }
 
   // 모달 핸들러
+  const handleImageModal = (): void => {
+    closeImageModal();
+  }
+
   const handleNameModal = (name: string): void => {
     setInputName(name);
     closeNameModal()
@@ -131,7 +149,7 @@ const ProfileModifyCopy = () => {
         <div className="profile__img-box">
           <img
             className="img-box__img"
-            src={memberImage ? memberImage.toString() : member.fileUrl}
+            src={stringMemberImage}
             alt="profile-image"
           />
           <input
@@ -181,9 +199,8 @@ const ProfileModifyCopy = () => {
             </div>
           </div>
 
+          {/* 역할 */}
           <div className="info-box__role">
-
-            {/* 역할 */}
             <div className="role__title"
             >
               <span className="role__title--text">
@@ -208,7 +225,7 @@ const ProfileModifyCopy = () => {
             <div className="birth__body" onClick={() => openBirthModal()}>
               <div
                 className="birth__body__part--01">
-                {inputBirthDay} ({inputBirthType === "SOLAR" ? "양력" : "음력"})
+                {changeDate(inputBirthDay)} ({inputBirthType === "SOLAR" ? "양력" : "음력"})
               </div>
 
             </div>
@@ -249,6 +266,17 @@ const ProfileModifyCopy = () => {
       </div>
 
       {/*모달*/}
+      {isImageModalOpen ? (
+        <ProfileCropper
+          cropImage={cropImage}
+          cropShape={"round"}
+          handleModalEvent={handleImageModal}
+          sender={sender}
+        />
+      ) : (
+        null
+      )}
+
       {isNameModalOpen ?
         <NameModal handleNameModal={(name: string) => handleNameModal(name)} name={inputName}/> : null
       }

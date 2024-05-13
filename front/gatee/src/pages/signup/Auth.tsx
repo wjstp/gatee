@@ -32,7 +32,7 @@ const SignupAuth = () => {
       {
         grant_type: "authorization_code",
         client_id: kakaoJavaScriptKey,
-        redirect_uri: mobile_home_taehyeon,
+        redirect_uri: web,
         code: code
       },
       {
@@ -47,7 +47,7 @@ const SignupAuth = () => {
       },
       (err: AxiosError<any>): void => {
         // 로그인 실패
-        alert('다시 로그인을 시도해보세요');
+        alert('카카오 서버로 로그인이 안돼요!');
         navigate('/kakao');
       }
     ).then().catch();
@@ -64,8 +64,8 @@ const SignupAuth = () => {
       (res: AxiosResponse<any>): void => {
 
         // 우리 토큰 로컬 스토리지 저장
-        const access_token = res.headers.authorization.split(' ')[1];
-        localStorage.setItem("accessToken", access_token);
+        const accessToken = res.headers.authorization.split(' ')[1];
+        localStorage.setItem("accessToken", accessToken);
 
         // 이름에 카카오 닉네임 저장
         const name = res.data.name;

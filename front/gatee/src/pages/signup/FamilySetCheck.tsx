@@ -11,8 +11,8 @@ const SignupFamilySetCheck = () => {
   // 초대 코드 공유 페이지로 가기
   const goToFamilySetShare = () => {
     // 가족 생성하기
-    // createFamily();
-    navigate('/signup/member-set');
+    createFamily();
+    // navigate('/signup/member-set');
   }
 
   // 파일을 업로드했을 때

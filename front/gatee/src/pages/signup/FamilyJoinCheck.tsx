@@ -16,23 +16,23 @@ const SignupFamilyJoinCheck = () => {
     navigate(-1);
   }
 
-  // // 가족 합류 api
-  // const joinFamily = () => {
-  //   joinFamilyApi(
-  //     {
-  //       familyCode: code
-  //     },
-  //     (res: AxiosResponse<any>) => {
-  //       console.log(res);
-  //       navigate("/signup/family-join/check")
-  //     },
-  //     (err: AxiosError<any>) => {
-  //       console.log(err);
-  //       alert("잘못된 코드입니다!");
-  //       navigate("/signup/family-join");
-  //     }
-  //   )
-  // }
+  // 가족 합류 api
+  const joinFamily = () => {
+    joinFamilyApi(
+      {
+        familyCode: familyCode
+      },
+      (res: AxiosResponse<any>) => {
+        console.log(res);
+        navigate("/signup/family-join/check")
+      },
+      (err: AxiosError<any>) => {
+        console.log(err);
+        alert("잘못된 코드입니다!");
+        navigate("/signup/family-join");
+      }
+    ).then().catch();
+  }
 
   return (
     <div className="signup-family-join-check">

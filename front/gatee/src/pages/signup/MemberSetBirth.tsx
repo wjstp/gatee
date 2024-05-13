@@ -136,6 +136,7 @@ const SignupMemberSetBirth = () => {
                 value="LUNAR"
                 checked={birthType === "LUNAR"}
                 onClick={() => changeBirthType(birthType)}
+                readOnly
               />
               <label
                 className={birthType === "LUNAR" ? "btn-lunar__input--label--selected" : "btn-lunar__input--label"}

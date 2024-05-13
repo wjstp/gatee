@@ -1,5 +1,5 @@
 import localAxios from "@api/LocalAxios";
-import { AxiosError, AxiosResponse, AxiosInstance } from "axios";
+import axios, { AxiosError, AxiosResponse, AxiosInstance } from "axios";
 import {
   GetFamilyMemberApiReq,
   CreateFamilyCodeApiReq,
@@ -10,6 +10,7 @@ import {
 
 const local: AxiosInstance = localAxios();
 const local_file: AxiosInstance = localAxios("file");
+const REACT_APP_API_URL: string | undefined = process.env.REACT_APP_API_URL;
 
 // 가족 생성
 export const createFamilyApi = async function (data: FormData,
@@ -19,10 +20,15 @@ export const createFamilyApi = async function (data: FormData,
 };
 
 // 가족 코드 생성
+// export const createFamilyCodeApi = async function (data: CreateFamilyCodeApiReq,
+//                                                    success: (res: AxiosResponse<any>) => void,
+//                                                    fail: (err: AxiosError<any>) => void) {
+//   await axios.get(`${REACT_APP_API_URL}/family/code`, { headers: data.headers, params: data.familyId }).then(success).catch(fail);
+// }
 export const createFamilyCodeApi = async function (data: CreateFamilyCodeApiReq,
                                                    success: (res: AxiosResponse<any>) => void,
                                                    fail: (err: AxiosError<any>) => void) {
-  await local.get(`/family/code`, { params: data }).then(success).catch(fail);
+  await local.get(`/family/code`, { params: data.familyId }).then(success).catch(fail);
 }
 
 // 가족 합류

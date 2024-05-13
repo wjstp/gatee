@@ -16,6 +16,7 @@ const SignupFamilySet = () => {
 
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [cropImage, setCropImage] = useState<string>("");
+
   // 사진초기화
   useEffect(() => {
     setFamilyImage(null);

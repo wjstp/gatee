@@ -15,6 +15,8 @@ const SignupIndex = () => {
     navigate("/signup/permission");
   }
 
+  // const getMyData
+
   return (
     <div className="signup-index">
 

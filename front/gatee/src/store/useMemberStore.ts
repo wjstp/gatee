@@ -39,7 +39,9 @@ export const useMemberStore = create<MemberStore>()(
       phoneNumber: null,
       familyId:"ㅁㄴㅇ",
       fileUrl:"",
-      isLeader:true
+      isLeader:true,
+      memberImage: null,
+      stringMemberImage: "",
     },
     // 정보 수정 방법 : setMyInfo 함수를 호출할 때 변경하려는 속성을 포함하는 객체를 전달
     // ex) 이름과 닉네임을 변경하려면 다음과 같이 호출
