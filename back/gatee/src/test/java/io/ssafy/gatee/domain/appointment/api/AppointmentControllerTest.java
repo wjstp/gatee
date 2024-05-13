@@ -79,12 +79,17 @@ class AppointmentControllerTest extends RestDocsTestSupport {
     void joinAppointment() throws Exception {
 
         // given
-        doNothing().when(appointmentService).joinAppointment(any(UUID.class));
+        doNothing().when(appointmentService).joinAppointment(any(UUID.class), any(Long.class));
 
         // when
-        ResultActions result = mockMvc.perform(patch("/api/appointments"));
+        ResultActions result = mockMvc.perform(patch("/api/appointments/{appointmentId}", 1L));
 
         // then
-        result.andExpect(status().isOk());
+        result.andExpect(status().isOk())
+                .andDo(restDocs.document(
+                        pathParameters(
+                                parameterWithName("appointmentId").description("약속 ID").optional()
+                        )
+                ));
     }
 }
