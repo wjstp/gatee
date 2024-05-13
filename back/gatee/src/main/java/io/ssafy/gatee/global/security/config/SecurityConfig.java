@@ -67,6 +67,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.PATCH, "/api/members").hasRole("ANONYMOUS")
                                 .requestMatchers(HttpMethod.PATCH, "/api/members/notifications").hasAnyRole("ANONYMOUS", "USER")
                                 .requestMatchers(HttpMethod.POST, "/api/family", "/api/family/join").hasAnyRole("ANONYMOUS")
+                                .requestMatchers(HttpMethod.GET, "/api/family/check").hasAnyRole("ANONYMOUS")
                                 .anyRequest().hasRole("USER")
                         )
 
