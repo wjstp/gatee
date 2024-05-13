@@ -84,7 +84,7 @@ const SignupMemberSetBirth = () => {
   }
 
   return (
-    <div className="signup-member-set-birth">
+    <div className="signup-member-set-birth slide-in">
       
       {/*생일 제목*/}
       <div className="signup-member-set-birth__title-birth">

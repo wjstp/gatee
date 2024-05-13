@@ -1,16 +1,18 @@
 import React, {useRef, useState} from 'react';
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { IoIosCamera } from "react-icons/io";
 import { useMemberStore } from "@store/useMemberStore";
 import { createMemberApi, createFamilyCodeApi } from "@api/member";
 import { AxiosResponse, AxiosError } from "axios";
 import { useFamilyStore } from "@store/useFamilyStore";
-import { uploadFileApi } from "@api/file";
 import dayjs from 'dayjs';
 import ProfileCropper from "@pages/profile/components/Cropper";
 import useModal from "@hooks/useModal";
+import { modifyProfileImageApi } from "@api/profile";
 
 const SignupMemberSetCheck = () => {
+  const location = useLocation();
+  const icon: string = location.state?.icon;
   const navigate = useNavigate();
   const sender: string = "member-set"
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -31,37 +33,12 @@ const SignupMemberSetCheck = () => {
 
   // 다음 넘어가기
   const goToMemberSetPermission = () => {
-    // uploadFile();
-    // createMember();
-    const accessToken: string | null = localStorage.getItem("accessToken");
-    createFamilyCode(accessToken);
+    createMember();
+    // modifyProfileImage();
     // navigate("/signup/member-set/share");
   }
 
-  // 멤버 프로필 파일 업로드
-  const uploadFile = () => {
-    const formData = new FormData;
-    if (memberImage) {
-      formData.append("file", memberImage);
-      formData.append("fileType", "MEMBER_PROFILE")
-    }
-    uploadFileApi(
-      formData,
-      (res: AxiosResponse<any>) => {
-        console.log(res)
-        // 이미지 저장
-        setStringMemberImage(res.data.imageUrl);
-
-        // 멤버 등록
-        createMember();
-      },
-      (err: AxiosError<any>) => {
-        console.log(err)
-      }
-    ).then().catch();
-  }
-  console.log(familyId)
-  // 회원 생성
+  // 회원 정보 등록
   const createMember = () => {
     if (birth && role) {
       createMemberApi(
@@ -76,39 +53,64 @@ const SignupMemberSetCheck = () => {
         },
         (res: AxiosResponse<any>) => {
           console.log(res);
-          
+          console.log("멤버 등록 성공")
           // 토큰 갱신
           const accessToken = res.headers.authorization.split(' ')[1];
           localStorage.setItem("accessToken", accessToken);
-          
-          // 가족 코드 생성
-          createFamilyCode(accessToken);
+          console.log(accessToken)
         },
         (err: AxiosError<any>): void => {
           console.log(err);
         }
-      ).then().catch();
+      ).then(
+        // 이미지 수정
+        () => {modifyProfileImage()}
+      ).catch();
     }
   }
 
-  // 가족 코드 생성
-  const createFamilyCode = (accessToken: string | null) => {
-    if (accessToken) {
-      createFamilyCodeApi(
-        {
-          familyId: familyId,
-        },
-        (res: AxiosResponse<any>) => {
-          console.log(res);
-          // 가족 코드 집어넣기
-          setFamilyCode(res.data.familyCode);
-          navigate("/signup/member-set/share");
-        },
-        (err: AxiosError<any>): void => {
-          console.log(err);
-        }
-      ).then().catch();
+  // 회원 이미지 수정
+  const modifyProfileImage = () => {
+    const formData = new FormData();
+    formData.append("fileType", "MEMBER_PROFILE");
+    if (memberImage) {
+      formData.append("file", memberImage);
+    } else {
+      formData.append("defaultImage", icon);
     }
+    
+    // 프로필 이미지 수정 요청 보내기
+    modifyProfileImageApi(
+      formData,
+      (res: AxiosResponse<any>) => {
+        console.log(res);
+        
+        // 가족 코드 생성
+        createFamilyCode();
+      },
+      (err: AxiosError<any>) => {
+        console.log(err);
+      }
+    )
+  }
+
+  // 가족 코드 생성
+  const createFamilyCode = () => {
+    createFamilyCodeApi(
+      {
+        familyId: familyId,
+      },
+      (res: AxiosResponse<any>) => {
+        console.log(res);
+        console.log("코드 생성 성공")
+        // 가족 코드 집어넣기
+        setFamilyCode(res.data.familyCode);
+        navigate("/signup/member-set/share");
+      },
+      (err: AxiosError<any>): void => {
+        console.log(err);
+      }
+    ).then().catch();
   }
 
   // 뒤로 가기
@@ -149,7 +151,7 @@ const SignupMemberSetCheck = () => {
   }
 
   return (
-    <div className="signup-member-set-check">
+    <div className="signup-member-set-check slide-in">
 
       {/*제목*/}
       <div className="signup-member-set-check__title">

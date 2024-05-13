@@ -20,11 +20,6 @@ export const createFamilyApi = async function (data: FormData,
 };
 
 // 가족 코드 생성
-// export const createFamilyCodeApi = async function (data: CreateFamilyCodeApiReq,
-//                                                    success: (res: AxiosResponse<any>) => void,
-//                                                    fail: (err: AxiosError<any>) => void) {
-//   await axios.get(`${REACT_APP_API_URL}/family/code`, { headers: data.headers, params: data.familyId }).then(success).catch(fail);
-// }
 export const createFamilyCodeApi = async function (data: CreateFamilyCodeApiReq,
                                                    success: (res: AxiosResponse<any>) => void,
                                                    fail: (err: AxiosError<any>) => void) {

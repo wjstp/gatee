@@ -18,3 +18,10 @@ export const modifyProfileApi = async function (data: ModifyProfileReq,
                                                fail: (err: AxiosError<any>) => void) {
   await local.patch(`/members/profile`, data).then(success).catch(fail);
 };
+
+// 프로필 이미지 수정
+export const modifyProfileImageApi = async function (data: FormData,
+                                                     success: (res: AxiosResponse<any>) => void,
+                                                     fail: (err: AxiosError<any>) => void) {
+  await local_file.post(`/members/image`, data).then(success).catch(fail);
+}

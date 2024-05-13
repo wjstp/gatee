@@ -53,7 +53,7 @@ const SignupMemberSetShare = () => {
   }
 
   return (
-    <div className="signup-member-set-share">
+    <div className="signup-member-set-share slide-in">
 
       {/*제목*/}
       <div className="signup-member-set-share__title">

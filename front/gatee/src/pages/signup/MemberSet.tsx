@@ -35,7 +35,7 @@ const SignupMemberSet = () => {
   }
 
   return (
-    <div className="signup-member-set">
+    <div className="signup-member-set slide-in">
 
       {/*제목*/}
       <div className="signup-member-set__title">

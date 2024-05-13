@@ -5,17 +5,10 @@ import { ReactComponent as HomeIcon } from "@assets/images/icons/ic_home.svg"
 const SignupIndex = () => {
   const navigate = useNavigate();
 
-  // 만약 가족에 가입이 된적이 있다면
-  useEffect(() => {
-
-  }, []);
-
   // 약관 페이지로 이동
   const goToFamilyJoin = ():void => {
     navigate("/signup/permission");
   }
-
-  // const getMyData
 
   return (
     <div className="signup-index">

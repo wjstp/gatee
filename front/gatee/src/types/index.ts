@@ -139,6 +139,13 @@ export interface ModifyProfileReq {
   phoneNumber: string | null;
 }
 
+// 프로필 이미지 수정
+export interface ModifyProfileImageReq {
+  defaultImage: string;
+  fileType: string;
+  file: File;
+}
+
 // 기분 상태 수정
 export interface ModifyMoodReq {
   mood: string;

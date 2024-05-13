@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { FaCamera } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
-import { MemberInfoSample } from "@constants/index";
 import useModal from "@hooks/useModal";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -21,12 +20,9 @@ const ProfileModifyCopy = () => {
   // 쿼리스트링으로 넘어온 이름을 확인하기 위함
   const { name } = useParams<{ name: string }>();
   const { myInfo, setMyInfo, stringMemberImage } = useMemberStore()
-  // 멤버 불러오기
-  const member = MemberInfoSample;
 
   // 이미지 관련
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [memberImage, setMemberImage] = useState<string | ArrayBuffer | null>(member.fileUrl);
   const [cropImage, setCropImage] = useState<string>("");
   // 닉네임 관련
   const [inputNickname, setInputNickname] = useState<string>(myInfo?.nickname);
@@ -51,9 +47,9 @@ const ProfileModifyCopy = () => {
 
 
   // 수정 버튼
-  const goToModified = () => {
+  const goToModified = async () => {
     // 회원 정보 수정
-    setMyInfo(
+    await setMyInfo(
       {
         name: inputName,
         nickname: inputNickname,
@@ -63,7 +59,7 @@ const ProfileModifyCopy = () => {
         phoneNumber: inputPhoneNumber,
       }
     )
-    navigate(`/profile/${name}`)
+    await modifyProfile();
   }
 
   // 수정 요청
@@ -72,6 +68,7 @@ const ProfileModifyCopy = () => {
       myInfo,
       (res: AxiosResponse<any>) => {
         console.log(res);
+        navigate(`/profile/${name}`);
       },
       (err: AxiosError<any>) => {
         console.log(err)

@@ -5,12 +5,12 @@ import { useModalStore } from "@store/useModalStore";
 
 const SubLayout = () => {
   const { showModal } = useModalStore();
-  const [currentUrl, setcurrentUrl] = useState("");
+  const [currentUrl, setCurrentUrl] = useState("");
   // 현재의 url을 추적
   const location = useLocation()
   // url이 변경될 때마다 저장해줌
   useEffect(() => {
-    setcurrentUrl(location.pathname)
+    setCurrentUrl(location.pathname)
   },[location.pathname])
 
   return (

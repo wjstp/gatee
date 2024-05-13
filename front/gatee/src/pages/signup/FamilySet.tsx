@@ -75,7 +75,7 @@ const SignupFamilySet = () => {
   }
 
   return (
-    <div className="signup-family-set">
+    <div className="signup-family-set slide-in">
 
       {/*제목*/}
       <div className="signup-family-set__title">

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
-import {requestPermission} from "../../firebase-messaging-sw";
+import { useLocation, useNavigate } from "react-router-dom";
+import { requestPermission } from "../../firebase-messaging-sw";
 
 const SignupPermission = () => {
   const navigate = useNavigate();
 
+  // 체크박스
   const [allChecked, setAllChecked] = useState(false);
   const [privacyChecked, setPrivacyChecked] = useState(false);
   const [pushChecked, setPushChecked] = useState(false);
@@ -57,7 +58,7 @@ const SignupPermission = () => {
   }
 
   return (
-    <div className="signup-permission">
+    <div className="signup-permission slide-in">
       
       {/*제목*/}
       <div className="signup-permission__title">

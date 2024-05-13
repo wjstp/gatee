@@ -13,7 +13,7 @@ const SignupMemberSetFinish = () => {
   }
 
   return (
-    <div className="signup-member-set-finish">
+    <div className="signup-member-set-finish slide-in">
       {/*제목*/}
       <div className="signup-member-set-finish__title">
         <div className="title__header">

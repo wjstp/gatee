@@ -35,7 +35,7 @@ const SignupFamilyJoinCheck = () => {
   }
 
   return (
-    <div className="signup-family-join-check">
+    <div className="signup-family-join-check slide-in">
       {/*가족 이미지*/}
       <div className="signup-family-join-check__img">
         <img

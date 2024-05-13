@@ -11,6 +11,7 @@ import man1 from "@assets/images/signup/profile_man1.svg";
 import man2 from "@assets/images/signup/profile_man2.svg";
 import oldMan from "@assets/images/signup/profile_oldman.svg";
 import { useMemberStore } from "@store/useMemberStore";
+import girl1 from "@assets/images/signup/profile_girl1.svg";
 
 const SignupMemberSetRoleMale = (props: {
   inputRef: React.RefObject<HTMLInputElement>;
@@ -100,7 +101,10 @@ const SignupMemberSetRoleMale = (props: {
         <div className="icon-box1">
           <button
             className={stringMemberImage === boy1 ? "icon-box__btn-kid--selected" : "icon-box__btn-kid"}
-            onClick={() => setStringMemberImage(boy1)}
+            onClick={() => {
+              setStringMemberImage(boy1);
+              setIcon("boy1");
+            }}
           >
             <Boy1
               className={stringMemberImage === boy1 ? "btn-kid--icon--selected" : "btn-kid--icon"}
@@ -108,7 +112,10 @@ const SignupMemberSetRoleMale = (props: {
           </button>
           <button
             className={stringMemberImage === man1 ? "icon-box__btn-young--selected" : "icon-box__btn-young"}
-            onClick={() => setStringMemberImage(man1)}
+            onClick={() => {
+              setStringMemberImage(man1);
+              setIcon("man1");
+            }}
           >
             <Man1
               className={stringMemberImage === man1 ? "btn-young--icon--selected" : "btn-young--icon"}
@@ -116,7 +123,10 @@ const SignupMemberSetRoleMale = (props: {
           </button>
           <button
             className={stringMemberImage === oldMan ? "icon-box__btn-old--selected" : "icon-box__btn-old"}
-            onClick={() => setStringMemberImage(oldMan)}
+            onClick={() => {
+              setStringMemberImage(oldMan);
+              setIcon("oldman");
+            }}
           >
             <OldMan
               className={stringMemberImage === oldMan ? "btn-old--icon--selected" : "btn-old--icon"}
@@ -126,7 +136,10 @@ const SignupMemberSetRoleMale = (props: {
         <div className="icon-box2">
           <button
             className={stringMemberImage === boy2 ? "icon-box__btn-kid--selected" : "icon-box__btn-kid"}
-            onClick={() => setStringMemberImage(boy2)}
+            onClick={() => {
+              setStringMemberImage(boy2);
+              setIcon("boy2");
+            }}
           >
             <Boy2
               className={stringMemberImage === boy2 ? "btn-kid--icon--selected" : "btn-kid--icon"}
@@ -134,7 +147,10 @@ const SignupMemberSetRoleMale = (props: {
           </button>
           <button
             className={stringMemberImage === man2 ? "icon-box__btn-young--selected" : "icon-box__btn-young"}
-            onClick={() => setStringMemberImage(man2)}
+            onClick={() => {
+              setStringMemberImage(man2);
+              setIcon("man2");
+            }}
           >
             <Man2
               className={stringMemberImage === man2 ? "btn-young--icon--selected" : "btn-young--icon"}

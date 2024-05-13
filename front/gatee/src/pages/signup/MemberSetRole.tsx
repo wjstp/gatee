@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import SignupMemberSetRoleMale from "@pages/signup/components/MemberSetRoleMale";
 import SignupMemberSetRoleFemale from "@pages/signup/components/MemberSetRoleFemale";
 import { useMemberStore } from "@store/useMemberStore";
-import { createMemberApi } from "@api/member";
 
 const SignupMemberSetRole = () => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -50,12 +49,20 @@ const SignupMemberSetRole = () => {
         stringMemberImage
       ).then((file: File) => {
         setMemberImage(file);
-        navigate("/signup/member-set/check");
+        navigate("/signup/member-set/check", {
+          state: {
+            icon
+          }
+        });
       }).catch((err) => {
         console.log(err);
       });
     }
   }
+
+  useEffect(() => {
+    console.log(icon)
+  }, [icon]);
 
   // URL을 받아서 File 객체로 변환하는 함수
   const convertURLToFile = async (imageUrl: string) => {
@@ -65,7 +72,7 @@ const SignupMemberSetRole = () => {
   }
 
   return (
-    <div className="signup-member-set-role">
+    <div className="signup-member-set-role slide-in">
 
       {/*역할과 아이콘*/}
       <div className="signup-member-set-role__choice">

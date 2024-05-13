@@ -73,7 +73,7 @@ const SignupFamilyJoin = () => {
   }
 
   return (
-    <div className="signup-family-join">
+    <div className="signup-family-join slide-in">
 
       {/*제목*/}
       <div className="signup-family-join__title">

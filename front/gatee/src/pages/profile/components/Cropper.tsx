@@ -38,8 +38,9 @@ const ProfileCropper = (props: {
       // Blob을 File로 변환
       const fileName = "croppedImage.png";
       const lastModified = new Date().getTime();
-      const file = new File([blob], fileName, { type: "image/png", lastModified });
-      const resizedFile: File = (await imageResizer(file, 1000, 1000)) as File;
+      const file = new File([blob], fileName, { type: "image/jpeg", lastModified });
+      const resizedFile: File = (await imageResizer(file, 500, 500)) as File;
+      console.log(resizedFile);
       const jpgUrl = URL.createObjectURL(resizedFile);
 
       // 가족사진일 경우에만 가족 스토어 수정

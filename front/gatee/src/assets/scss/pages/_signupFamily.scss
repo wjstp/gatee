@@ -76,6 +76,7 @@
 // 권한 설정 페이지
 .signup-permission {
   @include flex_center;
+
   flex-direction: column;
 
   height: 100%;
@@ -393,7 +394,7 @@
 
     height: 200px;
     width: 200px;
-    border-radius: 100%;
+    border-radius: 5%;
     position: relative;
     display: flex;
     justify-content: center;
