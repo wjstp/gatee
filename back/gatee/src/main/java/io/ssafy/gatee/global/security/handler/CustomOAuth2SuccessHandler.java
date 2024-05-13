@@ -31,11 +31,11 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 
     private final MemberFamilyRepository memberFamilyRepository;
 
-    private final String REDIRECT_URI_SUCCESS = "http://localhost:3000/main";
+    private final String REDIRECT_URI_SUCCESS = "/main";
 
-    private final String REDIRECT_URI_NOT_FAMILY = "http://localhost:3000/signup/family-set";
+    private final String REDIRECT_URI_NOT_FAMILY = "/signup/family-set";
 
-    private final String REDIRECT_URI_ANONYMOUS = "http://localhost:3000/signup/family-set";
+    private final String REDIRECT_URI_ANONYMOUS = "/signup/family-set";
 
 
     @Override
