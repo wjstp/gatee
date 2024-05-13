@@ -2,6 +2,7 @@
 @use '../components/index' as *;
 
 .mission__index {
+  @extend %modal-fade-in;
 
   .improvement-oneline {
     @include flex_center;

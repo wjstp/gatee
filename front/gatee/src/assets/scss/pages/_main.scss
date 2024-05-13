@@ -160,6 +160,7 @@
 
 .profile-modal--bg {
   @extend %modal-overlay;
+  @extend %modal-fade-in;
 
   .profile-modal--content {
     @extend %modal-content;

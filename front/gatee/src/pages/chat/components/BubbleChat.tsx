@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from "react";
-import {ChatMessage, SenderType, ChatContent, MemberApiReq} from "@type/index";
+import React, { useEffect, useState } from "react";
+import { ChatMessage, SenderType, ChatContent, MemberApiReq } from "@type/index";
 import getUserInfo from "@utils/getUserInfo";
 import convertKrTime from "@utils/convertKrTime";
 import renderBubbleComponent from "@utils/renderBubbleComponent";
 import { useFamilyStore } from "@store/useFamilyStore";
 import { useMemberStore } from "@store/useMemberStore";
-import {NavLink} from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 interface ChatMessageProps {
  chat: ChatContent;

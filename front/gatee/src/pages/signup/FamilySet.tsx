@@ -2,15 +2,26 @@ import React, { useRef, useState, useEffect } from 'react';
 import { IoIosCamera } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { useFamilyStore } from "@store/useFamilyStore";
-import { imageResizer } from "@utils/imageResizer"
+import basicFamily from "@assets/images/profile/family.jpg";
+import ProfileCropper from "@pages/profile/components/Cropper";
+import useModal from "@hooks/useModal";
 
 const SignupFamilySet = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const sender: string = "family-set"
   const { familyName, setFamilyName, setFamilyImage, stringImage, setStringImage } = useFamilyStore();
+  const { isOpen, openModal, closeModal } = useModal();
 
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [cropImage, setCropImage] = useState<string>("");
+
+  // 사진초기화
+  useEffect(() => {
+    setFamilyImage(null);
+    setStringImage(basicFamily);
+  }, []);
 
   // 입력값
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -25,10 +36,11 @@ const SignupFamilySet = () => {
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>)=> {
     const file: File | null = e.target.files ? e.target.files[0] : null;
     if (file) {
-      const resizedFile: File = (await imageResizer(file, 1000, 1000)) as File;
-      const jpgUrl = URL.createObjectURL(resizedFile);
-      setFamilyImage(resizedFile);
-      setStringImage(jpgUrl);
+      // 크롭할 이미지 넣기
+      const jpgUrl = URL.createObjectURL(file);
+      setCropImage(jpgUrl);
+      // 모달 열기
+      openModal();
     }
   }
 
@@ -56,8 +68,14 @@ const SignupFamilySet = () => {
     }
   }
 
+  // 모달 이벤트
+  const handleModalEvent = () => {
+    // 모달 종료
+    closeModal();
+  }
+
   return (
-    <div className="signup-family-set">
+    <div className="signup-family-set slide-in">
 
       {/*제목*/}
       <div className="signup-family-set__title">
@@ -91,6 +109,18 @@ const SignupFamilySet = () => {
           </div>
         </button>
       </div>
+      
+      {/*크롭 모달*/}
+      {isOpen ? (
+        <ProfileCropper
+          cropImage={cropImage}
+          cropShape={"rect"}
+          handleModalEvent={handleModalEvent}
+          sender={sender}
+        />
+      ) : (
+        null
+      )}
 
       {/*가족 이름 입력창*/}
       <div className="signup-family-set__input-box">
@@ -117,7 +147,9 @@ const SignupFamilySet = () => {
           onClick={goToFamilySetCheck}
           disabled={!familyName}
         >
-          <span className="btn-next__text">소개하기</span>
+          <span className="btn-next__text">
+            소개하기
+          </span>
         </button>
       </div>
 

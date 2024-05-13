@@ -13,7 +13,7 @@ const MainLayout = () => {
   const {showModal} = useModalStore();
   const { setMyInfo } = useMemberStore();
   const {familyInfo,setFamilyId, setFamilyInfo, setFamilyName, setFamilyScore} = useFamilyStore();
-  const { showBottomBar } = useChatStore();
+  const { isShowBottomBar } = useChatStore();
 
   // 가족 데이터 저장 Api
   const saveFamilyData = (familyId:string) => {
@@ -76,10 +76,10 @@ const MainLayout = () => {
       }
 
       <TopBar></TopBar>
-      <div id={showBottomBar? "main" : "main-focus"}>
+      <div id={isShowBottomBar? "main" : "main-focus"}>
         <Outlet />
       </div>
-      { showBottomBar && <BottomBar></BottomBar> }
+      { isShowBottomBar && <BottomBar></BottomBar> }
     </>
   )
 }

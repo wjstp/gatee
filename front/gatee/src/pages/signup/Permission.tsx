@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import {requestPermission} from "../../firebase-messaging-sw";
+import { requestPermission } from "../../firebase-messaging-sw";
 
-const SignupMemberSetPermission = () => {
+const SignupPermission = () => {
   const navigate = useNavigate();
+
+  // 체크박스
   const [allChecked, setAllChecked] = useState(false);
   const [privacyChecked, setPrivacyChecked] = useState(false);
   const [pushChecked, setPushChecked] = useState(false);
   const [cameraChecked, setCameraChecked] = useState(false);
 
   // 멤버 생성
-  const goToMemberSetFinish = () => {
-    // 회원 정보 등록
-    // axios.post
+  const goToFamilyJoin = () => {
     // 푸시알림 권한 요청 함수
-    requestPermission()
-    navigate("/signup/member-set/finish");
+    requestPermission();
+
+    // 코드 입력으로 넘어가기
+    navigate("/signup/family-join");
   }
 
   // 모두 동의 상태 관리
@@ -56,19 +58,22 @@ const SignupMemberSetPermission = () => {
   }
 
   return (
-    <div className="signup-member-set-permission">
+    <div className="signup-permission slide-in">
+      
       {/*제목*/}
-      <div className="signup-member-set-permission__title">
+      <div className="signup-permission__title">
         <span className="title__part--01">
           원활한 서비스 이용을 위해
         </span>
         <span className="title__part--02">
-          다음 앱 권한을 허용해주세요
+          앱 권한을 허용해 주세요
         </span>
       </div>
 
       {/*체크박스*/}
-      <div className="signup-member-set-permission__checkbox">
+      <div className="signup-permission__checkbox">
+        
+        {/*전체 약관*/}
         <div className="checkbox-all">
           <input
             className="checkbox-all__input"
@@ -82,6 +87,8 @@ const SignupMemberSetPermission = () => {
             </span>
           </label>
         </div>
+        
+        {/*개인 정보 약관*/}
         <div className="checkbox-privacy">
           <input
             className="checkbox-privacy__input"
@@ -98,6 +105,8 @@ const SignupMemberSetPermission = () => {
             </span>
           </label>
         </div>
+        
+        {/*푸시 알림 약관*/}
         <div className="checkbox-push">
           <input
             className="checkbox-push__input"
@@ -110,10 +119,12 @@ const SignupMemberSetPermission = () => {
               푸시 알림(필수)
             </span>
             <span className="label__part--02">
-              채팅, 일정, 앨범, 한마디, 퀴즈, 기념일
+              채팅, 일정, 앨범, 한마디, 기념일
             </span>
           </label>
         </div>
+        
+        {/*카메라 약관*/}
         <div className="checkbox-camera">
           <input
             className="checkbox-camera__input"
@@ -126,17 +137,18 @@ const SignupMemberSetPermission = () => {
               카메라/앨범(필수)
             </span>
             <span className="label__part--02">
-              일정/앨범 사진, 채팅 사진
+              가족, 프로필, 일정/앨범, 채팅 사진
             </span>
           </label>
         </div>
+
       </div>
 
       {/*다음 버튼*/}
-      <div className="signup-member-set-permission__btn">
+      <div className="signup-permission__btn">
         <button
           className="btn-next"
-          onClick={goToMemberSetFinish}
+          onClick={goToFamilyJoin}
           disabled={!allChecked} // 모두 동의 체크되지 않으면 비활성화
         >
             <span className="btn-next__text">
@@ -144,8 +156,9 @@ const SignupMemberSetPermission = () => {
             </span>
         </button>
       </div>
+
     </div>
   );
 };
 
-export default SignupMemberSetPermission;
+export default SignupPermission;

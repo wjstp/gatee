@@ -1,9 +1,9 @@
 import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from "axios";
+import { useEffect, useState } from "react";
 
 const REACT_APP_API_URL: string | undefined = process.env.REACT_APP_API_URL;
 
 export default function localAxios(type?: string) {
-  const accessToken: string | null = localStorage.getItem("accessToken");
 
   // axios 인스턴스 생성
   const instance: AxiosInstance = axios.create({
@@ -14,6 +14,7 @@ export default function localAxios(type?: string) {
   instance.interceptors.request.use(
     async (config: InternalAxiosRequestConfig) => {
       try {
+        const accessToken: string | null = localStorage.getItem("accessToken");
         // Request 발생 시 적용할 axios 요청의 설정 config
         if (type === "file") {
           config.headers["Content-Type"] = "multipart/form-data";

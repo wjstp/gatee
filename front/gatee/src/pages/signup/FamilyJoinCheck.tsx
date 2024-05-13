@@ -1,43 +1,55 @@
 import React from 'react';
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useFamilyStore } from "@store/useFamilyStore";
+import { joinFamilyApi } from "@api/member";
+import { AxiosError, AxiosResponse } from "axios";
 
 const SignupFamilyJoinCheck = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-
-  // 가족 조회
-  // axios.get
-
+  const { familyCode, stringImage, familyName, familyId } = useFamilyStore();
+  
+  // 다음으로 넘어가기
   const goToMemberSet = () => {
-    // 가족 합류
-    // axios.post
-    navigate("/signup/member-set");
+    joinFamily();
   }
-
+  
+  // 뒤로 가기
   const backTo = () => {
     navigate(-1);
   }
 
-  const familyData = {
-    familyId: "33",
-    familyImage: "https://cacamaru.com/cacamaru/wp-content/uploads/2019/08/6.%EC%A7%B1%EA%B5%AC%EA%B0%80%EC%A1%B1.jpg",
-    familyName: "짱구네 가족"
+  // 가족 합류 api
+  const joinFamily = () => {
+    joinFamilyApi(
+      {
+        familyCode: familyCode
+      },
+      (res: AxiosResponse<any>) => {
+        console.log(res);
+        navigate("/signup/member-set");
+      },
+      (err: AxiosError<any>) => {
+        console.log(err);
+      }
+    ).then().catch();
   }
 
   return (
-    <div className="signup-family-join-check">
+    <div className="signup-family-join-check slide-in">
       {/*가족 이미지*/}
       <div className="signup-family-join-check__img">
         <img
           className="img"
-          src={familyData.familyImage}
+          src={stringImage}
           alt="family-image"
         />
       </div>
 
       {/*가족 이름*/}
       <div className="signup-family-join-check__name">
-        <span className="name">{familyData.familyName}</span>
+        <span className="name">
+          {familyName}
+        </span>
       </div>
 
       <div className="signup-family-join-check__btn">

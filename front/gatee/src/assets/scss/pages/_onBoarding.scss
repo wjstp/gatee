@@ -83,15 +83,14 @@
       height: 10%;
       width: 100vw;
 
+      &:active {
+        opacity: 0.5;
+      }
+
       .kakaoLoginImage {
         height: 100%;
         width: 100%;
       }
-    }
-
-    .kakaoLoginButton:hover {
-      opacity: 0.2;
-      transition: 0.1s;
     }
   }
 

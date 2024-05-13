@@ -37,10 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static io.ssafy.gatee.global.exception.message.ExceptionMessage.*;
@@ -213,10 +210,12 @@ public class FamilyServiceImpl implements FamilyService {
         List<MemberFamily> memberFamilies = memberFamilyRepository.findAllByFamily_Id(UUID.fromString(familyId));
         // 예외
         if (! memberFamilies.isEmpty()) {
+
             List<MemberFamilyInfoRes> memberFamilyInfoList = memberFamilies.stream().map(memberFamily -> MemberFamilyInfoRes.builder()
                     .memberId(memberFamily.getMember().getId())
                     .memberFamilyId(memberFamily.getId())
-                    .fileUrl(memberFamily.getMember().getFile().getUrl())
+                    .fileUrl(Objects.nonNull(memberFamily.getMember().getFile())?
+                            memberFamily.getMember().getFile().getUrl() : null)
                     .birth(memberFamily.getMember().getBirth())
                     .name(memberFamily.getMember().getName())
                     .nickname(memberFamily.getMember().getNickname())

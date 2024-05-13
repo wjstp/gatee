@@ -1,20 +1,22 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { AxiosResponse, AxiosError } from "axios";
 import { useFamilyStore } from "@store/useFamilyStore";
+import { getMyDataApi, getFamilyDataApi } from "@api/member";
 
 const SignupFamilyJoin = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
-  const { familyCode, setFamilyCode } = useFamilyStore();
+  const { setFamilyCode, setFamilyId, setStringImage, setFamilyName } = useFamilyStore();
 
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [code, setCode] = useState<string>("");
 
   // 입력값
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const value: string = e.target.value.toUpperCase();
+    const value: string = e.target.value;
     if (value.length <= 8) {
-      setFamilyCode(value);
+      setCode(value);
       setErrorMessage("");
     }
   }
@@ -22,26 +24,50 @@ const SignupFamilyJoin = () => {
   // 입력하기 버튼 클릭 처리
   const goToFamilyJoinCheck = (): void => {
     // 입력값이 8글자의 대문자 영어와 숫자로 구성되어 있는지 확인
-    if (familyCode.length !== 8 || !/^[A-Z0-9]*$/.test(familyCode)) { // 조건을 올바르게 수정했습니다.
-      setErrorMessage('8글자의 대문자 영어와 숫자만 입력해주세요.');
+    if (code.length !== 8 || !/^[a-zA-Z0-9]*$/.test(code)) {
+      setErrorMessage('8글자의 영어와 숫자만 입력해주세요.');
       // 재포커싱
       if (inputRef.current) {
         inputRef.current.focus();
       }
       return; // 함수 실행 중단
     } else {
-      // 코드로 가족 조회하기
-      // axios.get()
-      navigate("/signup/family-join/check")
+      getFamilyData();
     }
   };
+  
+  // 가족 코드로 가족 조회하기
+  const getFamilyData = () => {
+    getFamilyDataApi(
+      {
+        familyCode: code
+      },
+      (res: AxiosResponse<any>) => {
+        console.log(res);
+        setFamilyCode(code);
+        setFamilyId(res.data.familyId);
+        setFamilyName(res.data.familyName);
+        setStringImage(res.data.familyImageUrl);
+        navigate("/signup/family-join/check")
+      },
+      (err: AxiosError<any>) => {
+        console.log(err);
+      }
+    ).then().catch();
+  }
+
+  // 가족 생성 버튼 클릭 처리
+  const goToFamilySet = (): void => {
+    navigate("/signup/family-set");
+  }
 
   return (
-    <div className="signup-family-join">
+    <div className="signup-family-join slide-in">
+
       {/*제목*/}
       <div className="signup-family-join__title">
         <span className="title__part--01">
-          가족코드를 입력
+          초대 코드를 입력
         </span>
         <span className="title__part--02">
             해 주세요
@@ -56,13 +82,16 @@ const SignupFamilyJoin = () => {
           type="text"
           pattern="[가-힣]*"
           placeholder="예) A43959FE "
-          value={familyCode}
+          value={code}
           onChange={handleInputChange}
-          autoFocus
         />
       </div>
       <div className="signup-family-set__error-message">
-        {errorMessage ? errorMessage : null}
+        {errorMessage ? (
+          errorMessage
+        ) : (
+          "　"
+        )}
       </div>
 
       {/*입력하기 버튼*/}
@@ -70,13 +99,26 @@ const SignupFamilyJoin = () => {
         <button
           className="btn-input"
           onClick={goToFamilyJoinCheck}
-          disabled={!familyCode}
+          disabled={!code}
         >
             <span className="btn-input__text">
               입력하기
             </span>
         </button>
       </div>
+
+      {/*가족 생성*/}
+      <div className="signup-family-join__create">
+        <button
+          className="btn-create"
+          onClick={goToFamilySet}
+        >
+          <span className="btn-create__text">
+            초대 코드를 받지 못했나요?
+          </span>
+        </button>
+      </div>
+
     </div>
   );
 };

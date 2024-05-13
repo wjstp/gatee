@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import { FaPhone } from "react-icons/fa";
 import { ReactComponent as PencilIcon } from "@assets/images/icons/ic_pencil.svg";
@@ -9,19 +9,30 @@ import Box from '@mui/material/Box';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import FeelingToast from "@pages/profile/components/FeelingToast";
 import { useMemberStore } from "@store/useMemberStore";
-import {useFamilyStore} from "@store/useFamilyStore";
+import { useFamilyStore } from "@store/useFamilyStore";
+import dayjs from "dayjs";
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
 const ProfileIndex = () => {
+  const navigate = useNavigate();
   // 모달 상태 적용
   const { setShowModal } = useModalStore();
-  const { mood } = useMemberStore();
+  const { myInfo } = useMemberStore();
   const { familyInfo } = useFamilyStore();
+  // 쿼리스트링으로 넘어온 이메일을 확인하기 위함
+  const { email } = useParams<{ email: string }>();
+
   // 열린지 닫힌지 상태 확인 가능
   const [state, setState] = React.useState({
     bottom: false,
   });
+
+  // 멤버 확인 -> 나중에는 조회로 가져오기
+  const familyMember = familyInfo.find(member => member.email === email);
+  
+  // 백과사전이 있는지 조회하기 용
+  const [createdCharacter, setCreateCharacter] = useState<boolean>(false);
 
   // MUI 관련 코드 -> 슬라이드 다운 해서 내리기 기능 가능
   const toggleDrawer =
@@ -63,36 +74,27 @@ const ProfileIndex = () => {
       <FeelingToast handleFinishTab={handleFinishTab}/>
     </Box>
   );
-
-  const navigate = useNavigate();
-  // 쿼리스트링으로 넘어온 이름을 확인하기 위함
-  const { email } = useParams<{ email: string }>();
-  // 백과사전이 있는지 조회하기 용
-  const [createdCharacter, setCreateCharacter] = useState<boolean>(false);
-
+  
+  // 수정으로 넘어가기
   const goToModify = () => {
     navigate(`/profile/${email}/modify`)
   }
-
-  // 멤버 확인 -> 나중에는 조회로 가져오기
-  const familyMember = familyInfo.find(member => member.email === email);
 
   // 내 프로필일 때만 프로필 정보와 기분을 수정할 수 있음
 
   // 날짜 형식 변환 함수
   const changeDate = (originalDate: string): string => {
-    const date = new Date(originalDate);
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
+    const formattedDate: string = dayjs(originalDate).format("YYYY.MM.DD");
 
-    return `${year}.${month}.${day}`;
+    return formattedDate;
   }
   
   // 백과사전 바꾸기
   const handleCharacter = (): void => {
     setCreateCharacter(!createdCharacter);
   }
+
+  console.log(myInfo.mood)
 
   // 모의고사 예시
   const question = QuestionSample[0];
@@ -113,7 +115,7 @@ const ProfileIndex = () => {
         {/*닉네임*/}
         <div className="profile__nickname">
           <span className="profile__nickname__part--01">
-            {familyMember?.nickname}
+            {myInfo.nickname}
           </span>
           <button
             className="profile__nickname__part--02"
@@ -125,28 +127,28 @@ const ProfileIndex = () => {
         
         {/*기분 상태*/}
         <div className="profile__mood-box">
-          <span className="mood-box__title">
-            오늘 기분이 어때요?
-          </span>
           <React.Fragment key={"bottom"}>
             <button
               className="mood-box__btn"
               onClick={toggleDrawer("bottom", true)} // 토스트 팝업 열기
             >
-            <span className="mood-box__btn--text">
-              {mood ? (
-                <>
-                  {mood === "HAPPY" && <div>🥰</div>}
-                  {mood === "SAD" && <div>😥</div>}
-                  {mood === "ALONE" && <div>😑</div>}
-                  {mood === "ANGRY" && <div>🤬</div>}
-                  {mood === "FEAR" && <div>😱</div>}
-                  {mood === "SLEEPY" && <div>😪</div>}
-                </>
-              ) : (
-                <div>😶</div>
-              )}
-            </span>
+              <span className="mood-box__btn--text">
+                오늘 기분이 어때요?&nbsp;&nbsp;&nbsp;
+              </span>
+              <span className="mood-box__btn--icon">
+                {myInfo.mood ? (
+                  <>
+                    {myInfo.mood === "HAPPY" && <span>🥰</span>}
+                    {myInfo.mood === "SAD" && <span>😥</span>}
+                    {myInfo.mood === "ALONE" && <span>😑</span>}
+                    {myInfo.mood === "ANGRY" && <span>🤬</span>}
+                    {myInfo.mood === "FEAR" && <span>😱</span>}
+                    {myInfo.mood === "SLEEPY" && <span>😪</span>}
+                  </>
+                ) : (
+                  <span>😶</span>
+                )}
+              </span>
             </button>
             <SwipeableDrawer
               anchor={"bottom"}
@@ -163,12 +165,12 @@ const ProfileIndex = () => {
           <div className="info-box__name">
             <div className="name__title">
               <span className="name__title--text">
-                이름
+                실명
               </span>
             </div>
             <div className="name__body">
               <span className="name__body--text">
-                {familyMember?.name}
+                {myInfo.name}
               </span>
             </div>
           </div>
@@ -180,7 +182,7 @@ const ProfileIndex = () => {
             </div>
             <div className="role__body">
               <span className="role__body--text">
-                {familyMember?.role}
+                {myInfo.role}
               </span>
             </div>
           </div>
@@ -192,10 +194,10 @@ const ProfileIndex = () => {
             </div>
             <div className="birth__body">
               <span className="birth__body__part--01">
-                {changeDate(familyMember?.birth as string)}
+                {changeDate(myInfo.birth as string)}
               </span>
               <span className="birth__body__part--02">
-                {familyMember?.birthType === "SOLAR" ? ("(양력)") : ("(음력)")}
+                &nbsp;{myInfo.birthType === "SOLAR" ? ("(양력)") : ("(음력)")}
               </span>
             </div>
           </div>
@@ -206,14 +208,14 @@ const ProfileIndex = () => {
               </span>
             </div>
             <div className="phone__body">
-              {familyMember?.phoneNumber ? (
+              {myInfo.phoneNumber ? (
                 <>
                   <span className="phone__body__part--01">
-                    {familyMember?.phoneNumber}
+                    {myInfo.phoneNumber}
                   </span>
                     <a
                       className="phone__body__part--02"
-                      href={`tel:${familyMember?.phoneNumber}`}
+                      href={`tel:${myInfo.phoneNumber}`}
                     >
                       <FaPhone className="icon" />
                     </a>

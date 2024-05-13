@@ -1,59 +1,30 @@
 import {create} from "zustand";
-import {MyMemberApiRes} from "@type/index";
-
-
-
-type MemberStore = {
-  memberId: string | null;
-  setMemberId: (newMemberId: string) => void;
-  name: string;
-  setName: (newName: string) => void;
-  nickname: string | null;
-  setNickName: (newNickname: string) => void;
-  birthDay: string | null;
-  setBirthDay: (newBirthDay: string) => void;
-  birthType: string;
-  setBirthType: (newBirthType: string) => void;
-  role: string;
-  setRole: (newRole: string) => void;
-  mood: string;
-  setMood: (newMood: string) => void;
-  phoneNumber: string;
-  setPhoneNumber: (newPhoneNumber: string) => void;
-  gender: string;
-  setGender: (newGender: string) => void;
-  icon: string;
-  setIcon: (newIcon: string) => void;
-  memberImage: string | ArrayBuffer | null;
-  setMemberImage: (newImage: string | ArrayBuffer | null) => void;
-  myInfo : MyMemberApiRes;
-  setMyInfo: (newMyInfo: Partial<MyMemberApiRes>) => void;
-};
+import { MyMemberApiRes, MemberStore } from "@type/index";
 
 export const useMemberStore = create<MemberStore>()(
   (set) => ({
     memberId: null,
     setMemberId: (newMemberId: string) => set({memberId: newMemberId}),
-    name: "예빈",
+    name: "",
     setName: (newName: string) => set({name: newName}),
     nickname: null,
     setNickName: (newNickname: string) => set({nickname: newNickname}),
-    birthDay: null,
-    setBirthDay: (newBirthDay: string) => set({birthDay: newBirthDay}),
+    birth: null,
+    setBirth: (newBirth: string) => set({birth: newBirth}),
     birthType: "SOLAR",
     setBirthType: (newBirthType: string) => set({birthType: newBirthType}),
-    role: "",
-    setRole: (newRole: string) => set({role: newRole}),
-    mood: "default",
-    setMood: (newMood: string) => set({mood: newMood}),
+    role: null,
+    setRole: (newRole: string | null) => set({role: newRole}),
+    mood: null,
+    setMood: (newMood: string | null) => set({mood: newMood}),
     phoneNumber: "",
     setPhoneNumber: (newPhoneNumber: string) => set({phoneNumber: newPhoneNumber}),
     gender: "",
     setGender: (newGender: string) => set({gender: newGender}),
-    icon: "",
-    setIcon: (newIcon: string) => set({icon: newIcon}),
     memberImage: null,
-    setMemberImage: (newImage: string | ArrayBuffer | null) => set({memberImage: newImage}),
+    setMemberImage: (newImage: File | null) => set({memberImage: newImage}),
+    stringMemberImage: "",
+    setStringMemberImage: (newStringMemberImage: string) => set({stringMemberImage: newStringMemberImage}),
 
     // 내 정보 객체
     myInfo : {
@@ -61,15 +32,15 @@ export const useMemberStore = create<MemberStore>()(
       birthType: "SOLAR",
       email: "******@gmail.com",
       memberId: "123123",
-      mood: "default",
+      mood: null,
       name: "이윤정",
       nickname: "쌒유진",
       role: "딸",
       phoneNumber: null,
-      familyId:"ㅁㄴㅇ",
-      fileUrl:"",
-      isLeader:true,
-      memberFamilyId:1
+      familyId: "ㅁㄴㅇ",
+      fileUrl: "",
+      isLeader: true,
+      memberFamilyId: 1,
     },
     // 정보 수정 방법 : setMyInfo 함수를 호출할 때 변경하려는 속성을 포함하는 객체를 전달
     // ex) 이름과 닉네임을 변경하려면 다음과 같이 호출

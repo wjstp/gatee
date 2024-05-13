@@ -1,11 +1,14 @@
 @use '../abstracts' as *;
 @use '../base' as *;
+@use '../components' as *;
 
 .exam__font-choson {
   font-family: $ChosunGs;
 }
 
 .exam__index {
+  @extend %modal-fade-in;
+
   //지난 평가
   .exam__index__heading {
     display: flex;
