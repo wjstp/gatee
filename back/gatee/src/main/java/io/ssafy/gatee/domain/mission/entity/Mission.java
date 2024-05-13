@@ -35,4 +35,27 @@ public class Mission extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
+
+    public void increaseRange(Type type) {
+        this.nowRange++;
+
+        if (type.equals(Type.ALBUM) || type.equals(Type.FEATURE)) {
+            if (this.nowRange % 10 == 0) {
+                this.isComplete = true;
+                this.completedLevel++;
+            }
+        } else if (type.equals(Type.EXAM)) {
+            if (this.nowRange % 3 == 0) {
+                this.isComplete = true;
+                this.completedLevel++;
+            }
+        } else {
+            this.isComplete = true;
+            this.completedLevel++;
+        }
+    }
+
+    public void doComplete() {
+        this.isComplete = false;
+    }
 }
