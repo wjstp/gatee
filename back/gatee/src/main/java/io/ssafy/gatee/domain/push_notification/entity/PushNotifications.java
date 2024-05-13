@@ -40,4 +40,8 @@ public class PushNotifications {
 
     @Field(name="created_at")
     private String createdAt;
+
+    public void checkPushNotifications() {
+        this.isCheck = true;
+    }
 }
