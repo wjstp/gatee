@@ -15,6 +15,17 @@ $chat-input-height: 3rem;
     display: flex;
     flex-direction: column-reverse;
     overflow-y: scroll;
+    position: relative;
+
+    &__bottom {
+      min-width: 0.1rem;
+      min-height: 10rem;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      z-index: -10;
+      background: transparent;
+    }
 
     &__preview {
       @include flex-row;
@@ -22,19 +33,11 @@ $chat-input-height: 3rem;
       align-items: center;
       padding: 0.7rem;
       position: fixed;
-      z-index: 0;
+      z-index: 10;
       width: calc(100% - 1rem);
       background-color: rgba(255, 227, 185, 0.8);
       border-radius: 10px;
-      opacity: 0;
       transition: opacity 0.1s ease-in-out;
-
-      &--active {
-        @extend .chat__main__preview;
-
-        opacity: 1;
-        z-index: 10;
-      }
 
       &__sender {
         color: $orange600;
@@ -54,16 +57,8 @@ $chat-input-height: 3rem;
 
       position: fixed;
       width: calc(100% - 1rem);
-      opacity: 0;
       transition: opacity 0.1s ease-in-out;
-      z-index: 0;
-
-      &--active {
-        @extend .chat__main__scroll-down;
-
-        opacity: 1;
-        z-index: 10;
-      }
+      z-index: 10;
 
       &-button {
         @include flex-center;
@@ -73,6 +68,12 @@ $chat-input-height: 3rem;
         height: 2rem;
         border-radius: 50%;
         color: white;
+
+        &:focus,
+        &:active,
+        &:hover {
+          background-color: rgba(255, 227, 185, 0.8);
+        }
       }
     }
   }
