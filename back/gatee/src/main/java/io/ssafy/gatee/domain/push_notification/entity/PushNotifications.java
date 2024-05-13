@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 public class PushNotifications {
 
     @Id
-    @Field(name = "notification_id")
     private ObjectId notificationId;
 
     private String type;
