@@ -1,23 +1,18 @@
 import React, { useRef, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useMemberStore } from "@store/useMemberStore";
-import axios from "axios";
 
 const SignupMemberSet = () => {
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
-  const [inputName, setInputName] = useState<string>('');
   const { name, setName } = useMemberStore();
 
   const [errorMessage, setErrorMessage] = useState<string>("");
 
-  // 카카오톡으로 이름 조회해서 받아오면 그걸로 미리 넣어놓기
-  // axios.get
-
   // 입력값
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const value: string = e.target.value;
-    if (value.length <= 8) {
+    if (value.length <= 6) {
       setName(value);
       setErrorMessage("");
     }
@@ -40,7 +35,8 @@ const SignupMemberSet = () => {
   }
 
   return (
-    <div className="signup-member-set">
+    <div className="signup-member-set slide-in">
+
       {/*제목*/}
       <div className="signup-member-set__title">
         <span className="title__part--01">
@@ -61,11 +57,16 @@ const SignupMemberSet = () => {
           placeholder="예) 홍길동"
           value={name}
           onChange={handleInputChange}
-          autoFocus
         />
       </div>
+
+      {/*에러 메시지*/}
       <div className="signup-member-set__error-message">
-        {errorMessage ? errorMessage : null}
+        {errorMessage ? (
+          errorMessage
+        ) : (
+          "　"
+        )}
       </div>
 
       {/*다음 버튼*/}
@@ -80,6 +81,7 @@ const SignupMemberSet = () => {
             </span>
         </button>
       </div>
+
     </div>
   );
 };

@@ -1,21 +1,21 @@
 import React, {useEffect, useState} from 'react';
 import Stamp from "@assets/images/icons/stamp_logo.png"
 import {useNavigate, useParams} from "react-router-dom";
-import {getFamilyExamResultApi, getMyExamResultApi} from "@api/exam";
+import {getFamilyExamResultApi} from "@api/exam";
 // import Lottie from "lottie-react";
 // import EmptyAnimation from "@assets/images/animation/empty_animation.json"
 
 import {ExamResult, MemberApiRes} from "@type/index";
 import getGradeSvg from "@utils/getGradeSvg";
 import {useFamilyStore} from "@store/useFamilyStore";
-import getUserInfo from "@utils/getUserInfo";
 import ExamNotFound from "@pages/exam/components/ExamNotFound";
+import getUserInfoByMemberFamilyId from "@utils/getUserInfoByMemberFamilyId";
 
 
 const ExamGrade = () => {
   const params = useParams();
   const {familyInfo} = useFamilyStore()
-  const [userInfo,setUserInfo] = useState<MemberApiRes|null>(null);
+  const [userInfo, setUserInfo] = useState<MemberApiRes | null>(null);
   const [avgGrade, setAvgGrade] = useState<null | number>(null)
 
   const [gradeDataList, setGradeDataList] = useState<ExamResult[]>([
@@ -27,24 +27,23 @@ const ExamGrade = () => {
 
 
   useEffect(() => {
-    if (params.memberId) {
-      setUserInfo(getUserInfo(familyInfo,params.memberId))
-
+    if (params.memberFamilyId) {
+      setUserInfo(getUserInfoByMemberFamilyId(familyInfo, Number(params.memberFamilyId)))
     }
 
   }, [params]);
 
   useEffect(() => {
-    if (userInfo?.memberId) {
-      getFamilyExamResultApi(userInfo?.memberId,
+    if (userInfo?.memberFamilyId) {
+      getFamilyExamResultApi(userInfo?.memberFamilyId,
         res => {
-          console.log("getFamilyExamResultApi",res)
+          console.log("getFamilyExamResultApi", res)
           setGradeDataList(res.data)
           if (res.data?.length) {
             const scores = res.data.map(item => item.score)
             const scoreSum = scores.reduce((sum, score) => sum + score, 0);
-            const average = scoreSum / scores.length;
-            setAvgGrade(average)
+            const average = Math.ceil(scoreSum / scores.length);
+            setAvgGrade(getGradeSvg(average))
           }
         }, err => {
           console.log(err)
@@ -62,7 +61,7 @@ const ExamGrade = () => {
         <>
 
           <div className="exam__grade-header">
-            <div className="small">{userInfo?.nickname}의 평균 점수는? </div>
+            <div className="small">{userInfo?.nickname}의 평균 점수는?</div>
             <div className="large"> {avgGrade}등급</div>
           </div>
           <div className="exam__grade-body">

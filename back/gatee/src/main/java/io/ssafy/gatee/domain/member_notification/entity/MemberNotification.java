@@ -39,6 +39,7 @@ public class MemberNotification extends BaseEntity {
         this.albumNotification = true;
         this.scheduleNotification = true;
         this.naggingNotification = true;
+        this.featureNotification = true;
     }
 
     public void modifyMemberNotification(NotificationAgreementReq notificationAgreementReq) {

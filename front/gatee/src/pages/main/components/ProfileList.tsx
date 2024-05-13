@@ -4,7 +4,7 @@ import {MemberApiRes} from "@type/index";
 import ProfileModal from "@pages/main/components/ProfileModal";
 import useModal from "@hooks/useModal";
 import getMoodEmoji from "@utils/getMoodEmoji";
-import {naggingApi} from "@api/member";
+import {naggingApi} from "@api/notification";
 
 interface ProfileItemProps {
   profileData: MemberApiRes,

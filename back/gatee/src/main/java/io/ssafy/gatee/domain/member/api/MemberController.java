@@ -1,7 +1,9 @@
 package io.ssafy.gatee.domain.member.api;
 
+import io.ssafy.gatee.domain.file.entity.type.FileType;
 import io.ssafy.gatee.domain.member.application.MemberService;
 import io.ssafy.gatee.domain.member.dto.request.*;
+import io.ssafy.gatee.domain.member.dto.response.MemberEditProfileImageRes;
 import io.ssafy.gatee.domain.member.dto.response.MemberInfoRes;
 import io.ssafy.gatee.global.security.user.CustomUserDetails;
 import jakarta.servlet.http.HttpServletResponse;
@@ -11,7 +13,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Nullable;
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.UUID;
 
@@ -32,8 +37,11 @@ public class MemberController {
     // 회원 정보 등록 (회원 가입 후 처음)
     @PatchMapping
     @ResponseStatus(HttpStatus.OK)
-    public void saveInfo(HttpServletResponse response,
-                         @Valid @RequestBody MemberSaveReq memberSaveReq, @AuthenticationPrincipal CustomUserDetails customUserDetails) throws ParseException {
+    public void saveInfo(
+            HttpServletResponse response,
+            @Valid @RequestBody MemberSaveReq memberSaveReq,
+            @AuthenticationPrincipal CustomUserDetails customUserDetails
+    ) throws ParseException {
         memberService.saveMemberInfo(memberSaveReq, customUserDetails.getMemberId(), response);
     }
 
@@ -53,12 +61,17 @@ public class MemberController {
         memberService.editMemberInfo(memberEditReq, customUserDetails.getMemberId());
     }
 
-//     프로필 이미지 수정 - file 추가 예정
-//    @PatchMapping("/image")
-//    @ResponseStatus(HttpStatus.OK)
-//    public void editProfileImage(@Valid @RequestBody String imageUrl) {
-//
-//    }
+    // 프로필 이미지 수정 - file 추가 예정
+    @PostMapping("/image")
+    @ResponseStatus(HttpStatus.OK)
+    public MemberEditProfileImageRes editProfileImage(
+            @Valid
+            @RequestParam @Nullable String defaultImage,
+            @RequestParam FileType fileType,
+            @RequestParam @Nullable MultipartFile file
+    ) throws IOException {
+        return memberService.editProfileImage(defaultImage, fileType, file);
+    }
 
     // 기분 상태 수정
     @PatchMapping("/moods")

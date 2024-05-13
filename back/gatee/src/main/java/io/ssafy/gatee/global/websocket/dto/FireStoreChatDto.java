@@ -21,9 +21,9 @@ public class FireStoreChatDto {
 
     private final String sender;
 
-    private final Integer totalMember;
-
     private final List<String> unReadMember;
 
     private final String currentTime;
+
+    private final Long appointmentId;
 }
