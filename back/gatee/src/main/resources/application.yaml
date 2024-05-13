@@ -37,7 +37,4 @@ spring:
 
 logging:
   level:
-    com: debug
-    org.hibernate.SQL: debug
-    org.hibernate.type: trace
-    org.springframework.security: trace
+    com: info
