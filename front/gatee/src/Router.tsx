@@ -122,6 +122,7 @@ const Router = () => {
         <Route path="/signup/member-set/birth" element={<SignupMemberSetBirth/>}/>
         <Route path="/signup/member-set/role" element={<SignupMemberSetRole/>}/>
         <Route path="/signup/member-set/check" element={<SignupMemberSetCheck/>}/>
+        <Route path="/signup/member-set/share" element={<SignupMemberSetShare/>}/>
         <Route path="/signup/member-set/finish" element={<SignupMemberSetFinish/>}/>
       </Route>
     </Routes>

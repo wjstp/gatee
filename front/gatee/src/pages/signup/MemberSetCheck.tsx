@@ -71,7 +71,6 @@ const SignupMemberSetCheck = () => {
           birth: birth,
           birthType: birthType,
           role: role,
-          // familyId: "3f5fdeb6-445c-4aaa-9e60-0da13dfc14e6",
           familyId: familyId,
           phoneNumber: null
         },
@@ -97,10 +96,6 @@ const SignupMemberSetCheck = () => {
     if (accessToken) {
       createFamilyCodeApi(
         {
-          headers: {
-            Authorization: accessToken
-          },
-          // familyId: "3f5fdeb6-445c-4aaa-9e60-0da13dfc14e6",
           familyId: familyId,
         },
         (res: AxiosResponse<any>) => {

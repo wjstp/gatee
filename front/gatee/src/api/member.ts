@@ -28,7 +28,7 @@ export const createFamilyApi = async function (data: FormData,
 export const createFamilyCodeApi = async function (data: CreateFamilyCodeApiReq,
                                                    success: (res: AxiosResponse<any>) => void,
                                                    fail: (err: AxiosError<any>) => void) {
-  await local.get(`/family/code`, { params: data.familyId }).then(success).catch(fail);
+  await local.get(`/family/code`, { params: data }).then(success).catch(fail);
 }
 
 // 가족 합류

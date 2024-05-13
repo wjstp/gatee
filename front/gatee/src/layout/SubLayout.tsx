@@ -20,7 +20,7 @@ const SubLayout = () => {
       */}
         <HelmetProvider>
           <Helmet>
-            {currentUrl === "/signup" || currentUrl === "/auth" ? (
+            {currentUrl === "/signup" ? (
               <meta name="theme-color" id="theme-color" content="#FFBE5C"/>
             ) : (showModal ? (
                 <meta name="theme-color" id="theme-color" content="#808080"/>

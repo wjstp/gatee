@@ -11,13 +11,13 @@ const SignupMemberSetRole = () => {
   const {
     role,
     gender,
-    memberImage,
     setMemberImage,
     stringMemberImage,
     setStringMemberImage
   } = useMemberStore();
 
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [icon, setIcon] = useState<string>("");
 
   // 역할이 바뀌면 에러메시지 초기화
   useEffect(() => {
@@ -75,6 +75,7 @@ const SignupMemberSetRole = () => {
             goToMemberSetCheck={goToMemberSetCheck}
             errorMessage={errorMessage}
             setErrorMessage={setErrorMessage}
+            setIcon={setIcon}
           />
         ) : (
           <SignupMemberSetRoleFemale
@@ -82,6 +83,7 @@ const SignupMemberSetRole = () => {
             goToMemberSetCheck={goToMemberSetCheck}
             errorMessage={errorMessage}
             setErrorMessage={setErrorMessage}
+            setIcon={setIcon}
           />
         )}
       </div>

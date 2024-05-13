@@ -7,8 +7,7 @@ import { getFamilyMemberApi, getMyDataApi } from "@api/member";
 const SignupFamilyJoin = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
-  const { setFamilyCode } = useFamilyStore();
-  // localStorage.setItem("accessToken", "4PIPr7t5HjH_OAJe30I-WALNSMJ12K3hg-QKKw0gAAABj2ztS6ke0jm_MNo9Pw");
+  const { setFamilyCode, setFamilyId } = useFamilyStore();
 
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [code, setCode] = useState<string>("");
@@ -65,6 +64,7 @@ const SignupFamilyJoin = () => {
     getMyDataApi(
       (res: AxiosResponse<any>) => {
         console.log(res)
+        setFamilyId(res.data.familyId);
       },
       (err: AxiosError<any>) => {
         console.log(err)

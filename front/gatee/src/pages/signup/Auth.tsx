@@ -70,10 +70,11 @@ const SignupAuth = () => {
         // 이름에 카카오 닉네임 저장
         const name = res.data.name;
         setName(name);
-        console.log(res)
+        console.log(res);
 
-        // 회원가입 페이지로 이동
-        navigate('/signup');
+        // 멤버의 상태에 따라 적절한 위치로 보내기
+        const redirect: string = res.data.redirectUrl;
+        navigate(redirect);
       },
       (err: AxiosError<any>): void => {
         console.log(err)

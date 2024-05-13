@@ -87,7 +87,6 @@ export interface MemberApiReq {
 
 // 가족 코드 생성
 export interface CreateFamilyCodeApiReq {
-  headers: object;
   familyId: string;
 }
 

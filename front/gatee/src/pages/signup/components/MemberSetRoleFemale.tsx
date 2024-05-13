@@ -1,11 +1,15 @@
 import React from 'react';
 import SignupMemberSetRoleEtc from "@pages/signup/components/MemberSetRoleEtc";
-import { ReactComponent as Girl } from "@assets/images/signup/profile_girl.svg";
-import { ReactComponent as Woman } from "@assets/images/signup/profile_woman.svg";
-import { ReactComponent as OldWoman } from "@assets/images/signup/profile_old_woman.svg";
-import girl from "@assets/images/signup/profile_girl.svg";
-import woman from "@assets/images/signup/profile_woman.svg";
-import oldWoman from "@assets/images/signup/profile_old_woman.svg";
+import { ReactComponent as Girl1 } from "@assets/images/signup/profile_girl1.svg";
+import { ReactComponent as Girl2 } from "@assets/images/signup/profile_girl2.svg";
+import { ReactComponent as Woman1 } from "@assets/images/signup/profile_woman1.svg";
+import { ReactComponent as Woman2 } from "@assets/images/signup/profile_woman2.svg";
+import { ReactComponent as OldWoman } from "@assets/images/signup/profile_oldwoman.svg";
+import girl1 from "@assets/images/signup/profile_girl1.svg";
+import girl2 from "@assets/images/signup/profile_girl2.svg";
+import woman1 from "@assets/images/signup/profile_woman1.svg";
+import woman2 from "@assets/images/signup/profile_woman2.svg";
+import oldWoman from "@assets/images/signup/profile_oldwoman.svg";
 import { useMemberStore } from "@store/useMemberStore";
 
 const SignupMemberSetRoleFemale = (props: {
@@ -13,8 +17,9 @@ const SignupMemberSetRoleFemale = (props: {
   goToMemberSetCheck: () => void;
   errorMessage: string;
   setErrorMessage: (message: string) => void;
+  setIcon: (icon: string) => void;
 }) => {
-  const { inputRef, goToMemberSetCheck, errorMessage, setErrorMessage } = props;
+  const { inputRef, goToMemberSetCheck, errorMessage, setErrorMessage, setIcon } = props;
   const { role, setRole, stringMemberImage, setStringMemberImage } = useMemberStore();
 
   return (
@@ -92,29 +97,62 @@ const SignupMemberSetRoleFemale = (props: {
 
       {/*아이콘*/}
       <div className="signup-member-set-role-female__icon">
-        <div className="icon-box">
+        <div className="icon-box1">
           <button
-            className={stringMemberImage === girl ? "icon-box__btn-kid--selected" : "icon-box__btn-kid"}
-            onClick={() => setStringMemberImage(girl)}
+            className={stringMemberImage === girl1 ? "icon-box__btn-kid--selected" : "icon-box__btn-kid"}
+            onClick={() => {
+              setStringMemberImage(girl1);
+              setIcon("girl1");
+            }}
           >
-            <Girl
-              className={stringMemberImage === girl ? "btn-kid--icon--selected" : "btn-kid--icon"}
+            <Girl1
+              className={stringMemberImage === girl1 ? "btn-kid--icon--selected" : "btn-kid--icon"}
             />
           </button>
           <button
-            className={stringMemberImage === woman ? "icon-box__btn-young--selected" : "icon-box__btn-young"}
-            onClick={() => setStringMemberImage(woman)}
+            className={stringMemberImage === woman1 ? "icon-box__btn-young--selected" : "icon-box__btn-young"}
+            onClick={() => {
+              setStringMemberImage(woman1);
+              setIcon("woman1");
+            }}
           >
-            <Woman
-              className={stringMemberImage === woman ? "btn-young--icon--selected" : "btn-young--icon"}
+            <Woman1
+              className={stringMemberImage === woman1 ? "btn-young--icon--selected" : "btn-young--icon"}
             />
           </button>
           <button
             className={stringMemberImage === oldWoman ? "icon-box__btn-old--selected" : "icon-box__btn-old"}
-            onClick={() => setStringMemberImage(oldWoman)}
+            onClick={() => {
+              setStringMemberImage(oldWoman);
+              setIcon("oldwoman");
+            }}
           >
             <OldWoman
               className={stringMemberImage === oldWoman ? "btn-old--icon--selected" : "btn-old--icon"}
+            />
+          </button>
+        </div>
+        <div className="icon-box2">
+          <button
+            className={stringMemberImage === girl2 ? "icon-box__btn-kid--selected" : "icon-box__btn-kid"}
+            onClick={() => {
+              setStringMemberImage(girl2);
+              setIcon("girl2");
+            }}
+          >
+            <Girl2
+              className={stringMemberImage === girl2 ? "btn-kid--icon--selected" : "btn-kid--icon"}
+            />
+          </button>
+          <button
+            className={stringMemberImage === woman2 ? "icon-box__btn-young--selected" : "icon-box__btn-young"}
+            onClick={() => {
+              setStringMemberImage(woman2);
+              setIcon("woman2");
+            }}
+          >
+            <Woman2
+              className={stringMemberImage === woman2 ? "btn-young--icon--selected" : "btn-young--icon"}
             />
           </button>
         </div>
