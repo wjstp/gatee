@@ -3,7 +3,8 @@ import { AxiosError, AxiosResponse, AxiosInstance } from "axios";
 import {
   GetFamilyMemberApiReq,
   CreateFamilyCodeApiReq,
-  JoinFamilyApiReq
+  JoinFamilyApiReq,
+  MemberApiRes, CreateMemberApiReq,
 } from "@type/index";
 
 const local: AxiosInstance = localAxios();
@@ -38,7 +39,7 @@ export const getFamilyMemberApi = async function (data: GetFamilyMemberApiReq,
 }
 
 // 회원 생성
-export const createMemberApi = async function (data: MemberApiRes,
+export const createMemberApi = async function (data: CreateMemberApiReq,
                                                success: (res: AxiosResponse<any>) => void,
                                                fail: (err: AxiosError<any>) => void) {
   await local.post("/members", data).then(success).catch(fail);

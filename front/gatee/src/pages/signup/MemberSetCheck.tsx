@@ -23,7 +23,6 @@ const SignupMemberSetCheck = () => {
     birth,
     birthType,
     memberImage,
-    setMemberImage,
     stringMemberImage,
     setStringMemberImage,
   } = useMemberStore();
