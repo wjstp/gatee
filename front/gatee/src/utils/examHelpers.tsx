@@ -18,6 +18,10 @@ export const transformQuestionData = (data: QuestionData[]): {
   const answerNumArray: number[] = [];
 
   data.forEach((question) => {
+    // let wrongAnswers = question.wrongAnswers
+    // if (question.wrongAnswers.length === 1){
+    //   wrongAnswers =question.wrongAnswers[0].split(",")
+    // }
     const answerList = shuffleArray([...question.wrongAnswers, question.correctAnswer]);
     const correctNumber = answerList.findIndex(answer => answer === question.correctAnswer) + 1;
 

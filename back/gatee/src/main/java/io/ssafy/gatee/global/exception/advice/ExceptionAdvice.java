@@ -1,9 +1,6 @@
 package io.ssafy.gatee.global.exception.advice;
 
-import io.ssafy.gatee.global.exception.error.bad_request.DoNotHavePermissionException;
-import io.ssafy.gatee.global.exception.error.bad_request.ExistsFamilyException;
-import io.ssafy.gatee.global.exception.error.bad_request.ExpiredCodeException;
-import io.ssafy.gatee.global.exception.error.bad_request.WrongTypeFilterException;
+import io.ssafy.gatee.global.exception.error.bad_request.*;
 import io.ssafy.gatee.global.exception.error.not_found.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -23,7 +20,8 @@ public class ExceptionAdvice {
             MemberFamilyScheduleNotFoundException.class,
             AlbumNotFoundException.class,
             MemberFeatureNotFoundException.class,
-            MemberNotificationNotFoundException.class
+            MemberNotificationNotFoundException.class,
+            AppointmentNotFoundException.class
     })
     public String handleNotFound(RuntimeException e) {
         return e.getMessage();

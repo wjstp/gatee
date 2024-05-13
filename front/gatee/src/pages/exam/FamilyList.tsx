@@ -1,22 +1,21 @@
 import React, {useEffect, useState} from 'react';
-import {MemberApiRes} from "@type/index";
-import {Link, useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import getGradeSvg from "@utils/getGradeSvg";
 import {useFamilyStore} from "@store/useFamilyStore";
-import Grade from "@pages/exam/Grade";
 import Stamp from "@assets/images/icons/stamp_logo.png";
 import {getAllFamilyExamResultApi} from "@api/exam";
 import ExamNotFound from "@pages/exam/components/ExamNotFound";
 
 interface FamilyGrade {
-  nickname:string,
-  memberId:string,
-  averageScore:number|null
+  nickname: string,
+  memberId: string,
+  averageScore: number | null
 }
+
 const ExamFamilyList = () => {
 
   const {familyName} = useFamilyStore()
-  const [familyGrade,setFamilyGrade] = useState<FamilyGrade[]>([
+  const [familyGrade, setFamilyGrade] = useState<FamilyGrade[]>([
     // {
     //   nickname:"예빈",
     //   memberId:"ad257b72-990e-4867-a616-9381dd144937",
@@ -36,9 +35,9 @@ const ExamFamilyList = () => {
   ]);
 
   useEffect(() => {
-    getAllFamilyExamResultApi(res=>{
+    getAllFamilyExamResultApi(res => {
       setFamilyGrade(res.data)
-    },err=>{
+    }, err => {
       console.log(err)
     })
   }, []);
@@ -46,7 +45,7 @@ const ExamFamilyList = () => {
     <div className="exam-grade">
 
       {
-        setFamilyGrade.length ===0 ?
+        setFamilyGrade.length === 0 ?
           <ExamNotFound/>
           :
           <>
@@ -91,7 +90,7 @@ const Table = ({familyData}: { familyData: FamilyGrade }) => {
         {familyData.averageScore === null ?
           "없음"
           :
-          `${familyData.averageScore}/100`
+          `${Math.ceil(familyData.averageScore)}/100`
         }
       </div>
       <div className="flex-comment">{grade}</div>

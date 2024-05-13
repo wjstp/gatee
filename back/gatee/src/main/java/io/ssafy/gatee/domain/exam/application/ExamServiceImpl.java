@@ -65,6 +65,20 @@ public class ExamServiceImpl implements ExamService {
     }
 
     @Override
+    public List<ExamResultRes> readOtherExamResults(Long memberFamilyId) {
+        List<Exam> exams = examRepository.findByMemberFamilyId(memberFamilyId);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        if (!exams.isEmpty()) {
+            return exams.stream().map(exam -> ExamResultRes
+                    .builder()
+                    .examId(exam.getId())
+                    .createdAt(dateTimeFormatter.format(exam.getCreatedAt()))
+                    .score(exam.getScore()).build()).toList();
+        }
+        return new ArrayList<>();
+    }
+
+    @Override
     public ExamDetailRes readExamResultDetail(Long examId) {
         Exam exam = examRepository.getReferenceById(examId);
         List<MemberFamilyExam> memberFamilyExams = memberFamilyExamRepository.findByExam_Id(examId);
@@ -78,9 +92,11 @@ public class ExamServiceImpl implements ExamService {
         return memberFamilyExamRepository.findFamilyExamResults(memberId);
     }
 
+
+
     @Override
     @Transactional
-    public void saveExamResult(ExamReq examReq, UUID memberId) {
+    public ExamSaveRes saveExamResult(ExamReq examReq, UUID memberId) {
         Member proxyMember = memberRepository.getReferenceById(memberId);
         MemberFamily memberFamily = memberFamilyRepository.findByMember(proxyMember)
                 .orElseThrow(() -> new MemberFamilyNotFoundException(ExceptionMessage.MEMBER_FAMILY_NOT_FOUND));
@@ -93,5 +109,6 @@ public class ExamServiceImpl implements ExamService {
                 .choiceNumber(examResult.choiceNumber())
                 .correctNumber(examResult.correctNumber()).build()).toList();
         memberFamilyExamRepository.saveAll(memberFamilyExams);
+        return ExamSaveRes.builder().examId(exam.getId()).build();
     }
 }

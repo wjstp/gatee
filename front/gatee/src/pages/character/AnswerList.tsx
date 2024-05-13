@@ -11,7 +11,7 @@ const CharacterStart = () => {
   useEffect(() => {
     getAnsweredAskApi(res => {
       console.log(res.data)
-      // setAnswerList(res?.data)
+      setAnswerList(res?.data)
 
     }, err => {
       console.log(err)

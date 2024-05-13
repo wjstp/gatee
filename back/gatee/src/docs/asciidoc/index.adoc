@@ -43,6 +43,19 @@ include::{snippets}/member-controller-test/edit-info/http-request.adoc[]
 include::{snippets}/member-controller-test/edit-info/http-response.adoc[]
 
 
+== 회원 프로필 이미지 수정
+
+- Request
+
+include::{snippets}/member-controller-test/edit-profile-image/curl-request.adoc[]
+include::{snippets}/member-controller-test/edit-profile-image/form-parameters.adoc[]
+
+- Response
+
+include::{snippets}/member-controller-test/edit-profile-image/http-response.adoc[]
+include::{snippets}/member-controller-test/edit-profile-image/response-fields.adoc[]
+
+
 == 기분 상태 수정
 
 - Request
@@ -279,6 +292,7 @@ include::{snippets}/feature-controller-test/read-feature-list/http-response.adoc
 include::{snippets}/feature-controller-test/read-feature-list/response-fields.adoc[]
 
 
+
 == 백문백답 질문 및 답변 조회
 
 - Request
@@ -289,6 +303,17 @@ include::{snippets}/feature-controller-test/read-feature-result/http-request.ado
 
 include::{snippets}/feature-controller-test/read-feature-result/http-response.adoc[]
 include::{snippets}/feature-controller-test/read-feature-result/response-fields.adoc[]
+
+== 다른 사람의 백문백답 질문 및 답변 조회
+
+- Request
+
+include::{snippets}/feature-controller-test/read-other-feature-result/http-request.adoc[]
+
+- Response
+
+include::{snippets}/feature-controller-test/read-other-feature-result/http-response.adoc[]
+include::{snippets}/feature-controller-test/read-other-feature-result/response-fields.adoc[]
 
 
 = Exam
@@ -344,7 +369,7 @@ include::{snippets}/exam-controller-test/read-other-exam-results/response-fields
 - Request
 
 include::{snippets}/exam-controller-test/read-exam-result-details/http-request.adoc[]
-include::{snippets}/exam-controller-test/read-exam-result-details/path-parameters.adoc[]
+include::{snippets}/exam-controller-test/read-exam-result-details/query-parameters.adoc[]
 
 - Response
 
@@ -362,7 +387,7 @@ include::{snippets}/exam-controller-test/save-exam-result/query-parameters.adoc[
 - Response
 
 include::{snippets}/exam-controller-test/save-exam-result/http-response.adoc[]
-
+include::{snippets}/exam-controller-test/save-exam-result/response-fields.adoc[]
 
 ---
 ---

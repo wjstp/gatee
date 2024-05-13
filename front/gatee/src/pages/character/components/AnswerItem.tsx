@@ -7,16 +7,16 @@ const AnswerItem = ({question,index}:{question:Answer, index:number}) => {
     const [answer,setAnswer] = useState(question.answer);
     const [edit,setEdit] = useState(false);
     const submitEditAnswer = () => {
-      // editAskAnswerApi (
-      //   {
-      //     featureId:question.featureId,
-      //     answer:answer
-      //   },res=>{
-      //     console.log(res)
-      //   },err => {
-      //     console.log(err)
-      //   }
-      // )
+      editAskAnswerApi (
+        {
+          featureId:question.featureId,
+          answer:answer
+        },res=>{
+          console.log(res)
+        },err => {
+          console.log(err)
+        }
+      )
       setEdit(false);
     }
     return (
@@ -31,7 +31,7 @@ const AnswerItem = ({question,index}:{question:Answer, index:number}) => {
             <div className="character__answer-item-container">
 
                 <div className="character__answer__item-index">
-                    #{question?.featureId}
+                    #{index+1}
                 </div>
                 <div>
                     {question.question}

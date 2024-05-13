@@ -198,6 +198,7 @@ public class FamilyServiceImpl implements FamilyService {
         if (! memberFamilies.isEmpty()) {
             List<MemberFamilyInfoRes> memberFamilyInfoList = memberFamilies.stream().map(memberFamily -> MemberFamilyInfoRes.builder()
                     .memberId(memberFamily.getMember().getId())
+                    .memberFamilyId(memberFamily.getId())
                     .fileUrl(memberFamily.getMember().getFile().getUrl())
                     .birth(memberFamily.getMember().getBirth())
                     .name(memberFamily.getMember().getName())
