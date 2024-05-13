@@ -94,20 +94,15 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public void updateRead(UUID memberId, UUID familyId) {
         DatabaseReference reference = databaseReference.child("chat").child(familyId.toString()).child("messages");
-        log.info("디비" + reference.toString());
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                log.info("onDataChange start!!");
                 for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
-                    log.info("messageSnapshot" + messageSnapshot.toString());
                     DataSnapshot unreadMemberSnapshot = messageSnapshot.child("unReadMember");
                     if (unreadMemberSnapshot.getValue() != null) { // 널 체크 추가
-                        log.info("unreadMember는 " + unreadMemberSnapshot.toString());
                         String unReadMemberStr = unreadMemberSnapshot.getValue().toString();
                         unReadMemberStr = unReadMemberStr.substring(1, unReadMemberStr.length() - 1);
                         String[] items = unReadMemberStr.split(", ");
-                        log.info("어레이 : " + Arrays.toString(items));
                         List<String> newList = new ArrayList<>(Arrays.asList(items)); // 수정 가능한 리스트 생성
                         if (newList.contains(memberId.toString())) {
                             newList.remove(memberId.toString()); // 특정 memberId 제거
@@ -130,13 +125,11 @@ public class ChatServiceImpl implements ChatService {
     public void createAppointment(ChatDto chatDto, UUID memberId) throws ExecutionException, InterruptedException {
         UUID familyId = familyService.getFamilyIdByMemberId(memberId);
         Member proxyMember = memberRepository.getReferenceById(memberId);
-        log.info("memberId: {}", memberId);
         List<Member> unreadList = memberFamilyRepository.findAllWithFamilyByMember(proxyMember)
                 .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND))
                 .stream()
                 .map(MemberFamily::getMember)
                 .toList();
-        log.info("unreadList: {}", unreadList);
 
         // Redis에서 online 가족 가져오기
         List<Member> onlineMember = onlineRoomMemberRepository.findById(familyId)
@@ -145,7 +138,6 @@ public class ChatServiceImpl implements ChatService {
                 .stream()
                 .map(this::findMemberById)
                 .toList();
-        log.info("onlineMember" + onlineMember);
         // 온라인 멤버를 언리드에서 제거, 오프라인 멤버(안읽은 멤버)만 추가
         List<String> unReadMemberAsStringList = unreadList.stream()
                 .filter(offline -> !onlineMember.contains(offline))
@@ -153,7 +145,6 @@ public class ChatServiceImpl implements ChatService {
                 .stream()
                 .map(offline -> offline.getId().toString())
                 .toList();
-        log.info("unReadMemberAsStringList" + unReadMemberAsStringList);
         // 파이어스토어 전송
         this.saveMessageToRealtimeDatabase(FireStoreChatDto.builder()
                 .messageType(chatDto.messageType())
