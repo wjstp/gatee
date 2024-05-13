@@ -33,7 +33,7 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 
     private final String REDIRECT_URI_SUCCESS = "/main";
 
-    private final String REDIRECT_URI_NOT_FAMILY = "/signup/family-set";
+    private final String REDIRECT_URI_NOT_FAMILY = "/signup";
 
     private final String REDIRECT_URI_ANONYMOUS = "/signup/family-set";
 
