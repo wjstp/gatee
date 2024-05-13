@@ -45,6 +45,7 @@ const ChatIndex = () => {
   const [isShowScrollDownButton, setIsShowScrollDownButton] = useState(false);
   const [isShowPreviewMessage, setIsShowPreviewMessage] = useState<boolean>(false);
   const [previewMessage, setPreviewMessage] = useState<{ sender: string | undefined, content: string } | null>(null);
+  const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // WebSocket 연결
@@ -230,18 +231,6 @@ const ChatIndex = () => {
     }));
   }
 
-  // 스크롤 이벤트 리스너 등록
-  // useEffect(() => {
-  //   if (chatMainRef.current) {
-  //     chatMainRef.current.addEventListener('scroll', handleScroll);
-  //   }
-  //   return () => {
-  //     if (chatMainRef.current) {
-  //       chatMainRef.current.removeEventListener('scroll', handleScroll);
-  //     }
-  //   };
-  // }, [chatMainRef.current]);
-
   // 스크롤 이벤트 핸들러
   const handleScroll = () => {
     // const ref = chatMainRef.current!;
@@ -263,13 +252,9 @@ const ChatIndex = () => {
 
   // 스크롤 맨 아래로 내리기
   const scrollToBottom = () => {
-    // setIsShowScrollDownButton(false);
-    // setIsShowPreviewMessage(false);
-    // setPreviewMessage(null);
-    //
-    // if (chatMainRef.current) {
-    //   chatMainRef.current.scrollTop = chatMainRef.current.scrollHeight;
-    // }
+    if (bottomRef.current) {
+      bottomRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   // 이전 채팅과 현재 채팅의 보낸 사람이 같은지 여부에 따라 props 설정
@@ -310,6 +295,10 @@ const ChatIndex = () => {
 
       {/*채팅 메인*/}
       <div className="chat__main">
+        {/*<div ref={bottomRef}>*/}
+        {/*  아래*/}
+        {/*</div>*/}
+
         {renderChatBubble}
 
         {/*모든 데이터를 불러왔을 시 타겟 제거*/}
@@ -319,7 +308,7 @@ const ChatIndex = () => {
           </div>
         )}
 
-        {/*/!*밑으로 이동 버튼*!/*/}
+        {/*밑으로 이동 버튼*/}
         {/*<div*/}
         {/*  className={isShowScrollDownButton && !isShowPreviewMessage ? "chat__main__scroll-down--active" : "chat__main__scroll-down"}>*/}
         {/*  <button*/}
