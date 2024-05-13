@@ -678,6 +678,7 @@ include::{snippets}/appointment-controller-test/get-join-member-in-appointment/r
 - Request
 
 include::{snippets}/appointment-controller-test/join-appointment/http-request.adoc[]
+include::{snippets}/appointment-controller-test/join-appointment/path-parameters.adoc[]
 
 - Response
 
