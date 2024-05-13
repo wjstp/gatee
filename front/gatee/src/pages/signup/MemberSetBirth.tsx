@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AiOutlineMan } from "react-icons/ai";
@@ -11,9 +11,19 @@ import { useMemberStore } from "@store/useMemberStore";
 
 const SignupMemberSetBirth = () => {
   const navigate = useNavigate();
+  const {
+    birth,
+    birthType,
+    gender,
+    setBirth,
+    setBirthType,
+    setGender,
+    setRole,
+  } = useMemberStore();
 
-  const { birthDay, birthType, gender, setBirthDay, setBirthType, setGender } = useMemberStore();
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
+  // MUI 커스텀 스타일
   const dateFieldCustom = {
     "& .MuiOutlinedInput-root": {
       color: "#000",
@@ -30,6 +40,7 @@ const SignupMemberSetBirth = () => {
         borderWidth: "3px",
       },
     },
+    width: "100px",
   };
 
   // 날짜 형식 검증 함수 (YYYY-MM-DD)
@@ -37,10 +48,35 @@ const SignupMemberSetBirth = () => {
     return /^\d{4}-\d{2}-\d{2}$/.test(date);
   };
 
+  // 오늘 날짜보다 미래인지 검증하는 함수
+  const isFutureDate = (date: string) => {
+    return dayjs(date).isAfter(dayjs());
+  };
+
   // 날짜 핸들러
   const handleSetSelectedDateChange = (date: Dayjs | null) => {
-    setBirthDay(date ? date.format("YYYY-MM-DD") : "");
+    const formattedDate = date ? date.format("YYYY-MM-DD") : "";
+    setBirth(formattedDate);
+    if (date && isFutureDate(formattedDate)) {
+      setErrorMessage('유효한 날짜를 선택해주세요');
+    } else {
+      setErrorMessage('');
+    }
   };
+
+  // 음력 양력 바꾸기
+  const changeBirthType = (birthType: string) => {
+    if (birthType === "SOLAR") {
+      setBirthType("LUNAR")
+    } else {
+      setBirthType("SOLAR")
+    }
+  }
+
+  // 역할 초기화
+  useEffect(() => {
+    setRole(null)
+  }, [gender]);
 
   // 다음으로 가기
   const goToMemberSetRole = () => {
@@ -48,7 +84,8 @@ const SignupMemberSetBirth = () => {
   }
 
   return (
-    <div className="signup-member-set-birth">
+    <div className="signup-member-set-birth slide-in">
+      
       {/*생일 제목*/}
       <div className="signup-member-set-birth__title-birth">
         <span className="title-birth__part--01">
@@ -61,6 +98,8 @@ const SignupMemberSetBirth = () => {
 
       {/*생일 선택*/}
       <div className="signup-member-set-birth__birthday">
+        
+        {/*날짜 입력*/}
         <div className="birthday-date-field">
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer
@@ -70,55 +109,53 @@ const SignupMemberSetBirth = () => {
                 className="birthday-datefield__input"
                 format="YYYY / MM / DD"
                 autoFocus={true}
-                value={birthDay ? dayjs(birthDay) : null}
+                value={birth ? dayjs(birth) : null}
                 onChange={handleSetSelectedDateChange}
                 inputProps={{
                   style: {
-                    textAlign: "center", fontSize: "23px" },
+                    textAlign: "center", fontSize: "22px" },
                 }}
                 sx={dateFieldCustom}
+                maxDate={dayjs()}
               />
             </DemoContainer>
           </LocalizationProvider>
         </div>
+
+        {/*음력 선택*/}
         <div className="birthday-choice">
-          <button
-            className="birthday-choice__btn-solar"
-            onClick={() => setBirthType("SOLAR")}
-          >
-            <input
-              className="btn-solar__input"
-              type="radio"
-              name="calendarType"
-              value="SOLAR"
-              checked={birthType === "SOLAR"}
-              onChange={(e) => setBirthType(e.target.value)}
-            />
-            <label
-              className={birthType === "SOLAR" ? "btn-solar__input--label--selected" : "btn-solar__input--label"}
+          <div className="birthday-choice__lunar">
+            <button
+              className="btn-lunar"
+              onClick={() => changeBirthType(birthType)}
             >
-              양력
-            </label>
-          </button>
-          <button
-            className="birthday-choice__btn-lunar"
-            onClick={() => setBirthType("LUNAR")}
-          >
-            <input
-              className="btn-lunar__input"
-              type="radio"
-              name="calendarType"
-              value="LUNAR"
-              checked={birthType === "LUNAR"}
-              onChange={(e) => setBirthType(e.target.value)}
-            />
-            <label
-              className={birthType === "LUNAR" ? "btn-lunar__input--label--selected" : "btn-lunar__input--label"}
-            >
-              음력
-            </label>
-          </button>
+              <input
+                className="btn-lunar__input"
+                type="checkbox"
+                name="calendarType"
+                value="LUNAR"
+                checked={birthType === "LUNAR"}
+                onClick={() => changeBirthType(birthType)}
+                readOnly
+              />
+              <label
+                className={birthType === "LUNAR" ? "btn-lunar__input--label--selected" : "btn-lunar__input--label"}
+              >
+                음력
+              </label>
+            </button>
+          </div>
         </div>
+
+      </div>
+
+      {/*에러 메시지*/}
+      <div className="signup-member-set__error-message">
+        {errorMessage ? (
+          errorMessage
+        ) : (
+          "　"
+        )}
       </div>
 
       {/*성별 제목*/}
@@ -158,13 +195,19 @@ const SignupMemberSetBirth = () => {
         <button
           className="btn-next"
           onClick={goToMemberSetRole}
-          disabled={!birthDay || !gender || !isValidDateFormat(birthDay)}
+          disabled={
+            !birth ||
+            !gender ||
+            !isValidDateFormat(birth) ||
+            isFutureDate(birth)
+          }
         >
             <span className="btn-next__text">
               다음
             </span>
         </button>
       </div>
+
     </div>
   );
 };

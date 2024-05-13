@@ -76,6 +76,26 @@
     width: 100%;
   }
 
+  .empty-answer-list-container{
+    @include flex-center;
+    @include flex-col;
+    @include p-(2);
+    @include my-(2);
+
+    font-size: 1.5rem;
+    background-color: $gray50;
+    border-radius: 1rem;
+
+    .empty-answer-list-icon{
+      width: 5rem;
+      height: 10rem;
+      path {
+        fill:$gray100;
+      }
+
+    }
+  }
+
   .character__answer__item-card {
     @include p-(1);
     @include my-(1);

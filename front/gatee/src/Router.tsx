@@ -12,7 +12,6 @@ import NotificationIndex from "@pages/notification";
 import OnboardingIndex from "@pages/onboarding/index";
 import KaKaoLogin from "@pages/onboarding/components/KaKaoLogin";
 import ProfileIndex from "@pages/profile";
-import ProfileModify from "@pages/profile/modify";
 import ScheduleIndex from "@pages/schedule/index";
 import ScheduleCreateSchedule from "@pages/schedule/Create";
 import ScheduleCreateReview from "@pages/schedule/CreateReview";
@@ -23,16 +22,16 @@ import CharacterIndex from "@pages/character";
 import CharacterStart from "@pages/character/AnswerList";
 import CharacterQuestion from "@pages/character/Question";
 import SignupIndex from "@pages/signup";
+import SignupPermission from "@pages/signup/Permission";
 import SignupFamilyJoin from "@pages/signup/FamilyJoin";
 import SignupFamilyJoinCheck from "@pages/signup/FamilyJoinCheck";
 import SignupFamilySet from "@pages/signup/FamilySet";
 import SignupFamilySetCheck from "@pages/signup/FamilySetCheck";
-import SignupFamilySetShare from "@pages/signup/FamilySetShare";
+import SignupMemberSetShare from "@pages/signup/MemberSetShare";
 import SignupMemberSet from "@pages/signup/MemberSet";
 import SignupMemberSetBirth from "@pages/signup/MemberSetBirth";
 import SignupMemberSetCheck from "@pages/signup/MemberSetCheck";
 import SignupMemberSetFinish from "@pages/signup/MemberSetFinish";
-import SignupMemberSetPermission from "@pages/signup/MemberSetPermission";
 import SignupMemberSetRole from "@pages/signup/MemberSetRole";
 import SignupAuth from "@pages/signup/Auth";
 import PhotoAlbum from "@pages/photo/AlbumGroup";
@@ -55,7 +54,7 @@ const Router = () => {
         {/*모의고사 페이지*/}
         <Route path="/exam" element={<ExamIndex/>}/>
         <Route path="/exam/list" element={<ExamFamilyList/>}/>
-        <Route path="/exam/grade/:memberId" element={<ExamGrade/>}/>
+        <Route path="/exam/grade/:memberFamilyId" element={<ExamGrade/>}/>
         <Route path="/exam/scored/:examId" element={<ExamScored/>}/>
         <Route path="/exam/taking" element={<ExamTaking/>}/>
 
@@ -84,7 +83,7 @@ const Router = () => {
 
         {/*백과사전 페이지*/}
         <Route path="/character" element={<CharacterIndex/>}/>
-        <Route path="/character/start" element={<CharacterStart/>}/>
+        <Route path="/character/start/:memberFamilyId" element={<CharacterStart/>}/>
         <Route path="/character/question" element={<CharacterQuestion/>}/>
 
         {/*앨범 페이지*/}
@@ -113,16 +112,16 @@ const Router = () => {
         {/*회원가입 페이지*/}
         <Route path="/auth" element={<SignupAuth/>}/>
         <Route path="/signup" element={<SignupIndex/>}/>
+        <Route path="/signup/permission" element={<SignupPermission/>}/>
         <Route path="/signup/family-set" element={<SignupFamilySet/>}/>
         <Route path="/signup/family-set/check" element={<SignupFamilySetCheck/>}/>
-        <Route path="/signup/family-set/share" element={<SignupFamilySetShare/>}/>
         <Route path="/signup/family-join" element={<SignupFamilyJoin/>}/>
         <Route path="/signup/family-join/check" element={<SignupFamilyJoinCheck/>}/>
         <Route path="/signup/member-set" element={<SignupMemberSet/>}/>
         <Route path="/signup/member-set/birth" element={<SignupMemberSetBirth/>}/>
         <Route path="/signup/member-set/role" element={<SignupMemberSetRole/>}/>
         <Route path="/signup/member-set/check" element={<SignupMemberSetCheck/>}/>
-        <Route path="/signup/member-set/permission" element={<SignupMemberSetPermission/>}/>
+        <Route path="/signup/member-set/share" element={<SignupMemberSetShare/>}/>
         <Route path="/signup/member-set/finish" element={<SignupMemberSetFinish/>}/>
       </Route>
     </Routes>
