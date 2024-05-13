@@ -2,30 +2,29 @@
 @use '../components/index' as *;
 
 .profile-index {
+  @extend %modal-fade-in;
+
   height: 100%;
   width: 100%;
 
   &__profile {
-    display: flex;
+    @include flex_center;
+
     flex-direction: column;
-    align-items: center;
     height: 65%;
     width: 100%;
 
     .profile__img-box {
       @extend %circular-profile-image;
 
+      margin-top: 1%;
       height: 200px;
       width: 200px;
-      border-radius: 100%;
-      position: relative;
+      border: 1px solid $gray75;
 
       .img-box__img {
-
         height: 200px;
         width: 200px;
-        border-radius: 100%;
-        object-fit: cover;
       }
     }
 
@@ -50,9 +49,8 @@
         position: absolute;
         right: 6%;
 
-        &:hover {
-          opacity: 0.2;
-          transition: 0.1s;
+        &:active {
+          opacity: 0.1;
         }
 
         .icon {
@@ -68,30 +66,26 @@
     }
 
     .profile__mood-box {
-      @include flex_center;
-
-      margin-top: 1%;
+      margin-top: 2%;
+      margin-bottom: 2%;
       height: 10%;
       width: 100%;
 
-      .mood-box__title {
-        font-size: 22px;
-        color: $orange400;
-      }
-
       .mood-box__btn {
-        margin-left: 2%;
-        height: 45px;
-        width: 45px;
-        border-radius: 100%;
+        height: 100%;
+        width: 100%;
 
-        &:hover {
-          opacity: 0.9;
-          transition: 0.1s;
+        &:active {
+          opacity: 0.5;
         }
 
         &--text {
-          font-size: 31px;
+          font-size: 22px;
+          color: $orange400;
+        }
+
+        &--icon {
+          font-size: 26px;
         }
       }
     }
@@ -245,7 +239,6 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    margin-top: 4%;
 
     .character__created {
 
@@ -332,6 +325,9 @@
       .non-created__btn {
         @extend %orange-button-large;
 
+        width: 80%;
+        margin-top: 5%;
+
         .btn--text {
 
         }
@@ -341,33 +337,31 @@
 }
 
 .profile-modify {
+  @extend %modal-fade-in;
+
   height: 100%;
   width: 100%;
 
   &__profile {
-    display: flex;
+    @include flex_center;
+
     flex-direction: column;
-    align-items: center;
-    height: 57%;
+    height: 65%;
     width: 100%;
 
     .profile__img-box {
       @extend %circular-profile-image;
 
+      margin-top: 1%;
       height: 200px;
       width: 200px;
-      border-radius: 100%;
+      border: 1px solid $gray75;
       position: relative;
-      margin-top: 5%;
 
       .img-box__img {
-
-        height: 150px;
-        width: 150px;
-        border-radius: 100%;
-        object-fit: cover;
+        height: 200px;
+        width: 200px;
         opacity: 0.7;
-        //border: 1px solid black;
       }
 
       .img-box__btn {
@@ -375,15 +369,15 @@
         width: 100px;
         position: absolute;
 
-        &:hover {
-          opacity: 0.2;
+        &:active {
+          opacity: 0.1;
         }
 
         .btn__icon {
           height: 60px;
           width: 60px;
           fill: $gray300;
-          opacity: 0.3;
+          opacity: 0.2;
         }
       }
     }
@@ -404,33 +398,12 @@
       }
     }
 
-    .profile__mood-box {
-      @include flex_center;
-
-      margin-top: 1%;
+    .profile__blank-box {
+      margin-top: 3.5%;
+      margin-bottom: 2%;
       height: 10%;
       width: 100%;
-
-      .mood-box__title {
-        font-size: 22px;
-        color: $orange400;
-      }
-
-      .mood-box__btn {
-        margin-left: 2%;
-        height: 45px;
-        width: 45px;
-        border-radius: 100%;
-
-        &:hover {
-          opacity: 0.2;
-          transition: 0.1s;
-        }
-
-        &--text {
-          font-size: 31px;
-        }
-      }
+      font-size: 22px;
     }
 
     .profile__info-box {
@@ -666,6 +639,9 @@
     .btn-modified {
       @extend %orange-button-large;
 
+      width: 80%;
+      margin-top: 5%;
+
       &--text {
 
       }
@@ -705,6 +681,11 @@
     border-radius: 20px;
     padding: 10px;
     color: black;
+
+    &:active {
+      opacity: 0.5;
+      background-color: $gray50;
+    }
   }
 
   .first__part--01,
@@ -799,6 +780,7 @@
 
 .modal__bg {
   @extend %modal-overlay;
+  @extend %modal-fade-in;
 
   .name__input {
    font-size: 2rem;
@@ -912,7 +894,9 @@
 
 .profile-cropper {
   @extend %modal-overlay;
+  @extend %modal-fade-in;
 
+  animation: modalFadeIn 0.3s ease-out forwards;
   height: 100%;
   width: 100%;
 

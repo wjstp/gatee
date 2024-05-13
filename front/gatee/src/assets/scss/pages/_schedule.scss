@@ -1,10 +1,13 @@
 @use '../abstracts/index' as *;
+@use '../components/index' as *;
 
 @function calendarBannerImage($month) {
   @return '../../images/schedule/bg_calendar_banner' + $month + '.jpg';
 }
 
 .schedule {
+  @extend %modal-fade-in;
+
   height: 100%;
   position: relative;
 
