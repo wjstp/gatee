@@ -171,4 +171,45 @@ class FeatureControllerTest extends RestDocsTestSupport {
                 ));
     }
 
+    @Test
+    @CustomWithMockUser
+    @DisplayName("다른 사람의 백문백답 질문 & 답변 조회")
+    void readOtherFeatureResult() throws Exception {
+
+        // given
+        List<FeatureResultRes> featureResList = new ArrayList<>();
+
+        FeatureResultRes featureRes1 = FeatureResultRes.builder()
+                .featureId(1L)
+                .question("가고 싶은 여행지")
+                .answer("중국").build();
+
+        FeatureResultRes featureRes2 = FeatureResultRes.builder()
+                .featureId(2L)
+                .question("가고 싶은 여행지")
+                .answer("중국").build();
+
+        featureResList.add(featureRes1);
+        featureResList.add(featureRes2);
+
+        given(featureService.readFeatureResults(any(UUID.class)))
+                .willReturn(featureResList);
+
+        // where
+        ResultActions result = mockMvc.perform(get("/api/features/{memberId}/results", UUID.randomUUID())
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+        );
+
+        //then
+        result.andExpect(status().isOk())
+                .andDo(restDocs.document(
+                        responseFields(
+                                fieldWithPath("[].featureId").type(JsonFieldType.NUMBER).description("백문백답 질문 id"),
+                                fieldWithPath("[].question").type(JsonFieldType.STRING).description("백문백답 질문"),
+                                fieldWithPath("[].answer").type(JsonFieldType.STRING).description("백문백답 답변")
+                        )
+                ));
+    }
+
 }

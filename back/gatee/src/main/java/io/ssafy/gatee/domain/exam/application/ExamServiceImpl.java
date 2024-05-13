@@ -80,7 +80,7 @@ public class ExamServiceImpl implements ExamService {
 
     @Override
     @Transactional
-    public void saveExamResult(ExamReq examReq, UUID memberId) {
+    public ExamSaveRes saveExamResult(ExamReq examReq, UUID memberId) {
         Member proxyMember = memberRepository.getReferenceById(memberId);
         MemberFamily memberFamily = memberFamilyRepository.findByMember(proxyMember)
                 .orElseThrow(() -> new MemberFamilyNotFoundException(ExceptionMessage.MEMBER_FAMILY_NOT_FOUND));
@@ -93,5 +93,6 @@ public class ExamServiceImpl implements ExamService {
                 .choiceNumber(examResult.choiceNumber())
                 .correctNumber(examResult.correctNumber()).build()).toList();
         memberFamilyExamRepository.saveAll(memberFamilyExams);
+        return ExamSaveRes.builder().examId(exam.getId()).build();
     }
 }

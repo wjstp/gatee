@@ -11,6 +11,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,6 +34,12 @@ public class FeatureController {
         return featureService.readFeatureResults(customUserDetails.getMemberId());
     }
 
+    // 질문 및 답변 조회
+    @GetMapping("/{memberId}/results")
+    @ResponseStatus(HttpStatus.OK)
+    public List<FeatureResultRes> readOtherFeatureResults(@PathVariable("memberId") UUID memberId) {
+        return featureService.readFeatureResults(memberId);
+    }
 
     // 질문 답변 시 문제 생성
     @PostMapping
