@@ -4,7 +4,7 @@ import getGradeSvg from "@utils/getGradeSvg";
 import {useFamilyStore} from "@store/useFamilyStore";
 import Stamp from "@assets/images/icons/stamp_logo.png";
 import {getAllFamilyExamResultApi} from "@api/exam";
-import ExamNotFound from "@pages/exam/components/ExamNotFound";
+import GradeNotFound from "@pages/exam/components/GradeNotFound";
 import getUserInfo from "@utils/getUserInfo";
 
 interface FamilyGrade {
@@ -49,7 +49,7 @@ const ExamFamilyList = () => {
 
       {
         setFamilyGrade.length === 0 ?
-          <ExamNotFound/>
+          <GradeNotFound/>
           :
           <>
             <div className="exam__grade-header">
