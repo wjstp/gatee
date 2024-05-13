@@ -25,7 +25,7 @@ export const naggingApi = async function (data: NaggingApiReq,
   await local.post("/notifications/nagging", data).then(success).catch(fail);
 };
 
-// 알람 동의 변경
+// 알람 동의 조회
 export const getAgreeNotification = async function (success: (res: AxiosResponse<any>) => void,
                                                     fail: (err: AxiosError<any>) => void) {
   await local.get(`/notifications`).then(success).catch(fail);
