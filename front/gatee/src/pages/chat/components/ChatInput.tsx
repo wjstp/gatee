@@ -32,7 +32,7 @@ const ChatInput = (props: ChatInputProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedEmojiCategory, SetSelectedEmojiCategory] = useState<string>(EMOJI[0].name);
   const buttonWrapperRef = useRef<HTMLDivElement>(null);
-  const { setShowBottomBar } = useChatStore();
+  const { setIsShowBottomBar } = useChatStore();
 
   // 변수 초기화
   const reset = () => {
@@ -206,16 +206,16 @@ const ChatInput = (props: ChatInputProps) => {
       document.removeEventListener("mousedown", handleClickOutside);
 
       // 하단바 설정 초기화
-      setShowBottomBar(true);
+      setIsShowBottomBar(true);
     };
   }, []);
 
   // TextField 포커스 핸들러
   const handleFocusInput = (isFocus: boolean) => {
     if (isFocus) {
-      setShowBottomBar(false);
+      setIsShowBottomBar(false);
     } else {
-      setShowBottomBar(true);
+      setIsShowBottomBar(true);
     }
   }
 

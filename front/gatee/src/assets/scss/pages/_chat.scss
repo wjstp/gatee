@@ -291,28 +291,17 @@ $chat-input-height: 3rem;
   }
 
   &__button {
-    @include flex-between;
-    @include mt-(1);
+    @include flex-center;
+    @include mt-(1.1);
 
     &__accept {
-      @extend %orange-button-small;
+      @extend %orange-button-radius-large;
+      @include flex-center;
       @include my-(0);
 
-      width: 48%;
-    }
-
-    &__refuse {
-      @extend %orange-button-small;
-      @include my-(0);
-
-      background-color: $gray100;
-      width: 48%;
-
-      &:focus,
-      &:active,
-      &:hover {
-        background-color: $gray150;
-      }
+      font-size: 18px;
+      padding: 0 1.5rem;
+      gap: 0.5rem;
     }
   }
 }
