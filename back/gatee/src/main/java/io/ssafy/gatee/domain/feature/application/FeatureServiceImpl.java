@@ -74,11 +74,18 @@ public class FeatureServiceImpl implements FeatureService{
     }
 
     @Override
+    public List<FeatureResultRes> readOtherFeatureResults(Long memberFamilyId) {
+        List<MemberFeature> memberFeatureList = memberFeatureRepository.findByMemberFamilyId(memberFamilyId);
+        return memberFeatureList.stream().map(FeatureResultRes::toDto).toList();
+    }
+
+    @Override
     @Transactional
     public void updateFeature(UUID memberId, FeatureReq featureReq) {
         MemberFeature memberFeature = memberFeatureRepository.findByMember_IdAndFeature_Id(memberId, featureReq.featureId())
                 .orElseThrow(()-> new MemberFeatureNotFoundException(ExceptionMessage.MEMBER_FEATURE_NOT_FOUND));
         List<String> wrongAnswers = getWrongAnswersFromGPT(memberFeature.getFeature().getQuestion(), featureReq.answer());
+
         memberFeature.editMemberFeature(featureReq.answer(), wrongAnswers);
     }
 
@@ -86,7 +93,7 @@ public class FeatureServiceImpl implements FeatureService{
     public List<String> getWrongAnswersFromGPT(String question, String answer) {
         String content = "\""+question + "\"라는 질문에 대해 \"" + answer +"\"라는 답변을 했고, 이를 객관식 문제로 낼 거야. " +
                 "이 객관식 문제를 낼 때선지에 있을 만한 예시 3개를 만들어줘\n" +
-                "객관식 문제를 낼 떄 선지에 있을만한 예시의 조건 4가지를 모두 충족해야한다.\n" +
+                "객관식 문제를 낼 떄 선지에 있을만한 예시의 조건 6가지를 모두 충족해야한다.\n" +
                 "1. 비슷한 길이의 단어나 문장\n" +
                 "2. 같은 범주의 단어나 문장\n"+
                 "3. 시제(과거, 현재)가 일치\n"+
@@ -109,4 +116,6 @@ public class FeatureServiceImpl implements FeatureService{
         }
         return null;
     }
+
+
 }

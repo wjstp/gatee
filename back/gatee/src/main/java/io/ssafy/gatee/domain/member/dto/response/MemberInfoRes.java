@@ -7,6 +7,7 @@ import java.util.UUID;
 @Builder
 public record MemberInfoRes(
         UUID memberId,
+        Long memberFamilyId,
         UUID familyId,
         String name,
         String email,
