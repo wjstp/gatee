@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import CustomSwitch from "@components/CustomSwitch";
-import {requestPermission} from "../../../firebase-messaging-sw";
+// import {requestPermission} from "../../../firebase-messaging-sw";
 import {editAgreeNotification, getAgreeNotification} from "@api/notification";
-import {dividerClasses} from "@mui/material";
 
 
 interface HandleFinishTab {
