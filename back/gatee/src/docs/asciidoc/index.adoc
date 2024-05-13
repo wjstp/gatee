@@ -43,6 +43,19 @@ include::{snippets}/member-controller-test/edit-info/http-request.adoc[]
 include::{snippets}/member-controller-test/edit-info/http-response.adoc[]
 
 
+== 회원 프로필 이미지 수정
+
+- Request
+
+include::{snippets}/member-controller-test/edit-profile-image/curl-request.adoc[]
+include::{snippets}/member-controller-test/edit-profile-image/form-parameters.adoc[]
+
+- Response
+
+include::{snippets}/member-controller-test/edit-profile-image/http-response.adoc[]
+include::{snippets}/member-controller-test/edit-profile-image/response-fields.adoc[]
+
+
 == 기분 상태 수정
 
 - Request
@@ -356,7 +369,7 @@ include::{snippets}/exam-controller-test/read-other-exam-results/response-fields
 - Request
 
 include::{snippets}/exam-controller-test/read-exam-result-details/http-request.adoc[]
-include::{snippets}/exam-controller-test/read-exam-result-details/path-parameters.adoc[]
+include::{snippets}/exam-controller-test/read-exam-result-details/query-parameters.adoc[]
 
 - Response
 
