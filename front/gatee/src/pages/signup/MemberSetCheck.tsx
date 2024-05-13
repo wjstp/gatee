@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
 import { IoIosCamera } from "react-icons/io";
 import { useMemberStore } from "@store/useMemberStore";
@@ -9,6 +9,7 @@ import dayjs from 'dayjs';
 import ProfileCropper from "@pages/profile/components/Cropper";
 import useModal from "@hooks/useModal";
 import { modifyProfileImageApi } from "@api/profile";
+import Loading from "@components/Loading"
 
 const SignupMemberSetCheck = () => {
   const location = useLocation();
@@ -24,11 +25,16 @@ const SignupMemberSetCheck = () => {
     birthType,
     memberImage,
     stringMemberImage,
-    setStringMemberImage,
   } = useMemberStore();
   const { familyId, setFamilyCode } = useFamilyStore();
 
   const [cropImage, setCropImage] = useState<string>("");
+  const [loading, setLoading] = useState(true)
+
+  // 로딩 화면
+  useEffect(() => {
+
+  }, []);
 
   // 다음 넘어가기
   const goToMemberSetPermission = () => {

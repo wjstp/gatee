@@ -15,7 +15,6 @@ export default function localAxios(type?: string) {
     async (config: InternalAxiosRequestConfig) => {
       try {
         const accessToken: string | null = localStorage.getItem("accessToken");
-        console.log(accessToken);
         // Request 발생 시 적용할 axios 요청의 설정 config
         if (type === "file") {
           config.headers["Content-Type"] = "multipart/form-data";

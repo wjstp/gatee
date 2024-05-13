@@ -1,10 +1,14 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import SignupMemberSetRoleMale from "@pages/signup/components/MemberSetRoleMale";
 import SignupMemberSetRoleFemale from "@pages/signup/components/MemberSetRoleFemale";
 import { useMemberStore } from "@store/useMemberStore";
+import { getMyDataApi } from "@api/member";
+import { AxiosError, AxiosResponse } from "axios";
+import { useFamilyStore } from "@store/useFamilyStore";
 
 const SignupMemberSetRole = () => {
+  const location = useLocation();
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const {
@@ -44,31 +48,12 @@ const SignupMemberSetRole = () => {
     
     // 역할과 아이콘이 선택되었을 때
     } else {
-      // 아이콘을 파일로 전환하여 페이지 넘기기
-      convertURLToFile(
-        stringMemberImage
-      ).then((file: File) => {
-        setMemberImage(file);
-        navigate("/signup/member-set/check", {
-          state: {
-            icon
-          }
-        });
-      }).catch((err) => {
-        console.log(err);
-      });
+      navigate("/signup/member-set/check", {
+        state: {
+          icon
+        }
+      })
     }
-  }
-
-  useEffect(() => {
-    console.log(icon)
-  }, [icon]);
-
-  // URL을 받아서 File 객체로 변환하는 함수
-  const convertURLToFile = async (imageUrl: string) => {
-    const response = await fetch(imageUrl);
-    const blob = await response.blob();
-    return new File([blob], "profile_image", { type: "image/jpeg" });
   }
 
   return (
