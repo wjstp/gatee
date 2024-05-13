@@ -18,6 +18,7 @@ const SignupMemberSetRoleEtc = (props: {
 
   return (
     <div className="signup-member-set-role-etc">
+
       {/*이름 입력*/}
       <div className="signup-member-set-role-etc__input">
         <input
@@ -31,6 +32,7 @@ const SignupMemberSetRoleEtc = (props: {
           autoFocus
         />
       </div>
+
     </div>
   );
 };

@@ -1,23 +1,6 @@
 import { create } from "zustand";
 import basicFamily from "@assets/images/profile/family.jpg"
-import { MemberApiRes } from "@type/index";
-
-type FamilyStore = {
-  familyId: string;
-  setFamilyId: (newId: string) => void;
-  familyName: string;
-  setFamilyName: (newName: string) => void;
-  familyImage: File | null;
-  setFamilyImage: (newImage: File | null) => void;
-  stringImage: string;
-  setStringImage: (newStringImage: string) => void;
-  familyCode: string;
-  setFamilyCode: (newCode: string) => void;
-  familyScore: number;
-  setFamilyScore: (newScore: number) => void;
-  familyInfo: MemberApiRes[];
-  setFamilyInfo: (newInfo: MemberApiRes[]) => void;
-}
+import { MemberApiRes, FamilyStore } from "@type/index";
 
 export const useFamilyStore = create<FamilyStore>(
   (set) => ({

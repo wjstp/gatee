@@ -22,16 +22,16 @@ import CharacterIndex from "@pages/character";
 import CharacterStart from "@pages/character/AnswerList";
 import CharacterQuestion from "@pages/character/Question";
 import SignupIndex from "@pages/signup";
+import SignupPermission from "@pages/signup/Permission";
 import SignupFamilyJoin from "@pages/signup/FamilyJoin";
 import SignupFamilyJoinCheck from "@pages/signup/FamilyJoinCheck";
 import SignupFamilySet from "@pages/signup/FamilySet";
 import SignupFamilySetCheck from "@pages/signup/FamilySetCheck";
-import SignupFamilySetShare from "@pages/signup/FamilySetShare";
+import SignupMemberSetShare from "@pages/signup/MemberSetShare";
 import SignupMemberSet from "@pages/signup/MemberSet";
 import SignupMemberSetBirth from "@pages/signup/MemberSetBirth";
 import SignupMemberSetCheck from "@pages/signup/MemberSetCheck";
 import SignupMemberSetFinish from "@pages/signup/MemberSetFinish";
-import SignupMemberSetPermission from "@pages/signup/MemberSetPermission";
 import SignupMemberSetRole from "@pages/signup/MemberSetRole";
 import SignupAuth from "@pages/signup/Auth";
 import PhotoAlbum from "@pages/photo/AlbumGroup";
@@ -112,16 +112,16 @@ const Router = () => {
         {/*회원가입 페이지*/}
         <Route path="/auth" element={<SignupAuth/>}/>
         <Route path="/signup" element={<SignupIndex/>}/>
+        <Route path="/signup/permission" element={<SignupPermission/>}/>
         <Route path="/signup/family-set" element={<SignupFamilySet/>}/>
         <Route path="/signup/family-set/check" element={<SignupFamilySetCheck/>}/>
-        <Route path="/signup/family-set/share" element={<SignupFamilySetShare/>}/>
         <Route path="/signup/family-join" element={<SignupFamilyJoin/>}/>
         <Route path="/signup/family-join/check" element={<SignupFamilyJoinCheck/>}/>
         <Route path="/signup/member-set" element={<SignupMemberSet/>}/>
         <Route path="/signup/member-set/birth" element={<SignupMemberSetBirth/>}/>
         <Route path="/signup/member-set/role" element={<SignupMemberSetRole/>}/>
         <Route path="/signup/member-set/check" element={<SignupMemberSetCheck/>}/>
-        <Route path="/signup/member-set/permission" element={<SignupMemberSetPermission/>}/>
+        <Route path="/signup/member-set/share" element={<SignupMemberSetShare/>}/>
         <Route path="/signup/member-set/finish" element={<SignupMemberSetFinish/>}/>
       </Route>
     </Routes>
