@@ -21,9 +21,10 @@ public record MemberSaveReq (
         @NotNull
         String role,
 
-
         @NotNull
         String familyId,
+
+
 
         String phoneNumber
 ){
