@@ -3,10 +3,12 @@ import Header from "@pages/character/components/Header";
 import {useNavigate} from "react-router-dom";
 import {useDictStore} from "@store/useDictStore";
 import {getNewDictAskApi} from "@api/dictionary";
+import {useMemberStore} from "@store/useMemberStore";
 
 const CharacterIndex = () => {
   const navigate = useNavigate();
   const {askList, setAskList} = useDictStore()
+  const {myInfo} = useMemberStore()
   const handleGotoDictionary = () => {
     getNewDictAskApi(res => {
         console.log(res)
@@ -27,7 +29,7 @@ const CharacterIndex = () => {
     <div className="character__index">
 
       {/* 헤더 -> **의 백과사전 */}
-      <Header/>
+      <Header name={myInfo.nickname}/>
 
       {/* 설명 머릿말 */}
       <h3 className="character__index__explain__title">

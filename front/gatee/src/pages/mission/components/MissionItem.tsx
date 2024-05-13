@@ -10,9 +10,12 @@ import {FaCheckCircle} from "react-icons/fa";
 
 import ProgressBar from "@ramonak/react-progress-bar";
 
+// content, nowRange, MaxRange, type, isCompleted
+
 type Mission = {
   content: string;
   range: number;
+
   complete: boolean;
   type: string
 };
