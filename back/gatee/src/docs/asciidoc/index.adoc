@@ -688,3 +688,43 @@ include::{snippets}/appointment-controller-test/join-appointment/http-response.a
 
 
 ---
+
+= Mission
+
+== 미션 목록 조회
+
+- Request
+
+include::{snippets}/mission-controller-test/read-mission/http-request.adoc[]
+
+- Response
+
+include::{snippets}/mission-controller-test/read-mission/http-response.adoc[]
+include::{snippets}/mission-controller-test/read-mission/response-fields.adoc[]
+
+
+== 미션 수행
+
+- Request
+
+include::{snippets}/mission-controller-test/progress-mission/http-request.adoc[]
+include::{snippets}/mission-controller-test/progress-mission/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/mission-controller-test/progress-mission/http-response.adoc[]
+
+
+== 미션 완료
+
+- Request
+
+include::{snippets}/mission-controller-test/complete-mission/http-request.adoc[]
+include::{snippets}/mission-controller-test/complete-mission/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/mission-controller-test/complete-mission/http-response.adoc[]
+
+
+---

@@ -32,7 +32,8 @@ public class ExceptionAdvice {
             DoNotHavePermissionException.class,
             ExpiredCodeException.class,
             WrongTypeFilterException.class,
-            ExistsFamilyException.class
+            ExistsFamilyException.class,
+            DidNotCompleted.class
     })
     public String handleBadRequest(RuntimeException e) {
         return e.getMessage();
