@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Stamp from "@assets/images/icons/stamp_logo.png"
 import {useNavigate, useParams} from "react-router-dom";
-import {getFamilyExamResultApi, getMyExamResultApi} from "@api/exam";
+import {getFamilyExamResultApi} from "@api/exam";
 // import Lottie from "lottie-react";
 // import EmptyAnimation from "@assets/images/animation/empty_animation.json"
 

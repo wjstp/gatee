@@ -1,9 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {MemberApiRes} from "@type/index";
-import {Link, useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import getGradeSvg from "@utils/getGradeSvg";
 import {useFamilyStore} from "@store/useFamilyStore";
-import Grade from "@pages/exam/Grade";
 import Stamp from "@assets/images/icons/stamp_logo.png";
 import {getAllFamilyExamResultApi} from "@api/exam";
 import ExamNotFound from "@pages/exam/components/ExamNotFound";

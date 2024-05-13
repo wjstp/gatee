@@ -3,9 +3,7 @@ import {useMemberStore} from "@store/useMemberStore";
 import {useFamilyStore} from "@store/useFamilyStore";
 
 const Header = () => {
-  const name: string = "윤예빈"
-  // const familyName: string = "윤씨네"
-  const { familyName } = useFamilyStore()
+  // const { familyName } = useFamilyStore()
   const {myInfo} = useMemberStore()
   return (
     <div className="exam__header">
