@@ -30,9 +30,7 @@ public class Appointment extends BaseEntity {
 
     private String title;
 
-    private LocalDateTime createAt;
-
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "family_id")
     private Family family;
 
