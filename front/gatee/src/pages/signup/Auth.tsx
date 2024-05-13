@@ -4,6 +4,8 @@ import { AxiosResponse, AxiosError } from "axios";
 import { kakaoLoginAPI, kakaoTokenAPI } from "@api/kakao";
 import { useMemberStore } from "@store/useMemberStore";
 import Loading from "@components/Loading";
+import { getMyDataApi } from "@api/member";
+import { useFamilyStore } from "@store/useFamilyStore";
 
 const SignupAuth = () => {
   const navigate = useNavigate();
@@ -17,6 +19,7 @@ const SignupAuth = () => {
   const code: string | null = new URL(window.location.href).searchParams.get('code');
 
   const { setName } = useMemberStore();
+  const { setFamilyId } = useFamilyStore();
 
   // 인가코드를 받았을 때마다 실행
   useEffect(() => {
@@ -32,7 +35,7 @@ const SignupAuth = () => {
       {
         grant_type: "authorization_code",
         client_id: kakaoJavaScriptKey,
-        redirect_uri: redirectUri,
+        redirect_uri: mobile_home_taehyeon,
         code: code
       },
       {
