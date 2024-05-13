@@ -1,6 +1,7 @@
 package io.ssafy.gatee.domain.mission.entity;
 
 import io.ssafy.gatee.domain.base.BaseEntity;
+import io.ssafy.gatee.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,7 +24,15 @@ public class Mission extends BaseEntity {
     @Enumerated(EnumType.STRING)  // Enum 타입 일 경우 선언
     private Type type;
 
-    private String name;
+    private String content;
 
-    private Integer endCount;
+    private boolean isComplete;
+
+    private Integer nowRange;
+
+    private Integer maxRange;
+
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
 }
