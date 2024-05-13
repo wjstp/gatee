@@ -10,5 +10,5 @@ public interface AppointmentService {
 
     JoinMembersDto getJoinMemberInAppointment(Long appointmentId);
 
-    void joinAppointment(UUID memberId);
+    void joinAppointment(UUID memberId, Long appointmentId);
 }

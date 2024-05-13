@@ -30,9 +30,11 @@ public class AppointmentController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PatchMapping
-    public void joinAppointment(@AuthenticationPrincipal CustomUserDetails principal) {
+    @PatchMapping("/{appointmentId}")
+    @PreAuthorize("@authorizeService.authorizeToReadAppointment(#principal.getMemberId, #appointmentId)")
+    public void joinAppointment(@AuthenticationPrincipal CustomUserDetails principal,
+                                @PathVariable Long appointmentId) {
         UUID memberId = principal.getMemberId();
-        appointmentService.joinAppointment(memberId);
+        appointmentService.joinAppointment(memberId, appointmentId);
     }
 }
