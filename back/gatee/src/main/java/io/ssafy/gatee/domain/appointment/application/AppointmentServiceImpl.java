@@ -1,11 +1,14 @@
 package io.ssafy.gatee.domain.appointment.application;
 
 import io.ssafy.gatee.domain.appointment.dao.AppointmentRepository;
+import io.ssafy.gatee.domain.appointment.dto.JoinMembersDto;
 import io.ssafy.gatee.domain.appointment.entity.Appointment;
 import io.ssafy.gatee.domain.family.dao.FamilyRepository;
 import io.ssafy.gatee.domain.family.entity.Family;
 import io.ssafy.gatee.domain.member.dao.MemberRepository;
 import io.ssafy.gatee.domain.member.entity.Member;
+import io.ssafy.gatee.global.exception.error.bad_request.AppointmentNotFoundException;
+import io.ssafy.gatee.global.exception.message.ExceptionMessage;
 import io.ssafy.gatee.global.websocket.dto.ChatDto;
 import lombok.RequiredArgsConstructor;
 import org.joda.time.LocalDateTime;
@@ -14,6 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
+
+import static io.ssafy.gatee.global.exception.message.ExceptionMessage.*;
+import static java.util.stream.Collectors.*;
 
 @Service
 @RequiredArgsConstructor
@@ -36,5 +43,18 @@ public class AppointmentServiceImpl implements AppointmentService{
                 .joinMembers(Set.of(proxyMember))
                 .build();
         return appointmentRepository.save(appointment).getId();
+    }
+
+    @Override
+    public JoinMembersDto getJoinMemberInAppointment(Long appointmentId) {
+        Appointment appointment = appointmentRepository.findById(appointmentId)
+                .orElseThrow(() -> new AppointmentNotFoundException(APPOINTMENT_NOT_FOUNT));
+        return JoinMembersDto.builder()
+                    .joinMemberIds(appointment
+                            .getJoinMembers()
+                            .stream()
+                            .map(Member::getId)
+                            .collect(toSet()))
+                    .build();
     }
 }

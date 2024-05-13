@@ -14,6 +14,7 @@ import org.joda.time.DateTime;
 import org.joda.time.LocalDateTime;
 
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -42,4 +43,8 @@ public class Appointment extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "member_id")
     )
     private Set<Member> joinMembers;
+
+    public boolean isCreatedByTargetFamily(UUID familyId) {
+        return family.getId().equals(familyId);
+    }
 }
