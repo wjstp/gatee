@@ -20,6 +20,9 @@ import io.ssafy.gatee.domain.member_family.dao.MemberFamilyRepository;
 import io.ssafy.gatee.domain.member_family.entity.MemberFamily;
 import io.ssafy.gatee.domain.member_notification.dao.MemberNotificationRepository;
 import io.ssafy.gatee.domain.member_notification.entity.MemberNotification;
+import io.ssafy.gatee.domain.mission.dao.MissionRepository;
+import io.ssafy.gatee.domain.mission.entity.Mission;
+import io.ssafy.gatee.domain.mission.entity.Type;
 import io.ssafy.gatee.global.exception.error.not_found.MemberFamilyNotFoundException;
 import io.ssafy.gatee.global.exception.error.not_found.MemberNotFoundException;
 import io.ssafy.gatee.global.jwt.application.JwtService;
@@ -64,6 +67,8 @@ public class MemberServiceImpl implements MemberService {
     private final JwtService jwtService;
 
     private final FileRepository fileRepository;
+
+    private final MissionRepository missionRepository;
 
     private final S3Util s3Util;
 
@@ -110,6 +115,51 @@ public class MemberServiceImpl implements MemberService {
                 .build();
 
         albumRepository.save(album);
+
+        Mission albumMission = Mission.builder()
+                .type(Type.ALBUM)
+                .nowRange(0)
+                .maxRange(1)
+                .completedLevel(0)
+                .isComplete(false)
+                .member(member)
+                .build();
+
+        Mission examMission = Mission.builder()
+                .type(Type.EXAM)
+                .nowRange(0)
+                .maxRange(1)
+                .completedLevel(0)
+                .isComplete(false)
+                .member(member)
+                .build();
+
+        Mission featureMission = Mission.builder()
+                .type(Type.FEATURE)
+                .nowRange(0)
+                .maxRange(10)
+                .completedLevel(0)
+                .isComplete(false)
+                .member(member)
+                .build();
+
+        Mission scheduleMission = Mission.builder()
+                .type(Type.SCHEDULE)
+                .nowRange(0)
+                .maxRange(1)
+                .completedLevel(0)
+                .isComplete(false)
+                .member(member)
+                .build();
+
+        List<Mission> missionList = new ArrayList<>();
+
+        missionList.add(albumMission);
+        missionList.add(examMission);
+        missionList.add(featureMission);
+        missionList.add(scheduleMission);
+
+        missionRepository.saveAll(missionList);
 
         // 토큰 발급
         modifyMemberToken(member, response);
