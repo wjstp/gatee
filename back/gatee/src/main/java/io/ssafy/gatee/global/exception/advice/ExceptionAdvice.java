@@ -21,7 +21,8 @@ public class ExceptionAdvice {
             AlbumNotFoundException.class,
             MemberFeatureNotFoundException.class,
             MemberNotificationNotFoundException.class,
-            AppointmentNotFoundException.class
+            AppointmentNotFoundException.class,
+            PushNotificationNotFoundException.class
     })
     public String handleNotFound(RuntimeException e) {
         return e.getMessage();

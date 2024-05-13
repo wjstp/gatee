@@ -36,4 +36,5 @@ public interface PushNotificationService {
 
     void modifyNotificationAgreements(UUID memberId, NotificationAgreementReq agreementReq);
 
+    void checkReadNotification(String notificationId);
 }
