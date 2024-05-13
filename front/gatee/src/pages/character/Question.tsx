@@ -88,6 +88,7 @@ const CharacterQuestion = () => {
                  placeholder="답변을 입력해 주세요"
                  sx={muiFocusCustom}
                  autoFocus
+                 multiline
                  onClick={(event) => event.stopPropagation()}/>
       {/*  다음 버튼 */}
       <button className="orangeButtonLarge" onClick={submitHandler}>
