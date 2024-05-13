@@ -38,15 +38,31 @@ export interface MemberStore {
   setPhoneNumber: (newPhoneNumber: string) => void;
   gender: string;
   setGender: (newGender: string) => void;
-  memberImage: File | null
+  memberImage: File | null;
   setMemberImage: (newImage: File | null) => void;
   stringMemberImage: string;
   setStringMemberImage: (newStringMemberImage: string) => void;
-  myInfo : MemberApiReq;
-  setMyInfo: (newMyInfo: Partial<MemberApiReq>) => void;
+  myInfo : MyMemberApiRes;
+  setMyInfo: (newMyInfo: Partial<MyMemberApiRes>) => void;
 };
 
-// member
+// 멤버
+export interface MyMemberApiRes {
+  birth: string
+  birthType: string;
+  email: string;
+  memberId: string;
+  mood: string|null;
+  name: string;
+  nickname: string;
+  role: string;
+  familyId: string;
+  phoneNumber: string | null;
+  fileUrl: string;
+  isLeader: boolean;
+  memberFamilyId:number;
+}
+
 
 // 멤버 create api 정보
 export interface CreateMemberApiReq {
@@ -72,6 +88,24 @@ export interface MemberApiReq {
   phoneNumber: string | null;
   fileUrl: string;
   isLeader: boolean;
+}
+
+// 회원 정보
+export interface MemberInfo {
+  birth: string
+  birthType: string;
+  email: string;
+  memberId: string;
+  mood: string|null;
+  name: string;
+  nickname: string;
+  role: string;
+  phoneNumber: string | null;
+  fileUrl: string;
+  isLeader: boolean;
+  memberFamilyId: number;
+  memberImage: File | null;
+  stringMemberImage: string;
 }
 
 // 가족 코드 생성
