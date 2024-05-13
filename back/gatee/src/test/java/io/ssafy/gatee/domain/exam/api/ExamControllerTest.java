@@ -190,12 +190,12 @@ class ExamControllerTest extends RestDocsTestSupport {
         examResList.add(examRes1);
         examResList.add(examRes2);
 
-        given(examService.readExamResults(any(UUID.class)))
+        given(examService.readOtherExamResults(any(Long.class)))
                 .willReturn(examResList);
 
 
         // where
-        ResultActions result = mockMvc.perform(get("/api/exams/{memberId}/results", UUID.randomUUID())
+        ResultActions result = mockMvc.perform(get("/api/exams/{memberFamilyId}/results", 1L)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
         );
@@ -204,7 +204,7 @@ class ExamControllerTest extends RestDocsTestSupport {
         result.andExpect(status().isOk())
                 .andDo(restDocs.document(
                         pathParameters(
-                                parameterWithName("memberId").description("멤버 id").optional()
+                                parameterWithName("memberFamilyId").description("멤버 가족 id").optional()
                         ),
                         responseFields(
                                 fieldWithPath("[].examId").type(JsonFieldType.NUMBER).description("모의고사 id"),
@@ -277,7 +277,8 @@ class ExamControllerTest extends RestDocsTestSupport {
     void saveExamResult() throws Exception {
 
         // given
-        doNothing().when(examService).saveExamResult(any(ExamReq.class), any(UUID.class));
+        given(examService.saveExamResult(any(ExamReq.class), any(UUID.class)))
+                .willReturn(ExamSaveRes.builder().examId(1L).build());
 
         // when
         ResultActions result = mockMvc.perform(post("/api/exams")
@@ -296,6 +297,9 @@ class ExamControllerTest extends RestDocsTestSupport {
                                 parameterWithName("examResults[].choiceNumber").description("선택 번호").optional(),
                                 parameterWithName("examResults[].correctNumber").description("정답 번호").optional(),
                                 parameterWithName("score").description("모의고사 점수").optional()
+                        ),
+                        responseFields(
+                                fieldWithPath("examId").type(JsonFieldType.NUMBER).description("모의고사 id")
                         )
                 ));
     }

@@ -1,12 +1,18 @@
 package io.ssafy.gatee.domain.family.dto.response;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
-
-import java.util.UUID;
 
 @Builder
 public record FamilyCheckRes(
+
+        @NotNull
         String familyId,
-        String familyName
+
+        @NotNull
+        String familyName,
+
+        @NotNull
+        String familyImageUrl
 ) {
 }

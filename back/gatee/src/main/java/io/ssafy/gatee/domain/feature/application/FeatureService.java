@@ -18,4 +18,6 @@ public interface FeatureService {
     void updateFeature(UUID memberId, FeatureReq featureReq);
 
     List<String> getWrongAnswersFromGPT(String question, String answer);
+
+    List<FeatureResultRes> readOtherFeatureResults(Long memberFamilyId);
 }

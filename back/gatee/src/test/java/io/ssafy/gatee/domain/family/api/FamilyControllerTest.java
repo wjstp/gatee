@@ -154,12 +154,13 @@ class FamilyControllerTest extends RestDocsTestSupport {
                 .willReturn(FamilyCheckRes.builder()
                         .familyName("가족 이름")
                         .familyId("가족 id")
+                        .familyImageUrl("가족 사진 URL")
                         .build());
 
         // when
-        ResultActions result = mockMvc.perform(post("/api/family/code")
+        ResultActions result = mockMvc.perform(get("/api/family/check")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(readJson("json/family/checkFamilyCode.json"))
+                .param("familyCode", "A1B2C3D4")
                 .accept(MediaType.APPLICATION_JSON)
 
         );
@@ -167,9 +168,13 @@ class FamilyControllerTest extends RestDocsTestSupport {
         // then
         result.andExpect(status().isOk())
                 .andDo(restDocs.document(
+                        queryParameters(
+                                parameterWithName("familyCode").description("가족 초대 코드").optional()
+                        ),
                         responseFields(
                                 fieldWithPath("familyId").type(JsonFieldType.STRING).description("가족 id"),
-                                fieldWithPath("familyName").type(JsonFieldType.STRING).description("가족 이름"))
+                                fieldWithPath("familyName").type(JsonFieldType.STRING).description("가족 이름"),
+                                fieldWithPath("familyImageUrl").type(JsonFieldType.STRING).description("가족 사진 URL"))
         ));
     }
 
@@ -200,7 +205,18 @@ class FamilyControllerTest extends RestDocsTestSupport {
                         responseFields(
                                 fieldWithPath("name").type(JsonFieldType.STRING).description("가족 이름"),
                                 fieldWithPath("familyScore").type(JsonFieldType.NUMBER).description("가족 점수"),
-                                fieldWithPath("memberFamilyInfoList").type(JsonFieldType.ARRAY).description("가족 구성원 목록").optional()
+                                fieldWithPath("memberFamilyInfoList").type(JsonFieldType.ARRAY).description("가족 구성원 목록").optional(),
+                                fieldWithPath("memberFamilyInfoList.[].memberFamilyId").type(JsonFieldType.NUMBER).description("가족 구성원 familyId").optional(),
+                                fieldWithPath("memberFamilyInfoList.[].name").type(JsonFieldType.STRING).description("가족 구성원 이름").optional(),
+                                fieldWithPath("memberFamilyInfoList.[].email").type(JsonFieldType.STRING).description("가족 구성원 이메일").optional(),
+                                fieldWithPath("memberFamilyInfoList.[].nickname").type(JsonFieldType.STRING).description("가족 구성원 닉네임").optional(),
+                                fieldWithPath("memberFamilyInfoList.[].birth").type(JsonFieldType.STRING).description("가족 구성원 생일").optional(),
+                                fieldWithPath("memberFamilyInfoList.[].birthType").type(JsonFieldType.STRING).description("가족 구성원 생일 타입 - 음력 / 양력").optional(),
+                                fieldWithPath("memberFamilyInfoList.[].isLeader").type(JsonFieldType.STRING).description("가족 구성원 가족장 여부").optional(),
+                                fieldWithPath("memberFamilyInfoList.[].role").type(JsonFieldType.STRING).description("가족 구성원 역할").optional(),
+                                fieldWithPath("memberFamilyInfoList.[].fileUrl").type(JsonFieldType.STRING).description("가족 구성원 프로필 이미지 url").optional()
+
+
                         )
                 ));
     }

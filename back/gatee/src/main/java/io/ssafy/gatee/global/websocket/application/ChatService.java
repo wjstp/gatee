@@ -9,4 +9,6 @@ public interface ChatService {
     void sendMessage(ChatDto chatDto, UUID memberId) throws ExecutionException, InterruptedException;
 
     void updateRead(UUID memberId, UUID familyId);
+
+    void createAppointment(ChatDto chatDto, UUID memberId) throws ExecutionException, InterruptedException;
 }
