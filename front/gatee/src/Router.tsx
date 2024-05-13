@@ -43,7 +43,7 @@ import AllYear from "@pages/photo/AllYear";
 import PhotoIndex from "@pages/photo";
 import PhotoDetail from "@pages/photo/PhotoDetail";
 import PhotoAlbumGroupDetail from "@pages/photo/AlbumGroupDetail";
-import ProfileModifyCopy from "@pages/profile/modifyCopy";
+import ProfileModify from "@pages/profile/Modify";
 import NotFound from "@components/NotFound";
 import ExamFamilyList from "@pages/exam/FamilyList";
 
@@ -67,7 +67,7 @@ const Router = () => {
 
         {/*프로필 페이지*/}
         <Route path="/profile/:email" element={<ProfileIndex/>}/>
-        <Route path="/profile/:email/modify" element={<ProfileModifyCopy/>}/>
+        <Route path="/profile/:email/modify" element={<ProfileModify/>}/>
 
         {/*메인 페이지*/}
         <Route path="/main" element={<MainIndex/>}/>

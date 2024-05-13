@@ -32,8 +32,8 @@ export interface MemberStore {
   setBirthType: (newBirthType: string) => void;
   role: string | null;
   setRole: (newRole: string | null) => void;
-  mood: string;
-  setMood: (newMood: string) => void;
+  mood: string | null;
+  setMood: (newMood: string | null) => void;
   phoneNumber: string;
   setPhoneNumber: (newPhoneNumber: string) => void;
   gender: string;
@@ -148,6 +148,7 @@ export interface ModifyProfileReq {
   birth: string;
   birthType: string;
   role: string;
+  familyId: string;
   phoneNumber: string | null;
 }
 

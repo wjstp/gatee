@@ -9,7 +9,6 @@ import dayjs from 'dayjs';
 import ProfileCropper from "@pages/profile/components/Cropper";
 import useModal from "@hooks/useModal";
 import { modifyProfileImageApi } from "@api/profile";
-import Loading from "@components/Loading"
 
 const SignupMemberSetCheck = () => {
   const location = useLocation();
@@ -29,12 +28,6 @@ const SignupMemberSetCheck = () => {
   const { familyId, setFamilyCode } = useFamilyStore();
 
   const [cropImage, setCropImage] = useState<string>("");
-  const [loading, setLoading] = useState(true)
-
-  // 로딩 화면
-  useEffect(() => {
-
-  }, []);
 
   // 다음 넘어가기
   const goToMemberSetPermission = () => {

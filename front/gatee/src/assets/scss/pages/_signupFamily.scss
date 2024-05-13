@@ -16,6 +16,8 @@
 
 // 첫 선택 페이지
 .signup-index {
+  @extend %modal-fade-in;
+
   height: 100%;
   background-color: $orange400;
   padding-left: 10%;
@@ -390,21 +392,14 @@
   flex-direction: column;
 
   &__img {
-    @extend %circular-profile-image;
-
     height: 200px;
     width: 200px;
     border-radius: 5%;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 
     .img {
       height: 200px;
       width: 200px;
-      border-radius: 100%;
-      object-fit: cover;
+      border-radius: 5%;
     }
   }
 
