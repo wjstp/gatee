@@ -2,10 +2,7 @@ package io.ssafy.gatee.domain.exam.api;
 
 import io.ssafy.gatee.domain.exam.application.ExamService;
 import io.ssafy.gatee.domain.exam.dto.request.ExamReq;
-import io.ssafy.gatee.domain.exam.dto.response.ExamDetailRes;
-import io.ssafy.gatee.domain.exam.dto.response.ExamFamilyRes;
-import io.ssafy.gatee.domain.exam.dto.response.ExamRes;
-import io.ssafy.gatee.domain.exam.dto.response.ExamResultRes;
+import io.ssafy.gatee.domain.exam.dto.response.*;
 import io.ssafy.gatee.global.security.user.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -63,11 +60,11 @@ public class ExamController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public void saveExamResult(
+    public ExamSaveRes saveExamResult(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @RequestBody ExamReq examReq
     ) {
-        examService.saveExamResult(examReq, customUserDetails.getMemberId());
+        return examService.saveExamResult(examReq, customUserDetails.getMemberId());
     }
 
 }
