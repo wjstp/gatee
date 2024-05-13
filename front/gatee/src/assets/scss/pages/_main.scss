@@ -121,6 +121,14 @@
           font-weight: bold;
           color: $gray200;
 
+          .main-profile-item-nickname {
+            text-align: center;
+            width: 80%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+
           .main-profile-wrapper {
             @include flex_center;
 

@@ -103,7 +103,7 @@ const ExamTaking = () => {
 
         setTimeout(() => {
             setEndLoading(false)
-            navigate(`/exam/scored/${res.data}`)
+            navigate(`/exam/scored/${res.data.examId}`)
           }
           , 1000)
 

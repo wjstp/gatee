@@ -1,14 +1,16 @@
 import React, {useEffect, useState} from 'react';
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import getGradeSvg from "@utils/getGradeSvg";
 import {useFamilyStore} from "@store/useFamilyStore";
 import Stamp from "@assets/images/icons/stamp_logo.png";
 import {getAllFamilyExamResultApi} from "@api/exam";
 import ExamNotFound from "@pages/exam/components/ExamNotFound";
+import getUserInfo from "@utils/getUserInfo";
 
 interface FamilyGrade {
   nickname: string,
   memberId: string,
+  memberFamilyId:number;
   averageScore: number | null
 }
 
@@ -37,6 +39,7 @@ const ExamFamilyList = () => {
   useEffect(() => {
     getAllFamilyExamResultApi(res => {
       setFamilyGrade(res.data)
+      console.log(res)
     }, err => {
       console.log(err)
     })
@@ -83,8 +86,15 @@ const ExamFamilyList = () => {
 
 const Table = ({familyData}: { familyData: FamilyGrade }) => {
   const grade = getGradeSvg(familyData.averageScore)
+  const {familyInfo} = useFamilyStore()
+  const userInfo = getUserInfo(familyInfo,familyData.memberId)
+  const navigate = useNavigate()
+  const gotoDetail = ()=>{
+    if (userInfo)
+    navigate(`/exam/grade/${userInfo.memberFamilyId}`)
+  }
   return (
-    <Link to={`/exam/grade/${familyData.memberId}`} className="exam-grade-data">
+    <div onClick={()=>gotoDetail()} className="exam-grade-data">
       <div className="flex-date">{familyData.nickname}</div>
       <div className="flex-point">
         {familyData.averageScore === null ?
@@ -94,7 +104,7 @@ const Table = ({familyData}: { familyData: FamilyGrade }) => {
         }
       </div>
       <div className="flex-comment">{grade}</div>
-    </Link>
+    </div>
   )
 }
 export default ExamFamilyList;
