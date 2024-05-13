@@ -36,12 +36,6 @@ export const getFamilyMemberApi = async function (data: {
   await local.get("/family", {params:data}).then(success).catch(fail);
 }
 
-// 잔소리 보내기
-export const naggingApi = async function (data: NaggingApiReq,
-                                          success: (res: AxiosResponse<any>) => void,
-                                          fail: (err: AxiosError<any>) => void) {
-  await local.post("/notifications/nagging", data).then(success).catch(fail);
-};
 
 interface EditProfileApiReq {
   "name" : string;
