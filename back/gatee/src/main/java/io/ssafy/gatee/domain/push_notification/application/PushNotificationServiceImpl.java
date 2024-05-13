@@ -23,10 +23,12 @@ import io.ssafy.gatee.domain.push_notification.entity.PushNotifications;
 import io.ssafy.gatee.domain.push_notification.entity.Type;
 import io.ssafy.gatee.global.exception.error.not_found.MemberNotFoundException;
 import io.ssafy.gatee.global.exception.error.not_found.MemberNotificationNotFoundException;
+import io.ssafy.gatee.global.exception.error.not_found.PushNotificationNotFoundException;
 import io.ssafy.gatee.global.exception.message.ExceptionMessage;
 import io.ssafy.gatee.global.firebase.FirebaseInit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.bson.types.ObjectId;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -255,5 +257,13 @@ public class PushNotificationServiceImpl implements PushNotificationService {
         MemberNotification memberNotification = memberNotificationRepository.findByMember(proxyMember)
                 .orElseThrow(()-> new MemberNotFoundException(ExceptionMessage.MEMBER_NOTIFICATION_NOT_FOUND));
         memberNotification.modifyMemberNotification(agreementReq);
+    }
+
+    @Override
+    public void checkReadNotification(String notificationId) {
+        PushNotifications pushNotifications = pushNotificationRepository.findById(notificationId)
+                .orElseThrow(()-> new PushNotificationNotFoundException(ExceptionMessage.PUSH_NOTIFICATION_NOT_FOUND));
+        pushNotifications.checkPushNotifications();
+        pushNotificationRepository.save(pushNotifications);
     }
 }
