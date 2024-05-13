@@ -192,11 +192,11 @@ class FeatureControllerTest extends RestDocsTestSupport {
         featureResList.add(featureRes1);
         featureResList.add(featureRes2);
 
-        given(featureService.readFeatureResults(any(UUID.class)))
+        given(featureService.readOtherFeatureResults(any(Long.class)))
                 .willReturn(featureResList);
 
         // where
-        ResultActions result = mockMvc.perform(get("/api/features/{memberId}/results", UUID.randomUUID())
+        ResultActions result = mockMvc.perform(get("/api/features/{memberFamilyId}/results", 1L)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
         );

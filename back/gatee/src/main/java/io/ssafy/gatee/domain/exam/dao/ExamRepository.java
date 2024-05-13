@@ -19,4 +19,12 @@ public interface ExamRepository extends JpaRepository<Exam, Long> {
         where mf.memberFamily.member.id = :memberId
     """)
     List<Exam> findByMemberId(UUID memberId);
+
+    @Query("""
+        select e from Exam e
+        join MemberFamilyExam mf
+        on mf.exam.id = e.id
+        where mf.memberFamily.id = :memberFamilyId
+    """)
+    List<Exam> findByMemberFamilyId(Long memberFamilyId);
 }

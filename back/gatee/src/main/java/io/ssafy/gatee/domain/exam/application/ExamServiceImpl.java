@@ -65,6 +65,20 @@ public class ExamServiceImpl implements ExamService {
     }
 
     @Override
+    public List<ExamResultRes> readOtherExamResults(Long memberFamilyId) {
+        List<Exam> exams = examRepository.findByMemberFamilyId(memberFamilyId);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        if (!exams.isEmpty()) {
+            return exams.stream().map(exam -> ExamResultRes
+                    .builder()
+                    .examId(exam.getId())
+                    .createdAt(dateTimeFormatter.format(exam.getCreatedAt()))
+                    .score(exam.getScore()).build()).toList();
+        }
+        return new ArrayList<>();
+    }
+
+    @Override
     public ExamDetailRes readExamResultDetail(Long examId) {
         Exam exam = examRepository.getReferenceById(examId);
         List<MemberFamilyExam> memberFamilyExams = memberFamilyExamRepository.findByExam_Id(examId);
@@ -77,6 +91,8 @@ public class ExamServiceImpl implements ExamService {
     public List<ExamFamilyRes> readFamilyExamResults(UUID memberId) {
         return memberFamilyExamRepository.findFamilyExamResults(memberId);
     }
+
+
 
     @Override
     @Transactional

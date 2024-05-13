@@ -160,6 +160,7 @@ public class MemberServiceImpl implements MemberService {
 
         return MemberInfoRes.builder()
                 .memberId(member.getId())
+                .memberFamilyId(memberFamily.getId())
                 .familyId(memberFamily.getFamily().getId())
                 .name(member.getName())
                 .email(member.getEmail())
