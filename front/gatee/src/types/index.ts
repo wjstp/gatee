@@ -47,17 +47,6 @@ export interface MemberStore {
 };
 
 // member
-export interface Member {
-  name: string;
-  nickname: string;
-  email: string;
-  role: string;
-  birth: string;
-  birthType: string;
-  fileUrl: string;
-  mood: string | null;
-  phoneNumber: string | null;
-}
 
 // 멤버 create api 정보
 export interface CreateMemberApiReq {
@@ -112,6 +101,7 @@ export interface MemberApiRes {
   phoneNumber: string | null;
   fileUrl: string;
   isLeader: boolean;
+  memberFamilyId:number;
 }
 
 export interface MyMemberApiRes {
@@ -127,6 +117,7 @@ export interface MyMemberApiRes {
   phoneNumber: string | null;
   fileUrl: string;
   isLeader: boolean;
+  memberFamilyId:number;
 }
 
 // 프로필 수정

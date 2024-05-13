@@ -1,5 +1,9 @@
 package io.ssafy.gatee.domain.member.application;
 
+import io.ssafy.gatee.domain.album.dao.AlbumRepository;
+import io.ssafy.gatee.domain.album.entity.Album;
+import io.ssafy.gatee.domain.family.dao.FamilyRepository;
+import io.ssafy.gatee.domain.family.entity.Family;
 import io.ssafy.gatee.domain.file.dao.FileRepository;
 import io.ssafy.gatee.domain.file.entity.File;
 import io.ssafy.gatee.domain.file.entity.type.FileType;
@@ -22,6 +26,7 @@ import io.ssafy.gatee.global.jwt.application.JwtService;
 import io.ssafy.gatee.global.s3.util.S3Util;
 import io.ssafy.gatee.global.security.user.CustomUserDetails;
 import jakarta.servlet.http.HttpServletResponse;
+import jodd.util.StringUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -48,9 +53,13 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
 
+    private final FamilyRepository familyRepository;
+
     private final MemberFamilyRepository memberFamilyRepository;
 
     private final MemberNotificationRepository memberNotificationRepository;
+
+    private final AlbumRepository albumRepository;
 
     private final JwtService jwtService;
 
@@ -87,11 +96,21 @@ public class MemberServiceImpl implements MemberService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
 
+        Family family = familyRepository.getReferenceById(UUID.fromString(memberSaveReq.familyId()));
+
         member.saveInfo(memberSaveReq);
-        MemberFamily memberFamily = memberFamilyRepository.findByMemberAndFamilyId(member, UUID.fromString(memberSaveReq.familyId()))
+        MemberFamily memberFamily = memberFamilyRepository.findByMemberAndFamily(member, family)
                 .orElseThrow(() -> new MemberFamilyNotFoundException(MEMBER_FAMILY_NOT_FOUND));
 
-        memberFamily.editRole(memberSaveReq.role().toString());
+        memberFamily.editRole(memberSaveReq.role());
+
+        Album album = Album.builder()
+                .family(family)
+                .name(memberSaveReq.name() + "의 사진")
+                .build();
+
+        albumRepository.save(album);
+
         // 토큰 발급
         modifyMemberToken(member, response);
     }
@@ -129,7 +148,7 @@ public class MemberServiceImpl implements MemberService {
 
         File entity;
 
-        if (defaultImage.isEmpty() && !file.isEmpty()) {
+        if (StringUtil.isEmpty(defaultImage) && !file.isEmpty()) {
             entity = s3Util.upload(fileType, file);
 
         } else {

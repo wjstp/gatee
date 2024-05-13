@@ -47,13 +47,13 @@ public class WebSocketHandler extends TextWebSocketHandler {
         }
 
         if (chatDto.messageType().equals(APPOINTMENT)) {
+            log.info("약속 전송!");
             chatService.createAppointment(chatDto, memberId);
         }
     }
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        log.info("연결 성공");
         UUID memberId = UUID.fromString(session.getPrincipal().getName());
         UUID familyId = familyService.getFamilyIdByMemberId(memberId);
 
@@ -77,7 +77,6 @@ public class WebSocketHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         // 회원
-        log.info("연결 종료");
         UUID memberId = UUID.fromString(session.getPrincipal().getName());
         UUID familyId = familyService.getFamilyIdByMemberId(memberId);
         OnlineRoomMember onlineRoomMember = onlineRoomMemberRepository.findById(familyId)

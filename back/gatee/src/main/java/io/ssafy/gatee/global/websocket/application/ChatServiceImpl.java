@@ -4,6 +4,7 @@ import com.google.firebase.database.*;
 import io.ssafy.gatee.domain.appointment.application.AppointmentService;
 import io.ssafy.gatee.domain.family.application.FamilyService;
 import io.ssafy.gatee.domain.family.dao.FamilyRepository;
+import io.ssafy.gatee.domain.family.entity.Family;
 import io.ssafy.gatee.domain.member.dao.MemberRepository;
 import io.ssafy.gatee.domain.member.entity.Member;
 import io.ssafy.gatee.domain.member_family.dao.MemberFamilyRepository;
@@ -55,9 +56,7 @@ public class ChatServiceImpl implements ChatService {
         this.appointmentService = appointmentService;
     }
 
-    @Override
-    public void sendMessage(ChatDto chatDto, UUID memberId) throws ExecutionException, InterruptedException {
-        // 나중에 추상화
+    private List<String> handleUnreadMember(UUID memberId) {
         UUID familyId = familyService.getFamilyIdByMemberId(memberId);
         Member proxyMember = memberRepository.getReferenceById(memberId);
         List<Member> unreadList = memberFamilyRepository.findAllWithFamilyByMember(proxyMember)
@@ -73,18 +72,22 @@ public class ChatServiceImpl implements ChatService {
                 .stream()
                 .map(this::findMemberById)
                 .toList();
-        // 온라인 멤버를 언리드에서 제거, 오프라인 멤버(안읽은 멤버)만 추가
-        List<String> unReadMemberAsStringList = unreadList.stream()
+        return unreadList.stream()
                 .filter(offline -> !onlineMember.contains(offline))
                 .toList()
                 .stream()
                 .map(offline -> offline.getId().toString())
                 .toList();
+    }
+
+    @Override
+    public void sendMessage(ChatDto chatDto, UUID memberId) throws ExecutionException, InterruptedException {
+        List<String> unReadMemberAsStringList = this.handleUnreadMember(memberId);
+        UUID familyId = familyService.getFamilyIdByMemberId(memberId);
         // 파이어스토어 전송
         this.saveMessageToRealtimeDatabase(FireStoreChatDto.builder()
                 .messageType(chatDto.messageType())
                 .content(chatDto.content())
-                .totalMember(unreadList.size())
                 .sender(memberId.toString())
                 .unReadMember(unReadMemberAsStringList)
                 .currentTime(chatDto.currentTime())
@@ -94,20 +97,15 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public void updateRead(UUID memberId, UUID familyId) {
         DatabaseReference reference = databaseReference.child("chat").child(familyId.toString()).child("messages");
-        log.info("디비" + reference.toString());
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                log.info("onDataChange start!!");
                 for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
-                    log.info("messageSnapshot" + messageSnapshot.toString());
                     DataSnapshot unreadMemberSnapshot = messageSnapshot.child("unReadMember");
                     if (unreadMemberSnapshot.getValue() != null) { // 널 체크 추가
-                        log.info("unreadMember는 " + unreadMemberSnapshot.toString());
                         String unReadMemberStr = unreadMemberSnapshot.getValue().toString();
                         unReadMemberStr = unReadMemberStr.substring(1, unReadMemberStr.length() - 1);
                         String[] items = unReadMemberStr.split(", ");
-                        log.info("어레이 : " + Arrays.toString(items));
                         List<String> newList = new ArrayList<>(Arrays.asList(items)); // 수정 가능한 리스트 생성
                         if (newList.contains(memberId.toString())) {
                             newList.remove(memberId.toString()); // 특정 memberId 제거
@@ -128,37 +126,14 @@ public class ChatServiceImpl implements ChatService {
     @Override
     @Transactional
     public void createAppointment(ChatDto chatDto, UUID memberId) throws ExecutionException, InterruptedException {
+        List<String> unReadMemberAsStringList = handleUnreadMember(memberId);
         UUID familyId = familyService.getFamilyIdByMemberId(memberId);
-        Member proxyMember = memberRepository.getReferenceById(memberId);
-        log.info("memberId: {}", memberId);
-        List<Member> unreadList = memberFamilyRepository.findAllWithFamilyByMember(proxyMember)
-                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND))
-                .stream()
-                .map(MemberFamily::getMember)
-                .toList();
-        log.info("unreadList: {}", unreadList);
 
-        // Redis에서 online 가족 가져오기
-        List<Member> onlineMember = onlineRoomMemberRepository.findById(familyId)
-                .map(onlineRoomMember -> Optional.ofNullable(onlineRoomMember.getOnlineUsers()).orElseGet(Collections::emptySet)) // getOnlineUsers가 null이면 빈 Set을 반환
-                .orElseThrow()
-                .stream()
-                .map(this::findMemberById)
-                .toList();
-        log.info("onlineMember" + onlineMember);
-        // 온라인 멤버를 언리드에서 제거, 오프라인 멤버(안읽은 멤버)만 추가
-        List<String> unReadMemberAsStringList = unreadList.stream()
-                .filter(offline -> !onlineMember.contains(offline))
-                .toList()
-                .stream()
-                .map(offline -> offline.getId().toString())
-                .toList();
-        log.info("unReadMemberAsStringList" + unReadMemberAsStringList);
+        log.info("파이어베이스 전송 직전");
         // 파이어스토어 전송
         this.saveMessageToRealtimeDatabase(FireStoreChatDto.builder()
                 .messageType(chatDto.messageType())
                 .content(chatDto.content())
-                .totalMember(unreadList.size())
                 .sender(memberId.toString())
                 .unReadMember(unReadMemberAsStringList)
                 .currentTime(chatDto.currentTime())

@@ -12,7 +12,6 @@ import NotificationIndex from "@pages/notification";
 import OnboardingIndex from "@pages/onboarding/index";
 import KaKaoLogin from "@pages/onboarding/components/KaKaoLogin";
 import ProfileIndex from "@pages/profile";
-import ProfileModify from "@pages/profile/modify";
 import ScheduleIndex from "@pages/schedule/index";
 import ScheduleCreateSchedule from "@pages/schedule/Create";
 import ScheduleCreateReview from "@pages/schedule/CreateReview";
@@ -55,7 +54,7 @@ const Router = () => {
         {/*모의고사 페이지*/}
         <Route path="/exam" element={<ExamIndex/>}/>
         <Route path="/exam/list" element={<ExamFamilyList/>}/>
-        <Route path="/exam/grade/:memberId" element={<ExamGrade/>}/>
+        <Route path="/exam/grade/:memberFamilyId" element={<ExamGrade/>}/>
         <Route path="/exam/scored/:examId" element={<ExamScored/>}/>
         <Route path="/exam/taking" element={<ExamTaking/>}/>
 
@@ -84,7 +83,7 @@ const Router = () => {
 
         {/*백과사전 페이지*/}
         <Route path="/character" element={<CharacterIndex/>}/>
-        <Route path="/character/start" element={<CharacterStart/>}/>
+        <Route path="/character/start/:memberFamilyId" element={<CharacterStart/>}/>
         <Route path="/character/question" element={<CharacterQuestion/>}/>
 
         {/*앨범 페이지*/}
