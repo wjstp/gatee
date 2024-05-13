@@ -95,6 +95,11 @@ export interface CreateFamilyCodeApiReq {
   familyId: string;
 }
 
+// 가족 코드로 조회하기
+export interface getFamilyDataApiReq {
+  familyCode: string;
+}
+
 // 가족 합류
 export interface JoinFamilyApiReq {
   familyCode: string;

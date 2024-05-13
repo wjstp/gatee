@@ -2,12 +2,12 @@ import React, { useState, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
 import { AxiosResponse, AxiosError } from "axios";
 import { useFamilyStore } from "@store/useFamilyStore";
-import { getFamilyMemberApi, getMyDataApi } from "@api/member";
+import { getMyDataApi, getFamilyDataApi } from "@api/member";
 
 const SignupFamilyJoin = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
-  const { setFamilyCode, setFamilyId } = useFamilyStore();
+  const { setFamilyCode, setFamilyId, setStringImage, setFamilyName } = useFamilyStore();
 
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [code, setCode] = useState<string>("");
@@ -32,21 +32,23 @@ const SignupFamilyJoin = () => {
       }
       return; // 함수 실행 중단
     } else {
-      // getFamily();
-      getMyData();
-      // navigate("/signup/family-join/check");
+      getFamilyData();
     }
   };
   
-  // 가족 정보 조회하기
-  const getFamily = () => {
-    getFamilyMemberApi(
+  // 가족 코드로 가족 조회하기
+  const getFamilyData = () => {
+    getFamilyDataApi(
       {
-        familyId: "71631a5a-f9b5-4c3f-9f4e-957a9f7b5a19"
+        familyCode: code
       },
       (res: AxiosResponse<any>) => {
         console.log(res);
         setFamilyCode(code);
+        setFamilyId(res.data.familyId);
+        setFamilyName(res.data.familyName);
+        setStringImage(res.data.familyImageUrl);
+        navigate("/signup/family-join/check")
       },
       (err: AxiosError<any>) => {
         console.log(err);
@@ -57,19 +59,6 @@ const SignupFamilyJoin = () => {
   // 가족 생성 버튼 클릭 처리
   const goToFamilySet = (): void => {
     navigate("/signup/family-set");
-  }
-
-  // 멤버 조회
-  const getMyData = () => {
-    getMyDataApi(
-      (res: AxiosResponse<any>) => {
-        console.log(res)
-        setFamilyId(res.data.familyId);
-      },
-      (err: AxiosError<any>) => {
-        console.log(err)
-      }
-    ).then().catch();
   }
 
   return (
