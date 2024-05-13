@@ -358,3 +358,13 @@ export interface Answer {
   question: string;
   answer: string;
 }
+
+// 미션 api 관련
+export interface Mission {
+  id: number;
+  type: string;
+  isComplete: boolean;
+  nowRange: number;
+  maxRange: number;
+  completedLevel: number;
+};

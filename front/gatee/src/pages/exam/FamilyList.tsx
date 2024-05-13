@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Link, useNavigate} from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 import getGradeSvg from "@utils/getGradeSvg";
 import {useFamilyStore} from "@store/useFamilyStore";
 import Stamp from "@assets/images/icons/stamp_logo.png";

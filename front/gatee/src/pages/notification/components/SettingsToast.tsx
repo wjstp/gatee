@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import CustomSwitch from "@components/CustomSwitch";
 import {requestPermission} from "../../../firebase-messaging-sw";
-import {editAgreeNotification, getAgreeNotification} from "@api/notification";
+import {editAgreeNotificationApi, getAgreeNotificationApi} from "@api/notification";
 
 
 interface HandleFinishTab {
@@ -33,7 +33,7 @@ const SettingsToast = ({handleFinishTab}: HandleFinishTab) => {
   // 완료 버튼 누르면 끝내기
   const handleFinish = (event: React.MouseEvent<HTMLButtonElement>) => {
     console.log("설정 저장")
-    editAgreeNotification(
+    editAgreeNotificationApi(
       {
         albumNotification: albumAlarmChecked,
         naggingNotification: naggingAlarmChecked,
@@ -51,7 +51,7 @@ const SettingsToast = ({handleFinishTab}: HandleFinishTab) => {
 
 
   useEffect(() => {
-    getAgreeNotification(res => {
+    getAgreeNotificationApi(res => {
       console.log(res)
       setAlbumAlarmChecked(res.data.albumNotification)
       setNaggingAlarmChecked(res.data.naggingNotification)

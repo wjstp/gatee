@@ -12,7 +12,7 @@ interface NotificationAgrees {
 }
 
 // 알람 동의 변경
-export const editAgreeNotification = async function (data: NotificationAgrees,
+export const editAgreeNotificationApi = async function (data: NotificationAgrees,
                                                      success: (res: AxiosResponse<any>) => void,
                                                      fail: (err: AxiosError<any>) => void) {
   await local.patch(`/notifications`, data).then(success).catch(fail);
@@ -26,7 +26,7 @@ export const naggingApi = async function (data: NaggingApiReq,
 };
 
 // 알람 동의 조회
-export const getAgreeNotification = async function (success: (res: AxiosResponse<any>) => void,
+export const getAgreeNotificationApi = async function (success: (res: AxiosResponse<any>) => void,
                                                     fail: (err: AxiosError<any>) => void) {
   await local.get(`/notifications`).then(success).catch(fail);
 }
