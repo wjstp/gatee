@@ -26,6 +26,7 @@ import io.ssafy.gatee.global.jwt.application.JwtService;
 import io.ssafy.gatee.global.s3.util.S3Util;
 import io.ssafy.gatee.global.security.user.CustomUserDetails;
 import jakarta.servlet.http.HttpServletResponse;
+import jodd.util.StringUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -147,7 +148,7 @@ public class MemberServiceImpl implements MemberService {
 
         File entity;
 
-        if (defaultImage.isEmpty() && !file.isEmpty()) {
+        if (StringUtil.isEmpty(defaultImage) && !file.isEmpty()) {
             entity = s3Util.upload(fileType, file);
 
         } else {
