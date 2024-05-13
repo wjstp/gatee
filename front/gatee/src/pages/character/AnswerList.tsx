@@ -49,6 +49,7 @@ const CharacterStart = () => {
             setIsLoading(false)
           },
           err => {
+            console.log(err)
           }
         )
       }
