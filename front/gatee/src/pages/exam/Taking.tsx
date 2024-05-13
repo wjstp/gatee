@@ -42,9 +42,11 @@ const ExamTaking = () => {
       const updatedTransformedData = transformedData.map((item, index) => {
         return {
           ...item,
-          choiceNumber: myAnswerList[index]
+          choiceNumber: myAnswerList[index],
+          question:`${item.nickname}님의 ${item.question}은?`
         };
       });
+      console.log(updatedTransformedData)
       setTransformedData(updatedTransformedData);
 
     }
@@ -101,7 +103,7 @@ const ExamTaking = () => {
 
         setTimeout(() => {
             setEndLoading(false)
-            navigate(`/exam/grade/${res.data}`)
+            navigate(`/exam/scored/${res.data}`)
           }
           , 1000)
 
