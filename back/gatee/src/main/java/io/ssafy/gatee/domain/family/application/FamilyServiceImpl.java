@@ -1,5 +1,7 @@
 package io.ssafy.gatee.domain.family.application;
 
+import io.ssafy.gatee.domain.album.dao.AlbumRepository;
+import io.ssafy.gatee.domain.album.entity.Album;
 import io.ssafy.gatee.domain.family.dao.FamilyRepository;
 import io.ssafy.gatee.domain.family.dto.request.FamilyJoinReq;
 import io.ssafy.gatee.domain.family.dto.request.FamilyNameReq;
@@ -25,7 +27,6 @@ import io.ssafy.gatee.global.exception.error.not_found.MemberFamilyNotFoundExcep
 import io.ssafy.gatee.global.redis.dao.OnlineRoomMemberRepository;
 import io.ssafy.gatee.global.redis.dto.OnlineRoomMember;
 import io.ssafy.gatee.global.s3.util.S3Util;
-import jakarta.validation.Valid;
 import jodd.util.StringUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -63,6 +64,8 @@ public class FamilyServiceImpl implements FamilyService {
     private final FileRepository fileRepository;
 
     private final S3Util s3Util;
+
+    private final AlbumRepository albumRepository;
 
     private final String DEFAULT_FAMILY_IMAGE_URL = "https://spring-learning.s3.ap-southeast-2.amazonaws.com/default/family.jpg";
 
@@ -118,6 +121,20 @@ public class FamilyServiceImpl implements FamilyService {
                 .id(family.getId())
                 .onlineUsers(usersSet)
                 .build());
+
+        Album familyPhotos = Album.builder()
+                .family(family)
+                .name("가족 사진")
+                .build();
+
+        albumRepository.save(familyPhotos);
+
+        Album childPhotos = Album.builder()
+                .family(family)
+                .name("어린 시절 사진")
+                .build();
+
+        albumRepository.save(childPhotos);
 
         return FamilySaveRes.builder()
                 .familyId(family.getId())
@@ -233,15 +250,19 @@ public class FamilyServiceImpl implements FamilyService {
     public FamilyCheckRes checkFamilyCode(String familyCode, UUID memberId) {
         ValueOperations<String, String> redisValueOperation = redisTemplate.opsForValue();
 
-        if (StringUtil.isEmpty(redisValueOperation.get(familyCode))) {
+        String familyId = redisValueOperation.get(familyCode);
+
+        if (familyId == null) {
             throw new ExpiredCodeException(EXPIRED_CODE);
         } else {
-            String familyId = redisValueOperation.get(familyCode);
             Family family = familyRepository.findById(UUID.fromString(familyId))
                     .orElseThrow(()-> new FamilyNotFoundException(FAMILY_NOT_FOUND));
+
             return FamilyCheckRes.builder()
                     .familyId(familyId)
-                    .familyName(family.getName()).build();
+                    .familyName(family.getName())
+                    .familyImageUrl(family.getFile().getUrl())
+                    .build();
         }
     }
 }

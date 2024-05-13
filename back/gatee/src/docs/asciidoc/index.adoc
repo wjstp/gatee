@@ -127,10 +127,12 @@ include::{snippets}/family-controller-test/create-family-code/http-response.adoc
 - Request
 
 include::{snippets}/family-controller-test/check-family-code/http-request.adoc[]
+include::{snippets}/family-controller-test/check-family-code/query-parameters.adoc[]
 
 - Response
 
 include::{snippets}/family-controller-test/check-family-code/http-response.adoc[]
+include::{snippets}/family-controller-test/check-family-code/response-fields.adoc[]
 
 
 == 가족 합류
