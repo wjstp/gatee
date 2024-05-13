@@ -38,7 +38,6 @@ public class AppointmentServiceImpl implements AppointmentService {
         Family proxyFamily = familyRepository.getReferenceById(familyId);
         Appointment appointment = Appointment.builder()
                 .title(chatDto.content())
-                .createAt(LocalDateTime.now())
                 .family(proxyFamily)
                 .joinMembers(Set.of(proxyMember))
                 .build();
