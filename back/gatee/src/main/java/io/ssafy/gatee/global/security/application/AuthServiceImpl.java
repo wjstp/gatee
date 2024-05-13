@@ -40,9 +40,9 @@ public class AuthServiceImpl implements AuthService {
         HttpEntity<String> entity = new HttpEntity<>(null, headers);
         ResponseEntity<KakaoTokenRes> response = restTemplate.postForEntity(KAKAO_USER_INFO_URL, entity, KakaoTokenRes.class);
         if (response.getStatusCode() == HttpStatus.OK) {
-            httpServletResponse.setContentType("application/json");
-            httpServletResponse.setCharacterEncoding("UTF-8");
-            httpServletResponse.getWriter().write("{\"name\":\"" + response.getBody().kakaoAccount().kakaoProfile().nickname() + "\"}");
+//            httpServletResponse.setContentType("application/json");
+//            httpServletResponse.setCharacterEncoding("UTF-8");
+//            httpServletResponse.getWriter().write("{\"name\":\"" + response.getBody().kakaoAccount().kakaoProfile().nickname() + "\"}");
             return response.getBody();
         }
         throw new RuntimeException();
