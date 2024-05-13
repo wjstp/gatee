@@ -16,17 +16,17 @@ const Improvement = ({type}: any) => {
       buttonComment: "한마디 보내기",
       icon: HeartIcon
     },
-    about: {
-      content: ["나의 이야기를", "전해볼까요?"],
-      destination: "/character/start",
-      buttonComment: "백과사전 작성하기",
-      icon: BookIcon
-    },
     hello: {
       content: ["가벼운 인사 한마디", "건네봐요"],
       destination: "/chatting",
       buttonComment: "채팅하기",
       icon: GoalIcon
+    },
+    about: {
+      content: ["나의 이야기를", "전해볼까요?"],
+      destination: "/character/start",
+      buttonComment: "백과사전 작성하기",
+      icon: BookIcon
     },
     calendar: {
       content: ["함께 일정을", "잡아보아요"],

@@ -70,7 +70,8 @@ export const MemberInfoSample: MyMemberApiRes = {
   phoneNumber: "010-8806-8489",
   memberId:"asasd",
   isLeader:true,
-  familyId:"asdasdasd"
+  familyId:"asdasdasd",
+  memberFamilyId:1,
 }
 
 // 가족 구성원 임시 데이터
@@ -87,6 +88,7 @@ export const FamilyMemberInfoSample: MemberApiRes[] = [
     phoneNumber: "010-8806-8489",
     fileUrl: "https://image.xportsnews.com/contents/images/upload/article/2023/1013/mb_1697156860596868.jpg",
     isLeader: false,
+    memberFamilyId:1,
   }
 ]
 
