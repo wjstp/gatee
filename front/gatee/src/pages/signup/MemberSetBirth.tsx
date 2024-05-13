@@ -55,12 +55,18 @@ const SignupMemberSetBirth = () => {
 
   // 날짜 핸들러
   const handleSetSelectedDateChange = (date: Dayjs | null) => {
-    const formattedDate = date ? date.format("YYYY-MM-DD") : "";
-    setBirth(formattedDate);
-    if (date && isFutureDate(formattedDate)) {
-      setErrorMessage('유효한 날짜를 선택해주세요');
+    if (date) {
+      const formattedDate = date.format("YYYY-MM-DD");
+      if (isValidDateFormat(formattedDate)) {
+        setBirth(formattedDate);
+        if (isFutureDate(formattedDate)) {
+          setErrorMessage('유효한 날짜를 선택해주세요');
+        } else {
+          setErrorMessage('');
+        }
+      }
     } else {
-      setErrorMessage('');
+      setBirth('');
     }
   };
 

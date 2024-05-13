@@ -6,7 +6,16 @@ import { AxiosError, AxiosResponse } from "axios";
 
 const SignupFamilySetCheck = () => {
   const navigate = useNavigate();
-  const { familyName, familyImage, stringImage, setStringImage, familyId, setFamilyId, setFamilyCode, setFamilyImage } = useFamilyStore();
+  const {
+    familyName,
+    familyImage,
+    stringImage,
+    setStringImage,
+    familyId,
+    setFamilyId,
+    setFamilyCode,
+    setFamilyImage
+  } = useFamilyStore();
 
   // 초대 코드 공유 페이지로 가기
   const goToFamilySetShare = () => {

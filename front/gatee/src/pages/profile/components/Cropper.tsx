@@ -36,7 +36,7 @@ const ProfileCropper = (props: {
       );
 
       // Blob을 File로 변환
-      const fileName = "croppedImage.png";
+      const fileName = "croppedImage.jpg";
       const lastModified = new Date().getTime();
       const file = new File([blob], fileName, { type: "image/jpeg", lastModified });
       const resizedFile: File = (await imageResizer(file, 500, 500)) as File;
@@ -56,13 +56,6 @@ const ProfileCropper = (props: {
       console.error(e);
     }
   }, [croppedAreaPixels, cropImage]);
-
-  // URL을 받아서 File 객체로 변환하는 함수
-  const convertURLToFile = async (imageUrl: string) => {
-    const response = await fetch(imageUrl);
-    const blob = await response.blob();
-    return new File([blob], "profile_image", { type: "image/jpeg" });
-  }
   
   // 모달 닫기
   const handleCancel = () => {
@@ -81,7 +74,7 @@ const ProfileCropper = (props: {
           image={cropImage}
           crop={crop}
           zoom={zoom}
-          aspect={4 / 4}
+          aspect={1}
           onCropChange={setCrop}
           onCropComplete={onCropComplete}
           onZoomChange={setZoom}
