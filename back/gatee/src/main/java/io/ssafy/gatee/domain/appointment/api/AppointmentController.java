@@ -28,4 +28,11 @@ public class AppointmentController {
             @AuthenticationPrincipal CustomUserDetails principal) {
         return appointmentService.getJoinMemberInAppointment(appointmentId);
     }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PatchMapping
+    public void joinAppointment(@AuthenticationPrincipal CustomUserDetails principal) {
+        UUID memberId = principal.getMemberId();
+        appointmentService.joinAppointment(memberId);
+    }
 }

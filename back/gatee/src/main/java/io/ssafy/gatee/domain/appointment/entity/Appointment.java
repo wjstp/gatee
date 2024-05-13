@@ -47,4 +47,8 @@ public class Appointment extends BaseEntity {
     public boolean isCreatedByTargetFamily(UUID familyId) {
         return family.getId().equals(familyId);
     }
+
+    public void addJoinMember(Member proxyMember) {
+        this.joinMembers.add(proxyMember);
+    }
 }

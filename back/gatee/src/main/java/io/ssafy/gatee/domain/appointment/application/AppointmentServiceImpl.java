@@ -3,6 +3,7 @@ package io.ssafy.gatee.domain.appointment.application;
 import io.ssafy.gatee.domain.appointment.dao.AppointmentRepository;
 import io.ssafy.gatee.domain.appointment.dto.JoinMembersDto;
 import io.ssafy.gatee.domain.appointment.entity.Appointment;
+import io.ssafy.gatee.domain.family.application.FamilyService;
 import io.ssafy.gatee.domain.family.dao.FamilyRepository;
 import io.ssafy.gatee.domain.family.entity.Family;
 import io.ssafy.gatee.domain.member.dao.MemberRepository;
@@ -25,11 +26,12 @@ import static java.util.stream.Collectors.*;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class AppointmentServiceImpl implements AppointmentService{
+public class AppointmentServiceImpl implements AppointmentService {
 
     private final AppointmentRepository appointmentRepository;
     private final MemberRepository memberRepository;
     private final FamilyRepository familyRepository;
+    private final FamilyService familyService;
 
     @Override
     @Transactional
@@ -50,11 +52,22 @@ public class AppointmentServiceImpl implements AppointmentService{
         Appointment appointment = appointmentRepository.findById(appointmentId)
                 .orElseThrow(() -> new AppointmentNotFoundException(APPOINTMENT_NOT_FOUNT));
         return JoinMembersDto.builder()
-                    .joinMemberIds(appointment
-                            .getJoinMembers()
-                            .stream()
-                            .map(Member::getId)
-                            .collect(toSet()))
-                    .build();
+                .joinMemberIds(appointment
+                        .getJoinMembers()
+                        .stream()
+                        .map(Member::getId)
+                        .collect(toSet()))
+                .build();
+    }
+
+    @Override
+    @Transactional
+    public void joinAppointment(UUID memberId) {
+        Member proxyMember = memberRepository.getReferenceById(memberId);
+        UUID familyId = familyService.getFamilyIdByMemberId(memberId);
+        Family proxyFamily = familyRepository.getReferenceById(familyId);
+        Appointment appointment = appointmentRepository.findByFamily(proxyFamily)
+                .orElseThrow(() -> new AppointmentNotFoundException(APPOINTMENT_NOT_FOUNT));
+        appointment.addJoinMember(proxyMember);
     }
 }

@@ -9,4 +9,6 @@ public interface AppointmentService {
     Long createAppointment(ChatDto chatDto, UUID familyId, UUID memberId);
 
     JoinMembersDto getJoinMemberInAppointment(Long appointmentId);
+
+    void joinAppointment(UUID memberId);
 }
