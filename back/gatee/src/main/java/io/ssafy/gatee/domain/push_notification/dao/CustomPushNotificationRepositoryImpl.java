@@ -27,7 +27,7 @@ public class CustomPushNotificationRepositoryImpl implements CustomPushNotificat
         Query query = new Query().addCriteria(Criteria.where("id").gt(cursor)).with(pageable);
 
 
-        List<PushNotificationPageRes> productsList = mongoTemplate.find(query, Products.class)
+        List<PushNotificationPageRes> pushNotification = mongoTemplate.find(query, Products.class)
                 .stream()
                 .map(ProductsListDto::toDto)
                 .collect(Collectors.toList());
