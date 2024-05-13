@@ -82,9 +82,8 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public void sendMessage(ChatDto chatDto, UUID memberId) throws ExecutionException, InterruptedException {
-        UUID familyId = familyService.getFamilyIdByMemberId(memberId);
-        Family proxyFamily = familyRepository.getReferenceById(familyId);
         List<String> unReadMemberAsStringList = this.handleUnreadMember(memberId);
+        UUID familyId = familyService.getFamilyIdByMemberId(memberId);
         // 파이어스토어 전송
         this.saveMessageToRealtimeDatabase(FireStoreChatDto.builder()
                 .messageType(chatDto.messageType())
@@ -127,34 +126,14 @@ public class ChatServiceImpl implements ChatService {
     @Override
     @Transactional
     public void createAppointment(ChatDto chatDto, UUID memberId) throws ExecutionException, InterruptedException {
+        List<String> unReadMemberAsStringList = handleUnreadMember(memberId);
         UUID familyId = familyService.getFamilyIdByMemberId(memberId);
-        Member proxyMember = memberRepository.getReferenceById(memberId);
-        List<Member> unreadList = memberFamilyRepository.findAllWithFamilyByMember(proxyMember)
-                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND))
-                .stream()
-                .map(MemberFamily::getMember)
-                .toList();
 
-        // Redis에서 online 가족 가져오기
-        List<Member> onlineMember = onlineRoomMemberRepository.findById(familyId)
-                .map(onlineRoomMember -> Optional.ofNullable(onlineRoomMember.getOnlineUsers()).orElseGet(Collections::emptySet)) // getOnlineUsers가 null이면 빈 Set을 반환
-                .orElseThrow()
-                .stream()
-                .map(this::findMemberById)
-                .toList();
-        // 온라인 멤버를 언리드에서 제거, 오프라인 멤버(안읽은 멤버)만 추가
-        List<String> unReadMemberAsStringList = unreadList.stream()
-                .filter(offline -> !onlineMember.contains(offline))
-                .toList()
-                .stream()
-                .map(offline -> offline.getId().toString())
-                .toList();
         log.info("파이어베이스 전송 직전");
         // 파이어스토어 전송
         this.saveMessageToRealtimeDatabase(FireStoreChatDto.builder()
                 .messageType(chatDto.messageType())
                 .content(chatDto.content())
-                .totalMember(unreadList.size())
                 .sender(memberId.toString())
                 .unReadMember(unReadMemberAsStringList)
                 .currentTime(chatDto.currentTime())
