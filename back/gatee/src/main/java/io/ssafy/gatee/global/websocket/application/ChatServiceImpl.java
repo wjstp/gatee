@@ -145,6 +145,7 @@ public class ChatServiceImpl implements ChatService {
                 .stream()
                 .map(offline -> offline.getId().toString())
                 .toList();
+        log.info("파이어베이스 전송 직전");
         // 파이어스토어 전송
         this.saveMessageToRealtimeDatabase(FireStoreChatDto.builder()
                 .messageType(chatDto.messageType())

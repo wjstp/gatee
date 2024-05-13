@@ -47,6 +47,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
         }
 
         if (chatDto.messageType().equals(APPOINTMENT)) {
+            log.info("약속 전송!");
             chatService.createAppointment(chatDto, memberId);
         }
     }
