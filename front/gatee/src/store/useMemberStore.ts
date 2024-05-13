@@ -1,5 +1,5 @@
 import {create} from "zustand";
-import { MyMemberApiRes, MemberStore, MemberInfo } from "@type/index";
+import { MyMemberApiRes, MemberStore } from "@type/index";
 
 export const useMemberStore = create<MemberStore>()(
   (set) => ({

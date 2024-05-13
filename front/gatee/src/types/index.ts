@@ -90,24 +90,6 @@ export interface MemberApiReq {
   isLeader: boolean;
 }
 
-// 회원 정보
-export interface MemberInfo {
-  birth: string
-  birthType: string;
-  email: string;
-  memberId: string;
-  mood: string|null;
-  name: string;
-  nickname: string;
-  role: string;
-  phoneNumber: string | null;
-  fileUrl: string;
-  isLeader: boolean;
-  memberFamilyId: number;
-  memberImage: File | null;
-  stringMemberImage: string;
-}
-
 // 가족 코드 생성
 export interface CreateFamilyCodeApiReq {
   familyId: string;
