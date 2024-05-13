@@ -1,7 +1,6 @@
 package io.ssafy.gatee.domain.member.entity;
 
 
-import io.ssafy.gatee.domain.family_schedule.entity.FamilySchedule;
 import io.ssafy.gatee.domain.base.BaseEntity;
 import io.ssafy.gatee.domain.file.entity.File;
 import io.ssafy.gatee.domain.member.dto.request.MemberEditReq;
@@ -16,7 +15,8 @@ import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Objects;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -58,13 +58,12 @@ public class Member extends BaseEntity {
     private Privilege privilege;
 
     // 회원 정보 저장 - file field 추가 예정
-    public void saveInfo(MemberSaveReq memberSaveReq, File file) {
+    public void saveInfo(MemberSaveReq memberSaveReq) {
         this.name = memberSaveReq.name();
         this.privilege = Privilege.USER;    // 추가 정보 저장시 권한 변경
         this.nickname = memberSaveReq.nickname();
         this.birth = LocalDate.parse(memberSaveReq.birth(), DateTimeFormatter.ISO_DATE);
         this.birthType = BirthType.valueOf(memberSaveReq.birthType());
-        this.file = file;
     }
 
     // 회원 정보 수정
