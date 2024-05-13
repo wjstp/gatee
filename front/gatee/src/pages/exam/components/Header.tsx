@@ -1,8 +1,10 @@
 import React from 'react';
+import {useMemberStore} from "@store/useMemberStore";
+import {useFamilyStore} from "@store/useFamilyStore";
 
 const Header = () => {
-  const name: string = "윤예빈"
-  const familyName: string = "윤씨네"
+  // const { familyName } = useFamilyStore()
+  const {myInfo} = useMemberStore()
   return (
     <div className="exam__header">
       {/*제목*/}
@@ -14,19 +16,19 @@ const Header = () => {
             성명
           </div>
           <div className="exam__header-border-right">
-            {name}
+            {myInfo.name}
           </div>
         </div>
 
-        {/*가족명*/}
-        <div className="exam__header-border">
-          <div className="exam__header-border-left">
-            가족명
-          </div>
-          <div className="exam__header-border-right">
-            {familyName}
-          </div>
-        </div>
+        {/*/!*가족명*!/*/}
+        {/*<div className="exam__header-border">*/}
+        {/*  <div className="exam__header-border-left">*/}
+        {/*    가족명*/}
+        {/*  </div>*/}
+        {/*  <div className="exam__header-border-right">*/}
+        {/*    {familyName}*/}
+        {/*  </div>*/}
+        {/*</div>*/}
       </div>
       <div className="exam__header-footer">
 

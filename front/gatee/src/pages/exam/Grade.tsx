@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Stamp from "@assets/images/icons/stamp_logo.png"
 import {useNavigate, useParams} from "react-router-dom";
-import {getFamilyExamResultApi, getMyExamResultApi} from "@api/exam";
+import {getFamilyExamResultApi} from "@api/exam";
 // import Lottie from "lottie-react";
 // import EmptyAnimation from "@assets/images/animation/empty_animation.json"
 
@@ -43,8 +43,8 @@ const ExamGrade = () => {
           if (res.data?.length) {
             const scores = res.data.map(item => item.score)
             const scoreSum = scores.reduce((sum, score) => sum + score, 0);
-            const average = scoreSum / scores.length;
-            setAvgGrade(average)
+            const average = Math.ceil(scoreSum / scores.length);
+            setAvgGrade(getGradeSvg(average))
           }
         }, err => {
           console.log(err)

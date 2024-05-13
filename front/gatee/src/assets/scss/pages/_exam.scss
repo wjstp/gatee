@@ -87,19 +87,23 @@
 
     .exam__header-border {
       border: 1px solid black;
-      width: 16vh;
+      width: 20vh;
       display: flex;
       height: 4vh;
 
       .exam__header-border-left {
-        width: 8vh;
+        width: 10vh;
         @include flex_center;
         border-right: 1px solid black;
       }
 
       .exam__header-border-right {
-        width: 8vh;
         @include flex_center;
+
+        width: 10vh;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
     }
   }
@@ -240,6 +244,7 @@
 }
 
 .exam-grade {
+  position: relative;
   @include flex-col;
 
   * {
@@ -247,7 +252,6 @@
   }
 
   height: 100%;
-
 
 
   .exam__grade-header {
@@ -259,6 +263,8 @@
     }
 
     .large {
+      @include ml-(0.5);
+
       font-size: 1.8rem;
     }
 
@@ -316,6 +322,8 @@
       width: 13vw;
     }
   }
+
+
 }
 
 .exam__empty {
@@ -357,46 +365,58 @@
 
 }
 
-.exam-answer-sheet-container {
-  //width: 80%;
-  border: 1px solid $gray200;
-  @include mx-(1);
-  @include flex-row;
-  flex: 1;
+.exam-taking {
+  position: relative;
+  height: 100%;
+  .exam-answer-sheet-container {
 
-  .item-container {
-    @include flex-col;
+    @include flex-row;
     @include flex_center;
 
-    font-size: 1.2rem;
+    position: absolute;
+    bottom: 3rem;
+    border: 1px solid $gray200;
     flex: 1;
+    width: 90dvw;
+    margin: 0 5vw;
 
-    .index {
-      @include py-(1);
+
+    .item-container {
+      @include flex-col;
       @include flex_center;
-      width: 100%;
-      background-color: $gray100;
-      border-bottom: 1px solid $gray200;
+
+      font-size: 1.2rem;
+      flex: 1;
+
+      .index {
+        @include py-(1);
+        @include flex_center;
+        width: 100%;
+        background-color: $gray100;
+        border-bottom: 1px solid $gray200;
+      }
+
+      .answer {
+        @include my-(1);
+        @include flex_center;
+        width: 1.5rem;
+        height: 1.5rem;
+        border: 1px solid $gray200;
+        border-radius: 5rem;
+      }
+
+      .no-answer {
+        color: white;
+        border: 0 !important;
+      }
+
+
     }
 
-    .answer {
-      @include my-(1);
-      @include flex_center;
-      width: 1.5rem;
-      height: 1.5rem;
-      border: 1px solid $gray200;
-      border-radius: 5rem;
+    .item-right-line {
+      border-right: 0.2px solid $gray200;
     }
-
-    .no-answer {
-      color: white;
-      border: 0 !important;
-    }
-
-
   }
 
-  .item-right-line {
-    border-right: 0.2px solid $gray200;
-  }
+
 }
