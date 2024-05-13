@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import CustomSwitch from "@components/CustomSwitch";
-// import {requestPermission} from "../../../firebase-messaging-sw";
+import {requestPermission} from "../../../firebase-messaging-sw";
 import {editAgreeNotification, getAgreeNotification} from "@api/notification";
 
 
@@ -18,7 +18,7 @@ const SettingsToast = ({handleFinishTab}: HandleFinishTab) => {
   // 스위치 조절 함수
   const handleAlbumChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAlbumAlarmChecked(event.target.checked);
-    // requestPermission()
+    requestPermission()
   };
   const handleNaggingChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNaggingAlarmChecked(event.target.checked);
@@ -73,10 +73,10 @@ const SettingsToast = ({handleFinishTab}: HandleFinishTab) => {
 
     <div
       className="notification-setting--container">
-      {
-        loading ?
-          null
-          :
+      {/*{*/}
+      {/*  loading ?*/}
+      {/*    null*/}
+      {/*    :*/}
           <>
             {/* 상단 */}
             <div className="setting-top--container">
@@ -136,7 +136,7 @@ const SettingsToast = ({handleFinishTab}: HandleFinishTab) => {
 
             </div>
           </>
-      }
+      {/*}*/}
 
     </div>
   );
