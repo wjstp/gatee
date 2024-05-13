@@ -51,10 +51,10 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
         if (isAnonymousMember(customUserDetails)) {
             if (memberFamilyRepository.existsByMember_Id(customUserDetails.getMemberId())) {
                 log.info("회원 정보 기입 페이지로 이동");
-                redirectUrl = REDIRECT_URI_NOT_FAMILY;
+                redirectUrl = REDIRECT_URI_ANONYMOUS;
             } else {
                 log.info("가족 정보 저장 페이지로 이동");
-                redirectUrl = REDIRECT_URI_ANONYMOUS;
+                redirectUrl = REDIRECT_URI_NOT_FAMILY;
             }
         } else {
             redirectUrl = REDIRECT_URI_SUCCESS;
