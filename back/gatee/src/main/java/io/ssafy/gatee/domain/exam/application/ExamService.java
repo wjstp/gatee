@@ -17,4 +17,6 @@ public interface ExamService {
     ExamDetailRes readExamResultDetail(Long examId);
 
     List<ExamFamilyRes> readFamilyExamResults(UUID memberId);
+
+    List<ExamResultRes> readOtherExamResults(Long memberFamilyId);
 }

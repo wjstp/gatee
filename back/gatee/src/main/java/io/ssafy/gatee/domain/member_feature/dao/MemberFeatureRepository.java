@@ -17,12 +17,20 @@ public interface MemberFeatureRepository extends JpaRepository<MemberFeature, Lo
     @Query(value = """
         select mf from MemberFeature mf
         where mf.member.id in :memberIdList
-        and size(mf.wrongAnswer) > 0
+        and size(mf.wrongAnswer) = 3
         order by rand()
         """)
     List<MemberFeature> findRandomMemberFeature(@Param("memberIdList") List<UUID> memberIdList, Pageable pageable);
 
     List<MemberFeature> findByMember_Id(UUID memberId);
+
+    @Query("""
+        select f from MemberFeature f
+        join MemberFamily mf
+        on mf.member.id = f.member.id
+        where mf.id = :memberFamilyId
+    """)
+    List<MemberFeature> findByMemberFamilyId(Long memberFamilyId);
 
     Optional<MemberFeature> findByMember_IdAndFeature_Id(UUID memberId, Long featureId);
 }

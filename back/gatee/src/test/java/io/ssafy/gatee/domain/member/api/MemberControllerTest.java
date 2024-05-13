@@ -200,6 +200,7 @@ class MemberControllerTest extends RestDocsTestSupport {
         given(memberService.readMemberInfo(any(UUID.class)))
                 .willReturn(MemberInfoRes.builder()
                         .memberId(UUID.randomUUID())
+                        .memberFamilyId(1L)
                         .familyId(UUID.randomUUID())
                         .name("test1")
                         .email("test1@gmail.com")
@@ -218,6 +219,7 @@ class MemberControllerTest extends RestDocsTestSupport {
                 .andDo(restDocs.document(
                                 responseFields(
                                         fieldWithPath("memberId").type(JsonFieldType.STRING).description("회원 ID"),
+                                        fieldWithPath("memberFamilyId").type(JsonFieldType.NUMBER).description("회원 가족 ID"),
                                         fieldWithPath("familyId").type(JsonFieldType.STRING).description("가족 ID"),
                                         fieldWithPath("name").type(JsonFieldType.STRING).description("이름 (실명)"),
                                         fieldWithPath("email").type(JsonFieldType.STRING).description("email"),

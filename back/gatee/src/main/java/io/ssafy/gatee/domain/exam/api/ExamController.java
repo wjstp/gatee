@@ -50,12 +50,12 @@ public class ExamController {
         return examService.readExamResultDetail(examId);
     }
 
-    @GetMapping("/{memberId}/results")
+    @GetMapping("/{memberFamilyId}/results")
     @ResponseStatus(HttpStatus.OK)
     public List<ExamResultRes> readOtherExamResults(
-            @PathVariable("memberId") UUID memberId
+            @PathVariable("memberFamilyId") Long memberFamilyId
     ) {
-        return examService.readExamResults(memberId);
+        return examService.readOtherExamResults(memberFamilyId);
     }
 
     @PostMapping

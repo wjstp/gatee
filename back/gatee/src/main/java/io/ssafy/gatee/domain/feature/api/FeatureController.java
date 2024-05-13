@@ -35,10 +35,10 @@ public class FeatureController {
     }
 
     // 질문 및 답변 조회
-    @GetMapping("/{memberId}/results")
+    @GetMapping("/{memberFamilyId}/results")
     @ResponseStatus(HttpStatus.OK)
-    public List<FeatureResultRes> readOtherFeatureResults(@PathVariable("memberId") UUID memberId) {
-        return featureService.readFeatureResults(memberId);
+    public List<FeatureResultRes> readOtherFeatureResults(@PathVariable("memberFamilyId") Long memberFamilyId) {
+        return featureService.readOtherFeatureResults(memberFamilyId);
     }
 
     // 질문 답변 시 문제 생성
