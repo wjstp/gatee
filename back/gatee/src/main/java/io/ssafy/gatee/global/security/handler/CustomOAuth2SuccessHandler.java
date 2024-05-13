@@ -35,7 +35,7 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 
     private final String REDIRECT_URI_NOT_FAMILY = "/signup";
 
-    private final String REDIRECT_URI_ANONYMOUS = "/signup/family-set";
+    private final String REDIRECT_URI_ANONYMOUS = "/signup/member-set";
 
 
     @Override
