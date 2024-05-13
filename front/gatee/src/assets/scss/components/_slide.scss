@@ -1,0 +1,31 @@
+@use '../abstracts' as *;
+
+.slide-in {
+  animation: straight 0.5s ease forwards;
+}
+
+@keyframes straight {
+  from {
+    transform: translateX(100%);
+    visibility: visible;
+  }
+
+  to {
+    transform: translateX(0%);
+  }
+}
+
+.slide-out {
+  animation: back 0.5s ease forwards;
+}
+
+@keyframes back {
+  from {
+    transform: translateX(-100%);
+    visibility: visible;
+  }
+
+  to {
+    transform: translateX(0%);
+  }
+}

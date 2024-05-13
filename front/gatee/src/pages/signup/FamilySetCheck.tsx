@@ -6,14 +6,13 @@ import { AxiosError, AxiosResponse } from "axios";
 
 const SignupFamilySetCheck = () => {
   const navigate = useNavigate();
-  const { familyName, familyImage, stringImage } = useFamilyStore();
+  const { familyName, familyImage, stringImage, setStringImage, familyId, setFamilyId, setFamilyCode, setFamilyImage } = useFamilyStore();
 
   // 초대 코드 공유 페이지로 가기
   const goToFamilySetShare = () => {
     // 가족 생성하기
-    // createFamily();
-
-    navigate("/signup/family-set/share");
+    createFamily();
+    // navigate('/signup/member-set');
   }
 
   // 파일을 업로드했을 때
@@ -30,7 +29,10 @@ const SignupFamilySetCheck = () => {
     createFamilyApi(
       formData,
       (res: AxiosResponse<any>) => {
-        console.log(res)
+        console.log(res);
+        setFamilyId(res.data.familyId);
+        setStringImage(res.data.fileUrl.imageUrl);
+        navigate('/signup/member-set');
       },
       (err: AxiosError<any>) => {
         console.log(err)
@@ -44,7 +46,8 @@ const SignupFamilySetCheck = () => {
   }
 
   return (
-    <div className="signup-family-set-check">
+    <div className="signup-family-set-check slide-in">
+
       {/*제목*/}
       <div className="signup-family-set-check__title">
         <span className="title__part--01">
@@ -90,6 +93,7 @@ const SignupFamilySetCheck = () => {
           </span>
         </button>
       </div>
+
     </div>
   );
 };

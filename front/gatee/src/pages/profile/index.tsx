@@ -9,19 +9,30 @@ import Box from '@mui/material/Box';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import FeelingToast from "@pages/profile/components/FeelingToast";
 import { useMemberStore } from "@store/useMemberStore";
-import {useFamilyStore} from "@store/useFamilyStore";
+import { useFamilyStore } from "@store/useFamilyStore";
+import dayjs from "dayjs";
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
 const ProfileIndex = () => {
+  const navigate = useNavigate();
   // 모달 상태 적용
   const { setShowModal } = useModalStore();
   const { mood } = useMemberStore();
   const { familyInfo } = useFamilyStore();
+  // 쿼리스트링으로 넘어온 이름을 확인하기 위함
+  const { email } = useParams<{ email: string }>();
+
   // 열린지 닫힌지 상태 확인 가능
   const [state, setState] = React.useState({
     bottom: false,
   });
+
+  // 멤버 확인 -> 나중에는 조회로 가져오기
+  const familyMember = familyInfo.find(member => member.email === email);
+  
+  // 백과사전이 있는지 조회하기 용
+  const [createdCharacter, setCreateCharacter] = useState<boolean>(false);
 
   // MUI 관련 코드 -> 슬라이드 다운 해서 내리기 기능 가능
   const toggleDrawer =
@@ -63,19 +74,11 @@ const ProfileIndex = () => {
       <FeelingToast handleFinishTab={handleFinishTab}/>
     </Box>
   );
-
-  const navigate = useNavigate();
-  // 쿼리스트링으로 넘어온 이름을 확인하기 위함
-  const { email } = useParams<{ email: string }>();
-  // 백과사전이 있는지 조회하기 용
-  const [createdCharacter, setCreateCharacter] = useState<boolean>(false);
-
+  
+  // 수정으로 넘어가기
   const goToModify = () => {
     navigate(`/profile/${email}/modify`)
   }
-
-  // 멤버 확인 -> 나중에는 조회로 가져오기
-  const familyMember = familyInfo.find(member => member.email === email);
 
   // 내 프로필일 때만 프로필 정보와 기분을 수정할 수 있음
 
@@ -195,7 +198,7 @@ const ProfileIndex = () => {
                 {changeDate(familyMember?.birth as string)}
               </span>
               <span className="birth__body__part--02">
-                {familyMember?.birthType === "SOLAR" ? ("(양력)") : ("(음력)")}
+                &nbsp;{familyMember?.birthType === "SOLAR" ? ("(양력)") : ("(음력)")}
               </span>
             </div>
           </div>
