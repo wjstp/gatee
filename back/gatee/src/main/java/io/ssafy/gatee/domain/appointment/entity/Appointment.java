@@ -30,7 +30,7 @@ public class Appointment extends BaseEntity {
 
     private String title;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "family_id")
     private Family family;
 
