@@ -25,7 +25,9 @@ public enum ExceptionMessage {
     DID_NOT_COMPLETED("완료되지 않았습니다."),
 
     UN_ACCEPT("토큰이 null이거나 길이가 짧습니다."),
-    BAD_TYPE("토큰이 Bearer 타입이 아닙니다.")
+    BAD_TYPE("토큰이 Bearer 타입이 아닙니다."),
+    
+    GPT_SERIVCE_UNAVAILABLE("Open AI 서버 요청 부하")
     ;
 
     private final String message;

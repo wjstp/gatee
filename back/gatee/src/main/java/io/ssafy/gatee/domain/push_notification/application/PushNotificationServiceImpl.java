@@ -31,6 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -131,7 +132,7 @@ public class PushNotificationServiceImpl implements PushNotificationService {
         PushNotificationFCMReq pushNotification = PushNotificationFCMReq.builder()
                 .receiverId(Collections.singletonList(naggingReq.receiverId()))
                 .senderId(memberId)
-                .title(Type.NAGGING.toString())
+                .title(Type.NAGGING.korean)
                 .content(result.answer())
                 .dataFCMReq(DataFCMReq.builder()
                         .type(Type.NAGGING)
