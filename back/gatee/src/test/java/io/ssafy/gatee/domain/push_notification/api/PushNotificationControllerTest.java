@@ -2,18 +2,24 @@ package io.ssafy.gatee.domain.push_notification.api;
 
 import io.ssafy.gatee.config.restdocs.RestDocsTestSupport;
 import io.ssafy.gatee.config.security.CustomWithMockUser;
+import io.ssafy.gatee.domain.album.dto.request.AlbumSaveReq;
+import io.ssafy.gatee.domain.album.dto.response.AlbumSaveRes;
 import io.ssafy.gatee.domain.member.dto.request.MemberSaveReq;
 import io.ssafy.gatee.domain.member.dto.response.MemberInfoRes;
 import io.ssafy.gatee.domain.push_notification.application.PushNotificationService;
 import io.ssafy.gatee.domain.push_notification.dto.request.NaggingReq;
 import io.ssafy.gatee.domain.push_notification.dto.request.NotificationAgreementReq;
+import io.ssafy.gatee.domain.push_notification.dto.request.PushNotificationCheckReq;
 import io.ssafy.gatee.domain.push_notification.dto.response.NaggingRes;
 import io.ssafy.gatee.domain.push_notification.dto.response.NotificationAgreementRes;
+import io.ssafy.gatee.domain.push_notification.dto.response.PushNotificationPageRes;
+import io.ssafy.gatee.domain.push_notification.dto.response.PushNotificationRes;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
@@ -23,6 +29,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import java.util.UUID;
+import java.util.List;
 
 import static org.mockito.BDDMockito.any;
 import static org.mockito.BDDMockito.given;
@@ -74,6 +81,66 @@ class PushNotificationControllerTest extends RestDocsTestSupport {
 
     @Test
     @CustomWithMockUser
+    void readNotifications() throws Exception {
+
+        PushNotificationRes pushNotificationRes1 = PushNotificationRes.builder()
+                .notificationId("6641b46b93237768ce9b546d")
+                .title("제목")
+                .content("알림 내용")
+                .createdAt("알림 발송 시간")
+                .isCheck(false)
+                .senderId(UUID.randomUUID().toString())
+                .type("ALBUM")
+                .typeId(1L)
+                .build();
+        PushNotificationRes pushNotificationRes2 = PushNotificationRes.builder()
+                .notificationId("6641b46b93237768ce9b546d")
+                .title("제목")
+                .content("알림 내용")
+                .createdAt("알림 발송 시간")
+                .isCheck(false)
+                .senderId(UUID.randomUUID().toString())
+                .type("ALBUM")
+                .typeId(1L)
+                .build();
+        PushNotificationPageRes pushNotificationPageRes = PushNotificationPageRes.builder()
+                .pushNotificationResList(List.of(pushNotificationRes1, pushNotificationRes2))
+                .hasNext(true)
+                .nextCursor("6641aaef38f8fa7c0ae57553").build();
+        // given
+        given(pushNotificationService.readNotifications(any(UUID.class), any(Pageable.class), any(String.class)))
+                .willReturn(pushNotificationPageRes);
+
+        // when
+        ResultActions result = mockMvc.perform(get("/api/notifications")
+
+                .param("cursor", "6641aaef38f8fa7c0ae57553"));
+
+        // then
+        result.andExpect(status().isOk())
+                .andDo(restDocs.document(
+                        queryParameters(
+                                parameterWithName("cursor").description("조회를 시작할 id")
+                        ),
+                                responseFields(
+                                        fieldWithPath("hasNext").type(JsonFieldType.BOOLEAN).description("다음 페이지가 있는지 없는지"),
+                                        fieldWithPath("nextCursor").type(JsonFieldType.STRING).description("다음 커서 (다음 페이지의 첫번째 "),
+                                        fieldWithPath("pushNotificationResList").type(JsonFieldType.ARRAY).description("알림 정보 객체 리스트"),
+                                        fieldWithPath("pushNotificationResList.[].notificationId").type(JsonFieldType.STRING).description("알림 id"),
+                                        fieldWithPath("pushNotificationResList.[].type").type(JsonFieldType.STRING).description("알림의 Type - NAGGING / ALBUM / SCHEDULE"),
+                                        fieldWithPath("pushNotificationResList.[].typeId").type(JsonFieldType.NUMBER).description("알림의 Type Id"),
+                                        fieldWithPath("pushNotificationResList.[].senderId").type(JsonFieldType.STRING).description("알림을 보낸 사람의 member Id"),
+                                        fieldWithPath("pushNotificationResList.[].title").type(JsonFieldType.STRING).description("알림 제목"),
+                                        fieldWithPath("pushNotificationResList.[].content").type(JsonFieldType.STRING).description("알림 내용"),
+                                        fieldWithPath("pushNotificationResList.[].isCheck").type(JsonFieldType.BOOLEAN).description("알림 확인 여부"),
+                                        fieldWithPath("pushNotificationResList.[].createdAt").type(JsonFieldType.STRING).description("알림 생성시간")
+
+                        )
+                ));
+    }
+
+    @Test
+    @CustomWithMockUser
     void readNotificationAgreements() throws Exception {
 
         // given
@@ -97,6 +164,29 @@ class PushNotificationControllerTest extends RestDocsTestSupport {
                                         fieldWithPath("featureNotification").type(JsonFieldType.BOOLEAN).description("가족 특징 알림 동의 여부"))
                         )
                 );
+    }
+
+    @Test
+    @CustomWithMockUser
+    void checkReadNotification() throws Exception {
+
+        // given
+        doNothing().when(pushNotificationService).checkReadNotification(any(String.class));
+
+        // when
+        ResultActions result = mockMvc.perform(patch("/api/notifications/check")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(readJson("json/push_notification/checkReadNotification.json"))
+                .accept(MediaType.APPLICATION_JSON)
+        );
+
+        // then
+        result.andExpect(status().isOk())
+                .andDo(restDocs.document(
+                        queryParameters(
+                                parameterWithName("notificationId").description("알림 ID").optional()
+                )));
+
     }
 
     @Test

@@ -50,9 +50,10 @@ public class PushNotificationController {
                                                      @RequestParam(required = false) String cursor) {
         return notificationService.readNotifications(customUserDetails.getMemberId(), pageable, cursor);
     }
+
     // 알림 읽음 처리
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/check")
+    @PatchMapping("/check")
     public void checkReadNotification(@RequestBody PushNotificationCheckReq pushNotificationCheckReq) {
         notificationService.checkReadNotification(pushNotificationCheckReq.notificationId());
     }
