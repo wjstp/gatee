@@ -2,14 +2,16 @@ package io.ssafy.gatee.domain.push_notification.dao;
 
 import io.ssafy.gatee.domain.push_notification.dto.response.PushNotificationPageRes;
 import io.ssafy.gatee.domain.push_notification.dto.response.PushNotificationRes;
+import io.ssafy.gatee.domain.push_notification.entity.PushNotifications;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.bson.types.ObjectId;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
-import java.awt.print.Pageable;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,23 +23,27 @@ import static java.util.Objects.isNull;
 public class CustomPushNotificationRepositoryImpl implements CustomPushNotificationRepository{
 
     private final MongoTemplate mongoTemplate;
-    private final String COLLECTION_NAME = "push_notification";
+
     @Override
-    public PushNotificationRes findMyPushNotifications(String receiverId, String cursor, Pageable pageable) {
-        Query query = new Query().addCriteria(Criteria.where("id").gt(cursor)).with(pageable);
-
-
-        List<PushNotificationPageRes> pushNotification = mongoTemplate.find(query, Products.class)
+    public PushNotificationPageRes findMyPushNotifications(String receiverId, Pageable pageable, String cursor) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("receiver_id").is(receiverId)).with(pageable);
+        if (!isNull(cursor) && !cursor.isEmpty()) {
+            query.addCriteria(Criteria.where("id").lt(new ObjectId(cursor)));
+        }
+        List<PushNotificationRes> pushNotification = mongoTemplate.find(query, PushNotifications.class)
                 .stream()
-                .map(ProductsListDto::toDto)
+                .map(PushNotificationRes::toDto)
                 .collect(Collectors.toList());
-        boolean hasNext = mongoTemplate.count(query, Products.class) >= pageable.getPageSize();
-        var nextCursor = hasNext ? productsList.get(productsList.size() - 1).id() : null;
-        productsList.remove(productsList.size() - 1);
-        return ProductsPageRes.builder()
-                .content(productsList)
+        if (pushNotification.size() > pageable.getPageSize()) {
+            pushNotification.subList(0, pushNotification.size()-1);
+        }
+        boolean hasNext = mongoTemplate.count(query, PushNotifications.class) >= pageable.getPageSize();
+        var nextCursor = hasNext ? pushNotification.get(pushNotification.size() - 1).notificationId() : null;
+        return PushNotificationPageRes.builder()
+                .pushNotificationResList(pushNotification)
                 .nextCursor(nextCursor)
+                .hasNext(hasNext)
                 .build();
-        return null;
     }
 }

@@ -39,5 +39,5 @@ public class PushNotifications {
     private boolean isCheck;
 
     @Field(name="created_at")
-    private LocalDateTime createdAt;
+    private String createdAt;
 }

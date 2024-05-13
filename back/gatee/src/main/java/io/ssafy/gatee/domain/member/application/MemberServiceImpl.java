@@ -94,6 +94,10 @@ public class MemberServiceImpl implements MemberService {
         memberFamily.editRole(memberSaveReq.role().toString());
         // 토큰 발급
         modifyMemberToken(member, response);
+        // 알림 동의 모두 열기
+        memberNotificationRepository.save(MemberNotification.builder()
+                .member(member)
+                .build());
     }
 
     @Override
@@ -102,9 +106,6 @@ public class MemberServiceImpl implements MemberService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
         member.saveNotificationToken(memberTokenReq.notificationToken());
-        memberNotificationRepository.save(MemberNotification.builder()
-                .member(member)
-                .build());
     }
 
     // 회원 정보 수정

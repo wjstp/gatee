@@ -7,19 +7,15 @@ import io.ssafy.gatee.domain.push_notification.dto.request.NotificationAgreement
 import io.ssafy.gatee.domain.push_notification.dto.request.TokenReq;
 import io.ssafy.gatee.domain.push_notification.dto.response.NaggingRes;
 import io.ssafy.gatee.domain.push_notification.dto.response.NotificationAgreementRes;
-import io.ssafy.gatee.domain.push_notification.dto.response.PushNotificationRes;
+import io.ssafy.gatee.domain.push_notification.dto.response.PushNotificationPageRes;
 import io.ssafy.gatee.global.security.user.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @Log4j2
@@ -45,12 +41,12 @@ public class PushNotificationController {
 
     // 알림 목록 조회
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/agreements")
-    public Page<PushNotificationRes> readNotifications(@AuthenticationPrincipal CustomUserDetails customUserDetails,
-                                                       @PageableDefault(size = 20,
-                                                               sort = "_id",
-                                                               direction = Sort.Direction.DESC) Pageable pageable,
-                                                       @RequestParam(required = false) String cursor){
+    @GetMapping
+    public PushNotificationPageRes readNotifications(@AuthenticationPrincipal CustomUserDetails customUserDetails,
+                                                     @PageableDefault(
+                                                             sort = "notification_id") Pageable pageable,
+                                                     // default size : 10
+                                                     @RequestParam(required = false) String cursor) {
         return notificationService.readNotifications(customUserDetails.getMemberId(), pageable, cursor);
     }
     // 알림 읽음 처리
