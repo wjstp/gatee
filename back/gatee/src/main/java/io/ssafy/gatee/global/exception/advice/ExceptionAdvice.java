@@ -2,6 +2,7 @@ package io.ssafy.gatee.global.exception.advice;
 
 import io.ssafy.gatee.global.exception.error.bad_request.*;
 import io.ssafy.gatee.global.exception.error.not_found.*;
+import io.ssafy.gatee.global.exception.error.service_unavailable.GptServiceUnavailable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -36,6 +37,15 @@ public class ExceptionAdvice {
             ExistsFamilyException.class
     })
     public String handleBadRequest(RuntimeException e) {
+        return e.getMessage();
+    }
+
+
+    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
+    @ExceptionHandler({
+            GptServiceUnavailable.class
+    })
+    public String handleServiceUnavailable(RuntimeException e) {
         return e.getMessage();
     }
 
