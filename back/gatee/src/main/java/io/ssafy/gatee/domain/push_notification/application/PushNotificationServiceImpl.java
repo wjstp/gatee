@@ -8,6 +8,7 @@ import io.ssafy.gatee.domain.member.dao.MemberRepository;
 import io.ssafy.gatee.domain.member.entity.Member;
 import io.ssafy.gatee.domain.member_notification.dao.MemberNotificationRepository;
 import io.ssafy.gatee.domain.member_notification.entity.MemberNotification;
+import io.ssafy.gatee.domain.push_notification.dao.PushNotificationRepository;
 import io.ssafy.gatee.domain.push_notification.dto.request.DataFCMReq;
 import io.ssafy.gatee.domain.push_notification.dto.request.NaggingReq;
 import io.ssafy.gatee.domain.push_notification.dto.request.NotificationAgreementReq;
@@ -16,6 +17,7 @@ import io.ssafy.gatee.domain.push_notification.dto.response.NaggingRes;
 import io.ssafy.gatee.domain.push_notification.dto.response.NotificationAgreementRes;
 import io.ssafy.gatee.domain.push_notification.dto.response.PushNotificationRes;
 import io.ssafy.gatee.domain.push_notification.entity.PushNotification;
+import io.ssafy.gatee.domain.push_notification.entity.PushNotifications;
 import io.ssafy.gatee.domain.push_notification.entity.Type;
 import io.ssafy.gatee.global.exception.error.not_found.MemberNotFoundException;
 import io.ssafy.gatee.global.exception.error.not_found.MemberNotificationNotFoundException;
@@ -23,6 +25,7 @@ import io.ssafy.gatee.global.exception.message.ExceptionMessage;
 import io.ssafy.gatee.global.firebase.FirebaseInit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,9 +40,10 @@ public class PushNotificationServiceImpl implements PushNotificationService {
     private final GptService gptService;
     private final MemberRepository memberRepository;
     private final MemberNotificationRepository memberNotificationRepository;
-
+    private final PushNotificationRepository pushNotificationRepository;
     @Override
-    public List<PushNotificationRes> readNotifications(UUID memberId) {
+    public List<PushNotificationRes> readNotifications(UUID memberId, Pageable pageable, String cursor) {
+        pushNotificationRepository.findAll(pageable);
         return null;
     }
 
@@ -94,14 +98,20 @@ public class PushNotificationServiceImpl implements PushNotificationService {
     }
 
     @Override
-    public void savePushNotification() {
-
+    public void savePushNotification(PushNotificationFCMReq pushNotificationFCMReq) {
+        List<PushNotifications> pushNotifications = pushNotificationFCMReq.receiverId().stream()
+                .map(receiverId -> PushNotifications.builder()
+                    .type(pushNotificationFCMReq.dataFCMReq().type().toString())
+                    .typeId(pushNotificationFCMReq.dataFCMReq().typeId())
+                    .senderId(pushNotificationFCMReq.senderId().toString())
+                    .receiverId(receiverId.toString())
+                    .title(pushNotificationFCMReq.title())
+                    .content(pushNotificationFCMReq.content())
+                    .isCheck(false).build()).toList();
+        log.info("저장");
+        pushNotificationRepository.saveAll(pushNotifications);
     }
 
-    @Override
-    public void savePushNotifications() {
-
-    }
 
     @Override
     public NaggingRes sendNagging(NaggingReq naggingReq, UUID memberId) throws FirebaseMessagingException {
@@ -165,6 +175,8 @@ public class PushNotificationServiceImpl implements PushNotificationService {
             log.info("successfully sent message ? " + response);
             // todo : 저장
         }
+        savePushNotification(pushNotificationFCMReq);
+
     }
 
     @Override
@@ -218,7 +230,7 @@ public class PushNotificationServiceImpl implements PushNotificationService {
             log.info(response.getFailureCount() + " messages were not sent");
             log.info(response.getSuccessCount() + " messages were sent successfully");
         }
-
+        savePushNotification(pushNotificationFCMReq);
     }
 
     @Override

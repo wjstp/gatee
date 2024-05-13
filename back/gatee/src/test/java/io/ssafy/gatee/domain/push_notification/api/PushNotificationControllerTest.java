@@ -85,7 +85,7 @@ class PushNotificationControllerTest extends RestDocsTestSupport {
                         .featureNotification(true).build());
 
         // when
-        ResultActions result = mockMvc.perform(get("/api/notifications"));
+        ResultActions result = mockMvc.perform(get("/api/notifications/agreements"));
 
         // then
         result.andExpect(status().isOk())
@@ -107,7 +107,7 @@ class PushNotificationControllerTest extends RestDocsTestSupport {
         doNothing().when(pushNotificationService).modifyNotificationAgreements(any(UUID.class), any(NotificationAgreementReq.class));
 
         // when
-        ResultActions result = mockMvc.perform(patch("/api/notifications")
+        ResultActions result = mockMvc.perform(patch("/api/notifications/agreements")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(readJson("json/push_notification/modifyNotificationAgreements.json"))
                 .accept(MediaType.APPLICATION_JSON)
