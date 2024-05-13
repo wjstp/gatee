@@ -121,7 +121,7 @@ const ExamTaking = () => {
   }, [transformedData]);
 
   return (
-    <div>
+    <div className="exam-taking">
       {startLoading ?
         <ExamLoading type="start"/>
         :

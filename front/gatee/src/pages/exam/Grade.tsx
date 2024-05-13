@@ -43,8 +43,8 @@ const ExamGrade = () => {
           if (res.data?.length) {
             const scores = res.data.map(item => item.score)
             const scoreSum = scores.reduce((sum, score) => sum + score, 0);
-            const average = scoreSum / scores.length;
-            setAvgGrade(average)
+            const average = Math.ceil(scoreSum / scores.length);
+            setAvgGrade(getGradeSvg(average))
           }
         }, err => {
           console.log(err)
