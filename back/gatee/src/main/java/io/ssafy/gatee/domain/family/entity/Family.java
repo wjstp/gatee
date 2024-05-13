@@ -2,6 +2,7 @@ package io.ssafy.gatee.domain.family.entity;
 
 
 import io.ssafy.gatee.domain.base.BaseEntity;
+import io.ssafy.gatee.domain.chatroom.entity.ChatRoom;
 import io.ssafy.gatee.domain.file.entity.File;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -31,6 +32,10 @@ public class Family extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "file_id")
     private File file;
+
+    @OneToOne
+    @JoinColumn(name = "chat_room_id")
+    private ChatRoom chatRoom;
 
     public void editFamilyName(String name) {
         this.name = name;
