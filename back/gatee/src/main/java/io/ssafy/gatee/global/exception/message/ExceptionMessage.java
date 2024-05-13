@@ -21,6 +21,7 @@ public enum ExceptionMessage {
     EXPIRED_CODE("만료된 인증코드입니다."),
     WRONG_TYPE_FILTER("잘못된 필터입니다."),
     EXISTS_FAMILY("이미 가족이 존재합니다"),
+    DID_NOT_COMPLETED("완료되지 않았습니다."),
 
     UN_ACCEPT("토큰이 null이거나 길이가 짧습니다."),
     BAD_TYPE("토큰이 Bearer 타입이 아닙니다.")
