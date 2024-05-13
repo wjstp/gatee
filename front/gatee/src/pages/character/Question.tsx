@@ -3,12 +3,13 @@ import {useNavigate} from "react-router-dom";
 import {useDictStore} from "@store/useDictStore";
 import {sumbitAskAnswerApi} from "@api/dictionary";
 import TextField from "@mui/material/TextField";
+import {useMemberStore} from "@store/useMemberStore";
 
 const CharacterQuestion = () => {
   const navigate = useNavigate();
   const {askList, askIndex, setAskIndex} = useDictStore()
   const [inputValue, setInputValue] = useState('');
-
+  const {myInfo} = useMemberStore()
   const muiFocusCustom = {
     "& .MuiOutlinedInput-root": {
       fontSize: "1.2rem",
@@ -31,7 +32,7 @@ const CharacterQuestion = () => {
     if (askIndex < askList.length - 1) {
       setAskIndex(askIndex + 1)
     } else {
-      navigate("/character/start")
+      navigate(`/character/start/${myInfo.memberFamilyId}`)
     }
   }
 
@@ -41,13 +42,13 @@ const CharacterQuestion = () => {
       sumbitAskAnswerApiFunc()
     } else {
       setAskIndex(0)
-      navigate("/character/start")
+      navigate(`/character/start/${myInfo.memberFamilyId}`)
     }
   }
   // 그만할래요
   const quitDictionary = () => {
     setAskIndex(0)
-    navigate("/character/start")
+    navigate(`/character/start/${myInfo.memberFamilyId}`)
   }
 
   // 답변 제출

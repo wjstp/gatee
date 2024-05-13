@@ -27,11 +27,10 @@ export const getMyDataApi = async function (success: (res: AxiosResponse<any>) =
   await local.get("/members").then(success).catch(fail);
 }
 
-interface GetFamilyMemberApiRes {
-  familyId:string
-}
 // 가족 정보 가져오기
-export const getFamilyMemberApi = async function (data: GetFamilyMemberApiRes,
+export const getFamilyMemberApi = async function (data: {
+                                                    familyId:string
+                                                  },
                                                   success: (res: AxiosResponse<any>) => void,
                                                   fail: (err: AxiosError<any>) => void) {
   await local.get("/family", {params:data}).then(success).catch(fail);
@@ -43,3 +42,20 @@ export const naggingApi = async function (data: NaggingApiReq,
                                           fail: (err: AxiosError<any>) => void) {
   await local.post("/notifications/nagging", data).then(success).catch(fail);
 };
+
+interface EditProfileApiReq {
+  "name" : string;
+  "nickname" : string;
+  "birth" : string;
+  "birthType" : string;
+  "role" : string;
+  "familyId" : string;
+  "phoneNumber" : string;
+}
+// 정보 수정
+export const editProfileApi = async function (data: EditProfileApiReq,
+                                          success: (res: AxiosResponse<any>) => void,
+                                          fail: (err: AxiosError<any>) => void) {
+  await local.patch("/members/profile", data).then(success).catch(fail);
+};
+

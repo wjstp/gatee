@@ -1,17 +1,6 @@
 /* 응답타입: Res, 요청타입: Req, props타입: Props 뒤에 붙이고 사용하기 */
 
 // member
-export interface Member {
-  name: string;
-  nickname: string;
-  email: string;
-  role: string;
-  birth: string;
-  birthType: string;
-  fileUrl: string;
-  mood: string | null;
-  phoneNumber: string | null;
-}
 
 // 가족 api 정보
 export interface MemberApiReq {
@@ -40,6 +29,7 @@ export interface MemberApiRes {
   phoneNumber: string | null;
   fileUrl: string;
   isLeader: boolean;
+  memberFamilyId:number;
 }
 
 export interface MyMemberApiRes {
@@ -55,6 +45,7 @@ export interface MyMemberApiRes {
   phoneNumber: string | null;
   fileUrl: string;
   isLeader: boolean;
+  memberFamilyId:number;
 }
 
 export interface CreateFamilyApiReq {

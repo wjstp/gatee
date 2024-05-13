@@ -11,11 +11,10 @@ interface KoreanMentType {
 const MissionIndex = () => {
   const [missions, setMissions] = useState([
     {type: "target", content: "백문백답 10개 채우기", range: 0.1, complete: false},
-    {type: "good", content: "사진에 좋아요 누르기", range: 0.3, complete: false},
     {type: "pencil", content: "모의고사 풀기", range: 0.2, complete: false},
     {type: "calendar", content: "일정 올리기", range: 1, complete: true},
-    {type: "camera", content: "사진 올리기", range: 1, complete: true},
-    {type: "file", content: "앨범 만들기", range: 1, complete: true},
+    // {type: "camera", content: "사진 올리기", range: 1, complete: true},
+    {type: "file", content: "앨범에 사진 채우기", range: 1, complete: true},
 
   ]);
   // 슬라이더 세팅
@@ -70,20 +69,20 @@ const MissionIndex = () => {
     <div className="mission__index">
       <div className="improvement-oneline">
         <div className="flex-row">
-          <div className="text-orange">{familyName}</div>
-          <div>
-            는 다른 가족에 비해
+
+
+          <div className="improvement-comment">
+            <span className="text-orange">{familyName}는</span>
+            {improvement.map((item, i) => (
+              <React.Fragment key={i}>
+                {i > 0 && ", "}
+                {koreanMent[item]}
+              </React.Fragment>
+            ))}
+            {"가 부족해요"}
           </div>
         </div>
-        <div className="improvement-comment">
-          {improvement.map((item, i) => (
-            <React.Fragment key={i}>
-              {i > 0 && ", "}
-              {koreanMent[item]}
-            </React.Fragment>
-          ))}
-          {"가 부족해요"}
-        </div>
+
       </div>
       <Slider {...settings}>
         {improvement.map((item, i) => (<Improvement type={item} key={i}/>))}
