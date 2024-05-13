@@ -129,7 +129,6 @@ export interface ChatMessage {  // MESSAGE
   messageType: string;
   sender: string;
   currentTime: string;
-  totalMember: number;
   unReadMember: string[];
   content: string;
 }
@@ -139,20 +138,18 @@ export interface ChatFile { // FILE
   messageType: string;
   sender: string;
   currentTime: string;
-  totalMember: number;
   unReadMember: string[];
   files: string[];
 }
 
 export interface ChatAppointment {  // APPOINTMENT
   id: string;
+  appointmentId: number;
   messageType: string;
   sender: string;
   currentTime: string;
-  totalMember: number;
   unReadMember: string[];
   content: string;
-  participants: string[];
 }
 
 export interface ChatEmoji {  // EMOJI
@@ -160,7 +157,6 @@ export interface ChatEmoji {  // EMOJI
   messageType: string;
   sender: string;
   currentTime: string;
-  totalMember: number;
   unReadMember: string[];
   emojiId: string;
   content: string;
@@ -177,7 +173,6 @@ export interface ChatAlarm {  // ALARM
   messageType: string;
   sender: string;
   currentTime: string;
-  totalMember: number;
   unReadMember: string[];
   content: string;
 }
