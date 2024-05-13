@@ -34,6 +34,8 @@ public interface MemberFamilyRepository extends JpaRepository<MemberFamily, Long
     )
     List<MemberFamilyInfoRes> findMemberFamilyByFamilyId(UUID familyId);
     Optional<MemberFamily> findByMember(Member member);
+
+    boolean existsByMember_Id(UUID memberId);
     @Query("SELECT mf FROM MemberFamily mf WHERE mf.family = (SELECT m.family FROM MemberFamily m WHERE m.member = :member)")
     Optional<List<MemberFamily>> findAllWithFamilyByMember(Member member);
     Optional<List<MemberFamily>> findAllByFamily(Family family);
