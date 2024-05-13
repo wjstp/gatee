@@ -24,13 +24,13 @@ public class Mission extends BaseEntity {
     @Enumerated(EnumType.STRING)  // Enum 타입 일 경우 선언
     private Type type;
 
-    private String content;
-
     private boolean isComplete;
 
     private Integer nowRange;
 
     private Integer maxRange;
+
+    private Integer completedLevel;
 
     @ManyToOne
     @JoinColumn(name = "member_id")

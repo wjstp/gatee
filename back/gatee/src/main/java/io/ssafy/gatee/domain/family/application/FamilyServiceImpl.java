@@ -250,15 +250,19 @@ public class FamilyServiceImpl implements FamilyService {
     public FamilyCheckRes checkFamilyCode(String familyCode, UUID memberId) {
         ValueOperations<String, String> redisValueOperation = redisTemplate.opsForValue();
 
-        if (StringUtil.isEmpty(redisValueOperation.get(familyCode))) {
+        String familyId = redisValueOperation.get(familyCode);
+
+        if (familyId == null) {
             throw new ExpiredCodeException(EXPIRED_CODE);
         } else {
-            String familyId = redisValueOperation.get(familyCode);
             Family family = familyRepository.findById(UUID.fromString(familyId))
                     .orElseThrow(()-> new FamilyNotFoundException(FAMILY_NOT_FOUND));
+
             return FamilyCheckRes.builder()
                     .familyId(familyId)
-                    .familyName(family.getName()).build();
+                    .familyName(family.getName())
+                    .familyImageUrl(family.getFile().getUrl())
+                    .build();
         }
     }
 }

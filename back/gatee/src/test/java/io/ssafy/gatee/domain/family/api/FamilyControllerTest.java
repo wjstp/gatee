@@ -154,12 +154,13 @@ class FamilyControllerTest extends RestDocsTestSupport {
                 .willReturn(FamilyCheckRes.builder()
                         .familyName("가족 이름")
                         .familyId("가족 id")
+                        .familyImageUrl("가족 사진 URL")
                         .build());
 
         // when
-        ResultActions result = mockMvc.perform(post("/api/family/code")
+        ResultActions result = mockMvc.perform(get("/api/family/check")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(readJson("json/family/checkFamilyCode.json"))
+                .param("familyCode", "A1B2C3D4")
                 .accept(MediaType.APPLICATION_JSON)
 
         );
@@ -167,9 +168,13 @@ class FamilyControllerTest extends RestDocsTestSupport {
         // then
         result.andExpect(status().isOk())
                 .andDo(restDocs.document(
+                        queryParameters(
+                                parameterWithName("familyCode").description("가족 초대 코드").optional()
+                        ),
                         responseFields(
                                 fieldWithPath("familyId").type(JsonFieldType.STRING).description("가족 id"),
-                                fieldWithPath("familyName").type(JsonFieldType.STRING).description("가족 이름"))
+                                fieldWithPath("familyName").type(JsonFieldType.STRING).description("가족 이름"),
+                                fieldWithPath("familyImageUrl").type(JsonFieldType.STRING).description("가족 사진 URL"))
         ));
     }
 

@@ -60,13 +60,13 @@ public class FamilyController {
     }
 
     // 가족 코드 확인
-    @PostMapping("/code")
+    @GetMapping("/check")
     @ResponseStatus(HttpStatus.OK)
     public FamilyCheckRes checkFamilyCode(
-            @Valid @RequestBody FamilyJoinReq familyJoinReq,
+            @RequestParam String familyCode,
             @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {
-        return familyService.checkFamilyCode(familyJoinReq.familyCode(), customUserDetails.getMemberId());
+        return familyService.checkFamilyCode(familyCode, customUserDetails.getMemberId());
     }
 
     // 가족 합류
