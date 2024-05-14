@@ -214,9 +214,8 @@ class FamilyControllerTest extends RestDocsTestSupport {
                                 fieldWithPath("memberFamilyInfoList.[].birthType").type(JsonFieldType.STRING).description("가족 구성원 생일 타입 - 음력 / 양력").optional(),
                                 fieldWithPath("memberFamilyInfoList.[].isLeader").type(JsonFieldType.STRING).description("가족 구성원 가족장 여부").optional(),
                                 fieldWithPath("memberFamilyInfoList.[].role").type(JsonFieldType.STRING).description("가족 구성원 역할").optional(),
-                                fieldWithPath("memberFamilyInfoList.[].fileUrl").type(JsonFieldType.STRING).description("가족 구성원 프로필 이미지 url").optional()
-
-
+                                fieldWithPath("memberFamilyInfoList.[].profileImageUrl").type(JsonFieldType.STRING).description("가족 구성원 프로필 이미지 url").optional(),
+                                fieldWithPath("memberFamilyInfoList.[].phoneNumber").type(JsonFieldType.STRING).description("가족 구성원 프로필 이미지 url").optional()
                         )
                 ));
     }

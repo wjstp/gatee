@@ -248,6 +248,8 @@ public class MemberServiceImpl implements MemberService {
                 .birthType(String.valueOf(member.getBirthType()))
                 .mood(member.getMood())
                 .role(String.valueOf(memberFamily.getRole()))
+                .profileImageUrl(member.getFile().getUrl())
+                .phoneNumber(member.getPhoneNumber())
                 .build();
     }
 
