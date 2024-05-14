@@ -206,47 +206,48 @@
     }
 
 
-    .message-input--container {
-      @include flex-col;
+  }
+
+}
+  .message-input--container {
+    @include flex-col;
+    width: 100%;
+
+    .message-input--warning {
+      @include my-(0.3);
+      font-size: 0.8rem;
+      color: $orange600;
+      display: flex;
+      align-items: center;
+    }
+
+    .message-input--no--seen {
+      @include my-(0.3);
+      font-size: 0.8rem;
+      color: white;
+    }
+
+    .message-input {
       width: 100%;
+    }
 
-      .message-input--warning {
-        @include my-(0.3);
-        font-size: 0.8rem;
-        color: $orange600;
-        display: flex;
-        align-items: center;
-      }
-
-      .message-input--no--seen {
-        @include my-(0.3);
-        font-size: 0.8rem;
-        color: white;
-      }
-
-      .message-input {
-        width: 100%;
-      }
-
-      .message-input--explain {
-        @include flex-center;
-        @include mt-(0.5);
-        color: $gray200;
-      }
+    .message-input--explain {
+      @include flex-center;
+      @include mt-(0.5);
+      color: $gray200;
+    }
 
 
-      .send-message-button {
-        @include flex-center;
-        margin: 0 auto;
-        width: 2rem;
-        height: 2rem;
-        border-radius: 10rem;
-        background-color: $orange400;
-      }
+    .send-message-button {
+      @include flex-center;
+      margin: 0 auto;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 10rem;
+      background-color: $orange400;
+    }
 
-      :disabled {
-        background-color: $orange100;
-      }
+    :disabled {
+      background-color: $orange100;
     }
   }
-}
