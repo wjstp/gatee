@@ -1,23 +1,24 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import TopBar from '@components/TopBar';
 import BottomBar from "@components/BottomBar";
-import { Outlet, useLocation } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { useModalStore } from "@store/useModalStore";
 import { useMemberStore } from "@store/useMemberStore";
-import { useFamilyStore }  from "@store/useFamilyStore";
+import { useFamilyStore } from "@store/useFamilyStore";
 import { useChatStore } from "@store/useChatStore";
 import { getFamilyMemberApi, getMyDataApi } from "@api/member";
 import firebase from "../firebase-config";
 import 'firebase/database';
+import NotificationPopUp from "@components/NotificationPopup";
 
 const MainLayout = () => {
   const { showModal} = useModalStore();
   const { setMyInfo, myInfo } = useMemberStore();
   const { familyId, familyInfo,setFamilyId, setFamilyInfo, setFamilyName, setFamilyScore, setChatRoomId } = useFamilyStore();
   const { isShowBottomBar, setIsNewMessage } = useChatStore();
-  const chatRef = firebase.database().ref(`chat/${familyId}/messages`);
-  const location = useLocation();
+  const chatRef = firebase.database().ref(`chat/${ familyId }/messages`);
+  const { showNotification} = useModalStore()
 
   // 가족 데이터 저장 Api
   const saveFamilyData = (familyId: string) => {
@@ -80,31 +81,37 @@ const MainLayout = () => {
 
   return (
     <>
+      {/*알림*/}
+      {
+        showNotification ?
+          <NotificationPopUp/> :
+          null
+      }
       {/* 모달이 띄워진 상태라면 상단바를 회색으로 만듦 */}
       {
         showModal ?
           (
             <HelmetProvider>
-            <Helmet>
-              <meta name="theme-color" id="theme-color" content="#808080"/>
-            </Helmet>
-          </HelmetProvider>
+              <Helmet>
+                <meta name="theme-color" id="theme-color" content="#808080"/>
+              </Helmet>
+            </HelmetProvider>
           )
           :
           (
             <HelmetProvider>
-            <Helmet>
-              <meta name="theme-color" id="theme-color" content="#FEFEFE"/>
-            </Helmet>
-          </HelmetProvider>
+              <Helmet>
+                <meta name="theme-color" id="theme-color" content="#FEFEFE"/>
+              </Helmet>
+            </HelmetProvider>
           )
       }
 
       <TopBar></TopBar>
-      <div id={isShowBottomBar? "main" : "main-focus"}>
-        <Outlet />
+      <div id={isShowBottomBar ? "main" : "main-focus"}>
+        <Outlet/>
       </div>
-      { isShowBottomBar && <BottomBar></BottomBar> }
+      {isShowBottomBar && <BottomBar></BottomBar>}
     </>
   )
 }

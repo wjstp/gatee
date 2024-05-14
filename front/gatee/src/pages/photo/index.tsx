@@ -124,8 +124,10 @@ const PhotoIndex = () => {
       },
       res => {
         console.log(res)
+        if (albumMission) {
+          doMissionApiFunc(editPhotoIdList.length, albumName)
+        }
         editPhotoIdList.length = 0;
-
         navigate(`/photo/album/${albumId}/${albumName}`)
       },
       err => {
@@ -265,7 +267,7 @@ const PhotoIndex = () => {
 
   // 미션 수행
   const doMissionApiFunc = (amount: number, name: string | null) => {
-
+    console.log("doMissionApiFunc")
     // 0단계인 어린시절 사진, 1단계인 가족사진, 2단계인 내 사진 채우기 그 이후는 사진 올리기
     if (name === null || name === "어린 시절 사진" && albumMission?.completedLevel === 0
       || name === "가족 사진" && albumMission?.completedLevel === 1
@@ -273,11 +275,10 @@ const PhotoIndex = () => {
 
       // 올릴 수 있는 점수
       const maxAmount = getPossibleAmount(albumMission, amount)
-
+      console.log(maxAmount)
       // 미션 수행 API
       doMissionApi({type: "ALBUM", photoCount: maxAmount},
         res => {
-          console.log(res?.data)
           // 상태 저장
           increaseMissionRange("ALBUM", maxAmount)
         }, err => {

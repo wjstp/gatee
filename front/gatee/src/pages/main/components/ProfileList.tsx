@@ -5,6 +5,7 @@ import ProfileModal from "@pages/main/components/ProfileModal";
 import useModal from "@hooks/useModal";
 import getMoodEmoji from "@utils/getMoodEmoji";
 import {naggingApi} from "@api/notification";
+import Loading from "@components/Loading";
 
 interface ProfileItemProps {
   profileData: MemberApiRes,
@@ -16,7 +17,7 @@ const ProfileList = ({profileDataList}: { profileDataList: MemberApiRes[] }) => 
   const {isOpen, openModal, closeModal} = useModal();
   const [clickedProfile, setClickedProfile] = useState<MemberApiRes | null>(null);
   const navigate = useNavigate()
-
+  const [loading, setLoading] = useState(false);
   // 프로필 클릭했을 때
   const handleClickProfile = (profileData: MemberApiRes) => {
     // 상태 업데이트, 모달 켜주고, 모달 store 업데이트
@@ -46,6 +47,9 @@ const ProfileList = ({profileDataList}: { profileDataList: MemberApiRes[] }) => 
           console.log(res)
         }, err => {
           console.log(err)
+          // 로딩
+          setLoading(true)
+          setTimeout(()=>setLoading(false), 1000)
         }
       )
     }
@@ -66,6 +70,10 @@ const ProfileList = ({profileDataList}: { profileDataList: MemberApiRes[] }) => 
             null
         }
       </div>
+      {loading?
+      <Loading/>
+        :null
+      }
     </div>
   );
 };
