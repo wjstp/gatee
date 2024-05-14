@@ -15,6 +15,10 @@ import {useFamilyStore} from "@store/useFamilyStore";
 import Loading from "@components/Loading";
 import {usePhotoStore} from "@store/usePhotoStore";
 import {useShallow} from "zustand/react/shallow";
+import {useMissionStore} from "@store/useMissionStore";
+import {findAlbumMission, getPossibleAmount} from "@utils/photoMissionHelper";
+import {doMissionApi} from "@api/mission";
+import {useMemberStore} from "@store/useMemberStore";
 
 
 const PhotoIndex = () => {
@@ -22,9 +26,13 @@ const PhotoIndex = () => {
   const navigate = useNavigate()
   const params = useParams()
   const {familyId} = useFamilyStore()
+  const {myInfo} = useMemberStore()
   const [loading, setLoading] = useState(true)
+  const {missionList, increaseMissionRange} = useMissionStore()
+  // 앨범 미션
+  const albumMission = findAlbumMission(missionList)
+
   const {
-    detailPhotoGroup,
     addDetailPhotoGroup,
     removeDetailPhotos,
     removeAlbum,
@@ -39,7 +47,6 @@ const PhotoIndex = () => {
       addDetailAlbumPhotoGroup: state.addDetailAlbumPhotoGroup,
       removeAlbumDetailPhotos: state.removeAlbumDetailPhotos,
     })))
-
 
   // 상단 탭 상태 관리 -> 모든 사진 / 앨범사진
   const [activeTab, setActiveTab] = useState("album"); // 현재 경로를 기본값으로 설정
@@ -118,6 +125,7 @@ const PhotoIndex = () => {
       res => {
         console.log(res)
         editPhotoIdList.length = 0;
+
         navigate(`/photo/album/${albumId}/${albumName}`)
       },
       err => {
@@ -255,9 +263,38 @@ const PhotoIndex = () => {
     return matches ? matches.length : 0;
   };
 
-// 이미지 선택 처리
+  // 미션 수행
+  const doMissionApiFunc = (amount: number, name: string | null) => {
+
+    // 0단계인 어린시절 사진, 1단계인 가족사진, 2단계인 내 사진 채우기 그 이후는 사진 올리기
+    if (name === null || name === "어린 시절 사진" && albumMission?.completedLevel === 0
+      || name === "가족 사진" && albumMission?.completedLevel === 1
+      || name === `${myInfo.name}` && albumMission?.completedLevel === 2) {
+
+      // 올릴 수 있는 점수
+      const maxAmount = getPossibleAmount(albumMission, amount)
+
+      // 미션 수행 API
+      doMissionApi({type: "ALBUM", photoCount: maxAmount},
+        res => {
+          console.log(res?.data)
+          // 상태 저장
+          increaseMissionRange("ALBUM", maxAmount)
+        }, err => {
+          console.log(err)
+        })
+    }
+  }
+
+  // 이미지 선택 처리
   const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
     if (event.target.files && event.target.files.length > 0) {
+
+      // 미션 수행
+      if (albumMission && albumMission?.completedLevel >= 3) {
+        doMissionApiFunc(event.target.files.length, null)
+      }
+
       const files: File[] = Array.from(event.target.files);
       if (files) {
         // 여러 파일을 업로드할 수 있도록 multiple 속성이 설정
@@ -265,7 +302,7 @@ const PhotoIndex = () => {
           const resizedFile: File = (await imageResizer(file, 1000, 1000)) as File;
           console.log(resizedFile);
           const formData = new FormData();
-          formData.append("fileType", "MESSAGE");
+          formData.append("fileType", "ALBUM");
           formData.append('file', resizedFile);
           uploadImages(formData);
         }

@@ -2,6 +2,7 @@ package io.ssafy.gatee.domain.mission.entity;
 
 import io.ssafy.gatee.domain.base.BaseEntity;
 import io.ssafy.gatee.domain.member.entity.Member;
+import io.ssafy.gatee.domain.mission.dto.request.MissionTypeReq;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,22 +37,35 @@ public class Mission extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    public void increaseRange(Type type) {
+    public void increaseRange(MissionTypeReq missionTypeReq) {
         this.nowRange++;
 
-        if (type.equals(Type.ALBUM) || type.equals(Type.FEATURE)) {
+        if (missionTypeReq.type().equals(Type.ALBUM)) {
+            this.nowRange += missionTypeReq.photoCount() - 1;
+
+            if (this.nowRange >= (this.completedLevel + 1) * 10) {
+                this.isComplete = true;
+                this.completedLevel++;
+                this.maxRange += 10;
+            }
+        } else if (missionTypeReq.type().equals(Type.FEATURE)) {
             if (this.nowRange % 10 == 0) {
                 this.isComplete = true;
                 this.completedLevel++;
+                this.maxRange += 10;
             }
-        } else if (type.equals(Type.EXAM)) {
-            if (this.nowRange % 3 == 0) {
+        } else if (missionTypeReq.type().equals(Type.EXAM)) {
+            if (this.nowRange == (2 * this.completedLevel + 1)) {
                 this.isComplete = true;
                 this.completedLevel++;
+                this.maxRange += 2;
             }
         } else {
-            this.isComplete = true;
-            this.completedLevel++;
+            if (this.nowRange == Math.pow(2, this.completedLevel)) {
+                this.isComplete = true;
+                this.completedLevel++;
+                this.maxRange = (int) Math.pow(2, this.completedLevel);
+            }
         }
     }
 

@@ -58,7 +58,7 @@
     position: absolute;
     opacity: 0.7;
     z-index: -1;
-    bottom: 0rem;
+    bottom: 0;
   }
 
   .go-to-mission__button {
@@ -120,6 +120,14 @@
           background-color: white;
           font-weight: bold;
           color: $gray200;
+
+          .main-profile-item-nickname {
+            text-align: center;
+            width: 80%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
 
           .main-profile-wrapper {
             @include flex_center;

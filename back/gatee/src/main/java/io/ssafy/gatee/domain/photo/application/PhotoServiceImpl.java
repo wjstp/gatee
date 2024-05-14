@@ -153,8 +153,6 @@ public class PhotoServiceImpl implements PhotoService {
                 .build();
 
         photoRepository.save(photo);
-
-
         
         // 사진 등록시 가족들에게 알림
         pushNotificationService.sendPushOneToMany(PushNotificationFCMReq.builder()

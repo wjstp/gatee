@@ -3,6 +3,7 @@ package io.ssafy.gatee.domain.mission.application;
 import io.ssafy.gatee.domain.member.dao.MemberRepository;
 import io.ssafy.gatee.domain.member.entity.Member;
 import io.ssafy.gatee.domain.mission.dao.MissionRepository;
+import io.ssafy.gatee.domain.mission.dto.request.MissionTypeReq;
 import io.ssafy.gatee.domain.mission.dto.response.MissionListRes;
 import io.ssafy.gatee.domain.mission.entity.Mission;
 import io.ssafy.gatee.domain.mission.entity.Type;
@@ -39,12 +40,12 @@ public class MissionServiceImpl implements MissionService {
 
     // 미션 수행
     @Override
-    public void progressMission(UUID memberId, Type type) {
+    public void progressMission(UUID memberId, MissionTypeReq missionTypeReq) {
         Member member = memberRepository.getReferenceById(memberId);
 
-        Mission mission = missionRepository.findByMemberAndType(member, type);
+        Mission mission = missionRepository.findByMemberAndType(member, missionTypeReq.type());
 
-        mission.increaseRange(type);
+        mission.increaseRange(missionTypeReq);
     }
 
     // 미션 완료

@@ -13,6 +13,7 @@ import { useFamilyStore } from "@store/useFamilyStore";
 import dayjs from "dayjs";
 import { createFamilyCodeApi, getMyDataApi } from "@api/member";
 import { AxiosError, AxiosResponse } from "axios";
+import {getFamilyAnsweredAskApi} from "@api/dictionary";
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
@@ -34,6 +35,9 @@ const ProfileIndex = () => {
   const familyMember = familyInfo.find(member => member.email === email);
   const [isMe, setIsMe] = useState<boolean>(false);
   
+  // 백과사전이 있는지 조회하기 용
+  const [createdCharacter, setCreateCharacter] = useState<boolean>(false);
+
   // 나로 들어왔는지 확인
   useEffect(() => {
     // 내가 맞다면 상태 변경 및 정보 조회하기
@@ -42,11 +46,9 @@ const ProfileIndex = () => {
       saveMemberData();
     } else {
       setIsMe(false);
+      getFamilyAnsweredAsk();
     }
   }, [email]);
-  
-  // 백과사전이 있는지 조회하기 용
-  const [createdCharacter, setCreateCharacter] = useState<boolean>(false);
 
   // MUI 관련 코드 -> 슬라이드 다운 해서 내리기 기능 가능
   const toggleDrawer =
@@ -140,6 +142,25 @@ const ProfileIndex = () => {
   // 백과사전 이동
   const handleCharacter = (): void => {
     navigate(`/character`);
+  }
+
+  // 백과사전 푼 문제 조회
+  const getFamilyAnsweredAsk = () => {
+    if (familyMember) {
+      getFamilyAnsweredAskApi(
+        familyMember?.memberFamilyId,
+        (res: AxiosResponse<any>) => {
+          console.log("다른 사람 백과사전 푼 문제 상태", res);
+
+          if (res.data.length === 0) {
+            setCreateCharacter(true);
+          }
+        },
+        (err: AxiosError<any>) => {
+          console.log(err);
+        }
+      )
+    }
   }
 
   // 모의고사 예시
@@ -362,6 +383,7 @@ const ProfileIndex = () => {
       
       {/*백과사전 섹션*/}
       <div className="profile-index__character">
+
         {createdCharacter ? (
           <div className="character__created">
             <div className="created__title">
@@ -394,9 +416,12 @@ const ProfileIndex = () => {
                     className="character-box__btn-detail"
                     onClick={handleCharacter}
                   >
-                <span className="btn-detail--text">
-                  나의 백과사전 보러가기
-                </span>
+                    <span className="btn-detail__part--01">
+                      {familyMember?.nickname}
+                    </span>
+                    <span className="btn-detail__part--02">
+                      님의 백과사전 보러가기
+                    </span>
                   </button>
                 </div>
               </div>

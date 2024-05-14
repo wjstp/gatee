@@ -5,6 +5,7 @@ import java.util.UUID;
 public record ChatDto(
     MessageType messageType,
     String content,
+    String emojiId,
     String currentTime
 ) {
 }

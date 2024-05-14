@@ -53,7 +53,6 @@ include::{snippets}/member-controller-test/edit-profile-image/form-parameters.ad
 - Response
 
 include::{snippets}/member-controller-test/edit-profile-image/http-response.adoc[]
-include::{snippets}/member-controller-test/edit-profile-image/response-fields.adoc[]
 
 
 == 기분 상태 수정
@@ -749,6 +748,37 @@ include::{snippets}/mission-controller-test/complete-mission/query-parameters.ad
 - Response
 
 include::{snippets}/mission-controller-test/complete-mission/http-response.adoc[]
+
+
+---
+
+
+= Mission
+
+== 채팅방 사진 전체 조회
+
+- Request
+
+include::{snippets}/chat-room-controller-test/read-file-list-chat-room/http-request.adoc[]
+include::{snippets}/chat-room-controller-test/read-file-list-chat-room/path-parameters.adoc[]
+
+- Response
+
+include::{snippets}/chat-room-controller-test/read-file-list-chat-room/http-response.adoc[]
+include::{snippets}/chat-room-controller-test/read-file-list-chat-room/response-fields.adoc[]
+
+
+== 채팅방 사진 등록
+
+- Request
+
+include::{snippets}/chat-room-controller-test/save-file-list-chat-room/http-request.adoc[]
+include::{snippets}/chat-room-controller-test/save-file-list-chat-room/path-parameters.adoc[]
+include::{snippets}/chat-room-controller-test/save-file-list-chat-room/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/chat-room-controller-test/save-file-list-chat-room/http-response.adoc[]
 
 
 ---

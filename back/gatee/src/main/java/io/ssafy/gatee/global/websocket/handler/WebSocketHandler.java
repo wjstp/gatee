@@ -43,12 +43,17 @@ public class WebSocketHandler extends TextWebSocketHandler {
         ChatDto chatDto = objectMapper.readValue(message.getPayload(), ChatDto.class);
 
         if (chatDto.messageType().equals(MESSAGE)) {
-            chatService.sendMessage(chatDto,memberId);
+            chatService.sendMessage(chatDto, memberId);
         }
 
         if (chatDto.messageType().equals(APPOINTMENT)) {
             log.info("약속 전송!");
             chatService.createAppointment(chatDto, memberId);
+        }
+
+        if (chatDto.messageType().equals(EMOJI)) {
+            log.info("이모지 전송");
+            chatService.sendEmozi(chatDto, memberId);
         }
     }
 

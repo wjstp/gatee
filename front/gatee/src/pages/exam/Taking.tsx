@@ -6,8 +6,10 @@ import ExamLoading from "@pages/exam/components/ExamLoading";
 import {TransformedQuestionData} from "@type/index";
 import {saveExamResultApi} from "@api/exam";
 import {getNewExamApi} from "@api/exam";
-import {transformQuestionData,getExamScore,setAnswerAtIndex} from "@utils/examHelpers"
+import {transformQuestionData, getExamScore, setAnswerAtIndex} from "@utils/examHelpers"
 import {questionList} from "@constants/index";
+import ExamNotFound from "@pages/exam/components/ExamNotFound";
+import {doMissionApi} from "@api/mission";
 
 
 const ExamTaking = () => {
@@ -16,6 +18,7 @@ const ExamTaking = () => {
   const [myAnswerList, setMyAnswerList] = useState<number[]>([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
   const [startLoading, setStartLoading] = useState<boolean>(true);
   const [endLoading, setEndLoading] = useState<boolean>(false);
+  const [notFound, setNotFound] = useState<boolean>(false);
 
   // 정답
   const [correctAnswerSheet, setCorrectAnswerSheet] = useState<number[]>([]);
@@ -43,7 +46,7 @@ const ExamTaking = () => {
         return {
           ...item,
           choiceNumber: myAnswerList[index],
-          question:`${item.nickname}님의 ${item.question}은?`
+          question: `${item.nickname}님의 ${item.question}은?`
         };
       });
       console.log(updatedTransformedData)
@@ -73,8 +76,17 @@ const ExamTaking = () => {
       res => {
         console.log(res)
         const {transformedData, answerNumArray} = transformQuestionData(res.data)
-        setTransformedData(transformedData)
-        setCorrectAnswerSheet(answerNumArray)
+        if (res.data.length > 9) {
+          setTransformedData(transformedData)
+          setCorrectAnswerSheet(answerNumArray)
+        } else {
+          setTimeout(()=> {
+              setStartLoading(false)
+              setNotFound(true)
+            }
+          ,2000)
+
+        }
       },
       err => {
         console.log(err)
@@ -86,6 +98,21 @@ const ExamTaking = () => {
 
   }, []);
 
+  // 미션 수행 api
+  const doMissionApiFunc = () => {
+    doMissionApi({type: "EXAM", photoCount: null},
+      res => {
+        console.log(res.data)
+        setTimeout(() => {
+            setEndLoading(false)
+            navigate(`/exam/scored/${res.data.examId}`)
+          }
+          , 1000)
+
+      }, err => {
+        console.log(err)
+      })
+  }
 
   // 로딩 끝내기
   useEffect(() => {
@@ -100,24 +127,23 @@ const ExamTaking = () => {
         score: getExamScore(myAnswerList, correctAnswerSheet)
       }, res => {
         console.log(res)
+        // 미션 수행 api
+        doMissionApiFunc()
 
-        setTimeout(() => {
-            setEndLoading(false)
-            navigate(`/exam/scored/${res.data}`)
-          }
-          , 1000)
 
       }, err => {
         console.log(err)
 
         setTimeout(() => {
             setEndLoading(false)
+
             navigate("/exam/grade")
           }
           , 1000)
       })
 
     }
+
   }, [transformedData]);
 
   return (
@@ -128,16 +154,19 @@ const ExamTaking = () => {
         endLoading ?
           <ExamLoading type="end"/>
           :
-          <>
-            <Header/>
-            <QuestionItemTaking myAnswerList={myAnswerList}
-                                handleNextIndex={handleNextIndex}
-                                handleBeforeIndex={handleBeforeIndex}
-                                questionNumber={questionIndex}
-                                questionItem={transformedData[questionIndex]}/>
+          notFound ?
+            <ExamNotFound/>
+            :
+            <>
+              <Header/>
+              <QuestionItemTaking myAnswerList={myAnswerList}
+                                  handleNextIndex={handleNextIndex}
+                                  handleBeforeIndex={handleBeforeIndex}
+                                  questionNumber={questionIndex}
+                                  questionItem={transformedData[questionIndex]}/>
 
-            <MyAnswerSheet myAnswerList={myAnswerList} handleProblem={handleProblem}/>
-          </>
+              <MyAnswerSheet myAnswerList={myAnswerList} handleProblem={handleProblem}/>
+            </>
       }
 
     </div>

@@ -1,51 +1,36 @@
 import React from "react";
-import FileIcon from "@assets/images/icon3D/file.png"
 import CameraIcon from "@assets/images/icon3D/camera.png"
 import TargetIcon from "@assets/images/icon3D/target.png"
 import CalendarIcon from "@assets/images/icon3D/calendar.png"
-import GoodIcon from "@assets/images/icon3D/good.png"
 import PencilIcon from "@assets/images/icon3D/pencil.png"
 import {Link} from "react-router-dom";
 import {FaCheckCircle} from "react-icons/fa";
 
 import ProgressBar from "@ramonak/react-progress-bar";
+import getContentFromMission from "@utils/getContentFromMission";
+import {completeMissionApi} from "@api/mission";
+import {MissionListApiReq} from "@type/index";
 
-// content, nowRange, MaxRange, type, isCompleted
 
-type Mission = {
-  content: string;
-  range: number;
-
-  complete: boolean;
-  type: string
-};
-const MissionItem = ({mission}: { mission: Mission }) => {
+const MissionItem = ({mission, handleSubmitMission}: { mission: MissionListApiReq, handleSubmitMission: () => void }) => {
   const iconImg = () => {
     let icon;
     let destination;
 
     switch (mission.type) {
-      case "file":
-        icon = <img className="iconimg" src={FileIcon} alt=""/>;
-        destination = "/photo";
-        break;
-      case "camera":
+      case "ALBUM":
         icon = <img className="iconimg" src={CameraIcon} alt=""/>;
         destination = "/photo";
         break;
-      case "target":
+      case "FEATURE":
         icon = <img className="iconimg" src={TargetIcon} alt=""/>;
-        destination = "/profile";
+        destination = "/character/question";
         break;
-      case "calendar":
+      case "SCHEDULE":
         icon = <img className="iconimg" src={CalendarIcon} alt=""/>;
-        destination = "calender";
+        destination = "/schedule";
         break;
-      case "good":
-        icon = <img className="iconimg" src={GoodIcon} alt=""/>;
-        destination = "/photo";
-        break;
-      case "pencil":
+      case "EXAM":
         icon = <img className="iconimg" src={PencilIcon} alt=""/>;
         destination = "/exam";
         break;
@@ -59,24 +44,36 @@ const MissionItem = ({mission}: { mission: Mission }) => {
   };
 
   const {icon, destination} = iconImg();
+  const content = getContentFromMission(mission.type, mission.completedLevel);
+
+  // 미션 제출
+  const submitMission = () => {
+    completeMissionApi({type: mission.type}, res => {
+      console.log(res)
+      handleSubmitMission()
+    }, err => {
+      console.log(err)
+    })
+  }
+
   return (
     <div>
       <div className="mission__item">
         {icon}
-        {!mission.complete ?
+        {!mission.isComplete ?
           <div className="mission-content">
             {/* 미션명 + 미션 하러가기 버튼 */}
             <div className="mission__name-container">
-              <div className="title">{mission.content}
+              <div className="title">{content}
               </div>
               <Link to={destination} className="mission-goto">하러 가기</Link>
             </div>
 
             {/* 진행 바 */}
             {/*공식 문서 https://www.npmjs.com/package/@ramonak/react-progress-bar*/}
-            <ProgressBar completed={mission.range * 100}
+            <ProgressBar completed={mission.nowRange}
                          height={"13px"}
-                         maxCompleted={100}
+                         maxCompleted={mission.maxRange}
                          bgColor={"#FFBE5C"}
                          baseBgColor={"#f6f6f6"}
                          isLabelVisible={false}
@@ -87,12 +84,12 @@ const MissionItem = ({mission}: { mission: Mission }) => {
             <div className="mission__name-container">
               {/*미션 명*/}
               <div className="title-check-align">
-                <div className="title">{mission.content}
+                <div className="title">{content}
                 </div>
                 <FaCheckCircle color="#FFBE5C" size={18} className="check-icon"/>
               </div>
               {/*미션 완료 버튼*/}
-              <button className="mission__complete-button">다음 미션</button>
+              <button onClick={() => submitMission()} className="mission__complete-button">다음 미션</button>
             </div>
 
           </div>

@@ -342,6 +342,7 @@ export interface GroupPhotoData {
   imageUrl: string | null,
   PhotoId: number | null
 }
+
 export interface MonthYearThumbnailPhotoData {
   createdAt: string,
   imageUrl: string,
@@ -351,6 +352,7 @@ export interface MonthYearThumbnailPhotoData {
 export interface MonthYearPhotoTabProps {
   monthYearPhotoData: MonthYearThumbnailPhotoData
 }
+
 export interface GroupPhotoItemProps {
   groupPhotoData: GroupPhotoData
 }
@@ -401,13 +403,13 @@ export interface DeletePhotoApiReq {
 
 // 모의고사 api 관련
 export interface ExamResult {
-  examId:string|number;
+  examId: string | number;
   score: number;
   createdAt: string;
 }
 
 export interface TransformedQuestionData {
-  nickname:string,
+  nickname: string,
   question: string;
   answerList: string[];
   correctNumber: number;
@@ -415,32 +417,47 @@ export interface TransformedQuestionData {
 }
 
 export interface QuestionData {
-  nickname:string;
+  nickname: string;
   questionWord: string;
   wrongAnswers: string[];
   correctAnswer: string;
 }
 
 export interface ExamProblem {
-  "question" : string,
-  "answerList" : string[],
-  "choiceNumber" : number|string,
-  "correctNumber" : number|string
+  "question": string,
+  "answerList": string[],
+  "choiceNumber": number | string,
+  "correctNumber": number | string
 }
 
 export interface SaveExamResultApiReq {
-  examResults : ExamProblem[],
-  score:number
+  examResults: ExamProblem[],
+  score: number
 }
 
 // 백문백답 api 관련
 export interface SaveAskAnswerApiReq {
-  featureId:number,
-  answer:string
+  featureId: number,
+  answer: string
 }
 
 export interface Answer {
-  featureId:number;
+  featureId: number;
   question: string;
   answer: string;
+}
+
+// 미션 api 관련
+export interface MissionListApiReq {
+  id: number;
+  type: string;
+  isComplete: boolean;
+  nowRange: number;
+  maxRange: number;
+  completedLevel: number;
+}
+
+export interface DoMission {
+  type: string;
+  photoCount: number | null;
 }

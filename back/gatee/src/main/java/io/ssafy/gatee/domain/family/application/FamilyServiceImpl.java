@@ -2,6 +2,8 @@ package io.ssafy.gatee.domain.family.application;
 
 import io.ssafy.gatee.domain.album.dao.AlbumRepository;
 import io.ssafy.gatee.domain.album.entity.Album;
+import io.ssafy.gatee.domain.chat_room.dao.ChatRoomRepository;
+import io.ssafy.gatee.domain.chat_room.entity.ChatRoom;
 import io.ssafy.gatee.domain.family.dao.FamilyRepository;
 import io.ssafy.gatee.domain.family.dto.request.FamilyJoinReq;
 import io.ssafy.gatee.domain.family.dto.request.FamilyNameReq;
@@ -64,6 +66,8 @@ public class FamilyServiceImpl implements FamilyService {
 
     private final AlbumRepository albumRepository;
 
+    private final ChatRoomRepository chatRoomRepository;
+
     private final String DEFAULT_FAMILY_IMAGE_URL = "https://spring-learning.s3.ap-southeast-2.amazonaws.com/default/family.jpg";
 
     // 가족 생성
@@ -81,7 +85,7 @@ public class FamilyServiceImpl implements FamilyService {
 
         File imageFile;
 
-        if (StringUtil.isEmpty(fileType.toString()) || file.isEmpty()) {
+        if (fileType == null || file == null) {
             File defaultFile = File.builder()
                     .name("family")
                     .originalName("family.jpg")
@@ -98,11 +102,18 @@ public class FamilyServiceImpl implements FamilyService {
             fileRepository.save(imageFile);
         }
 
+        ChatRoom chatRoom = ChatRoom.builder().build();
+
         Family family = familyRepository.save(Family.builder()
                 .name(name)
                 .file(imageFile)
                 .score(0)
+                .chatRoom(chatRoom)
                 .build());
+
+        chatRoom.saveFamily(family);
+
+        chatRoomRepository.save(chatRoom);
 
         MemberFamily memberFamily = MemberFamily.builder()
                 .member(member)
@@ -214,8 +225,6 @@ public class FamilyServiceImpl implements FamilyService {
             List<MemberFamilyInfoRes> memberFamilyInfoList = memberFamilies.stream().map(memberFamily -> MemberFamilyInfoRes.builder()
                     .memberId(memberFamily.getMember().getId())
                     .memberFamilyId(memberFamily.getId())
-                    .fileUrl(Objects.nonNull(memberFamily.getMember().getFile())?
-                            memberFamily.getMember().getFile().getUrl() : null)
                     .birth(memberFamily.getMember().getBirth())
                     .name(memberFamily.getMember().getName())
                     .nickname(memberFamily.getMember().getNickname())
@@ -224,10 +233,13 @@ public class FamilyServiceImpl implements FamilyService {
                     .mood(memberFamily.getMember().getMood())
                     .isLeader(memberFamily.isLeader())
                     .birthType(memberFamily.getMember().getBirthType())
+                    .profileImageUrl(memberFamily.getMember().getFile().getUrl())
+                    .phoneNumber(memberFamily.getMember().getPhoneNumber())
                     .build()).toList();
             return FamilyInfoRes.builder()
                     .name(family.getName())
                     .familyScore(family.getScore())
+                    .familyImageUrl(family.getFile().getUrl())
                     .memberFamilyInfoList(memberFamilyInfoList)
                     .build();
         }

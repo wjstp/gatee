@@ -28,6 +28,10 @@
       color: $orange500;
     }
 
+    &-chat {
+      position: relative;
+    }
+
     &-home {
       @include flex-col;
       @include flex-center;
