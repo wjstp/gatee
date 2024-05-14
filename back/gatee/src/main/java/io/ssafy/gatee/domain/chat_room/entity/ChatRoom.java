@@ -1,9 +1,7 @@
-package io.ssafy.gatee.domain.chatroom_file.entity;
+package io.ssafy.gatee.domain.chat_room.entity;
 
 import io.ssafy.gatee.domain.base.BaseEntity;
-import io.ssafy.gatee.domain.chatroom.entity.ChatRoom;
 import io.ssafy.gatee.domain.family.entity.Family;
-import io.ssafy.gatee.domain.file.entity.File;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,17 +15,16 @@ import org.hibernate.annotations.SQLRestriction;
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLRestriction("status=TRUE")
-public class ChatRoomFile extends BaseEntity {
+public class ChatRoom extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "chat_room_id")
-    private ChatRoom chatRoom;
+    @OneToOne(mappedBy = "chatRoom")
+    private Family family;
 
-    @ManyToOne
-    @JoinColumn(name = "file_id")
-    private File file;
+    public void saveFamily(Family family) {
+        this.family = family;
+    }
 }
