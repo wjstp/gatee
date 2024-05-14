@@ -1,13 +1,16 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import {useDictStore} from "@store/useDictStore";
-import {sumbitAskAnswerApi} from "@api/dictionary";
+import {getNewDictAskApi, sumbitAskAnswerApi} from "@api/dictionary";
 import TextField from "@mui/material/TextField";
 import {useMemberStore} from "@store/useMemberStore";
+import {doMissionApi} from "@api/mission";
+import NewQuestionNotFound from "@pages/character/components/NewQuestionNotFound";
 
 const CharacterQuestion = () => {
   const navigate = useNavigate();
-  const {askList, askIndex, setAskIndex} = useDictStore()
+  const {askList, askIndex, setAskIndex,setAskList} = useDictStore()
+  const [isEmpty, setEmpty] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const {myInfo} = useMemberStore()
   const muiFocusCustom = {
@@ -24,7 +27,7 @@ const CharacterQuestion = () => {
       }
     }
   };
-
+  const [isLoading, setIsLoading] = useState(true);
 
   // 건너뛰기 버튼
   const skip = () => {
@@ -41,8 +44,8 @@ const CharacterQuestion = () => {
     if (askIndex < askList.length - 1) {
       sumbitAskAnswerApiFunc()
     } else {
+      sumbitAskAnswerApiFunc()
       setAskIndex(0)
-      navigate(`/character/start/${myInfo.memberFamilyId}`)
     }
   }
   // 그만할래요
@@ -58,58 +61,95 @@ const CharacterQuestion = () => {
         featureId: askList[askIndex].featureId,
         answer: inputValue
       }, res => {
-        console.log(res)
+        console.log(res.data)
         console.log("제출");
         console.log("다음 질문");
         setAskIndex(askIndex + 1)
         setInputValue("")
+        // 미션 수행
+        doMissionApiFunc()
       }, err => {
         console.log(err)
       }
     )
   }
 
+  // 미션 수행 api
+  const doMissionApiFunc = () => {
+    doMissionApi({type: "FEATURE", photoCount: null},
+      res => {
+        console.log(res.data)
+        if (askIndex >= askList.length - 1) {
+          navigate(`/character/start/${myInfo.memberFamilyId}`)
+        }
+      }, err => {
+        console.log(err)
+      })
+  }
+
+
+  useEffect(() => {
+    getNewDictAskApi(res => {
+        console.log(res)
+        setAskList(res.data)
+        if (res.data.length === 0) {
+          setEmpty(true)
+        }
+      },
+      err => {
+        console.log(err)
+      }
+    )
+  }, []);
   return (
     <div className="character__question">
+      {isLoading?
+        null:
+        isEmpty ?
+        <>
+          <NewQuestionNotFound/>
 
-      {/*  그만두기 버튼 */}
-      <div className="skipButton"
-           onClick={() => quitDictionary()}
-      >
-        그만할래요
-      </div>
+        </> :
+        <>
+          {/*  그만두기 버튼 */}
+          <div className="skipButton"
+               onClick={() => quitDictionary()}
+          >
+            그만할래요
+          </div>
 
-      {/*  문제 명 */}
-      <h1>{askList[askIndex].question}</h1>
+          {/*  문제 명 */}
+          <h1>{askList[askIndex]?.question}</h1>
 
-      {/*  입력란 */}
-      <TextField value={inputValue}
-                 onChange={(e) => setInputValue(e.target.value)}
-                 type="text"
-                 placeholder="답변을 입력해 주세요"
-                 sx={muiFocusCustom}
-                 autoFocus
-                 multiline
-                 onClick={(event) => event.stopPropagation()}/>
-      {/*  다음 버튼 */}
-      <button className="orangeButtonLarge" onClick={submitHandler}>
-        {askIndex < askList.length - 1 ? "다음" : "제출"}
-      </button>
+          {/*  입력란 */}
+          <TextField value={inputValue}
+                     onChange={(e) => setInputValue(e.target.value)}
+                     type="text"
+                     placeholder="답변을 입력해 주세요"
+                     sx={muiFocusCustom}
+                     autoFocus
+                     multiline
+                     onClick={(event) => event.stopPropagation()}/>
+          {/*  다음 버튼 */}
+          <button className="orangeButtonLarge" onClick={submitHandler}>
+            {askIndex < askList.length - 1 ? "다음" : "제출"}
+          </button>
 
 
-      {/*  건너뛰기 버튼 */}
-      {askIndex < askList.length - 1 ?
-        <p className="skipButton flex-center"
-           onClick={skip}>
-          건너뛰기
-        </p>
-        :
-        <p className="skipButton flex-center"
-           onClick={skip}>
-          끝내기
-        </p>
-      }
+          {/*  건너뛰기 버튼 */}
+          {askIndex < askList.length - 1 ?
+            <p className="skipButton flex-center"
+               onClick={skip}>
+              건너뛰기
+            </p>
+            :
+            <p className="skipButton flex-center"
+               onClick={skip}>
+              끝내기
+            </p>
+          }
 
+        </>}
 
     </div>
   );
