@@ -40,7 +40,7 @@ public class ExamServiceImpl implements ExamService {
     public List<ExamRes> readExam(UUID memberId) {
         List<UUID> familyMemberIdExcludeMe = memberFamilyRepository.findMyFamily(memberId);
 
-        List<MemberFeature> randomFeature = memberFeatureRepository.findRandomMemberFeature(familyMemberIdExcludeMe, PageRequest.of(0, 20));
+        List<MemberFeature> randomFeature = memberFeatureRepository.findRandomMemberFeature(familyMemberIdExcludeMe, PageRequest.of(0, 10));
 
         return randomFeature.stream().map(memberFeature -> ExamRes.builder()
                 .nickname(memberFeature.getMember().getNickname())

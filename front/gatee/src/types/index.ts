@@ -544,3 +544,16 @@ export interface DoMission {
   type: string;
   photoCount: number | null;
 }
+
+// 알림 API 관련
+export interface NotificationRes {
+  typeId: number,
+  title: string,
+  notificationId: string
+  senderId: string
+  type: string
+  content: string
+  isCheck: boolean,
+  createdAt: string,
+  senderImageUrl:string
+}

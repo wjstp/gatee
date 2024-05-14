@@ -2,14 +2,20 @@
 @use '../components/index' as *;
 
 .notification-tab--container {
-  @include mt-(0.5);
+
   position: relative;
   height: 100%;
 
   .notification--top--container {
+    position: fixed;
     @include flex-row;
-    @include mx-(1);
-    @include ml-(2);
+    @include mt-(-0.5);
+    @include py-(0.5);
+    @include pr-(1);
+    @include pl-(2);
+
+    width: 100%;
+    background-color: #fff;
     justify-content: space-between;
     align-items: center;
 
@@ -19,42 +25,66 @@
     }
   }
 
-  .notification-item--container {
-    @include flex-row;
-    @include p-(1.5);
-    @include py-(1.2);
+  .read {
+    background-color: $gray50;
+  }
 
-    height: 5.5rem;
-    align-items: center;
-    gap: 1rem;
+  .notification-list-container {
 
-    .unread {
-      background-color: $orange100;
-    }
+    @include pt-(3);
+
+    .notification-item--container {
+      @include flex-row;
+      @include p-(1.5);
+      @include py-(1.2);
 
 
-    .notification-item-profile--img {
-      width: 3rem;
-      height: 3rem;
-      object-fit: cover;
-      border-radius: 50%;
-    }
+      height: 5.5rem;
+      align-items: center;
+      gap: 1rem;
 
-    .notification-item--content {
-      @include flex-col;
+      .notification-item-profile--img {
+        width: 3rem;
+        height: 3rem;
+        object-fit: cover;
+        border-radius: 50%;
+      }
 
-      flex-grow: 1;
-      height: 100%;
-      //background-color: red;
-      justify-content: space-between;
+      .notification-item--content-container {
+        @include flex-col;
 
-      .notification-item--top--container {
-        @include flex-row;
+        flex-grow: 1;
+        height: 100%;
+        //background-color: red;
         justify-content: space-between;
+
+        .notification-item--top--container {
+          @include flex-row;
+          justify-content: space-between;
+
+          .notification-item-title {
+            font-weight: 500;
+            //color: $orange500;
+          }
+        }
+
+        .notification-item-content {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          width: 80%;
+        }
       }
     }
   }
 
+  .notification-scroll-finish-explain {
+    @include flex-center;
+    @include p-(1);
+
+    color: $gray100;
+    background-color: $gray50;
+  }
 
 }
 
@@ -114,40 +144,58 @@
     }
   }
 
-
 }
 
+.nagging-modal-bg {
+  @extend %modal-overlay;
 
-.move-up--animation {
-  animation-name: fadeInUP;
-  animation-duration: 0.5s;
-  animation-fill-mode: both;
-}
+  .nagging-modal-content--container {
+    @extend %modal-content;
+    @include p-(2);
+    @include mx-(2);
 
-@keyframes fadeInUP {
-  from {
-    opacity: 1;
-    transform: translateY(-100dvh);
+    @include flex-col;
+    align-items: start;
+
+    .nagging-modal-title {
+      @include mb-(0.8);
+
+      font-size: 1.5rem;
+    }
+
+    .nagging-modal-content {
+      font-size: 1.3rem;
+    }
+
+    .nagging-modal-btn-container {
+      @include mt-(1);
+
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      gap: 1rem;
+
+      .btn {
+        @include px-(0.8);
+        @include py-(0.6);
+
+        flex-basis: fit-content;
+        font-size: 1.1rem;
+        font-weight: bold;
+        border-radius: 5rem;
+      }
+
+      .orange {
+        flex-grow: 6;
+        background-color: $orange500;
+        color: white;
+      }
+
+      .plane {
+        flex-grow: 5;
+        border: 1px solid $gray100;
+      }
+    }
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
-.move-down--animation {
-  animation-name: fadeOutDown;
-  animation-duration: 0.5s;
-  animation-fill-mode: both;
-}
-
-@keyframes fadeOutDown {
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(-100dvh);
-  }
-}
