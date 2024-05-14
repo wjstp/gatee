@@ -5,6 +5,7 @@ import { useFamilyStore } from "@store/useFamilyStore";
 import basicFamily from "@assets/images/profile/family.jpg";
 import ProfileCropper from "@pages/profile/components/Cropper";
 import useModal from "@hooks/useModal";
+import { imageResizer } from "@utils/imageResizer";
 
 const SignupFamilySet = () => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -36,8 +37,10 @@ const SignupFamilySet = () => {
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>)=> {
     const file: File | null = e.target.files ? e.target.files[0] : null;
     if (file) {
+      const resizedFile: File = (await imageResizer(file, 2000, 2000)) as File;
       // 크롭할 이미지 넣기
-      const jpgUrl = URL.createObjectURL(file);
+      const jpgUrl = URL.createObjectURL(resizedFile);
+
       setCropImage(jpgUrl);
       // 모달 열기
       openModal();

@@ -50,7 +50,8 @@ const SignupMemberSetRole = () => {
     } else {
       navigate("/signup/member-set/check", {
         state: {
-          icon
+          icon,
+          previous: "member-set"
         }
       })
     }

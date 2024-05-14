@@ -4,7 +4,6 @@
 $chat-input-height: 3rem;
 
 .chat {
-  @extend %modal-fade-in;
   @include flex-col;
 
   height: 100%;

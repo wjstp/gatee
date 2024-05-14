@@ -1,4 +1,5 @@
 @use '../abstracts/index' as *;
+@use '../components/index' as *;
 
 .onboarding__container-center {
   justify-content: center;
@@ -81,7 +82,7 @@
       @include flex_center;
 
       height: 10%;
-      width: 100vw;
+      width: 70%;
 
       &:active {
         opacity: 0.5;
@@ -110,6 +111,8 @@
 
 // 표시줄
 .onboarding__dotContainer {
+  @extend %modal-fade-in;
+
   display: flex;
   gap: 10px;
   justify-content: center;

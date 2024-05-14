@@ -64,7 +64,7 @@ const BubbleChatAppointment = (props: ChatAppointmentProps) => {
   const getParticipantsInfo = (id: string, index: number) => {
     const userInfo: null | MemberApiReq = getUserInfo(familyInfo, id);
 
-    return <Avatar src={userInfo?.fileUrl} alt={userInfo?.nickname} key={index}/>;
+    return <Avatar src={userInfo?.profileImageUrl} alt={userInfo?.nickname} key={index}/>;
   }
 
   useEffect(() => {

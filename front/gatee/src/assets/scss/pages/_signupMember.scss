@@ -1022,11 +1022,11 @@
     flex-direction: column;
 
     .title__header {
-      font-size: 30px;
+      font-size: 28px;
 
       .title__part--01 {
         font-weight: bold;
-        font-size: 35px;
+        font-size: 30px;
       }
 
       .title__part--02 {
@@ -1035,7 +1035,7 @@
 
     .title__body {
       margin-top: 1%;
-      font-size: 30px;
+      font-size: 28px;
 
       .title__part--03 {
       }
@@ -1043,20 +1043,21 @@
   }
 
   &__img {
-    height: 40%;
-    width: 100%;
-    margin-left: 19%;
-    margin-top: 10%;
+    height: 30%;
+    width: 70%;
+    margin-left: 5%;
 
     .img {
-
+      margin-top: 10%;
+      height: 100%;
+      width: 100%;
     }
   }
 
   &__btn {
     @include flex_center;
 
-    width: 100%;
+    width: 80%;
 
     .btn-next {
       @extend %orange-button-large;
