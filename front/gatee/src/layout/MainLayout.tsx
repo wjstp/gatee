@@ -14,7 +14,7 @@ import 'firebase/database';
 const MainLayout = () => {
   const { showModal} = useModalStore();
   const { setMyInfo, myInfo } = useMemberStore();
-  const { familyId, familyInfo,setFamilyId, setFamilyInfo, setFamilyName, setFamilyScore } = useFamilyStore();
+  const { familyId, familyInfo,setFamilyId, setFamilyInfo, setFamilyName, setFamilyScore, setChatRoomId } = useFamilyStore();
   const { isShowBottomBar, setIsNewMessage } = useChatStore();
   const chatRef = firebase.database().ref(`chat/${familyId}/messages`);
   const location = useLocation();
@@ -28,6 +28,7 @@ const MainLayout = () => {
         setFamilyInfo(res.data.memberFamilyInfoList);
         setFamilyName(res.data.name);
         setFamilyScore(res.data.familyScore);
+        setChatRoomId(res.data.chatRoomId);
       },
       (err) => {
         console.error(err);

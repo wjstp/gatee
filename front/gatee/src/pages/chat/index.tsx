@@ -35,7 +35,6 @@ const ChatIndex = () => {
 
   const { familyId, familyInfo } = useFamilyStore();
   const { myInfo } = useMemberStore();
-  const { setIsNewMessage } = useChatStore();
 
   const PAGE_SIZE: number = 30;
   const chatRef = firebase.database().ref(`chat/${familyId}/messages`);
@@ -45,7 +44,6 @@ const ChatIndex = () => {
   const [isGetAllData, setIsGetAllData] = useState<boolean>(false);
   const [isEntryChat, setIsEntryChat] = useState<boolean>(false);
 
-  const [isShowScrollDownButton, setIsShowScrollDownButton] = useState(false);
   const [isShowPreviewMessage, setIsShowPreviewMessage] = useState<boolean>(false);
   const [previewMessage, setPreviewMessage] = useState<{ sender: string | undefined, content: string } | null>(null);
   const bottomRef = useRef<HTMLDivElement | null>(null);
@@ -66,7 +64,6 @@ const ChatIndex = () => {
     }
   }, []);
 
-  // 채팅방 입장 시 메시지 조회
   useEffect(() => {
     if (familyId) {
       // Firebase 실시간 이벤트 리스너 등록
@@ -110,6 +107,7 @@ const ChatIndex = () => {
       return;
     }
 
+    // 소켓이 정상 종료되지 않았다면
     // 재연결 요청 횟수 증가
     reconnectAttempts++;
     

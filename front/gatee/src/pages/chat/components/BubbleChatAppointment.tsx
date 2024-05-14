@@ -10,7 +10,7 @@ import getUserInfo from "@utils/getUserInfo";
 import { useFamilyStore } from "@store/useFamilyStore";
 import { useMemberStore } from "@store/useMemberStore";
 import { useChatStore } from "@store/useChatStore";
-import { getParticipantsApi, applyParticipationApi } from "@api/chat";
+import { getAppointmentParticipantsApi, applyAppointmentParticipationApi } from "@api/chat";
 
 interface ChatAppointmentProps {
   chat: ChatAppointment;
@@ -32,7 +32,7 @@ const BubbleChatAppointment = (props: ChatAppointmentProps) => {
 
   // 참여자 리스트 조회
   const getParticipants = async () => {
-    getParticipantsApi(
+    getAppointmentParticipantsApi(
       chat.appointmentId,
       (res) => {
         setParticipants(res.data.joinMemberIds);
@@ -46,7 +46,7 @@ const BubbleChatAppointment = (props: ChatAppointmentProps) => {
   // 약속 참여
   const applyParticipation = () => {
     if (chat.appointmentId) {
-      applyParticipationApi(
+      applyAppointmentParticipationApi(
         chat.appointmentId,
         (res) => {
           setParticipants(prevParticipants => [...prevParticipants, myInfo.memberId]);
