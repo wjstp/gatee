@@ -47,41 +47,35 @@ public class PushNotificationServiceImpl implements PushNotificationService {
     private final MemberNotificationRepository memberNotificationRepository;
     private final PushNotificationRepository pushNotificationRepository;
     private final CustomPushNotificationRepositoryImpl customPushNotificationRepository;
+
     @Override
     public PushNotificationPageRes readNotifications(UUID memberId, Pageable pageable, String cursor) {
         return customPushNotificationRepository.findMyPushNotifications(memberId.toString(), PageRequest.of(pageable.getPageNumber(), pageable.getPageSize() + 1), cursor);
     }
 
     @Override
-    public void sendTestPush(String token) throws FirebaseMessagingException {
-        firebaseInit.init();
-        Message message = Message.builder()
-                .putData("push", "success")
-                .setToken(token)
-                .setNotification(Notification.builder()
-                        .setTitle("제목")
-                        .setImage("https://source.unsplash.com/random/cat")
-                        .setBody("내용")
-                        .build())  // 내용 설정
-                // 안드로이드 설정
-                .setAndroidConfig(AndroidConfig.builder()
-                        .setTtl(3600 * 1000)    // 푸시 알림 유지 시간
-                        .setNotification(AndroidNotification.builder()
-                                .setTitle("제목")
-                                .setImage("https://source.unsplash.com/random/cat")
-                                .setBody("내용")
-                                .setClickAction("push_click").build())  // todo: 푸시 알림 클릭시 연결 동작 - 아마도 프론트 함수 호출?
-                        .build())
-                // ios 설정
-                .setApnsConfig(ApnsConfig.builder()
-                        .setAps(Aps.builder()
-                                .setCategory("https://source.unsplash.com/random/apple")
-                                .setBadge(42)   // todo: ?
-                                .build())
-                        .build())
-                .build();
-        String response = FirebaseMessaging.getInstance().send(message);
-        log.info("successfully sent message ? " + response);
+    public void checkReadNotification(String notificationId) {
+        PushNotifications pushNotifications = pushNotificationRepository.findById(notificationId)
+                .orElseThrow(()-> new PushNotificationNotFoundException(ExceptionMessage.PUSH_NOTIFICATION_NOT_FOUND));
+        pushNotifications.checkPushNotifications();
+        pushNotificationRepository.save(pushNotifications);
+    }
+
+    @Override
+    public NotificationAgreementRes readNotificationAgreements(UUID memberId) {
+        Member member = memberRepository.getReferenceById(memberId);
+        MemberNotification memberNotification = memberNotificationRepository.findByMember(member)
+                .orElseThrow(()-> new MemberNotificationNotFoundException(ExceptionMessage.MEMBER_NOTIFICATION_NOT_FOUND));
+        return NotificationAgreementRes.toDto(memberNotification);
+    }
+
+    @Override
+    @Transactional
+    public void modifyNotificationAgreements(UUID memberId, NotificationAgreementReq agreementReq) {
+        Member proxyMember = memberRepository.getReferenceById(memberId);
+        MemberNotification memberNotification = memberNotificationRepository.findByMember(proxyMember)
+                .orElseThrow(()-> new MemberNotFoundException(ExceptionMessage.MEMBER_NOTIFICATION_NOT_FOUND));
+        memberNotification.modifyMemberNotification(agreementReq);
     }
 
     @Override
@@ -98,6 +92,7 @@ public class PushNotificationServiceImpl implements PushNotificationService {
             case NAGGING -> Objects.nonNull(memberNotification) && memberNotification.isNaggingNotification();
             case SCHEDULE -> Objects.nonNull(memberNotification) && memberNotification.isScheduleNotification();
             case ALBUM -> Objects.nonNull(memberNotification) && memberNotification.isAlbumNotification();
+            case CHATTING -> Objects.nonNull(memberNotification) && memberNotification.isChatNotification();
             default -> false;
         };
     }
@@ -107,22 +102,23 @@ public class PushNotificationServiceImpl implements PushNotificationService {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String senderImageUrl = memberRepository.findById(pushNotificationFCMReq.senderId())
                 .orElseThrow(()-> new MemberNotFoundException(ExceptionMessage.MEMBER_NOT_FOUND)).getFile().getUrl();
-
+        if (pushNotificationFCMReq.dataFCMReq().type().equals(Type.CHATTING)) {
+            return;
+        }
         List<PushNotifications> pushNotifications = pushNotificationFCMReq.receiverId().stream()
                 .map(receiverId -> PushNotifications.builder()
-                    .type(pushNotificationFCMReq.dataFCMReq().type().toString())
-                    .typeId(pushNotificationFCMReq.dataFCMReq().typeId())
-                    .senderId(pushNotificationFCMReq.senderId().toString())
-                    .senderImageUrl(senderImageUrl)
-                    .receiverId(receiverId.toString())
-                    .title(pushNotificationFCMReq.title())
-                    .content(pushNotificationFCMReq.content())
-                    .createdAt(dateTimeFormatter.format(LocalDateTime.now()))
-                    .isCheck(false).build()).toList();
+                        .type(pushNotificationFCMReq.dataFCMReq().type().toString())
+                        .typeId(pushNotificationFCMReq.dataFCMReq().typeId())
+                        .senderId(pushNotificationFCMReq.senderId().toString())
+                        .senderImageUrl(senderImageUrl)
+                        .receiverId(receiverId.toString())
+                        .title(pushNotificationFCMReq.title())
+                        .content(pushNotificationFCMReq.content())
+                        .createdAt(dateTimeFormatter.format(LocalDateTime.now()))
+                        .isCheck(false).build()).toList();
         log.info("저장");
         pushNotificationRepository.saveAll(pushNotifications);
     }
-
 
     @Override
     public NaggingRes sendNagging(NaggingReq naggingReq, UUID memberId) throws FirebaseMessagingException {
@@ -193,12 +189,14 @@ public class PushNotificationServiceImpl implements PushNotificationService {
 
     @Override
     public void sendPushOneToMany(PushNotificationFCMReq pushNotificationFCMReq) throws FirebaseMessagingException {   // 이건 토큰 할때나..
-        firebaseInit.init();
+        log.info(pushNotificationFCMReq.receiverId().toString());
         List<String> receiverTokens = pushNotificationFCMReq.receiverId().stream()
                 .map(memberRepository::findById)
                 .filter(Optional::isPresent)
                 .filter(receiver -> checkAgreement(pushNotificationFCMReq.dataFCMReq().type(), receiver.get().getId()))
                 .map(receiver -> receiver.get().getNotificationToken()).toList();
+        log.info(checkAgreement(pushNotificationFCMReq.dataFCMReq().type(), pushNotificationFCMReq.receiverId().get(0))+"");
+        log.info(receiverTokens.toString());
         if (!receiverTokens.isEmpty()) {
             MulticastMessage message = MulticastMessage.builder()
                     .addAllTokens(receiverTokens)
@@ -246,27 +244,33 @@ public class PushNotificationServiceImpl implements PushNotificationService {
     }
 
     @Override
-    public NotificationAgreementRes readNotificationAgreements(UUID memberId) {
-        Member member = memberRepository.getReferenceById(memberId);
-        MemberNotification memberNotification = memberNotificationRepository.findByMember(member)
-                .orElseThrow(()-> new MemberNotificationNotFoundException(ExceptionMessage.MEMBER_NOTIFICATION_NOT_FOUND));
-        return NotificationAgreementRes.toDto(memberNotification);
-    }
-
-    @Override
-    @Transactional
-    public void modifyNotificationAgreements(UUID memberId, NotificationAgreementReq agreementReq) {
-        Member proxyMember = memberRepository.getReferenceById(memberId);
-        MemberNotification memberNotification = memberNotificationRepository.findByMember(proxyMember)
-                .orElseThrow(()-> new MemberNotFoundException(ExceptionMessage.MEMBER_NOTIFICATION_NOT_FOUND));
-        memberNotification.modifyMemberNotification(agreementReq);
-    }
-
-    @Override
-    public void checkReadNotification(String notificationId) {
-        PushNotifications pushNotifications = pushNotificationRepository.findById(notificationId)
-                .orElseThrow(()-> new PushNotificationNotFoundException(ExceptionMessage.PUSH_NOTIFICATION_NOT_FOUND));
-        pushNotifications.checkPushNotifications();
-        pushNotificationRepository.save(pushNotifications);
+    public void sendTestPush(String token) throws FirebaseMessagingException {
+        Message message = Message.builder()
+                .putData("push", "success")
+                .setToken(token)
+                .setNotification(Notification.builder()
+                        .setTitle("제목")
+                        .setImage("https://source.unsplash.com/random/cat")
+                        .setBody("내용")
+                        .build())  // 내용 설정
+                // 안드로이드 설정
+                .setAndroidConfig(AndroidConfig.builder()
+                        .setTtl(3600 * 1000)    // 푸시 알림 유지 시간
+                        .setNotification(AndroidNotification.builder()
+                                .setTitle("제목")
+                                .setImage("https://source.unsplash.com/random/cat")
+                                .setBody("내용")
+                                .setClickAction("push_click").build())  // todo: 푸시 알림 클릭시 연결 동작 - 아마도 프론트 함수 호출?
+                        .build())
+                // ios 설정
+                .setApnsConfig(ApnsConfig.builder()
+                        .setAps(Aps.builder()
+                                .setCategory("https://source.unsplash.com/random/apple")
+                                .setBadge(42)   // todo: ?
+                                .build())
+                        .build())
+                .build();
+        String response = FirebaseMessaging.getInstance().send(message);
+        log.info("successfully sent message ? " + response);
     }
 }
