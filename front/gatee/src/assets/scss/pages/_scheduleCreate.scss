@@ -74,6 +74,14 @@
 
               background-color: if($category == 'group', rgb(255, 245, 221), if($category == 'event', #eefff0, #f7f0ff));
               color: black;
+              font-weight: 600;
+            }
+
+            &hover,
+            &:focus,
+            &:active  {
+              background-color: if($category == 'group', rgb(255, 245, 221), if($category == 'event', #eefff0, #f7f0ff));
+              color: black;
             }
           }
         }
@@ -118,7 +126,7 @@
 
         width: 65px;
         height: 65px;
-        opacity: 0.6;
+        opacity: 0.4;
         transition: opacity 0.2s ease-in-out;
 
         &--active {
@@ -134,7 +142,7 @@
     }
 
     &__number {
-      @include ml-(0.5);
+      @include ml-(1);
 
       font: {
         weight: 500;
@@ -153,7 +161,7 @@
     }
 
     button[disabled] {
-      opacity: 0.5;
+      background-color: $gray75;
       cursor: not-allowed;
 
       &:focus,

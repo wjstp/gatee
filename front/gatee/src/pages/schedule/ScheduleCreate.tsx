@@ -11,11 +11,9 @@ import dayjs, { Dayjs } from 'dayjs';
 
 import calculateWeekday from "@utils/calculateWeekday";
 import { useFamilyStore } from "@store/useFamilyStore";
-import ProfileImage from '@assets/images/logo/app_icon_orange.png'
 import getUserInfo from "@utils/getUserInfo";
 import Button from "@mui/material/Button";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-import SettingsToast from "@pages/notification/components/SettingsToast";
 import { useModalStore } from "@store/useModalStore";
 import Box from "@mui/material/Box";
 
@@ -35,7 +33,6 @@ const ScheduleCreate = () => {
   const [endTime, setEndTime] = useState<Dayjs | null>();
   const [participants, setParticipants] = useState<string[]>(familyInfo.map(member => member.memberId));
 
-  const [isOpenColor, setIsOpenColor] = useState<boolean>(false)
   const colorList: string[] = ["pink", "yellow", "green", "blue", "purple"]
   const [state, setState] = React.useState({bottom: false});
   const {setShowModal} = useModalStore();
@@ -199,7 +196,7 @@ const ScheduleCreate = () => {
            onClick={() => handleSetParticipants(memberId)}>
         <div
           className={`create-schedule-participant__profile-image${participants.includes(memberId) ? '--active' : ''}`}>
-          <img src={userInfo?.fileUrl} alt={userInfo?.nickname}/>
+          <img src={userInfo?.profileImageUrl} alt={userInfo?.nickname}/>
         </div>
         <div className="create-schedule-participant__profile-nickname">
           {userInfo?.nickname}

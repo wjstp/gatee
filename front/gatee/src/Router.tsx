@@ -77,7 +77,7 @@ const Router = () => {
         <Route path="/main" element={<MainIndex/>}/>
 
         {/*미션 페이지*/}
-        <Route path="/main/mission" element={<MissionIndex/>}/>
+        <Route path="/mission" element={<MissionIndex/>}/>
 
         {/*스케줄 페이지*/}
         <Route path="/schedule" element={<ScheduleIndex/>}/>

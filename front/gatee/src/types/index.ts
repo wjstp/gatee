@@ -199,13 +199,9 @@ export interface ScheduleItemRes {
   content: string;
   startDate: string;
   endDate: string;
-  scheduleRecord: {
-    content: string;
-    imageUrl: string;
-  }[];
+  scheduleRecordRes: ScheduleRecordReq[];
   participateMembers: {
     nickname: string;
-    memberId: string;
     profileImageUrl: string;
   }[]
 }
@@ -233,7 +229,7 @@ export interface ScheduleModifyReq {
 
 export interface ScheduleRecordReq {
   content: string;
-  fileIdList: string;
+  fileUrlList: FileRes[];
 }
 
 
