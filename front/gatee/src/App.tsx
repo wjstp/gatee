@@ -5,7 +5,7 @@ import {useModalStore} from "@store/useModalStore";
 import {useLocation} from "react-router-dom";
 
 const App = () => {
-  const {notificationPopUp,setNotificationPopUp, setShowNotification} = useModalStore()
+  const {notificationPopUp, setNotificationPopUp, setShowNotification} = useModalStore()
   const location = useLocation();
   let messaging;
 
@@ -28,22 +28,19 @@ const App = () => {
       }
 
       setNotificationPopUp({
-        title:notificationTitle,
-        body:notificationData.body,
-        icon:notificationData.icon,
-        url:url,
+        title: notificationTitle,
+        body: notificationData.body,
+        icon: notificationData.icon,
+        url: url,
       })
-
     });
 
   useEffect(() => {
     if (notificationPopUp !== null) {
       // 채팅 페이지가 아니고 채팅알림이 아니면 울림
-      if (!location.pathname.includes("chatting")&&notificationPopUp.title==="채팅 알림") {
+      if (location.pathname.includes("chatting") && notificationPopUp.title === "채팅 알림") {
+      } else {
         setShowNotification(true)
-        setTimeout(() =>
-            setShowNotification(false)
-          , 5000)
       }
     }
   }, [notificationPopUp]);

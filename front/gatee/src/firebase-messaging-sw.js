@@ -73,20 +73,3 @@ export async function requestPermission() {
 //   // ...
 // });
 
-// // 메세지 받는 함수 v8
-
-
-
-// 알림 표시
-const showNotification = (notificationTitle, notificationOptions,url) => {
-  // 알림 생성
-  const notification = new Notification(notificationTitle, notificationOptions);
-
-  // 알림 클릭 이벤트 리스너 추가
-  notification.addEventListener('click', function() {
-    // 클릭 시 동작할 코드 작성
-    console.log('알림이 클릭되었습니다.');
-    // 예시: 원하는 URL로 이동
-    window.location.href = url;
-  });
-}

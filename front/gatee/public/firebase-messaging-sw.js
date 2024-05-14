@@ -28,7 +28,7 @@ let url = "/main"
 
 messaging.onBackgroundMessage((payload) => {
   console.log(
-    '[firebase-messaging-sw.js] Received background message ',
+    '백그라운드 알림',
     payload.notification
   );
   // Customize notification here

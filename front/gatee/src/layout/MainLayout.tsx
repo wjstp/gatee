@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import TopBar from '@components/TopBar';
 import BottomBar from "@components/BottomBar";
 import {Outlet, useLocation} from 'react-router-dom'
@@ -18,8 +18,7 @@ const MainLayout = () => {
   const {familyId, familyInfo, setFamilyId, setFamilyInfo, setFamilyName, setFamilyScore} = useFamilyStore();
   const {isShowBottomBar, setIsNewMessage} = useChatStore();
   const chatRef = firebase.database().ref(`chat/${familyId}/messages`);
-  const {showNotification, setShowNotification, notificationPopUp, setNotificationPopUp} = useModalStore()
-  const location = useLocation();
+  const {showNotification} = useModalStore()
 
   // 가족 데이터 저장 Api
   const saveFamilyData = (familyId: string) => {

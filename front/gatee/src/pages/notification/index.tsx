@@ -74,11 +74,11 @@ const NotificationIndex = () => {
   const navigate = useNavigate()
   // 모달 상태 적용
   const {setShowModal} = useModalStore()
-  const [hasNext, setHasNext] = useState<boolean>(true);
+  const [hasNext, setHasNext] = useState<boolean>(false);
   const [nextCursor, setNextCursor] = useState<string | null>(null);
   const [clickedNotification, setClickedNotification] = useState<NotificationRes | null | undefined>(null)
   const [isLoading, setLoading] = useState<boolean>(false)
-  const [isGetAllData, setIsGetAllData] = useState<boolean>(false);
+  const [isGetAllData, setIsGetAllData] = useState<boolean|null>(null);
   // 알림 데이터 리스트
   const [notificationDataList, setNotificationDataList] = useState<NotificationRes[]>([])
 
@@ -89,7 +89,7 @@ const NotificationIndex = () => {
     if (clicked && clicked?.type === "NAGGING")
       openModal()
 
-    if (!isCheck)
+    if (!isCheck) {
       readNotificationApi({notificationId: id}
         , res => {
           console.log(res.data)
@@ -108,6 +108,9 @@ const NotificationIndex = () => {
         , err => {
           console.log(err)
         })
+    } else {
+      navigate(getUrlFromType(clicked?.type, clicked?.typeId))
+    }
   }
 
   // 모달 내리기
@@ -183,7 +186,7 @@ const NotificationIndex = () => {
           return <NotificationItem key={index} notificationData={item} handleReadNotification={handleReadNotification}/>
         })}
 
-        {!isGetAllData && (
+        {isGetAllData===false && (
           <div className="scroll-target" ref={target}>
             <Lottie className="scroll-target__animation" animationData={ScrollAnimation}/>
           </div>

@@ -10,7 +10,6 @@ import {transformQuestionData, getExamScore, setAnswerAtIndex} from "@utils/exam
 import {questionList} from "@constants/index";
 import ExamNotFound from "@pages/exam/components/ExamNotFound";
 import {doMissionApi} from "@api/mission";
-import {SiAsda} from "react-icons/si";
 
 
 const ExamTaking = () => {

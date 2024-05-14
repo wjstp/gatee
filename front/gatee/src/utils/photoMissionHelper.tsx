@@ -15,7 +15,7 @@ export const getPossibleAmount = (mission: MissionListApiReq|undefined, amount: 
   // 앨범 미션이 존재하지 않는 경우 기본값인 0을 반환
   if (mission===undefined) return 0;
 
-  if (mission.completedLevel < 3) return 0;
+  if (mission.completedLevel >= 3) return 0;
   // 앨범 미션의 maxRange와 nowRange를 사용하여 계산
   const maxAmount = mission.maxRange - mission.nowRange;
   return Math.min(maxAmount, amount)
