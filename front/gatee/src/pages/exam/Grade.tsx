@@ -2,13 +2,10 @@ import React, {useEffect, useState} from 'react';
 import Stamp from "@assets/images/icons/stamp_logo.png"
 import {useNavigate, useParams} from "react-router-dom";
 import {getFamilyExamResultApi} from "@api/exam";
-// import Lottie from "lottie-react";
-// import EmptyAnimation from "@assets/images/animation/empty_animation.json"
-
 import {ExamResult, MemberApiRes} from "@type/index";
 import getGradeSvg from "@utils/getGradeSvg";
 import {useFamilyStore} from "@store/useFamilyStore";
-import ExamNotFound from "@pages/exam/components/ExamNotFound";
+import GradeNotFound from "@pages/exam/components/GradeNotFound";
 import getUserInfoByMemberFamilyId from "@utils/getUserInfoByMemberFamilyId";
 
 
@@ -56,7 +53,7 @@ const ExamGrade = () => {
 
       {/* 상단 헤더 */}
       {avgGrade === null ?
-        <ExamNotFound/>
+        <GradeNotFound/>
         :
         <>
 

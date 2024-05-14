@@ -371,13 +371,14 @@
 .exam-taking {
   position: relative;
   height: 100%;
+
   .exam-answer-sheet-container {
 
     @include flex-row;
     @include flex_center;
 
     position: absolute;
-    bottom: 3rem;
+    bottom: 1rem;
     border: 1px solid $gray200;
     flex: 1;
     width: 90dvw;
@@ -392,7 +393,7 @@
       flex: 1;
 
       .index {
-        @include py-(1);
+        @include py-(0.7);
         @include flex_center;
         width: 100%;
         background-color: $gray100;
@@ -400,7 +401,7 @@
       }
 
       .answer {
-        @include my-(1);
+        @include my-(0.7);
         @include flex_center;
         width: 1.5rem;
         height: 1.5rem;
@@ -422,4 +423,51 @@
   }
 
 
+}
+
+.exam-not-found-container {
+  flex-direction: column;
+  align-content: center;
+  //@include flex-col;
+  height: 100%;
+
+  .exam__empty-icon {
+    width: 20%;
+    height: 20%;
+
+    path {
+      fill: black
+    }
+  }
+
+  .exam-not-found-info {
+    //background-color: red;
+    p, h3 {
+      text-align: center;
+      font-size: 1.3rem;
+      @include mb-(0.5);
+    }
+  }
+
+  .exam-not-found-explain-container {
+    @include p-(2);
+    @include m-(2);
+
+    border-radius: 1rem;
+    background-color: $gray50;
+
+    p, h3 {
+      font-size: 1.3rem;
+      @include mb-(0.5);
+    }
+
+    .go-to-dictionary-btn{
+      //display: flex;
+      text-decoration: underline;
+      //justify-content: end;
+      font-size: 1.2rem;
+      @include mt-(1);
+    }
+
+  }
 }

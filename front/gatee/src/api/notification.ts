@@ -5,29 +5,50 @@ import {NaggingApiReq} from "@type/index";
 const local: AxiosInstance = localAxios("default");
 
 interface NotificationAgrees {
-  "albumNotification": boolean;
-  "naggingNotification": boolean;
-  "scheduleNotification": boolean;
-  "featureNotification": boolean;
+    "albumNotification": boolean;
+    "naggingNotification": boolean;
+    "scheduleNotification": boolean;
+    "featureNotification": boolean;
 }
 
 // 알람 동의 변경
-export const editAgreeNotification = async function (data: NotificationAgrees,
-                                                     success: (res: AxiosResponse<any>) => void,
-                                                     fail: (err: AxiosError<any>) => void) {
-  await local.patch(`/notifications`, data).then(success).catch(fail);
+export const editAgreeNotificationApi = async function (data: NotificationAgrees,
+                                                        success: (res: AxiosResponse<any>) => void,
+                                                        fail: (err: AxiosError<any>) => void) {
+    await local.patch(`/notifications/agreements`, data).then(success).catch(fail);
 }
 
 // 잔소리 보내기
 export const naggingApi = async function (data: NaggingApiReq,
                                           success: (res: AxiosResponse<any>) => void,
                                           fail: (err: AxiosError<any>) => void) {
-  await local.post("/notifications/nagging", data).then(success).catch(fail);
+    await local.post("/notifications/nagging", data).then(success).catch(fail);
 };
 
-// 알람 동의 변경
-export const getAgreeNotification = async function (success: (res: AxiosResponse<any>) => void,
-                                                    fail: (err: AxiosError<any>) => void) {
-  await local.get(`/notifications`).then(success).catch(fail);
+// 알람 동의 조회
+export const getAgreeNotificationApi = async function (success: (res: AxiosResponse<any>) => void,
+                                                       fail: (err: AxiosError<any>) => void) {
+    await local.get(`/notifications/agreements`).then(success).catch(fail);
+}
+
+// 맨 처음 알림 리스트
+export const getNotificationListApiFirst = async function (success: (res: AxiosResponse<any>) => void,
+                                                           fail: (err: AxiosError<any>) => void) {
+    await local.get(`/notifications`).then(success).catch(fail);
+}
+
+// 무한 스크롤 알림 리스트
+export const getNotificationListApiNext = async function (data: string,
+                                                          success: (res: AxiosResponse<any>) => void,
+                                                          fail: (err: AxiosError<any>) => void) {
+    await local.get(`/notifications`, {params: {cursor: data}}).then(success).catch(fail);
+}
+
+
+// 알람 읽음처리
+export const readNotificationApi = async function (data: {notificationId:string},
+                                                        success: (res: AxiosResponse<any>) => void,
+                                                        fail: (err: AxiosError<any>) => void) {
+  await local.patch(`/notifications/check`, data).then(success).catch(fail);
 }
 
