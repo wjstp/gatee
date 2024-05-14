@@ -4,6 +4,7 @@ import com.google.firebase.messaging.FirebaseMessagingException;
 import io.ssafy.gatee.domain.push_notification.application.PushNotificationService;
 import io.ssafy.gatee.domain.push_notification.dto.request.NaggingReq;
 import io.ssafy.gatee.domain.push_notification.dto.request.NotificationAgreementReq;
+import io.ssafy.gatee.domain.push_notification.dto.request.PushNotificationCheckReq;
 import io.ssafy.gatee.domain.push_notification.dto.request.TokenReq;
 import io.ssafy.gatee.domain.push_notification.dto.response.NaggingRes;
 import io.ssafy.gatee.domain.push_notification.dto.response.NotificationAgreementRes;
@@ -43,13 +44,18 @@ public class PushNotificationController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public PushNotificationPageRes readNotifications(@AuthenticationPrincipal CustomUserDetails customUserDetails,
-                                                     @PageableDefault(
-                                                             sort = "notification_id") Pageable pageable,
+                                                     @PageableDefault Pageable pageable,
                                                      // default size : 10
                                                      @RequestParam(required = false) String cursor) {
         return notificationService.readNotifications(customUserDetails.getMemberId(), pageable, cursor);
     }
+
     // 알림 읽음 처리
+    @ResponseStatus(HttpStatus.OK)
+    @PatchMapping("/check")
+    public void checkReadNotification(@RequestBody PushNotificationCheckReq pushNotificationCheckReq) {
+        notificationService.checkReadNotification(pushNotificationCheckReq.notificationId());
+    }
 
     // 동의목록 조회
     @ResponseStatus(HttpStatus.OK)

@@ -3,7 +3,6 @@ package io.ssafy.gatee.domain.member.api;
 import io.ssafy.gatee.domain.file.entity.type.FileType;
 import io.ssafy.gatee.domain.member.application.MemberService;
 import io.ssafy.gatee.domain.member.dto.request.*;
-import io.ssafy.gatee.domain.member.dto.response.MemberEditProfileImageRes;
 import io.ssafy.gatee.domain.member.dto.response.MemberInfoRes;
 import io.ssafy.gatee.global.security.user.CustomUserDetails;
 import jakarta.servlet.http.HttpServletResponse;
@@ -64,13 +63,14 @@ public class MemberController {
     // 프로필 이미지 수정 - file 추가 예정
     @PostMapping("/image")
     @ResponseStatus(HttpStatus.OK)
-    public MemberEditProfileImageRes editProfileImage(
+    public void editProfileImage(
             @Valid
             @RequestParam @Nullable String defaultImage,
             @RequestParam FileType fileType,
-            @RequestParam @Nullable MultipartFile file
+            @RequestParam @Nullable MultipartFile file,
+            @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) throws IOException {
-        return memberService.editProfileImage(defaultImage, fileType, file);
+        memberService.editProfileImage(defaultImage, fileType, file, customUserDetails.getMemberId());
     }
 
     // 기분 상태 수정

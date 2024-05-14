@@ -14,7 +14,7 @@ import Loading from "@components/Loading";
 
 const MainIndex = () => {
   // const {setMyInfo} = useMemberStore()
-  const {setMyInfo} = useMemberStore()
+  const {myInfo, setMyInfo} = useMemberStore()
   const {familyInfo,setFamilyId, setFamilyInfo, setFamilyName, setFamilyScore} = useFamilyStore()
   const [loading, setLoading] = useState(true)
   // 가족 데이터 저장 Api

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { BiCopy } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { ReactComponent as KaKaoMessage } from "@assets/images/signup/kakao_message.svg";

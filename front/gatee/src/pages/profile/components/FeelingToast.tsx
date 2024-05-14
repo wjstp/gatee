@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import React from 'react';
 import { useMemberStore } from "@store/useMemberStore";
 import { modifyMoodApi } from "@api/profile";
 import { AxiosError, AxiosResponse } from "axios";
@@ -9,8 +8,7 @@ interface HandleFinishTab {
 }
 
 const FeelingToast = ({handleFinishTab}:HandleFinishTab) => {
-  const navigate = useNavigate();
-  const { mood, setMood } = useMemberStore();
+  const { myInfo, setMyInfo } = useMemberStore();
 
   // 완료 버튼 누르면 끝내기
   const handleFinish = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -18,18 +16,23 @@ const FeelingToast = ({handleFinishTab}:HandleFinishTab) => {
   }
 
   // 기분 설정한 것을 보내기
-  const modifyMood = () => {
-    modifyMoodApi(
-      {
-        mood: mood
-      },
-      (res: AxiosResponse<any>) => {
-        console.log(res)
-      },
-      (err: AxiosError<any>) => {
-        console.log(err)
-      }
-    ).then().catch();
+  const modifyMood = (newMood: string, event: React.MouseEvent<HTMLButtonElement>) => {
+    if (newMood) {
+      modifyMoodApi(
+        {
+          mood: newMood
+        },
+        (res: AxiosResponse<any>) => {
+          console.log(res)
+          // 기분 상태 수정
+          setMyInfo({mood: newMood});
+          handleFinish(event);
+        },
+        (err: AxiosError<any>) => {
+          console.log(err)
+        }
+      ).then().catch();
+    }
   }
 
   return (
@@ -37,12 +40,15 @@ const FeelingToast = ({handleFinishTab}:HandleFinishTab) => {
       className="profile-feeling-toast"
       onClick={() => handleFinish}
     >
+      
+      {/*행복과 슬픔*/}
       <div className="feeling-toast__first">
+        
+        {/*행복*/}
         <button
-          className={`first__part--01 ${mood === "HAPPY" ? "active" : ""}`}
+          className={`first__part--01 ${myInfo.mood === "HAPPY" ? "active" : ""}`}
           onClick={(event) => {
-            setMood("HAPPY");
-            handleFinish(event);
+            modifyMood("HAPPY", event);
           }}
         >
           <span className="part--01--emoji">🥰 </span>
@@ -50,11 +56,12 @@ const FeelingToast = ({handleFinishTab}:HandleFinishTab) => {
             행복해요
           </span>
         </button>
+        
+        {/*슬픔*/}
         <button
-          className={`first__part--02 ${mood === "SAD" ? "active" : ""}`}
+          className={`first__part--02 ${myInfo.mood === "SAD" ? "active" : ""}`}
           onClick={(event) => {
-            setMood("SAD");
-            handleFinish(event);
+            modifyMood("SAD", event);
           }}
         >
           <span className="part--02--emoji">😥 </span>
@@ -62,13 +69,17 @@ const FeelingToast = ({handleFinishTab}:HandleFinishTab) => {
             속상해요
           </span>
         </button>
+        
       </div>
+      
+      {/*분노와 외로움*/}
       <div className="feeling-toast__second">
+        
+        {/*분노*/}
         <button
-          className={`second__part--01 ${mood === "ANGRY" ? "active" : ""}`}
+          className={`second__part--01 ${myInfo.mood === "ANGRY" ? "active" : ""}`}
           onClick={(event) => {
-            setMood("ANGRY");
-            handleFinish(event);
+            modifyMood("ANGRY", event);
           }}
         >
           <span className="part--01--emoji">🤬 </span>
@@ -76,11 +87,12 @@ const FeelingToast = ({handleFinishTab}:HandleFinishTab) => {
             화나요
           </span>
         </button>
+        
+        {/*외로움*/}
         <button
-          className={`second__part--02 ${mood === "ALONE" ? "active" : ""}`}
+          className={`second__part--02 ${myInfo.mood === "ALONE" ? "active" : ""}`}
           onClick={(event) => {
-            setMood("ALONE");
-            handleFinish(event);
+            modifyMood("ALONE", event);
           }}
         >
           <span className="part--02--emoji">😑 </span>
@@ -88,13 +100,17 @@ const FeelingToast = ({handleFinishTab}:HandleFinishTab) => {
             혼자 있고 싶어요
           </span>
         </button>
+
       </div>
+
+      {/*심란함과 피곤함*/}
       <div className="feeling-toast__third">
+
+        {/*심란함*/}
         <button
-          className={`third__part--01 ${mood === "FEAR" ? "active" : ""}`}
+          className={`third__part--01 ${myInfo.mood === "FEAR" ? "active" : ""}`}
           onClick={(event) => {
-            setMood("FEAR");
-            handleFinish(event);
+            modifyMood("FEAR", event);
           }}
         >
           <span className="part--01--emoji">😱 </span>
@@ -102,11 +118,12 @@ const FeelingToast = ({handleFinishTab}:HandleFinishTab) => {
             심란해요
           </span>
         </button>
+
+        {/*피곤함*/}
         <button
-          className={`third__part--02 ${mood === "SLEEPY" ? "active" : ""}`}
+          className={`third__part--02 ${myInfo.mood === "SLEEPY" ? "active" : ""}`}
           onClick={(event) => {
-            setMood("SLEEPY");
-            handleFinish(event);
+            modifyMood("SLEEPY", event);
           }}
         >
           <span className="part--02--emoji">😪 </span>
@@ -114,7 +131,9 @@ const FeelingToast = ({handleFinishTab}:HandleFinishTab) => {
             피곤해요
           </span>
         </button>
+
       </div>
+
     </div>
   );
 };

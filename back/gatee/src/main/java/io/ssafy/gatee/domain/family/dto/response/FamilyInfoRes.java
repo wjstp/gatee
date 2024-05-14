@@ -9,6 +9,7 @@ import java.util.List;
 public record FamilyInfoRes(
         String name,
         Integer familyScore,
+        String familyImageUrl,
         List<MemberFamilyInfoRes> memberFamilyInfoList
 ) {
 }

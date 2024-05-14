@@ -7,11 +7,13 @@ import { AxiosError, AxiosResponse } from "axios";
 const SignupFamilyJoinCheck = () => {
   const navigate = useNavigate();
   const { familyCode, stringImage, familyName, familyId } = useFamilyStore();
-
+  
+  // 다음으로 넘어가기
   const goToMemberSet = () => {
-    navigate("/signup/member-set");
+    joinFamily();
   }
-
+  
+  // 뒤로 가기
   const backTo = () => {
     navigate(-1);
   }
@@ -24,12 +26,10 @@ const SignupFamilyJoinCheck = () => {
       },
       (res: AxiosResponse<any>) => {
         console.log(res);
-        navigate("/signup/family-join/check")
+        navigate("/signup/member-set");
       },
       (err: AxiosError<any>) => {
         console.log(err);
-        alert("잘못된 코드입니다!");
-        navigate("/signup/family-join");
       }
     ).then().catch();
   }
@@ -47,7 +47,9 @@ const SignupFamilyJoinCheck = () => {
 
       {/*가족 이름*/}
       <div className="signup-family-join-check__name">
-        <span className="name">{familyName}</span>
+        <span className="name">
+          {familyName}
+        </span>
       </div>
 
       <div className="signup-family-join-check__btn">

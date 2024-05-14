@@ -37,10 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static io.ssafy.gatee.global.exception.message.ExceptionMessage.*;
@@ -84,7 +81,7 @@ public class FamilyServiceImpl implements FamilyService {
 
         File imageFile;
 
-        if (StringUtil.isEmpty(fileType.toString()) || file.isEmpty()) {
+        if (fileType == null || file == null) {
             File defaultFile = File.builder()
                     .name("family")
                     .originalName("family.jpg")
@@ -213,10 +210,10 @@ public class FamilyServiceImpl implements FamilyService {
         List<MemberFamily> memberFamilies = memberFamilyRepository.findAllByFamily_Id(UUID.fromString(familyId));
         // 예외
         if (! memberFamilies.isEmpty()) {
+
             List<MemberFamilyInfoRes> memberFamilyInfoList = memberFamilies.stream().map(memberFamily -> MemberFamilyInfoRes.builder()
                     .memberId(memberFamily.getMember().getId())
                     .memberFamilyId(memberFamily.getId())
-                    .fileUrl(memberFamily.getMember().getFile().getUrl())
                     .birth(memberFamily.getMember().getBirth())
                     .name(memberFamily.getMember().getName())
                     .nickname(memberFamily.getMember().getNickname())
@@ -225,10 +222,13 @@ public class FamilyServiceImpl implements FamilyService {
                     .mood(memberFamily.getMember().getMood())
                     .isLeader(memberFamily.isLeader())
                     .birthType(memberFamily.getMember().getBirthType())
+                    .profileImageUrl(memberFamily.getMember().getFile().getUrl())
+                    .phoneNumber(memberFamily.getMember().getPhoneNumber())
                     .build()).toList();
             return FamilyInfoRes.builder()
                     .name(family.getName())
                     .familyScore(family.getScore())
+                    .familyImageUrl(family.getFile().getUrl())
                     .memberFamilyInfoList(memberFamilyInfoList)
                     .build();
         }

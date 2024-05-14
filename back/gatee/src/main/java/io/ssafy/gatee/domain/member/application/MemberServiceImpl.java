@@ -12,7 +12,6 @@ import io.ssafy.gatee.domain.member.dto.request.MemberEditMoodReq;
 import io.ssafy.gatee.domain.member.dto.request.MemberEditReq;
 import io.ssafy.gatee.domain.member.dto.request.MemberSaveReq;
 import io.ssafy.gatee.domain.member.dto.request.MemberTokenReq;
-import io.ssafy.gatee.domain.member.dto.response.MemberEditProfileImageRes;
 import io.ssafy.gatee.domain.member.dto.response.MemberInfoRes;
 import io.ssafy.gatee.domain.member.entity.Member;
 import io.ssafy.gatee.domain.member.entity.Privilege;
@@ -20,6 +19,9 @@ import io.ssafy.gatee.domain.member_family.dao.MemberFamilyRepository;
 import io.ssafy.gatee.domain.member_family.entity.MemberFamily;
 import io.ssafy.gatee.domain.member_notification.dao.MemberNotificationRepository;
 import io.ssafy.gatee.domain.member_notification.entity.MemberNotification;
+import io.ssafy.gatee.domain.mission.dao.MissionRepository;
+import io.ssafy.gatee.domain.mission.entity.Mission;
+import io.ssafy.gatee.domain.mission.entity.Type;
 import io.ssafy.gatee.global.exception.error.not_found.MemberFamilyNotFoundException;
 import io.ssafy.gatee.global.exception.error.not_found.MemberNotFoundException;
 import io.ssafy.gatee.global.jwt.application.JwtService;
@@ -65,6 +67,8 @@ public class MemberServiceImpl implements MemberService {
 
     private final FileRepository fileRepository;
 
+    private final MissionRepository missionRepository;
+
     private final S3Util s3Util;
 
     private static final List<String> DEFAULT_FATHER_IMAGE = List.of("https://spring-learning.s3.ap-southeast-2.amazonaws.com/message/910c8375-f2f7-487e-8adc-7695e04d5b55_profile_man1.PNG", "https://spring-learning.s3.ap-southeast-2.amazonaws.com/message/d136e934-6def-4ab4-8fa2-cbed4a571174_profile_man2.PNG");
@@ -106,13 +110,59 @@ public class MemberServiceImpl implements MemberService {
 
         Album album = Album.builder()
                 .family(family)
-                .name(memberSaveReq.name() + "의 사진")
+                .name(memberSaveReq.name())
                 .build();
 
         albumRepository.save(album);
 
+        Mission albumMission = Mission.builder()
+                .type(Type.ALBUM)
+                .nowRange(0)
+                .maxRange(1)
+                .completedLevel(0)
+                .isComplete(false)
+                .member(member)
+                .build();
+
+        Mission examMission = Mission.builder()
+                .type(Type.EXAM)
+                .nowRange(0)
+                .maxRange(1)
+                .completedLevel(0)
+                .isComplete(false)
+                .member(member)
+                .build();
+
+        Mission featureMission = Mission.builder()
+                .type(Type.FEATURE)
+                .nowRange(0)
+                .maxRange(10)
+                .completedLevel(0)
+                .isComplete(false)
+                .member(member)
+                .build();
+
+        Mission scheduleMission = Mission.builder()
+                .type(Type.SCHEDULE)
+                .nowRange(0)
+                .maxRange(1)
+                .completedLevel(0)
+                .isComplete(false)
+                .member(member)
+                .build();
+
+        List<Mission> missionList = new ArrayList<>();
+
+        missionList.add(albumMission);
+        missionList.add(examMission);
+        missionList.add(featureMission);
+        missionList.add(scheduleMission);
+
+        missionRepository.saveAll(missionList);
+
         // 토큰 발급
         modifyMemberToken(member, response);
+
         // 알림 동의 모두 열기
         memberNotificationRepository.save(MemberNotification.builder()
                 .member(member)
@@ -145,7 +195,7 @@ public class MemberServiceImpl implements MemberService {
     // 프로필 이미지 수정
     @Override
     @Transactional
-    public MemberEditProfileImageRes editProfileImage(String defaultImage, FileType fileType, MultipartFile file) throws IOException {
+    public void editProfileImage(String defaultImage, FileType fileType, MultipartFile file, UUID memberId) throws IOException {
 
         File entity;
 
@@ -156,7 +206,7 @@ public class MemberServiceImpl implements MemberService {
             entity = File.builder()
                         .fileType(FileType.MEMBER_PROFILE)
                         .url("https://spring-learning.s3.ap-southeast-2.amazonaws.com/default/profile_" + defaultImage + ".PNG")
-                        .dir("message")
+                        .dir("/default")
                         .name("default_image")
                         .originalName("default_image")
                         .build();
@@ -164,9 +214,9 @@ public class MemberServiceImpl implements MemberService {
 
         fileRepository.save(entity);
 
-        return MemberEditProfileImageRes.builder()
-                .imageUrl(entity.getUrl())
-                .build();
+        Member member = memberRepository.getReferenceById(memberId);
+
+        member.editProfileImage(entity);
     }
 
     // 기분 상태 수정
@@ -198,6 +248,8 @@ public class MemberServiceImpl implements MemberService {
                 .birthType(String.valueOf(member.getBirthType()))
                 .mood(member.getMood())
                 .role(String.valueOf(memberFamily.getRole()))
+                .profileImageUrl(member.getFile().getUrl())
+                .phoneNumber(member.getPhoneNumber())
                 .build();
     }
 

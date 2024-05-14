@@ -14,7 +14,7 @@ import ProfileCropper from "@pages/profile/components/Cropper";
 import { modifyProfileApi } from "@api/profile";
 import { AxiosResponse, AxiosError } from "axios";
 
-const ProfileModifyCopy = () => {
+const ProfileModify = () => {
   const navigate = useNavigate();
   const sender: string = "member-set"
   // 쿼리스트링으로 넘어온 이름을 확인하기 위함
@@ -47,28 +47,36 @@ const ProfileModifyCopy = () => {
 
 
   // 수정 버튼
-  const goToModified = async () => {
+  const goToModified = () => {
     // 회원 정보 수정
-    await setMyInfo(
+    setMyInfo(
       {
         name: inputName,
         nickname: inputNickname,
-        role: inputRole,
         birth: inputBirthDay,
         birthType: inputBirthType,
+        role: inputRole,
         phoneNumber: inputPhoneNumber,
       }
     )
-    await modifyProfile();
+    modifyProfile();
   }
 
   // 수정 요청
   const modifyProfile = () => {
     modifyProfileApi(
-      myInfo,
+      {
+        name: inputName,
+        nickname: inputNickname,
+        birth: inputBirthDay,
+        birthType: inputBirthType,
+        role: inputRole,
+        familyId: myInfo.familyId,
+        phoneNumber: inputPhoneNumber
+      },
       (res: AxiosResponse<any>) => {
         console.log(res);
-        navigate(`/profile/${name}`);
+        navigate(`/profile/${myInfo.email}`);
       },
       (err: AxiosError<any>) => {
         console.log(err)
@@ -180,6 +188,11 @@ const ProfileModifyCopy = () => {
           />
         </div>
 
+        {/*간격 맞추기용 박스*/}
+        <div className="profile__blank-box">
+          &nbsp;
+        </div>
+
         {/*정보 박스*/}
         <div className="profile__info-box">
           <div className="info-box__name">
@@ -238,7 +251,7 @@ const ProfileModifyCopy = () => {
             <div className="phone__body"
                  onClick={() => openPhoneModal()}>
               {inputPhoneNumber === null || inputPhoneNumber=== "" ?
-                <button className="phone__plus__btn">추가하기</button>
+                <button className="phone__plus__btn">입력해주세요</button>
                 :
                 <div className="phone__body__part--01"> {inputPhoneNumber}
                 </div>
@@ -573,4 +586,4 @@ const PhoneModal = ({handlePhoneModal, phone}: { handlePhoneModal: (phone: strin
   )
 }
 
-export default ProfileModifyCopy;
+export default ProfileModify;

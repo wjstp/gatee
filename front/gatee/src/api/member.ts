@@ -4,7 +4,7 @@ import {
   GetFamilyMemberApiReq,
   CreateFamilyCodeApiReq,
   JoinFamilyApiReq,
-  MemberApiRes, CreateMemberApiReq,
+  CreateMemberApiReq, getFamilyDataApiReq,
 } from "@type/index";
 
 const local: AxiosInstance = localAxios();
@@ -22,6 +22,13 @@ export const createFamilyCodeApi = async function (data: CreateFamilyCodeApiReq,
                                                    success: (res: AxiosResponse<any>) => void,
                                                    fail: (err: AxiosError<any>) => void) {
   await local.get(`/family/code`, { params: data }).then(success).catch(fail);
+}
+
+// 가족 코드로 가족 조회
+export const getFamilyDataApi = async function (data: getFamilyDataApiReq,
+                                                success: (res: AxiosResponse<any>) => void,
+                                                fail: (err: AxiosError<any>) => void) {
+  await local.get(`/family/check`, { params: data }).then(success).catch(fail);
 }
 
 // 가족 합류
@@ -42,7 +49,7 @@ export const getFamilyMemberApi = async function (data: GetFamilyMemberApiReq,
 export const createMemberApi = async function (data: CreateMemberApiReq,
                                                success: (res: AxiosResponse<any>) => void,
                                                fail: (err: AxiosError<any>) => void) {
-  await local.post("/members", data).then(success).catch(fail);
+  await local.patch("/members", data).then(success).catch(fail);
 };
 
 // 내 정보 조회
