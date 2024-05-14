@@ -20,7 +20,10 @@ public class FireStoreChatDto {
     private final String content;
 
     private final String sender;
+
     private final String emojiId;
+
+    private final List<String> files;
 
     private final List<String> unReadMember;
 

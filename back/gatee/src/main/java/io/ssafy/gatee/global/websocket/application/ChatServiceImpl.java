@@ -36,9 +36,7 @@ public class ChatServiceImpl implements ChatService {
 
     private final MemberRepository memberRepository;
     private final MemberFamilyRepository memberFamilyRepository;
-    private final FamilyRepository familyRepository;
     private final DatabaseReference databaseReference;
-
     private final FamilyService familyService;
     private final OnlineRoomMemberRepository onlineRoomMemberRepository;
 
@@ -48,7 +46,6 @@ public class ChatServiceImpl implements ChatService {
 
     public ChatServiceImpl(MemberRepository memberRepository,
                            MemberFamilyRepository memberFamilyRepository,
-                           FamilyRepository familyRepository,
                            OnlineRoomMemberRepository onlineRoomMemberRepository,
                            FirebaseInit firebaseInit,
                            FamilyService familyService,
@@ -56,7 +53,6 @@ public class ChatServiceImpl implements ChatService {
                            PushNotificationService pushNotificationService) {
         this.memberRepository = memberRepository;
         this.memberFamilyRepository = memberFamilyRepository;
-        this.familyRepository = familyRepository;
         firebaseInit.init(); // Firebase 초기화 메서드 호출
         this.databaseReference = FirebaseDatabase.getInstance().getReference();
         this.onlineRoomMemberRepository = onlineRoomMemberRepository;
@@ -169,6 +165,32 @@ public class ChatServiceImpl implements ChatService {
                         .receiverId(familyMemberIdList)
                         .title("채팅 알림")
                         .content(chatDto.content())
+                        .dataFCMReq(DataFCMReq.builder()
+                                .type(Type.CHATTING)
+                                .build())
+                        .build());
+    }
+
+    @Override
+    public void sendImages(ChatDto chatDto, UUID memberId) throws FirebaseMessagingException {
+        List<String> unReadMemberAsStringList = handleUnreadMember(memberId);
+        UUID familyId = familyService.getFamilyIdByMemberId(memberId);
+        List<UUID> familyMemberIdList = this.findFamilyMemberIdExceptMe(memberId);
+        this.saveMessageToRealtimeDatabase(FireStoreChatDto.builder()
+                .messageType(chatDto.messageType())
+                .files(chatDto.files())
+                .emojiId(chatDto.emojiId().toString())
+                .sender(memberId.toString())
+                .unReadMember(unReadMemberAsStringList)
+                .currentTime(chatDto.currentTime())
+                .appointmentId(appointmentService.createAppointment(chatDto, familyId, memberId))
+                .build(), familyId);
+        pushNotificationService.sendPushOneToMany(
+                PushNotificationFCMReq.builder()
+                        .senderId(memberId)
+                        .receiverId(familyMemberIdList)
+                        .title("채팅 알림")
+                        .content("사진")
                         .dataFCMReq(DataFCMReq.builder()
                                 .type(Type.CHATTING)
                                 .build())

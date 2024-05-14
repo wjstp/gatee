@@ -14,4 +14,6 @@ public interface ChatService {
     void createAppointment(ChatDto chatDto, UUID memberId) throws ExecutionException, InterruptedException, FirebaseMessagingException;
 
     void sendEmozi(ChatDto chatDto, UUID memberId) throws FirebaseMessagingException;
+
+    void sendImages(ChatDto chatDto, UUID memberId) throws FirebaseMessagingException;
 }
