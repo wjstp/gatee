@@ -152,6 +152,7 @@ class PushNotificationControllerTest extends RestDocsTestSupport {
                         .albumNotification(true)
                         .naggingNotification(false)
                         .scheduleNotification(false)
+                        .chatNotification(true)
                         .featureNotification(true).build());
 
         // when
@@ -164,6 +165,7 @@ class PushNotificationControllerTest extends RestDocsTestSupport {
                                         fieldWithPath("albumNotification").type(JsonFieldType.BOOLEAN).description("앨범 등록시 알림 동의 여부"),
                                         fieldWithPath("scheduleNotification").type(JsonFieldType.BOOLEAN).description("일정 등록시 알림 동의 여부"),
                                         fieldWithPath("naggingNotification").type(JsonFieldType.BOOLEAN).description("한마디 하기 알림 동의 여부"),
+                                        fieldWithPath("chatNotification").type(JsonFieldType.BOOLEAN).description("채팅 알림 동의 여부"),
                                         fieldWithPath("featureNotification").type(JsonFieldType.BOOLEAN).description("가족 특징 알림 동의 여부"))
                         )
                 );
@@ -213,6 +215,7 @@ class PushNotificationControllerTest extends RestDocsTestSupport {
                                 parameterWithName("albumNotification").description("앨범 등록시 알림 동의 여부").optional(),
                                 parameterWithName("naggingNotification").description("한마디 하기 알림 동의 여부").optional(),
                                 parameterWithName("scheduleNotification").description("일정 등록시 알림 동의 여부").optional(),
+                                parameterWithName("chatNotification").description("채팅 알림 동의 여부").optional(),
                                 parameterWithName("featureNotification").description("가족 특징 알림 동의 여부").optional()
                         )
                 ));

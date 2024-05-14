@@ -11,8 +11,8 @@ public record NotificationAgreementRes(
         boolean albumNotification,
         boolean naggingNotification,
         boolean scheduleNotification,
-
-        boolean featureNotification
+        boolean featureNotification,
+        boolean chatNotification
 ){
     public static NotificationAgreementRes toDto(MemberNotification memberNotification){
         return NotificationAgreementRes.builder()
@@ -20,6 +20,7 @@ public record NotificationAgreementRes(
                 .scheduleNotification(memberNotification.isScheduleNotification())
                 .naggingNotification(memberNotification.isNaggingNotification())
                 .featureNotification(memberNotification.isFeatureNotification())
+                .chatNotification(memberNotification.isChatNotification())
                 .build();
     }
 }
