@@ -66,7 +66,7 @@ const CharacterStart = () => {
         isLoading === true ?
           <></> :
 
-          <div className="character__answerTmpList">
+          <div className="character__answerList">
             {/* 헤더 */}
             <Header name={userInfo?.nickname}/>
             {/* 사전 작성하기 버튼 */}

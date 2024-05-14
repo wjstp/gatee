@@ -10,7 +10,8 @@ self.addEventListener("activate", function (e) {
 
 // 푸시 알림 받는 설정
 self.addEventListener("push", function (e) {
-  console.log("푸시 알림 왔다!!!!!: ", e.data.json());
+  console.log("푸시 e: ", e);
+  console.log("푸시 e.data.json(): ", e.data.json());
   if (!e.data.json()) return;
 
   const resultData = e.data.json().notification;
@@ -26,7 +27,10 @@ self.addEventListener("push", function (e) {
 
 self.addEventListener("notificationclick", function (event) {
   console.log("Notification clicked");
+  console.log("event",event)
   const clickedNotification = event.notification;
+  console.log("event.notification",event.notification)
+  console.log("event.notification.data.url",event.notification.data.url)
   clickedNotification.close();
 
   const pushPath = '/main';

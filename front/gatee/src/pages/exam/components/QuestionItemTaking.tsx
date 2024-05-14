@@ -41,11 +41,11 @@ const QuestionItemTaking = (
     <div className="exam__item">
       {/* 문제 */}
       <div className="exam__item__question">
-        {questionNumber+1}. {questionItem.nickname}님의 {questionItem.question}은?
+        {questionNumber+1}. {questionItem?.nickname}님의 {questionItem?.question}은?
       </div>
 
       {/* 객관식 */}
-      {questionItem.answerList.map((answer: any, i: number) => {
+      {questionItem?.answerList.map((answer: any, i: number) => {
         return (
           <div key={i} className="exam__item__answerList"
                onClick={() => handleAnswer(i + 1)}>
