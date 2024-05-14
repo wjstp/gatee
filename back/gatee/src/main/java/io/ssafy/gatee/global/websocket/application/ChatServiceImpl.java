@@ -148,6 +148,32 @@ public class ChatServiceImpl implements ChatService {
                         .build());
     }
 
+    @Override
+    public void sendEmozi(ChatDto chatDto, UUID memberId) throws FirebaseMessagingException {
+        List<String> unReadMemberAsStringList = handleUnreadMember(memberId);
+        UUID familyId = familyService.getFamilyIdByMemberId(memberId);
+        List<UUID> familyMemberIdList = this.findFamilyMemberIdExceptMe(memberId);
+        this.saveMessageToRealtimeDatabase(FireStoreChatDto.builder()
+                .messageType(chatDto.messageType())
+                .content(chatDto.content())
+                .emojiId(chatDto.emojiId().toString())
+                .sender(memberId.toString())
+                .unReadMember(unReadMemberAsStringList)
+                .currentTime(chatDto.currentTime())
+                .appointmentId(appointmentService.createAppointment(chatDto, familyId, memberId))
+                .build(), familyId);
+        pushNotificationService.sendPushOneToMany(
+                PushNotificationFCMReq.builder()
+                        .senderId(memberId)
+                        .receiverId(familyMemberIdList)
+                        .title("채팅 알림")
+                        .content(chatDto.content())
+                        .dataFCMReq(DataFCMReq.builder()
+                                .type(Type.CHATTING)
+                                .build())
+                        .build());
+    }
+
 
     public void saveMessageToRealtimeDatabase(FireStoreChatDto fireStoreChatDto, UUID familyId) {
         // roomId를 사용하여 채팅방에 대한 참조를 가져옵니다.
