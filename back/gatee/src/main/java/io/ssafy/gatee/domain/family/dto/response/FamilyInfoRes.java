@@ -10,6 +10,7 @@ public record FamilyInfoRes(
         String name,
         Integer familyScore,
         String familyImageUrl,
+        Long chatRoomId,
         List<MemberFamilyInfoRes> memberFamilyInfoList
 ) {
 }

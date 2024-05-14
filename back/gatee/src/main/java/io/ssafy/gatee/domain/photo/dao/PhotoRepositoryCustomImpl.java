@@ -61,6 +61,7 @@ public class PhotoRepositoryCustomImpl implements PhotoRepositoryCustom {
                                 .from(photo)
                                 .groupBy(photo.createdAt.year(), photo.createdAt.month())
                 ))
+                .orderBy(photo.createdAt.desc())
                 .fetch();
     }
 
@@ -74,6 +75,7 @@ public class PhotoRepositoryCustomImpl implements PhotoRepositoryCustom {
                                 .from(photo)
                                 .groupBy(photo.createdAt.year())
                 ))
+                .orderBy(photo.createdAt.desc())
                 .fetch();
     }
 
