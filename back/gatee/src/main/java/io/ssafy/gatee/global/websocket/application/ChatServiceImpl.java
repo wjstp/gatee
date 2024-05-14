@@ -172,6 +172,7 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
+    @Transactional
     public void sendImages(ChatDto chatDto, UUID memberId) throws FirebaseMessagingException {
         List<String> unReadMemberAsStringList = handleUnreadMember(memberId);
         UUID familyId = familyService.getFamilyIdByMemberId(memberId);

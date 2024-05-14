@@ -2,5 +2,6 @@
   "albumNotification" : false,
   "naggingNotification" : false,
   "scheduleNotification" : true,
-  "featureNotification" : true
+  "featureNotification" : true,
+  "chatNotification" : true
 }

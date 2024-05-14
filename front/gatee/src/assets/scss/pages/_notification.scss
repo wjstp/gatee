@@ -108,14 +108,14 @@
     position: relative;
 
     .setting--title {
-
       text-align: center;
     }
 
     .setting-finish-btn {
       position: absolute;
       right: 0;
-      font-size: 1.2rem;
+      font-size: $font-size;
+      color: $subtext-color;
       //color: $orange500;
     }
   }

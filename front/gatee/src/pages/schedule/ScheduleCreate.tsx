@@ -1,4 +1,4 @@
-import React, {useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom"
 
 import { TextField } from '@mui/material';
@@ -9,15 +9,22 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateValidationError } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from 'dayjs';
 
-import { FamilyMemberInfoSample } from "@constants/index";
 import calculateWeekday from "@utils/calculateWeekday";
+import { useFamilyStore } from "@store/useFamilyStore";
 import ProfileImage from '@assets/images/logo/app_icon_orange.png'
-
+import getUserInfo from "@utils/getUserInfo";
+import Button from "@mui/material/Button";
+import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+import SettingsToast from "@pages/notification/components/SettingsToast";
+import { useModalStore } from "@store/useModalStore";
+import Box from "@mui/material/Box";
 
 const ScheduleCreate = () => {
   dayjs.locale('ko');
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const {familyInfo} = useFamilyStore();
+
   const [title, setTitle] = useState<string>("");
   const [color, setColor] = useState<string>("pink")
   const [content, setContent] = useState<string>("");
@@ -26,14 +33,20 @@ const ScheduleCreate = () => {
   const [endDate, setEndDate] = useState<Dayjs | null>(null);
   const [startTime, setStartTime] = useState<Dayjs | null>();
   const [endTime, setEndTime] = useState<Dayjs | null>();
-  const [participants, setParticipants] = useState<string[]>(FamilyMemberInfoSample.map(member => member.email));
+  const [participants, setParticipants] = useState<string[]>(familyInfo.map(member => member.memberId));
+
   const [isOpenColor, setIsOpenColor] = useState<boolean>(false)
   const colorList: string[] = ["pink", "yellow", "green", "blue", "purple"]
+  const [state, setState] = React.useState({bottom: false});
+  const {setShowModal} = useModalStore();
+  type Anchor = 'top' | 'left' | 'bottom' | 'right';
+
   const [isTitleError, setIsTitleError] = useState<boolean>(false);
   const [isStartDateError, setIsStartDateError] = useState<boolean>(false);
   const [isEndDateError, setIsEndDateError] = useState<boolean>(false);
   const [startDateError, setStartDateError] = useState<DateValidationError | null>(null);
   const [endDateError, setEndDateError] = useState<DateValidationError | null>(null);
+
 
   useEffect(() => {
     setStartDate(dayjs(searchParams.get("start")));
@@ -41,6 +54,15 @@ const ScheduleCreate = () => {
     setStartTime(dayjs(`${searchParams.get("start")}T00:00:00`));
     setEndTime(dayjs(`${searchParams.get("end")}T23:59:59`));
   }, [searchParams]);
+
+  // 일정 생성 버튼 클릭 핸들러
+  const handleCreateSchedule = () => {
+    if (!title) {
+      setIsTitleError(true);
+    } else {
+      navigate('/schedule');
+    }
+  }
 
   // 제목 입력 핸들러
   const handleSetTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -91,7 +113,7 @@ const ScheduleCreate = () => {
       setEndDate(newValue);
     }
   }
-  
+
   // 종료 일자 에러 메시지
   const errorMessageEndDate = React.useMemo(() => {
     switch (endDateError) {
@@ -100,19 +122,19 @@ const ScheduleCreate = () => {
         setIsEndDateError(true);
         return '유효한 날짜를 입력해 주세요';
       }
-      
+
       case 'minDate': {
         setIsEndDateError(true);
         return '시작일 이후의 날짜를 입력해 주세요';
       }
-        
+
       default: {
         setIsEndDateError(false);
         return '';
       }
     }
   }, [endDateError]);
-  
+
   // 시작 시간 입력 핸들러
   const handleSetStartTime = (newValue: Dayjs | null) => {
     if (dayjs(newValue).isValid()) {
@@ -162,7 +184,7 @@ const ScheduleCreate = () => {
   const handleSetParticipants = (value: string) => {
     if (participants.includes(value)) {
       // 이미 참여자인 경우 참여자 목록에서 제거
-      setParticipants(participants.filter((email) => email !== value))
+      setParticipants(participants.filter((memberId) => memberId !== value))
     } else {
       // 아직 참여자가 아닌 경우 참여자 목록에 추가
       setParticipants([...participants, value]);
@@ -170,44 +192,36 @@ const ScheduleCreate = () => {
   }
 
   // 참여자 프로필 렌더링
-  const renderProfile = (email: string, nickname: string, image: string) => {
+  const renderProfile = (memberId: string) => {
+    const userInfo = getUserInfo(familyInfo, memberId);
     return (
-      <div className="create-schedule-participant__profile-item" key={email} onClick={() => handleSetParticipants(email)}>
-        <div className={`create-schedule-participant__profile-image${participants.includes(email) ? '--active' : ''}`}>
-          <img src={ProfileImage} alt=""/>
-          {/*<img src={ member.image } alt={ nickname } />*/}
+      <div className="create-schedule-participant__profile-item" key={memberId}
+           onClick={() => handleSetParticipants(memberId)}>
+        <div
+          className={`create-schedule-participant__profile-image${participants.includes(memberId) ? '--active' : ''}`}>
+          <img src={userInfo?.fileUrl} alt={userInfo?.nickname}/>
         </div>
         <div className="create-schedule-participant__profile-nickname">
-          {nickname}
+          {userInfo?.nickname}
         </div>
       </div>
     );
   }
 
-
   // 참여자 수 반환
-  const getParticipantNumber = () : string => {
-    if (participants.length === FamilyMemberInfoSample.length) {
+  const getParticipantNumber = (): string => {
+    if (participants.length === familyInfo.length) {
       return "전원 참여"
     } else {
       return `${participants.length}명 참여`
     }
   }
-  
+
   // 일정 생성 버튼 활성화 여부 계산
   const isButtonEnabled = () => {
     return title && !isStartDateError && !isEndDateError;
   };
 
-  // 일정 생성 버튼 클릭 핸들러
-  const handleCreateSchedule = () => {
-    if (!title) {
-      setIsTitleError(true);
-    } else {
-      navigate('/schedule');
-    }
-  }
-  
   // mui custom
   const muiFocusCustom = {
     "& .MuiOutlinedInput-root": {
@@ -218,6 +232,75 @@ const ScheduleCreate = () => {
         },
       }
     }
+  }
+
+  // MUI 관련 코드 -> 슬라이드 다운 해서 내리기 기능 가능
+  const toggleDrawer =
+    (anchor: Anchor, open: boolean) =>
+      (event: React.KeyboardEvent | React.MouseEvent) => {
+        console.log(anchor)
+        if (open === true) {
+          setShowModal(true)
+        } else {
+          setShowModal(false)
+        }
+        if (
+          event &&
+          event.type === 'keydown' &&
+          ((event as React.KeyboardEvent).key === 'Tab' ||
+            (event as React.KeyboardEvent).key === 'Shift')
+        ) {
+          return;
+        }
+        setState({...state, [anchor]: open});
+      };
+
+  // 설정 탭에서 완료 버튼 누를 때 팝업 내리기
+  const handleFinishTab = (event: React.MouseEvent) => {
+    console.log("부모")
+    toggleDrawer('bottom', false)(event)
+  }
+
+  // 토스트 객체
+  const renderColorList = (anchor: Anchor) => (
+    <Box
+      sx={{
+        width: 'auto'
+      }}
+      role="presentation"
+      onKeyDown={toggleDrawer(anchor, false)}
+      style={{backgroundColor: "#7B7B7B"}}
+    >
+      {/* 토스트 팝업 되는 컴포넌트 넣기 */}
+      <InputColorToast/>
+    </Box>
+  );
+
+  const InputColorToast = () => {
+    return (
+      <div className="create-schedule__input-color">
+
+        <div className="create-schedule__input-color-title">
+          <h2>색상</h2>
+        </div>
+        <div className="create-schedule__input-color-list">
+          {colorList.map((value: string, index: number) => (
+            <button
+              key={index}
+              className={`create-schedule__input-color-item${value === color ? '--active' : ''}`}
+              style={{backgroundColor: colorPalette(value)}}
+              onClick={() => setColor(value)}
+            />
+          ))}
+        </div>
+        <button
+          className="create-schedule__input-color-close"
+          onClick={handleFinishTab}
+        >
+          닫기
+        </button>
+      </div>
+    )
   }
 
   return (
@@ -243,14 +326,28 @@ const ScheduleCreate = () => {
             />
 
             {/*일정 색상 선택*/}
-            <button
-              className={`create-schedule-info__input-color-button${isOpenColor ? '--active' : ''}`}
-              onClick={() => {
-                setIsOpenColor(!isOpenColor)
-              }}
-              style={{backgroundColor: colorPalette(color)}}
-            >
-            </button>
+            <div className="create-schedule-info__input-color-button">
+              <React.Fragment key={"bottom"}>
+                <Button
+                  onClick={toggleDrawer("bottom", true)}
+                  style={
+                    {
+                      width: "5",
+                      height: "5",
+                      backgroundColor: colorPalette(color)
+                    }
+                  }
+                >
+                </Button>
+                <SwipeableDrawer
+                  anchor={"bottom"}
+                  open={state["bottom"]}
+                  onClose={toggleDrawer("bottom", false)}
+                  onOpen={toggleDrawer("bottom", true)}>
+                  {renderColorList("bottom")}
+                </SwipeableDrawer>
+              </React.Fragment>
+            </div>
           </div>
 
           {/*일정 내용 입력*/}
@@ -354,8 +451,8 @@ const ScheduleCreate = () => {
 
             {/*가족 프로필*/}
             <div className="create-schedule-participant__profile">
-              {FamilyMemberInfoSample.map((member, index: number) => (
-                renderProfile(member.email, member.nickname, member.profileImageUrl)
+              {familyInfo.map((member) => (
+                renderProfile(member.memberId)
               ))}
             </div>
           </div>
@@ -370,29 +467,6 @@ const ScheduleCreate = () => {
           생성
         </button>
       </div>
-
-      {/* 색상 선택창 */}
-      {isOpenColor && (
-        <div className="create-schedule__input-color">
-          <div className="create-schedule__input-color-title">색상</div>
-          <div className="create-schedule__input-color-list">
-            {colorList.map((value: string, index: number) => (
-              <button
-                key={index}
-                className={`create-schedule__input-color-item${value === color ? '--active' : ''}`}
-                style={{backgroundColor: colorPalette(value)}}
-                onClick={() => setColor(value)}
-              />
-            ))}
-          </div>
-          <button
-            className="create-schedule__input-color-close"
-            onClick={() => setIsOpenColor(false)}
-          >
-            닫기
-          </button>
-        </div>
-      )}
     </div>
   );
 }
