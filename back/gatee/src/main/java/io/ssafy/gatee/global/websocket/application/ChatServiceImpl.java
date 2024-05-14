@@ -179,7 +179,6 @@ public class ChatServiceImpl implements ChatService {
         this.saveMessageToRealtimeDatabase(FireStoreChatDto.builder()
                 .messageType(chatDto.messageType())
                 .files(chatDto.files())
-                .emojiId(chatDto.emojiId().toString())
                 .sender(memberId.toString())
                 .unReadMember(unReadMemberAsStringList)
                 .currentTime(chatDto.currentTime())
