@@ -94,7 +94,10 @@ if (firebase.messaging.isSupported())
       body: notificationData.body,
       icon: notificationData.icon,
     };
-    showNotification(notificationTitle, notificationOptions,url);
+    if (window.location.href.includes("chatting") && notificationTitle.includes("채팅")) return
+    else {
+      showNotification(notificationTitle, notificationOptions, url);
+    }
   });
 
 
