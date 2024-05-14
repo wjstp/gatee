@@ -98,7 +98,7 @@ const SignupPermission = () => {
           />
           <label className="checkbox-privacy__label">
             <span className="label__part--01">
-              개인 정보(필수)
+              개인 정보 (필수)
             </span>
             <span className="label__part--02">
               이름, 생년월일, 성별
@@ -116,7 +116,7 @@ const SignupPermission = () => {
           />
           <label className="checkbox-push__label">
             <span className="label__part--01">
-              푸시 알림(필수)
+              푸시 알림 (필수)
             </span>
             <span className="label__part--02">
               채팅, 일정, 앨범, 한마디, 기념일
@@ -134,10 +134,10 @@ const SignupPermission = () => {
           />
           <label className="checkbox-camera__label">
             <span className="label__part--01">
-              카메라/앨범(필수)
+              카메라/앨범 (필수)
             </span>
             <span className="label__part--02">
-              가족, 프로필, 일정/앨범, 채팅 사진
+              프로필, 가족 이미지, 앨범, 채팅
             </span>
           </label>
         </div>

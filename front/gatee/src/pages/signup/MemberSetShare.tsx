@@ -52,9 +52,9 @@ const SignupMemberSetShare = () => {
 
   // 초대 코드를 클립보드에 복사하는 함수
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(familyCode).then(() => {
-      alert("초대 코드가 클립보드에 복사되었습니다.");
-    }).catch(err => {
+    navigator.clipboard.writeText(familyCode)
+      .then()
+      .catch(err => {
       console.error('클립보드 복사에 실패했습니다', err);
     });
   }

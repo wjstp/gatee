@@ -27,7 +27,7 @@ public class BaseEntity {
     private LocalDateTime updatedAt;
 
     @PrePersist
-    public void prePersis() {
+    public void prePersist() {
         this.status = true;
     }
 

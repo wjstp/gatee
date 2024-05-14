@@ -157,3 +157,55 @@
   }
 }
 
+.character-family-list {
+
+  .go-to-question {
+    @include flex_center;
+    @extend %orange-button-large;
+
+    width: 85dvw;
+    margin: 1rem auto;
+  }
+
+  .character-family-list-title {
+    @include flex-center;
+    @include my-(2);
+  }
+
+  .character-family-list-container {
+    @include flex-col;
+    gap: 0.5rem;
+
+    .character-family-list-item-container {
+
+      @include p-(0.5);
+      @include pr-(2);
+      @include mx-(2);
+      @include flex-row;
+      gap: 0.4rem;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid $gray100;
+      border-radius: 0.5rem;
+      flex: 1;
+
+      .icon-and-name-container {
+        @include flex-row;
+        gap: 0.4rem;
+        align-items: center;
+
+        .character-family-list-item-name {
+          font-size: 1.3rem;
+
+        }
+      }
+
+      .go-to-dict-btn {
+        font-size: 1rem;
+        text-decoration: underline;
+        color: $orange500;
+      }
+    }
+  }
+
+}

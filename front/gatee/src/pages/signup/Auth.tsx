@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { AxiosResponse, AxiosError } from "axios";
 import { kakaoLoginAPI, kakaoTokenAPI } from "@api/kakao";
 import { useMemberStore } from "@store/useMemberStore";
 import Loading from "@components/Loading";
-import { getMyDataApi } from "@api/member";
-import { useFamilyStore } from "@store/useFamilyStore";
 
 const SignupAuth = () => {
   const navigate = useNavigate();
@@ -19,7 +17,6 @@ const SignupAuth = () => {
   const code: string | null = new URL(window.location.href).searchParams.get('code');
 
   const { setName } = useMemberStore();
-  const { setFamilyId } = useFamilyStore();
 
   // 인가코드를 받았을 때마다 실행
   useEffect(() => {
@@ -44,12 +41,13 @@ const SignupAuth = () => {
         }
       },
       (res: AxiosResponse<any>): void => {
-        console.log(res.data.access_token)
+        console.log(res.data.access_token);
         // 카카오 토큰으로 우리 서버 토큰 발급하기
         tokenChange(res.data.access_token);
       },
       (err: AxiosError<any>): void => {
         // 로그인 실패
+        console.error("Kakao login failed", err);
         alert('카카오 서버로 로그인이 안돼요!');
         navigate('/kakao');
       }
@@ -80,12 +78,11 @@ const SignupAuth = () => {
         navigate(redirect);
       },
       (err: AxiosError<any>): void => {
-        console.log(err)
-        // 로그인 실패
-        alert('다시 로그인을 시도해보세요');
+        console.error(err);
+        alert("로그인에 실패했습니다. 다시 시도해 주세요.");
         navigate('/kakao');
       }
-    )
+    ).then().catch();
   }
 
   return (

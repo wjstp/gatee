@@ -36,6 +36,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+import static com.google.firebase.messaging.MessagingErrorCode.INVALID_ARGUMENT;
+import static com.google.firebase.messaging.MessagingErrorCode.UNREGISTERED;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -188,12 +191,13 @@ public class PushNotificationServiceImpl implements PushNotificationService {
     }
 
     @Override
+    @Transactional
     public void sendPushOneToMany(PushNotificationFCMReq pushNotificationFCMReq) throws FirebaseMessagingException {   // 이건 토큰 할때나..
         log.info(pushNotificationFCMReq.receiverId().toString());
         List<String> receiverTokens = pushNotificationFCMReq.receiverId().stream()
                 .map(memberRepository::findById)
                 .filter(Optional::isPresent)
-                .filter(receiverGet -> Objects.nonNull(receiverGet.get().getNotificationToken()))
+                .filter(receiverGet -> Objects.nonNull(receiverGet.get().getNotificationToken())&& ! receiverGet.equals(""))    // todo: 수정
                 .filter(receiver -> checkAgreement(pushNotificationFCMReq.dataFCMReq().type(), receiver.get().getId()))
                 .map(receiver -> receiver.get().getNotificationToken()).toList();
         log.info(checkAgreement(pushNotificationFCMReq.dataFCMReq().type(), pushNotificationFCMReq.receiverId().get(0))+"");
@@ -230,7 +234,12 @@ public class PushNotificationServiceImpl implements PushNotificationService {
                 List<String> failedTokens = new ArrayList<>();
                 for (int i = 0; i < responses.size(); i++) {
                     if (!responses.get(i).isSuccessful()) {
-                        // todo: 토큰 오류 시 로직 추가 - db에는 저장해야 한다.
+                        // 응답 코드 확인 후 토큰 에러 일시, 토큰 삭제
+                        MessagingErrorCode exception = responses.get(i).getException().getMessagingErrorCode();
+                        if (exception.equals(UNREGISTERED)) {
+                            Optional<Member> member = memberRepository.findByNotificationToken(receiverTokens.get(i));
+                            member.ifPresent(mem -> mem.saveNotificationToken(null));   // todo:수정
+                        }
                         failedTokens.add(receiverTokens.get(i));
                     }
                 }

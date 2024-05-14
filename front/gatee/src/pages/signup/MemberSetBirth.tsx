@@ -60,7 +60,7 @@ const SignupMemberSetBirth = () => {
       if (isValidDateFormat(formattedDate)) {
         setBirth(formattedDate);
         if (isFutureDate(formattedDate)) {
-          setErrorMessage('유효한 날짜를 선택해주세요');
+          setErrorMessage('유효한 날짜를 선택해 주세요');
         } else {
           setErrorMessage('');
         }
@@ -170,7 +170,7 @@ const SignupMemberSetBirth = () => {
           성별
         </span>
         <span className="title-gender__part--02">
-          을 골라주세요
+          을 선택해 주세요
         </span>
       </div>
 

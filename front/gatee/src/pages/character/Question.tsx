@@ -61,7 +61,6 @@ const CharacterQuestion = () => {
         featureId: askList[askIndex].featureId,
         answer: inputValue
       }, res => {
-        console.log(res.data)
         console.log("제출");
         console.log("다음 질문");
         setAskIndex(askIndex + 1)
@@ -92,8 +91,10 @@ const CharacterQuestion = () => {
     getNewDictAskApi(res => {
         console.log(res)
         setAskList(res.data)
+        setIsLoading(false)
         if (res.data.length === 0) {
           setEmpty(true)
+
         }
       },
       err => {
