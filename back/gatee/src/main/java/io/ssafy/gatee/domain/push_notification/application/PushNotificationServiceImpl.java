@@ -107,7 +107,9 @@ public class PushNotificationServiceImpl implements PushNotificationService {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String senderImageUrl = memberRepository.findById(pushNotificationFCMReq.senderId())
                 .orElseThrow(()-> new MemberNotFoundException(ExceptionMessage.MEMBER_NOT_FOUND)).getFile().getUrl();
-
+        if (pushNotificationFCMReq.dataFCMReq().type().equals(Type.CHATTING)) {
+            return;
+        }
         List<PushNotifications> pushNotifications = pushNotificationFCMReq.receiverId().stream()
                 .map(receiverId -> PushNotifications.builder()
                     .type(pushNotificationFCMReq.dataFCMReq().type().toString())
