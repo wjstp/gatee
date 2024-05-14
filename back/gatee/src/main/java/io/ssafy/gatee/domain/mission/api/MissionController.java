@@ -36,7 +36,7 @@ public class MissionController {
             @RequestBody MissionTypeReq missionTypeReq,
             @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {
-        missionService.progressMission(customUserDetails.getMemberId(), missionTypeReq.type());
+        missionService.progressMission(customUserDetails.getMemberId(), missionTypeReq);
     }
 
     // 미션 완료
