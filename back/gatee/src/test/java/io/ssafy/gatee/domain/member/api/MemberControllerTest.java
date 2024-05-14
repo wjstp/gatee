@@ -8,7 +8,6 @@ import io.ssafy.gatee.domain.member.dto.request.MemberEditMoodReq;
 import io.ssafy.gatee.domain.member.dto.request.MemberEditReq;
 import io.ssafy.gatee.domain.member.dto.request.MemberSaveReq;
 import io.ssafy.gatee.domain.member.dto.request.MemberTokenReq;
-import io.ssafy.gatee.domain.member.dto.response.MemberEditProfileImageRes;
 import io.ssafy.gatee.domain.member.dto.response.MemberInfoRes;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -134,10 +133,7 @@ class MemberControllerTest extends RestDocsTestSupport {
     void editProfileImage() throws Exception {
 
         // given
-        given(memberService.editProfileImage(any(String.class), any(FileType.class), any(MultipartFile.class)))
-                .willReturn(MemberEditProfileImageRes.builder()
-                        .imageUrl("https://spring-learning.s3.ap-southeast-2.amazonaws.com/default/profile_oldman.PNG")
-                        .build());
+        doNothing().when(memberService).editProfileImage(any(String.class), any(FileType.class), any(MultipartFile.class), any(UUID.class));
 
         // when
         // Mock 파일 생성
@@ -162,10 +158,7 @@ class MemberControllerTest extends RestDocsTestSupport {
                                 parameterWithName("defaultImage").description("기본 이미지 이름").optional(),
                                 parameterWithName("fileType").description("파일 타입").optional(),
                                 parameterWithName("file").description("사진 파일").optional()
-                        ),
-                        responseFields(
-                                fieldWithPath("imageUrl").type(JsonFieldType.STRING).description("파일 URL")
-                                )
+                        )
                 ));
     }
 
