@@ -1,6 +1,8 @@
 /* 응답타입: Res, 요청타입: Req, props타입: Props 뒤에 붙이고 사용하기 */
 
 // 가족
+import {createScheduleApi} from "@api/schedule";
+
 export interface FamilyStore {
   chatRoomId: number | null;
   setChatRoomId: (newId: number) => void;
@@ -191,7 +193,7 @@ export interface ScheduleListRes {
   endDate: string;
 }
 
-export interface ScheduleItemRes {
+export interface ScheduleDetailRes {
   scheduleId: number;
   category: string;
   title: string;
@@ -199,14 +201,19 @@ export interface ScheduleItemRes {
   content: string;
   startDate: string;
   endDate: string;
-  scheduleRecordRes: ScheduleRecordReq[];
+  scheduleRecordRes: ScheduleRecord[];
   participateMembers: {
     nickname: string;
     profileImageUrl: string;
   }[]
 }
 
-export interface ScheduleCreateReq {
+export interface ScheduleDetailReq {
+  scheduleId: number;
+  familyId: string;
+}
+
+export interface CreateScheduleReq {
   familyId: string;
   category: string;
   title: string;
@@ -217,17 +224,28 @@ export interface ScheduleCreateReq {
   memberIdList: string[];
 }
 
-export interface ScheduleModifyReq {
-  familyId: string;
-  category: string;
-  title: string;
-  emoji: string;
-  content: string | null;
-  startDate: string;
-  endDate: string;
+export interface ModifyScheduleReq {
+  scheduleId: number;
+  data : {
+    familyId: string;
+    category: string;
+    title: string;
+    emoji: string;
+    content: string | null;
+    startDate: string;
+    endDate: string;
+  }
 }
 
-export interface ScheduleRecordReq {
+export interface CreateRecordReq {
+  scheduleId: number;
+  data: {
+    content: string;
+    fileIdList: string[];
+  }
+}
+
+export interface ScheduleRecord {
   content: string;
   fileUrlList: FileRes[];
 }
