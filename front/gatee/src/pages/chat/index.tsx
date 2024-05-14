@@ -6,17 +6,19 @@ import ChatDate from "@pages/chat/components/ChatDate";
 import { ChatContent, ChatDateLine, ChatType, ChatSendMessage } from "@type/index";
 import { useFamilyStore } from "@store/useFamilyStore";
 import { useMemberStore } from "@store/useMemberStore";
+import { useChatStore } from "@store/useChatStore";
 import getUserInfo from "@utils/getUserInfo";
 import Loading from "@components/Loading";
 import { FaArrowDown } from "react-icons/fa";
 import ScrollAnimation from "@assets/images/animation/scroll_animation.json";
+import useObserver from "@hooks/useObserver";
 import Lottie from "lottie-react";
 
 import SockJS from "sockjs-client";
 import firebase from "../../firebase-config";
 import 'firebase/database';
-import useObserver from "@hooks/useObserver";
-import LoadingAnimation from "@assets/images/animation/loading_animation.json";
+import { useInView } from 'react-intersection-observer';
+
 
 const ChatIndex = () => {
   const { REACT_APP_API_URL } = process.env;
@@ -26,26 +28,28 @@ const ChatIndex = () => {
   const ws = useRef<WebSocket | null>(null);
 
   const MAX_TIME_INTERVAL: number = 1000;
-  const MAX_RECONNECT_ATTEMPTS: number = 3;
+  const MAX_RECONNECT_ATTEMPTS: number = 5;
   let reconnectTimeInterval: number = Math.random() * MAX_TIME_INTERVAL;
   let reconnectAttempts: number = 0;
   const [isReconnecting, setIsReconnecting] = useState<boolean>(false);
 
   const { familyId, familyInfo } = useFamilyStore();
   const { myInfo } = useMemberStore();
+  const { setIsNewMessage } = useChatStore();
 
-  const PAGE_SIZE: number = 20;
+  const PAGE_SIZE: number = 30;
   const chatRef = firebase.database().ref(`chat/${familyId}/messages`);
   const [messages, setMessages] = useState<(ChatContent | ChatDateLine)[]>([]);
   const [startKey, setStartKey] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isEntryChat, setIsEntryChat] = useState<boolean>(false);
   const [isGetAllData, setIsGetAllData] = useState<boolean>(false);
+  const [isEntryChat, setIsEntryChat] = useState<boolean>(false);
 
   const [isShowScrollDownButton, setIsShowScrollDownButton] = useState(false);
   const [isShowPreviewMessage, setIsShowPreviewMessage] = useState<boolean>(false);
   const [previewMessage, setPreviewMessage] = useState<{ sender: string | undefined, content: string } | null>(null);
-  const bottomRef = useRef<HTMLDivElement>(null);
+  const bottomRef = useRef<HTMLDivElement | null>(null);
+  const { ref, inView } = useInView();
 
   useEffect(() => {
     // WebSocket 연결
@@ -57,8 +61,8 @@ const ChatIndex = () => {
         ws.current.close();
       }
       // Firebase 실시간 이벤트 리스너 해제
-      chatRef.off();
-
+      chatRef.off('child_changed');
+      chatRef.off('child_added');
     }
   }, []);
 
@@ -68,16 +72,24 @@ const ChatIndex = () => {
       // Firebase 실시간 이벤트 리스너 등록
       chatRef.limitToLast(1).on('child_added', handleAddChatData);
       chatRef.on('child_changed', handleUpdateChatData);
+
+      // 메시지 조회
+      loadMessages();
     }
   }, [familyId]);
 
   // WebSocket 연결
   const connect = () => {
-    ws.current = new SockJS(`${WS_URL}?Token=${localStorage.getItem('accessToken')}`);
+    try {
+      ws.current = new SockJS(`${WS_URL}?Token=${localStorage.getItem('accessToken')}`);
 
-    // WebSocket 연결 상태 리스너
-    ws.current.onopen = handleWebSocketOpen;
-    ws.current.onclose = handleWebSocketClose;
+      // WebSocket 연결 상태 리스너
+      ws.current.onopen = handleWebSocketOpen;
+      ws.current.onclose = handleWebSocketClose;
+    } catch (error) {
+      console.error("Failed to connect to WebSocket:", error);
+      navigate("/main");
+    }
   }
 
   // WebSocket 연결 성공 이벤트 핸들러
@@ -131,47 +143,59 @@ const ChatIndex = () => {
 
   // 채팅방 이전 메시지 불러오기
   const loadMessages = () => {
-    if (!isLoading) {
-      setIsLoading(true);
+    if (isLoading) return;
 
-      let query = chatRef.orderByKey().limitToLast(PAGE_SIZE);
+    // 데이터 로드 시작
+    setIsLoading(true);
 
-      if (startKey) {
-        query = query.endAt(startKey);
-      }
+    let query = chatRef.orderByKey().limitToLast(PAGE_SIZE);
 
-      query.once('value')
-        .then((snapshot) => {
-          const messagesArray: (ChatContent | ChatDateLine)[] = [];
-
-          snapshot.forEach((childSnapshot) => {
-            const newMessage = { id: childSnapshot.key, ...childSnapshot.val() };
-            messagesArray.unshift(newMessage);
-          });
-
-          if (messagesArray.length !== 1) {
-            messagesArray.pop();
-          } else {
-            setIsGetAllData(true);
-          }
-
-          // 메시지 저장
-          setMessages((prevMessages) => [...prevMessages, ...messagesArray]);
-
-          // 새로운 startKey를 설정
-          const newStartKey: string = Object.keys(snapshot.val())[0];
-          setStartKey(newStartKey);
-        })
-        .then(() => {
-          setIsLoading(false);
-        })
-        .catch(() => {
-          console.log("There's no message")
-          setIsLoading(false);
-        });
+    if (startKey) {
+      query = query.endAt(startKey);
     }
+
+    query.once('value')
+      .then((snapshot) => {
+        // 새로운 메시지 배열
+        const messagesArray: (ChatContent | ChatDateLine)[] = [];
+
+        snapshot.forEach((childSnapshot) => {
+          const newMessage = { id: childSnapshot.key, ...childSnapshot.val() };
+          messagesArray.unshift(newMessage);
+        });
+
+
+        // 마지막 메시지일 경우를 제외하고는 뒤에 메시지를 자름
+        if (messagesArray.length !== 1) {
+          messagesArray.pop();
+        } else {
+          setIsGetAllData(true);
+        }
+
+        if (!isEntryChat) {
+          messagesArray.shift();
+        }
+
+        // 메시지 저장
+        setMessages((prevMessages) => [...prevMessages, ...messagesArray]);
+
+        // 새로운 startKey를 설정
+        const newStartKey: string = Object.keys(snapshot.val())[0];
+        setStartKey(newStartKey);
+
+        // 데이터 로드 종료
+        setIsLoading(false);
+        setIsEntryChat(true);
+      })
+      .catch(() => {
+        console.log("There's no message")
+        setIsLoading(false);
+        setIsGetAllData(true);
+        setIsEntryChat(true);
+      });
   };
 
+  // 스크롤 타겟
   const { target } = useObserver({
     fetcher: loadMessages,
     dependency: messages,
@@ -180,13 +204,8 @@ const ChatIndex = () => {
 
   // 메시지 추가 이벤트 수신 핸들러
   const handleAddChatData = (snapshot: firebase.database.DataSnapshot) => {
-    if (!isEntryChat) {
-      setIsEntryChat(true);
-      return;
-    };
-
     const newMessage: ChatContent | ChatDateLine = { id: snapshot.key, ...snapshot.val() };
-    setMessages((prevMessages) => [newMessage, ...prevMessages]);
+    setMessages(prevMessages => [newMessage, ...prevMessages]);
 
     // 메시지 프리뷰 설정
     handleShowPreview(newMessage);
@@ -196,7 +215,7 @@ const ChatIndex = () => {
     if (newMessage.messageType === ChatType.DATE_LINE) return;
     if ("sender" in newMessage && newMessage.sender === myInfo.memberId) return;
 
-    if ("sender" in newMessage) {
+    if (("sender" in newMessage)) {
       const sender: string | undefined = getUserInfo(familyInfo, newMessage.sender)?.nickname;
       let content: string = "";
 
@@ -213,7 +232,6 @@ const ChatIndex = () => {
       }
       setPreviewMessage({sender, content});
       setIsShowPreviewMessage(true);
-      setIsShowScrollDownButton(false);
     }
   }
 
@@ -231,29 +249,19 @@ const ChatIndex = () => {
     }));
   }
 
-  // 스크롤 이벤트 핸들러
-  const handleScroll = () => {
-    // const ref = chatMainRef.current!;
-    // if (Math.abs(ref.scrollTop) > ref.scrollHeight - ref.clientHeight - 100) {
-    //   // 스크롤이 맨 위인 경우 다음 페이지의 데이터 요청
-    //   loadMessages();
-    // }
-    // if (ref.scrollTop < -50) {
-    //   // 스크롤이 맨 아래가 아닌 경우 맨 아래로 이동하는 버튼 표시
-    //   setIsShowScrollDownButton(true);
-    // }
-    // if (ref.scrollTop > -50) {
-    //   // 스크롤이 맨 아래인 경우 프리뷰 제거
-    //   setIsShowScrollDownButton(false);
-    //   setIsShowPreviewMessage(false);
-    //   setPreviewMessage(null);
-    // }
-  };
+  // 하단 영역인지 확인
+  useEffect(() => {
+    if (inView) {
+      // 스크롤이 맨 아래인 경우 프리뷰 제거
+      setIsShowPreviewMessage(false);
+    }
+  }, [inView]);
 
   // 스크롤 맨 아래로 내리기
   const scrollToBottom = () => {
     if (bottomRef.current) {
       bottomRef.current.scrollIntoView({ behavior: 'smooth' });
+      setPreviewMessage(null);
     }
   };
 
@@ -295,40 +303,45 @@ const ChatIndex = () => {
 
       {/*채팅 메인*/}
       <div className="chat__main">
-        {/*<div ref={bottomRef}>*/}
-        {/*  아래*/}
-        {/*</div>*/}
+        {/*채팅 하단*/}
+        <div ref={bottomRef}></div>
 
+        {/*채팅 하단 영역*/}
+        <div ref={ref} className="chat__main__bottom"></div>
+        
+        {/*채팅 내용*/}
         {renderChatBubble}
 
-        {/*모든 데이터를 불러왔을 시 타겟 제거*/}
-        {!isGetAllData && (
+        {/*DB에 더 불러올 데이터가 존재하고 데이터가 페이지 크기를 넘어갔을 때 표시*/}
+        {(!isGetAllData && messages.length >= PAGE_SIZE - 1) && (
           <div className="scroll-target" ref={target} >
             <Lottie className="scroll-target__animation" animationData={ScrollAnimation}/>
           </div>
         )}
 
-        {/*밑으로 이동 버튼*/}
-        {/*<div*/}
-        {/*  className={isShowScrollDownButton && !isShowPreviewMessage ? "chat__main__scroll-down--active" : "chat__main__scroll-down"}>*/}
-        {/*  <button*/}
-        {/*    className="chat__main__scroll-down-button"*/}
-        {/*    onClick={scrollToBottom}*/}
-        {/*    disabled={!isShowScrollDownButton}*/}
-        {/*  >*/}
-        {/*    <FaArrowDown size={17}/>*/}
-        {/*  </button>*/}
-        {/*</div>*/}
+        {/*아래로 이동 버튼*/}
+        {(!inView && !isShowPreviewMessage) && (
+          <div
+            className="chat__main__scroll-down">
+            <button
+              className="chat__main__scroll-down-button"
+              onClick={scrollToBottom}
+            >
+              <FaArrowDown size={17}/>
+            </button>
+          </div>
+        )}
 
-        {/*/!*새로운 메시지 프리뷰*!/*/}
-        {/*<button*/}
-        {/*  className={isShowPreviewMessage ? "chat__main__preview--active" : "chat__main__preview"}*/}
-        {/*  onClick={scrollToBottom}*/}
-        {/*  disabled={!isShowPreviewMessage}*/}
-        {/*>*/}
-        {/*  <span className="chat__main__preview__sender">{previewMessage?.sender}</span>*/}
-        {/*  <span className="chat__main__preview__content">{previewMessage?.content}</span>*/}
-        {/*</button>*/}
+        {/*새로운 메시지 프리뷰*/}
+        {(!inView && isShowPreviewMessage) && (
+          <button
+            className="chat__main__preview"
+            onClick={scrollToBottom}
+          >
+            <span className="chat__main__preview__sender">{previewMessage?.sender}</span>
+            <span className="chat__main__preview__content">{previewMessage?.content}</span>
+          </button>
+        )}
       </div>
 
       {/*채팅 입력*/}
