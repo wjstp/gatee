@@ -41,6 +41,7 @@ const ChatIndex = () => {
   const [startKey, setStartKey] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isGetAllData, setIsGetAllData] = useState<boolean>(false);
+  const [isEntryChat, setIsEntryChat] = useState<boolean>(false);
 
   const [isShowScrollDownButton, setIsShowScrollDownButton] = useState(false);
   const [isShowPreviewMessage, setIsShowPreviewMessage] = useState<boolean>(false);
@@ -169,6 +170,10 @@ const ChatIndex = () => {
           setIsGetAllData(true);
         }
 
+        if (!isEntryChat) {
+          messagesArray.shift();
+        }
+
         // 메시지 저장
         setMessages((prevMessages) => [...prevMessages, ...messagesArray]);
 
@@ -178,13 +183,19 @@ const ChatIndex = () => {
 
         // 데이터 로드 종료
         setIsLoading(false);
+        setIsEntryChat(true);
       })
       .catch(() => {
         console.log("There's no message")
         setIsLoading(false);
         setIsGetAllData(true);
+        setIsEntryChat(true);
       });
   };
+
+  useEffect(() => {
+    console.log(isEntryChat)
+  }, [isEntryChat]);
 
   // 스크롤 타겟
   const { target } = useObserver({
@@ -304,7 +315,7 @@ const ChatIndex = () => {
         {renderChatBubble}
 
         {/*DB에 더 불러올 데이터가 존재하고 데이터가 페이지 크기를 넘어갔을 때 표시*/}
-        {(!isGetAllData && messages.length >= PAGE_SIZE) && (
+        {(!isGetAllData && messages.length >= PAGE_SIZE - 1) && (
           <div className="scroll-target" ref={target} >
             <Lottie className="scroll-target__animation" animationData={ScrollAnimation}/>
           </div>
