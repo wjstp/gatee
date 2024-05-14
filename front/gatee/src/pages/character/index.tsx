@@ -4,6 +4,7 @@ import {useNavigate} from "react-router-dom";
 import {useDictStore} from "@store/useDictStore";
 import {getNewDictAskApi} from "@api/dictionary";
 import {useMemberStore} from "@store/useMemberStore";
+import NewQuestionNotFound from "@pages/character/components/NewQuestionNotFound";
 
 const CharacterIndex = () => {
     const navigate = useNavigate();
@@ -33,8 +34,7 @@ const CharacterIndex = () => {
         <div className="character__index">
             {isEmpty ?
                 <>
-                    <p>모든 질문을 대답했어요.</p>
-                    <p>업데이트를 기다려주세요!</p>
+                    <NewQuestionNotFound/>
                 </>
                 :
                 <>

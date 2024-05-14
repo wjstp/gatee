@@ -80,8 +80,12 @@ const ExamTaking = () => {
           setTransformedData(transformedData)
           setCorrectAnswerSheet(answerNumArray)
         } else {
-          setStartLoading(false)
-          setNotFound(true)
+          setTimeout(()=> {
+              setStartLoading(false)
+              setNotFound(true)
+            }
+          ,2000)
+
         }
       },
       err => {
@@ -132,7 +136,7 @@ const ExamTaking = () => {
 
         setTimeout(() => {
             setEndLoading(false)
-            setNotFound(true)
+
             navigate("/exam/grade")
           }
           , 1000)

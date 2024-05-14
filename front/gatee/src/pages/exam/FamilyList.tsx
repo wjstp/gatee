@@ -48,7 +48,7 @@ const ExamFamilyList = () => {
     <div className="exam-grade">
 
       {
-        setFamilyGrade.length === 0 ?
+        familyGrade.length === 0 ?
           <GradeNotFound/>
           :
           <>
