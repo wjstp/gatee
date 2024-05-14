@@ -14,6 +14,7 @@ public enum ExceptionMessage {
     MEMBER_FAMILY_SCHEDULE_NOT_FOUND("가족 내의 해당 일정에서 회원 정보를 찾을 수 없습니다."),
     ALBUM_NOT_FOUND("가족 내의 앨범을 찾을 수 없습니다."),
     MEMBER_FEATURE_NOT_FOUND("백문백답 정보를 찾을 수 없습니다."),
+    MEMBER_NOTIFICATION_NOT_FOUND("푸시 알림 동의 항목을 찾을 수 없습니다."),
 
     DO_NOT_HAVE_REQUEST("권한이 없습니다."),
     EXPIRED_CODE("만료된 인증코드입니다."),

@@ -43,6 +43,7 @@ public class PushNotificationController {
     public void modifyNotificationAgreements(@AuthenticationPrincipal CustomUserDetails customUserDetails, @RequestBody NotificationAgreementReq agreementReq) {
         notificationService.modifyNotificationAgreements(customUserDetails.getMemberId(), agreementReq);
     }
+
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/nagging")
     public NaggingRes sendNagging(@RequestBody NaggingReq naggingReq, @AuthenticationPrincipal CustomUserDetails customUserDetails) throws FirebaseMessagingException {

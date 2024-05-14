@@ -32,12 +32,10 @@ import io.ssafy.gatee.domain.schedule.entity.Category;
 import io.ssafy.gatee.domain.schedule.entity.Schedule;
 import io.ssafy.gatee.domain.schedule_record.dao.ScheduleRecordRepository;
 import io.ssafy.gatee.domain.schedule_record.entity.ScheduleRecord;
-import io.ssafy.gatee.global.batch.scheduler.PlanScheduler;
 import io.ssafy.gatee.global.exception.error.bad_request.DoNotHavePermissionException;
 import io.ssafy.gatee.global.exception.error.not_found.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -76,8 +74,6 @@ public class ScheduleServiceImpl implements ScheduleService {
     private final FileRepository fileRepository;
 
     private final PushNotificationService pushNotificationService;
-
-    private final PlanScheduler planScheduler;
 
     // 전체 일정 조회
     @Override
@@ -158,22 +154,19 @@ public class ScheduleServiceImpl implements ScheduleService {
         pushNotificationService.sendPushOneToMany(PushNotificationFCMReq.builder()
                 .senderId(memberId)
                 .receiverId(memberFamilyRepository.findMyFamily(memberId))
-                .title(Type.SCHEDULE.korean)
+                .title("일정 등록")
                 .content(member.getName() + "님이 일정을 등록하였습니다.")
                 .dataFCMReq(DataFCMReq.builder()
                         .type(Type.SCHEDULE)
                         .typeId(schedule.getId()).build())
                 .build());
-
-        planScheduler.registerSchedule(memberId, schedule.getId(), LocalDateTime.parse(scheduleSaveReq.endDate()));
-
     }
 
     // 일정 수정
     @Override
     @Transactional
     public void editSchedule(ScheduleEditReq scheduleEditReq, UUID memberId, Long scheduleId)
-            throws DoNotHavePermissionException, FamilyScheduleNotFoundException, MemberFamilyScheduleNotFoundException, FamilyNotFoundException, FirebaseMessagingException {
+            throws DoNotHavePermissionException, FamilyScheduleNotFoundException, MemberFamilyScheduleNotFoundException, FamilyNotFoundException {
         Member member = memberRepository.getReferenceById(memberId);
 
         Family family = familyRepository.getReferenceById(UUID.fromString(scheduleEditReq.familyId()));
@@ -192,21 +185,6 @@ public class ScheduleServiceImpl implements ScheduleService {
         } else {
             throw new DoNotHavePermissionException(DO_NOT_HAVE_REQUEST);
         }
-
-        // 알림발송
-        pushNotificationService.sendPushOneToMany(PushNotificationFCMReq.builder()
-                .senderId(memberId)
-                .receiverId(memberFamilyRepository.findMyFamily(memberId))
-                .title(Type.SCHEDULE.korean)
-                .content(member.getName() + "님이 일정을 변경하였습니다.")
-                .dataFCMReq(DataFCMReq.builder()
-                        .type(Type.SCHEDULE)
-                        .typeId(schedule.getId()).build())
-                .build());
-
-        // 일정 완료 알림 일정 변경
-        planScheduler.deleteSchedule(memberId, scheduleId);
-        planScheduler.registerSchedule(memberId, scheduleId, LocalDateTime.parse(scheduleEditReq.endDate()));
     }
 
     //일정 삭제
@@ -278,3 +256,4 @@ public class ScheduleServiceImpl implements ScheduleService {
         photoScheduleRecordRepository.saveAll(photoScheduleRecordList);
     }
 }
+
