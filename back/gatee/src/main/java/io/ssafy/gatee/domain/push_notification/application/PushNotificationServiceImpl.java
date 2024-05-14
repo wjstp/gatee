@@ -193,6 +193,7 @@ public class PushNotificationServiceImpl implements PushNotificationService {
         List<String> receiverTokens = pushNotificationFCMReq.receiverId().stream()
                 .map(memberRepository::findById)
                 .filter(Optional::isPresent)
+                .filter(receiverGet -> Objects.nonNull(receiverGet.get().getNotificationToken()))
                 .filter(receiver -> checkAgreement(pushNotificationFCMReq.dataFCMReq().type(), receiver.get().getId()))
                 .map(receiver -> receiver.get().getNotificationToken()).toList();
         log.info(checkAgreement(pushNotificationFCMReq.dataFCMReq().type(), pushNotificationFCMReq.receiverId().get(0))+"");
