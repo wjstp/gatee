@@ -42,7 +42,7 @@ export interface MemberStore {
   setMemberImage: (newImage: File | null) => void;
   stringMemberImage: string;
   setStringMemberImage: (newStringMemberImage: string) => void;
-  myInfo : MyMemberApiRes;
+  myInfo: MyMemberApiRes;
   setMyInfo: (newMyInfo: Partial<MyMemberApiRes>) => void;
 };
 
@@ -52,7 +52,7 @@ export interface MyMemberApiRes {
   birthType: string;
   email: string;
   memberId: string;
-  mood: string|null;
+  mood: string | null;
   name: string;
   nickname: string;
   role: string;
@@ -60,7 +60,7 @@ export interface MyMemberApiRes {
   phoneNumber: string | null;
   fileUrl: string;
   isLeader: boolean;
-  memberFamilyId:number;
+  memberFamilyId: number;
 }
 
 
@@ -81,7 +81,7 @@ export interface MemberApiReq {
   birthType: string;
   email: string;
   memberId: string;
-  mood: string|null;
+  mood: string | null;
   name: string;
   nickname: string;
   role: string;
@@ -115,14 +115,14 @@ export interface MemberApiRes {
   birthType: string;
   email: string;
   memberId: string;
-  mood: string|null;
+  mood: string | null;
   name: string;
   nickname: string;
   role: string;
   phoneNumber: string | null;
   fileUrl: string;
   isLeader: boolean;
-  memberFamilyId:number;
+  memberFamilyId: number;
 }
 
 export interface MyMemberApiRes {
@@ -130,7 +130,7 @@ export interface MyMemberApiRes {
   birthType: string;
   email: string;
   memberId: string;
-  mood: string|null;
+  mood: string | null;
   name: string;
   nickname: string;
   role: string;
@@ -138,7 +138,7 @@ export interface MyMemberApiRes {
   phoneNumber: string | null;
   fileUrl: string;
   isLeader: boolean;
-  memberFamilyId:number;
+  memberFamilyId: number;
 }
 
 // 프로필 수정
@@ -362,6 +362,7 @@ export interface GroupPhotoData {
   imageUrl: string | null,
   PhotoId: number | null
 }
+
 export interface MonthYearThumbnailPhotoData {
   createdAt: string,
   imageUrl: string,
@@ -371,6 +372,7 @@ export interface MonthYearThumbnailPhotoData {
 export interface MonthYearPhotoTabProps {
   monthYearPhotoData: MonthYearThumbnailPhotoData
 }
+
 export interface GroupPhotoItemProps {
   groupPhotoData: GroupPhotoData
 }
@@ -421,13 +423,13 @@ export interface DeletePhotoApiReq {
 
 // 모의고사 api 관련
 export interface ExamResult {
-  examId:string|number;
+  examId: string | number;
   score: number;
   createdAt: string;
 }
 
 export interface TransformedQuestionData {
-  nickname:string,
+  nickname: string,
   question: string;
   answerList: string[];
   correctNumber: number;
@@ -435,38 +437,38 @@ export interface TransformedQuestionData {
 }
 
 export interface QuestionData {
-  nickname:string;
+  nickname: string;
   questionWord: string;
   wrongAnswers: string[];
   correctAnswer: string;
 }
 
 export interface ExamProblem {
-  "question" : string,
-  "answerList" : string[],
-  "choiceNumber" : number|string,
-  "correctNumber" : number|string
+  "question": string,
+  "answerList": string[],
+  "choiceNumber": number | string,
+  "correctNumber": number | string
 }
 
 export interface SaveExamResultApiReq {
-  examResults : ExamProblem[],
-  score:number
+  examResults: ExamProblem[],
+  score: number
 }
 
 // 백문백답 api 관련
 export interface SaveAskAnswerApiReq {
-  featureId:number,
-  answer:string
+  featureId: number,
+  answer: string
 }
 
 export interface Answer {
-  featureId:number;
+  featureId: number;
   question: string;
   answer: string;
 }
 
 // 미션 api 관련
-export interface Mission {
+export interface MissionListApiReq {
   id: number;
   type: string;
   isComplete: boolean;
@@ -474,3 +476,8 @@ export interface Mission {
   maxRange: number;
   completedLevel: number;
 };
+
+export interface DoMission {
+  type: string;
+  photoCount: number | null;
+}

@@ -4,6 +4,7 @@ import {useDictStore} from "@store/useDictStore";
 import {sumbitAskAnswerApi} from "@api/dictionary";
 import TextField from "@mui/material/TextField";
 import {useMemberStore} from "@store/useMemberStore";
+import {doMissionApi} from "@api/mission";
 
 const CharacterQuestion = () => {
   const navigate = useNavigate();
@@ -41,8 +42,8 @@ const CharacterQuestion = () => {
     if (askIndex < askList.length - 1) {
       sumbitAskAnswerApiFunc()
     } else {
+      sumbitAskAnswerApiFunc()
       setAskIndex(0)
-      navigate(`/character/start/${myInfo.memberFamilyId}`)
     }
   }
   // 그만할래요
@@ -58,17 +59,31 @@ const CharacterQuestion = () => {
         featureId: askList[askIndex].featureId,
         answer: inputValue
       }, res => {
-        console.log(res)
+        console.log(res.data)
         console.log("제출");
         console.log("다음 질문");
         setAskIndex(askIndex + 1)
         setInputValue("")
+        // 미션 수행
+        doMissionApiFunc()
       }, err => {
         console.log(err)
       }
     )
   }
 
+  // 미션 수행 api
+  const doMissionApiFunc = () => {
+    doMissionApi({type: "FEATURE", photoCount: null},
+      res => {
+        console.log(res.data)
+        if (askIndex >= askList.length - 1) {
+          navigate(`/character/start/${myInfo.memberFamilyId}`)
+        }
+      }, err => {
+        console.log(err)
+      })
+  }
   return (
     <div className="character__question">
 
