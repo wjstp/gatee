@@ -15,6 +15,8 @@ public record MemberInfoRes(
         String birth,
         String birthType,
         String mood,
-        String role
+        String role,
+        String profileImageUrl,
+        String phoneNumber
 ) {
 }

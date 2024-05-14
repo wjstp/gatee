@@ -11,7 +11,6 @@ import man1 from "@assets/images/signup/profile_man1.svg";
 import man2 from "@assets/images/signup/profile_man2.svg";
 import oldMan from "@assets/images/signup/profile_oldman.svg";
 import { useMemberStore } from "@store/useMemberStore";
-import girl1 from "@assets/images/signup/profile_girl1.svg";
 
 const SignupMemberSetRoleMale = (props: {
   inputRef: React.RefObject<HTMLInputElement>;

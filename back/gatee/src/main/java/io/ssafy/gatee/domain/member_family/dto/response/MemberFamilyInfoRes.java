@@ -18,6 +18,7 @@ public record MemberFamilyInfoRes(
         Boolean isLeader,
         String mood,
         String role,
-        String fileUrl
+        String profileImageUrl,
+        String phoneNumber
 ) {
 }

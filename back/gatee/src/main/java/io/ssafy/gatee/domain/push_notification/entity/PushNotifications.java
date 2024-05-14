@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 public class PushNotifications {
 
     @Id
-    @Field(name = "notification_id")
     private ObjectId notificationId;
 
     private String type;
@@ -40,4 +39,8 @@ public class PushNotifications {
 
     @Field(name="created_at")
     private String createdAt;
+
+    public void checkPushNotifications() {
+        this.isCheck = true;
+    }
 }

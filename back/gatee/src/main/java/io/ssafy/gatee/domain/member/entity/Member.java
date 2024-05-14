@@ -86,4 +86,9 @@ public class Member extends BaseEntity {
     public void editMood(String mood) {
         this.mood = mood;
     }
+
+    // 회원 프로필 이미지 수정
+    public void editProfileImage(File file) {
+        this.file = file;
+    }
 }

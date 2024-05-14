@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
 import { IoIosCamera } from "react-icons/io";
 import { useMemberStore } from "@store/useMemberStore";
@@ -24,7 +24,6 @@ const SignupMemberSetCheck = () => {
     birthType,
     memberImage,
     stringMemberImage,
-    setStringMemberImage,
   } = useMemberStore();
   const { familyId, setFamilyCode } = useFamilyStore();
 

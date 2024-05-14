@@ -8,6 +8,8 @@ import lombok.Builder;
 public record MissionTypeReq(
 
         @NotNull
-        Type type
+        Type type,
+
+        Integer photoCount
 ) {
 }

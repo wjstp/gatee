@@ -7,9 +7,12 @@ import com.theokanning.openai.completion.chat.ChatMessageRole;
 import com.theokanning.openai.service.OpenAiService;
 import io.ssafy.gatee.domain.chatgpt.dto.request.QuestionDto;
 import io.ssafy.gatee.domain.chatgpt.dto.response.GptResponseDto;
+import io.ssafy.gatee.global.exception.error.service_unavailable.GptServiceUnavailable;
+import io.ssafy.gatee.global.exception.message.ExceptionMessage;
 import io.ssafy.gatee.global.openai.config.ChatGptConfig;
 import io.ssafy.gatee.global.openai.util.Prompt;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,15 +24,19 @@ public class GptService {
     private final OpenAiService openAiService;
 
     public ChatCompletionResult generated(List<ChatMessage> chatMessages) {
-        ChatCompletionRequest build = ChatCompletionRequest.builder()
-                .messages(chatMessages)
-                .model(ChatGptConfig.MODEL)
-                .maxTokens(ChatGptConfig.MAX_TOKEN)
-                .temperature(ChatGptConfig.TEMPERATURE)
-                .topP(ChatGptConfig.TOP_P)
-                .build();
+        try {
+            ChatCompletionRequest build = ChatCompletionRequest.builder()
+                    .messages(chatMessages)
+                    .model(ChatGptConfig.MODEL)
+                    .maxTokens(ChatGptConfig.MAX_TOKEN)
+                    .temperature(ChatGptConfig.TEMPERATURE)
+                    .topP(ChatGptConfig.TOP_P)
+                    .build();
 
-        return openAiService.createChatCompletion(build);
+            return openAiService.createChatCompletion(build);
+        } catch (RuntimeException e) {
+            throw new GptServiceUnavailable(ExceptionMessage.GPT_SERIVCE_UNAVAILABLE);
+        }
     }
 
     public List<ChatMessage> generatedQuestionAndAnswerMessage(QuestionDto questionDto) {
