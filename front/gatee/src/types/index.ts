@@ -42,25 +42,25 @@ export interface MemberStore {
   setMemberImage: (newImage: File | null) => void;
   stringMemberImage: string;
   setStringMemberImage: (newStringMemberImage: string) => void;
-  myInfo: MyMemberApiRes;
+  myInfo : MyMemberApiRes;
   setMyInfo: (newMyInfo: Partial<MyMemberApiRes>) => void;
-}
+};
 
 // 멤버
 export interface MyMemberApiRes {
   birth: string
   birthType: string;
   email: string;
+  familyId: string;
+  memberFamilyId: number;
   memberId: string;
   mood: string | null;
   name: string;
   nickname: string;
-  role: string;
-  familyId: string;
   phoneNumber: string | null;
-  fileUrl: string;
+  profileImageUrl: string;
+  role: string;
   isLeader: boolean;
-  memberFamilyId: number;
 }
 
 
@@ -80,13 +80,15 @@ export interface MemberApiReq {
   birth: string
   birthType: string;
   email: string;
+  familyId: string;
+  memberFamilyId: number;
   memberId: string;
   mood: string | null;
   name: string;
   nickname: string;
-  role: string;
   phoneNumber: string | null;
-  fileUrl: string;
+  profileImageUrl: string;
+  role: string;
   isLeader: boolean;
 }
 
@@ -114,31 +116,16 @@ export interface MemberApiRes {
   birth: string
   birthType: string;
   email: string;
-  memberId: string;
-  mood: string | null;
-  name: string;
-  nickname: string;
-  role: string;
-  phoneNumber: string | null;
-  fileUrl: string;
-  isLeader: boolean;
-  memberFamilyId: number;
-}
-
-export interface MyMemberApiRes {
-  birth: string
-  birthType: string;
-  email: string;
-  memberId: string;
-  mood: string | null;
-  name: string;
-  nickname: string;
-  role: string;
   familyId: string;
-  phoneNumber: string | null;
-  fileUrl: string;
-  isLeader: boolean;
   memberFamilyId: number;
+  memberId: string;
+  mood: string | null;
+  name: string;
+  nickname: string;
+  phoneNumber: string | null;
+  profileImageUrl: string;
+  role: string;
+  isLeader: boolean;
 }
 
 // 프로필 수정
@@ -150,13 +137,6 @@ export interface ModifyProfileReq {
   role: string;
   familyId: string;
   phoneNumber: string | null;
-}
-
-// 프로필 이미지 수정
-export interface ModifyProfileImageReq {
-  defaultImage: string;
-  fileType: string;
-  file: File;
 }
 
 // 기분 상태 수정

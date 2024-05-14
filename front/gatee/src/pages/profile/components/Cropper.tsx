@@ -13,7 +13,7 @@ const ProfileCropper = (props: {
 }) => {
   const { cropImage, cropShape, handleModalEvent, sender } = props;
   const { setFamilyImage, setStringImage } = useFamilyStore();
-  const { setMemberImage, setStringMemberImage } = useMemberStore();
+  const { setMemberImage, setStringMemberImage, setMyInfo } = useMemberStore();
 
   const [crop, setCrop] = useState({ x: 0, y: 0 })
   const [zoom, setZoom] = useState(1)
@@ -47,9 +47,14 @@ const ProfileCropper = (props: {
       if (sender === "family-set") {
         setFamilyImage(resizedFile);
         setStringImage(jpgUrl);
-      } else {
+      } else if (sender === "member-set") {
         setMemberImage(resizedFile);
         setStringMemberImage(jpgUrl);
+      } else {
+        setMemberImage(resizedFile);
+        setMyInfo({
+          profileImageUrl: jpgUrl,
+        })
       }
       handleModalEvent();
     } catch (e) {

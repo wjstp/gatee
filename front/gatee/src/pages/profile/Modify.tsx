@@ -11,15 +11,15 @@ import Checkbox from "@mui/material/Checkbox";
 import { FormControlLabel } from "@mui/material";
 import { useMemberStore } from "@store/useMemberStore";
 import ProfileCropper from "@pages/profile/components/Cropper";
-import { modifyProfileApi } from "@api/profile";
+import {modifyProfileApi, modifyProfileImageApi} from "@api/profile";
 import { AxiosResponse, AxiosError } from "axios";
+import { imageResizer } from "@utils/imageResizer";
 
 const ProfileModify = () => {
   const navigate = useNavigate();
-  const sender: string = "member-set"
+  const sender: string = "profile"
   // 쿼리스트링으로 넘어온 이름을 확인하기 위함
-  const { name } = useParams<{ name: string }>();
-  const { myInfo, setMyInfo, stringMemberImage } = useMemberStore()
+  const { myInfo, setMyInfo, memberImage, stringMemberImage } = useMemberStore()
 
   // 이미지 관련
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -45,21 +45,42 @@ const ProfileModify = () => {
   const { isOpen: isBirthModalOpen, openModal: openBirthModal, closeModal: closeBirthModal } = useModal();
   const { isOpen: isPhoneModalOpen, openModal: openPhoneModal, closeModal: closePhoneModal } = useModal();
 
-
   // 수정 버튼
   const goToModified = () => {
     // 회원 정보 수정
     setMyInfo(
       {
-        name: inputName,
-        nickname: inputNickname,
         birth: inputBirthDay,
         birthType: inputBirthType,
+        name: inputName,
+        nickname: inputNickname,
         role: inputRole,
         phoneNumber: inputPhoneNumber,
       }
     )
-    modifyProfile();
+    modifyProfileImage();
+  }
+
+  // 회원 이미지 수정
+  const modifyProfileImage = () => {
+    const formData = new FormData();
+    formData.append("fileType", "MEMBER_PROFILE");
+    if (memberImage) {
+      formData.append("file", memberImage);
+    }
+
+    // 프로필 이미지 수정 요청 보내기
+    modifyProfileImageApi(
+      formData,
+      (res: AxiosResponse<any>) => {
+        console.log("이미지 수정 성공", res);
+        // 회원 정보 수정
+        modifyProfile();
+      },
+      (err: AxiosError<any>) => {
+        console.log(err);
+      }
+    )
   }
 
   // 수정 요청
@@ -75,7 +96,7 @@ const ProfileModify = () => {
         phoneNumber: inputPhoneNumber
       },
       (res: AxiosResponse<any>) => {
-        console.log(res);
+        console.log("회원 정보 수정 성공", res);
         navigate(`/profile/${myInfo.email}`);
       },
       (err: AxiosError<any>) => {
@@ -92,11 +113,12 @@ const ProfileModify = () => {
   }
 
   // 이미지 선택 처리
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file: File | null = e.target.files ? e.target.files[0] : null;
     if (file) {
+      const resizedFile: File = (await imageResizer(file, 2000, 2000)) as File;
       // 크롭할 이미지 넣기
-      const jpgUrl = URL.createObjectURL(file);
+      const jpgUrl = URL.createObjectURL(resizedFile);
       setCropImage(jpgUrl);
       // 모달 열기
       openImageModal();
@@ -152,26 +174,28 @@ const ProfileModify = () => {
 
         {/*프로필 이미지*/}
         <div className="profile__img-box">
-          <img
-            className="img-box__img"
-            src={stringMemberImage}
-            alt="profile-image"
-          />
-          <input
-            type="file"
-            accept="image/*"
-            style={{display: 'none'}}
-            ref={fileInputRef}
-            onChange={handleImageChange}
-          />
           <button
             className="img-box__btn"
             onClick={handleCameraButtonClick}
           >
-            <FaCamera
-              className="btn__icon"
-              size={20}
+            <img
+              className="btn--img"
+              src={myInfo.profileImageUrl}
+              alt="profile-image"
             />
+            <input
+              type="file"
+              accept="image/*"
+              style={{display: 'none'}}
+              ref={fileInputRef}
+              onChange={handleImageChange}
+            />
+            <div className="btn--icon">
+              <FaCamera
+                className="icon"
+                size={20}
+              />
+            </div>
           </button>
         </div>
 

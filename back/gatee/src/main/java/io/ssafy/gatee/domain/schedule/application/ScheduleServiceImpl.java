@@ -28,7 +28,6 @@ import io.ssafy.gatee.domain.schedule.dto.request.ScheduleSaveRecordReq;
 import io.ssafy.gatee.domain.schedule.dto.request.ScheduleSaveReq;
 import io.ssafy.gatee.domain.schedule.dto.response.ScheduleInfoRes;
 import io.ssafy.gatee.domain.schedule.dto.response.ScheduleListRes;
-import io.ssafy.gatee.domain.schedule.entity.Category;
 import io.ssafy.gatee.domain.schedule.entity.Schedule;
 import io.ssafy.gatee.domain.schedule_record.dao.ScheduleRecordRepository;
 import io.ssafy.gatee.domain.schedule_record.entity.ScheduleRecord;
@@ -77,13 +76,10 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     // 전체 일정 조회
     @Override
-    public ScheduleListRes readSchedule(UUID familyId) throws FamilyNotFoundException {
+    public List<ScheduleListRes> readSchedule(UUID familyId) throws FamilyNotFoundException {
         Family family = familyRepository.getReferenceById(familyId);
 
-        return ScheduleListRes.builder()
-                .personalScheduleList(familyScheduleRepositoryCustom.getPersonalScheduleList(family))
-                .groupScheduleList(familyScheduleRepositoryCustom.getGroupScheduleList(family))
-                .build();
+        return familyScheduleRepositoryCustom.getAllScheduleList(family);
     }
 
     // 일정 상세 조회

@@ -17,6 +17,7 @@ const MainIndex = () => {
   const {myInfo, setMyInfo} = useMemberStore()
   const {familyInfo,setFamilyId, setFamilyInfo, setFamilyName, setFamilyScore} = useFamilyStore()
   const [loading, setLoading] = useState(true)
+
   // 가족 데이터 저장 Api
   const saveFamilyData = (familyId:string) => {
     getFamilyMemberApi({familyId:familyId},
@@ -55,8 +56,6 @@ const MainIndex = () => {
       setLoading(false)
     ,700)
   }, []);
-
-
 
   return (
     <div className="main-container">

@@ -11,6 +11,9 @@ import FeelingToast from "@pages/profile/components/FeelingToast";
 import { useMemberStore } from "@store/useMemberStore";
 import { useFamilyStore } from "@store/useFamilyStore";
 import dayjs from "dayjs";
+import { createFamilyCodeApi, getMyDataApi } from "@api/member";
+import { AxiosError, AxiosResponse } from "axios";
+import {getFamilyAnsweredAskApi} from "@api/dictionary";
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
@@ -18,21 +21,34 @@ const ProfileIndex = () => {
   const navigate = useNavigate();
   // 모달 상태 적용
   const { setShowModal } = useModalStore();
-  const { myInfo } = useMemberStore();
-  const { familyInfo } = useFamilyStore();
+  const { myInfo, setMyInfo } = useMemberStore();
+  const { familyInfo, setFamilyCode } = useFamilyStore();
   // 쿼리스트링으로 넘어온 이메일을 확인하기 위함
   const { email } = useParams<{ email: string }>();
 
   // 열린지 닫힌지 상태 확인 가능
-  const [state, setState] = React.useState({
+  const [state, setState] = useState({
     bottom: false,
   });
 
-  // 멤버 확인 -> 나중에는 조회로 가져오기
+  // 멤버 확인
   const familyMember = familyInfo.find(member => member.email === email);
+  const [isMe, setIsMe] = useState<boolean>(false);
   
   // 백과사전이 있는지 조회하기 용
   const [createdCharacter, setCreateCharacter] = useState<boolean>(false);
+
+  // 나로 들어왔는지 확인
+  useEffect(() => {
+    // 내가 맞다면 상태 변경 및 정보 조회하기
+    if (email === myInfo.email) {
+      setIsMe(true);
+      saveMemberData();
+    } else {
+      setIsMe(false);
+      getFamilyAnsweredAsk();
+    }
+  }, [email]);
 
   // MUI 관련 코드 -> 슬라이드 다운 해서 내리기 기능 가능
   const toggleDrawer =
@@ -57,7 +73,7 @@ const ProfileIndex = () => {
 
   // 설정 탭에서 완료 버튼 누를 때 팝업 내리기
   const handleFinishTab = (event:React.MouseEvent) => {
-    toggleDrawer('bottom', false)(event)
+    toggleDrawer('bottom', false)(event);
   }
 
   // 토스트 객체
@@ -74,13 +90,47 @@ const ProfileIndex = () => {
       <FeelingToast handleFinishTab={handleFinishTab}/>
     </Box>
   );
+
+  // 정보 불러오기 Api
+  const saveMemberData = () => {
+    getMyDataApi(
+      (res) => {
+        console.log("내 정보 조회",res.data)
+        // 스토어에 저장
+        setMyInfo(res.data)
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+
+  // 가족 코드 생성
+  const createFamilyCode = () => {
+    createFamilyCodeApi(
+      {
+        familyId: myInfo.familyId,
+      },
+      (res: AxiosResponse<any>) => {
+        console.log("코드 생성 성공", res);
+        // 가족 코드 집어넣기
+        setFamilyCode(res.data.familyCode);
+        navigate("/signup/member-set/share", {
+          state: {
+            from: 'profile'
+          }
+        });
+      },
+      (err: AxiosError<any>): void => {
+        console.log(err);
+      }
+    ).then().catch();
+  }
   
   // 수정으로 넘어가기
   const goToModify = () => {
     navigate(`/profile/${email}/modify`)
   }
-
-  // 내 프로필일 때만 프로필 정보와 기분을 수정할 수 있음
 
   // 날짜 형식 변환 함수
   const changeDate = (originalDate: string): string => {
@@ -89,12 +139,29 @@ const ProfileIndex = () => {
     return formattedDate;
   }
   
-  // 백과사전 바꾸기
+  // 백과사전 이동
   const handleCharacter = (): void => {
-    setCreateCharacter(!createdCharacter);
+    navigate(`/character`);
   }
 
-  console.log(myInfo.mood)
+  // 백과사전 푼 문제 조회
+  const getFamilyAnsweredAsk = () => {
+    if (familyMember) {
+      getFamilyAnsweredAskApi(
+        familyMember?.memberFamilyId,
+        (res: AxiosResponse<any>) => {
+          console.log("다른 사람 백과사전 푼 문제 상태", res);
+
+          if (res.data.length === 0) {
+            setCreateCharacter(true);
+          }
+        },
+        (err: AxiosError<any>) => {
+          console.log(err);
+        }
+      )
+    }
+  }
 
   // 모의고사 예시
   const question = QuestionSample[0];
@@ -108,45 +175,93 @@ const ProfileIndex = () => {
         <div className="profile__img-box">
           <img
             className="img-box__img"
-            src={familyMember?.fileUrl}
+            src={isMe ? (
+              myInfo.profileImageUrl
+            ) : (
+              familyMember?.profileImageUrl
+            )}
             alt="profile-image"
           />
         </div>
+        
+        {/*가족 초대 버튼*/}
+        {myInfo.isLeader && isMe ? (
+          <div className="profile__invite-box">
+            <button
+              className="invite-box__btn"
+              onClick={createFamilyCode}
+            >
+              <div className="btn--text">
+                초대하기
+              </div>
+            </button>
+          </div>
+        ) : (
+          null
+        )}
+        
         {/*닉네임*/}
         <div className="profile__nickname">
-          <span className="profile__nickname__part--01">
-            {myInfo.nickname}
-          </span>
-          <button
-            className="profile__nickname__part--02"
-            onClick={goToModify}
-          >
-            <PencilIcon className="icon" />
-          </button>
+          <div className="profile__nickname__part--01">
+            {isMe ? (
+              myInfo.nickname
+            ) : (
+              familyMember?.nickname
+            )}
+            {isMe ? (
+              <button
+                className="profile__nickname__part--02"
+                onClick={goToModify}
+              >
+                <PencilIcon className="icon" />
+              </button>
+            ) : (
+              null
+            )}
+          </div>
         </div>
         
         {/*기분 상태*/}
         <div className="profile__mood-box">
           <React.Fragment key={"bottom"}>
             <button
-              className="mood-box__btn"
+              className={isMe ? (
+                "mood-box__btn"
+              ) : (
+                "mood-box__btn--disabled"
+              )}
               onClick={toggleDrawer("bottom", true)} // 토스트 팝업 열기
             >
-              <span className="mood-box__btn--text">
+              <span className="btn--text">
                 오늘 기분이 어때요?&nbsp;&nbsp;&nbsp;
               </span>
-              <span className="mood-box__btn--icon">
-                {myInfo.mood ? (
-                  <>
-                    {myInfo.mood === "HAPPY" && <span>🥰</span>}
-                    {myInfo.mood === "SAD" && <span>😥</span>}
-                    {myInfo.mood === "ALONE" && <span>😑</span>}
-                    {myInfo.mood === "ANGRY" && <span>🤬</span>}
-                    {myInfo.mood === "FEAR" && <span>😱</span>}
-                    {myInfo.mood === "SLEEPY" && <span>😪</span>}
-                  </>
+              <span className="btn--icon">
+                {isMe ? (
+                  myInfo.mood ? (
+                    <>
+                      {myInfo.mood === "HAPPY" && <span>🥰</span>}
+                      {myInfo.mood === "SAD" && <span>😥</span>}
+                      {myInfo.mood === "ALONE" && <span>😑</span>}
+                      {myInfo.mood === "ANGRY" && <span>🤬</span>}
+                      {myInfo.mood === "FEAR" && <span>😱</span>}
+                      {myInfo.mood === "SLEEPY" && <span>😪</span>}
+                    </>
+                  ) : (
+                    <span>😶</span>
+                  )
                 ) : (
-                  <span>😶</span>
+                  familyMember?.mood ? (
+                    <>
+                      {familyMember?.mood === "HAPPY" && <span>🥰</span>}
+                      {familyMember?.mood === "SAD" && <span>😥</span>}
+                      {familyMember?.mood === "ALONE" && <span>😑</span>}
+                      {familyMember?.mood === "ANGRY" && <span>🤬</span>}
+                      {familyMember?.mood === "FEAR" && <span>😱</span>}
+                      {familyMember?.mood === "SLEEPY" && <span>😪</span>}
+                    </>
+                  ) : (
+                    <span>😶</span>
+                  )
                 )}
               </span>
             </button>
@@ -170,7 +285,11 @@ const ProfileIndex = () => {
             </div>
             <div className="name__body">
               <span className="name__body--text">
-                {myInfo.name}
+                {isMe ? (
+                  myInfo.name
+                ) : (
+                  familyMember?.name
+                )}
               </span>
             </div>
           </div>
@@ -182,7 +301,11 @@ const ProfileIndex = () => {
             </div>
             <div className="role__body">
               <span className="role__body--text">
-                {myInfo.role}
+                {isMe ? (
+                  myInfo.role
+                ) : (
+                  familyMember?.role
+                )}
               </span>
             </div>
           </div>
@@ -194,10 +317,18 @@ const ProfileIndex = () => {
             </div>
             <div className="birth__body">
               <span className="birth__body__part--01">
-                {changeDate(myInfo.birth as string)}
+                {isMe ? (
+                  changeDate(myInfo.birth as string)
+                ) : (
+                  changeDate(familyMember?.birth as string)
+                )}
               </span>
               <span className="birth__body__part--02">
-                &nbsp;{myInfo.birthType === "SOLAR" ? ("(양력)") : ("(음력)")}
+                {isMe ? (
+                  myInfo.birthType === "SOLAR" ? (" (양력)") : (" (음력)")
+                ) : (
+                  familyMember?.birthType === "SOLAR" ? (" (양력)") : (" (음력)")
+                )}
               </span>
             </div>
           </div>
@@ -208,22 +339,42 @@ const ProfileIndex = () => {
               </span>
             </div>
             <div className="phone__body">
-              {myInfo.phoneNumber ? (
-                <>
-                  <span className="phone__body__part--01">
-                    {myInfo.phoneNumber}
-                  </span>
+              {isMe ? (
+                myInfo.phoneNumber ? (
+                  <>
+                    <span className="phone__body__part--01">
+                      {myInfo.phoneNumber}
+                    </span>
                     <a
                       className="phone__body__part--02"
                       href={`tel:${myInfo.phoneNumber}`}
                     >
                       <FaPhone className="icon" />
                     </a>
-                </>
-              ) : (
-                <span className="phone__body__part--03">
+                  </>
+                ) : (
+                  <span className="phone__body__part--03">
                   입력해주세요
                 </span>
+                )
+              ) : (
+                familyMember?.phoneNumber ? (
+                  <>
+                    <span className="phone__body__part--01">
+                      {familyMember?.phoneNumber}
+                    </span>
+                    <a
+                      className="phone__body__part--02"
+                      href={`tel:${familyMember?.phoneNumber}`}
+                    >
+                      <FaPhone className="icon" />
+                    </a>
+                  </>
+                ) : (
+                  <span className="phone__body__part--03">
+                    입력되지 않았습니다
+                  </span>
+                )
               )}
             </div>
           </div>
@@ -232,6 +383,7 @@ const ProfileIndex = () => {
       
       {/*백과사전 섹션*/}
       <div className="profile-index__character">
+
         {createdCharacter ? (
           <div className="character__created">
             <div className="created__title">
@@ -264,9 +416,12 @@ const ProfileIndex = () => {
                     className="character-box__btn-detail"
                     onClick={handleCharacter}
                   >
-                <span className="btn-detail--text">
-                  나의 백과사전 보러가기
-                </span>
+                    <span className="btn-detail__part--01">
+                      {familyMember?.nickname}
+                    </span>
+                    <span className="btn-detail__part--02">
+                      님의 백과사전 보러가기
+                    </span>
                   </button>
                 </div>
               </div>

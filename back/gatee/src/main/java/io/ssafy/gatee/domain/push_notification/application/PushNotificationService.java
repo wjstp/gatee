@@ -18,7 +18,6 @@ public interface PushNotificationService {
 
     PushNotificationPageRes readNotifications(UUID memberId, Pageable pageable, String cursor);
 
-    void sendTestPush(String token) throws FirebaseMessagingException;
 
     String findTokenByMemberId(UUID memberId);
 
@@ -37,4 +36,5 @@ public interface PushNotificationService {
     void modifyNotificationAgreements(UUID memberId, NotificationAgreementReq agreementReq);
 
     void checkReadNotification(String notificationId);
+    void sendTestPush(String token) throws FirebaseMessagingException;
 }

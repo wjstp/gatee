@@ -27,6 +27,9 @@ public class PushNotifications {
     @Field(name = "sender_id")
     private String senderId;
 
+    @Field(name="sender_image_url")
+    private String senderImageUrl;
+
     @Field(name = "receiver_id")
     private String receiverId;
 

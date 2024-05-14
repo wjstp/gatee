@@ -33,6 +33,8 @@ public class MemberNotification extends BaseEntity {
 
     private boolean featureNotification;
 
+    private boolean chatNotification;
+
 
     @PrePersist
     public void prePersist() {
@@ -40,6 +42,7 @@ public class MemberNotification extends BaseEntity {
         this.scheduleNotification = true;
         this.naggingNotification = true;
         this.featureNotification = true;
+        this.chatNotification = true;
     }
 
     public void modifyMemberNotification(NotificationAgreementReq notificationAgreementReq) {
@@ -47,5 +50,6 @@ public class MemberNotification extends BaseEntity {
         this.scheduleNotification = notificationAgreementReq.scheduleNotification();
         this.naggingNotification = notificationAgreementReq.naggingNotification();
         this.featureNotification = notificationAgreementReq.featureNotification();
+        this.chatNotification = notificationAgreementReq.chatNotification();
     }
 }

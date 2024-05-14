@@ -29,7 +29,7 @@ const PhotoItem = ({photoDetailData}: { photoDetailData: PhotoDetailData }) => {
   // 멤버 Id 받아서 아이콘 Url 반환하는 함수
   const findProfile = (memberId: string) => {
     if (familyInfo.length > 0) {
-      return familyInfo.find(member => member.memberId === memberId)?.fileUrl;
+      return familyInfo.find(member => member.memberId === memberId)?.profileImageUrl;
     } else {
       return ""
     }
