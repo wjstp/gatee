@@ -68,9 +68,10 @@ public class MemberController {
             @Valid
             @RequestParam @Nullable String defaultImage,
             @RequestParam FileType fileType,
-            @RequestParam @Nullable MultipartFile file
+            @RequestParam @Nullable MultipartFile file,
+            @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) throws IOException {
-        return memberService.editProfileImage(defaultImage, fileType, file);
+        return memberService.editProfileImage(defaultImage, fileType, file, customUserDetails.getMemberId());
     }
 
     // 기분 상태 수정
