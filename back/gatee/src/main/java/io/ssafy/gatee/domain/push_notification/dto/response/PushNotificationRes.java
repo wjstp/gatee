@@ -22,6 +22,7 @@ public record PushNotificationRes(
                 .type(pushNotifications.getType())
                 .typeId(pushNotifications.getTypeId())
                 .senderId(pushNotifications.getSenderId())
+                .senderImageUrl(pushNotifications.getSenderImageUrl())
                 .title(pushNotifications.getTitle())
                 .content(pushNotifications.getContent())
                 .createdAt(pushNotifications.getCreatedAt())
