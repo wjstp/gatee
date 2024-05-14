@@ -44,7 +44,7 @@ export interface MemberStore {
   setStringMemberImage: (newStringMemberImage: string) => void;
   myInfo: MyMemberApiRes;
   setMyInfo: (newMyInfo: Partial<MyMemberApiRes>) => void;
-};
+}
 
 // 멤버
 export interface MyMemberApiRes {
@@ -475,7 +475,7 @@ export interface MissionListApiReq {
   nowRange: number;
   maxRange: number;
   completedLevel: number;
-};
+}
 
 export interface DoMission {
   type: string;

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import MissionItem from "@pages/mission/components/MissionItem";
 import Slider from "react-slick";
 import Improvement from "@pages/mission/components/Improvement";

@@ -33,7 +33,6 @@ const PhotoIndex = () => {
   const albumMission = findAlbumMission(missionList)
 
   const {
-    detailPhotoGroup,
     addDetailPhotoGroup,
     removeDetailPhotos,
     removeAlbum,
@@ -266,19 +265,27 @@ const PhotoIndex = () => {
 
   // 미션 수행
   const doMissionApiFunc = (amount: number, name: string | null) => {
+
     // 0단계인 어린시절 사진, 1단계인 가족사진, 2단계인 내 사진 채우기 그 이후는 사진 올리기
     if (name === null || name === "어린 시절 사진" && albumMission?.completedLevel === 0
       || name === "가족 사진" && albumMission?.completedLevel === 1
       || name === `${myInfo.name}` && albumMission?.completedLevel === 2) {
-      doMissionApi({type: "ALBUM", photoCount: getPossibleAmount(albumMission, amount)},
+
+      // 올릴 수 있는 점수
+      const maxAmount = getPossibleAmount(albumMission, amount)
+
+      // 미션 수행 API
+      doMissionApi({type: "ALBUM", photoCount: maxAmount},
         res => {
           console.log(res?.data)
+          // 상태 저장
+          increaseMissionRange("ALBUM", maxAmount)
         }, err => {
           console.log(err)
         })
     }
   }
-  
+
   // 이미지 선택 처리
   const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
     if (event.target.files && event.target.files.length > 0) {
