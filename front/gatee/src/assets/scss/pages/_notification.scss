@@ -2,14 +2,20 @@
 @use '../components/index' as *;
 
 .notification-tab--container {
-  @include mt-(0.5);
+
   position: relative;
   height: 100%;
 
   .notification--top--container {
+    position: fixed;
     @include flex-row;
-    @include mx-(1);
-    @include ml-(2);
+    @include mt-(-0.5);
+    @include py-(0.5);
+    @include pr-(1);
+    @include pl-(2);
+
+    width: 100%;
+    background-color: #fff;
     justify-content: space-between;
     align-items: center;
 
@@ -23,50 +29,56 @@
     background-color: $gray50;
   }
 
-  .notification-item--container {
-    @include flex-row;
-    @include p-(1.5);
-    @include py-(1.2);
+  .notification-list-container {
 
-    height: 5.5rem;
-    align-items: center;
-    gap: 1rem;
+    @include pt-(3);
 
-    .notification-item-profile--img {
-      width: 3rem;
-      height: 3rem;
-      object-fit: cover;
-      border-radius: 50%;
-    }
+    .notification-item--container {
+      @include flex-row;
+      @include p-(1.5);
+      @include py-(1.2);
 
-    .notification-item--content-container {
-      @include flex-col;
 
-      flex-grow: 1;
-      height: 100%;
-      //background-color: red;
-      justify-content: space-between;
+      height: 5.5rem;
+      align-items: center;
+      gap: 1rem;
 
-      .notification-item--top--container {
-        @include flex-row;
-        justify-content: space-between;
-
-        .notification-item-title {
-          font-weight: 500;
-          //color: $orange500;
-        }
+      .notification-item-profile--img {
+        width: 3rem;
+        height: 3rem;
+        object-fit: cover;
+        border-radius: 50%;
       }
 
-      .notification-item-content {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        width: 80%;
+      .notification-item--content-container {
+        @include flex-col;
+
+        flex-grow: 1;
+        height: 100%;
+        //background-color: red;
+        justify-content: space-between;
+
+        .notification-item--top--container {
+          @include flex-row;
+          justify-content: space-between;
+
+          .notification-item-title {
+            font-weight: 500;
+            //color: $orange500;
+          }
+        }
+
+        .notification-item-content {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          width: 80%;
+        }
       }
     }
   }
 
-  .notification-scroll-finish-explain{
+  .notification-scroll-finish-explain {
     @include flex-center;
     @include p-(1);
 
@@ -172,6 +184,7 @@
         font-weight: bold;
         border-radius: 5rem;
       }
+
       .orange {
         flex-grow: 6;
         background-color: $orange500;
@@ -180,7 +193,7 @@
 
       .plane {
         flex-grow: 5;
-        border:1px solid $gray100;
+        border: 1px solid $gray100;
       }
     }
   }

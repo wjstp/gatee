@@ -96,7 +96,7 @@ const NotificationIndex = () => {
 
           // 이동해야할때 navigate
           if (clicked?.type === "NAGGING")
-          navigate(getUrlFromType(clicked?.type,clicked?.typeId))
+            navigate(getUrlFromType(clicked?.type, clicked?.typeId))
 
           // 이동 안할때는 상태 업데이트(css) 변경
           setNotificationDataList(prevList =>
@@ -177,17 +177,18 @@ const NotificationIndex = () => {
 
       </div>
 
-      {/* 알림 개별 아이템 */}
-      {notificationDataList.map((item, index) => {
-        return <NotificationItem key={index} notificationData={item} handleReadNotification={handleReadNotification}/>
-      })}
+      <div className="notification-list-container">
+        {/* 알림 개별 아이템 */}
+        {notificationDataList.map((item, index) => {
+          return <NotificationItem key={index} notificationData={item} handleReadNotification={handleReadNotification}/>
+        })}
 
-      {!isGetAllData && (
-        <div className="scroll-target" ref={target}>
-          <Lottie className="scroll-target__animation" animationData={ScrollAnimation}/>
-        </div>
-      )}
-
+        {!isGetAllData && (
+          <div className="scroll-target" ref={target}>
+            <Lottie className="scroll-target__animation" animationData={ScrollAnimation}/>
+          </div>
+        )}
+      </div>
       {isGetAllData ?
         <div className="notification-scroll-finish-explain">
           모든 알림을 조회하였습니다.

@@ -46,6 +46,7 @@ import PhotoAlbumGroupDetail from "@pages/photo/AlbumGroupDetail";
 import ProfileModify from "@pages/profile/Modify";
 import NotFound from "@components/NotFound";
 import ExamFamilyList from "@pages/exam/FamilyList";
+import CharacterFamilyList from "@pages/character/FamilyList";
 
 const Router = () => {
   return (
@@ -83,6 +84,7 @@ const Router = () => {
 
         {/*백과사전 페이지*/}
         <Route path="/character" element={<CharacterIndex/>}/>
+        <Route path="/character/start" element={<CharacterFamilyList/>}/>
         <Route path="/character/start/:memberFamilyId" element={<CharacterStart/>}/>
         <Route path="/character/question" element={<CharacterQuestion/>}/>
 
