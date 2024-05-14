@@ -1,4 +1,3 @@
-
 self.addEventListener("install", function (e) {
   console.log("FCM Service Worker install..");
   self.skipWaiting();
@@ -8,11 +7,15 @@ self.addEventListener("activate", function (e) {
   console.log("FCM Service Worker activate..");
 });
 
-// 푸시 알림 받는 설정
+// 전역 푸시 알림 받는 설정
 self.addEventListener("push", function (e) {
-  console.log("푸시 e: ", e);
   console.log("푸시 e.data.json(): ", e.data.json());
   if (!e.data.json()) return;
+
+  // 사용자가 보고 있고, 알림이 채팅이면 알림이 안뜸
+  self.addEventListener("visibilitychange",function (e){
+    if(e.data.json()?.notification?.title==="채팅") return;
+  })
 
   const resultData = e.data.json().notification;
   const notificationTitle = resultData.title;
@@ -25,12 +28,13 @@ self.addEventListener("push", function (e) {
   self.registration.showNotification(notificationTitle, notificationOptions);
 });
 
+
 self.addEventListener("notificationclick", function (event) {
   console.log("Notification clicked");
-  console.log("event",event)
+  console.log("event", event)
   const clickedNotification = event.notification;
-  console.log("event.notification",event.notification)
-  console.log("event.notification.data.url",event.notification.data.url)
+  console.log("event.notification", event.notification)
+  console.log("event.notification.data.url", event.notification.data.url)
   clickedNotification.close();
 
   const pushPath = '/main';
@@ -41,19 +45,3 @@ self.addEventListener("notificationclick", function (event) {
     self.clients.openWindow(pushPath)
   );
 });
-
-
-
-// // 백그라운드 메세지
-// messaging.onBackgroundMessage((payload) => {
-//   console.log('[firebase-messaging-sw.js] 백그라운드 메세지 도착 ', payload);
-//   // Customize notification here
-//   const notificationTitle = 'Background Message Title';
-//   const notificationOptions = {
-//     body: 'Background Message body.',
-//     icon: '/app_icon.png'
-//   };
-//
-//   self.registration.showNotification(notificationTitle,
-//     notificationOptions);
-// });

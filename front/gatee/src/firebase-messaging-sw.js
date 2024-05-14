@@ -74,7 +74,8 @@ export async function requestPermission() {
 // });
 
 // // 메세지 받는 함수 v8
-// onMessage(messaging, (payload) => {
-//   console.log(`Message received. ${payload}`);
-//   // ...
-// });
+// if (firebase.messaging.isSupported())
+//   messaging.onMessage((payload) => {
+//     console.log(alert(`'포그라운드. ', ${payload}`));
+//
+//   });
