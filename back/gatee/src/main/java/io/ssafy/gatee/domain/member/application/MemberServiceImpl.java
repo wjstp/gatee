@@ -195,7 +195,7 @@ public class MemberServiceImpl implements MemberService {
     // 프로필 이미지 수정
     @Override
     @Transactional
-    public MemberEditProfileImageRes editProfileImage(String defaultImage, FileType fileType, MultipartFile file) throws IOException {
+    public MemberEditProfileImageRes editProfileImage(String defaultImage, FileType fileType, MultipartFile file, UUID memberId) throws IOException {
 
         File entity;
 
@@ -213,6 +213,10 @@ public class MemberServiceImpl implements MemberService {
         }
 
         fileRepository.save(entity);
+
+        Member member = memberRepository.getReferenceById(memberId);
+
+        member.editProfileImage(entity);
 
         return MemberEditProfileImageRes.builder()
                 .imageUrl(entity.getUrl())

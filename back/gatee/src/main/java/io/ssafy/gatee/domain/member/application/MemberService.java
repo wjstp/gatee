@@ -25,7 +25,7 @@ public interface MemberService {
 
     void editMemberInfo(MemberEditReq memberEditReq, UUID memberId) throws ParseException;
 
-    MemberEditProfileImageRes editProfileImage(String defaultImage, FileType fileType, MultipartFile file) throws IOException;
+    MemberEditProfileImageRes editProfileImage(String defaultImage, FileType fileType, MultipartFile file, UUID memberId) throws IOException;
 
     void editMood(MemberEditMoodReq memberEditMoodReq, UUID memberId);
 
