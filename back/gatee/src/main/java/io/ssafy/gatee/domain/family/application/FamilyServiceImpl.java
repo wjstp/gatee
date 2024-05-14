@@ -81,7 +81,7 @@ public class FamilyServiceImpl implements FamilyService {
 
         File imageFile;
 
-        if (StringUtil.isEmpty(fileType.toString()) || file.isEmpty()) {
+        if (fileType == null || file == null) {
             File defaultFile = File.builder()
                     .name("family")
                     .originalName("family.jpg")
