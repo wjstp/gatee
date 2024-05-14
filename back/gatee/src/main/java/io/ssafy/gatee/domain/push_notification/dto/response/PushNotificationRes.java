@@ -10,6 +10,7 @@ public record PushNotificationRes(
         String type,
         Long typeId,
         String senderId,
+        String senderImageUrl,
         String title,
         String content,
         boolean isCheck,
