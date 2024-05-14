@@ -132,6 +132,7 @@ class PushNotificationControllerTest extends RestDocsTestSupport {
                                         fieldWithPath("pushNotificationResList.[].type").type(JsonFieldType.STRING).description("알림의 Type - NAGGING / ALBUM / SCHEDULE"),
                                         fieldWithPath("pushNotificationResList.[].typeId").type(JsonFieldType.NUMBER).description("알림의 Type Id"),
                                         fieldWithPath("pushNotificationResList.[].senderId").type(JsonFieldType.STRING).description("알림을 보낸 사람의 member Id"),
+                                        fieldWithPath("pushNotificationResList.[].senderImageUrl").type(JsonFieldType.STRING).description("알림을 보낸 사람의 프로필 이미지 url"),
                                         fieldWithPath("pushNotificationResList.[].title").type(JsonFieldType.STRING).description("알림 제목"),
                                         fieldWithPath("pushNotificationResList.[].content").type(JsonFieldType.STRING).description("알림 내용"),
                                         fieldWithPath("pushNotificationResList.[].isCheck").type(JsonFieldType.BOOLEAN).description("알림 확인 여부"),
