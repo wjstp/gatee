@@ -9,7 +9,6 @@ import io.ssafy.gatee.domain.schedule.dto.request.ScheduleSaveRecordReq;
 import io.ssafy.gatee.domain.schedule.dto.request.ScheduleSaveReq;
 import io.ssafy.gatee.domain.schedule.dto.response.ParticipateMemberRes;
 import io.ssafy.gatee.domain.schedule.dto.response.ScheduleInfoRes;
-import io.ssafy.gatee.domain.schedule.dto.response.ScheduleListInfoRes;
 import io.ssafy.gatee.domain.schedule.dto.response.ScheduleListRes;
 import io.ssafy.gatee.domain.schedule.entity.Category;
 import io.ssafy.gatee.domain.schedule.entity.Schedule;
@@ -51,9 +50,9 @@ class ScheduleControllerTest extends RestDocsTestSupport {
     void readSchedule() throws Exception {
 
         // given
-        List<ScheduleListInfoRes> personalScheduleList = new ArrayList<>();
+        List<ScheduleListRes> scheduleListResList = new ArrayList<>();
 
-        Schedule personalSchedule = Schedule.builder()
+        Schedule schedule1 = Schedule.builder()
                 .id(1L)
                 .category(Category.PERSONAL)
                 .title("개인 일정 제목")
@@ -63,13 +62,7 @@ class ScheduleControllerTest extends RestDocsTestSupport {
                 .endDate(LocalDateTime.parse("2024-05-12"))
                 .build();
 
-        ScheduleListInfoRes scheduleListInfoPersonal = ScheduleListInfoRes.toDto(personalSchedule);
-
-        personalScheduleList.add(scheduleListInfoPersonal);
-
-        List<ScheduleListInfoRes> groupScheduleList = new ArrayList<>();
-
-        Schedule groupSchedule = Schedule.builder()
+        Schedule schedule2 = Schedule.builder()
                 .id(2L)
                 .category(Category.PERSONAL)
                 .title("가족 일정 제목")
@@ -79,15 +72,11 @@ class ScheduleControllerTest extends RestDocsTestSupport {
                 .endDate(LocalDateTime.parse("2024-05-12"))
                 .build();
 
-        ScheduleListInfoRes scheduleListInfoGroup = ScheduleListInfoRes.toDto(groupSchedule);
-
-        groupScheduleList.add(scheduleListInfoGroup);
+        scheduleListResList.add(ScheduleListRes.toDto(schedule1));
+        scheduleListResList.add(ScheduleListRes.toDto(schedule2));
 
         given(scheduleService.readSchedule(any(UUID.class)))
-                .willReturn(ScheduleListRes.builder()
-                        .personalScheduleList(personalScheduleList)
-                        .groupScheduleList(groupScheduleList)
-                        .build());
+                .willReturn(scheduleListResList);
 
         // when
         ResultActions result = mockMvc.perform(get("/api/schedule")
@@ -103,24 +92,13 @@ class ScheduleControllerTest extends RestDocsTestSupport {
                                 parameterWithName("familyId").description("가족 ID").optional()
                         ),
                         responseFields(
-                                fieldWithPath("personalScheduleList").type(JsonFieldType.ARRAY).description("개인 일정 리스트"),
-                                fieldWithPath("personalScheduleList[].scheduleId").type(JsonFieldType.NUMBER).description("일정 ID"),
-                                fieldWithPath("personalScheduleList[].category").type(JsonFieldType.STRING).description("개인"),
-                                fieldWithPath("personalScheduleList[].title").type(JsonFieldType.STRING).description("일정 제목"),
-                                fieldWithPath("personalScheduleList[].emoji").type(JsonFieldType.STRING).description("이모티콘"),
-                                fieldWithPath("personalScheduleList[].content").type(JsonFieldType.STRING).description("일정 내용"),
-                                fieldWithPath("personalScheduleList[].startDate").type(JsonFieldType.STRING).description("시작 시간"),
-                                fieldWithPath("personalScheduleList[].endDate").type(JsonFieldType.STRING).description("종료 시간"),
-                                fieldWithPath("personalScheduleList[].scheduleRecord").type(JsonFieldType.OBJECT).description("일정 기록").optional(),
-                                fieldWithPath("groupScheduleList").type(JsonFieldType.ARRAY).description("가족 일정 리스트"),
-                                fieldWithPath("groupScheduleList[].scheduleId").type(JsonFieldType.NUMBER).description("일정 ID"),
-                                fieldWithPath("groupScheduleList[].category").type(JsonFieldType.STRING).description("가족"),
-                                fieldWithPath("groupScheduleList[].title").type(JsonFieldType.STRING).description("일정 제목"),
-                                fieldWithPath("groupScheduleList[].emoji").type(JsonFieldType.STRING).description("이모티콘"),
-                                fieldWithPath("groupScheduleList[].content").type(JsonFieldType.STRING).description("일정 내용"),
-                                fieldWithPath("groupScheduleList[].startDate").type(JsonFieldType.STRING).description("시작 시간"),
-                                fieldWithPath("groupScheduleList[].endDate").type(JsonFieldType.STRING).description("종료 시간"),
-                                fieldWithPath("groupScheduleList[].scheduleRecord").type(JsonFieldType.OBJECT).description("일정 기록").optional()
+                                fieldWithPath("[].scheduleId").type(JsonFieldType.NUMBER).description("일정 ID"),
+                                fieldWithPath("[].category").type(JsonFieldType.STRING).description("개인"),
+                                fieldWithPath("[].title").type(JsonFieldType.STRING).description("일정 제목"),
+                                fieldWithPath("[].emoji").type(JsonFieldType.STRING).description("이모티콘"),
+                                fieldWithPath("[].content").type(JsonFieldType.STRING).description("일정 내용"),
+                                fieldWithPath("[].startDate").type(JsonFieldType.STRING).description("시작 시간"),
+                                fieldWithPath("[].endDate").type(JsonFieldType.STRING).description("종료 시간")
                                 )
                 ));
     }
@@ -134,13 +112,11 @@ class ScheduleControllerTest extends RestDocsTestSupport {
 
         ParticipateMemberRes participateMember1 = ParticipateMemberRes.builder()
                 .nickname("엄마")
-                .email("test1@gmail.com")
                 .profileImageUrl("https://gaty.duckdns.org/s3-image-url-1")
                 .build();
 
         ParticipateMemberRes participateMember2 = ParticipateMemberRes.builder()
                 .nickname("아빠")
-                .email("test2@gmail.com")
                 .profileImageUrl("https://gaty.duckdns.org/s3-image-url-2")
                 .build();
 
@@ -186,7 +162,6 @@ class ScheduleControllerTest extends RestDocsTestSupport {
                                 fieldWithPath("scheduleRecord").type(JsonFieldType.OBJECT).description("일정 기록").optional(),
                                 fieldWithPath("participateMembers").type(JsonFieldType.ARRAY).description("일정 참여 멤버 목록"),
                                 fieldWithPath("participateMembers[].nickname").type(JsonFieldType.STRING).description("닉네임"),
-                                fieldWithPath("participateMembers[].email").type(JsonFieldType.STRING).description("이메일"),
                                 fieldWithPath("participateMembers[].profileImageUrl").type(JsonFieldType.STRING).description("프로필 사진 URL")
                         )
                 ));

@@ -2,7 +2,6 @@
 @use '../components/index' as *;
 
 .notification-tab--container {
-  @extend %modal-fade-in;
   @include mt-(0.5);
   position: relative;
   height: 100%;
@@ -106,7 +105,7 @@
         @include flex-row;
         align-items: center;
 
-        font-size: 1.2rem;
+        font-size: 1rem;
         justify-content: space-between;
         flex: 1;
         gap: 1rem;

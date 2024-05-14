@@ -80,9 +80,9 @@ const ProfileItem = ({profileData, handleClickProfile}: ProfileItemProps) => {
     <div className="main-profile-list-item--box">
       <div className="main-profile-list-item--container"
            onClick={handleClickProfileItem}>
-        <p>{profileData.nickname}</p>
+        <p className="main-profile-item-nickname">{profileData.nickname}</p>
         <div className="main-profile-wrapper">
-          <img className="main-profile-img" src={profileData.fileUrl} alt="프사"/>
+          <img className="main-profile-img" src={profileData.profileImageUrl} alt="프사"/>
           <div className="main-profile-mood">
             {getMoodEmoji(profileData.mood)}
           </div>

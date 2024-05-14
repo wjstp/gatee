@@ -189,6 +189,7 @@ class FamilyControllerTest extends RestDocsTestSupport {
                         .name("세진이네")
                         .familyScore(0)
                         .familyImageUrl("https://gaty.duckdns.org/s3-image-url")
+                        .chatRoomId(1L)
                         .memberFamilyInfoList(any(List.class))
                         .build());
 
@@ -207,6 +208,7 @@ class FamilyControllerTest extends RestDocsTestSupport {
                                 fieldWithPath("name").type(JsonFieldType.STRING).description("가족 이름"),
                                 fieldWithPath("familyScore").type(JsonFieldType.NUMBER).description("가족 점수"),
                                 fieldWithPath("familyImageUrl").type(JsonFieldType.STRING).description("가족 사진 URL"),
+                                fieldWithPath("chatRoomId").type(JsonFieldType.NUMBER).description("가족 채팅방 ID"),
                                 fieldWithPath("memberFamilyInfoList").type(JsonFieldType.ARRAY).description("가족 구성원 목록").optional(),
                                 fieldWithPath("memberFamilyInfoList.[].memberFamilyId").type(JsonFieldType.NUMBER).description("가족 구성원 familyId").optional(),
                                 fieldWithPath("memberFamilyInfoList.[].name").type(JsonFieldType.STRING).description("가족 구성원 이름").optional(),

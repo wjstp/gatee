@@ -15,23 +15,23 @@ const QuestionScored = (
   return (
     <div className="exam__item">
       {/* 채점 */}
-      <Mark result={question.choiceNumber===question.correctNumber}/>
+      <Mark result={question?.choiceNumber===question?.correctNumber}/>
 
       {/* 문제 */}
       <div className="exam__item__question">
         {/*{question.correctNumber===question.choiceNumber? "true":"false"}*/}
-        {questionNumber + 1}. {question.question}
+        {questionNumber + 1}. {question?.question}
       </div>
 
       {/* 객관식 */}
-      {question.answerList.map((answer: any, i: number) => {
+      {question?.answerList.map((answer: any, i: number) => {
         return (
           <div key={i} className="exam__item__answerList">
             {/* 객관식 번호 */}
-            <div className={question.choiceNumber === i + 1 ? "activateIndex" : "deactivateIndex"}>
+            <div className={question?.choiceNumber === i + 1 ? "activateIndex" : "deactivateIndex"}>
               {i + 1}
             </div>
-            {question.correctNumber === i+1 ?
+            {question?.correctNumber === i+1 ?
               <CheckImg className="exam__item__checkImg"/>
             :
               null

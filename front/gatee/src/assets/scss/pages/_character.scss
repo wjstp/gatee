@@ -6,6 +6,7 @@
   @include flex-col;
   @include my-(5);
   @include mx-(2);
+  @extend %modal-fade-in;
 
   height: 100%;
 
@@ -67,6 +68,24 @@
   }
 }
 
+.new-question-not-found-container {
+  @include flex-center;
+  @include flex-col;
+  @include p-(3);
+  border-radius: 1rem;
+  background-color: $gray50;
+
+  .new-question-not-found-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    @include mb-(1);
+  }
+
+  .new-question-not-found-explain {
+    font-size: 1.3rem;
+  }
+}
+
 .character__answerList {
   @include mx-(2);
 
@@ -76,7 +95,7 @@
     width: 100%;
   }
 
-  .empty-answer-list-container{
+  .empty-answer-list-container {
     @include flex-center;
     @include flex-col;
     @include p-(2);
@@ -86,11 +105,12 @@
     background-color: $gray50;
     border-radius: 1rem;
 
-    .empty-answer-list-icon{
+    .empty-answer-list-icon {
       width: 5rem;
       height: 10rem;
+
       path {
-        fill:$gray100;
+        fill: $gray100;
       }
 
     }
@@ -114,9 +134,9 @@
       }
 
 
-
     }
-    .editPencil{
+
+    .editPencil {
       color: $gray200;
       position: absolute;
       top: 1rem;
@@ -128,7 +148,7 @@
       font-size: 1.5rem;
       @include mt-(0.5);
 
-      .edit__input{
+      .edit__input {
         font-size: 1.3rem;
         border-bottom: 1px solid $gray100;
         //@include pb-(0.3);

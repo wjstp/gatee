@@ -2,10 +2,10 @@
 @use '../components/index' as *;
 
 .profile-index {
-  @extend %modal-fade-in;
-
   height: 100%;
   width: 100%;
+  flex-direction: column;
+  position: relative;
 
   &__profile {
     @include flex_center;
@@ -17,14 +17,36 @@
     .profile__img-box {
       @extend %circular-profile-image;
 
-      margin-top: 1%;
-      height: 200px;
-      width: 200px;
+      margin-top: 10%;
+      height: 170px;
+      width: 170px;
       border: 1px solid $gray75;
 
       .img-box__img {
-        height: 200px;
-        width: 200px;
+        height: 170px;
+        width: 170px;
+      }
+    }
+
+    .profile__invite-box {
+      @include flex_center;
+
+      position: absolute;
+      height: 40px;
+      width: 80px;
+      bottom: 0;
+      left: 1%;
+
+      .invite-box__btn {
+        height: 100%;
+        width: 100%;
+        color: $gray100;
+        font-size: 14px;
+        text-decoration: underline;
+
+        &:active {
+          opacity: 0.5;
+        }
       }
     }
 
@@ -34,11 +56,12 @@
       height: 30%;
       width: 40%;
       margin-top: 5%;
-      position: relative;
 
       &__part--01 {
-        font-size: 30px;
+        font-size: 28px;
         font-weight: bold;
+        position: relative;
+        text-align: center;
       }
 
       &__part--02 {
@@ -47,7 +70,8 @@
         height: 20px;
         width: 20px;
         position: absolute;
-        right: 6%;
+        right: -30px;
+        top: 25%;
 
         &:active {
           opacity: 0.1;
@@ -74,25 +98,42 @@
       .mood-box__btn {
         height: 100%;
         width: 100%;
+        text-align: center;
 
         &:active {
           opacity: 0.5;
         }
 
-        &--text {
-          font-size: 22px;
+        .btn--text {
+          font-size: 20px;
           color: $orange400;
         }
 
-        &--icon {
-          font-size: 26px;
+        .btn--icon {
+          font-size: 24px;
+        }
+      }
+
+      .mood-box__btn--disabled {
+        height: 100%;
+        width: 100%;
+        text-align: center;
+        pointer-events: none;
+
+        .btn--text {
+          font-size: 20px;
+          color: $orange400;
+        }
+
+        .btn--icon {
+          font-size: 24px;
         }
       }
     }
 
     .profile__info-box {
       height: 100%;
-      width: 70%;
+      width: 65%;
       font-size: 18px;
       color: $gray200;
 
@@ -241,6 +282,11 @@
     flex-direction: column;
 
     .character__created {
+      @include flex_center;
+
+      height: 100%;
+      width: 100%;
+      flex-direction: column;
 
       .created__title {
 
@@ -316,16 +362,15 @@
     }
 
     .character__non-created {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      height: 50%;
+      @include flex_center;
+
+      height: 100%;
       width: 100%;
 
       .non-created__btn {
-        @extend %orange-button-large;
+        @extend %orange-button-medium;
 
-        width: 80%;
+        font-size: 18px;
         margin-top: 5%;
 
         .btn--text {
@@ -337,8 +382,6 @@
 }
 
 .profile-modify {
-  @extend %modal-fade-in;
-
   height: 100%;
   width: 100%;
 
@@ -352,32 +395,40 @@
     .profile__img-box {
       @extend %circular-profile-image;
 
-      margin-top: 1%;
-      height: 200px;
-      width: 200px;
+      margin-top: 10%;
+      height: 170px;
+      width: 170px;
       border: 1px solid $gray75;
       position: relative;
 
-      .img-box__img {
-        height: 200px;
-        width: 200px;
-        opacity: 0.7;
-      }
-
       .img-box__btn {
-        height: 100px;
-        width: 100px;
-        position: absolute;
+        @extend %circular-profile-image;
+
+        height: 170px;
+        width: 170px;
+        opacity: 0.7;
+        position: relative;
 
         &:active {
-          opacity: 0.1;
+          opacity: 0.3;
         }
 
-        .btn__icon {
+        .btn--img {
+          height: 170px;
+          width: 170px;
+        }
+
+        .btn--icon {
           height: 60px;
           width: 60px;
-          fill: $gray300;
-          opacity: 0.2;
+          position: absolute;
+
+          .icon {
+            height: 100%;
+            width: 100%;
+            fill: $gray300;
+            opacity: 0.2;
+          }
         }
       }
     }
@@ -391,7 +442,7 @@
         height: 100%;
         width: 100%;
         text-align: center;
-        font-size: 30px;
+        font-size: 28px;
         font-weight: bold;
         text-decoration: underline;
         color: $gray200;
@@ -408,7 +459,7 @@
 
     .profile__info-box {
       height: 100%;
-      width: 70%;
+      width: 65%;
       font-size: 18px;
       color: black;
 
@@ -636,10 +687,13 @@
   &__btn {
     @include flex_center;
 
-    .btn-modified {
-      @extend %orange-button-large;
+    height: 32%;
+    width: 100%;
 
-      width: 80%;
+    .btn-modified {
+      @extend %orange-button-medium;
+
+      font-size: 18px;
       margin-top: 5%;
 
       &--text {
@@ -663,7 +717,7 @@
   .feeling-toast__first,
   .feeling-toast__second,
   .feeling-toast__third {
-    width: 100%;
+    width: 95%;
     display: flex;
     justify-content: space-between;
     margin-bottom: 10px;
@@ -692,14 +746,14 @@
   .second__part--01,
   .third__part--01 {
     margin-left: 3%;
-    margin-right: 1%;
+    margin-right: 2%;
   }
 
   .first__part--02,
   .second__part--02,
   .third__part--02 {
     margin-right: 3%;
-    margin-left: 1%;
+    margin-left: 2%;
   }
 
   .active {

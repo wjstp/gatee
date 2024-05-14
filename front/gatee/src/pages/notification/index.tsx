@@ -1,43 +1,27 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Box from '@mui/material/Box';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import Button from '@mui/material/Button';
 import SettingsToast from "@pages/notification/components/SettingsToast";
 import {useModalStore} from "@store/useModalStore";
+import {getNotificationListApiFirst, readNotificationApi} from "@api/notification";
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
-interface NotificationItemProps {
-  type: string,
-  content: string,
-}
 
 const NotificationIndex = () => {
-  // 모달 상태 적용
-  const {setShowModal} = useModalStore()
-
-  // 알림 데이터 리스트
-  const notificationDataList = [
-    {type: "앨범", content: "내용", date: "2024-05"},
-    {type: "한마디", content: "내용", date: "2024-05"},
-    {type: "일정", content: "내용", date: "2024-05"},
-    {type: "깜짝 퀴즈", content: "내용", date: "2024-05"},
-    {type: "기념일", content: "내용", date: "2024-05"},
-  ]
-
   // 열린지 닫힌지 상태 확인 가능
   const [state, setState] = React.useState({
     bottom: false,
   });
 
 
-  
-  // MUI 관련 코드 -> 슬라이드 다운 해서 내리기 기능 가능 
+  // MUI 관련 코드 -> 슬라이드 다운 해서 내리기 기능 가능
   const toggleDrawer =
     (anchor: Anchor, open: boolean) =>
       (event: React.KeyboardEvent | React.MouseEvent) => {
         console.log(anchor)
-        if (open === true){
+        if (open === true) {
           setShowModal(true)
         } else {
           setShowModal(false)
@@ -54,7 +38,7 @@ const NotificationIndex = () => {
       };
 
   // 설정 탭에서 완료 버튼 누를 때 팝업 내리기
-  const handleFinishTab = (event:React.MouseEvent) => {
+  const handleFinishTab = (event: React.MouseEvent) => {
     console.log("부모")
     toggleDrawer('bottom', false)(event)
   }
@@ -67,14 +51,47 @@ const NotificationIndex = () => {
       }}
       role="presentation"
       onKeyDown={toggleDrawer(anchor, false)}
-      style={{backgroundColor:"#7B7B7B"}}
+      style={{backgroundColor: "#7B7B7B"}}
     >
       {/* 토스트 팝업 되는 컴포넌트 넣기 */}
       <SettingsToast handleFinishTab={handleFinishTab}/>
     </Box>
   );
 
-  
+  // 모달 상태 적용
+  const {setShowModal} = useModalStore()
+
+  // 알림 데이터 리스트
+  const notificationDataList = [
+    {type: "앨범", content: "내용", date: "2024-05"},
+    {type: "한마디", content: "내용", date: "2024-05"},
+    {type: "일정", content: "내용", date: "2024-05"},
+    {type: "깜짝 퀴즈", content: "내용", date: "2024-05"},
+    {type: "기념일", content: "내용", date: "2024-05"},
+  ]
+
+  // 읽음 처리
+  const handleReadNotification = (id: string) => {
+    readNotificationApi({notificationId: id}
+      , res => {
+        console.log(res)
+      }
+      , err => {
+        console.log(err)
+
+      })
+  }
+
+  useEffect(() => {
+
+    getNotificationListApiFirst(
+      res => {
+        console.log(res)
+      }, err => {
+        console.log(err)
+      })
+  }, []);
+
 
   return (
     <div className="notification-tab--container">

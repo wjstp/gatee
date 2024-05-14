@@ -53,16 +53,16 @@ export interface MyMemberApiRes {
   birth: string
   birthType: string;
   email: string;
+  familyId: string;
+  memberFamilyId: number;
   memberId: string;
-  mood: string|null;
+  mood: string | null;
   name: string;
   nickname: string;
-  role: string;
-  familyId: string;
   phoneNumber: string | null;
-  fileUrl: string;
+  profileImageUrl: string;
+  role: string;
   isLeader: boolean;
-  memberFamilyId:number;
 }
 
 
@@ -82,13 +82,15 @@ export interface MemberApiReq {
   birth: string
   birthType: string;
   email: string;
+  familyId: string;
+  memberFamilyId: number;
   memberId: string;
-  mood: string|null;
+  mood: string | null;
   name: string;
   nickname: string;
-  role: string;
   phoneNumber: string | null;
-  fileUrl: string;
+  profileImageUrl: string;
+  role: string;
   isLeader: boolean;
 }
 
@@ -127,20 +129,20 @@ export interface MemberApiRes {
   memberFamilyId:number;
 }
 
-export interface MyMemberApiRes {
-  birth: string;
+export interface MemberApiRes {
+  birth: string
   birthType: string;
   email: string;
+  familyId: string;
+  memberFamilyId: number;
   memberId: string;
-  mood: string|null;
+  mood: string | null;
   name: string;
   nickname: string;
-  role: string;
-  familyId: string;
   phoneNumber: string | null;
-  fileUrl: string;
+  profileImageUrl: string;
+  role: string;
   isLeader: boolean;
-  memberFamilyId:number;
 }
 
 // 프로필 수정
@@ -152,13 +154,6 @@ export interface ModifyProfileReq {
   role: string;
   familyId: string;
   phoneNumber: string | null;
-}
-
-// 프로필 이미지 수정
-export interface ModifyProfileImageReq {
-  defaultImage: string;
-  fileType: string;
-  file: File;
 }
 
 // 기분 상태 수정
@@ -425,6 +420,7 @@ export interface GroupPhotoData {
   imageUrl: string | null,
   PhotoId: number | null
 }
+
 export interface MonthYearThumbnailPhotoData {
   createdAt: string,
   imageUrl: string,
@@ -434,6 +430,7 @@ export interface MonthYearThumbnailPhotoData {
 export interface MonthYearPhotoTabProps {
   monthYearPhotoData: MonthYearThumbnailPhotoData
 }
+
 export interface GroupPhotoItemProps {
   groupPhotoData: GroupPhotoData
 }
@@ -484,13 +481,13 @@ export interface DeletePhotoApiReq {
 
 // 모의고사 api 관련
 export interface ExamResult {
-  examId:string|number;
+  examId: string | number;
   score: number;
   createdAt: string;
 }
 
 export interface TransformedQuestionData {
-  nickname:string,
+  nickname: string,
   question: string;
   answerList: string[];
   correctNumber: number;
@@ -498,32 +495,47 @@ export interface TransformedQuestionData {
 }
 
 export interface QuestionData {
-  nickname:string;
+  nickname: string;
   questionWord: string;
   wrongAnswers: string[];
   correctAnswer: string;
 }
 
 export interface ExamProblem {
-  "question" : string,
-  "answerList" : string[],
-  "choiceNumber" : number|string,
-  "correctNumber" : number|string
+  "question": string,
+  "answerList": string[],
+  "choiceNumber": number | string,
+  "correctNumber": number | string
 }
 
 export interface SaveExamResultApiReq {
-  examResults : ExamProblem[],
-  score:number
+  examResults: ExamProblem[],
+  score: number
 }
 
 // 백문백답 api 관련
 export interface SaveAskAnswerApiReq {
-  featureId:number,
-  answer:string
+  featureId: number,
+  answer: string
 }
 
 export interface Answer {
-  featureId:number;
+  featureId: number;
   question: string;
   answer: string;
+}
+
+// 미션 api 관련
+export interface MissionListApiReq {
+  id: number;
+  type: string;
+  isComplete: boolean;
+  nowRange: number;
+  maxRange: number;
+  completedLevel: number;
+}
+
+export interface DoMission {
+  type: string;
+  photoCount: number | null;
 }

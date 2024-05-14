@@ -1,17 +1,23 @@
 import React from 'react';
 import { BiCopy } from "react-icons/bi";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ReactComponent as KaKaoMessage } from "@assets/images/signup/kakao_message.svg";
 import { useFamilyStore } from "@store/useFamilyStore";
 
 const SignupMemberSetShare = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const from: string = location.state?.from;
   const server: string | undefined = process.env.REACT_APP_API_URL;
 
   const { familyName, stringImage, familyCode } = useFamilyStore();
 
   const goToMemberSetFininsh = () => {
-    navigate("/signup/member-set/finish");
+    if (from === "member-set") {
+      navigate("/signup/member-set/finish");
+    } else {
+      navigate(-1);
+    }
   }
   
   // 카카오 공유하기 버튼
@@ -28,8 +34,9 @@ const SignupMemberSetShare = () => {
         },
       },
       itemContent: {
-        profileText: `${familyName} 가족에서 초대가 왔어요~`,
-        titleImageText: '아래 코드를 복사해 들어오세요!',
+        profileText: `가족과 함께 '가티'`,
+        titleImageText: `${familyName} 가족에서 초대가 왔어요~`,
+        titleImageCategory: '아래 코드를 복사해 들어올래요?'
       },
       buttons: [
         {
@@ -125,7 +132,11 @@ const SignupMemberSetShare = () => {
           onClick={goToMemberSetFininsh}
         >
           <span className="btn__text">
-            다음
+            {from === "member-set" ? (
+              "다음"
+            ) : (
+              "돌아가기"
+            )}
           </span>
         </button>
       </div>

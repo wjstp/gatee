@@ -13,8 +13,8 @@ import OnboardingIndex from "@pages/onboarding/index";
 import KaKaoLogin from "@pages/onboarding/components/KaKaoLogin";
 import ProfileIndex from "@pages/profile";
 import ScheduleIndex from "@pages/schedule/index";
-import ScheduleCreateSchedule from "@pages/schedule/Create";
-import ScheduleCreateReview from "@pages/schedule/CreateReview";
+import ScheduleCreate from "@pages/schedule/ScheduleCreate";
+import ReviewCreate from "@pages/schedule/ReviewCreate";
 import ScheduleDetail from "@pages/schedule/ScheduleDetail";
 import ChatIndex from "@pages/chat";
 import ChatPhoto from "@pages/chat/ChatPhoto";
@@ -77,8 +77,8 @@ const Router = () => {
 
         {/*스케줄 페이지*/}
         <Route path="/schedule" element={<ScheduleIndex/>}/>
-        <Route path="/schedule/create-schedule" element={<ScheduleCreateSchedule/>}/>
-        <Route path="/schedule/create-review" element={<ScheduleCreateReview/>}/>
+        <Route path="/schedule/create-schedule" element={<ScheduleCreate/>}/>
+        <Route path="/schedule/create-review" element={<ReviewCreate/>}/>
         <Route path="/schedule/:id" element={<ScheduleDetail/>}/>
 
         {/*백과사전 페이지*/}

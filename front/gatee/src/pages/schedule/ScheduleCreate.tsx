@@ -16,14 +16,14 @@ import getUserInfo from "@utils/getUserInfo";
 import Button from "@mui/material/Button";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import SettingsToast from "@pages/notification/components/SettingsToast";
-import {useModalStore} from "@store/useModalStore";
+import { useModalStore } from "@store/useModalStore";
 import Box from "@mui/material/Box";
 
 const ScheduleCreate = () => {
   dayjs.locale('ko');
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { familyInfo } = useFamilyStore();
+  const {familyInfo} = useFamilyStore();
 
   const [title, setTitle] = useState<string>("");
   const [color, setColor] = useState<string>("pink")
@@ -37,8 +37,8 @@ const ScheduleCreate = () => {
 
   const [isOpenColor, setIsOpenColor] = useState<boolean>(false)
   const colorList: string[] = ["pink", "yellow", "green", "blue", "purple"]
-  const [state, setState] = React.useState({ bottom: false });
-  const { setShowModal } = useModalStore();
+  const [state, setState] = React.useState({bottom: false});
+  const {setShowModal} = useModalStore();
   type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
   const [isTitleError, setIsTitleError] = useState<boolean>(false);
@@ -113,7 +113,7 @@ const ScheduleCreate = () => {
       setEndDate(newValue);
     }
   }
-  
+
   // 종료 일자 에러 메시지
   const errorMessageEndDate = React.useMemo(() => {
     switch (endDateError) {
@@ -122,19 +122,19 @@ const ScheduleCreate = () => {
         setIsEndDateError(true);
         return '유효한 날짜를 입력해 주세요';
       }
-      
+
       case 'minDate': {
         setIsEndDateError(true);
         return '시작일 이후의 날짜를 입력해 주세요';
       }
-        
+
       default: {
         setIsEndDateError(false);
         return '';
       }
     }
   }, [endDateError]);
-  
+
   // 시작 시간 입력 핸들러
   const handleSetStartTime = (newValue: Dayjs | null) => {
     if (dayjs(newValue).isValid()) {
@@ -195,9 +195,11 @@ const ScheduleCreate = () => {
   const renderProfile = (memberId: string) => {
     const userInfo = getUserInfo(familyInfo, memberId);
     return (
-      <div className="create-schedule-participant__profile-item" key={memberId} onClick={() => handleSetParticipants(memberId)}>
-        <div className={`create-schedule-participant__profile-image${participants.includes(memberId) ? '--active' : ''}`}>
-          <img src={ userInfo?.fileUrl } alt={ userInfo?.nickname } />
+      <div className="create-schedule-participant__profile-item" key={memberId}
+           onClick={() => handleSetParticipants(memberId)}>
+        <div
+          className={`create-schedule-participant__profile-image${participants.includes(memberId) ? '--active' : ''}`}>
+          <img src={userInfo?.fileUrl} alt={userInfo?.nickname}/>
         </div>
         <div className="create-schedule-participant__profile-nickname">
           {userInfo?.nickname}
@@ -207,19 +209,19 @@ const ScheduleCreate = () => {
   }
 
   // 참여자 수 반환
-  const getParticipantNumber = () : string => {
+  const getParticipantNumber = (): string => {
     if (participants.length === familyInfo.length) {
       return "전원 참여"
     } else {
       return `${participants.length}명 참여`
     }
   }
-  
+
   // 일정 생성 버튼 활성화 여부 계산
   const isButtonEnabled = () => {
     return title && !isStartDateError && !isEndDateError;
   };
-  
+
   // mui custom
   const muiFocusCustom = {
     "& .MuiOutlinedInput-root": {
@@ -237,7 +239,7 @@ const ScheduleCreate = () => {
     (anchor: Anchor, open: boolean) =>
       (event: React.KeyboardEvent | React.MouseEvent) => {
         console.log(anchor)
-        if (open === true){
+        if (open === true) {
           setShowModal(true)
         } else {
           setShowModal(false)
@@ -254,7 +256,7 @@ const ScheduleCreate = () => {
       };
 
   // 설정 탭에서 완료 버튼 누를 때 팝업 내리기
-  const handleFinishTab = (event:React.MouseEvent) => {
+  const handleFinishTab = (event: React.MouseEvent) => {
     console.log("부모")
     toggleDrawer('bottom', false)(event)
   }
@@ -267,7 +269,7 @@ const ScheduleCreate = () => {
       }}
       role="presentation"
       onKeyDown={toggleDrawer(anchor, false)}
-      style={{backgroundColor:"#7B7B7B"}}
+      style={{backgroundColor: "#7B7B7B"}}
     >
       {/* 토스트 팝업 되는 컴포넌트 넣기 */}
       <InputColorToast/>
@@ -329,12 +331,12 @@ const ScheduleCreate = () => {
                 <Button
                   onClick={toggleDrawer("bottom", true)}
                   style={
-                  {
-                    width: "5",
-                    height: "5",
-                    backgroundColor: colorPalette(color)
+                    {
+                      width: "5",
+                      height: "5",
+                      backgroundColor: colorPalette(color)
+                    }
                   }
-                }
                 >
                 </Button>
                 <SwipeableDrawer

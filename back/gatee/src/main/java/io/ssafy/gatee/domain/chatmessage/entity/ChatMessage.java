@@ -1,7 +1,7 @@
 package io.ssafy.gatee.domain.chatmessage.entity;
 
 import io.ssafy.gatee.domain.base.BaseEntity;
-import io.ssafy.gatee.domain.chatroom.entity.ChatRoom;
+import io.ssafy.gatee.domain.chat_room.entity.ChatRoom;
 import io.ssafy.gatee.domain.file.entity.File;
 import io.ssafy.gatee.domain.member.entity.Member;
 import jakarta.persistence.*;
