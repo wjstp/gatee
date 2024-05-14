@@ -155,7 +155,8 @@ public class ChatServiceImpl implements ChatService {
         List<UUID> familyMemberIdList = this.findFamilyMemberIdExceptMe(memberId);
         this.saveMessageToRealtimeDatabase(FireStoreChatDto.builder()
                 .messageType(chatDto.messageType())
-                .content(chatDto.emoziId().toString())
+                .content(chatDto.content())
+                .emoziId(chatDto.emoziId().toString())
                 .sender(memberId.toString())
                 .unReadMember(unReadMemberAsStringList)
                 .currentTime(chatDto.currentTime())
