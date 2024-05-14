@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {useModalStore} from "@store/useModalStore";
 import {useNavigate} from "react-router-dom";
 import logo from "@assets/images/logo/app_icon_orange.svg"

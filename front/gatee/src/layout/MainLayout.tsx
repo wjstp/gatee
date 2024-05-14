@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import TopBar from '@components/TopBar';
 import BottomBar from "@components/BottomBar";
-import {Outlet, useLocation} from 'react-router-dom'
+import {Outlet} from 'react-router-dom'
 import {Helmet, HelmetProvider} from 'react-helmet-async';
 import {useModalStore} from "@store/useModalStore";
 import {useMemberStore} from "@store/useMemberStore";

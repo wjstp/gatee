@@ -75,6 +75,7 @@ const SettingsToast = ({handleFinishTab}: HandleFinishTab) => {
   //
   //   }
   // }, [albumAlarmChecked,naggingAlarmChecked,scheduleAlarmChecked,featureAlarmChecked]);
+  // @ts-ignore
   return (
 
     <div

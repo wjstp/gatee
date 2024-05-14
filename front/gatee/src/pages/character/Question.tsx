@@ -6,12 +6,14 @@ import TextField from "@mui/material/TextField";
 import {useMemberStore} from "@store/useMemberStore";
 import {doMissionApi} from "@api/mission";
 import NewQuestionNotFound from "@pages/character/components/NewQuestionNotFound";
+import Loading from "@components/Loading";
 
 const CharacterQuestion = () => {
   const navigate = useNavigate();
   const {askList, askIndex, setAskIndex, setAskList} = useDictStore()
   const [isEmpty, setEmpty] = useState(false);
   const [inputValue, setInputValue] = useState('');
+  const [loading,setLoading] = useState(false)
   const {myInfo} = useMemberStore()
   const muiFocusCustom = {
     "& .MuiOutlinedInput-root": {
@@ -70,7 +72,9 @@ const CharacterQuestion = () => {
 
       }, err => {
         console.log(err)
-        alert("좀 더 고심해서 대답을 적어볼까요?")
+        // 로딩
+        setLoading(true)
+        setTimeout(()=>setLoading(false), 1000)
         setAskIndex(askIndex -1)
         setInputValue(input)
       }
@@ -155,7 +159,7 @@ const CharacterQuestion = () => {
             }
 
           </>}
-
+      {loading? <Loading/>:null}
     </div>
   );
 }
