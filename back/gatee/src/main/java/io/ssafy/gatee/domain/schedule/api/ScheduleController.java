@@ -21,7 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Currency;
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -35,7 +35,7 @@ public class ScheduleController {
     // 일정 리스트 조회
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public ScheduleListRes readSchedule(
+    public List<ScheduleListRes> readSchedule(
             @Valid
             @RequestParam String familyId
     ) throws FamilyNotFoundException {
