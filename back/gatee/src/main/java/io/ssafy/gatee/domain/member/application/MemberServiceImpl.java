@@ -12,7 +12,6 @@ import io.ssafy.gatee.domain.member.dto.request.MemberEditMoodReq;
 import io.ssafy.gatee.domain.member.dto.request.MemberEditReq;
 import io.ssafy.gatee.domain.member.dto.request.MemberSaveReq;
 import io.ssafy.gatee.domain.member.dto.request.MemberTokenReq;
-import io.ssafy.gatee.domain.member.dto.response.MemberEditProfileImageRes;
 import io.ssafy.gatee.domain.member.dto.response.MemberInfoRes;
 import io.ssafy.gatee.domain.member.entity.Member;
 import io.ssafy.gatee.domain.member.entity.Privilege;
@@ -111,7 +110,7 @@ public class MemberServiceImpl implements MemberService {
 
         Album album = Album.builder()
                 .family(family)
-                .name(memberSaveReq.name() + "의 사진")
+                .name(memberSaveReq.name())
                 .build();
 
         albumRepository.save(album);
@@ -195,7 +194,7 @@ public class MemberServiceImpl implements MemberService {
     // 프로필 이미지 수정
     @Override
     @Transactional
-    public MemberEditProfileImageRes editProfileImage(String defaultImage, FileType fileType, MultipartFile file, UUID memberId) throws IOException {
+    public void editProfileImage(String defaultImage, FileType fileType, MultipartFile file, UUID memberId) throws IOException {
 
         File entity;
 
@@ -217,10 +216,6 @@ public class MemberServiceImpl implements MemberService {
         Member member = memberRepository.getReferenceById(memberId);
 
         member.editProfileImage(entity);
-
-        return MemberEditProfileImageRes.builder()
-                .imageUrl(entity.getUrl())
-                .build();
     }
 
     // 기분 상태 수정
