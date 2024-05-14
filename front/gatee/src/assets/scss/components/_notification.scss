@@ -10,3 +10,34 @@
   top: 0;
   right: -10%;
 }
+
+.notification-pop-up--container {
+
+  @include flex-col;
+  @include mx-(3);
+  @include px-(2);
+  @include py-(1);
+  position: fixed;
+  left: 5dvw;
+  width: 90dvw;
+  z-index: 9999;
+  align-content: center;
+  margin: auto auto;
+  top:2rem;
+  background-color: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 0px 10px rgba(0, 0, 0, 0.3);
+  gap:0.5rem;
+
+  .notification-pop-up--title {
+    font-weight: bold;
+  }
+
+  .notification-pop-up--content {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+  }
+
+}

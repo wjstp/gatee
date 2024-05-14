@@ -75,30 +75,6 @@ export async function requestPermission() {
 
 // // 메세지 받는 함수 v8
 
-let url = "/main"
-
-if (firebase.messaging.isSupported())
-  messaging.onMessage((payload) => {
-    console.log(payload.notification)
-    const notificationData = payload.notification
-    const notificationTitle = payload.notification.title;
-    if (notificationTitle.includes("채팅")) {
-      url = "/chatting"
-    } else if (notificationTitle.includes("사진")) {
-      url = "/photo/day"
-    } else if (notificationTitle.includes("한마디")) {
-      url = "/notification"
-    }
-
-    const notificationOptions = {
-      body: notificationData.body,
-      icon: notificationData.icon,
-    };
-    if (window.location.href.includes("chatting") && notificationTitle.includes("채팅")) return
-    else {
-      showNotification(notificationTitle, notificationOptions, url);
-    }
-  });
 
 
 // 알림 표시
