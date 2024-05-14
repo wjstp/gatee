@@ -32,13 +32,13 @@ export const getAgreeNotificationApi = async function (success: (res: AxiosRespo
 }
 
 // 맨 처음 알림 리스트
-export const getNotificationListApiFirst = async function (success: (res: AxiosResponse<any>) => void,
+export const getNotificationListFirstApi = async function (success: (res: AxiosResponse<any>) => void,
                                                            fail: (err: AxiosError<any>) => void) {
     await local.get(`/notifications`).then(success).catch(fail);
 }
 
 // 무한 스크롤 알림 리스트
-export const getNotificationListApiNext = async function (data: string,
+export const getNotificationListNextApi = async function (data: string|null,
                                                           success: (res: AxiosResponse<any>) => void,
                                                           fail: (err: AxiosError<any>) => void) {
     await local.get(`/notifications`, {params: {cursor: data}}).then(success).catch(fail);
