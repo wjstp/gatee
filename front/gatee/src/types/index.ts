@@ -2,8 +2,8 @@
 
 // 가족
 export interface FamilyStore {
-  chatroomId: number | null;
-  setChatroomId: (newId: number) => void;
+  chatRoomId: number | null;
+  setChatRoomId: (newId: number) => void;
   familyId: string;
   setFamilyId: (newId: string) => void;
   familyName: string;
@@ -366,8 +366,13 @@ export interface EmojiItem {
 }
 
 export  interface SendFileReq {
-  chatroomId: number;
-  fileIdList: string[];
+  chatRoomId: number;
+  fileIdList: number[];
+}
+
+export interface FileRes {
+  fileId: number;
+  imageUrl: string;
 }
 
 // 잔소리 보내기 api request

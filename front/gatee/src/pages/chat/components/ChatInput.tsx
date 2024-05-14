@@ -8,11 +8,13 @@ import { IoCloseOutline } from "react-icons/io5";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import TextField from '@mui/material/TextField';
 import { EMOJI } from "@constants/index";
-import { EmojiItem, ChatSendMessage } from "@type/index";
+import { EmojiItem, ChatSendMessage, SendFileReq, FileRes } from "@type/index";
 import { uploadFileApi } from "@api/file";
 import { NavLink } from "react-router-dom";
 import dayjs from "dayjs";
 import { useChatStore } from "@store/useChatStore";
+import {sendChatFileApi} from "@api/chat";
+import {useFamilyStore} from "@store/useFamilyStore";
 
 interface ChatInputProps {
   onSendMessage: (newMessages: ChatSendMessage) => void;
@@ -21,7 +23,7 @@ interface ChatInputProps {
 const ChatInput = (props: ChatInputProps) => {
   const { onSendMessage } = props;
   const [inputMessage, setInputMessage] = useState<string>("");
-  const [inputFile, setInputFile] = useState<File[] | null>(null);
+  const [inputFile, setInputFile] = useState<File[]>([]);
   const [inputEmoji, setInputEmoji] = useState<EmojiItem | null>(null);
   const [isOpenPlus, setIsOpenPlus] = useState<boolean>(false);
   const [isOpenAppointment, setIsOpenAppointment] = useState<boolean>(false);
@@ -33,6 +35,40 @@ const ChatInput = (props: ChatInputProps) => {
   const [selectedEmojiCategory, SetSelectedEmojiCategory] = useState<string>(EMOJI[0].name);
   const buttonWrapperRef = useRef<HTMLDivElement>(null);
   const { setIsShowBottomBar } = useChatStore();
+  const { chatRoomId } = useFamilyStore();
+  const [fileUrls, setFileUrls]= useState<string[]>([]);
+  const [fileIds, setFileIds]= useState<number[]>([]);
+  const [data, setData] = useState<FileRes | null>(null);
+  const [fileLength, setFileLength] = useState<number>(0);
+
+  useEffect(() => {
+    if (data) {
+      addFileRes(data.imageUrl, data.fileId);
+    }
+  }, [data]);
+
+  const addFileRes = (url:string, id:number) => {
+    if (url && id) {
+      setFileUrls([...fileUrls, url]);
+      setFileIds([...fileIds, id]);
+    }
+  }
+
+  useEffect(() => {
+    if (fileLength > 0 && fileLength === fileIds.length && fileLength === fileUrls.length) {
+      const currentTime: string = dayjs().format("YYYY-MM-DD HH:mm:ss");
+
+      // 사진 업로드
+      sendChatFile();
+
+      // 소켓 전송
+      onSendMessage({
+        messageType: "FILE",
+        files: fileUrls,
+        currentTime,
+      })
+    }
+  }, [fileUrls, fileIds]);
 
   // 변수 초기화
   const reset = () => {
@@ -42,18 +78,17 @@ const ChatInput = (props: ChatInputProps) => {
     setIsOpenEmojiPreview(false);
     setIsOpenEmoji(false);
     setInputMessage("");
-    setInputFile(null);
     setInputEmoji(null);
+    setInputFile([]);
   }
 
   // 메시지 전송 핸들러
   const handleSendMessage = () => {
     const currentTime: string = dayjs().format("YYYY-MM-DD HH:mm:ss");
-
     // FILE
     if (inputFile) {
-      const fileUrls: string[] = [];
-      const fileIds: string[] = [];
+      setFileUrls([]);
+      setFileIds([]);
 
       inputFile.forEach((file: File) => {
         // FormData 객체 생성
@@ -65,21 +100,15 @@ const ChatInput = (props: ChatInputProps) => {
         uploadFileApi(
           formData,
           (res) => {
-            fileUrls.push(res.data.imageUrl);
-            fileIds.push(res.data.fileId);
+            setData(res.data);
           },
           (error) => {
-            console.error(error)
+            console.error(error);
           })
           .then().catch();
       });
-
-      onSendMessage({
-        messageType: "FILE",
-        files: fileUrls,
-        currentTime,
-      })
     }
+
     // EMOJI
     else if (inputEmoji) {
       onSendMessage({
@@ -110,6 +139,26 @@ const ChatInput = (props: ChatInputProps) => {
     reset();
   }
 
+  // 파일 전송
+  const sendChatFile = () => {
+    console.log(fileIds)
+    if (chatRoomId) {
+      const data: SendFileReq  = {
+        chatRoomId: chatRoomId,
+        fileIdList: fileIds
+      }
+      sendChatFileApi(
+        data,
+        (res) => {
+          console.log(res.data);
+        },
+        (err) => {
+          console.error(err);
+        }
+      ).then().catch()
+    }
+  }
+
   // 메시지 입력 핸들러
   const handleSetMessage = (event: ChangeEvent<HTMLInputElement>) => {
     setInputMessage(event.target.value);
@@ -131,7 +180,10 @@ const ChatInput = (props: ChatInputProps) => {
   // 파일 선택 핸들러
   const handleSetFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
-      setInputFile(Array.from(event.target.files))
+      // 파일 저장
+      setInputFile(Array.from(event.target.files));
+      setFileLength(event.target.files.length);
+
       // 미리보기 렌더링
       setIsOpenFilePreview(true);
 
@@ -167,7 +219,7 @@ const ChatInput = (props: ChatInputProps) => {
     setIsOpenEmojiPreview(true);
 
     // 파일 입력 초기화
-    setInputFile(null);
+    setInputFile([]);
     setIsOpenFilePreview(false);
   }
 
@@ -180,7 +232,7 @@ const ChatInput = (props: ChatInputProps) => {
   // input 토글
   useEffect(() => {
     setInputMessage("");
-    setInputFile(null);
+    setInputFile([]);
     setIsOpenEmoji(false);
     setInputEmoji(null);
     setIsOpenEmojiPreview(false);
@@ -214,6 +266,7 @@ const ChatInput = (props: ChatInputProps) => {
   const handleFocusInput = (isFocus: boolean) => {
     if (isFocus) {
       setIsShowBottomBar(false);
+      setIsOpenEmoji(false);
     } else {
       setIsShowBottomBar(true);
     }
@@ -351,7 +404,7 @@ const ChatInput = (props: ChatInputProps) => {
 
           {isOpenAppointment ? (
             // 약속 잡기 취소 버튼
-            <button className="chat-input__button-cancel" onClick={reset}>
+            <button className="chat-input__button-cancel" onClick={() => reset()}>
               <IoCloseCircleOutline size={30}/>
             </button>
           ) : (

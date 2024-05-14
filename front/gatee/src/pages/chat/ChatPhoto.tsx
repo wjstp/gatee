@@ -1,17 +1,25 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import PhotoList from "@components/PhotoList";
-import {applyAppointmentParticipationApi, getChatFileApi} from "@api/chat";
+import { applyAppointmentParticipationApi, getChatFileApi } from "@api/chat";
 import { useFamilyStore } from "@store/useFamilyStore";
+import { FileRes } from "@type/index";
 
 const ChatPhoto = () => {
-  const { chatroomId } = useFamilyStore();
+  const { chatRoomId } = useFamilyStore();
+  const [files, setFiles] = useState<FileRes[] | null>(null);
+
+  useEffect(() => {
+    if (chatRoomId) {
+      getChatFile();
+    }
+  }, [chatRoomId]);
 
   const getChatFile = () => {
-    if (chatroomId) {
+    if (chatRoomId) {
       getChatFileApi(
-        chatroomId,
+        chatRoomId,
         (res) => {
-          console.log(res);
+          setFiles(res.data);
         },
         (err) => {
           console.log(err);
@@ -22,8 +30,11 @@ const ChatPhoto = () => {
 
   return (
     <div className="chat-photo">
-      {/*사진 리스트*/}
-      {/*<PhotoList editMode="normal" photoGroup={photoGroup} handleChecked={null} />*/}
+      {files && files.map((file: FileRes, index: number) => (
+        <div key={index} className="chat-photo__item">
+          <img src={file.imageUrl} alt={`Photo ${index + 1}`} className="chat-photo__image"/>
+        </div>
+      ))}
     </div>
   )
 }

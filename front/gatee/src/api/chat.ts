@@ -29,6 +29,6 @@ export const getChatFileApi = async function (data: number,
 export const sendChatFileApi = async function (data: SendFileReq,
                                                  success: (res: AxiosResponse<any>) => void,
                                                  fail: (err: AxiosError<any>) => void) {
-  const { chatroomId, fileIdList } = data;
-  await local.post(`/schedule$/{chatroomId}`, fileIdList).then(success).catch(fail);
+  const { chatRoomId, fileIdList } = data;
+  await local.post(`/chatroom/${chatRoomId}`, {fileIdList}).then(success).catch(fail);
 }
