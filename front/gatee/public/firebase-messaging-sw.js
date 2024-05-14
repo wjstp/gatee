@@ -1,47 +1,79 @@
-self.addEventListener("install", function (e) {
-  console.log("FCM Service Worker install..");
+importScripts('https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js');
+importScripts('https://www.gstatic.com/firebasejs/8.3.1/firebase-messaging.js');
+
+const firebaseConfig = {
+  apiKey: 'AIzaSyCiiaCQgXFvOYDt5jzzRIHwnhC_kCJ5op8',
+  authDomain: 'gatee-bf33f.firebaseapp.com',
+  projectId: 'gatee-bf33f',
+  storageBucket: 'gatee-bf33f.appspot.com',
+  messagingSenderId: '1009013790999',
+  appId: '1:1009013790999:web:e4273021380c2598cd7f52',
+};
+firebase.initializeApp(firebaseConfig);
+const messaging = firebase.messaging();
+messaging.usePublicVapidKey('BHM_6_Y5fpMq6wpVagokLqSOdbPAwoNXW5eUO2DNw3lV_bGMgrr9f7BnymfevaF_TaJMpwummAey77-wsO-0VsE');
+
+
+self.addEventListener('install', function (e) {
+  console.log('fcm sw install..');
   self.skipWaiting();
 });
 
-self.addEventListener("activate", function (e) {
-  console.log("FCM Service Worker activate..");
+self.addEventListener('activate', function (e) {
+  console.log('fcm sw activate..');
 });
 
-// 전역 푸시 알림 받는 설정
-self.addEventListener("push", function (e) {
-  console.log("푸시 e.data.json(): ", e.data.json());
-  if (!e.data.json()) return;
+let url = "/main"
 
-  // 사용자가 보고 있고, 알림이 채팅이면 알림이 안뜸
-  self.addEventListener("visibilitychange",function (e){
-    if(e.data.json()?.notification?.title==="채팅") return;
-  })
 
-  const resultData = e.data.json().notification;
-  const notificationTitle = resultData.title;
+messaging.onBackgroundMessage((payload) => {
+  console.log(
+    '[firebase-messaging-sw.js] Received background message ',
+    payload.notification
+  );
+  // Customize notification here
+  const notificationData = payload.notification
+  const notificationTitle = payload.notification.title;
+  if (notificationTitle.includes("채팅")) {
+    url = "/chatting"
+  } else if (notificationTitle.includes("사진")) {
+    url = "/photo/day"
+  } else if (notificationTitle.includes("한마디")) {
+    url = "/notification"
+  }
+
   const notificationOptions = {
-    body: resultData.body,
-    icon: resultData.image,
-    tag: resultData.tag,
-    ...resultData,
+    body: notificationData.body,
+    icon: notificationData.icon,
   };
+
+
   self.registration.showNotification(notificationTitle, notificationOptions);
 });
 
 
-self.addEventListener("notificationclick", function (event) {
-  console.log("Notification clicked");
-  console.log("event", event)
-  const clickedNotification = event.notification;
-  console.log("event.notification", event.notification)
-  console.log("event.notification.data.url", event.notification.data.url)
-  clickedNotification.close();
+self.addEventListener('notificationclick', function (event) {
 
-  const pushPath = '/main';
-  console.log("알림 클릭 시, 페이지 이동 : " + pushPath);
-
-  // 클라이언트 측에서 해당 경로로 이동
-  event.waitUntil(
-    self.clients.openWindow(pushPath)
-  );
+  event.notification.close();
+  event.waitUntil(clients.openWindow(url));
 });
+
+
+// 전역 알림 받기 설정
+// self.addEventListener('push', function (e) {
+//   console.log(e.data.json().notification.title)
+// const notificationData=e.data.json().notification
+//   const notificationTitle = e.data.json().notification.title;
+//   if (notificationTitle.includes("채팅")) {
+//     url = "/chatting"
+//   } else if (notificationTitle.includes("사진")) {
+//     url = "/photo/day"
+//   } else if (notificationTitle.includes("한마디")) {
+//     url = "/notification"
+//   }
+//const notificationOptions = {
+//     body: notificationData.body,
+//     icon: notificationData.icon,
+//   };
+//    self.registration.showNotification(notificationTitle, notificationOptions);
+// });
