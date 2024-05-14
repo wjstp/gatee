@@ -52,7 +52,8 @@ const ChatInput = (props: ChatInputProps) => {
 
     // FILE
     if (inputFile) {
-      const files: string[] = [];
+      const fileUrls: string[] = [];
+      const fileIds: string[] = [];
 
       inputFile.forEach((file: File) => {
         // FormData 객체 생성
@@ -64,7 +65,8 @@ const ChatInput = (props: ChatInputProps) => {
         uploadFileApi(
           formData,
           (res) => {
-            files.push(res.data.imageUrl);
+            fileUrls.push(res.data.imageUrl);
+            fileIds.push(res.data.fileId);
           },
           (error) => {
             console.error(error)
@@ -74,27 +76,25 @@ const ChatInput = (props: ChatInputProps) => {
 
       onSendMessage({
         messageType: "FILE",
-        files,
+        files: fileUrls,
         currentTime,
       })
     }
-
-    // 메시지 전송
-    if (inputMessage) {
+    // EMOJI
+    else if (inputEmoji) {
+      onSendMessage({
+        messageType: "EMOJI",
+        content: inputMessage,
+        emojiId: inputEmoji.id,
+        currentTime,
+      })
+    }
+    else if (inputMessage) {
       // APPOINTMENT
       if (isOpenAppointment) {
         onSendMessage({
           messageType: "APPOINTMENT",
           content: inputMessage,
-          currentTime,
-        })
-      }
-      // EMOJI
-      else if (inputEmoji) {
-        onSendMessage({
-          messageType: "EMOJI",
-          content: inputMessage,
-          emojiId: inputEmoji.id,
           currentTime,
         })
       }

@@ -96,16 +96,16 @@ export const updateAlbumNameApi = async function (data: UpdateAlbumNameApiReq,
 export const uploadAlbumPhotoApi = async function (data: UploadAlbumPhotoApiReq,
                                                    success: (res: AxiosResponse<any>) => void,
                                                    fail: (err: AxiosError<any>) => void) {
-  console.log(`albums/${data.albumId}/photos`)
-  console.log(`photoIdList: ${data.photoIdList}`)
-  await local.post(`albums/${data.albumId}/photos`, {photoIdList: data.photoIdList}).then(success).catch(fail);
+  const {albumId, photoIdList} = data;
+  await local.post(`albums/${albumId}/photos`, photoIdList).then(success).catch(fail);
 }
 
 // 앨범 내 사진 삭제
 export const deleteAlbumPhotoApi = async function (data: UploadAlbumPhotoApiReq,
                                                    success: (res: AxiosResponse<any>) => void,
                                                    fail: (err: AxiosError<any>) => void) {
-  await local.patch(`albums/${data.albumId}/photos`, {photoAlbumId: data.photoIdList}).then(success).catch(fail);
+  const {albumId, photoIdList} = data;
+  await local.patch(`albums/${albumId}/photos`, {photoAlbumId: photoIdList}).then(success).catch(fail);
 }
 
 // 사진 상호작용 생성

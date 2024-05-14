@@ -1,11 +1,14 @@
 import { create } from "zustand";
 import basicFamily from "@assets/images/profile/family.jpg"
 import { MemberApiRes, FamilyStore } from "@type/index";
+import {numericPatterns} from "date-fns/parse/_lib/constants";
 
 export const useFamilyStore = create<FamilyStore>(
   (set) => ({
     familyId: "",
     setFamilyId: (newId: string) => set({familyId: newId}),
+    chatroomId: null,
+    setChatroomId: (newId: number) => set({chatroomId: newId}),
     familyName: "",
     setFamilyName: (newName: string) => set({familyName: newName}),
     familyImage: null,
