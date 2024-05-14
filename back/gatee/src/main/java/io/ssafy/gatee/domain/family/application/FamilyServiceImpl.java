@@ -214,8 +214,6 @@ public class FamilyServiceImpl implements FamilyService {
             List<MemberFamilyInfoRes> memberFamilyInfoList = memberFamilies.stream().map(memberFamily -> MemberFamilyInfoRes.builder()
                     .memberId(memberFamily.getMember().getId())
                     .memberFamilyId(memberFamily.getId())
-                    .fileUrl(Objects.nonNull(memberFamily.getMember().getFile())?
-                            memberFamily.getMember().getFile().getUrl() : null)
                     .birth(memberFamily.getMember().getBirth())
                     .name(memberFamily.getMember().getName())
                     .nickname(memberFamily.getMember().getNickname())
@@ -224,10 +222,13 @@ public class FamilyServiceImpl implements FamilyService {
                     .mood(memberFamily.getMember().getMood())
                     .isLeader(memberFamily.isLeader())
                     .birthType(memberFamily.getMember().getBirthType())
+                    .profileImageUrl(memberFamily.getMember().getFile().getUrl())
+                    .phoneNumber(memberFamily.getMember().getPhoneNumber())
                     .build()).toList();
             return FamilyInfoRes.builder()
                     .name(family.getName())
                     .familyScore(family.getScore())
+                    .familyImageUrl(family.getFile().getUrl())
                     .memberFamilyInfoList(memberFamilyInfoList)
                     .build();
         }

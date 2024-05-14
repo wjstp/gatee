@@ -2,8 +2,8 @@ package io.ssafy.gatee.domain.mission.api;
 
 import io.ssafy.gatee.config.restdocs.RestDocsTestSupport;
 import io.ssafy.gatee.config.security.CustomWithMockUser;
-import io.ssafy.gatee.domain.family.api.FamilyController;
 import io.ssafy.gatee.domain.mission.application.MissionService;
+import io.ssafy.gatee.domain.mission.dto.request.MissionTypeReq;
 import io.ssafy.gatee.domain.mission.dto.response.MissionListRes;
 import io.ssafy.gatee.domain.mission.entity.Type;
 import lombok.extern.slf4j.Slf4j;
@@ -23,10 +23,12 @@ import java.util.UUID;
 import static org.mockito.BDDMockito.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Slf4j
@@ -111,7 +113,7 @@ class MissionControllerTest extends RestDocsTestSupport {
     void progressMission() throws Exception {
 
         // given
-        doNothing().when(missionService).progressMission(any(UUID.class), any(Type.class));
+        doNothing().when(missionService).progressMission(any(UUID.class), any(MissionTypeReq.class));
 
         // when
         ResultActions result = mockMvc.perform(patch("/api/missions")
@@ -124,7 +126,8 @@ class MissionControllerTest extends RestDocsTestSupport {
         result.andExpect(status().isOk())
                 .andDo(restDocs.document(
                         queryParameters(
-                                parameterWithName("type").description("미션 타입").optional()
+                                parameterWithName("type").description("미션 타입").optional(),
+                                parameterWithName("photoCount").description("앨범 미션 : 사진의 개수").optional()
                         )
                 ));
     }

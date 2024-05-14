@@ -17,7 +17,6 @@ import io.ssafy.gatee.domain.push_notification.dto.request.PushNotificationFCMRe
 import io.ssafy.gatee.domain.push_notification.dto.response.NaggingRes;
 import io.ssafy.gatee.domain.push_notification.dto.response.NotificationAgreementRes;
 import io.ssafy.gatee.domain.push_notification.dto.response.PushNotificationPageRes;
-import io.ssafy.gatee.domain.push_notification.dto.response.PushNotificationRes;
 import io.ssafy.gatee.domain.push_notification.entity.PushNotification;
 import io.ssafy.gatee.domain.push_notification.entity.PushNotifications;
 import io.ssafy.gatee.domain.push_notification.entity.Type;
@@ -28,10 +27,8 @@ import io.ssafy.gatee.global.exception.message.ExceptionMessage;
 import io.ssafy.gatee.global.firebase.FirebaseInit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.bson.types.ObjectId;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -193,7 +190,7 @@ public class PushNotificationServiceImpl implements PushNotificationService {
     public void sendPushOneToMany(PushNotificationFCMReq pushNotificationFCMReq) throws FirebaseMessagingException {   // 이건 토큰 할때나..
         firebaseInit.init();
         List<String> receiverTokens = pushNotificationFCMReq.receiverId().stream()
-                .map(receiverId -> memberRepository.findById(receiverId))
+                .map(memberRepository::findById)
                 .filter(Optional::isPresent)
                 .filter(receiver -> checkAgreement(pushNotificationFCMReq.dataFCMReq().type(), receiver.get().getId()))
                 .map(receiver -> receiver.get().getNotificationToken()).toList();
