@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import CustomSwitch from "@components/CustomSwitch";
-import {requestPermission} from "../../../firebase-messaging-sw";
+// import {requestPermission} from "../../../firebase-messaging-sw";
 import {editAgreeNotificationApi, getAgreeNotificationApi} from "@api/notification";
 
 
@@ -19,7 +19,7 @@ const SettingsToast = ({handleFinishTab}: HandleFinishTab) => {
   // 스위치 조절 함수
   const handleAlbumChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAlbumAlarmChecked(event.target.checked);
-    requestPermission()
+
   };
   const handleNaggingChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNaggingAlarmChecked(event.target.checked);

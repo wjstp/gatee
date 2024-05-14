@@ -9,7 +9,7 @@ import NewQuestionNotFound from "@pages/character/components/NewQuestionNotFound
 
 const CharacterQuestion = () => {
   const navigate = useNavigate();
-  const {askList, askIndex, setAskIndex,setAskList} = useDictStore()
+  const {askList, askIndex, setAskIndex, setAskList} = useDictStore()
   const [isEmpty, setEmpty] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const {myInfo} = useMemberStore()
@@ -42,9 +42,9 @@ const CharacterQuestion = () => {
   // 제출 후 다음질문
   const submitHandler = () => {
     if (askIndex < askList.length - 1) {
-      sumbitAskAnswerApiFunc()
+      sumbitAskAnswerApiFunc(inputValue)
     } else {
-      sumbitAskAnswerApiFunc()
+      sumbitAskAnswerApiFunc(inputValue)
       setAskIndex(0)
     }
   }
@@ -55,26 +55,31 @@ const CharacterQuestion = () => {
   }
 
   // 답변 제출
-  const sumbitAskAnswerApiFunc = () => {
+  const sumbitAskAnswerApiFunc = (input: string) => {
+    setAskIndex(askIndex + 1)
+    setInputValue("")
+    // 미션 수행
+    doMissionApiFunc()
     sumbitAskAnswerApi(
       {
         featureId: askList[askIndex].featureId,
-        answer: inputValue
+        answer: input
       }, res => {
         console.log("제출");
         console.log("다음 질문");
-        setAskIndex(askIndex + 1)
-        setInputValue("")
-        // 미션 수행
-        doMissionApiFunc()
+
       }, err => {
         console.log(err)
+        alert("좀 더 고심해서 대답을 적어볼까요?")
+        setAskIndex(askIndex -1)
+        setInputValue(input)
       }
     )
   }
 
   // 미션 수행 api
   const doMissionApiFunc = () => {
+    console.log("미션")
     doMissionApi({type: "FEATURE", photoCount: null},
       res => {
         console.log(res.data)
@@ -94,7 +99,6 @@ const CharacterQuestion = () => {
         setIsLoading(false)
         if (res.data.length === 0) {
           setEmpty(true)
-
         }
       },
       err => {
@@ -104,53 +108,53 @@ const CharacterQuestion = () => {
   }, []);
   return (
     <div className="character__question">
-      {isLoading?
-        null:
+      {isLoading ?
+        null :
         isEmpty ?
-        <>
-          <NewQuestionNotFound/>
+          <>
+            <NewQuestionNotFound/>
 
-        </> :
-        <>
-          {/*  그만두기 버튼 */}
-          <div className="skipButton"
-               onClick={() => quitDictionary()}
-          >
-            그만할래요
-          </div>
+          </> :
+          <>
+            {/*  그만두기 버튼 */}
+            <div className="skipButton"
+                 onClick={() => quitDictionary()}
+            >
+              그만할래요
+            </div>
 
-          {/*  문제 명 */}
-          <h1>{askList[askIndex]?.question}</h1>
+            {/*  문제 명 */}
+            <h1>{askList[askIndex]?.question}</h1>
 
-          {/*  입력란 */}
-          <TextField value={inputValue}
-                     onChange={(e) => setInputValue(e.target.value)}
-                     type="text"
-                     placeholder="답변을 입력해 주세요"
-                     sx={muiFocusCustom}
-                     autoFocus
-                     multiline
-                     onClick={(event) => event.stopPropagation()}/>
-          {/*  다음 버튼 */}
-          <button className="orangeButtonLarge" onClick={submitHandler}>
-            {askIndex < askList.length - 1 ? "다음" : "제출"}
-          </button>
+            {/*  입력란 */}
+            <TextField value={inputValue}
+                       onChange={(e) => setInputValue(e.target.value)}
+                       type="text"
+                       placeholder="답변을 입력해 주세요"
+                       sx={muiFocusCustom}
+                       autoFocus
+                       multiline
+                       onClick={(event) => event.stopPropagation()}/>
+            {/*  다음 버튼 */}
+            <button className="orangeButtonLarge" onClick={submitHandler}>
+              {askIndex < askList.length - 1 ? "다음" : "제출"}
+            </button>
 
 
-          {/*  건너뛰기 버튼 */}
-          {askIndex < askList.length - 1 ?
-            <p className="skipButton flex-center"
-               onClick={skip}>
-              건너뛰기
-            </p>
-            :
-            <p className="skipButton flex-center"
-               onClick={skip}>
-              끝내기
-            </p>
-          }
+            {/*  건너뛰기 버튼 */}
+            {askIndex < askList.length - 1 ?
+              <p className="skipButton flex-center"
+                 onClick={skip}>
+                건너뛰기
+              </p>
+              :
+              <p className="skipButton flex-center"
+                 onClick={skip}>
+                끝내기
+              </p>
+            }
 
-        </>}
+          </>}
 
     </div>
   );
