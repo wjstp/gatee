@@ -281,6 +281,116 @@
     display: flex;
     flex-direction: column;
 
+    // 빈, 내 프로필일 때 사전
+    .character__non-created-my {
+      @include flex_center;
+
+      height: 100%;
+      width: 100%;
+
+      .non-created-my__btn {
+        @extend %orange-button-medium;
+
+        font-size: 18px;
+        margin-top: 5%;
+
+        .btn--text {
+        }
+      }
+    }
+
+    // 빈, 내 프로필이 아닐 때 사전
+    .character__non-created-other {
+      @include flex_center;
+
+      height: 100%;
+      width: 100%;
+      flex-direction: column;
+
+      .non-created-other__title {
+        @include flex_center;
+
+        height: 10%;
+        width: 100%;
+
+        .text--icon {
+          @include flex_center;
+
+          height: 100%;
+          width: 10%;
+
+          .icon {
+            height: 110%;
+            width: 110%;
+          }
+        }
+
+        .title--text {
+          @include flex_center;
+
+          font-size: 18px;
+          height: 100%;
+          font-weight: bold;
+          margin-right: 30%;
+        }
+      }
+
+      .non-created-other__character-box {
+        @include flex_center;
+
+        flex-direction: column;
+        margin-top: 2%;
+        height: 65%;
+        width: 75%;
+        background-color: $orange100;
+        border-radius: 15px;
+        font-size: 18px;
+
+        .character-box__header {
+
+          .header__part--01 {
+            font-weight: bold;
+          }
+
+          .header__part--02 {
+
+          }
+        }
+
+        .character-box__body--01 {
+          margin-top: 2%;
+
+          .body--01--text {
+
+          }
+        }
+
+        .character-box__body--02 {
+          @include flex_center;
+
+          margin-top: 5%;
+          height: 30%;
+          width: 80%;
+
+          .body--02__btn {
+            @extend %orange-button-medium;
+
+            height: 100%;
+            width: 100%;
+            background-color: $orange400;
+            color: white;
+
+            &:active {}
+
+            .btn--text {
+              font-size: 19px;
+              font-weight: bold;
+            }
+          }
+        }
+      }
+    }
+
     .character__created {
       @include flex_center;
 
@@ -289,6 +399,7 @@
       flex-direction: column;
 
       .created__title {
+        width: 100%;
 
         &--text {
           font-size: 20px;
@@ -300,6 +411,7 @@
       .created__character-box {
         display: flex;
         justify-content: center;
+        width: 100%;
 
         .character-box {
           position: relative;
@@ -357,24 +469,6 @@
               }
             }
           }
-        }
-      }
-    }
-
-    .character__non-created {
-      @include flex_center;
-
-      height: 100%;
-      width: 100%;
-
-      .non-created__btn {
-        @extend %orange-button-medium;
-
-        font-size: 18px;
-        margin-top: 5%;
-
-        .btn--text {
-
         }
       }
     }

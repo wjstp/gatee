@@ -34,9 +34,9 @@ const SignupMemberSetShare = () => {
         },
       },
       itemContent: {
-        profileText: `가족과 함께 '가티'`,
-        titleImageText: `${familyName} 가족에서 초대가 왔어요~`,
-        titleImageCategory: '아래 코드를 복사해 들어올래요?'
+        profileText: `가족과 같이 '가티'해요 ><`,
+        titleImageText: `'${familyName}' 가족에서 초대가 왔어요~`,
+        titleImageCategory: '아래 코드를 복사해 들어오세요!'
       },
       buttons: [
         {

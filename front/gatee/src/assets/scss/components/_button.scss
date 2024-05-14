@@ -26,8 +26,7 @@
     width: 90%;
 
     &:focus,
-    &:active,
-    &:hover {
+    &:active {
       background-color: $orange600;
     }
   }
@@ -39,8 +38,7 @@
     border-radius: 25px;
 
     &:focus,
-    &:active,
-    &:hover {
+    &:active {
       background-color: $orange600;
     }
   }
@@ -56,8 +54,7 @@
     };
 
     &:focus,
-    &:active,
-    &:hover {
+    &:active {
       background-color: $orange600;
     }
   }

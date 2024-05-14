@@ -10,10 +10,11 @@ import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import FeelingToast from "@pages/profile/components/FeelingToast";
 import { useMemberStore } from "@store/useMemberStore";
 import { useFamilyStore } from "@store/useFamilyStore";
+import { useDictStore } from "@store/useDictStore";
 import dayjs from "dayjs";
 import { createFamilyCodeApi, getMyDataApi } from "@api/member";
 import { AxiosError, AxiosResponse } from "axios";
-import {getFamilyAnsweredAskApi} from "@api/dictionary";
+import { getFamilyAnsweredAskApi } from "@api/dictionary";
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
@@ -23,6 +24,7 @@ const ProfileIndex = () => {
   const { setShowModal } = useModalStore();
   const { myInfo, setMyInfo } = useMemberStore();
   const { familyInfo, setFamilyCode } = useFamilyStore();
+  const { askList, setAskList } = useDictStore();
   // 쿼리스트링으로 넘어온 이메일을 확인하기 위함
   const { email } = useParams<{ email: string }>();
 
@@ -34,9 +36,6 @@ const ProfileIndex = () => {
   // 멤버 확인
   const familyMember = familyInfo.find(member => member.email === email);
   const [isMe, setIsMe] = useState<boolean>(false);
-  
-  // 백과사전이 있는지 조회하기 용
-  const [createdCharacter, setCreateCharacter] = useState<boolean>(false);
 
   // 나로 들어왔는지 확인
   useEffect(() => {
@@ -44,9 +43,10 @@ const ProfileIndex = () => {
     if (email === myInfo.email) {
       setIsMe(true);
       saveMemberData();
+      getFamilyAnsweredAsk(myInfo.memberFamilyId);
     } else {
       setIsMe(false);
-      getFamilyAnsweredAsk();
+      getFamilyAnsweredAsk(familyMember?.memberFamilyId);
     }
   }, [email]);
 
@@ -145,16 +145,13 @@ const ProfileIndex = () => {
   }
 
   // 백과사전 푼 문제 조회
-  const getFamilyAnsweredAsk = () => {
-    if (familyMember) {
+  const getFamilyAnsweredAsk = (memberFamilyId: number | undefined) => {
+    if (memberFamilyId) {
       getFamilyAnsweredAskApi(
-        familyMember?.memberFamilyId,
+        memberFamilyId,
         (res: AxiosResponse<any>) => {
           console.log("다른 사람 백과사전 푼 문제 상태", res);
-
-          if (res.data.length === 0) {
-            setCreateCharacter(true);
-          }
+          setAskList(res.data);
         },
         (err: AxiosError<any>) => {
           console.log(err);
@@ -383,8 +380,65 @@ const ProfileIndex = () => {
       
       {/*백과사전 섹션*/}
       <div className="profile-index__character">
+        
+        {askList.length === 0 ? (
+          // 사전이 비어있다면
 
-        {createdCharacter ? (
+          isMe ? (
+            // 내 프로필일 때
+            <div className="character__non-created-my">
+              <button
+                className="non-created-my__btn"
+                onClick={handleCharacter}
+              >
+                <span className="btn--text">
+                    내 사전 만들기
+                </span>
+              </button>
+            </div>
+
+          ) : (
+            // 내 프로필이 아닐 때
+            <div className="character__non-created-other">
+              <div className="non-created-other__title">
+                <div className="text--icon">
+                  <Book
+                    className="icon"
+                  />
+                </div>
+                <span className="title--text">
+                  오늘의 한줄 정보
+                </span>
+              </div>
+              <div className="non-created-other__character-box">
+                <div className="character-box__header">
+                  <span className="header__part--01">
+                    {familyMember?.nickname}
+                  </span>
+                  <span className="header__part--02">
+                    님의 사전이 텅 비어있어요!
+                  </span>
+                </div>
+                <div className="character-box__body--01">
+                  <span className="body--01--text">
+                    사전을 만들어달라고 말해 볼까요?
+                  </span>
+                </div>
+                <div className="character-box__body--02">
+                  <button
+                    className="body--02__btn"
+                  >
+                    <span className="btn--text">
+                      한마디 보내기
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          )
+
+        ) : (
+          // 사전이 비어있지 않다면
           <div className="character__created">
             <div className="created__title">
               <span className="created__title--text">
@@ -402,9 +456,9 @@ const ProfileIndex = () => {
                   </span>
                 </div>
                 <div className="character-box__answer">
-                <span className="answer__part--01">
-                  {question.correctAnswer}
-                </span>
+                  <span className="answer__part--01">
+                    {question.correctAnswer}
+                  </span>
                 </div>
                 <div className="character-box__icon">
                   <Book
@@ -427,19 +481,10 @@ const ProfileIndex = () => {
               </div>
             </div>
           </div>
-        ) : (
-          <div className="character__non-created">
-            <button
-              className="non-created__btn"
-              onClick={handleCharacter}
-            >
-              <span className="btn--text">
-                  나의 사전 만들기
-              </span>
-            </button>
-          </div>
         )}
+
       </div>
+
     </div>
   );
 }
