@@ -145,7 +145,7 @@ const SignupMemberSetCheck = () => {
 
   // 날짜 형식 변환 함수
   const changeDate = (originalDate: string): string => {
-    const formattedDate = dayjs(originalDate).format("YYYY.MM.DD");
+    const formattedDate = dayjs(originalDate).format("YYYY년 M월 D일");
 
     return formattedDate;
   }

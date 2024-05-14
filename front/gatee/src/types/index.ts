@@ -2,6 +2,8 @@
 
 // 가족
 export interface FamilyStore {
+  chatRoomId: number | null;
+  setChatRoomId: (newId: number) => void;
   familyId: string;
   setFamilyId: (newId: string) => void;
   familyName: string;
@@ -109,7 +111,22 @@ export interface JoinFamilyApiReq {
 
 // 가족 정보 조회
 export interface GetFamilyMemberApiReq {
-  familyId: string
+  familyId: string;
+}
+
+export interface MemberApiRes {
+  birth: string;
+  birthType: string;
+  email: string;
+  memberId: string;
+  mood: string|null;
+  name: string;
+  nickname: string;
+  role: string;
+  phoneNumber: string | null;
+  fileUrl: string;
+  isLeader: boolean;
+  memberFamilyId:number;
 }
 
 export interface MemberApiRes {
@@ -164,6 +181,62 @@ export interface Character {
 }
 
 // schedule
+export interface ScheduleListRes {
+  scheduleId: number;
+  category: string;
+  title: string;
+  emoji: string;
+  content: string;
+  startDate: string;
+  endDate: string;
+}
+
+export interface ScheduleItemRes {
+  scheduleId: number;
+  category: string;
+  title: string;
+  emoji: string;
+  content: string;
+  startDate: string;
+  endDate: string;
+  scheduleRecord: {
+    content: string;
+    imageUrl: string;
+  }[];
+  participateMembers: {
+    nickname: string;
+    memberId: string;
+    profileImageUrl: string;
+  }[]
+}
+
+export interface ScheduleCreateReq {
+  familyId: string;
+  category: string;
+  title: string;
+  emoji: string;
+  content: string | null;
+  startDate: string;
+  endDate: string;
+  memberIdList: string[];
+}
+
+export interface ScheduleModifyReq {
+  familyId: string;
+  category: string;
+  title: string;
+  emoji: string;
+  content: string | null;
+  startDate: string;
+  endDate: string;
+}
+
+export interface ScheduleRecordReq {
+  content: string;
+  fileIdList: string;
+}
+
+
 export interface Schedule {
   title: string | null;
   content: string | null;
@@ -290,6 +363,16 @@ export interface Emoji {
 export interface EmojiItem {
   id: string;
   image: string;
+}
+
+export  interface SendFileReq {
+  chatRoomId: number;
+  fileIdList: number[];
+}
+
+export interface FileRes {
+  fileId: number;
+  imageUrl: string;
 }
 
 // 잔소리 보내기 api request
