@@ -46,6 +46,7 @@ import PhotoAlbumGroupDetail from "@pages/photo/AlbumGroupDetail";
 import ProfileModify from "@pages/profile/Modify";
 import NotFound from "@components/NotFound";
 import ExamFamilyList from "@pages/exam/FamilyList";
+import ChatPhotoDetail from "@pages/chat/ChatPhotoDetail";
 
 const Router = () => {
   return (
@@ -61,6 +62,7 @@ const Router = () => {
         {/*채팅 페이지*/}
         <Route path="/chatting" element={<ChatIndex/>}/>
         <Route path="/chatting/photo" element={<ChatPhoto/>}/>
+        <Route path="/chatting/photo/:id" element={<ChatPhotoDetail/>}/>
 
         {/*알림 페이지*/}
         <Route path="/notification" element={<NotificationIndex/>}/>

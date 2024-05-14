@@ -31,7 +31,7 @@ const SignupMemberSetRoleFemale = (props: {
           나의 역할
         </span>
         <span className="title__part--02">
-          을 알려주세요
+          을 알려 주세요
         </span>
       </div>
 
@@ -91,7 +91,7 @@ const SignupMemberSetRoleFemale = (props: {
           아이콘
         </span>
         <span className="title__part--02">
-          을 선택해주세요
+          을 선택해 주세요
         </span>
       </div>
 

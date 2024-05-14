@@ -86,7 +86,7 @@ const ChatInput = (props: ChatInputProps) => {
   const handleSendMessage = () => {
     const currentTime: string = dayjs().format("YYYY-MM-DD HH:mm:ss");
     // FILE
-    if (inputFile) {
+    if (fileLength > 0) {
       setFileUrls([]);
       setFileIds([]);
 
@@ -141,7 +141,6 @@ const ChatInput = (props: ChatInputProps) => {
 
   // 파일 전송
   const sendChatFile = () => {
-    console.log(fileIds)
     if (chatRoomId) {
       const data: SendFileReq  = {
         chatRoomId: chatRoomId,
@@ -150,7 +149,7 @@ const ChatInput = (props: ChatInputProps) => {
       sendChatFileApi(
         data,
         (res) => {
-          console.log(res.data);
+          setFileLength(0);
         },
         (err) => {
           console.error(err);
