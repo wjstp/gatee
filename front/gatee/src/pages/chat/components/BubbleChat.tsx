@@ -33,7 +33,7 @@ const YoursChat = (props: YourChatMessageProps) => {
       {/*프로필*/}
       <NavLink to={`/profile/${senderInfo?.email}`} className="chat__yours-chat__profile">
         {!isPrevSender && (
-          <img src={senderInfo?.fileUrl} alt={senderInfo?.nickname}/>
+          <img src={senderInfo?.profileImageUrl} alt={senderInfo?.nickname}/>
         )}
       </NavLink>
 

@@ -59,19 +59,19 @@ export const MOOD: Mood[] = [
 
 // 멤버 임시 데이터
 export const MemberInfoSample: MyMemberApiRes = {
-  name: "이윤정",
-  nickname: "안유진",
-  email: "zyo0720@kakao.com",
-  role: "딸",
   birth: "2000-07-20",
   birthType: "SOLAR",
-  fileUrl: "https://cdn.citytimes.co.kr/news/photo/202310/mn_19685_20231014093033_1.jpg",
+  email: "zyo0720@kakao.com",
+  familyId: "asdasdasd",
+  memberFamilyId: 1,
+  memberId: "asasd",
   mood: "HAPPY",
+  name: "이윤정",
+  nickname: "안유진",
   phoneNumber: "010-8806-8489",
-  memberId:"asasd",
-  isLeader:true,
-  familyId:"asdasdasd",
-  memberFamilyId:1,
+  profileImageUrl: "https://cdn.citytimes.co.kr/news/photo/202310/mn_19685_20231014093033_1.jpg",
+  role: "딸",
+  isLeader: true,
 }
 
 // 가족 구성원 임시 데이터
@@ -80,15 +80,16 @@ export const FamilyMemberInfoSample: MemberApiRes[] = [
     birth: "2000-07-20",
     birthType: "SOLAR",
     email: "zyo0720@kakao.com",
+    familyId: "asdasdasd",
+    memberFamilyId: 1,
     memberId: "asasd",
-    mood: null,
+    mood: "HAPPY",
     name: "이윤정",
-    nickname: "이윤정",
-    role: "딸",
+    nickname: "안유진",
     phoneNumber: "010-8806-8489",
-    fileUrl: "https://image.xportsnews.com/contents/images/upload/article/2023/1013/mb_1697156860596868.jpg",
-    isLeader: false,
-    memberFamilyId:1,
+    profileImageUrl: "https://cdn.citytimes.co.kr/news/photo/202310/mn_19685_20231014093033_1.jpg",
+    role: "딸",
+    isLeader: true,
   }
 ]
 

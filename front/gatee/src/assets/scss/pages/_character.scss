@@ -6,6 +6,7 @@
   @include flex-col;
   @include my-(5);
   @include mx-(2);
+  @extend %modal-fade-in;
 
   height: 100%;
 

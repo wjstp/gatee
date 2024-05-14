@@ -2,8 +2,6 @@
 @use '../components' as *;
 
 .photo {
-  @extend %modal-fade-in;
-
   height: 100%;
 
   .photo-tab-container {
