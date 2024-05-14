@@ -209,6 +209,8 @@ class MemberControllerTest extends RestDocsTestSupport {
                         .birthType("SOLAR")
                         .mood("happy")
                         .role("FATHER")
+                        .profileImageUrl("https://gaty.duckdns.org/s3-image-url")
+                        .phoneNumber("010-0101-0101")
                         .build());
 
         // when
@@ -227,7 +229,9 @@ class MemberControllerTest extends RestDocsTestSupport {
                                         fieldWithPath("birth").type(JsonFieldType.STRING).description("생년월일 (yyyy-MM-dd)"),
                                         fieldWithPath("birthType").type(JsonFieldType.STRING).description("양력 / 음력"),
                                         fieldWithPath("mood").type(JsonFieldType.STRING).description("기분 상태"),
-                                        fieldWithPath("role").type(JsonFieldType.STRING).description("가족 내 역할")
+                                        fieldWithPath("role").type(JsonFieldType.STRING).description("가족 내 역할"),
+                                        fieldWithPath("profileImageUrl").type(JsonFieldType.STRING).description("프로필 이미지 URL"),
+                                        fieldWithPath("phoneNumber").type(JsonFieldType.STRING).description("전화번호")
                                 )
                         )
                 );
