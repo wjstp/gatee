@@ -6,6 +6,7 @@ import ChatDate from "@pages/chat/components/ChatDate";
 import { ChatContent, ChatDateLine, ChatType, ChatSendMessage } from "@type/index";
 import { useFamilyStore } from "@store/useFamilyStore";
 import { useMemberStore } from "@store/useMemberStore";
+import { useChatStore } from "@store/useChatStore";
 import getUserInfo from "@utils/getUserInfo";
 import Loading from "@components/Loading";
 import { FaArrowDown } from "react-icons/fa";
@@ -34,6 +35,7 @@ const ChatIndex = () => {
 
   const { familyId, familyInfo } = useFamilyStore();
   const { myInfo } = useMemberStore();
+  const { setIsNewMessage } = useChatStore();
 
   const PAGE_SIZE: number = 30;
   const chatRef = firebase.database().ref(`chat/${familyId}/messages`);
@@ -59,8 +61,8 @@ const ChatIndex = () => {
         ws.current.close();
       }
       // Firebase 실시간 이벤트 리스너 해제
-      chatRef.off();
-
+      chatRef.off('child_changed');
+      chatRef.off('child_added');
     }
   }, []);
 
@@ -192,10 +194,6 @@ const ChatIndex = () => {
         setIsEntryChat(true);
       });
   };
-
-  useEffect(() => {
-    console.log(isEntryChat)
-  }, [isEntryChat]);
 
   // 스크롤 타겟
   const { target } = useObserver({

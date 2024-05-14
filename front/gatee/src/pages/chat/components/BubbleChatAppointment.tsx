@@ -20,7 +20,7 @@ const BubbleChatAppointment = (props: ChatAppointmentProps) => {
   const { chat } = props;
   const { familyInfo } = useFamilyStore();
   const { myInfo } = useMemberStore();
-  const {isUserParticipant, setIsUserParticipant } = useChatStore();
+  const { isUserParticipant, setIsUserParticipant } = useChatStore();
   const [participants, setParticipants] = useState<string[]>([])
   const newIsUserParticipant: boolean = isUserParticipant[chat.appointmentId];
 
@@ -51,6 +51,7 @@ const BubbleChatAppointment = (props: ChatAppointmentProps) => {
         (res) => {
           setParticipants(prevParticipants => [...prevParticipants, myInfo.memberId]);
           setIsUserParticipant(chat.appointmentId, true);
+          getParticipants();
         },
         (err) => {
           console.error(err);
@@ -70,7 +71,7 @@ const BubbleChatAppointment = (props: ChatAppointmentProps) => {
     if (!isUserParticipant[chat.appointmentId]) {
       setIsUserParticipant(chat.appointmentId, participants.includes(myInfo.memberId))
     }
-  }, []);
+  }, [participants]);
 
 
   return (
