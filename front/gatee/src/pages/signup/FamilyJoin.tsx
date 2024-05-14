@@ -52,6 +52,7 @@ const SignupFamilyJoin = () => {
       },
       (err: AxiosError<any>) => {
         console.log(err);
+        alert("코드를 다시 확인해 보세요!")
       }
     ).then().catch();
   }
