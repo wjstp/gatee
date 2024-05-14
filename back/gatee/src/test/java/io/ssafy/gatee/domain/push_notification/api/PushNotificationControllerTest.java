@@ -90,6 +90,7 @@ class PushNotificationControllerTest extends RestDocsTestSupport {
                 .createdAt("알림 발송 시간")
                 .isCheck(false)
                 .senderId(UUID.randomUUID().toString())
+                .senderImageUrl("https://spring-learning.s3.ap-southeast-2.amazonaws.com/message/1b90ac50-c277-4994-81ba-75118b35f5ba_profile_oldwoman.PNG")
                 .type("ALBUM")
                 .typeId(1L)
                 .build();
@@ -100,6 +101,7 @@ class PushNotificationControllerTest extends RestDocsTestSupport {
                 .createdAt("알림 발송 시간")
                 .isCheck(false)
                 .senderId(UUID.randomUUID().toString())
+                .senderImageUrl("https://spring-learning.s3.ap-southeast-2.amazonaws.com/message/1b90ac50-c277-4994-81ba-75118b35f5ba_profile_oldwoman.PNG")
                 .type("ALBUM")
                 .typeId(1L)
                 .build();

@@ -105,11 +105,15 @@ public class PushNotificationServiceImpl implements PushNotificationService {
     @Override
     public void savePushNotification(PushNotificationFCMReq pushNotificationFCMReq) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String senderImageUrl = memberRepository.findById(pushNotificationFCMReq.senderId())
+                .orElseThrow(()-> new MemberNotFoundException(ExceptionMessage.MEMBER_NOT_FOUND)).getFile().getUrl();
+
         List<PushNotifications> pushNotifications = pushNotificationFCMReq.receiverId().stream()
                 .map(receiverId -> PushNotifications.builder()
                     .type(pushNotificationFCMReq.dataFCMReq().type().toString())
                     .typeId(pushNotificationFCMReq.dataFCMReq().typeId())
                     .senderId(pushNotificationFCMReq.senderId().toString())
+                    .senderImageUrl(senderImageUrl)
                     .receiverId(receiverId.toString())
                     .title(pushNotificationFCMReq.title())
                     .content(pushNotificationFCMReq.content())
@@ -125,11 +129,12 @@ public class PushNotificationServiceImpl implements PushNotificationService {
         String content = "\"" + naggingReq.message() + "\"라는 문장을 상냥한 어투로 바꿔줘. 이모티콘도 붙여줘.";
         GptResponseDto result = gptService.askQuestion(QuestionDto.builder().content(content).build());
         log.info(result.answer());
+        Member member = memberRepository.findById(memberId).orElseThrow(()-> new MemberNotFoundException(ExceptionMessage.MEMBER_NOT_FOUND));
 
         PushNotificationFCMReq pushNotification = PushNotificationFCMReq.builder()
                 .receiverId(Collections.singletonList(naggingReq.receiverId()))
                 .senderId(memberId)
-                .title(Type.NAGGING.korean)
+                .title(member.getNickname() +"님의 "+Type.NAGGING.korean)
                 .content(result.answer())
                 .dataFCMReq(DataFCMReq.builder()
                         .type(Type.NAGGING)
