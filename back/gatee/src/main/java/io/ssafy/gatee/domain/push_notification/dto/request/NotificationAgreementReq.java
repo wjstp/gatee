@@ -4,6 +4,7 @@ public record NotificationAgreementReq(
         boolean albumNotification,
         boolean naggingNotification,
         boolean scheduleNotification,
-        boolean featureNotification
+        boolean featureNotification,
+        boolean chatNotification
 ) {
 }
