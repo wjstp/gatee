@@ -341,7 +341,7 @@
         flex-direction: column;
         margin-top: 2%;
         height: 65%;
-        width: 75%;
+        width: 90%;
         background-color: $orange100;
         border-radius: 15px;
         font-size: 18px;
@@ -391,6 +391,7 @@
       }
     }
 
+    // 사전이 비어있지 않다면
     .character__created {
       @include flex_center;
 
@@ -399,74 +400,83 @@
       flex-direction: column;
 
       .created__title {
+        @include flex_center;
+
+        height: 10%;
         width: 100%;
 
-        &--text {
-          font-size: 20px;
+        .text--icon {
+          @include flex_center;
+
+          height: 100%;
+          width: 10%;
+
+          .icon {
+            height: 110%;
+            width: 110%;
+          }
+        }
+
+        .title--text {
+          @include flex_center;
+
+          font-size: 18px;
+          height: 100%;
           font-weight: bold;
-          margin-left: 15%;
+          margin-right: 30%;
         }
       }
 
       .created__character-box {
-        display: flex;
-        justify-content: center;
-        width: 100%;
+        @include flex_center;
 
-        .character-box {
-          position: relative;
-          display: flex;
-          flex-direction: column;
+        flex-direction: column;
+        margin-top: 2%;
+        height: 65%;
+        width: 90%;
+        background-color: $orange100;
+        border-radius: 15px;
+        font-size: 18px;
+
+        .character-box__header {
+
+          .header__part--01 {
+            font-weight: bold;
+          }
+
+          .header__part--02 {
+
+          }
+        }
+
+        .character-box__body--01 {
           margin-top: 2%;
-          background-color: $orange200;
-          height: 80%;
+
+          .body--01--text {
+
+          }
+        }
+
+        .character-box__body--02 {
+          @include flex_center;
+
+          margin-top: 5%;
+          height: 30%;
           width: 80%;
-          border-radius: 12px;
 
-          .character-box__question {
-            margin-top: 5%;
-            margin-left: 5%;
+          .body--02__btn {
+            @extend %orange-button-medium;
 
-            .question__part--01 {
-              font-size: 18px;
+            height: 100%;
+            width: 100%;
+            background-color: $orange400;
+            color: white;
+
+            &:active {}
+
+            .btn--text {
+              font-size: 19px;
               font-weight: bold;
-            }
-
-            .question__part--02 {
-              font-size: 18px;
-            }
-
-          }
-
-          .character-box__answer {
-            margin-left: 5%;
-            margin-top: 2%;
-
-            .answer__part--01 {
-              font-weight: bold;
-              font-size: 30px;
-            }
-          }
-
-          .character-box__icon {
-            position: absolute;
-            right: 3%;
-            top: 25%;
-
-            .icon {
-
-            }
-          }
-
-          .character-box__btn {
-            @include flex_center;
-
-            .character-box__btn-detail {
-              @extend %orange-button-large;
-
-              .btn-detail--text {
-
-              }
             }
           }
         }

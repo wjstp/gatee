@@ -283,6 +283,7 @@
 
   .input-modal-bg {
     @extend %modal-overlay;
+    @extend %modal-fade-in;
 
     .input-modal-content {
       @extend %modal-content;
@@ -310,6 +311,7 @@
 
   .album-name-select-modal-bg {
     @extend %modal-overlay;
+    @extend %modal-fade-in;
 
     .album-name-select-modal-content {
       @extend %modal-content;

@@ -441,43 +441,37 @@ const ProfileIndex = () => {
           // 사전이 비어있지 않다면
           <div className="character__created">
             <div className="created__title">
-              <span className="created__title--text">
-                오늘의 한줄 정보
-              </span>
+              <div className="text--icon">
+                <Book
+                  className="icon"
+                />
+              </div>
+              <span className="title--text">
+                  오늘의 한줄 정보
+                </span>
             </div>
             <div className="created__character-box">
-              <div className="character-box">
-                <div className="character-box__question">
-                  <span className="question__part--01">
+              <div className="character-box__header">
+                  <span className="header__part--01">
                     {familyMember?.nickname}
                   </span>
-                  <span className="question__part--02">
-                  님의 {question.question}
+                <span className="header__part--02">
+                    님의 사전이 텅 비어있어요!
                   </span>
-                </div>
-                <div className="character-box__answer">
-                  <span className="answer__part--01">
-                    {question.correctAnswer}
+              </div>
+              <div className="character-box__body--01">
+                  <span className="body--01--text">
+                    사전을 만들어달라고 말해 볼까요?
                   </span>
-                </div>
-                <div className="character-box__icon">
-                  <Book
-                    className="icon"
-                  />
-                </div>
-                <div className="character-box__btn">
-                  <button
-                    className="character-box__btn-detail"
-                    onClick={handleCharacter}
-                  >
-                    <span className="btn-detail__part--01">
-                      {familyMember?.nickname}
+              </div>
+              <div className="character-box__body--02">
+                <button
+                  className="body--02__btn"
+                >
+                    <span className="btn--text">
+                      한마디 보내기
                     </span>
-                    <span className="btn-detail__part--02">
-                      님의 백과사전 보러가기
-                    </span>
-                  </button>
-                </div>
+                </button>
               </div>
             </div>
           </div>
