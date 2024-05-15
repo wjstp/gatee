@@ -12,7 +12,7 @@ import io.ssafy.gatee.domain.schedule.entity.Category;
 import io.ssafy.gatee.domain.schedule.entity.Schedule;
 import io.ssafy.gatee.domain.schedule_record.dto.response.ScheduleRecordRes;
 import lombok.extern.slf4j.Slf4j;
-import org.joda.time.LocalDateTime;
+import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -57,8 +57,8 @@ class ScheduleControllerTest extends RestDocsTestSupport {
                 .title("개인 일정 제목")
                 .emoji("이모티콘")
                 .content("개인 일정 내용")
-                .startDate(LocalDateTime.parse("2024-05-01"))
-                .endDate(LocalDateTime.parse("2024-05-12"))
+                .startDate(LocalDateTime.parse("2024-05-01T00:00:00"))
+                .endDate(LocalDateTime.parse("2024-05-12T23:59:59"))
                 .build();
 
         Schedule schedule2 = Schedule.builder()
@@ -67,20 +67,21 @@ class ScheduleControllerTest extends RestDocsTestSupport {
                 .title("가족 일정 제목")
                 .emoji("이모티콘")
                 .content("가족 일정 내용")
-                .startDate(LocalDateTime.parse("2024-05-01"))
-                .endDate(LocalDateTime.parse("2024-05-12"))
+                .startDate(LocalDateTime.parse("2024-05-01T00:00:00"))
+                .endDate(LocalDateTime.parse("2024-05-12T23:59:59"))
                 .build();
 
         scheduleListResList.add(ScheduleListRes.toDto(schedule1));
         scheduleListResList.add(ScheduleListRes.toDto(schedule2));
 
-        given(scheduleService.readSchedule(any(UUID.class)))
+        given(scheduleService.readSchedule(any(UUID.class), any(Integer.class)))
                 .willReturn(scheduleListResList);
 
         // when
         ResultActions result = mockMvc.perform(get("/api/schedule")
                         .contentType(MediaType.APPLICATION_JSON)
                         .param("familyId", String.valueOf(UUID.randomUUID()))
+                        .param("month", String.valueOf(5))
                         .accept(MediaType.APPLICATION_JSON)
                 );
 
@@ -88,7 +89,8 @@ class ScheduleControllerTest extends RestDocsTestSupport {
         result.andExpect(status().isOk())
                 .andDo(restDocs.document(
                         queryParameters(
-                                parameterWithName("familyId").description("가족 ID").optional()
+                                parameterWithName("familyId").description("가족 ID").optional(),
+                                parameterWithName("month").description("조회 월").optional()
                         ),
                         responseFields(
                                 fieldWithPath("[].scheduleId").type(JsonFieldType.NUMBER).description("일정 ID"),
@@ -138,6 +140,7 @@ class ScheduleControllerTest extends RestDocsTestSupport {
         fileUrlResList.add(fileUrlRes2);
 
         ScheduleRecordRes scheduleRecordRes = ScheduleRecordRes.builder()
+                .scheduleRecordId(1L)
                 .content("일정 후기")
                 .fileUrlList(fileUrlResList)
                 .build();
@@ -180,6 +183,7 @@ class ScheduleControllerTest extends RestDocsTestSupport {
                                 fieldWithPath("startDate").type(JsonFieldType.STRING).description("시작 시간"),
                                 fieldWithPath("endDate").type(JsonFieldType.STRING).description("종료 시간"),
                                 fieldWithPath("scheduleRecordRes").type(JsonFieldType.OBJECT).description("일정 후기"),
+                                fieldWithPath("scheduleRecordRes.scheduleRecordId").type(JsonFieldType.NUMBER).description("일정 후기 ID"),
                                 fieldWithPath("scheduleRecordRes.content").type(JsonFieldType.STRING).description("일정 후기 내용"),
                                 fieldWithPath("scheduleRecordRes.fileUrlList").type(JsonFieldType.ARRAY).description("일정 후기 사진 목록"),
                                 fieldWithPath("scheduleRecordRes.fileUrlList[].fileId").type(JsonFieldType.NUMBER).description("일정 후기 사진 파일 ID"),

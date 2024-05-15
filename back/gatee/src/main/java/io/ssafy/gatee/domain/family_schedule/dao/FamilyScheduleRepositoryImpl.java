@@ -17,17 +17,13 @@ public class FamilyScheduleRepositoryImpl implements FamilyScheduleRepositoryCus
     private final JPQLQueryFactory jpqlQueryFactory;
 
     @Override
-    public List<ScheduleListRes> getAllScheduleList(Family family) {
+    public List<ScheduleListRes> getAllScheduleList(Family family, Integer month) {
         QFamilySchedule familySchedule = QFamilySchedule.familySchedule;
 
         return jpqlQueryFactory.select(familySchedule.schedule)
                 .from(familySchedule)
                 .where(familySchedule.family.eq(family))
-                .where(familySchedule.schedule.createdAt.in(
-                        JPAExpressions.select(familySchedule.schedule.createdAt.min())
-                                .from(familySchedule)
-                                .groupBy(familySchedule.createdAt.year(), familySchedule.createdAt.month())
-                ))
+                .where(familySchedule.schedule.startDate.month().eq(month).or(familySchedule.schedule.endDate.month().eq(month)))
                 .orderBy(familySchedule.schedule.createdAt.desc())
                 .fetch().stream().map(ScheduleListRes::toDto)
                 .toList();
