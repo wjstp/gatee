@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface FamilyScheduleRepositoryCustom {
 
-    List<ScheduleListRes> getAllScheduleList(Family family);
+    List<ScheduleListRes> getAllScheduleList(Family family, Integer month);
 }

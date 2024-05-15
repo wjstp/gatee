@@ -74,10 +74,10 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     // 전체 일정 조회
     @Override
-    public List<ScheduleListRes> readSchedule(UUID familyId) throws FamilyNotFoundException {
+    public List<ScheduleListRes> readSchedule(UUID familyId, Integer month) throws FamilyNotFoundException {
         Family family = familyRepository.getReferenceById(familyId);
 
-        return familyScheduleRepositoryCustom.getAllScheduleList(family);
+        return familyScheduleRepositoryCustom.getAllScheduleList(family, month);
     }
 
     // 일정 상세 조회
