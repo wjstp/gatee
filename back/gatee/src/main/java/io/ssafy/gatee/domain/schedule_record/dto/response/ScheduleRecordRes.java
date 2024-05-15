@@ -12,6 +12,9 @@ import java.util.List;
 public record ScheduleRecordRes(
 
         @NotNull
+        Long scheduleRecordId,
+
+        @NotNull
         String content,
 
         @NotNull
@@ -19,6 +22,7 @@ public record ScheduleRecordRes(
 ) {
     public static ScheduleRecordRes toDto(ScheduleRecord scheduleRecord, List<File> fileList) {
         return ScheduleRecordRes.builder()
+                .scheduleRecordId(scheduleRecord.getId())
                 .content(scheduleRecord.getContent())
                 .fileUrlList(fileList.stream().map(FileUrlRes::toDto).toList())
                 .build();

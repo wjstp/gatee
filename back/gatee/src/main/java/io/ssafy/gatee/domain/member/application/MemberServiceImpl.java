@@ -145,7 +145,7 @@ public class MemberServiceImpl implements MemberService {
         Mission scheduleMission = Mission.builder()
                 .type(Type.SCHEDULE)
                 .nowRange(0)
-                .maxRange(1)
+                .maxRange(2)
                 .completedLevel(0)
                 .isComplete(false)
                 .member(member)
