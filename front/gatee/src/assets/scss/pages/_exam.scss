@@ -430,9 +430,13 @@
 
 
   .warning-modal-bg {
+
     @extend %modal-overlay;
 
     .warning-modal-content {
+      * {
+        font-family: $ChosunGs;
+      }
       @extend %modal-content;
       @include p-(2);
       @include m-(2);
@@ -441,27 +445,33 @@
       font-size: 1.3rem;
 
       .warning-modal-btn-container {
+
         //@include mt-(1);
         width: 100%;
         display: flex;
         justify-content: space-between;
-
+        gap:1.5rem;
         button {
-          @extend %orange-button-medium;
+          //@extend %orange-button-medium;
+          border:1px solid $gray300;
+          font-weight: bold;
+
           @include px-(1);
           @include py-(0.5);
-          @include my-(0);
+          @include mt-(0.5);
 
           width: fit-content;
           height: fit-content;
-          font-size: 1rem;
+          font-size: 1.2rem;
+          background-color: $gray50;
+          color: $gray200;
         }
         .keep-going-btn {
-          background-color: $gray50;
-          color: $gray300;
+          //background-color: $gray200;
+          //color: white;
         }
         .replay-btn {
-
+          color: black;
         }
       }
     }

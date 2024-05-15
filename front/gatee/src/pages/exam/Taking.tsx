@@ -10,7 +10,7 @@ import {transformQuestionData, getExamScore, setAnswerAtIndex, unSelectedIndex} 
 import {questionList} from "@constants/index";
 import ExamNotFound from "@pages/exam/components/ExamNotFound";
 import {doMissionApi} from "@api/mission";
-
+import { IoWarningSharp } from "react-icons/io5";
 
 const ExamTaking = () => {
   const navigate = useNavigate();
@@ -137,12 +137,13 @@ const ExamTaking = () => {
     }
   }
 
-  // 경고 모달 => 끝내기이면 시험제출, 아니면 모달만 내림
+  // 경고 모달 => 끝내기이면 시험제출, 아니면 모달 내리고, 안 푼문제로 돌려주기
   const handleWarningModal = (type: string) => {
     if (type === "finish") {
       submitExam()
     } else {
       setWarning(false)
+      setQuestionIndex(noSelectList[0]-1)
     }
   }
 
@@ -311,9 +312,10 @@ const WarningModal = ({noSelectList, handleWarningModal}: {
   return (
     <div className="warning-modal-bg">
       <div className="warning-modal-content">
-        <h3>문제를 안풀었어요</h3>
+        <h3>안 푼 문제가 있어요</h3>
         <div>
-          {noSelectList.map((item, index) => <span key={index}>{item}{index===noSelectList.length-1 ? "":", "}</span>)}
+          <IoWarningSharp size={100} color={"lightgray"}/>
+          {/*{noSelectList.map((item, index) => <span key={index}>{item}{index===noSelectList.length-1 ? "":", "}</span>)}*/}
         </div>
         <div className="warning-modal-btn-container">
           <button className="keep-going-btn" onClick={() => handleWarningModal("finish")}>제출하기</button>
