@@ -11,7 +11,6 @@ interface QuestionScoredProps {
 
 const QuestionScored = (
   {question, questionNumber}: QuestionScoredProps) => {
-  console.log(question)
   return (
     <div className="exam__item">
       {/* 채점 */}

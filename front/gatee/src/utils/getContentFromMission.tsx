@@ -15,7 +15,7 @@ const getContentFromMission = (type: string, completedLevel: number) => {
     } else if (type === "SCHEDULE") {
       return `일정 ${(completedLevel + 1) * 3}개 잡기`
     } else if (type === "EXAM") {
-      return `모의고사 ${(completedLevel + 1) * 2 + 1}회 풀기`
+      return `모의고사 ${(completedLevel + 1) * 2 - 1}회 풀기`
     }
   }
 ;

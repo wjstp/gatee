@@ -10,7 +10,7 @@ import {useMemberStore} from "@store/useMemberStore";
 
 const ExamScored = () => {
   const params = useParams()
-  const [examDetailResult,setExamDetailResult] = useState<TransformedQuestionData[]>(transformedExamList)
+  const [examDetailResult,setExamDetailResult] = useState<TransformedQuestionData[]>([])
   const [score,setScore] = useState(0)
 
   useEffect(() => {
@@ -29,24 +29,32 @@ const ExamScored = () => {
   }, [params]);
 
   return (
+
     <div className="exam__scored">
       <Header/>
 
-      {/* 점수 */}
-      <Grade score={score}/>
+      {
+        examDetailResult.length === 0 ?
+          null :
+          <>
+            {/* 점수 */}
+            <Grade score={score}/>
 
-      {examDetailResult.map((item, index) => {
-        return (<QuestionScored key={ index } questionNumber={index} question={ item }
-        />)})}
+            {examDetailResult.map((item, index) => {
+              return (<QuestionScored key={ index } questionNumber={index} question={ item }
+              />)})}
 
 
-      {/* 하단의 줄 두개 */}
-      <div className="exam__scored-footer">
-      </div>
+            {/* 하단의 줄 두개 */}
+            <div className="exam__scored-footer">
+            </div>
 
-      <Link to="/exam/list" className="exam__scored--goto-grade">
-        가족 성적표 보러가기
-      </Link>
+            <Link to="/exam/list" className="exam__scored--goto-grade">
+              가족 성적표 보러가기
+            </Link>
+          </>
+      }
+
 
     </div>
   );

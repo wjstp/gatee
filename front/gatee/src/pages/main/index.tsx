@@ -9,14 +9,15 @@ import {getFamilyMemberApi, getMyDataApi} from "@api/member";
 import {useMemberStore} from "@store/useMemberStore";
 import {useFamilyStore} from "@store/useFamilyStore";
 import Loading from "@components/Loading";
-import { FaBook } from "react-icons/fa";
 import { FiBook } from "react-icons/fi";
+import {getMissionApi} from "@api/mission";
+import {useMissionStore} from "@store/useMissionStore";
 const MainIndex = () => {
   // const {setMyInfo} = useMemberStore()
   const { setMyInfo} = useMemberStore()
   const {familyInfo,setFamilyId, setFamilyInfo, setFamilyName, setFamilyScore} = useFamilyStore()
   const [loading, setLoading] = useState(true)
-
+  const { setMissionList} = useMissionStore()
   // 가족 데이터 저장 Api
   const saveFamilyData = (familyId:string) => {
     getFamilyMemberApi({familyId:familyId},
@@ -32,6 +33,18 @@ const MainIndex = () => {
     );
   }
 
+  // 미션 저장 api
+  const getMissionApiFunc = () => {
+    getMissionApi(
+      res => {
+        console.log(res)
+        setMissionList(res.data)
+      },
+      err => {
+        console.log(err)
+      }
+    )
+  }
   // 정보 불러오기 Api
   const saveMemberData = () => {
     getMyDataApi(
@@ -51,6 +64,7 @@ const MainIndex = () => {
 
   useEffect(() => {
     saveMemberData()
+    getMissionApiFunc()
     setTimeout(()=>
       setLoading(false)
     ,700)
