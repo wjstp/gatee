@@ -1,12 +1,12 @@
 import React, {useEffect} from 'react';
 import Router from "./Router";
 import firebase from "./firebase-config";
-import {useModalStore} from "@store/useModalStore";
 import {useLocation} from "react-router-dom";
 import {requestPermission} from "./firebase-messaging-sw";
+import {useNotificationStore} from "@store/useNotificationStore";
 
 const App = () => {
-  const {notificationPopUp, setNotificationPopUp, setShowNotification} = useModalStore()
+  const {notificationPopUp, setNotificationPopUp, setShowNotification} = useNotificationStore()
   const location = useLocation();
   // 파이어 베이스 관련 코드
   let messaging;
@@ -42,9 +42,9 @@ const App = () => {
 
   useEffect(() => {
     if (notificationPopUp !== null) {
-      // 채팅 페이지가 아니고 채팅알림이 아니면 울림
-      if (location.pathname.includes("chatting") && notificationPopUp.title === "채팅 알림") {
-      } else {
+      // 채팅 페이지가 아니고 채팅알림이 아니고, 알림 페이지가 아니면
+      if (location.pathname.includes("chatting") && notificationPopUp.title === "채팅 알림" || location.pathname==="/notification") {
+      } else{
         setShowNotification(true)
       }
     }
