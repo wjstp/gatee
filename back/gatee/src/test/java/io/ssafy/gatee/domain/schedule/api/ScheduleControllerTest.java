@@ -57,8 +57,8 @@ class ScheduleControllerTest extends RestDocsTestSupport {
                 .title("개인 일정 제목")
                 .emoji("이모티콘")
                 .content("개인 일정 내용")
-                .startDate(LocalDateTime.parse("2024-05-01"))
-                .endDate(LocalDateTime.parse("2024-05-12"))
+                .startDate(LocalDateTime.parse("2024-05-01T00:00:00"))
+                .endDate(LocalDateTime.parse("2024-05-12T23:59:59"))
                 .build();
 
         Schedule schedule2 = Schedule.builder()
@@ -67,8 +67,8 @@ class ScheduleControllerTest extends RestDocsTestSupport {
                 .title("가족 일정 제목")
                 .emoji("이모티콘")
                 .content("가족 일정 내용")
-                .startDate(LocalDateTime.parse("2024-05-01"))
-                .endDate(LocalDateTime.parse("2024-05-12"))
+                .startDate(LocalDateTime.parse("2024-05-01T00:00:00"))
+                .endDate(LocalDateTime.parse("2024-05-12T23:59:59"))
                 .build();
 
         scheduleListResList.add(ScheduleListRes.toDto(schedule1));
