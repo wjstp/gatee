@@ -5,12 +5,14 @@ import { PiBell } from "react-icons/pi";
 import { PiUserCircle } from "react-icons/pi";
 import { PiTarget } from "react-icons/pi";
 import { useMemberStore } from "@store/useMemberStore";
+import NotificationBadge from "@components/NotificationBadge";
+import {useNotificationStore} from "@store/useNotificationStore";
 
 const TopBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { myInfo } = useMemberStore();
-
+  const {showNotification} = useNotificationStore()
   const [currentPage, setCurrentPage] = useState('');
 
   useEffect(() => {
@@ -39,9 +41,11 @@ const TopBar = () => {
         
         {/*알림*/}
         <NavLink to="/notification" className={({isActive}) =>
-          isActive ? 'top-bar__right--active' : ''
+          isActive ? 'top-bar__right--active position-relative' : 'position-relative'
         }>
+
           <PiBell size={24}/>
+          { showNotification && location.pathname !== "/notification" && <NotificationBadge />}
         </NavLink>
 
         {/*프로필*/}

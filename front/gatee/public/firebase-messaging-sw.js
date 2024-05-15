@@ -41,10 +41,10 @@ messaging.onBackgroundMessage((payload) => {
   } else if (notificationTitle.includes("한마디")) {
     url = "/notification"
   }
-
+  console.log(url)
   const notificationOptions = {
     body: notificationData.body,
-    icon: notificationData.icon,
+    icon: notificationData.image,
   };
 
 
