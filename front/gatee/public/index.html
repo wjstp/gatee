@@ -42,7 +42,18 @@
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/firebase-messaging-sw.js');
+                // 서비스 워커가 등록되어 있지 않은 경우에만 등록
+                if (!navigator.serviceWorker.controller) {
+                    navigator.serviceWorker.register('/firebase-messaging-sw.js');
+                    self.addEventListener('install', function (e) {
+                        console.log('fcm sw install..');
+                        self.skipWaiting();
+                    });
+
+                    self.addEventListener('activate', function (e) {
+                        console.log('fcm sw activate..');
+                    });
+                }
             });
         }
     </script>
