@@ -84,7 +84,7 @@ const NaggingModal = ({notificationData, handleModal}: {
                        className="message-input"
                        multiline={true}
                        placeholder="예) 설거지 해줘!" sx={muiFocusCustom}
-
+                       spellCheck={false}
                        onClick={(event) => event.stopPropagation()}
                        inputProps={{maxLength: 25}}
                        InputProps={{
