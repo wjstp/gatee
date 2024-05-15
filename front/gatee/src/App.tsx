@@ -42,9 +42,8 @@ const App = () => {
 
   useEffect(() => {
     if (notificationPopUp !== null) {
-      // 채팅 페이지가 아니고 채팅알림이 아니고, 알림 페이지가 아니면
-      if (location.pathname.includes("chatting") && notificationPopUp.title === "채팅 알림" || location.pathname==="/notification") {
-      } else{
+      // 채팅이 아니고, 알림페이지 아닐때만 알림 팝업 울리기
+      if (!notificationPopUp.title.includes("채팅") || location.pathname !== "/notification") {
         setShowNotification(true)
       }
     }
