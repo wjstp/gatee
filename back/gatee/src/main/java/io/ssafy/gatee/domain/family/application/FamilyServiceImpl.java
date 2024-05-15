@@ -240,7 +240,6 @@ public class FamilyServiceImpl implements FamilyService {
             return FamilyInfoRes.builder()
                     .name(family.getName())
                     .familyScore(family.getScore())
-                    .familyImageUrl(family.getFile().getUrl())
                     .chatRoomId(family.getChatRoom().getId())
                     .familyImageUrl(Objects.nonNull(family.getFile())?
                             family.getFile().getUrl():null)
