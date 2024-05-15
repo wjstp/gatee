@@ -33,6 +33,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -102,12 +104,16 @@ public class PushNotificationServiceImpl implements PushNotificationService {
 
     @Override
     public void savePushNotification(PushNotificationFCMReq pushNotificationFCMReq) {
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String senderImageUrl = memberRepository.findById(pushNotificationFCMReq.senderId())
                 .orElseThrow(()-> new MemberNotFoundException(ExceptionMessage.MEMBER_NOT_FOUND)).getFile().getUrl();
         if (pushNotificationFCMReq.dataFCMReq().type().equals(Type.CHATTING)) {
             return;
         }
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        ZonedDateTime nowInKoreanTime = LocalDateTime.now().atZone(ZoneId.systemDefault())
+                .withZoneSameInstant(ZoneId.of("Asia/Seoul"));
+        LocalDateTime localDateTimeInKoreanTime = nowInKoreanTime.toLocalDateTime();
+        String now = dateTimeFormatter.format(localDateTimeInKoreanTime);
         List<PushNotifications> pushNotifications = pushNotificationFCMReq.receiverId().stream()
                 .map(receiverId -> PushNotifications.builder()
                         .type(pushNotificationFCMReq.dataFCMReq().type().toString())
@@ -117,7 +123,7 @@ public class PushNotificationServiceImpl implements PushNotificationService {
                         .receiverId(receiverId.toString())
                         .title(pushNotificationFCMReq.title())
                         .content(pushNotificationFCMReq.content())
-                        .createdAt(dateTimeFormatter.format(LocalDateTime.now()))
+                        .createdAt(now)
                         .isCheck(false).build()).toList();
         log.info("저장");
         pushNotificationRepository.saveAll(pushNotifications);

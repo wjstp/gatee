@@ -18,30 +18,33 @@
   @include mx-(3);
   @include px-(1.5);
   @include py-(1);
+  @extend %modal-fade-out;
 
   position: fixed;
   left: 5dvw;
   width: 90dvw;
+  height: 8vh;
   z-index: 9999;
   align-content: center;
+  align-items: center;
   margin: auto auto;
-  top:2rem;
+  top: 2rem;
   background-color: #fff;
   border-radius: 1rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  gap:0.7rem;
-  @extend %modal-fade-out;
+  gap: 0.7rem;
 
 
-  .notification-content--img{
+  .notification-content--img {
     width: 10%;
     height: fit-content;
     border-radius: 1rem;
     @include my-(0.2);
   }
+
   .notification-content--container {
     @include flex-col;
-
+    width: 100%;
     //gap: 1rem;
 
     .notification-pop-up--title {

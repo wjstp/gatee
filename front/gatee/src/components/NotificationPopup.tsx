@@ -1,9 +1,9 @@
 import React, {useEffect} from 'react';
-import {useModalStore} from "@store/useModalStore";
 import {useNavigate} from "react-router-dom";
 import logo from "@assets/images/logo/app_icon_orange.svg"
+import {useNotificationStore} from "@store/useNotificationStore";
 const NotificationPopUp = () => {
-  const {notificationPopUp, setNotificationPopUp, setShowNotification} = useModalStore();
+  const {notificationPopUp, setNotificationPopUp, setShowNotification} = useNotificationStore();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -12,7 +12,7 @@ const NotificationPopUp = () => {
       setTimeout(() => {
         // fade-out 효과 완료 후 알림 제거
         setNotificationPopUp(null);
-        setShowNotification(false);
+        // setShowNotification(false);
 
       }, 2000); // 2초 후 fade-out 효과 시작
     }
