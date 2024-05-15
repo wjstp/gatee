@@ -11,7 +11,6 @@ import io.ssafy.gatee.domain.member.entity.Member;
 import io.ssafy.gatee.global.exception.error.bad_request.AppointmentNotFoundException;
 import io.ssafy.gatee.global.websocket.dto.ChatDto;
 import lombok.RequiredArgsConstructor;
-import org.joda.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

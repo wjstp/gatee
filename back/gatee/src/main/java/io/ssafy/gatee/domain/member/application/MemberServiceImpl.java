@@ -118,7 +118,7 @@ public class MemberServiceImpl implements MemberService {
         Mission albumMission = Mission.builder()
                 .type(Type.ALBUM)
                 .nowRange(0)
-                .maxRange(1)
+                .maxRange(10)
                 .completedLevel(0)
                 .isComplete(false)
                 .member(member)
@@ -206,7 +206,7 @@ public class MemberServiceImpl implements MemberService {
             entity = File.builder()
                         .fileType(FileType.MEMBER_PROFILE)
                         .url("https://spring-learning.s3.ap-southeast-2.amazonaws.com/default/profile_" + defaultImage + ".PNG")
-                        .dir("/default")
+                        .dir("default/")
                         .name("default_image")
                         .originalName("default_image")
                         .build();
