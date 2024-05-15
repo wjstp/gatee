@@ -94,7 +94,7 @@ const MissionIndex = () => {
 
 
           <div className="improvement-comment">
-            <span className="text-orange">{familyName}는</span>
+            <span className="text-orange">{familyName} </span>
             {improvement.map((item, i) => (
               <React.Fragment key={i}>
                 {i > 0 && ", "}
