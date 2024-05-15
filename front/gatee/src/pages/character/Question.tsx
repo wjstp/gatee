@@ -139,6 +139,7 @@ const CharacterQuestion = () => {
             <TextField value={inputValue}
                        onChange={(e) => setInputValue(e.target.value)}
                        type="text"
+                       spellCheck={false}
                        placeholder="답변을 입력해 주세요"
                        sx={muiFocusCustom}
                        autoFocus
