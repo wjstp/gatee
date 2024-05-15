@@ -4,7 +4,6 @@ import SecondDict from "@pages/onboarding/components/SecondDict";
 import ThirdAll from "@pages/onboarding/components/ThirdAll";
 import Slider from "react-slick";
 import KaKaoLogin from "@pages/onboarding/components/KaKaoLogin";
-import * as events from "node:events";
 import { isBoolean } from "@craco/craco/dist/lib/utils";
 import { useNavigate } from "react-router-dom";
 import { useMemberStore } from "@store/useMemberStore";
