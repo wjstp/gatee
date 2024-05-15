@@ -6,7 +6,7 @@ const calculateWeekday = (value: Dayjs | null) => {
   if (dayOfWeek) {
     return weekdays[dayOfWeek];
   } else {
-    return '요일';
+    return '';
   }
 };
 

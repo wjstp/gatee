@@ -3,8 +3,6 @@ import {
   Question,
   Schedule,
   Emoji,
-  MemberApiRes,
-  MyMemberApiRes
 } from "@type/index";
 import EmojiDogOne from "@assets/images/emoji/emoji_dog1.png";
 import EmojiDogTwo from "@assets/images/emoji/emoji_dog2.png";
@@ -43,10 +41,6 @@ export const EMOJI: Emoji[] = [
   }
 ];
 
-// 파일 제한 사항
-// const ALLOW_FILE_EXTENSION: string = "jpg,jpeg,png";
-// const FILE_SIZE_MAX_LIMIT: number = 5 * 1024 * 1024;
-
 // 기분
 export const MOOD: Mood[] = [
   { name: "HAPPY", mood: "🥰", content: "행복해요"},
@@ -56,6 +50,21 @@ export const MOOD: Mood[] = [
   { name: "FEAR", mood: "😱", content: "심란해요" },
   {name: "SLEEPY", mood: "😪", content: "피곤해요" },
 ]
+
+// 일정 색상표
+export const SCHEDULE_COLOR: {name: string; code: string;}[] = [
+  {name: "red", code: "#ffa6a6"},
+  {name: "orange", code: "#FFC773"},
+  {name: "yellow", code: "#ffef98"},
+  {name: "green", code: "#b8ffa1"},
+  {name: "blue", code: "#abc2fb"},
+  {name: "navy", code: "#7b8cff"},
+  {name: "purple", code: "#c09cff"},
+  {name: "mint", code: "#a8fadb"},
+  {name: "pink", code: "#ffc3eb"},
+  {name: "gray", code: "#bfbfbf"},
+]
+
 
 // 모의고사 임시 데이터
 export const QuestionSample: Question[] = [

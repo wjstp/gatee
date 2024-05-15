@@ -1,8 +1,6 @@
 /* 응답타입: Res, 요청타입: Req, props타입: Props 뒤에 붙이고 사용하기 */
 
 // 가족
-import {createScheduleApi} from "@api/schedule";
-
 export interface FamilyStore {
   chatRoomId: number | null;
   setChatRoomId: (newId: number) => void;

@@ -63,7 +63,7 @@ const ScheduleIndex = () => {
   const handleCreateScheduleClick = () => {
     // 선택한 영역을 query string으로 전송
     navigate({
-        pathname: '/schedule/create-schedule',
+        pathname: '/schedule/create',
         search: `?start=${selectedStartDate}&end=${selectedEndDate}`,
     });
   }
@@ -172,14 +172,14 @@ const ScheduleIndex = () => {
             select={handleSelect}                // 영역 선택 이벤트
 
             // event
-            eventSources={[
-              {
-                googleCalendarId: REACT_APP_GOOGLE_CALENDAR_ID,
-                className: 'schedule-calendar__holiday',
-                color: "#ed6363",
-                textColor: "#FFF",
-              }
-            ]}
+            // eventSources={[
+            //   {
+            //     googleCalendarId: REACT_APP_GOOGLE_CALENDAR_ID,
+            //     className: 'schedule-calendar__holiday',
+            //     color: "#ed6363",
+            //     textColor: "#FFF",
+            //   }
+            // ]}
 
             events={[
               {start: "2024-05-01", end: "2024-05-01", color: "#FFE8E8", id: "group"},
