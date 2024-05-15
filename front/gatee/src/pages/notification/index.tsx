@@ -117,6 +117,7 @@ const NotificationIndex = () => {
 
   // 스크롤
   const nextScroll = () => {
+    console.log("스크롤")
     setLoading(true)
     if (nextCursor && hasNext) {
       getNotificationListNextApi(nextCursor,
@@ -156,7 +157,6 @@ const NotificationIndex = () => {
   }
   // 알림 리스트 가져오기
   useEffect(() => {
-
     getNotificationListFirstApiFunc()
   }, []);
 
@@ -255,9 +255,10 @@ const NotificationItem = ({notificationData, handleReadNotification}: {
       <div className="notification-item--content-container">
         <div className="notification-item--top--container">
           <p className="notification-item-title">{notificationData.title}</p>
-          {/*올해가 아니면 년도 보여줌*/}
+          {/*올해가 아니면 년도 보여줌, 오늘이면 시간 보여줌*/}
           <p>{todayYear === year && todayMonth===month && todayDate===date ?
-          `${hour}시 ${minute}분`: todayYear === year ? `${month}월 ${date}일` : `${year}년 ${month}월 ${date}일`}
+            hour >= 12 ? `오후 ${hour-12}: ` : `오전 ${hour}:`+
+           `${minute}`: todayYear === year ? `${month}월 ${date}일` : `${year}년 ${month}월 ${date}일`}
           </p>
         </div>
         <p className="notification-item-content">{notificationData.content}</p>
