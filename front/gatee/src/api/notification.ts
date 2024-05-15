@@ -5,10 +5,11 @@ import {NaggingApiReq} from "@type/index";
 const local: AxiosInstance = localAxios("default");
 
 interface NotificationAgrees {
-    "albumNotification": boolean;
-    "naggingNotification": boolean;
-    "scheduleNotification": boolean;
-    "featureNotification": boolean;
+    albumNotification: boolean;
+    naggingNotification: boolean;
+    scheduleNotification: boolean;
+    featureNotification: boolean;
+    chatNotification:boolean;
 }
 
 // 알람 동의 변경

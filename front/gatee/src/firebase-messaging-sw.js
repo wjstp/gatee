@@ -48,7 +48,7 @@ export async function requestPermission() {
 
     // 토큰 조회한 뒤, 서버로 토큰 구독
     if (token) {
-      alert(token)
+      // alert(token)
       console.log(token)
       // 스토어에 저장
       localStorage.setItem('fcmDeviceToken', token);
@@ -73,44 +73,3 @@ export async function requestPermission() {
 //   // ...
 // });
 
-// // 메세지 받는 함수 v8
-
-let url = "/main"
-
-if (firebase.messaging.isSupported())
-  messaging.onMessage((payload) => {
-    console.log(payload.notification)
-    const notificationData = payload.notification
-    const notificationTitle = payload.notification.title;
-    if (notificationTitle.includes("채팅")) {
-      url = "/chatting"
-    } else if (notificationTitle.includes("사진")) {
-      url = "/photo/day"
-    } else if (notificationTitle.includes("한마디")) {
-      url = "/notification"
-    }
-
-    const notificationOptions = {
-      body: notificationData.body,
-      icon: notificationData.icon,
-    };
-    if (window.location.href.includes("chatting") && notificationTitle.includes("채팅")) return
-    else {
-      showNotification(notificationTitle, notificationOptions, url);
-    }
-  });
-
-
-// 알림 표시
-const showNotification = (notificationTitle, notificationOptions,url) => {
-  // 알림 생성
-  const notification = new Notification(notificationTitle, notificationOptions);
-
-  // 알림 클릭 이벤트 리스너 추가
-  notification.addEventListener('click', function() {
-    // 클릭 시 동작할 코드 작성
-    console.log('알림이 클릭되었습니다.');
-    // 예시: 원하는 URL로 이동
-    window.location.href = url;
-  });
-}

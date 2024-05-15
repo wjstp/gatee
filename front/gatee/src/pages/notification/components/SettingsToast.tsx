@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import CustomSwitch from "@components/CustomSwitch";
-import {requestPermission} from "../../../firebase-messaging-sw";
+// import {requestPermission} from "../../../firebase-messaging-sw";
 import {editAgreeNotificationApi, getAgreeNotificationApi} from "@api/notification";
 
 
@@ -14,11 +14,12 @@ const SettingsToast = ({handleFinishTab}: HandleFinishTab) => {
   const [scheduleAlarmChecked, setScheduleAlarmChecked] = useState<boolean>(false);
   const [naggingAlarmChecked, setNaggingAlarmChecked] = useState<boolean>(false);
   const [featureAlarmChecked, setFeatureAlarmChecked] = useState<boolean>(false);
+  const [chatAlarmChecked, setChatAlarmChecked] = useState<boolean>(false);
   const [loading, setLoading] = useState(true);
   // 스위치 조절 함수
   const handleAlbumChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAlbumAlarmChecked(event.target.checked);
-    requestPermission()
+
   };
   const handleNaggingChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNaggingAlarmChecked(event.target.checked);
@@ -29,6 +30,9 @@ const SettingsToast = ({handleFinishTab}: HandleFinishTab) => {
   const handleAeatureChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFeatureAlarmChecked(event.target.checked);
   };
+  const handleChatChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setChatAlarmChecked(event.target.checked);
+  }
 
   // 완료 버튼 누르면 끝내기
   const handleFinish = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -39,6 +43,7 @@ const SettingsToast = ({handleFinishTab}: HandleFinishTab) => {
         naggingNotification: naggingAlarmChecked,
         scheduleNotification: scheduleAlarmChecked,
         featureNotification: featureAlarmChecked,
+        chatNotification:chatAlarmChecked
       }, res => {
         console.log(res)
         handleFinishTab(event)
@@ -57,6 +62,7 @@ const SettingsToast = ({handleFinishTab}: HandleFinishTab) => {
       setNaggingAlarmChecked(res.data.naggingNotification)
       setScheduleAlarmChecked(res.data.scheduleNotification)
       setFeatureAlarmChecked(res.data.featureNotification)
+      setChatAlarmChecked(res.data.chatNotification)
       setLoading(false)
     }, err => {
       console.log(err)
@@ -69,6 +75,7 @@ const SettingsToast = ({handleFinishTab}: HandleFinishTab) => {
   //
   //   }
   // }, [albumAlarmChecked,naggingAlarmChecked,scheduleAlarmChecked,featureAlarmChecked]);
+  // @ts-ignore
   return (
 
     <div
@@ -133,6 +140,22 @@ const SettingsToast = ({handleFinishTab}: HandleFinishTab) => {
 
               </div>
 
+              <div className="toggle-set-one-line--container">
+
+                {/* 채팅 토글 */}
+                <div className="toggle-item--container">
+                  <p>
+                    채팅
+                  </p>
+                  <CustomSwitch sx={{m: 1}} checked={chatAlarmChecked}
+                                onChange={handleChatChange}/>
+                </div>
+
+                {/* 기념일 간격 맞추기 위한 div */}
+                <div className="toggle-item--container">
+
+                </div>
+              </div>
 
             </div>
           </>
