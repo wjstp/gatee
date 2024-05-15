@@ -45,31 +45,28 @@ public class Mission extends BaseEntity {
 
             if (this.nowRange >= (this.completedLevel + 1) * 10) {
                 this.isComplete = true;
-                this.completedLevel++;
                 this.maxRange += 10;
             }
         } else if (missionTypeReq.type().equals(Type.FEATURE)) {
             if (this.nowRange % 10 == 0) {
                 this.isComplete = true;
-                this.completedLevel++;
                 this.maxRange += 10;
             }
         } else if (missionTypeReq.type().equals(Type.EXAM)) {
             if (this.nowRange == (2 * this.completedLevel + 1)) {
                 this.isComplete = true;
-                this.completedLevel++;
                 this.maxRange += 2;
             }
         } else {
             if (this.nowRange == Math.pow(2, this.completedLevel)) {
                 this.isComplete = true;
-                this.completedLevel++;
                 this.maxRange = (int) Math.pow(2, this.completedLevel);
             }
         }
     }
 
     public void doComplete() {
+        this.completedLevel++;
         this.isComplete = false;
     }
 }
