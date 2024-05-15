@@ -65,3 +65,14 @@ export const setAnswerAtIndex = (index: number, value: number, answerList: numbe
   }
   return answerList; // 인덱스가 범위를 벗어나면 원본 배열 반환
 };
+
+// 정답 안고른 문제 인덱스 보여주기
+export const unSelectedIndex = (myAnswerSheet: number[])=>{
+  let unselectedIndex:number[] = []
+  myAnswerSheet.forEach((item,index)=>{
+    if (item===0) {
+      unselectedIndex.push(index+1);
+    }
+  })
+  return unselectedIndex;
+}

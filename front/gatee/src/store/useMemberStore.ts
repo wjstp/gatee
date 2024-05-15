@@ -36,7 +36,7 @@ export const useMemberStore = create<MemberStore>()(
       memberId: "123123",
       mood: null,
       name: "이윤정",
-      nickname: "쌒유진",
+      nickname: "윤예빈",
       phoneNumber: null,
       profileImageUrl: "",
       role: "딸",
