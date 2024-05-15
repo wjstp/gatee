@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ScheduleService {
-    List<ScheduleListRes> readSchedule(UUID familyId) throws FamilyNotFoundException;
+    List<ScheduleListRes> readSchedule(UUID familyId, Integer month) throws FamilyNotFoundException;
     ScheduleInfoRes readScheduleDetail(Long scheduleId, UUID familyId) throws ScheduleNotFoundException, FamilyScheduleNotFoundException, MemberFamilyScheduleNotFoundException;
     void saveSchedule(ScheduleSaveReq scheduleSaveReq, UUID memberId) throws FamilyNotFoundException, FirebaseMessagingException;
     void editSchedule(ScheduleEditReq scheduleEditReq, UUID memberId, Long scheduleId) throws ScheduleNotFoundException, DoNotHavePermissionException, FamilyScheduleNotFoundException, MemberFamilyScheduleNotFoundException, FamilyNotFoundException;

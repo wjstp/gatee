@@ -14,37 +14,24 @@ const messaging = firebase.messaging();
 messaging.usePublicVapidKey('BHM_6_Y5fpMq6wpVagokLqSOdbPAwoNXW5eUO2DNw3lV_bGMgrr9f7BnymfevaF_TaJMpwummAey77-wsO-0VsE');
 
 
-self.addEventListener('install', function (e) {
-  console.log('fcm sw install..');
-  self.skipWaiting();
-});
 
-self.addEventListener('activate', function (e) {
-  console.log('fcm sw activate..');
-});
 
-let url = "/main"
+
 
 
 messaging.onBackgroundMessage((payload) => {
   console.log(
-    '[firebase-messaging-sw.js] Received background message ',
+    '백그라운드 알림',
     payload.notification
   );
   // Customize notification here
   const notificationData = payload.notification
   const notificationTitle = payload.notification.title;
-  if (notificationTitle.includes("채팅")) {
-    url = "/chatting"
-  } else if (notificationTitle.includes("사진")) {
-    url = "/photo/day"
-  } else if (notificationTitle.includes("한마디")) {
-    url = "/notification"
-  }
+
 
   const notificationOptions = {
     body: notificationData.body,
-    icon: notificationData.icon,
+    icon: notificationData.image,
   };
 
 
@@ -53,7 +40,7 @@ messaging.onBackgroundMessage((payload) => {
 
 
 self.addEventListener('notificationclick', function (event) {
-
+  const url = "/main"
   event.notification.close();
   event.waitUntil(clients.openWindow(url));
 });

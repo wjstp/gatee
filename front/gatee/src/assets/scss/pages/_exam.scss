@@ -140,7 +140,7 @@
 
   }
 
-  .exam__item__answerList {
+  .exam__item__answer-list {
     margin: 1vh 10vw 2vh 10vw;
     display: flex;
     position: relative;
@@ -153,7 +153,7 @@
       left: 0;
     }
 
-    .deactivateIndex {
+    .deactivate-index {
       border: 1px solid black;
       border-radius: 50%;
       width: 1.2rem;
@@ -161,13 +161,19 @@
       @include flex_center;
     }
 
-    .activateIndex {
+    .activate-index {
       border: 1px solid black;
       border-radius: 50%;
       width: 1.2rem;
       height: 1.2rem;
       background-color: $gray300;
       @include flex_center;
+    }
+
+    .answer-content {
+      width: 90%;
+      //background-color: red;
+
     }
   }
 }
@@ -457,8 +463,8 @@
     background-color: $gray50;
 
     p, h3 {
-      font-size: 1.3rem;
-      @include mb-(0.5);
+      font-size: 1.1rem;
+      @include mb-(0.7);
     }
 
     .go-to-dictionary-btn{

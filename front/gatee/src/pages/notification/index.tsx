@@ -17,6 +17,7 @@ import Lottie from "lottie-react";
 import ScrollAnimation from "@assets/images/animation/scroll_animation.json";
 import getUrlFromType from "@utils/getUrlFromType";
 import {useNavigate} from "react-router-dom";
+import {useNotificationStore} from "@store/useNotificationStore";
 
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
@@ -24,7 +25,7 @@ type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
 const NotificationIndex = () => {
   // 열린지 닫힌지 상태 확인 가능
-  const [state, setState] = React.useState({
+  const [state, setState] = useState({
     bottom: false,
   });
   // 모달 상태관리
@@ -74,13 +75,14 @@ const NotificationIndex = () => {
   const navigate = useNavigate()
   // 모달 상태 적용
   const {setShowModal} = useModalStore()
-  const [hasNext, setHasNext] = useState<boolean>(true);
+  const {notificationPopUp,setShowNotification} = useNotificationStore()
+  const [hasNext, setHasNext] = useState<boolean>(false);
   const [nextCursor, setNextCursor] = useState<string | null>(null);
   const [clickedNotification, setClickedNotification] = useState<NotificationRes | null | undefined>(null)
   const [isLoading, setLoading] = useState<boolean>(false)
-  const [isGetAllData, setIsGetAllData] = useState<boolean>(false);
+  const [isGetAllData, setIsGetAllData] = useState<boolean|null>(null);
   // 알림 데이터 리스트
-  const [notificationDataList, setNotificationDataList] = useState<NotificationRes[]>([])
+  const {notificationDataList, setNotificationDataList,setNotificationChecked} = useNotificationStore()
 
   // 읽음 처리
   const handleReadNotification = (id: string, isCheck: boolean) => {
@@ -88,26 +90,24 @@ const NotificationIndex = () => {
     setClickedNotification(clicked)
     if (clicked && clicked?.type === "NAGGING")
       openModal()
-
-    if (!isCheck)
+    if (!isCheck) {
       readNotificationApi({notificationId: id}
         , res => {
           console.log(res.data)
 
           // 이동해야할때 navigate
-          if (clicked?.type === "NAGGING")
+          if (clicked?.type !== "NAGGING")
             navigate(getUrlFromType(clicked?.type, clicked?.typeId))
 
           // 이동 안할때는 상태 업데이트(css) 변경
-          setNotificationDataList(prevList =>
-            prevList.map(item =>
-              item.notificationId === id ? {...item, isCheck: true} : item
-            )
-          );
+          setNotificationChecked(id);
         }
         , err => {
           console.log(err)
         })
+    } else if (clicked?.type !== "NAGGING") {
+      navigate(getUrlFromType(clicked?.type, clicked?.typeId))
+    }
   }
 
   // 모달 내리기
@@ -140,19 +140,32 @@ const NotificationIndex = () => {
     dependency: notificationDataList,
     isLoading
   })
-  // 알림 리스트 가져오기
-  useEffect(() => {
+
+  const getNotificationListFirstApiFunc = () => {
+    setShowNotification(false)
     getNotificationListFirstApi(
       res => {
         console.log(res.data)
         setNotificationDataList(res.data.pushNotificationResList)
         setHasNext(res.data.hasNext)
+        setIsGetAllData(!res.data.hasNext);
         setNextCursor(res.data.nextCursor)
       }, err => {
         console.log(err)
       })
+  }
+  // 알림 리스트 가져오기
+  useEffect(() => {
+
+    getNotificationListFirstApiFunc()
   }, []);
 
+  // 알림 뜨면 새로 갱신
+  useEffect(() => {
+    if (notificationPopUp!== null) {
+      getNotificationListFirstApiFunc()
+    }
+  }, [notificationPopUp]);
 
   return (
     <div className="notification-tab--container">
@@ -183,7 +196,7 @@ const NotificationIndex = () => {
           return <NotificationItem key={index} notificationData={item} handleReadNotification={handleReadNotification}/>
         })}
 
-        {!isGetAllData && (
+        {isGetAllData===false && (
           <div className="scroll-target" ref={target}>
             <Lottie className="scroll-target__animation" animationData={ScrollAnimation}/>
           </div>
@@ -211,11 +224,18 @@ const NotificationItem = ({notificationData, handleReadNotification}: {
   handleReadNotification: (id: string, isCheck: boolean) => void // 수정된 부분
 }) => {
 
-  const todayYear = new Date().getFullYear()
+  const today = new Date()
+  const todayYear = today.getFullYear()
+  const todayMonth = today.getMonth()+1
+  const todayDate = today.getDate()
   const dateDate = new Date(notificationData.createdAt)
   const year = dateDate.getFullYear()
   const month = dateDate.getMonth() + 1
   const date = dateDate.getDate()
+  const hour = dateDate.getHours()
+  const minute = dateDate.getMinutes()
+
+
 
 
   // 알림 누르기
@@ -236,7 +256,9 @@ const NotificationItem = ({notificationData, handleReadNotification}: {
         <div className="notification-item--top--container">
           <p className="notification-item-title">{notificationData.title}</p>
           {/*올해가 아니면 년도 보여줌*/}
-          <p>{todayYear !== year ? `${year}년 ` : null}{month}월 {date}일</p>
+          <p>{todayYear === year && todayMonth===month && todayDate===date ?
+          `${hour}시 ${minute}분`: todayYear === year ? `${month}월 ${date}일` : `${year}년 ${month}월 ${date}일`}
+          </p>
         </div>
         <p className="notification-item-content">{notificationData.content}</p>
       </div>

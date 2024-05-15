@@ -23,7 +23,15 @@ const ExamTaking = () => {
   // 정답
   const [correctAnswerSheet, setCorrectAnswerSheet] = useState<number[]>([]);
   // 변환 객체
-  const [transformedData, setTransformedData] = useState<TransformedQuestionData[]>([])
+  const [transformedData, setTransformedData] = useState<TransformedQuestionData[]>([
+    // {
+    //   nickname:"SiAsda",
+    //   question:"ASDDDDDDDDD as asda sdaasdDDDDDDD",
+    //   answerList:["ASASDDDDDD DDDDDDDDDDDDDDDD asd aas aadasdDDDDDDDDDDDDDDDD DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDAS","ASDASD","ASDASD","ASASDDDDDD ASASDDDDDD ASASDDDDDD ASASDDDDDD"],
+    //   correctNumber:1,
+    //   choiceNumber:1
+    // }
+  ])
 
   // 인덱스를 넘겨주고, 마지막 문제에서는 채점 화면으로 이동시켜준다
   const handleNextIndex: (questionNumber: number, value: number) => void = (questionNumber: number, value: number) => {

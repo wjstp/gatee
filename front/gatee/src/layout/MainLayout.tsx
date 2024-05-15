@@ -1,30 +1,39 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import TopBar from '@components/TopBar';
 import BottomBar from "@components/BottomBar";
-import { Outlet, useLocation } from 'react-router-dom'
-import { Helmet, HelmetProvider } from 'react-helmet-async';
-import { useModalStore } from "@store/useModalStore";
-import { useMemberStore } from "@store/useMemberStore";
-import { useFamilyStore }  from "@store/useFamilyStore";
-import { useChatStore } from "@store/useChatStore";
-import { getFamilyMemberApi, getMyDataApi } from "@api/member";
+import {Outlet} from 'react-router-dom'
+import {Helmet, HelmetProvider} from 'react-helmet-async';
+import {useModalStore} from "@store/useModalStore";
+import {useMemberStore} from "@store/useMemberStore";
+import {useFamilyStore} from "@store/useFamilyStore";
+import {useChatStore} from "@store/useChatStore";
+import {getFamilyMemberApi, getMyDataApi} from "@api/member";
 import firebase from "../firebase-config";
 import 'firebase/database';
+import NotificationPopUp from "@components/NotificationPopup";
 
 const MainLayout = () => {
-  const { showModal} = useModalStore();
-  const { setMyInfo, myInfo } = useMemberStore();
-  const { familyId, familyInfo,setFamilyId, setFamilyInfo, setFamilyName, setFamilyScore, setChatRoomId } = useFamilyStore();
-  const { isShowBottomBar, setIsNewMessage } = useChatStore();
+  const {showModal} = useModalStore();
+  const {setMyInfo, myInfo} = useMemberStore();
+  const {
+    familyId,
+    familyInfo,
+    setFamilyId,
+    setFamilyInfo,
+    setFamilyName,
+    setFamilyScore,
+    setChatRoomId
+  } = useFamilyStore();
+  const {isShowBottomBar, setIsNewMessage} = useChatStore();
   const chatRef = firebase.database().ref(`chat/${familyId}/messages`);
-  const location = useLocation();
+  // const {showNotification} = useNotificationStore()
 
   // 가족 데이터 저장 Api
   const saveFamilyData = (familyId: string) => {
     getFamilyMemberApi(
       {familyId: familyId},
       (res) => {
-        console.log("가족 정보 조회",res.data);
+        console.log("가족 정보 조회", res.data);
         setFamilyInfo(res.data.memberFamilyInfoList);
         setFamilyName(res.data.name);
         setFamilyScore(res.data.familyScore);
@@ -62,7 +71,7 @@ const MainLayout = () => {
 
   useEffect(() => {
     // Firebase 실시간 이벤트 리스너 등록
-    chatRef.limitToLast(1).on('value',handleNewMessage);
+    chatRef.limitToLast(1).on('value', handleNewMessage);
   }, [familyId]);
 
   // 수신한 새로운 메시지가 읽지 않은 것인지 확인
@@ -80,31 +89,33 @@ const MainLayout = () => {
 
   return (
     <>
+      {/*알림*/}
+      <NotificationPopUp/>
       {/* 모달이 띄워진 상태라면 상단바를 회색으로 만듦 */}
       {
         showModal ?
           (
             <HelmetProvider>
-            <Helmet>
-              <meta name="theme-color" id="theme-color" content="#808080"/>
-            </Helmet>
-          </HelmetProvider>
+              <Helmet>
+                <meta name="theme-color" id="theme-color" content="#808080"/>
+              </Helmet>
+            </HelmetProvider>
           )
           :
           (
             <HelmetProvider>
-            <Helmet>
-              <meta name="theme-color" id="theme-color" content="#FEFEFE"/>
-            </Helmet>
-          </HelmetProvider>
+              <Helmet>
+                <meta name="theme-color" id="theme-color" content="#FEFEFE"/>
+              </Helmet>
+            </HelmetProvider>
           )
       }
 
       <TopBar></TopBar>
-      <div id={isShowBottomBar? "main" : "main-focus"}>
-        <Outlet />
+      <div id={isShowBottomBar ? "main" : "main-focus"}>
+        <Outlet/>
       </div>
-      { isShowBottomBar && <BottomBar></BottomBar> }
+      {isShowBottomBar && <BottomBar></BottomBar>}
     </>
   )
 }
