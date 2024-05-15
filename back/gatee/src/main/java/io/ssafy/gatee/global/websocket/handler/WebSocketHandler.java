@@ -2,14 +2,10 @@ package io.ssafy.gatee.global.websocket.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.ssafy.gatee.domain.family.application.FamilyService;
-import io.ssafy.gatee.global.exception.error.not_found.FamilyNotFoundException;
-import io.ssafy.gatee.global.exception.message.ExceptionMessage;
-import io.ssafy.gatee.global.jwt.application.JwtService;
 import io.ssafy.gatee.global.redis.dao.OnlineRoomMemberRepository;
 import io.ssafy.gatee.global.redis.dto.OnlineRoomMember;
 import io.ssafy.gatee.global.websocket.application.ChatService;
 import io.ssafy.gatee.global.websocket.dto.ChatDto;
-import io.ssafy.gatee.global.websocket.dto.MessageType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -18,12 +14,10 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import java.security.Principal;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.UUID;
 
-import static io.ssafy.gatee.global.exception.message.ExceptionMessage.FAMILY_NOT_FOUND;
 import static io.ssafy.gatee.global.websocket.dto.MessageType.*;
 
 @Slf4j
@@ -43,12 +37,22 @@ public class WebSocketHandler extends TextWebSocketHandler {
         ChatDto chatDto = objectMapper.readValue(message.getPayload(), ChatDto.class);
 
         if (chatDto.messageType().equals(MESSAGE)) {
-            chatService.sendMessage(chatDto,memberId);
+            chatService.sendMessage(chatDto, memberId);
         }
 
         if (chatDto.messageType().equals(APPOINTMENT)) {
             log.info("약속 전송!");
             chatService.createAppointment(chatDto, memberId);
+        }
+
+        if (chatDto.messageType().equals(EMOJI)) {
+            log.info("이모지 전송");
+            chatService.sendEmozi(chatDto, memberId);
+        }
+
+        if (chatDto.messageType().equals(FILE)) {
+            log.info("사진 전송");
+            chatService.sendImages(chatDto, memberId);
         }
     }
 

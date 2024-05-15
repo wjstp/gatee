@@ -10,7 +10,7 @@ import getUserInfo from "@utils/getUserInfo";
 import { useFamilyStore } from "@store/useFamilyStore";
 import { useMemberStore } from "@store/useMemberStore";
 import { useChatStore } from "@store/useChatStore";
-import { getParticipantsApi, applyParticipationApi } from "@api/chat";
+import { getAppointmentParticipantsApi, applyAppointmentParticipationApi } from "@api/chat";
 
 interface ChatAppointmentProps {
   chat: ChatAppointment;
@@ -22,7 +22,7 @@ const BubbleChatAppointment = (props: ChatAppointmentProps) => {
   const { myInfo } = useMemberStore();
   const { isUserParticipant, setIsUserParticipant } = useChatStore();
   const [participants, setParticipants] = useState<string[]>([])
-  const { REACT_APP_API_URL } = process.env;
+  const newIsUserParticipant: boolean = isUserParticipant[chat.appointmentId];
 
   useEffect(() => {
     if (chat.appointmentId) {
@@ -30,16 +30,9 @@ const BubbleChatAppointment = (props: ChatAppointmentProps) => {
     }
   }, []);
 
-  // 유저 이메일이 참여자 리스트에 있는지 확인
-  useEffect(() => {
-    if (!isUserParticipant && participants) {
-      setIsUserParticipant(participants.includes(myInfo.memberId));
-    }
-  }, [participants]);
-
   // 참여자 리스트 조회
   const getParticipants = async () => {
-    getParticipantsApi(
+    getAppointmentParticipantsApi(
       chat.appointmentId,
       (res) => {
         setParticipants(res.data.joinMemberIds);
@@ -50,20 +43,15 @@ const BubbleChatAppointment = (props: ChatAppointmentProps) => {
     ).then().catch()
   }
 
-  // 참여자 정보 콜백 함수
-  const getParticipantsInfo = (id: string, index: number) => {
-    const userInfo: null | MemberApiReq = getUserInfo(familyInfo, id);
-
-    return <Avatar src={userInfo?.fileUrl} alt={userInfo?.nickname} key={index}/>;
-  }
-
+  // 약속 참여
   const applyParticipation = () => {
-    console.log(chat.appointmentId);
     if (chat.appointmentId) {
-      applyParticipationApi(
+      applyAppointmentParticipationApi(
         chat.appointmentId,
         (res) => {
           setParticipants(prevParticipants => [...prevParticipants, myInfo.memberId]);
+          setIsUserParticipant(chat.appointmentId, true);
+          getParticipants();
         },
         (err) => {
           console.error(err);
@@ -71,6 +59,20 @@ const BubbleChatAppointment = (props: ChatAppointmentProps) => {
       )
     }
   }
+
+  // 참여자 정보 콜백 함수
+  const getParticipantsInfo = (id: string, index: number) => {
+    const userInfo: null | MemberApiReq = getUserInfo(familyInfo, id);
+
+    return <Avatar src={userInfo?.profileImageUrl} alt={userInfo?.nickname} key={index}/>;
+  }
+
+  useEffect(() => {
+    if (!isUserParticipant[chat.appointmentId]) {
+      setIsUserParticipant(chat.appointmentId, participants.includes(myInfo.memberId))
+    }
+  }, [participants]);
+
 
   return (
     <Card className="bubble-appointment" variant="outlined" sx={{ borderRadius: 3 }}>
@@ -99,7 +101,7 @@ const BubbleChatAppointment = (props: ChatAppointmentProps) => {
       </div>
 
       {/* 참여자 여부 또는 버튼 렌더링 */}
-      {isUserParticipant ? (
+      {newIsUserParticipant ? (
         <div className="bubble-appointment__participants-status">
           참여
         </div>

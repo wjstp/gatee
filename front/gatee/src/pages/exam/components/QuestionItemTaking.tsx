@@ -41,22 +41,22 @@ const QuestionItemTaking = (
     <div className="exam__item">
       {/* 문제 */}
       <div className="exam__item__question">
-        {questionNumber+1}. {questionItem.nickname}님의 {questionItem.question}은?
+        {questionNumber+1}. {questionItem?.nickname}{questionItem?.question}?
       </div>
 
       {/* 객관식 */}
-      {questionItem.answerList.map((answer: any, i: number) => {
+      {questionItem?.answerList.map((answer: any, i: number) => {
         return (
-          <div key={i} className="exam__item__answerList"
+          <div key={i} className="exam__item__answer-list"
                onClick={() => handleAnswer(i + 1)}>
 
             {/* 객관식 번호 */}
-            <div className={i + 1 === selected ? "activateIndex" : "deactivateIndex"}>
+            <div className={i + 1 === selected ? "activate-index" : "deactivate-index"}>
               {i + 1}
             </div>
 
             {/*  객관식 답변 내용 */}
-            <div>{answer}</div>
+            <div className="answer-content">{answer}</div>
           </div>
         )
       })}

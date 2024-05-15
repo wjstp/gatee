@@ -7,6 +7,7 @@ import io.ssafy.gatee.domain.family_schedule.dao.FamilyScheduleRepository;
 import io.ssafy.gatee.domain.family_schedule.dao.FamilyScheduleRepositoryCustom;
 import io.ssafy.gatee.domain.family_schedule.entity.FamilySchedule;
 import io.ssafy.gatee.domain.file.dao.FileRepository;
+import io.ssafy.gatee.domain.file.entity.File;
 import io.ssafy.gatee.domain.member.dao.MemberRepository;
 import io.ssafy.gatee.domain.member.entity.Member;
 import io.ssafy.gatee.domain.member_family.dao.MemberFamilyRepository;
@@ -22,13 +23,9 @@ import io.ssafy.gatee.domain.push_notification.dto.request.DataFCMReq;
 import io.ssafy.gatee.domain.push_notification.dto.request.PushNotificationFCMReq;
 import io.ssafy.gatee.domain.push_notification.entity.Type;
 import io.ssafy.gatee.domain.schedule.dao.ScheduleRepository;
-import io.ssafy.gatee.domain.schedule.dto.request.ScheduleEditReq;
-import io.ssafy.gatee.domain.schedule.dto.request.ScheduleParticipateReq;
-import io.ssafy.gatee.domain.schedule.dto.request.ScheduleSaveRecordReq;
-import io.ssafy.gatee.domain.schedule.dto.request.ScheduleSaveReq;
+import io.ssafy.gatee.domain.schedule.dto.request.*;
 import io.ssafy.gatee.domain.schedule.dto.response.ScheduleInfoRes;
 import io.ssafy.gatee.domain.schedule.dto.response.ScheduleListRes;
-import io.ssafy.gatee.domain.schedule.entity.Category;
 import io.ssafy.gatee.domain.schedule.entity.Schedule;
 import io.ssafy.gatee.domain.schedule_record.dao.ScheduleRecordRepository;
 import io.ssafy.gatee.domain.schedule_record.entity.ScheduleRecord;
@@ -77,13 +74,10 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     // 전체 일정 조회
     @Override
-    public ScheduleListRes readSchedule(UUID familyId) throws FamilyNotFoundException {
+    public List<ScheduleListRes> readSchedule(UUID familyId) throws FamilyNotFoundException {
         Family family = familyRepository.getReferenceById(familyId);
 
-        return ScheduleListRes.builder()
-                .personalScheduleList(familyScheduleRepositoryCustom.getPersonalScheduleList(family))
-                .groupScheduleList(familyScheduleRepositoryCustom.getGroupScheduleList(family))
-                .build();
+        return familyScheduleRepositoryCustom.getAllScheduleList(family);
     }
 
     // 일정 상세 조회
@@ -101,7 +95,15 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         List<Member> memberList = memberFamilyScheduleList.stream().map(MemberFamilySchedule::getMember).toList();
 
-        return ScheduleInfoRes.toDto(schedule, memberList);
+        ScheduleRecord scheduleRecord = scheduleRecordRepository.findBySchedule(schedule);
+
+        List<PhotoScheduleRecord> photoScheduleRecordList = photoScheduleRecordRepository.findAllByScheduleRecord(scheduleRecord);
+
+        List<Photo> photoList = photoScheduleRecordList.stream().map(PhotoScheduleRecord::getPhoto).toList();
+
+        List<File> fileList = photoList.stream().map(Photo::getFile).toList();
+
+        return ScheduleInfoRes.toDto(schedule, memberList, scheduleRecord, fileList);
     }
 
     // 일정 등록
@@ -219,6 +221,24 @@ public class ScheduleServiceImpl implements ScheduleService {
             );
     }
 
+    // 일정 참여 취소
+    @Override
+    public void cancelSchedule(ScheduleCancelReq scheduleCancelReq, UUID memberId, Long scheduleId) throws FamilyScheduleNotFoundException, MemberFamilyScheduleNotFoundException {
+        Member member = memberRepository.getReferenceById(memberId);
+
+        Family family = familyRepository.getReferenceById(UUID.fromString(scheduleCancelReq.familyId()));
+
+        Schedule schedule = scheduleRepository.getReferenceById(scheduleId);
+
+        FamilySchedule familySchedule = familyScheduleRepository.findByFamilyAndSchedule(family, schedule)
+                .orElseThrow(() -> new FamilyScheduleNotFoundException(FAMILY_SCHEDULE_NOT_FOUND));
+
+        MemberFamilySchedule memberFamilySchedule = memberFamilyScheduleRepository.findByMemberAndFamilySchedule(member, familySchedule)
+                .orElseThrow(() -> new MemberFamilyScheduleNotFoundException(MEMBER_FAMILY_SCHEDULE_NOT_FOUND));
+
+        memberFamilyScheduleRepository.delete(memberFamilySchedule);
+    }
+
     // 일정 후기 등록
     @Override
     @Transactional
@@ -254,5 +274,15 @@ public class ScheduleServiceImpl implements ScheduleService {
                         .build()).toList();
 
         photoScheduleRecordRepository.saveAll(photoScheduleRecordList);
+    }
+
+    // 일정 후기 삭제
+    @Override
+    public void deleteScheduleRecord(Long scheduleId) {
+        Schedule schedule = scheduleRepository.getReferenceById(scheduleId);
+
+        ScheduleRecord scheduleRecord = scheduleRecordRepository.findBySchedule(schedule);
+
+        scheduleRecord.deleteData();
     }
 }

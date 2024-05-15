@@ -2,10 +2,7 @@ package io.ssafy.gatee.domain.schedule.api;
 
 import com.google.firebase.messaging.FirebaseMessagingException;
 import io.ssafy.gatee.domain.schedule.application.ScheduleService;
-import io.ssafy.gatee.domain.schedule.dto.request.ScheduleEditReq;
-import io.ssafy.gatee.domain.schedule.dto.request.ScheduleParticipateReq;
-import io.ssafy.gatee.domain.schedule.dto.request.ScheduleSaveRecordReq;
-import io.ssafy.gatee.domain.schedule.dto.request.ScheduleSaveReq;
+import io.ssafy.gatee.domain.schedule.dto.request.*;
 import io.ssafy.gatee.domain.schedule.dto.response.ScheduleInfoRes;
 import io.ssafy.gatee.domain.schedule.dto.response.ScheduleListRes;
 import io.ssafy.gatee.global.exception.error.bad_request.DoNotHavePermissionException;
@@ -21,7 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Currency;
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -35,7 +32,7 @@ public class ScheduleController {
     // 일정 리스트 조회
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public ScheduleListRes readSchedule(
+    public List<ScheduleListRes> readSchedule(
             @Valid
             @RequestParam String familyId
     ) throws FamilyNotFoundException {
@@ -96,7 +93,19 @@ public class ScheduleController {
         scheduleService.participateSchedule(scheduleParticipateReq, customUserDetails.getMemberId(), scheduleId);
     }
 
-    // 일정 기록 등록
+    // 일정 참여 취소
+    @PatchMapping("/{scheduleId}/cancel")
+    @ResponseStatus(HttpStatus.OK)
+    public void cancelSchedule(
+            @Valid
+            @RequestBody ScheduleCancelReq scheduleCancelReq,
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @PathVariable("scheduleId") Long scheduleId
+    ) throws MemberFamilyScheduleNotFoundException, FamilyScheduleNotFoundException {
+        scheduleService.cancelSchedule(scheduleCancelReq, customUserDetails.getMemberId(), scheduleId);
+    }
+
+    // 일정 후기 등록
     @PostMapping("/{scheduleId}/record")
     @ResponseStatus(HttpStatus.OK)
     public void saveScheduleRecord(
@@ -106,5 +115,14 @@ public class ScheduleController {
             @PathVariable("scheduleId") Long scheduleId
     ){
         scheduleService.saveScheduleRecord(scheduleSaveRecordReq, customUserDetails.getMemberId(), scheduleId);
+    }
+
+    // 일정 후기 삭제
+    @DeleteMapping("/{scheduleId}/record")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteScheduleRecord(
+            @PathVariable("scheduleId") Long scheduleId
+    ) {
+        scheduleService.deleteScheduleRecord(scheduleId);
     }
 }

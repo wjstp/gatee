@@ -239,6 +239,19 @@ include::{snippets}/schedule-controller-test/participate-schedule/query-paramete
 include::{snippets}/schedule-controller-test/participate-schedule/http-response.adoc[]
 
 
+== 일정 참여 취소
+
+- Request
+
+include::{snippets}/schedule-controller-test/cancel-schedule/http-request.adoc[]
+include::{snippets}/schedule-controller-test/cancel-schedule/path-parameters.adoc[]
+include::{snippets}/schedule-controller-test/cancel-schedule/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/schedule-controller-test/cancel-schedule/http-response.adoc[]
+
+
 == 일정 후기 등록
 
 - Request
@@ -246,6 +259,18 @@ include::{snippets}/schedule-controller-test/participate-schedule/http-response.
 include::{snippets}/schedule-controller-test/save-schedule-record/http-request.adoc[]
 include::{snippets}/schedule-controller-test/save-schedule-record/path-parameters.adoc[]
 include::{snippets}/schedule-controller-test/save-schedule-record/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/schedule-controller-test/save-schedule-record/http-response.adoc[]
+
+
+== 일정 후기 삭제
+
+- Request
+
+include::{snippets}/schedule-controller-test/delete-schedule/http-request.adoc[]
+include::{snippets}/schedule-controller-test/delete-schedule/path-parameters.adoc[]
 
 - Response
 
@@ -748,6 +773,37 @@ include::{snippets}/mission-controller-test/complete-mission/query-parameters.ad
 - Response
 
 include::{snippets}/mission-controller-test/complete-mission/http-response.adoc[]
+
+
+---
+
+
+= Mission
+
+== 채팅방 사진 전체 조회
+
+- Request
+
+include::{snippets}/chat-room-controller-test/read-file-list-chat-room/http-request.adoc[]
+include::{snippets}/chat-room-controller-test/read-file-list-chat-room/path-parameters.adoc[]
+
+- Response
+
+include::{snippets}/chat-room-controller-test/read-file-list-chat-room/http-response.adoc[]
+include::{snippets}/chat-room-controller-test/read-file-list-chat-room/response-fields.adoc[]
+
+
+== 채팅방 사진 등록
+
+- Request
+
+include::{snippets}/chat-room-controller-test/save-file-list-chat-room/http-request.adoc[]
+include::{snippets}/chat-room-controller-test/save-file-list-chat-room/path-parameters.adoc[]
+include::{snippets}/chat-room-controller-test/save-file-list-chat-room/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/chat-room-controller-test/save-file-list-chat-room/http-response.adoc[]
 
 
 ---

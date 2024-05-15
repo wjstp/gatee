@@ -9,10 +9,12 @@ import dayjs from 'dayjs';
 import ProfileCropper from "@pages/profile/components/Cropper";
 import useModal from "@hooks/useModal";
 import { modifyProfileImageApi } from "@api/profile";
+import { imageResizer } from "@utils/imageResizer";
 
 const SignupMemberSetCheck = () => {
   const location = useLocation();
   const icon: string = location.state?.icon;
+  const previous: string = location.state?.previous;
   const navigate = useNavigate();
   const sender: string = "member-set"
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -25,15 +27,13 @@ const SignupMemberSetCheck = () => {
     memberImage,
     stringMemberImage,
   } = useMemberStore();
-  const { familyId, setFamilyCode } = useFamilyStore();
+  const { familyId, familyCode, setFamilyCode } = useFamilyStore();
 
   const [cropImage, setCropImage] = useState<string>("");
 
   // 다음 넘어가기
   const goToMemberSetPermission = () => {
     createMember();
-    // modifyProfileImage();
-    // navigate("/signup/member-set/share");
   }
 
   // 회원 정보 등록
@@ -50,8 +50,7 @@ const SignupMemberSetCheck = () => {
           phoneNumber: null
         },
         (res: AxiosResponse<any>) => {
-          console.log(res);
-          console.log("멤버 등록 성공")
+          console.log("멤버 등록 성공", res);
           // 토큰 갱신
           const accessToken = res.headers.authorization.split(' ')[1];
           localStorage.setItem("accessToken", accessToken);
@@ -81,10 +80,15 @@ const SignupMemberSetCheck = () => {
     modifyProfileImageApi(
       formData,
       (res: AxiosResponse<any>) => {
-        console.log(res);
-        
-        // 가족 코드 생성
-        createFamilyCode();
+        console.log("이미지 수정 성공", res);
+
+        // 패밀리 코드가 있다면 바로 가입축하로 넘기기
+        if (familyCode) {
+          navigate(`/signup/member-set/finish`);
+        } else {
+          // 가족 코드 생성
+          createFamilyCode();
+        }
       },
       (err: AxiosError<any>) => {
         console.log(err);
@@ -99,11 +103,14 @@ const SignupMemberSetCheck = () => {
         familyId: familyId,
       },
       (res: AxiosResponse<any>) => {
-        console.log(res);
-        console.log("코드 생성 성공")
+        console.log("코드 생성 성공", res);
         // 가족 코드 집어넣기
         setFamilyCode(res.data.familyCode);
-        navigate("/signup/member-set/share");
+        navigate("/signup/member-set/share", {
+          state: {
+            from: 'member-set'
+          }
+        });
       },
       (err: AxiosError<any>): void => {
         console.log(err);
@@ -120,8 +127,9 @@ const SignupMemberSetCheck = () => {
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file: File | null = e.target.files ? e.target.files[0] : null;
     if (file) {
+      const resizedFile: File = (await imageResizer(file, 2000, 2000)) as File;
       // 크롭할 이미지 넣기
-      const jpgUrl = URL.createObjectURL(file);
+      const jpgUrl = URL.createObjectURL(resizedFile);
       setCropImage(jpgUrl);
       // 모달 열기
       openModal();
@@ -137,7 +145,7 @@ const SignupMemberSetCheck = () => {
 
   // 날짜 형식 변환 함수
   const changeDate = (originalDate: string): string => {
-    const formattedDate = dayjs(originalDate).format("YYYY.MM.DD");
+    const formattedDate = dayjs(originalDate).format("YYYY년 M월 D일");
 
     return formattedDate;
   }

@@ -1,22 +1,42 @@
-import React, {useState} from 'react';
+import React, {useEffect} from 'react';
 import MissionItem from "@pages/mission/components/MissionItem";
 import Slider from "react-slick";
 import Improvement from "@pages/mission/components/Improvement";
 import {useFamilyStore} from "@store/useFamilyStore";
+import {getMissionApi} from "@api/mission";
+import {useMissionStore} from "@store/useMissionStore";
 
 interface KoreanMentType {
   [key: string]: string;
 }
 
 const MissionIndex = () => {
-  const [missions, setMissions] = useState([
-    {type: "target", content: "백문백답 10개 채우기", range: 0.1, complete: false},
-    {type: "pencil", content: "모의고사 풀기", range: 0.2, complete: false},
-    {type: "calendar", content: "일정 올리기", range: 1, complete: true},
-    // {type: "camera", content: "사진 올리기", range: 1, complete: true},
-    {type: "file", content: "앨범에 사진 채우기", range: 1, complete: true},
 
-  ]);
+  const {missionList, setMissionList} = useMissionStore()
+  // 미션 저장 api
+  const getMissionApiFunc = () => {
+    getMissionApi(
+      res => {
+        console.log(res)
+        setMissionList(res.data)
+      },
+      err => {
+        console.log(err)
+      }
+    )
+  }
+
+  // 제출한 뒤에, 미션 get api 재실행
+  const handleSubmitMission = () => {
+    getMissionApiFunc()
+  }
+
+  // 미션 api 받기
+  useEffect(() => {
+    getMissionApiFunc()
+  }, []);
+
+
   // 슬라이더 세팅
   var settings
     : {
@@ -49,7 +69,7 @@ const MissionIndex = () => {
   };
 
   //우리 가족 명
-  const {familyName}=useFamilyStore()
+  const {familyName} = useFamilyStore()
   // 우리 가족의 개선사항
   const improvement = [
     "heart",
@@ -65,6 +85,8 @@ const MissionIndex = () => {
     "hello": "채팅 횟수",
     "calendar": "일정 잡기"
   }
+
+
   return (
     <div className="mission__index">
       <div className="improvement-oneline">
@@ -89,8 +111,8 @@ const MissionIndex = () => {
 
       </Slider>
       <h2 className="mission__item-title">미션 리스트</h2>
-      {missions.map((mission, index) => {
-        return <MissionItem key={index} mission={mission}/>
+      {missionList.map((mission, index) => {
+        return <MissionItem key={index} mission={mission} handleSubmitMission={handleSubmitMission}/>
       })}
     </div>
   );

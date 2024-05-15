@@ -13,8 +13,8 @@ import OnboardingIndex from "@pages/onboarding/index";
 import KaKaoLogin from "@pages/onboarding/components/KaKaoLogin";
 import ProfileIndex from "@pages/profile";
 import ScheduleIndex from "@pages/schedule/index";
-import ScheduleCreateSchedule from "@pages/schedule/Create";
-import ScheduleCreateReview from "@pages/schedule/CreateReview";
+import ScheduleCreate from "@pages/schedule/ScheduleCreate";
+import ReviewCreate from "@pages/schedule/ReviewCreate";
 import ScheduleDetail from "@pages/schedule/ScheduleDetail";
 import ChatIndex from "@pages/chat";
 import ChatPhoto from "@pages/chat/ChatPhoto";
@@ -46,6 +46,9 @@ import PhotoAlbumGroupDetail from "@pages/photo/AlbumGroupDetail";
 import ProfileModify from "@pages/profile/Modify";
 import NotFound from "@components/NotFound";
 import ExamFamilyList from "@pages/exam/FamilyList";
+import ChatPhotoDetail from "@pages/chat/ChatPhotoDetail";
+import CharacterFamilyList from "@pages/character/FamilyList";
+
 
 const Router = () => {
   return (
@@ -61,6 +64,7 @@ const Router = () => {
         {/*채팅 페이지*/}
         <Route path="/chatting" element={<ChatIndex/>}/>
         <Route path="/chatting/photo" element={<ChatPhoto/>}/>
+        <Route path="/chatting/photo/:id" element={<ChatPhotoDetail/>}/>
 
         {/*알림 페이지*/}
         <Route path="/notification" element={<NotificationIndex/>}/>
@@ -77,12 +81,13 @@ const Router = () => {
 
         {/*스케줄 페이지*/}
         <Route path="/schedule" element={<ScheduleIndex/>}/>
-        <Route path="/schedule/create-schedule" element={<ScheduleCreateSchedule/>}/>
-        <Route path="/schedule/create-review" element={<ScheduleCreateReview/>}/>
+        <Route path="/schedule/create-schedule" element={<ScheduleCreate/>}/>
+        <Route path="/schedule/create-review" element={<ReviewCreate/>}/>
         <Route path="/schedule/:id" element={<ScheduleDetail/>}/>
 
         {/*백과사전 페이지*/}
         <Route path="/character" element={<CharacterIndex/>}/>
+        <Route path="/character/start" element={<CharacterFamilyList/>}/>
         <Route path="/character/start/:memberFamilyId" element={<CharacterStart/>}/>
         <Route path="/character/question" element={<CharacterQuestion/>}/>
 

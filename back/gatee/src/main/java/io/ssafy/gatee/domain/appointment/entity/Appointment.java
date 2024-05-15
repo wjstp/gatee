@@ -1,7 +1,6 @@
 package io.ssafy.gatee.domain.appointment.entity;
 
 import io.ssafy.gatee.domain.base.BaseEntity;
-import io.ssafy.gatee.domain.chatroom.entity.ChatRoom;
 import io.ssafy.gatee.domain.family.entity.Family;
 import io.ssafy.gatee.domain.member.entity.Member;
 import jakarta.persistence.*;
@@ -10,8 +9,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLRestriction;
-import org.joda.time.DateTime;
-import org.joda.time.LocalDateTime;
 
 import java.util.Set;
 import java.util.UUID;

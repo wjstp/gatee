@@ -57,41 +57,6 @@ export const MOOD: Mood[] = [
   {name: "SLEEPY", mood: "😪", content: "피곤해요" },
 ]
 
-// 멤버 임시 데이터
-export const MemberInfoSample: MyMemberApiRes = {
-  name: "이윤정",
-  nickname: "안유진",
-  email: "zyo0720@kakao.com",
-  role: "딸",
-  birth: "2000-07-20",
-  birthType: "SOLAR",
-  fileUrl: "https://cdn.citytimes.co.kr/news/photo/202310/mn_19685_20231014093033_1.jpg",
-  mood: "HAPPY",
-  phoneNumber: "010-8806-8489",
-  memberId:"asasd",
-  isLeader:true,
-  familyId:"asdasdasd",
-  memberFamilyId:1,
-}
-
-// 가족 구성원 임시 데이터
-export const FamilyMemberInfoSample: MemberApiRes[] = [
-  {
-    birth: "2000-07-20",
-    birthType: "SOLAR",
-    email: "zyo0720@kakao.com",
-    memberId: "asasd",
-    mood: null,
-    name: "이윤정",
-    nickname: "이윤정",
-    role: "딸",
-    phoneNumber: "010-8806-8489",
-    fileUrl: "https://image.xportsnews.com/contents/images/upload/article/2023/1013/mb_1697156860596868.jpg",
-    isLeader: false,
-    memberFamilyId:1,
-  }
-]
-
 // 모의고사 임시 데이터
 export const QuestionSample: Question[] = [
   {
@@ -153,26 +118,6 @@ export const QuestionSample: Question[] = [
     question: "가장 힘들 때가 언제였나요?",
     correctAnswer: "여자 친구와 헤어졌을 때",
     answerList: ["여자 친구와 헤어졌을 때", "밥 먹을 때", "지하철 탈 때", "코딩할 때"],
-  }
-]
-
-// 사진 임시 데이터
-export const photoGroup = [
-  {
-    fileId: 1,
-    photoId: 1,
-    imageUrl: 'https://i.pinimg.com/564x/8b/a2/83/8ba283897b9ad414c929ca1a8630b4bd.jpg',
-  },
-  {
-    fileId: 2,
-    photoId: 2,
-    imageUrl: 'https://i.pinimg.com/564x/d0/8c/14/d08c14ed55d5ac1429e6ccf7fe403ad4.jpg',
-  },
-
-  {
-    fileId: 3,
-    photoId: 3,
-    imageUrl: 'https://i.pinimg.com/564x/a6/20/b6/a620b6da690371e66d9aadaf4e491d4b.jpg',
   }
 ]
 

@@ -2,6 +2,8 @@
 
 // 가족
 export interface FamilyStore {
+  chatRoomId: number | null;
+  setChatRoomId: (newId: number) => void;
   familyId: string;
   setFamilyId: (newId: string) => void;
   familyName: string;
@@ -51,16 +53,16 @@ export interface MyMemberApiRes {
   birth: string
   birthType: string;
   email: string;
+  familyId: string;
+  memberFamilyId: number;
   memberId: string;
-  mood: string|null;
+  mood: string | null;
   name: string;
   nickname: string;
-  role: string;
-  familyId: string;
   phoneNumber: string | null;
-  fileUrl: string;
+  profileImageUrl: string;
+  role: string;
   isLeader: boolean;
-  memberFamilyId:number;
 }
 
 
@@ -80,13 +82,15 @@ export interface MemberApiReq {
   birth: string
   birthType: string;
   email: string;
+  familyId: string;
+  memberFamilyId: number;
   memberId: string;
-  mood: string|null;
+  mood: string | null;
   name: string;
   nickname: string;
-  role: string;
   phoneNumber: string | null;
-  fileUrl: string;
+  profileImageUrl: string;
+  role: string;
   isLeader: boolean;
 }
 
@@ -107,38 +111,38 @@ export interface JoinFamilyApiReq {
 
 // 가족 정보 조회
 export interface GetFamilyMemberApiReq {
-  familyId: string
+  familyId: string;
+}
+
+export interface MemberApiRes {
+  birth: string;
+  birthType: string;
+  email: string;
+  memberId: string;
+  mood: string|null;
+  name: string;
+  nickname: string;
+  role: string;
+  phoneNumber: string | null;
+  fileUrl: string;
+  isLeader: boolean;
+  memberFamilyId:number;
 }
 
 export interface MemberApiRes {
   birth: string
   birthType: string;
   email: string;
-  memberId: string;
-  mood: string|null;
-  name: string;
-  nickname: string;
-  role: string;
-  phoneNumber: string | null;
-  fileUrl: string;
-  isLeader: boolean;
-  memberFamilyId:number;
-}
-
-export interface MyMemberApiRes {
-  birth: string
-  birthType: string;
-  email: string;
-  memberId: string;
-  mood: string|null;
-  name: string;
-  nickname: string;
-  role: string;
   familyId: string;
+  memberFamilyId: number;
+  memberId: string;
+  mood: string | null;
+  name: string;
+  nickname: string;
   phoneNumber: string | null;
-  fileUrl: string;
+  profileImageUrl: string;
+  role: string;
   isLeader: boolean;
-  memberFamilyId:number;
 }
 
 // 프로필 수정
@@ -150,13 +154,6 @@ export interface ModifyProfileReq {
   role: string;
   familyId: string;
   phoneNumber: string | null;
-}
-
-// 프로필 이미지 수정
-export interface ModifyProfileImageReq {
-  defaultImage: string;
-  fileType: string;
-  file: File;
 }
 
 // 기분 상태 수정
@@ -184,6 +181,62 @@ export interface Character {
 }
 
 // schedule
+export interface ScheduleListRes {
+  scheduleId: number;
+  category: string;
+  title: string;
+  emoji: string;
+  content: string;
+  startDate: string;
+  endDate: string;
+}
+
+export interface ScheduleItemRes {
+  scheduleId: number;
+  category: string;
+  title: string;
+  emoji: string;
+  content: string;
+  startDate: string;
+  endDate: string;
+  scheduleRecord: {
+    content: string;
+    imageUrl: string;
+  }[];
+  participateMembers: {
+    nickname: string;
+    memberId: string;
+    profileImageUrl: string;
+  }[]
+}
+
+export interface ScheduleCreateReq {
+  familyId: string;
+  category: string;
+  title: string;
+  emoji: string;
+  content: string | null;
+  startDate: string;
+  endDate: string;
+  memberIdList: string[];
+}
+
+export interface ScheduleModifyReq {
+  familyId: string;
+  category: string;
+  title: string;
+  emoji: string;
+  content: string | null;
+  startDate: string;
+  endDate: string;
+}
+
+export interface ScheduleRecordReq {
+  content: string;
+  fileIdList: string;
+}
+
+
 export interface Schedule {
   title: string | null;
   content: string | null;
@@ -312,6 +365,16 @@ export interface EmojiItem {
   image: string;
 }
 
+export  interface SendFileReq {
+  chatRoomId: number;
+  fileIdList: number[];
+}
+
+export interface FileRes {
+  fileId: number;
+  imageUrl: string;
+}
+
 // 잔소리 보내기 api request
 export interface NaggingApiReq {
   // 멤버 아이디
@@ -362,6 +425,7 @@ export interface GroupPhotoData {
   imageUrl: string | null,
   PhotoId: number | null
 }
+
 export interface MonthYearThumbnailPhotoData {
   createdAt: string,
   imageUrl: string,
@@ -371,6 +435,7 @@ export interface MonthYearThumbnailPhotoData {
 export interface MonthYearPhotoTabProps {
   monthYearPhotoData: MonthYearThumbnailPhotoData
 }
+
 export interface GroupPhotoItemProps {
   groupPhotoData: GroupPhotoData
 }
@@ -421,13 +486,13 @@ export interface DeletePhotoApiReq {
 
 // 모의고사 api 관련
 export interface ExamResult {
-  examId:string|number;
+  examId: string | number;
   score: number;
   createdAt: string;
 }
 
 export interface TransformedQuestionData {
-  nickname:string,
+  nickname: string,
   question: string;
   answerList: string[];
   correctNumber: number;
@@ -435,32 +500,60 @@ export interface TransformedQuestionData {
 }
 
 export interface QuestionData {
-  nickname:string;
+  nickname: string;
   questionWord: string;
   wrongAnswers: string[];
   correctAnswer: string;
 }
 
 export interface ExamProblem {
-  "question" : string,
-  "answerList" : string[],
-  "choiceNumber" : number|string,
-  "correctNumber" : number|string
+  "question": string,
+  "answerList": string[],
+  "choiceNumber": number | string,
+  "correctNumber": number | string
 }
 
 export interface SaveExamResultApiReq {
-  examResults : ExamProblem[],
-  score:number
+  examResults: ExamProblem[],
+  score: number
 }
 
 // 백문백답 api 관련
 export interface SaveAskAnswerApiReq {
-  featureId:number,
-  answer:string
+  featureId: number,
+  answer: string
 }
 
 export interface Answer {
-  featureId:number;
+  featureId: number;
   question: string;
   answer: string;
+}
+
+// 미션 api 관련
+export interface MissionListApiReq {
+  id: number;
+  type: string;
+  isComplete: boolean;
+  nowRange: number;
+  maxRange: number;
+  completedLevel: number;
+}
+
+export interface DoMission {
+  type: string;
+  photoCount: number | null;
+}
+
+// 알림 API 관련
+export interface NotificationRes {
+  typeId: number,
+  title: string,
+  notificationId: string
+  senderId: string
+  type: string
+  content: string
+  isCheck: boolean,
+  createdAt: string,
+  senderImageUrl:string
 }
