@@ -222,13 +222,15 @@ public class FamilyServiceImpl implements FamilyService {
                     .mood(memberFamily.getMember().getMood())
                     .isLeader(memberFamily.isLeader())
                     .birthType(memberFamily.getMember().getBirthType())
-                    .profileImageUrl(memberFamily.getMember().getFile().getUrl())
+                    .profileImageUrl(Objects.nonNull(memberFamily.getMember().getFile())?
+                            memberFamily.getMember().getFile().getUrl():null)
                     .phoneNumber(memberFamily.getMember().getPhoneNumber())
                     .build()).toList();
             return FamilyInfoRes.builder()
                     .name(family.getName())
                     .familyScore(family.getScore())
-                    .familyImageUrl(family.getFile().getUrl())
+                    .familyImageUrl(Objects.nonNull(family.getFile())?
+                            family.getFile().getUrl():null)
                     .memberFamilyInfoList(memberFamilyInfoList)
                     .build();
         }
