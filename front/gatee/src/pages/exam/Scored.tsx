@@ -2,11 +2,11 @@ import React, {useEffect, useState} from 'react';
 import Header from "./components/Header";
 import QuestionScored from "./components/QuestionItem";
 import getScoreImage from "@utils/getScoreImage";
-import {transformedExamList} from "@constants/index";
+// import {transformedExamList} from "@constants/index";
 import {Link, useParams} from "react-router-dom";
 import {getDetailExamResultApi} from "@api/exam";
 import {TransformedQuestionData} from "@type/index";
-import {useMemberStore} from "@store/useMemberStore";
+// import {useMemberStore} from "@store/useMemberStore";
 
 const ExamScored = () => {
   const params = useParams()
