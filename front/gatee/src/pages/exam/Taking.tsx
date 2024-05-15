@@ -111,11 +111,6 @@ const ExamTaking = () => {
     doMissionApi({type: "EXAM", photoCount: null},
       res => {
         console.log(res.data)
-        setTimeout(() => {
-            setEndLoading(false)
-            navigate(`/exam/scored/${res.data.examId}`)
-          }
-          , 1000)
 
       }, err => {
         console.log(err)
@@ -129,15 +124,18 @@ const ExamTaking = () => {
           setStartLoading(false)
         , 2000)
     } else if (endLoading === true) {
-
+      doMissionApiFunc()
       saveExamResultApi({
         examResults: transformedData,
         score: getExamScore(myAnswerList, correctAnswerSheet)
       }, res => {
         console.log(res)
         // 미션 수행 api
-        doMissionApiFunc()
-
+        setTimeout(() => {
+            setEndLoading(false)
+            navigate(`/exam/scored/${res.data.examId}`)
+          }
+          , 1000)
 
       }, err => {
         console.log(err)

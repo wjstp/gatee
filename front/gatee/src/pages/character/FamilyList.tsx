@@ -10,9 +10,9 @@ const CharacterFamilyList = () => {
       <h1 className="character-family-list-title">{familyName}의 서재</h1>
 
       <div className="character-family-list-container">
-        {familyInfo.map((member) => {
+        {familyInfo.map((member,index) => {
           return (
-            <Link to={`${member.memberFamilyId}`}
+            <Link to={`${member.memberFamilyId}`} key={index}
                   className="character-family-list-item-container">
               <div className="icon-and-name-container">
                 <img src={BookIcon} width={50} alt=""/>
