@@ -87,8 +87,13 @@ const CharacterQuestion = () => {
     doMissionApi({type: "FEATURE", photoCount: null},
       res => {
         console.log(res.data)
+        // 마지막 질문일때
         if (askIndex >= askList.length - 1) {
+          setLoading(true)
+          setTimeout(()=> {
+            setLoading(false)
           navigate(`/character/start/${myInfo.memberFamilyId}`)
+          }, 500)
         }
       }, err => {
         console.log(err)
