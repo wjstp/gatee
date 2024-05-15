@@ -1,9 +1,9 @@
 import dayjs, { Dayjs } from "dayjs";
 
 const calculateWeekday = (value: Dayjs | null) => {
-  const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
-  const dayOfWeek = dayjs(value).day();
-  if (dayOfWeek) {
+  if (value) {
+    const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
+    const dayOfWeek = dayjs(value).day();
     return weekdays[dayOfWeek];
   } else {
     return '';

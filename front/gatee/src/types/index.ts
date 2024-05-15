@@ -254,15 +254,10 @@ export interface ScheduleRecord {
   fileUrlList: FileRes[];
 }
 
-
-export interface Schedule {
-  title: string | null;
-  content: string | null;
-  category: string | null;
-  color: string | null;
-  startDate: string | null;
-  endDate: string | null;
-  participant: string[] | [];
+export enum ScheduleType {
+  GROUP = 'GROUP',
+  PERSONAL = 'PERSONAL',
+  EVENT = 'EVENT'
 }
 
 export interface Holiday {

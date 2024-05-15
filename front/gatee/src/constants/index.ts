@@ -1,9 +1,4 @@
-import {
-  Mood,
-  Question,
-  Schedule,
-  Emoji,
-} from "@type/index";
+import { Mood, Question, Emoji }from "@type/index";
 import EmojiDogOne from "@assets/images/emoji/emoji_dog1.png";
 import EmojiDogTwo from "@assets/images/emoji/emoji_dog2.png";
 import EmojiDogThree from "@assets/images/emoji/emoji_dog3.png";
@@ -53,13 +48,13 @@ export const MOOD: Mood[] = [
 
 // 일정 색상표
 export const SCHEDULE_COLOR: {name: string; code: string;}[] = [
-  {name: "red", code: "#ffa6a6"},
+  {name: "red", code: "#ffbbbb"},
   {name: "orange", code: "#ffd291"},
   {name: "yellow", code: "#ffef98"},
   {name: "green", code: "#b8ffa1"},
-  {name: "blue", code: "#abc2fb"},
-  {name: "navy", code: "#7b8cff"},
-  {name: "purple", code: "#c09cff"},
+  {name: "blue", code: "#bbdbff"},
+  {name: "navy", code: "#9eaaff"},
+  {name: "purple", code: "#d0b8ff"},
   {name: "mint", code: "#a8fadb"},
   {name: "pink", code: "#ffc3eb"},
   {name: "gray", code: "#bfbfbf"},
@@ -127,37 +122,6 @@ export const QuestionSample: Question[] = [
     question: "가장 힘들 때가 언제였나요?",
     correctAnswer: "여자 친구와 헤어졌을 때",
     answerList: ["여자 친구와 헤어졌을 때", "밥 먹을 때", "지하철 탈 때", "코딩할 때"],
-  }
-]
-
-// 일정 임시 데이터
-export const ScheduleSample: Schedule[] = [
-  {
-    title: "단체 일정",
-    content: "단체 일정입니다.",
-    category: "group",
-    color: "pink",
-    startDate: "2024-05-01T00:00",
-    endDate: "2024-05-01T23:59",
-    participant: ["zyo0720@kakao.com", "yebin4684@gmail.com", "wjstp14@gmail.com"]
-  },
-  {
-    title: "개인 일정",
-    content: "개인 일정입니다.",
-    category: "personal",
-    color: "blue",
-    startDate: "2024-05-01T00:00",
-    endDate: "2024-05-01T23:59",
-    participant: ["zyo0720@kakao.com"]
-  },
-  {
-    title: "이벤트",
-    content: "이벤트입니다.",
-    category: "event",
-    color: "purple",
-    startDate: "2024-05-01T00:00",
-    endDate: "2024-05-01T23:59",
-    participant: []
   }
 ]
 

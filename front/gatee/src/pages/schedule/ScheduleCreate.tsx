@@ -19,16 +19,20 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 import calculateWeekday from "@utils/calculateWeekday";
 import getUserInfo from "@utils/getUserInfo";
+import doMissionApiFunc from "@utils/doMissionApiFunc";
+import getColorCode from "@utils/getColorCode";
 import { useFamilyStore } from "@store/useFamilyStore";
 import { useModalStore } from "@store/useModalStore";
 import { SCHEDULE_COLOR } from "@constants/index";
 import { createScheduleApi } from "@api/schedule";
 import { CreateScheduleReq } from "@type/index";
+import { ScheduleType } from "@type/index";
 
 import { BsTextParagraph } from "react-icons/bs";
 import { MdAccessTime } from "react-icons/md";
 import { MdOutlineCategory } from "react-icons/md";
 import { GoPerson } from "react-icons/go";
+import {useMemberStore} from "@store/useMemberStore";
 
 
 const ScheduleCreate = () => {
@@ -36,11 +40,12 @@ const ScheduleCreate = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const {familyInfo, familyId} = useFamilyStore();
+  const { myInfo } = useMemberStore();
 
   const [title, setTitle] = useState<string>("");
   const [emoji, setEmoji] = useState<string>("red")
   const [content, setContent] = useState<string>("");
-  const [category, setCategory] = useState<string>("GROUP")
+  const [category, setCategory] = useState<string>(ScheduleType.GROUP)
   const [startDate, setStartDate] = useState<Dayjs | null>(null);
   const [endDate, setEndDate] = useState<Dayjs | null>(null);
   const [startTime, setStartTime] = useState<Dayjs | null>();
@@ -49,7 +54,7 @@ const ScheduleCreate = () => {
   const allMember: string[] = familyInfo.map(member => member.memberId);
 
   const [state, setState] = React.useState({bottom: false});
-  const {setShowModal} = useModalStore();
+  const { setShowModal } = useModalStore();
   type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
   const [isTitleError, setIsTitleError] = useState<boolean>(false);
@@ -57,6 +62,7 @@ const ScheduleCreate = () => {
   const [isEndDateError, setIsEndDateError] = useState<boolean>(false);
   const [startDateError, setStartDateError] = useState<DateValidationError | null>(null);
   const [endDateError, setEndDateError] = useState<DateValidationError | null>(null);
+  const [isCreatingSchedule, setIsCreatingSchedule] = useState<boolean>(false);
 
   const outerTheme = useTheme();
 
@@ -70,26 +76,33 @@ const ScheduleCreate = () => {
 
   // 일정 생성
   const createSchedule = () => {
-    const data: CreateScheduleReq = {
-      familyId,
-      category,
-      title,
-      emoji,
-      content,
-      startDate: `${startDate?.format("YYYY-MM-DD")}T${startTime?.format("HH:mm:ss")}`,
-      endDate: `${endDate?.format("YYYY-MM-DD")}T${endTime?.format("HH:mm:ss")}`,
-      memberIdList
-    }
+    if (isButtonEnabled()) {
+      setIsCreatingSchedule(true);
 
-    createScheduleApi(
-      data,
-      (res) => {
-        navigate('/schedule');
-      },
-      (err) => {
-        console.error(err);
+      const data: CreateScheduleReq = {
+        familyId,
+        category,
+        title,
+        emoji,
+        content,
+        startDate: `${startDate?.format("YYYY-MM-DD")}T${startTime?.format("HH:mm:ss")}`,
+        endDate: `${endDate?.format("YYYY-MM-DD")}T${endTime?.format("HH:mm:ss")}`,
+        memberIdList
       }
-    ).then().catch()
+
+      createScheduleApi(
+        data,
+        (res) => {
+          setIsCreatingSchedule(false);
+          doMissionApiFunc("SCHEDULE", null);
+          navigate('/schedule');
+        },
+        (err) => {
+          setIsCreatingSchedule(false);
+          console.error(err);
+        }
+      ).then().catch()
+    }
   }
 
   // 제목 입력 핸들러
@@ -102,13 +115,16 @@ const ScheduleCreate = () => {
 
   // 카테고리 선택 핸들러
   const handleSetCategory = (event: SelectChangeEvent) => {
-      setCategory(event.target.value as string);
+    setCategory(event.target.value as string);
 
-      if (event.target.value as string === "GROUP") {
-        setMemberIdList(allMember);
-      } else {
-        setMemberIdList([]);
-      }
+    if (event.target.value as string === ScheduleType.GROUP) {
+      setMemberIdList(allMember);
+    } else if (event.target.value as string === ScheduleType.PERSONAL) {
+      setMemberIdList([myInfo.memberId]);
+    }
+    else {
+      setMemberIdList([]);
+    }
   }
 
   // 시작 일자 입력 핸들러
@@ -192,12 +208,6 @@ const ScheduleCreate = () => {
     }
   }, [startDate, endDate, startTime, endTime, searchParams]);
 
-  // 색상 코드
-  const colorPalette = (value: string): string => {
-    const foundColor = SCHEDULE_COLOR.find(item => item.name === value);
-    return foundColor ? foundColor.code : "#FFFFFFFF";
-  };
-
   // 참여자 입력 핸들러
   const handleSetParticipants = (value: string) => {
     if (memberIdList.includes(value)) {
@@ -237,7 +247,7 @@ const ScheduleCreate = () => {
 
   // 일정 생성 버튼 활성화 여부 계산
   const isButtonEnabled = () => {
-    return title && !isStartDateError && !isEndDateError;
+    return title && !isStartDateError && !isEndDateError && !isCreatingSchedule;
   };
 
   // 슬라이드 다운 해서 내리기 기능 가능
@@ -289,7 +299,7 @@ const ScheduleCreate = () => {
             <button
               key={index}
               className={`create-schedule__input-color-item${item.name === emoji ? '--active' : ''}`}
-              style={{backgroundColor: colorPalette(item.name)}}
+              style={{backgroundColor: getColorCode(item.name)}}
               onClick={() => setEmoji(item.name)}
             />
           ))}
@@ -395,7 +405,7 @@ const ScheduleCreate = () => {
                       <button
                         className="create-schedule-info__input-color-button"
                         onClick={toggleDrawer("bottom", true)}
-                        style={{ backgroundColor: colorPalette(emoji) }}
+                        style={{ backgroundColor: getColorCode(emoji) }}
                       >
                       </button>
                     </InputAdornment>
@@ -430,26 +440,6 @@ const ScheduleCreate = () => {
                   }}
                 />
               </div>
-
-
-            {/*일정 카테고리 선택*/}
-            {/*<div className="create-schedule-info__input-category">*/}
-            {/*  <button*/}
-            {/*    className={`create-schedule-info__input-category-group${category === "group" ? '--active' : ''}`}*/}
-            {/*    onClick={() => handleSetCategory("group")}*/}
-            {/*  >가족 일정*/}
-            {/*  </button>*/}
-            {/*  <button*/}
-            {/*    className={`create-schedule-info__input-category-personal${category === "personal" ? '--active' : ''}`}*/}
-            {/*    onClick={() => handleSetCategory("personal")}*/}
-            {/*  >개인 일정*/}
-            {/*  </button>*/}
-            {/*  <button*/}
-            {/*    className={`create-schedule-info__input-category-event${category === "event" ? '--active' : ''}`}*/}
-            {/*    onClick={() => handleSetCategory("event")}*/}
-            {/*  >이벤트*/}
-            {/*  </button>*/}
-            {/*</div>*/}
           </div>
 
           {/*일정 기간 선택*/}
@@ -497,7 +487,7 @@ const ScheduleCreate = () => {
                 {/*종료 일자*/}
                 <DateField
                   value={endDate}
-                  format={`YYYY.MM.DD.${calculateWeekday(startDate)}요일`}
+                  format={`YYYY.MM.DD.${calculateWeekday(endDate)}요일`}
                   onChange={handleSetEndDate}
                   minDate={dayjs(startDate)}
                   onError={(newError) => setEndDateError(newError)}
@@ -546,15 +536,15 @@ const ScheduleCreate = () => {
                 value={category}
                 onChange={handleSetCategory}
               >
-                <MenuItem value={"GROUP"}>단체 일정</MenuItem>
-                <MenuItem value={"PERSONAL"}>개인 일정</MenuItem>
-                <MenuItem value={"EVENT"}>이벤트</MenuItem>
+                <MenuItem value={ScheduleType.GROUP}>단체 일정</MenuItem>
+                <MenuItem value={ScheduleType.PERSONAL}>개인 일정</MenuItem>
+                <MenuItem value={ScheduleType.EVENT}>이벤트</MenuItem>
               </Select>
             </FormControl>
           </div>
 
           {/*참여하는 사람*/}
-          {category === "GROUP" && (
+          {category === ScheduleType.GROUP && (
             <>
               <div className="create-schedule-participant-title">
                 <div className="create-schedule__wrapper">
