@@ -45,7 +45,8 @@ const ScheduleCreate = () => {
   const [endDate, setEndDate] = useState<Dayjs | null>(null);
   const [startTime, setStartTime] = useState<Dayjs | null>();
   const [endTime, setEndTime] = useState<Dayjs | null>();
-  const [memberIdList, setMemberIdList] = useState<string[]>(familyInfo.map(member => member.memberId));
+  const [memberIdList, setMemberIdList] = useState<string[]>([]);
+  const allMember: string[] = familyInfo.map(member => member.memberId);
 
   const [state, setState] = React.useState({bottom: false});
   const {setShowModal} = useModalStore();
@@ -64,6 +65,7 @@ const ScheduleCreate = () => {
     setEndDate(dayjs(searchParams.get("end")));
     setStartTime(dayjs(`${searchParams.get("start")} 00:00:00`));
     setEndTime(dayjs(`${searchParams.get("end")} 23:59:59`));
+    setMemberIdList(allMember);
   }, [searchParams]);
 
   // 일정 생성
@@ -74,17 +76,14 @@ const ScheduleCreate = () => {
       title,
       emoji,
       content,
-      startDate: `${startDate?.format("YYYY-MM-DD")} ${startTime?.format("HH:mm:ss")}`,
-      endDate: `${endDate?.format("YYYY-MM-DD")} ${endTime?.format("HH:mm:ss")}`,
+      startDate: `${startDate?.format("YYYY-MM-DD")}T${startTime?.format("HH:mm:ss")}`,
+      endDate: `${endDate?.format("YYYY-MM-DD")}T${endTime?.format("HH:mm:ss")}`,
       memberIdList
     }
-
-    console.log(data);
 
     createScheduleApi(
       data,
       (res) => {
-        console.log(res);
         navigate('/schedule');
       },
       (err) => {
@@ -104,6 +103,12 @@ const ScheduleCreate = () => {
   // 카테고리 선택 핸들러
   const handleSetCategory = (event: SelectChangeEvent) => {
       setCategory(event.target.value as string);
+
+      if (event.target.value as string === "GROUP") {
+        setMemberIdList(allMember);
+      } else {
+        setMemberIdList([]);
+      }
   }
 
   // 시작 일자 입력 핸들러
@@ -148,7 +153,8 @@ const ScheduleCreate = () => {
 
       case 'minDate': {
         setIsEndDateError(true);
-        return '시작일 이후의 날짜를 입력해 주세요';
+        setEndDate(startDate);
+        return '';
       }
 
       default: {
@@ -238,7 +244,6 @@ const ScheduleCreate = () => {
   const toggleDrawer =
     (anchor: Anchor, open: boolean) =>
       (event: React.KeyboardEvent | React.MouseEvent) => {
-        console.log(anchor)
         if (open === true) {
           setShowModal(true)
         } else {
@@ -257,7 +262,6 @@ const ScheduleCreate = () => {
 
   // 설정 탭에서 완료 버튼 누를 때 팝업 내리기
   const handleFinishTab = (event: React.MouseEvent) => {
-    console.log("부모")
     toggleDrawer('bottom', false)(event)
   }
 
@@ -412,6 +416,7 @@ const ScheduleCreate = () => {
                   onChange={handleSetContent}
                   placeholder="설명 추가"
                   multiline
+                  maxRows={5}
                   variant="standard"
                   spellCheck={false}
                   InputProps={{

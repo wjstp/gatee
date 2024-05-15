@@ -191,6 +191,11 @@ export interface ScheduleListRes {
   endDate: string;
 }
 
+export interface ScheduleListReq {
+  familyId: string;
+  month: number;
+}
+
 export interface ScheduleDetailRes {
   scheduleId: number;
   category: string;
@@ -244,6 +249,7 @@ export interface CreateRecordReq {
 }
 
 export interface ScheduleRecord {
+  scheduleRecordId: number;
   content: string;
   fileUrlList: FileRes[];
 }

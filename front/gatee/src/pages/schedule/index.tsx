@@ -1,21 +1,25 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import dayjs from 'dayjs';
 
 import { DateSelectArg, DayCellContentArg } from '@fullcalendar/core'
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin, { DateClickArg } from "@fullcalendar/interaction";
 import googleCalendarPlugin from "@fullcalendar/google-calendar";
-import dayjs from 'dayjs';
 
 import DayToast from "@pages/schedule/components/DayToast";
+import {getAllScheduleApi, getDetailScheduleApi} from "@api/schedule";
+
 import { FaCaretLeft, FaCaretRight } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
+import {useFamilyStore} from "@store/useFamilyStore";
 
 
 const ScheduleIndex = () => {
   const navigate = useNavigate();
-  const calendarRef: any = useRef(null)
+  const calendarRef: any = useRef(null);
+
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const [selectedDate, setSelectedDate] = useState<string>("");
   const [isOpenDayToast, setIsOpenDayToast] = useState<boolean>(false);
@@ -23,14 +27,43 @@ const ScheduleIndex = () => {
   const [selectedEndDate, setSelectedEndDate] = useState<string>(dayjs().format("YYYY-MM-DD"));
   const { REACT_APP_GOOGLE_API_KEY, REACT_APP_GOOGLE_CALENDAR_ID } = process.env;
 
+  const { familyId} = useFamilyStore();
 
+  // Fullcalendar 설정
   useEffect(() => {
     if (calendarRef.current) {
       const calendarApi = calendarRef.current.getApi();
       const calendarDate = calendarApi.getDate();
+
+      // 오늘 날짜 설정
       setCurrentDate(calendarDate);
+
     }
   }, []);
+
+  // 일정 데이터 불러오기
+  useEffect(() => {
+  if (familyId) {
+    getAllSchedule();
+  }
+  }, [familyId]);
+
+  const getAllSchedule = () => {
+    const data = {
+      familyId,
+      month: currentDate.getMonth() + 1
+    }
+
+    getAllScheduleApi (
+      data,
+      (res) => {
+        console.log(res);
+      },
+      (err) => {
+        console.error(err);
+      }
+    )
+  }
 
   // 이전 또는 다음 달로 이동하는 클릭 핸들러
   const handleMonthChange = (amount: number) => {
@@ -120,18 +153,9 @@ const ScheduleIndex = () => {
 
   return (
     <div className="schedule">
-      {/*배너*/}
-      <div
-        className={`schedule__banner${currentDate.getMonth() + 1}${isOpenDayToast ? ' schedule__banner--open' : ''}`}></div>
-
       <div className={`schedule-calendar${isOpenDayToast ? '--open' : ''}`}>
         {/*달력 헤더*/}
         <div className="schedule-calendar__header">
-        {/*오늘 날짜 이동 버튼*/}
-          <button className="schedule-calendar__button-today" onClick={handleTodayClick}>
-            <span>today</span>
-          </button>
-
           <div className="schedule-calendar__title-wrapper">
             {/*이전 달 전환 버튼*/}
             <button className="schedule-calendar__button-month" onClick={() => handleMonthChange(-1)}>
@@ -161,7 +185,7 @@ const ScheduleIndex = () => {
             googleCalendarApiKey={REACT_APP_GOOGLE_API_KEY}    // 구글 캘린더 API
             headerToolbar={{left: "", center: "", right: ""}}
             initialView={"dayGridMonth"}
-            height={"98%"}               // calendar 높이
+            height={"100%"}               // calendar 높이
             locale={"kr"}                // 언어 한글로 변경
             selectable={true}            // 영역 선택
             dayMaxEvents={true}          // row 높이보다 많으면 +N more 링크 표시
@@ -195,6 +219,11 @@ const ScheduleIndex = () => {
 
       {/*일자별 일정 리스트*/}
       {isOpenDayToast && <DayToast date={selectedDate} onCloseClick={handleDayClose} />}
+
+      {/*오늘 날짜 이동 버튼*/}
+      <button className="schedule-calendar__button-today" onClick={handleTodayClick}>
+        <span>오늘</span>
+      </button>
 
       {/*이벤트 추가 버튼*/}
       <button className="schedule-calendar__button-add-event" onClick={handleCreateScheduleClick}>

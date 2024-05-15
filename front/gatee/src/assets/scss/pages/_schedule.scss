@@ -1,39 +1,15 @@
-@use '../abstracts/index' as *;
-@use '../components/index' as *;
+@use '../abstracts' as *;
+@use '../components' as *;
 
-@function calendarBannerImage($month) {
-  @return '../../images/schedule/bg_calendar_banner' + $month + '.jpg';
-}
 
 .schedule {
   height: 100%;
   position: relative;
-
-  &__banner {
-    // banner뒤의 숫자에 따라 1월부터 12월까지의 이미지로 변경
-    @for $i from 1 through 12 {
-      &#{$i} {
-        background: {
-          image: url(calendarBannerImage(#{$i}));
-          position: center;
-          repeat: no-repeat;
-          size: cover;
-        };
-        height: 13%;
-        border-radius: 40px 40px 0 0;
-        transition: height 0.5s ease;
-      }
-    }
-
-    &--open {
-      height: 0%;
-    }
-  }
 }
 
 .schedule-calendar {
   margin: 0 2%;
-  height: 87%;
+  height: 100%;
 
   &--open {
     height: 50%;
@@ -59,11 +35,19 @@
   &__button {
     &-today {
       position: absolute;
-      left: 1.5rem;
+      z-index: 10;
+      left: 50%;
+      bottom: 7dvw;
+      margin-left: -30px;
+      margin-top: -18px;
+      background-color: white;
       color: $orange300;
+      padding: 8px 15px;
+      border-radius: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       font: {
         weight: 600;
-        size: $font-size-small;
+        size: 15px;
       }
     }
 

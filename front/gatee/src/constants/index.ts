@@ -12,8 +12,8 @@ import EmojiJulOne from "@assets/images/emoji/emoji_jul1.png";
 import EmojiJulTwo from "@assets/images/emoji/emoji_jul2.png";
 import EmojiJulThree from "@assets/images/emoji/emoji_jul3.png";
 import EmojiJulFour from "@assets/images/emoji/emoji_jul4.png";
-import EmojiDogThum from "@assets/images/emoji/emoji_dog_thum.png";
-import EmojiJulThum from "@assets/images/emoji/emoji_jul_thum.png";
+import EmojiDogThumb from "@assets/images/emoji/emoji_dog_thum.png";
+import EmojiJulThumb from "@assets/images/emoji/emoji_jul_thum.png";
 
 /* 대문자로 작성 */
 
@@ -21,7 +21,7 @@ import EmojiJulThum from "@assets/images/emoji/emoji_jul_thum.png";
 export const EMOJI: Emoji[] = [
   {
     name: "dog",
-    image: EmojiDogThum,
+    image: EmojiDogThumb,
     item: [
       { id: "dog1", image: EmojiDogOne },
       { id: "dog2", image: EmojiDogTwo },
@@ -31,7 +31,7 @@ export const EMOJI: Emoji[] = [
   },
   {
     name: "jul",
-    image: EmojiJulThum,
+    image: EmojiJulThumb,
     item: [
       { id: "jul1", image: EmojiJulOne },
       { id: "jul2", image: EmojiJulTwo },
@@ -54,7 +54,7 @@ export const MOOD: Mood[] = [
 // 일정 색상표
 export const SCHEDULE_COLOR: {name: string; code: string;}[] = [
   {name: "red", code: "#ffa6a6"},
-  {name: "orange", code: "#FFC773"},
+  {name: "orange", code: "#ffd291"},
   {name: "yellow", code: "#ffef98"},
   {name: "green", code: "#b8ffa1"},
   {name: "blue", code: "#abc2fb"},

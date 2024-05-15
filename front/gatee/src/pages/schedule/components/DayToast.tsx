@@ -11,12 +11,12 @@ interface DayToastProps {
 }
 
 const DayToast = ({date, onCloseClick}: DayToastProps) => {
-  const dateTitle = dayjs(date).format("M월 D일");
+  const dateTitle: string = dayjs(date).format("M월 D일");
 
   return (
     <div className="day-toast">
       <div className="day-toast__header">
-        <div className="day-toast__title">{dateTitle} ({calculateWeekday(dayjs(date))})</div>
+        <div className="day-toast__title">{dateTitle} {`${calculateWeekday(dayjs(date))}요일`}</div>
         <button className="day-toast__close" onClick={onCloseClick}>close</button>
       </div>
 

@@ -1,16 +1,22 @@
 import localAxios from "@api/LocalAxios";
 import { AxiosError, AxiosInstance, AxiosResponse } from "axios";
-import { CreateScheduleReq, ModifyScheduleReq, ScheduleDetailReq, CreateRecordReq } from "@type/index";
+import {
+  ScheduleListReq,
+  CreateScheduleReq,
+  ModifyScheduleReq,
+  ScheduleDetailReq,
+  CreateRecordReq } from "@type/index";
 
 
 const local: AxiosInstance = localAxios();
 
 
 // 전체 일정 조회
-export const getAllScheduleApi = async function (familyId: string,
+export const getAllScheduleApi = async function (data: ScheduleListReq,
                                               success: (res: AxiosResponse<any>) => void,
                                               fail: (err: AxiosError<any>) => void) {
-  await local.get(`/schedule`, {params: familyId}).then(success).catch(fail);
+  const { familyId, month } = data;
+  await local.get(`/schedule?familyId=${familyId}&month=${month}`).then(success).catch(fail);
 }
 
 // 일정 상세 조회
@@ -18,7 +24,7 @@ export const getDetailScheduleApi = async function (requestData: ScheduleDetailR
                                               success: (res: AxiosResponse<any>) => void,
                                               fail: (err: AxiosError<any>) => void) {
   const { scheduleId, familyId } = requestData;
-  await local.get(`/schedule/${scheduleId}`, {params: familyId}).then(success).catch(fail);
+  await local.get(`/schedule/${scheduleId}?familyId=${familyId}`).then(success).catch(fail);
 }
 
 // 일정 등록
@@ -48,7 +54,7 @@ export const applyScheduleParticipationApi = async function (requestData: Schedu
                                                     success: (res: AxiosResponse<any>) => void,
                                                     fail: (err: AxiosError<any>) => void) {
   const { scheduleId, familyId } = requestData;
-  await local.post(`/schedule/${scheduleId}`, {params: familyId}).then(success).catch(fail);
+  await local.post(`/schedule/${scheduleId}`, familyId).then(success).catch(fail);
 }
 
 // 일정 참여 취소
@@ -56,7 +62,7 @@ export const cancelScheduleParticipationApi = async function (requestData: Sched
                                                 success: (res: AxiosResponse<any>) => void,
                                                 fail: (err: AxiosError<any>) => void) {
   const { scheduleId, familyId } = requestData;
-  await local.patch(`/schedule/${scheduleId}/cancel`, {params: familyId}).then(success).catch(fail);
+  await local.patch(`/schedule/${scheduleId}/cancel`, familyId).then(success).catch(fail);
 }
 
 // 일정 후기 등록
