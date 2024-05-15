@@ -1,11 +1,6 @@
 import {create} from "zustand";
 
-interface NotificationPush {
-  title:string,
-  body:string,
-  icon:string,
-  url:string,
-}
+
 type ModalStore = {
   showModal: boolean;
   setShowModal: (newShow: boolean) => void;

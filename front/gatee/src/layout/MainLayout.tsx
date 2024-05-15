@@ -11,7 +11,6 @@ import {getFamilyMemberApi, getMyDataApi} from "@api/member";
 import firebase from "../firebase-config";
 import 'firebase/database';
 import NotificationPopUp from "@components/NotificationPopup";
-import {useNotificationStore} from "@store/useNotificationStore";
 
 const MainLayout = () => {
   const {showModal} = useModalStore();
