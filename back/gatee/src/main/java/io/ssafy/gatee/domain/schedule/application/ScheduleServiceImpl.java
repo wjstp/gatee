@@ -195,6 +195,8 @@ public class ScheduleServiceImpl implements ScheduleService {
     public void deleteSchedule(Long scheduleId) {
         Schedule schedule = scheduleRepository.getReferenceById(scheduleId);
 
+        List<ScheduleRecord> scheduleRecordList = scheduleRecordRepository.findAllBySchedule(schedule);
+
         schedule.deleteData();
     }
 
@@ -278,10 +280,10 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     // 일정 후기 삭제
     @Override
-    public void deleteScheduleRecord(Long scheduleId) {
+    public void deleteScheduleRecord(Long scheduleId, Long scheduleRecordId) {
         Schedule schedule = scheduleRepository.getReferenceById(scheduleId);
 
-        ScheduleRecord scheduleRecord = scheduleRecordRepository.findBySchedule(schedule);
+        ScheduleRecord scheduleRecord = scheduleRecordRepository.getReferenceById(scheduleRecordId);
 
         scheduleRecord.deleteData();
     }
