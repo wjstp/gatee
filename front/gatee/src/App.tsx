@@ -2,7 +2,6 @@ import React, {useEffect} from 'react';
 import Router from "./Router";
 import firebase from "./firebase-config";
 import {useLocation} from "react-router-dom";
-import {requestPermission} from "./firebase-messaging-sw";
 import {useNotificationStore} from "@store/useNotificationStore";
 
 const App = () => {
@@ -14,8 +13,8 @@ const App = () => {
   if (firebase.messaging.isSupported()) {
     messaging = firebase.messaging();
   }
-  // 권한 묻기
-  requestPermission()
+
+  
   let url = "/main"
 
   // 메세지 받기
@@ -43,7 +42,9 @@ const App = () => {
   useEffect(() => {
     if (notificationPopUp !== null) {
       // 채팅이 아니고, 알림페이지 아닐때만 알림 팝업 울리기
-      if (!notificationPopUp.title.includes("채팅") || location.pathname !== "/notification") {
+      if (notificationPopUp.title.includes("채팅")) {
+      }
+      else if(location.pathname !== "/notification") {
         setShowNotification(true)
       }
     }

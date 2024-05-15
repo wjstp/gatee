@@ -38,7 +38,7 @@
       @include flex-col;
       @include flex_center;
       height: 100vh*0.5;
-      //width: 100vw;
+      width: 100vw;
       padding-top: 3rem;
       //border: 3px solid red;
     }
@@ -59,6 +59,8 @@
 
     img {
       object-fit: cover;
+      height: 45dvh;
+      width: auto;
     }
 
     ////카카오 버튼
