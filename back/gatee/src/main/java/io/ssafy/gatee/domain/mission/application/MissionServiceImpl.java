@@ -40,6 +40,7 @@ public class MissionServiceImpl implements MissionService {
 
     // 미션 수행
     @Override
+    @Transactional
     public void progressMission(UUID memberId, MissionTypeReq missionTypeReq) {
         Member member = memberRepository.getReferenceById(memberId);
 
@@ -50,6 +51,7 @@ public class MissionServiceImpl implements MissionService {
 
     // 미션 완료
     @Override
+    @Transactional
     public void completeMission(UUID memberId, Type type) {
         Member member = memberRepository.getReferenceById(memberId);
 
