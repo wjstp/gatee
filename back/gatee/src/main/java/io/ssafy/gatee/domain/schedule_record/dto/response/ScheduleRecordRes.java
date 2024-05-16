@@ -1,7 +1,6 @@
 package io.ssafy.gatee.domain.schedule_record.dto.response;
 
 import io.ssafy.gatee.domain.file.dto.FileUrlRes;
-import io.ssafy.gatee.domain.file.entity.File;
 import io.ssafy.gatee.domain.schedule_record.entity.ScheduleRecord;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -20,11 +19,11 @@ public record ScheduleRecordRes(
         @NotNull
         List<FileUrlRes> fileUrlList
 ) {
-    public static ScheduleRecordRes toDto(ScheduleRecord scheduleRecord, List<File> fileList) {
+    public static ScheduleRecordRes toDto(ScheduleRecord scheduleRecord, List<FileUrlRes> fileUrlResList) {
         return ScheduleRecordRes.builder()
                 .scheduleRecordId(scheduleRecord.getId())
                 .content(scheduleRecord.getContent())
-                .fileUrlList(fileList.stream().map(FileUrlRes::toDto).toList())
+                .fileUrlList(fileUrlResList)
                 .build();
     }
 }
