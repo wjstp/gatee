@@ -242,8 +242,6 @@ const NotificationItem = ({notificationData, handleReadNotification}: {
   const hour = dateDate.getHours()
   const minute = dateDate.getMinutes()
 
-  console.log(minute)
-
 
   // 알림 누르기
   const handleNotificationItemClick = () => {

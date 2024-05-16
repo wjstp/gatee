@@ -5,6 +5,7 @@ import {IoSend} from "react-icons/io5";
 import {InputAdornment} from "@mui/material";
 import getMoodEmoji from "@utils/getMoodEmoji";
 import getMoodContent from "@utils/getMoodContent";
+import {useMemberStore} from "@store/useMemberStore";
 
 interface ProfileModalProps {
   profileData: MemberApiRes | null,
@@ -12,6 +13,7 @@ interface ProfileModalProps {
 }
 
 const ProfileModal = ({profileData, handleModalEvent}: ProfileModalProps) => {
+  const {myInfo} = useMemberStore()
   // 한마디 보내기 버튼 누르기 상태 관리
   const [isSendBtnClicked, setIsSendBtnClicked] = useState(false);
   // 메세지 입력 상태
@@ -76,19 +78,22 @@ const ProfileModal = ({profileData, handleModalEvent}: ProfileModalProps) => {
       {/* 버튼 */}
       <div className="profile-modal--button--container">
 
-        <button className="profile-modal-go-to-detail"
+        <button className={profileData?.memberId !== myInfo.memberId ? "profile-modal-go-to-detail":"profile-modal-go-to-detail flex-1"}
                 onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
                   handleProfileEvent(event, "gotoProfile")
                 }}>
           프로필
         </button>
 
+        {profileData?.memberId !== myInfo.memberId ?
         <button className="profile-modal-open-message"
                 onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
                   handleProfileEvent(event, "openMessage")
                 }}>
           한마디 보내기
         </button>
+
+        :null}
       </div>
 
       {/* 메세지 인풋 창 */}
