@@ -1,39 +1,15 @@
-@use '../abstracts/index' as *;
-@use '../components/index' as *;
+@use '../abstracts' as *;
+@use '../components' as *;
 
-@function calendarBannerImage($month) {
-  @return '../../images/schedule/bg_calendar_banner' + $month + '.jpg';
-}
 
 .schedule {
   height: 100%;
   position: relative;
-
-  &__banner {
-    // banner뒤의 숫자에 따라 1월부터 12월까지의 이미지로 변경
-    @for $i from 1 through 12 {
-      &#{$i} {
-        background: {
-          image: url(calendarBannerImage(#{$i}));
-          position: center;
-          repeat: no-repeat;
-          size: cover;
-        };
-        height: 13%;
-        border-radius: 40px 40px 0 0;
-        transition: height 0.5s ease;
-      }
-    }
-
-    &--open {
-      height: 0%;
-    }
-  }
 }
 
 .schedule-calendar {
   margin: 0 2%;
-  height: 87%;
+  height: 100%;
 
   &--open {
     height: 50%;
@@ -59,11 +35,19 @@
   &__button {
     &-today {
       position: absolute;
-      left: 1.5rem;
+      z-index: 10;
+      left: 50%;
+      bottom: 7dvw;
+      margin-left: -30px;
+      margin-top: -18px;
+      background-color: white;
       color: $orange300;
+      padding: 8px 15px;
+      border-radius: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       font: {
         weight: 600;
-        size: $font-size-small;
+        size: 15px;
       }
     }
 
@@ -124,9 +108,11 @@
     position: absolute;
     z-index: -10;
     background: $orange400;
-    top: -2px;
-    left: 25%;
-    width: 50%;
+    top: 0;
+    left: 50%;
+    width: 25px;
+    height: 25px;
+    transform: translate(-50%, -17%);
     padding-bottom: 50%;
     border-radius: 50%;
   }
@@ -144,6 +130,7 @@
   width: 100dvw;
   overflow: auto;
   border-top: $gray100 1px solid;
+  background-color: $gray75;
 
   &__header {
     @include mt-(1);
@@ -165,28 +152,25 @@
 
   }
 
-  &__schedule-list {
+  &__schedule {
     @include flex_col;
 
     gap: 1rem;
 
     &-group {
-      background-color: #FFD08A;
       min-height: 7rem;
-      border: $gray100 1px solid;
-      border-radius: 10px;
+      background-color: white;
     }
 
     &-personal {
-      background-color: #c2e5c5;
       min-height: 7rem;
+      background-color: white;
     }
 
     &-event {
-      background-color: #b8cdff;
       min-height: 7rem;
-      border: $gray100 1px solid;
-      border-radius: 10px;
+      background-color: white;
     }
   }
+
 }

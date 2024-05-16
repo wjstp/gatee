@@ -1,8 +1,37 @@
-@use '../abstracts/index' as *;
+@use '../abstracts' as *;
+@use '../base' as *;
 
 // mui 라이브러리 CSS 수정 파일
 
 // 탑 drawer 그림자 없에기 속성
 .css-1nvnyqx-MuiPaper-root-MuiDrawer-paper {
   box-shadow: none !important;
+}
+
+.css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root,
+.css-n70jm4-MuiInputBase-root-MuiInput-root-MuiSelect-root,
+.css-1yejmy4-MuiInputBase-root-MuiInput-root,
+.css-1rxmx0e-MuiInputBase-root-MuiInput-root,
+.css-12d570c-MuiInputBase-root-MuiInput-root,
+.css-eg0gsk-MuiInputBase-root-MuiInput-root,
+.css-z1o969-MuiInputBase-root-MuiOutlinedInput-root{
+  font-family: $pretendard !important;
+  font-size: $font-size !important;
+}
+
+.css-12d570c-MuiInputBase-root-MuiInput-root::after,
+.css-1rxmx0e-MuiInputBase-root-MuiInput-root::after,
+.css-1yejmy4-MuiInputBase-root-MuiInput-root::after
+{
+  border-bottom: 1px solid $orange400 !important;
+}
+
+.css-n70jm4-MuiInputBase-root-MuiInput-root-MuiSelect-root:hover:not(.Mui-disabled, .Mui-error):before,
+.css-n70jm4-MuiInputBase-root-MuiInput-root-MuiSelect-root::before,
+.css-n70jm4-MuiInputBase-root-MuiInput-root-MuiSelect-root::after {
+  border: none !important;
+}
+
+.css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root.Mui-selected {
+  background-color: $orange100 !important;
 }
