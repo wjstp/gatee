@@ -19,4 +19,6 @@ public interface ChatService {
     void sendImages(ChatDto chatDto, UUID memberId) throws FirebaseMessagingException;
 
     void sendDateLine(FireStoreChatDto fireStoreChatDto, UUID familyId);
+
+    void sendDateLineToAll();
 }
