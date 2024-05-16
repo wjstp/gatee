@@ -17,7 +17,7 @@
   @include flex-row;
   @include mx-(3);
   @include px-(1.5);
-  @include py-(1);
+  @include py-(1.8);
   @extend %modal-fade-out;
 
   position: fixed;
@@ -29,9 +29,10 @@
   align-items: center;
   margin: auto auto;
   top: 2rem;
-  background-color: #fff;
-  border-radius: 1rem;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  background-color: rgba(255, 227, 185, 0.8);
+
+  border-radius: 1.1rem;
+  //box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   gap: 0.7rem;
 
 
