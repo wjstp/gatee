@@ -1,43 +1,93 @@
 import React from 'react';
-import { Schedule } from '@type/index';
+import { ScheduleListRes } from '@type/index';
+import { NavLink } from "react-router-dom";
+import getColorCode from "@utils/getColorCode";
+import { ScheduleType } from "@type/index";
 
+type DayScheduleProps = {
+  schedule: ScheduleListRes;
+};
 
-export enum ScheduleType {
-  GROUP = 'group',
-  PERSONAL = 'personal',
-  EVENT = 'event'
-}
-
-const GroupSchedule = ({ schedule }: { schedule: Schedule }) => {
+const Group = (props: DayScheduleProps) => {
+  const { schedule } = props;
   return (
-    <div className="day-toast__schedule-list-group">
-      { schedule.title }
-    </div>
+    <NavLink
+      to={`/schedule/${schedule.scheduleId}`}
+      className="day-toast__schedule-group"
+      style={{ borderLeft: `5px solid ${getColorCode(schedule.emoji)}` }}
+    >
+      <div>
+        { schedule.startDate }
+      </div>
+      <div>
+        { schedule.endDate }
+      </div>
+      <div>
+        { schedule.title }
+      </div>
+      <div>
+        { schedule.content }
+      </div>
+    </NavLink>
   );
 };
 
-const PersonalSchedule = ({ schedule }: { schedule: Schedule }) => {
+const Personal = (props: DayScheduleProps) => {
+  const { schedule} = props;
   return (
-    <div className="day-toast__schedule-list-personal">
-      { schedule.title }
-    </div>
+    <NavLink
+      to={`/schedule/${schedule.scheduleId}`}
+      className="day-toast__schedule-personal"
+      style={{borderLeft: `5px solid ${getColorCode(schedule.emoji)}`}}
+    >
+      <div>
+        {schedule.startDate}
+      </div>
+      <div>
+        {schedule.endDate}
+      </div>
+      <div>
+        {schedule.title}
+      </div>
+      <div>
+        {schedule.content}
+      </div>
+    </NavLink>
   );
 };
 
-const Event = ({ schedule }: { schedule: Schedule }) => {
+const Event = (props: DayScheduleProps) => {
+  const {schedule} = props;
   return (
-    <div className="day-toast__schedule-list-event">
-      { schedule.title }
-    </div>
+    <NavLink
+      to={`/schedule/${schedule.scheduleId}`}
+      className="day-toast__schedule-event"
+      style={{borderLeft: `5px solid ${getColorCode(schedule.emoji)}`}}
+    >
+      <div>
+        {schedule.startDate}
+      </div>
+      <div>
+        {schedule.endDate}
+      </div>
+      <div>
+        {schedule.title}
+      </div>
+      <div>
+        {schedule.content}
+      </div>
+    </NavLink>
   );
 };
 
-const EventComponent = ({ schedule }: { schedule: Schedule }) => {
+const DayScheduleCard = (props: DayScheduleProps) => {
+  const {schedule} = props;
+
   switch (schedule.category) {
     case ScheduleType.GROUP:
-      return <GroupSchedule schedule={schedule} />;
+      return <Group schedule={schedule}/>;
     case ScheduleType.PERSONAL:
-      return <PersonalSchedule schedule={schedule} />;
+      return <Personal schedule={schedule} />;
     case ScheduleType.EVENT:
       return <Event schedule={schedule} />;
     default:
@@ -45,4 +95,4 @@ const EventComponent = ({ schedule }: { schedule: Schedule }) => {
   }
 };
 
-export default EventComponent;
+export default DayScheduleCard;

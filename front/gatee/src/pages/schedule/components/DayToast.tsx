@@ -1,34 +1,35 @@
 import React from 'react';
-import { ScheduleSample } from "@constants/index"
-import { Schedule } from "@type/index";
+import { ScheduleListRes } from "@type/index";
 import DayScheduleCard from "@pages/schedule/components/DayScheduleCard";
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import calculateWeekday from "@utils/calculateWeekday";
 
 interface DayToastProps {
-  date: string;
+  date: string,
+  schedules: ScheduleListRes[];
   onCloseClick: () => void;
 }
 
-const DayToast = ({date, onCloseClick}: DayToastProps) => {
-  const dateTitle = dayjs(date).format("M월 D일");
+const DayToast = (props: DayToastProps) => {
+  const { date, schedules, onCloseClick } = props;
+  const dateTitle: string = dayjs(date).format("M월 D일");
 
   return (
     <div className="day-toast">
       <div className="day-toast__header">
-        <div className="day-toast__title">{dateTitle} ({calculateWeekday(dayjs(date))})</div>
+        <div className="day-toast__title">{dateTitle} {`${calculateWeekday(dayjs(date))}요일`}</div>
         <button className="day-toast__close" onClick={onCloseClick}>close</button>
       </div>
 
       {/*일정 리스트*/}
-      <div className="day-toast__schedule-list">
+      <div className="day-toast__schedule">
         {/*일정이 없는 경우*/}
-        {ScheduleSample.length === 0 &&
+        {schedules.length === 0 &&
           <div className="day-toast__no-event">일정이 없습니다</div>
         }
 
         {/*일정 리스트*/}
-        {ScheduleSample.map((schedule: Schedule, index: number) => (
+        {schedules.map((schedule: ScheduleListRes, index: number) => (
           <DayScheduleCard key={index} schedule={schedule}/>
         ))}
       </div>
