@@ -1,5 +1,6 @@
 @use '../abstracts' as *;
 @use '../components' as *;
+@use '../base' as *;
 
 $chat-input-height: 3rem;
 
@@ -269,6 +270,13 @@ $chat-input-height: 3rem;
       width: 1.7rem;
       height: 1.7rem;
       font-size: $font-size-small;
+    }
+
+    &__nickname {
+      font: {
+        family: $pretendard;
+        size: $font-size;
+      }
     }
 
     &-status {

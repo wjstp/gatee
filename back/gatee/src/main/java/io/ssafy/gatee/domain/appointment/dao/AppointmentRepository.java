@@ -10,4 +10,5 @@ import java.util.Optional;
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
     Optional<Appointment> findByFamily(Family family);
+
 }

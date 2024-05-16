@@ -40,4 +40,8 @@ public class Family extends BaseEntity {
     public void editFamilyName(String name) {
         this.name = name;
     }
+
+    public void increaseScore() {
+        this.score++;
+    }
 }

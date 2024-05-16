@@ -23,6 +23,8 @@ const BubbleChatAppointment = (props: ChatAppointmentProps) => {
   const { isUserParticipant, setIsUserParticipant } = useChatStore();
   const [participants, setParticipants] = useState<string[]>([])
   const newIsUserParticipant: boolean = isUserParticipant[chat.appointmentId];
+  const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
+  const popoverOpen = Boolean(anchorEl);
 
   useEffect(() => {
     if (chat.appointmentId) {
@@ -66,12 +68,22 @@ const BubbleChatAppointment = (props: ChatAppointmentProps) => {
 
     return <Avatar src={userInfo?.profileImageUrl} alt={userInfo?.nickname} key={index}/>;
   }
-
+  
+  // 참여자 리스트 갱신
   useEffect(() => {
     if (!isUserParticipant[chat.appointmentId]) {
       setIsUserParticipant(chat.appointmentId, participants.includes(myInfo.memberId))
     }
   }, [participants]);
+
+  // 참여자 리스트 팝오버 핸들러
+  const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+  };
 
 
   return (

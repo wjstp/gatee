@@ -4,6 +4,8 @@ import io.ssafy.gatee.config.restdocs.RestDocsTestSupport;
 import io.ssafy.gatee.config.security.CustomWithMockUser;
 import io.ssafy.gatee.domain.mission.application.MissionService;
 import io.ssafy.gatee.domain.mission.dto.request.MissionTypeReq;
+import io.ssafy.gatee.domain.mission.dto.response.MissionImprovementsRes;
+import io.ssafy.gatee.domain.mission.dto.response.MissionInfoRes;
 import io.ssafy.gatee.domain.mission.dto.response.MissionListRes;
 import io.ssafy.gatee.domain.mission.entity.Type;
 import lombok.extern.slf4j.Slf4j;
@@ -45,6 +47,13 @@ class MissionControllerTest extends RestDocsTestSupport {
     void readMission() throws Exception {
 
         // given
+        MissionImprovementsRes missionImprovementsRes = MissionImprovementsRes.builder()
+                .albumMission(false)
+                .examMission(true)
+                .featureMission(false)
+                .scheduleMission(false)
+                .build();
+
         List<MissionListRes> missionListResList = new ArrayList<>();
 
         MissionListRes featureMissionRes = MissionListRes.builder()
@@ -88,22 +97,36 @@ class MissionControllerTest extends RestDocsTestSupport {
         missionListResList.add(scheduleMissionRes);
         missionListResList.add(albumMissionRes);
 
-        given(missionService.readMission(any(UUID.class)))
-                .willReturn(missionListResList);
+        given(missionService.readMission(any(UUID.class), any(UUID.class)))
+                .willReturn(MissionInfoRes.builder()
+                        .missionImprovementsRes(missionImprovementsRes)
+                        .missionListResList(missionListResList)
+                        .build());
 
         // when
-        ResultActions result = mockMvc.perform(get("/api/missions"));
+        ResultActions result = mockMvc.perform(get("/api/missions")
+                .param("familyId", String.valueOf(UUID.randomUUID()))
+        );
 
         // then
         result.andExpect(status().isOk())
                 .andDo(restDocs.document(
+                        queryParameters(
+                                parameterWithName("familyId").description("가족 ID").optional()
+                        ),
                         responseFields(
-                                fieldWithPath("[].id").type(JsonFieldType.NUMBER).description("미션 ID"),
-                                fieldWithPath("[].type").type(JsonFieldType.STRING).description("미션 타입"),
-                                fieldWithPath("[].isComplete").type(JsonFieldType.BOOLEAN).description("완료 여부"),
-                                fieldWithPath("[].nowRange").type(JsonFieldType.NUMBER).description("현재 진행도"),
-                                fieldWithPath("[].maxRange").type(JsonFieldType.NUMBER).description("최대 진행도"),
-                                fieldWithPath("[].completedLevel").type(JsonFieldType.NUMBER).description("완료된 단계")
+                                fieldWithPath("missionImprovementsRes").type(JsonFieldType.OBJECT).description("개선 사항 여부"),
+                                fieldWithPath("missionImprovementsRes.albumMission").type(JsonFieldType.BOOLEAN).description("앨범 미션 개선 여부"),
+                                fieldWithPath("missionImprovementsRes.examMission").type(JsonFieldType.BOOLEAN).description("모의고사 미션 개선 여부"),
+                                fieldWithPath("missionImprovementsRes.featureMission").type(JsonFieldType.BOOLEAN).description("백문백답 미션 개선 여부"),
+                                fieldWithPath("missionImprovementsRes.scheduleMission").type(JsonFieldType.BOOLEAN).description("일정 미션 개선 여부"),
+                                fieldWithPath("missionListResList").type(JsonFieldType.ARRAY).description("미션 목록"),
+                                fieldWithPath("missionListResList[].id").type(JsonFieldType.NUMBER).description("미션 ID"),
+                                fieldWithPath("missionListResList[].type").type(JsonFieldType.STRING).description("미션 타입"),
+                                fieldWithPath("missionListResList[].isComplete").type(JsonFieldType.BOOLEAN).description("완료 여부"),
+                                fieldWithPath("missionListResList[].nowRange").type(JsonFieldType.NUMBER).description("현재 진행도"),
+                                fieldWithPath("missionListResList[].maxRange").type(JsonFieldType.NUMBER).description("최대 진행도"),
+                                fieldWithPath("missionListResList[].completedLevel").type(JsonFieldType.NUMBER).description("완료된 단계")
                         )
                 ));
     }

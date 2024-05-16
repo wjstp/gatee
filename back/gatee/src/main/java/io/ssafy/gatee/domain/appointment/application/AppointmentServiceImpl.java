@@ -8,6 +8,7 @@ import io.ssafy.gatee.domain.family.dao.FamilyRepository;
 import io.ssafy.gatee.domain.family.entity.Family;
 import io.ssafy.gatee.domain.member.dao.MemberRepository;
 import io.ssafy.gatee.domain.member.entity.Member;
+import io.ssafy.gatee.global.batch.scheduler.AppointmentScheduler;
 import io.ssafy.gatee.global.exception.error.bad_request.AppointmentNotFoundException;
 import io.ssafy.gatee.global.websocket.dto.ChatDto;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Set;
 import java.util.UUID;
 
-import static io.ssafy.gatee.global.exception.message.ExceptionMessage.*;
-import static java.util.stream.Collectors.*;
+import static io.ssafy.gatee.global.exception.message.ExceptionMessage.APPOINTMENT_NOT_FOUNT;
+import static java.util.stream.Collectors.toSet;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +30,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final MemberRepository memberRepository;
     private final FamilyRepository familyRepository;
     private final FamilyService familyService;
+    private final AppointmentScheduler appointmentScheduler;
 
     @Override
     @Transactional
@@ -40,6 +42,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                 .family(proxyFamily)
                 .joinMembers(Set.of(proxyMember))
                 .build();
+//        appointmentScheduler.registerAppointment(memberId.toString(), appointment.getId(), appointment.getCreatedAt());
         return appointmentRepository.save(appointment).getId();
     }
 

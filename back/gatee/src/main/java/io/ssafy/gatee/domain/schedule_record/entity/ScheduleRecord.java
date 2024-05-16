@@ -21,7 +21,7 @@ public class ScheduleRecord extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "schedule_id")
     private Schedule schedule;
 

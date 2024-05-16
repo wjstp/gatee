@@ -176,7 +176,12 @@ export interface ScheduleListRes {
   endDate: string;
 }
 
-export interface ScheduleItemRes {
+export interface ScheduleListReq {
+  familyId: string;
+  month: number;
+}
+
+export interface ScheduleDetailRes {
   scheduleId: number;
   category: string;
   title: string;
@@ -184,18 +189,19 @@ export interface ScheduleItemRes {
   content: string;
   startDate: string;
   endDate: string;
-  scheduleRecord: {
-    content: string;
-    imageUrl: string;
-  }[];
+  scheduleRecordRes: ScheduleRecord[];
   participateMembers: {
     nickname: string;
-    memberId: string;
     profileImageUrl: string;
   }[]
 }
 
-export interface ScheduleCreateReq {
+export interface ScheduleDetailReq {
+  scheduleId: number;
+  familyId: string;
+}
+
+export interface CreateScheduleReq {
   familyId: string;
   category: string;
   title: string;
@@ -206,30 +212,37 @@ export interface ScheduleCreateReq {
   memberIdList: string[];
 }
 
-export interface ScheduleModifyReq {
-  familyId: string;
-  category: string;
-  title: string;
-  emoji: string;
-  content: string | null;
-  startDate: string;
-  endDate: string;
+export interface ModifyScheduleReq {
+  scheduleId: number;
+  data : {
+    familyId: string;
+    category: string;
+    title: string;
+    emoji: string;
+    content: string | null;
+    startDate: string;
+    endDate: string;
+  }
 }
 
-export interface ScheduleRecordReq {
+export interface CreateRecordReq {
+  scheduleId: number;
+  data: {
+    content: string;
+    fileIdList: string[];
+  }
+}
+
+export interface ScheduleRecord {
+  scheduleRecordId: number;
   content: string;
-  fileIdList: string;
+  fileUrlList: FileRes[];
 }
 
-
-export interface Schedule {
-  title: string | null;
-  content: string | null;
-  category: string | null;
-  color: string | null;
-  startDate: string | null;
-  endDate: string | null;
-  participant: string[] | [];
+export enum ScheduleType {
+  GROUP = 'GROUP',
+  PERSONAL = 'PERSONAL',
+  EVENT = 'EVENT'
 }
 
 export interface Holiday {
