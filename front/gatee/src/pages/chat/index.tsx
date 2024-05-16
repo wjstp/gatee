@@ -6,7 +6,6 @@ import ChatDate from "@pages/chat/components/ChatDate";
 import { ChatContent, ChatDateLine, ChatType, ChatSendMessage } from "@type/index";
 import { useFamilyStore } from "@store/useFamilyStore";
 import { useMemberStore } from "@store/useMemberStore";
-import { useChatStore } from "@store/useChatStore";
 import getUserInfo from "@utils/getUserInfo";
 import Loading from "@components/Loading";
 import { FaArrowDown } from "react-icons/fa";

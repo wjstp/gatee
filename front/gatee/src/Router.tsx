@@ -77,12 +77,12 @@ const Router = () => {
         <Route path="/main" element={<MainIndex/>}/>
 
         {/*미션 페이지*/}
-        <Route path="/main/mission" element={<MissionIndex/>}/>
+        <Route path="/mission" element={<MissionIndex/>}/>
 
         {/*스케줄 페이지*/}
         <Route path="/schedule" element={<ScheduleIndex/>}/>
-        <Route path="/schedule/create-schedule" element={<ScheduleCreate/>}/>
-        <Route path="/schedule/create-review" element={<ReviewCreate/>}/>
+        <Route path="/schedule/create" element={<ScheduleCreate/>}/>
+        <Route path="/schedule/review" element={<ReviewCreate/>}/>
         <Route path="/schedule/:id" element={<ScheduleDetail/>}/>
 
         {/*백과사전 페이지*/}
