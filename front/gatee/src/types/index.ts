@@ -189,6 +189,11 @@ export interface ScheduleListRes {
   content: string;
   startDate: string;
   endDate: string;
+  scheduleRecordCount: number;
+  participateMembers: {
+    nickname: string;
+    profileImageUrl: string;
+  }[]
 }
 
 export interface ScheduleListReq {

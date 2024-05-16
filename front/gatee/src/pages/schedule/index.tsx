@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import dayjs, { Dayjs } from 'dayjs';
 
-import {DateSelectArg, DayCellContentArg, EventSourceInput} from '@fullcalendar/core'
+import {DateSelectArg, DayCellContentArg, EventInput, EventSourceInput} from '@fullcalendar/core'
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin, { DateClickArg } from "@fullcalendar/interaction";
@@ -36,7 +36,6 @@ const ScheduleIndex = () => {
   const [scheduleList, setScheduleList] = useState<ScheduleListRes[]>([]);
   const [dayScheduleList, setDayScheduleList] = useState<ScheduleListRes[]>([]);
   const [monthScheduleList, setMonthScheduleList] = useState<EventSourceInput>([]);
-
   // Fullcalendar 설정
   useEffect(() => {
     if (calendarRef.current) {
@@ -66,15 +65,15 @@ const ScheduleIndex = () => {
         (res) => {
           setScheduleList(res.data);
 
-          // 캘린더 라이브러리에 쓸 수 있도록 변환
-          const formattedScheduleList: EventSourceInput = res.data.map((schedule: ScheduleListRes) => ({
-            id: schedule.category,
-            title: schedule.title,
-            color: getColorCode(schedule.emoji),
-            content: schedule.content,
-            start: dayjs(schedule.startDate).format("YYYY-MM-DD"),
-            end: dayjs(schedule.endDate).format("YYYY-MM-DD"),
-          }));
+          const formattedScheduleList: EventSourceInput = res.data.filter((schedule: ScheduleListRes) => schedule.category != ScheduleType.EVENT)
+            .map((schedule: ScheduleListRes) => ({
+              id: `${schedule.category}&${schedule.scheduleId}`,
+              title: schedule.title,
+              color: getColorCode(schedule.emoji),
+              start: dayjs(schedule.startDate).format("YYYY-MM-DD"),
+              end: dayjs(schedule.endDate).add(1, 'day').format("YYYY-MM-DD"),
+              sortIdx: `${schedule.category === ScheduleType.EVENT ? 0 : schedule.category === ScheduleType.GROUP ? 1 : 2}`
+            }));
           setMonthScheduleList(formattedScheduleList);
         },
         (err) => {
@@ -161,10 +160,22 @@ const ScheduleIndex = () => {
   // Day cell render hooks
   const useDayCellContent = (arg: DayCellContentArg) => {
     const dayNumber: string = arg.dayNumberText.replace("일", "");   // 일자에서 '일' 제거
+    const dayDate: string = dayjs(arg.date).format("YYYYMMDD");
+    const isEvent: boolean = scheduleList.some((schedule: ScheduleListRes) => {
+      const startDate: string = dayjs(schedule.startDate).format("YYYYMMDD");
+      const endDate: string = dayjs(schedule.endDate).format("YYYYMMDD");
+      return startDate <= dayDate && dayDate <= endDate;
+    });
+
     return (
       <div className="schedule-calendar__day" style={{color: arg.isToday ? "white" : ""}}>
         {dayNumber}
         {arg.isToday && <div className="schedule-calendar__today"></div>}
+        {isEvent && (
+          <div className="schedule-calendar__event-icon">
+            <img src="" alt=""/>
+          </div>
+        )}
       </div>
     )
   }
@@ -172,23 +183,38 @@ const ScheduleIndex = () => {
   // event content render hooks
   const useEventContent = (arg: { event: any }) => {
     const { event } = arg;
-    // 단체 일정은 띠와 함께 색에 맞는 이모티콘 보여 주기
-    // 개인 일정은 프로필 보여 주기
-    // 이벤트는 숫자에 스티커 붙이기
-    if (event.id === ScheduleType.GROUP) {
+    const eventInfo = event.id.split("&");
+
+    if (eventInfo[0] === ScheduleType.GROUP) {
       return (
-        <div>{event.title}</div>
+        <div className="schedule-calendar__group">
+          { event.title }
+        </div>
       );
-    } else if (event.id === ScheduleType.PERSONAL) {
+    } else if (eventInfo[0] === ScheduleType.PERSONAL) {
       return (
-        <div>{event.title}</div>
+        <div className="schedule-calendar__personal">
+          <div>
+            <img src="" alt=""/>
+          </div>
+          { event.title }
+        </div>
       );
-    } else if (event.id === ScheduleType.EVENT) {
+    } else if (eventInfo[0] === ScheduleType.EVENT) {
       return (
-        <div>{event.title}</div>
+        <div className="schedule-calendar__event">
+          { event.title }
+        </div>
       );
     }
   };
+
+  // More lick cell render hooks
+  const useMoreLinkContent = (arg: any) => {
+    return (
+      <div className="schedule-calendar__more"></div>
+    )
+  }
 
   // 일자 탭 닫기
   const handleDayClose = () => setIsOpenDayToast(false);
@@ -230,14 +256,20 @@ const ScheduleIndex = () => {
             height={"100%"}               // calendar 높이
             locale={"kr"}                // 언어 한글로 변경
             selectable={true}            // 영역 선택
-            // dayMaxEvents={true}          // row 높이보다 많으면 +N more 링크 표시
+            dayMaxEvents={true}          // row 높이보다 많으면 +N more 링크 표시
             moreLinkClick={"disable"}    // more 링크 비활성화
 
-            dayCellContent={useDayCellContent}   // 일자 셀에 요소 추가
-            dateClick={handleDateClick}          // 일자 클릭 이벤트
-            select={handleSelect}                // 영역 선택 이벤트
+            dayCellContent={useDayCellContent}    // // Day cell
+            eventContent={useEventContent}        // Event cell
+            moreLinkContent={useMoreLinkContent}  // More lick cell
+            dateClick={handleDateClick}           // 일자 클릭 이벤트
+            select={handleSelect}                 // 영역 선택 이벤트
 
-            // event
+
+            events={monthScheduleList}  // 이벤트 리스트
+            eventTextColor={"black"}    // 이벤트 폰트 색상
+            eventBorderColor={"white"}  // 이벤트 테두리 색상
+            eventOrder="sortIdx"        // 이벤트 정렬
             // eventSources={[
             //   {
             //     googleCalendarId: REACT_APP_GOOGLE_CALENDAR_ID,
@@ -246,17 +278,15 @@ const ScheduleIndex = () => {
             //     textColor: "#FFF",
             //   }
             // ]}
-
-            events={monthScheduleList}
-            eventTextColor={"black"}
-            eventBorderColor={"white"}
-            eventContent={useEventContent}
           />
         </div>
       </div>
 
       {/*일자별 일정 리스트*/}
-      { isOpenDayToast && <DayToast date={selectedDate} schedules={dayScheduleList} onCloseClick={handleDayClose} />}
+      { isOpenDayToast
+        &&
+        <DayToast date={selectedDate} schedules={dayScheduleList} onCloseClick={handleDayClose} />
+      }
 
       { isShowTodayButton && (
         // 오늘 날짜 이동 버튼

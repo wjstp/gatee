@@ -2,6 +2,9 @@
 @use '../components/index' as *;
 
 .create-schedule {
+  @include flex-col;
+
+  justify-content: space-between;
   min-height: 100%;
 
   &__input-container {
@@ -11,31 +14,33 @@
 
   &__title {
     font: {
-      weight: 600;
+      weight: 500;
       size: $font-size-big;
     };
     text-align: center;
     position: relative;
-    margin: 0.5rem 0;
+    margin: 0.5rem 0.5rem 1rem 0.5rem;
   }
 
   &__button-create {
-    position: absolute;
-    right: 0;
-    top: 0;
+    @include flex_center;
+    @include mt-(0.5);
+
+    width: 100%;
 
     button {
-      color: $orange400;
-      font: {
-        weight: 600;
-        size: $font-size;
-      }
+      @extend %orange-button-large;
+
+      width: 90%;
     }
 
     button[disabled] {
-      color: $gray100;
+      @extend %orange-button-large;
+
+      background-color: $gray100;
       cursor: not-allowed;
       font-weight: 400;
+      width: 90%;
     }
   }
 
@@ -71,15 +76,13 @@
 
       &-date {
         input {
-          text-align: left;
-          padding-left: calc(24px + 0.5rem);
+          text-align: center;
         }
       }
 
       &-time {
         input {
-          text-align: right;
-          padding-right: 5px;
+          text-align: center;
         }
       }
     }
@@ -91,7 +94,7 @@
     align-items: center;
     border-bottom: 1px solid #efefef;
     font-size: $font-size;
-    padding: 20px 0;
+    padding: 25px 0;
 
     p {
       margin-left: calc(25px + 0.5rem);
@@ -108,7 +111,7 @@
     align-items: center;
     border-bottom: 1px solid #efefef;
     font-size: $font-size;
-    padding: 20px 0;
+    padding: 19.5px 0;
   }
 
   &__icon {
@@ -172,7 +175,7 @@
 
   &__input-color {
     @include flex_col;
-    @include pt-(2);
+    @include py-(2);
 
     align-items: center;
     background-color: white;
@@ -196,18 +199,6 @@
 
         border: $orange300 3px solid;
       }
-    }
-
-    &-close {
-      background-color: $orange300;
-      font: {
-        size: $font-size;
-        weight: 500;
-      }
-      width: 90%;
-      height: 2.5rem;
-      margin: 2rem;
-      border-radius: 10px;
     }
   }
 }

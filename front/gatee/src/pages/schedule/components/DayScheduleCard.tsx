@@ -14,32 +14,32 @@ const Group = (props: DayScheduleProps) => {
     <NavLink
       to={`/schedule/${schedule.scheduleId}`}
       className="day-toast__schedule-group"
-      style={{ borderLeft: `5px solid ${getColorCode(schedule.emoji)}` }}
     >
+      <div className="day-toast__color" style={{backgroundColor: `${getColorCode(schedule.emoji)}`}}></div>
       <div>
-        { schedule.startDate }
+        {schedule.startDate}
       </div>
       <div>
-        { schedule.endDate }
+        {schedule.endDate}
       </div>
       <div>
-        { schedule.title }
+        {schedule.title}
       </div>
       <div>
-        { schedule.content }
+        {schedule.content}
       </div>
     </NavLink>
   );
 };
 
 const Personal = (props: DayScheduleProps) => {
-  const { schedule} = props;
+  const {schedule} = props;
   return (
     <NavLink
       to={`/schedule/${schedule.scheduleId}`}
       className="day-toast__schedule-personal"
-      style={{borderLeft: `5px solid ${getColorCode(schedule.emoji)}`}}
     >
+      <div className="day-toast__color" style={{backgroundColor: `${getColorCode(schedule.emoji)}`}}></div>
       <div>
         {schedule.startDate}
       </div>
@@ -62,8 +62,8 @@ const Event = (props: DayScheduleProps) => {
     <NavLink
       to={`/schedule/${schedule.scheduleId}`}
       className="day-toast__schedule-event"
-      style={{borderLeft: `5px solid ${getColorCode(schedule.emoji)}`}}
     >
+      <div className="day-toast__color" style={{backgroundColor: `${getColorCode(schedule.emoji)}`}}></div>
       <div>
         {schedule.startDate}
       </div>
