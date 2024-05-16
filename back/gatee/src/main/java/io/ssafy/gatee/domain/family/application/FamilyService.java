@@ -32,4 +32,6 @@ public interface FamilyService {
     void editFamilyName(UUID familyId, FamilyNameReq familyNameReq) throws FamilyNotFoundException;
 
     FamilyCheckRes checkFamilyCode(String familyCode, UUID memberId);
+
+    void sendDateLineToAll();
 }
