@@ -31,7 +31,7 @@ import java.util.Objects;
 public class FcmTokenRefreshBatchConfig {
 
     private final int CHUNK_SIZE = 1000;
-    private final String JOB_NAME = "FcmToken";
+    private final String JOB_NAME = "FcmTokenRefreshJob";
     private final EntityManagerFactory entityManagerFactory;
     private final MemberRepository memberRepository;
 
