@@ -7,6 +7,7 @@ import io.ssafy.gatee.domain.family_schedule.dao.FamilyScheduleRepository;
 import io.ssafy.gatee.domain.family_schedule.dao.FamilyScheduleRepositoryCustom;
 import io.ssafy.gatee.domain.family_schedule.entity.FamilySchedule;
 import io.ssafy.gatee.domain.file.dao.FileRepository;
+import io.ssafy.gatee.domain.file.dto.FileUrlRes;
 import io.ssafy.gatee.domain.file.entity.File;
 import io.ssafy.gatee.domain.member.dao.MemberRepository;
 import io.ssafy.gatee.domain.member.entity.Member;
@@ -24,19 +25,22 @@ import io.ssafy.gatee.domain.push_notification.dto.request.PushNotificationFCMRe
 import io.ssafy.gatee.domain.push_notification.entity.Type;
 import io.ssafy.gatee.domain.schedule.dao.ScheduleRepository;
 import io.ssafy.gatee.domain.schedule.dto.request.*;
+import io.ssafy.gatee.domain.schedule.dto.response.ParticipateMemberRes;
 import io.ssafy.gatee.domain.schedule.dto.response.ScheduleInfoRes;
 import io.ssafy.gatee.domain.schedule.dto.response.ScheduleListRes;
 import io.ssafy.gatee.domain.schedule.entity.Schedule;
 import io.ssafy.gatee.domain.schedule_record.dao.ScheduleRecordRepository;
+import io.ssafy.gatee.domain.schedule_record.dto.response.ScheduleRecordRes;
 import io.ssafy.gatee.domain.schedule_record.entity.ScheduleRecord;
 import io.ssafy.gatee.global.exception.error.bad_request.DoNotHavePermissionException;
 import io.ssafy.gatee.global.exception.error.not_found.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import java.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -77,7 +81,35 @@ public class ScheduleServiceImpl implements ScheduleService {
     public List<ScheduleListRes> readSchedule(UUID familyId, Integer month) throws FamilyNotFoundException {
         Family family = familyRepository.getReferenceById(familyId);
 
-        return familyScheduleRepositoryCustom.getAllScheduleList(family, month);
+        List<Schedule> scheduleList = familyScheduleRepositoryCustom.getAllScheduleList(family, month);
+
+        if (scheduleList.isEmpty()) {
+            return new ArrayList<>();
+        } else {
+            return scheduleList.stream().map(schedule -> {
+                FamilySchedule familySchedule = familyScheduleRepository.findByFamilyAndSchedule(family, schedule)
+                        .orElse(null);
+
+                List<Member> memberList;
+
+                if (familySchedule == null) {
+                    memberList = new ArrayList<>();
+                } else {
+                    List<MemberFamilySchedule> memberFamilyScheduleList = memberFamilyScheduleRepository.findAllByFamilySchedule(familySchedule)
+                            .orElse(null);
+
+                    if (memberFamilyScheduleList != null) {
+                        memberList = memberFamilyScheduleList.stream().map(MemberFamilySchedule::getMember).toList();
+                    }  else {
+                        memberList = new ArrayList<>();
+                    }
+                }
+
+                Integer scheduleRecordCount = scheduleRecordRepository.findAllBySchedule(schedule).size();
+
+                return ScheduleListRes.toDto(schedule, memberList, scheduleRecordCount);
+            }).toList();
+        }
     }
 
     // 일정 상세 조회
@@ -90,20 +122,61 @@ public class ScheduleServiceImpl implements ScheduleService {
         FamilySchedule familySchedule = familyScheduleRepository.findByFamilyAndSchedule(family, schedule)
                 .orElseThrow(() -> new FamilyScheduleNotFoundException(FAMILY_SCHEDULE_NOT_FOUND));
 
+        List<Member> memberList;
+
+        List<ParticipateMemberRes> participateMembers;
+
         List<MemberFamilySchedule> memberFamilyScheduleList = memberFamilyScheduleRepository.findAllByFamilySchedule(familySchedule)
-                .orElseThrow(() -> new MemberFamilyScheduleNotFoundException(MEMBER_FAMILY_SCHEDULE_NOT_FOUND));
+                .orElse(new ArrayList<>());
 
-        List<Member> memberList = memberFamilyScheduleList.stream().map(MemberFamilySchedule::getMember).toList();
+        if (!memberFamilyScheduleList.isEmpty()) {
+            memberList = memberFamilyScheduleList.stream().map(MemberFamilySchedule::getMember).toList();
 
-        ScheduleRecord scheduleRecord = scheduleRecordRepository.findBySchedule(schedule);
+            participateMembers = memberList.stream().map(ParticipateMemberRes::toDto).toList();
+        }  else {
+            participateMembers =  new ArrayList<>();
 
-        List<PhotoScheduleRecord> photoScheduleRecordList = photoScheduleRecordRepository.findAllByScheduleRecord(scheduleRecord);
+            participateMembers.add(ParticipateMemberRes.builder()
+                            .profileImageUrl(null)
+                            .nickname(null)
+                    .build());
+        }
 
-        List<Photo> photoList = photoScheduleRecordList.stream().map(PhotoScheduleRecord::getPhoto).toList();
+        List<ScheduleRecord> scheduleRecordList = scheduleRecordRepository.findAllBySchedule(schedule);
 
-        List<File> fileList = photoList.stream().map(Photo::getFile).toList();
+        List<ScheduleRecordRes> scheduleRecordResList;
 
-        return ScheduleInfoRes.toDto(schedule, memberList, scheduleRecord, fileList);
+        if (scheduleRecordList.isEmpty()) {
+            scheduleRecordResList = null;
+        } else {
+            scheduleRecordResList = scheduleRecordList.stream().map(scheduleRecord -> {
+                List<PhotoScheduleRecord> photoScheduleRecordList = photoScheduleRecordRepository.findAllByScheduleRecord(scheduleRecord);
+
+                List<Photo> photoList;
+
+                List<File> fileList;
+
+                List<FileUrlRes> fileUrlResList;
+
+                if (photoScheduleRecordList.isEmpty()) {
+                    fileUrlResList = new ArrayList<>();
+                } else {
+                    photoList = photoScheduleRecordList.stream().map(PhotoScheduleRecord::getPhoto).toList();
+
+                    if (photoList.isEmpty()) {
+                        fileUrlResList = new ArrayList<>();
+                    } else {
+                        fileList = photoList.stream().map(Photo::getFile).toList();
+
+                        fileUrlResList = fileList.stream().map(FileUrlRes::toDto).toList();
+                    }
+                }
+
+                return ScheduleRecordRes.toDto(scheduleRecord, fileUrlResList);
+            }).toList();
+        }
+
+        return ScheduleInfoRes.toDto(schedule, participateMembers, scheduleRecordResList);
     }
 
     // 일정 등록
@@ -140,17 +213,19 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         memberFamilyScheduleRepository.save(memberFamilySchedule);
 
-        List<Member> memberList = scheduleSaveReq.memberIdList().stream().map(memberRepository::getReferenceById).toList();
+        if (!scheduleSaveReq.memberIdList().isEmpty()) {
+            List<Member> memberList = scheduleSaveReq.memberIdList().stream().map(memberRepository::getReferenceById).toList();
 
-        List<MemberFamilySchedule> memberFamilyScheduleList = memberList.stream().map((member1) -> {
-            return MemberFamilySchedule.builder()
-                    .member(member1)
-                    .familySchedule(familySchedule)
-                    .isCreater(false)
-                    .build();
-        }).toList();
+            List<MemberFamilySchedule> memberFamilyScheduleList = memberList.stream().map(member1 ->
+                MemberFamilySchedule.builder()
+                        .member(member1)
+                        .familySchedule(familySchedule)
+                        .isCreater(false)
+                        .build()
+            ).toList();
 
-        memberFamilyScheduleRepository.saveAll(memberFamilyScheduleList);
+            memberFamilyScheduleRepository.saveAll(memberFamilyScheduleList);
+        }
 
         // 알림발송
         pushNotificationService.sendPushOneToMany(PushNotificationFCMReq.builder()
@@ -195,6 +270,10 @@ public class ScheduleServiceImpl implements ScheduleService {
     public void deleteSchedule(Long scheduleId) {
         Schedule schedule = scheduleRepository.getReferenceById(scheduleId);
 
+        List<ScheduleRecord> scheduleRecordList = scheduleRecordRepository.findAllBySchedule(schedule);
+
+        scheduleRecordRepository.deleteAll(scheduleRecordList);
+
         schedule.deleteData();
     }
 
@@ -223,6 +302,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     // 일정 참여 취소
     @Override
+    @Transactional
     public void cancelSchedule(ScheduleCancelReq scheduleCancelReq, UUID memberId, Long scheduleId) throws FamilyScheduleNotFoundException, MemberFamilyScheduleNotFoundException {
         Member member = memberRepository.getReferenceById(memberId);
 
@@ -278,10 +358,9 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     // 일정 후기 삭제
     @Override
-    public void deleteScheduleRecord(Long scheduleId) {
-        Schedule schedule = scheduleRepository.getReferenceById(scheduleId);
-
-        ScheduleRecord scheduleRecord = scheduleRecordRepository.findBySchedule(schedule);
+    @Transactional
+    public void deleteScheduleRecord(Long scheduleId, Long scheduleRecordId) {
+        ScheduleRecord scheduleRecord = scheduleRecordRepository.getReferenceById(scheduleRecordId);
 
         scheduleRecord.deleteData();
     }

@@ -45,22 +45,18 @@ public class Mission extends BaseEntity {
 
             if (this.nowRange >= (this.completedLevel + 1) * 10) {
                 this.isComplete = true;
-                this.maxRange += 10;
             }
         } else if (missionTypeReq.type().equals(Type.FEATURE)) {
-            if (this.nowRange % 10 == 0) {
+            if (this.nowRange >= (this.completedLevel + 1) * 10) {
                 this.isComplete = true;
-                this.maxRange += 10;
             }
         } else if (missionTypeReq.type().equals(Type.EXAM)) {
             if (this.nowRange == (2 * this.completedLevel + 1)) {
                 this.isComplete = true;
-                this.maxRange += 2;
             }
-        } else {
-            if (this.nowRange == Math.pow(2, this.completedLevel)) {
+        } else if (missionTypeReq.type().equals(Type.SCHEDULE)) {
+            if (this.nowRange == (int) Math.pow(2, this.completedLevel)) {
                 this.isComplete = true;
-                this.maxRange = (int) Math.pow(2, this.completedLevel);
             }
         }
     }
@@ -68,5 +64,23 @@ public class Mission extends BaseEntity {
     public void doComplete() {
         this.completedLevel++;
         this.isComplete = false;
+
+        if (this.type.equals(Type.ALBUM)) {
+            this.maxRange += 10;
+
+        } else if (this.type.equals(Type.FEATURE)) {
+            this.maxRange += 10;
+
+        } else if (this.type.equals(Type.EXAM)) {
+            this.maxRange += 2;
+
+        } else if (this.type.equals(Type.SCHEDULE)) {
+            this.maxRange = (int) Math.pow(2, this.completedLevel);
+
+        }
+
+        if (this.nowRange >= this.maxRange) {
+            this.isComplete = true;
+        }
     }
 }
