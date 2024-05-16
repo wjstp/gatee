@@ -330,6 +330,7 @@ const ScheduleIndex = () => {
             locale={"kr"}                // 언어 한글로 변경
             selectable={true}            // 영역 선택
             dayMaxEvents={true}          // row 높이보다 많으면 +N more 링크 표시
+            dayMaxEventRows={2}
             moreLinkClick={"disable"}    // more 링크 비활성화
 
             dayCellContent={useDayCellContent}    // // Day cell
