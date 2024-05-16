@@ -53,7 +53,7 @@ public class BatchScheduler {
         }
     }
 
-    @Scheduled(cron = "0 0 * * *")
+    @Scheduled(cron = "0 0 0 * * ?")
     public void runTimeLineToChatRoomJob() {
         log.info("batch start!!");
         chatService.sendDateLineToAll();
