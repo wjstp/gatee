@@ -51,10 +51,6 @@
           height: 100%;
         }
       }
-
-      &-content {
-        @include mb-(0.5);
-      }
     }
   }
 
@@ -64,7 +60,8 @@
     &__icon {
       color: rgba(0, 0, 0, 0.54);
       position: absolute;
-      top: 16px;
+      top: 50%;
+      transform: translate(0, -50%);
     }
 
     &__input {
@@ -72,10 +69,36 @@
 
       position: relative;
 
-      input {
-        text-align: center;
-        padding: 0;
+      &-date {
+        input {
+          text-align: left;
+          padding-left: calc(24px + 0.5rem);
+        }
       }
+
+      &-time {
+        input {
+          text-align: right;
+          padding-right: 5px;
+        }
+      }
+    }
+  }
+
+  &-all-day {
+    @include flex_between;
+
+    align-items: center;
+    border-bottom: 1px solid #efefef;
+    font-size: $font-size;
+    padding: 20px 0;
+
+    p {
+      margin-left: calc(25px + 0.5rem);
+    }
+
+    div {
+      margin-right: 5px;
     }
   }
 
@@ -85,7 +108,7 @@
     align-items: center;
     border-bottom: 1px solid #efefef;
     font-size: $font-size;
-    padding: 12px 0;
+    padding: 20px 0;
   }
 
   &__icon {

@@ -23,23 +23,24 @@ import doMissionApiFunc from "@utils/doMissionApiFunc";
 import getColorCode from "@utils/getColorCode";
 import { useFamilyStore } from "@store/useFamilyStore";
 import { useModalStore } from "@store/useModalStore";
+import {useMemberStore} from "@store/useMemberStore";
 import { SCHEDULE_COLOR } from "@constants/index";
 import { createScheduleApi } from "@api/schedule";
 import { CreateScheduleReq } from "@type/index";
 import { ScheduleType } from "@type/index";
+import CustomSwitch from "@components/CustomSwitch";
 
 import { BsTextParagraph } from "react-icons/bs";
-import { MdAccessTime } from "react-icons/md";
-import { MdOutlineCategory } from "react-icons/md";
+import { IoTimeOutline } from "react-icons/io5";
+import { PiShapes } from "react-icons/pi";
 import { GoPerson } from "react-icons/go";
-import {useMemberStore} from "@store/useMemberStore";
 
 
 const ScheduleCreate = () => {
   dayjs.locale('ko');
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const {familyInfo, familyId} = useFamilyStore();
+  const { familyInfo, familyId} = useFamilyStore();
   const { myInfo } = useMemberStore();
 
   const [title, setTitle] = useState<string>("");
@@ -63,6 +64,7 @@ const ScheduleCreate = () => {
   const [startDateError, setStartDateError] = useState<DateValidationError | null>(null);
   const [endDateError, setEndDateError] = useState<DateValidationError | null>(null);
   const [isCreatingSchedule, setIsCreatingSchedule] = useState<boolean>(false);
+  const [isAllDayCheck, setIsAllDayCheck] = useState<boolean>(false);
 
   const outerTheme = useTheme();
 
@@ -207,6 +209,15 @@ const ScheduleCreate = () => {
       setEndTime(dayjs(`${searchParams.get("end")}T23:59:59`));
     }
   }, [startDate, endDate, startTime, endTime, searchParams]);
+
+  // 하루 종일 체크 핸들러
+  const handleALlDayCheck = () => {
+    setIsAllDayCheck(!isAllDayCheck);
+    
+    // 시간 초기화
+    setStartTime(dayjs(`${searchParams.get("start")}T00:00:00`));
+    setEndTime(dayjs(`${searchParams.get("end")}T23:59:59`));;
+  }
 
   // 참여자 입력 핸들러
   const handleSetParticipants = (value: string) => {
@@ -391,13 +402,12 @@ const ScheduleCreate = () => {
                 value={title}
                 onChange={handleSetTitle}
                 placeholder="일정 제목을 입력해 주세요"
-                margin="normal"
                 error={isTitleError}
                 multiline
                 variant="standard"
                 spellCheck={false}
                 InputProps={{
-                  style: { padding: '15px 0' },
+                  style: { padding: '20px 0' },
                   inputProps: { maxLength: 20 },
                   startAdornment: (
                     <InputAdornment position="start">
@@ -419,27 +429,25 @@ const ScheduleCreate = () => {
               />
 
               {/*일정 내용 입력*/}
-              <div className="create-schedule-info__input-content">
-                <TextField
-                  fullWidth
-                  value={content}
-                  onChange={handleSetContent}
-                  placeholder="설명 추가"
-                  multiline
-                  maxRows={5}
-                  variant="standard"
-                  spellCheck={false}
-                  InputProps={{
-                    style: { padding: '15px 0' },
-                    inputProps: { maxLength: 1000 },
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <BsTextParagraph size={24} />
-                      </InputAdornment>
-                    )
-                  }}
-                />
-              </div>
+              <TextField
+                fullWidth
+                value={content}
+                onChange={handleSetContent}
+                placeholder="설명 추가"
+                multiline
+                maxRows={5}
+                variant="standard"
+                spellCheck={false}
+                InputProps={{
+                  style: { padding: '20px 0' },
+                  inputProps: { maxLength: 1000 },
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <BsTextParagraph size={24} />
+                    </InputAdornment>
+                  )
+                }}
+              />
           </div>
 
           {/*일정 기간 선택*/}
@@ -447,38 +455,41 @@ const ScheduleCreate = () => {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <div className="create-schedule-period__input">
                 <div className="create-schedule-period__icon">
-                  <MdAccessTime size={24}/>
+                  <IoTimeOutline size={24}/>
                 </div>
-                
+
                 {/*시작 일자*/}
                 <DateField
                   value={startDate}
-                  format={`YYYY.MM.DD.${calculateWeekday(startDate)}요일`}
+                  format={`YYYY. MM. DD. ${calculateWeekday(startDate)}요일`}
                   onChange={handleSetStartDate}
                   onError={(newError) => setStartDateError(newError)}
                   variant="standard"
                   fullWidth
+                  className="create-schedule-period__input-date"
                   slotProps={{
                     textField: {
                       helperText: errorMessageStartDate,
                     },
                   }}
                   InputProps={{
-                    style: { padding: '15px 0' },
+                    style: { padding: '20px 0' },
                   }}
                   FormHelperTextProps={{
                     style: { textAlign: 'center' },
                   }}
                 />
-                
+
                 {/*시작 시간*/}
                 <TimeField
                   value={startTime}
+                  disabled={isAllDayCheck}
                   format="HH:mm"
                   onChange={handleSetStartTime}
                   variant="standard"
+                  className="create-schedule-period__input-time"
                   InputProps={{
-                    style: { padding: '15px 0' },
+                    style: { padding: '20px 0' },
                   }}
                 />
               </div>
@@ -487,19 +498,20 @@ const ScheduleCreate = () => {
                 {/*종료 일자*/}
                 <DateField
                   value={endDate}
-                  format={`YYYY.MM.DD.${calculateWeekday(endDate)}요일`}
+                  format={`YYYY. MM. DD. ${calculateWeekday(endDate)}요일`}
                   onChange={handleSetEndDate}
                   minDate={dayjs(startDate)}
                   onError={(newError) => setEndDateError(newError)}
                   variant="standard"
                   fullWidth
+                  className="create-schedule-period__input-date"
                   slotProps={{
                     textField: {
                       helperText: errorMessageEndDate,
                     },
                   }}
                   InputProps={{
-                    style: { padding: '15px 0', margin: '9px 0' },
+                    style: { padding: '20px 0' },
                   }}
                   FormHelperTextProps={{
                     style: { textAlign: 'center' },
@@ -509,23 +521,30 @@ const ScheduleCreate = () => {
                 {/*종료 시간*/}
                 <TimeField
                   value={endTime}
+                  disabled={isAllDayCheck}
                   format="HH:mm"
                   onChange={handleSetEndTime}
                   variant="standard"
+                  className="create-schedule-period__input-time"
                   InputProps={{
-                    style: { padding: '15px 0', margin: '9px 0' },
+                    style: { padding: '20px 0' },
                   }}
                 />
               </div>
             </LocalizationProvider>
           </div>
           </ThemeProvider>
-          
+
+          <div className="create-schedule-all-day">
+            <p>하루 종일</p>
+            <CustomSwitch checked={isAllDayCheck} onChange={handleALlDayCheck} sx={{marginRight: "5px"}}/>
+          </div>
+
           {/*일정 카테고리*/}
           <div className="create-schedule-category">
             <div className="create-schedule__wrapper">
               <div className="create-schedule__icon">
-                <MdOutlineCategory size={24} />
+                <PiShapes size={24} />
               </div>
               <p>일정 종류</p>
             </div>

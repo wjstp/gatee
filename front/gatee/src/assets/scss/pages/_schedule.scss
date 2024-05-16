@@ -108,9 +108,11 @@
     position: absolute;
     z-index: -10;
     background: $orange400;
-    top: -2px;
-    left: 25%;
-    width: 50%;
+    top: 0;
+    left: 50%;
+    width: 25px;
+    height: 25px;
+    transform: translate(-50%, -17%);
     padding-bottom: 50%;
     border-radius: 50%;
   }
