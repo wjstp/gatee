@@ -203,7 +203,6 @@ const PhotoIndex = () => {
 
     if (mode === "normal") {
       // 일반 모드 선택 => 모달을 모두 끈다
-      console.log('백드롭 이벤트')
       closeEditModeModal()
 
     } else if (mode === "delete") {
@@ -246,7 +245,6 @@ const PhotoIndex = () => {
 
     // 백드롭 이벤트
     if (name === "" && id === 0) {
-      console.log('백드롭 이벤트')
       setEditMode("normal")
     } else {
       setAlbumName(name)
@@ -267,7 +265,7 @@ const PhotoIndex = () => {
 
   // 미션 수행
   const doMissionApiFunc = (amount: number, name: string | null) => {
-    console.log("doMissionApiFunc")
+
     // 0단계인 어린시절 사진, 1단계인 가족사진, 2단계인 내 사진 채우기 그 이후는 사진 올리기
     if (name === null || name === "어린 시절 사진" && albumMission?.completedLevel === 0
       || name === "가족 사진" && albumMission?.completedLevel === 1
@@ -275,7 +273,7 @@ const PhotoIndex = () => {
 
       // 올릴 수 있는 점수
       const maxAmount = getPossibleAmount(albumMission, amount)
-      console.log(maxAmount)
+      console.log("미션 수행 포토 카운트",maxAmount)
       // 미션 수행 API
       doMissionApi({type: "ALBUM", photoCount: maxAmount},
         res => {
@@ -301,7 +299,6 @@ const PhotoIndex = () => {
         // 여러 파일을 업로드할 수 있도록 multiple 속성이 설정
         for (const file of files) {
           const resizedFile: File = (await imageResizer(file, 1000, 1000)) as File;
-          console.log(resizedFile);
           const formData = new FormData();
           formData.append("fileType", "ALBUM");
           formData.append('file', resizedFile);

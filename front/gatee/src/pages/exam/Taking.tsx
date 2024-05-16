@@ -6,11 +6,11 @@ import ExamLoading from "@pages/exam/components/ExamLoading";
 import {TransformedQuestionData} from "@type/index";
 import {saveExamResultApi} from "@api/exam";
 import {getNewExamApi} from "@api/exam";
-import {transformQuestionData, getExamScore, setAnswerAtIndex} from "@utils/examHelpers"
+import {transformQuestionData, getExamScore, setAnswerAtIndex, unSelectedIndex} from "@utils/examHelpers"
 import {questionList} from "@constants/index";
 import ExamNotFound from "@pages/exam/components/ExamNotFound";
 import {doMissionApi} from "@api/mission";
-
+import { IoWarningSharp } from "react-icons/io5";
 
 const ExamTaking = () => {
   const navigate = useNavigate();
@@ -19,49 +19,133 @@ const ExamTaking = () => {
   const [startLoading, setStartLoading] = useState<boolean>(true);
   const [endLoading, setEndLoading] = useState<boolean>(false);
   const [notFound, setNotFound] = useState<boolean>(false);
-
+  const [warning, setWarning] = useState<boolean>(false);
+  const [noSelectList, setNoSelectList] = useState<number[]>([]);
   // 정답
   const [correctAnswerSheet, setCorrectAnswerSheet] = useState<number[]>([]);
   // 변환 객체
   const [transformedData, setTransformedData] = useState<TransformedQuestionData[]>([
     // {
-    //   nickname:"SiAsda",
-    //   question:"ASDDDDDDDDD as asda sdaasdDDDDDDD",
-    //   answerList:["ASASDDDDDD DDDDDDDDDDDDDDDD asd aas aadasdDDDDDDDDDDDDDDDD DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDAS","ASDASD","ASDASD","ASASDDDDDD ASASDDDDDD ASASDDDDDD ASASDDDDDD"],
-    //   correctNumber:1,
-    //   choiceNumber:1
+    //   nickname: "SiAsda",
+    //   question: "ASDDDDDDDD",
+    //   answerList: ["ASASD asd aas aadasDDDDD DDDDDDDDDDDAS", "ASDASD", "ASDASD", "ASADD ASASDDDDDD"],
+    //   correctNumber: 1,
+    //   choiceNumber: 1
+    // },
+    // {
+    //   nickname: "SiAsda",
+    //   question: "ASDDDDDDDD",
+    //   answerList: ["ASASD asd aas aadasDDDDD DDDDDDDDDDDAS", "ASDASD", "ASDASD", "ASADD ASASDDDDDD"],
+    //   correctNumber: 1,
+    //   choiceNumber: 1
+    // },
+    // {
+    //   nickname: "SiAsda",
+    //   question: "ASDDDDDDDD",
+    //   answerList: ["ASASD asd aas aadasDDDDD DDDDDDDDDDDAS", "ASDASD", "ASDASD", "ASADD ASASDDDDDD"],
+    //   correctNumber: 1,
+    //   choiceNumber: 1
+    // },
+    // {
+    //   nickname: "SiAsda",
+    //   question: "ASDDDDDDDD",
+    //   answerList: ["ASASD asd aas aadasDDDDD DDDDDDDDDDDAS", "ASDASD", "ASDASD", "ASADD ASASDDDDDD"],
+    //   correctNumber: 1,
+    //   choiceNumber: 1
+    // },
+    // {
+    //   nickname: "SiAsda",
+    //   question: "ASDDDDDDDD",
+    //   answerList: ["ASASD asd aas aadasDDDDD DDDDDDDDDDDAS", "ASDASD", "ASDASD", "ASADD ASASDDDDDD"],
+    //   correctNumber: 1,
+    //   choiceNumber: 1
+    // },
+    // {
+    //   nickname: "SiAsda",
+    //   question: "ASDDDDDDDD",
+    //   answerList: ["ASASD asd aas aadasDDDDD DDDDDDDDDDDAS", "ASDASD", "ASDASD", "ASADD ASASDDDDDD"],
+    //   correctNumber: 1,
+    //   choiceNumber: 1
+    // },
+    // {
+    //   nickname: "SiAsda",
+    //   question: "ASDDDDDDDD",
+    //   answerList: ["ASASD asd aas aadasDDDDD DDDDDDDDDDDAS", "ASDASD", "ASDASD", "ASADD ASASDDDDDD"],
+    //   correctNumber: 1,
+    //   choiceNumber: 1
+    // },
+    // {
+    //   nickname: "SiAsda",
+    //   question: "ASDDDDDDDD",
+    //   answerList: ["ASASD asd aas aadasDDDDD DDDDDDDDDDDAS", "ASDASD", "ASDASD", "ASADD ASASDDDDDD"],
+    //   correctNumber: 1,
+    //   choiceNumber: 1
+    // },
+    // {
+    //   nickname: "SiAsda",
+    //   question: "ASDDDDDDDD",
+    //   answerList: ["ASASD asd aas aadasDDDDD DDDDDDDDDDDAS", "ASDASD", "ASDASD", "ASADD ASASDDDDDD"],
+    //   correctNumber: 1,
+    //   choiceNumber: 1
+    // },
+    // {
+    //   nickname: "SiAsda",
+    //   question: "ASDDDDDDDD",
+    //   answerList: ["ASASD asd aas aadasDDDDD DDDDDDDDDDDAS", "ASDASD", "ASDASD", "ASADD ASASDDDDDD"],
+    //   correctNumber: 1,
+    //   choiceNumber: 1
     // }
   ])
 
-  // 인덱스를 넘겨주고, 마지막 문제에서는 채점 화면으로 이동시켜준다
+  // 시험지 제출 함수
+  const submitExam = () => {
+    // 끝나는 로딩넣기
+    console.log("제출")
+    setEndLoading(true)
+    // 정답 데이터를 추가함
+    const updatedTransformedData = transformedData.map((item, index) => {
+      return {
+        ...item,
+        choiceNumber: myAnswerList[index],
+        question: `${item.nickname} ${item.question}`
+      };
+    });
+    setTransformedData(updatedTransformedData);
+  }
+
+  // 인덱스 넘겨주는 함수, 마지막 문제에서는 채점 화면으로 이동시켜준다
   const handleNextIndex: (questionNumber: number, value: number) => void = (questionNumber: number, value: number) => {
     // 답안 저장
-    if (value !== 0) {
-      const updatedAnswerList = setAnswerAtIndex(questionNumber, value, myAnswerList);
+    const updatedAnswerList = setAnswerAtIndex(questionNumber, value, myAnswerList);
       setMyAnswerList(updatedAnswerList); // 업데이트된 배열로 상태 업데이트
-    }
 
     if (questionIndex < 9) {
       // 9보다 적을때는 answerlist 업데이트
       setQuestionIndex(questionIndex + 1);
     } else {
       // 마지막 문제일때는 저장 후 제출
-      console.log("제출")
-      // 끝나는 로딩넣기
-      setEndLoading(true)
-      // 정답 데이터를 추가함
-      const updatedTransformedData = transformedData.map((item, index) => {
-        return {
-          ...item,
-          choiceNumber: myAnswerList[index],
-          question: `${item.nickname}님의 ${item.question}은?`
-        };
-      });
-      console.log(updatedTransformedData)
-      setTransformedData(updatedTransformedData);
 
+      // 싹 다 답변 했을때는 바로 제출
+      if (unSelectedIndex(updatedAnswerList).length === 0) {
+        submitExam()
+      } // 아닐때는 저장 안된 리스트 업데이트
+      else {
+        setNoSelectList(unSelectedIndex(updatedAnswerList))
+        setWarning(true)
+      }
     }
   }
+
+  // 경고 모달 => 끝내기이면 시험제출, 아니면 모달 내리고, 안 푼문제로 돌려주기
+  const handleWarningModal = (type: string) => {
+    if (type === "finish") {
+      submitExam()
+    } else {
+      setWarning(false)
+      setQuestionIndex(noSelectList[0]-1)
+    }
+  }
+
 
   // 이전 문제로 되돌려 준다
   const handleBeforeIndex: (questionNumber: number, value: number) => void = (questionNumber: number, value: number) => {
@@ -78,6 +162,58 @@ const ExamTaking = () => {
   }
 
 
+  // 미션 수행 api
+  const doMissionApiFunc = () => {
+    doMissionApi({type: "EXAM", photoCount: null},
+      res => {
+        console.log(res.data)
+
+      }, err => {
+        console.log(err)
+      })
+  }
+
+  // 시험 저장 api
+  const saveExamResultApiFunc = () => {
+    // 제출하기
+    doMissionApiFunc()
+    saveExamResultApi({
+      examResults: transformedData,
+      score: getExamScore(myAnswerList, correctAnswerSheet)
+    }, res => {
+      console.log(res)
+      // 미션 수행 api
+      setTimeout(() => {
+          setEndLoading(false)
+          navigate(`/exam/scored/${res.data.examId}`)
+        }
+        , 1000)
+
+    }, err => {
+      console.log(err)
+
+      setTimeout(() => {
+          setEndLoading(false)
+          saveExamResultApiFunc()
+          navigate("/exam/grade")
+        }
+        , 1000)
+    })
+  }
+
+  // 로딩 끝내기
+  useEffect(() => {
+    if (startLoading && transformedData.length !== 0) {
+      setTimeout(() =>
+          setStartLoading(false)
+        , 2000)
+    } else if (endLoading === true) {
+      saveExamResultApiFunc()
+    }
+
+  }, [transformedData]);
+
+  // 시작하자마자 시험지 데이터 가져오기
   useEffect(() => {
 
     getNewExamApi(
@@ -88,11 +224,11 @@ const ExamTaking = () => {
           setTransformedData(transformedData)
           setCorrectAnswerSheet(answerNumArray)
         } else {
-          setTimeout(()=> {
+          setTimeout(() => {
               setStartLoading(false)
               setNotFound(true)
             }
-          ,2000)
+            , 2000)
 
         }
       },
@@ -106,54 +242,6 @@ const ExamTaking = () => {
 
   }, []);
 
-  // 미션 수행 api
-  const doMissionApiFunc = () => {
-    doMissionApi({type: "EXAM", photoCount: null},
-      res => {
-        console.log(res.data)
-        setTimeout(() => {
-            setEndLoading(false)
-            navigate(`/exam/scored/${res.data.examId}`)
-          }
-          , 1000)
-
-      }, err => {
-        console.log(err)
-      })
-  }
-
-  // 로딩 끝내기
-  useEffect(() => {
-    if (startLoading && transformedData.length !== 0) {
-      setTimeout(() =>
-          setStartLoading(false)
-        , 2000)
-    } else if (endLoading === true) {
-
-      saveExamResultApi({
-        examResults: transformedData,
-        score: getExamScore(myAnswerList, correctAnswerSheet)
-      }, res => {
-        console.log(res)
-        // 미션 수행 api
-        doMissionApiFunc()
-
-
-      }, err => {
-        console.log(err)
-
-        setTimeout(() => {
-            setEndLoading(false)
-
-            navigate("/exam/grade")
-          }
-          , 1000)
-      })
-
-    }
-
-  }, [transformedData]);
-
   return (
     <div className="exam-taking">
       {startLoading ?
@@ -165,18 +253,19 @@ const ExamTaking = () => {
           notFound ?
             <ExamNotFound/>
             :
-            <>
-              <Header/>
-              <QuestionItemTaking myAnswerList={myAnswerList}
-                                  handleNextIndex={handleNextIndex}
-                                  handleBeforeIndex={handleBeforeIndex}
-                                  questionNumber={questionIndex}
-                                  questionItem={transformedData[questionIndex]}/>
+          <>
+            <Header/>
+            <QuestionItemTaking myAnswerList={myAnswerList}
+                                handleNextIndex={handleNextIndex}
+                                handleBeforeIndex={handleBeforeIndex}
+                                questionNumber={questionIndex}
+                                questionItem={transformedData[questionIndex]}/>
 
-              <MyAnswerSheet myAnswerList={myAnswerList} handleProblem={handleProblem}/>
-            </>
+            <MyAnswerSheet myAnswerList={myAnswerList} handleProblem={handleProblem}/>
+          </>
       }
-
+      {/* 정답 다 안했을 때 */}
+      {warning ? <WarningModal noSelectList={noSelectList} handleWarningModal={handleWarningModal}/> : null}
     </div>
   );
 };
@@ -209,8 +298,30 @@ const MyAnswerSheet = ({myAnswerList, handleProblem}: {
           </div>
         )
       })}
+
+
     </div>
   );
 };
 
+const WarningModal = ({noSelectList, handleWarningModal}: {
+  noSelectList: number[],
+  handleWarningModal: (type: string) => void
+}) => {
+  return (
+    <div className="warning-modal-bg">
+      <div className="warning-modal-content">
+        <h3>안 푼 문제가 있어요</h3>
+        <div>
+          <IoWarningSharp size={100} color={"lightgray"}/>
+          {/*{noSelectList.map((item, index) => <span key={index}>{item}{index===noSelectList.length-1 ? "":", "}</span>)}*/}
+        </div>
+        <div className="warning-modal-btn-container">
+          <button className="keep-going-btn" onClick={() => handleWarningModal("finish")}>제출하기</button>
+          <button className="replay-btn" onClick={() => handleWarningModal("not")}>다시 풀기</button>
+        </div>
+      </div>
+    </div>
+  )
+}
 export default ExamTaking;

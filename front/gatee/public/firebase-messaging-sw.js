@@ -23,7 +23,7 @@ self.addEventListener('activate', function (e) {
   console.log('fcm sw activate..');
 });
 
-let url = "/main"
+
 
 
 messaging.onBackgroundMessage((payload) => {
@@ -34,17 +34,11 @@ messaging.onBackgroundMessage((payload) => {
   // Customize notification here
   const notificationData = payload.notification
   const notificationTitle = payload.notification.title;
-  if (notificationTitle.includes("채팅")) {
-    url = "/chatting"
-  } else if (notificationTitle.includes("사진")) {
-    url = "/photo/day"
-  } else if (notificationTitle.includes("한마디")) {
-    url = "/notification"
-  }
+
 
   const notificationOptions = {
     body: notificationData.body,
-    icon: notificationData.icon,
+    icon: notificationData.image,
   };
 
 
@@ -53,7 +47,7 @@ messaging.onBackgroundMessage((payload) => {
 
 
 self.addEventListener('notificationclick', function (event) {
-
+  const url = "/main"
   event.notification.close();
   event.waitUntil(clients.openWindow(url));
 });

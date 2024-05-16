@@ -83,13 +83,13 @@
           align-items: center;
 
           .title {
-            font-size: 1.1rem;
+            font-size: 1rem;
             @include mr-(0.4);
           }
         }
 
         .title {
-          font-size: 1.1rem;
+          font-size: 1rem;
         }
       }
 
@@ -110,9 +110,9 @@
   }
 
   .iconimg {
-    width: 7dvh;
+    width: 6.5dvh;
     @include mr-(1.2);
-    flex: 1;
+    //flex: 1;
   }
 
   h3 {

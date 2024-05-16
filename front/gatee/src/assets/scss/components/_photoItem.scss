@@ -8,9 +8,9 @@
 
   .photo-detail-img {
     @include flex-center;
-  ;
     flex: 1;
     max-width: 100dvw;
+    max-height: calc(100dvh - $topBar-height - $bottomBar-height - 7dvh);
     object-fit: contain;
   }
 
@@ -18,8 +18,8 @@
   .interaction--container {
     @include flex_between;
     @include mx-(1);
-    @include mb-(0.5);
-
+    //@include mb-(0.5);
+    height: 7dvh;
     .liked--container {
       @include flex_center;
 

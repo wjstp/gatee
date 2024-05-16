@@ -11,7 +11,6 @@ interface QuestionScoredProps {
 
 const QuestionScored = (
   {question, questionNumber}: QuestionScoredProps) => {
-  console.log(question)
   return (
     <div className="exam__item">
       {/* 채점 */}
@@ -26,9 +25,9 @@ const QuestionScored = (
       {/* 객관식 */}
       {question?.answerList.map((answer: any, i: number) => {
         return (
-          <div key={i} className="exam__item__answerList">
+          <div key={i} className="exam__item__answer-list">
             {/* 객관식 번호 */}
-            <div className={question?.choiceNumber === i + 1 ? "activateIndex" : "deactivateIndex"}>
+            <div className={question?.choiceNumber === i + 1 ? "activate-index" : "deactivate-index"}>
               {i + 1}
             </div>
             {question?.correctNumber === i+1 ?

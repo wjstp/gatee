@@ -34,9 +34,10 @@ public class ScheduleController {
     @ResponseStatus(HttpStatus.OK)
     public List<ScheduleListRes> readSchedule(
             @Valid
-            @RequestParam String familyId
+            @RequestParam String familyId,
+            @RequestParam Integer month
     ) throws FamilyNotFoundException {
-        return scheduleService.readSchedule(UUID.fromString(familyId));
+        return scheduleService.readSchedule(UUID.fromString(familyId), month);
     }
 
     // 일정 상세 조회

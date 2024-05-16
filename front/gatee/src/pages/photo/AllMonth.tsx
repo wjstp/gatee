@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {Link} from "react-router-dom";
 
 import {useFamilyStore} from "@store/useFamilyStore";
-import {getThumnailPhotoApi} from "@api/photo";
+import {getThumbnailPhotoApi} from "@api/photo";
 import {MonthYearPhotoTabProps} from "@type/index";
 import {usePhotoStore} from "@store/usePhotoStore";
 
@@ -12,7 +12,7 @@ const AllMonth = () => {
   const {monthThumbnailPhotoGroup,setMonthThumbnailPhotoGroup} = usePhotoStore()
   useEffect(() => {
     // 월별 사진 조회
-    getThumnailPhotoApi({familyId: familyId, filter: "MONTH"},
+    getThumbnailPhotoApi({familyId: familyId, filter: "MONTH"},
       res => {
         console.log(res)
         setMonthThumbnailPhotoGroup(res.data)

@@ -41,7 +41,7 @@ export const getAlbumListPhotoApi = async function (data: FamilyIdReq,
 
 
 // 년월 목록 썸네일 조회
-export const getThumnailPhotoApi = async function (data: GetThumnailPhotoApiReq,
+export const getThumbnailPhotoApi = async function (data: GetThumnailPhotoApiReq,
                                                     success: (res: AxiosResponse<any>) => void,
                                                     fail: (err: AxiosError<any>) => void) {
   await local.get(`/photos/thumbnails` ,{params:data}).then(success).catch(fail);
