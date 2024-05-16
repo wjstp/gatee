@@ -9,7 +9,7 @@
     @include py-(1);
     justify-content: space-evenly;
     position: sticky; /* 항상 상단에 고정됩니다. */
-    top: 0; /* 상단에 고정됩니다. */
+    top: -0.1rem; /* 상단에 고정됩니다. */
     z-index: 999; /* 다른 컨텐츠 위에 렌더링됩니다. */
     background-color: #fff;
 

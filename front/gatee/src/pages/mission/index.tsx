@@ -5,6 +5,7 @@ import Improvement from "@pages/mission/components/Improvement";
 import {useFamilyStore} from "@store/useFamilyStore";
 import {getMissionApi} from "@api/mission";
 import {useMissionStore} from "@store/useMissionStore";
+import {useMemberStore} from "@store/useMemberStore";
 
 interface KoreanMentType {
   [key: string]: string;
@@ -68,8 +69,8 @@ const MissionIndex = () => {
     dotsClass: 'dots_custom'
   };
 
-  //우리 가족 명
-  const {familyName} = useFamilyStore()
+
+  const {myInfo} = useMemberStore()
   // 우리 가족의 개선사항
   const improvement = [
     "heart",
@@ -94,7 +95,7 @@ const MissionIndex = () => {
 
 
           <div className="improvement-comment">
-            <span className="text-orange">{familyName} </span>
+            <span className="text-orange">{myInfo.nickname} </span>
             {improvement.map((item, i) => (
               <React.Fragment key={i}>
                 {i > 0 && ", "}
