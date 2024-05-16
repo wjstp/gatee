@@ -32,7 +32,7 @@ public class AppointmentScheduler {
     private final PushNotificationService pushNotificationService;
     private Map<String, ScheduledFuture<?>> scheduledTasks = new HashMap<>();
 
-    public void registerSchedule(String memberId, Long appointmentId, LocalDateTime planTime) {
+    public void registerAppointment(String memberId, Long appointmentId, LocalDateTime planTime) {
         ScheduledFuture<?> scheduledTask = taskScheduler.schedule(() -> {
                     try {
                         sendAppointmentNotification(appointmentId);
@@ -44,7 +44,7 @@ public class AppointmentScheduler {
         scheduledTasks.put(memberId + "_" + appointmentId.toString(), scheduledTask);
     }
 
-    public void deleteSchedule(String memberId, Long scheduleId) {
+    public void deleteAppointment(String memberId, Long scheduleId) {
         ScheduledFuture<?> scheduledTask = scheduledTasks.get(memberId + "_" + scheduleId.toString());
         if (Objects.nonNull(scheduledTask)) {
             scheduledTask.cancel(true);

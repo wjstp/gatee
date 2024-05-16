@@ -98,15 +98,16 @@ public class FeatureServiceImpl implements FeatureService{
                 "2. 같은 범주의 단어나 문장\n"+
                 "3. 시제(과거, 현재)가 일치\n"+
                 "4. \"" + question + "\"라는 질문에 대한 답으로 어색하지 않음\n"+
-                "5. 예시에는 문제는 포함되지 않음\n" +
+                "5. 예시에 질문은 포함되지 않음\n" +
                 "6. 하나의 단어나 문장\n" +
-                "7. \""+answer + "\"과는 다른 의미를 갖고 있음\n" +
+                "7. \""+answer + "\"라는 답변과는 다른 의미를 갖고 있음\n" +
                 "8. 따옴표를 예시 양끝에 붙이지 말 것\n" +
-                "9. 선지끼리 같은 내용이 겹치지 않음\n" +
+                "9. 예시끼리 내용이 겹치지 않음\n" +
 //                "4. 비문이 아닌 단어나 문장\n"+
-                "이 예시 3개를 string type으로 해서 하나의 파이썬 리스트에 이 예시들이 담긴 형태로 만들어줘."+
-                "미사여구 없이 리스트 한개만 보여줘."+
-                "[\"answer1\", \"answer2\", \"answer\"] 의 형식으로 보내줘. 따옴표가 중간에 반드시 있어야해."+
+                "이 예시 3개를 string type으로 해서 하나의 파이썬 리스트에 이 예시들이 담긴 형태로 만들어줘.\n"+
+                "미사여구 없이 리스트 한개만 보여줘.\n"+
+                "[\"answer1\", \"answer2\", \"answer\"] 의 형식으로 보내줘. 따옴표가 중간에 반드시 있어야해.\n"+
+                "answer1, answer2, answer3 은 서로 겹치면 안돼. \n"+
                 "파이썬 리스트는 단 하나만 보내줘";
 
         GptResponseDto result = gptService.askQuestion(QuestionDto.builder().content(content).build());
