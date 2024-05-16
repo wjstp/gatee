@@ -24,10 +24,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 import static io.ssafy.gatee.global.exception.message.ExceptionMessage.MEMBER_NOT_FOUND;
+import static io.ssafy.gatee.global.websocket.dto.MessageType.DATE_LINE;
 
 @Service
 @Slf4j
@@ -200,6 +202,17 @@ public class ChatServiceImpl implements ChatService {
         this.saveMessageToRealtimeDatabase(fireStoreChatDto, familyId);
     }
 
+    @Override
+    public void sendDateLineToAll() {
+        List<Family> allFamily = familyService.findAllFamily();
+        allFamily.forEach(family ->
+                this.sendDateLine(FireStoreChatDto.builder()
+                                .messageType(DATE_LINE)
+                                .currentTime(LocalDateTime.now().toString())
+                                .build(),
+                        family.getId())
+        );
+    }
 
     public void saveMessageToRealtimeDatabase(FireStoreChatDto fireStoreChatDto, UUID familyId) {
         // roomId를 사용하여 채팅방에 대한 참조를 가져옵니다.

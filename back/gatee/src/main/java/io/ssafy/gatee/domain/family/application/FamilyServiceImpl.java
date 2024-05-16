@@ -73,8 +73,6 @@ public class FamilyServiceImpl implements FamilyService {
 
     private final ChatRoomRepository chatRoomRepository;
 
-    private final ChatService chatService;
-
     private final String DEFAULT_FAMILY_IMAGE_URL = "https://spring-learning.s3.ap-southeast-2.amazonaws.com/default/family.jpg";
 
     // 가족 생성
@@ -288,14 +286,7 @@ public class FamilyServiceImpl implements FamilyService {
     }
 
     @Override
-    public void sendDateLineToAll() {
-        List<Family> allFamily = familyRepository.findAll();
-        allFamily.forEach(family ->
-                chatService.sendDateLine(FireStoreChatDto.builder()
-                                .messageType(DATE_LINE)
-                                .currentTime(LocalDateTime.now().toString())
-                                .build(),
-                        family.getId())
-        );
+    public List<Family> findAllFamily() {
+        return familyRepository.findAll();
     }
 }
