@@ -17,11 +17,11 @@ public class MissionRepositoryCustomImpl implements MissionRepositoryCustom {
     private final JPQLQueryFactory jpqlQueryFactory;
 
     @Override
-    public List<Member> findByMemberListAndType(List<Member> memberList, Type type) {
+    public List<Mission> findByMemberListAndType(List<Member> memberList, Type type) {
 
         QMission mission = QMission.mission;
 
-        return jpqlQueryFactory.selectFrom(mission.member)
+        return jpqlQueryFactory.selectFrom(mission)
                 .where(mission.member.in(memberList))
                 .where(mission.type.eq(type))
                 .orderBy(mission.nowRange.asc())
