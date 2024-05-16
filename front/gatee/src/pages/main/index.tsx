@@ -15,7 +15,7 @@ import {useMissionStore} from "@store/useMissionStore";
 const MainIndex = () => {
   // const {setMyInfo} = useMemberStore()
   const { setMyInfo} = useMemberStore()
-  const {familyInfo,setFamilyId, setFamilyInfo, setFamilyName, setFamilyScore} = useFamilyStore()
+  const {familyInfo,setFamilyId, setFamilyInfo, setFamilyName, setFamilyScore,setFamilyImage} = useFamilyStore()
   const [loading, setLoading] = useState(true)
   const { setMissionList} = useMissionStore()
   // 가족 데이터 저장 Api
@@ -26,6 +26,7 @@ const MainIndex = () => {
         setFamilyInfo(res.data.memberFamilyInfoList);
         setFamilyName(res.data.name);
         setFamilyScore(res.data.familyScore);
+        setFamilyImage(res.data.familyImageUrl);
       },
       (err) => {
         console.log(err);
