@@ -12,21 +12,23 @@ import org.springframework.batch.core.launch.NoSuchJobException;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRestartException;
+import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
 @Log4j2
-@RequiredArgsConstructor
 @Component
+@Profile("batch")
+@RequiredArgsConstructor
 public class BatchScheduler {
 
     private final JobLauncher jobLauncher;
     private final JobRegistry jobRegistry;
     private final FamilyService familyService;
 
-    @Scheduled(cron = "0 20 10 ? * *")  // 매일 아침 10시 20분
+    @Scheduled(cron = "0 0 * * * *")  // 매일 아침 10시 20분
     public void runFeatureNotificationJob() {
         String time = LocalDateTime.now().toString();
         try {
@@ -56,5 +58,11 @@ public class BatchScheduler {
     public void runTimeLineToChatRoomJob() {
         log.info("batch start!!");
         familyService.sendDateLineToAll();
+    }
+
+    @Scheduled(cron = "0 0 * * * *")  // 매일 아침 10시 20분
+    public void runTestJob() {
+        String time = LocalDateTime.now().toString();
+        log.info("batch test : " + time) ;
     }
 }
