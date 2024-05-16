@@ -64,6 +64,10 @@
 
           .notification-item-title {
             font-weight: 500;
+            max-width: 40dvw;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
             //color: $orange500;
           }
         }
