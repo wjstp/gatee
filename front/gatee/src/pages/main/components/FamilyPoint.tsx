@@ -3,13 +3,16 @@ import React from "react";
 import {useFamilyStore} from "@store/useFamilyStore";
 
 export const FamilyPoint = () => {
-  const {familyScore} = useFamilyStore()
+  const {familyScore,stringImage,familyName} = useFamilyStore()
   const myFamilyTemp = 36 + familyScore * 0.1
   return (
     <div className="main-family-info">
       {/* 가족 온도 */}
       <div className="title--container">
-        <div className="title--content">우리 가족 온도</div>
+        <img src={stringImage} className="main-family-img" alt=""/>
+        <div className="title--content">
+          {familyName} 온도
+        </div>
         <div className="title--temperature">{myFamilyTemp}ºC</div>
       </div>
 
