@@ -31,7 +31,7 @@ const KaKaoLogin = () => {
           {/* 로고 */}
           <LineLogo width={150} height={150}/>
           {/* 로고가 캡처 화면만큼 크면 안 되니까 div 요소 삽입하여 크기 조절 */}
-          <div className="emptyBox"></div>
+          <div className="emptyBox">sc</div>
         </div>
 
         {/* 로그인 버튼 */}

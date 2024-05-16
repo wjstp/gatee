@@ -1,5 +1,6 @@
 @use '../abstracts/index' as *;
 @use '../components/index' as *;
+@use '../base' as *;
 
 .onboarding__container-center {
   justify-content: center;
@@ -37,7 +38,7 @@
     .explain {
       @include flex-col;
       @include flex_center;
-      height: 100vh*0.5;
+      //height: 100vh*0.5;
       width: 100vw;
       padding-top: 3rem;
       //border: 3px solid red;
@@ -49,6 +50,9 @@
 
     .emptyBox {
       height: 100px;
+      font-family: $ChosunGs;
+      color: white;
+      font-size: 0.1rem;
     }
 
     .textFlex {

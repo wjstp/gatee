@@ -454,7 +454,7 @@
         button {
           //@extend %orange-button-medium;
           border:1px solid $gray300;
-          font-weight: bold;
+          //font-weight: bold;
 
           @include px-(1);
           @include py-(0.5);
