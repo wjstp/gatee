@@ -7,7 +7,6 @@ spring:
       local:
         - db-local
         - security-local
-        - batch-local
       prod:
         - db-prod
         - security-prod
