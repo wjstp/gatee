@@ -119,11 +119,12 @@ public class ScheduleController {
     }
 
     // 일정 후기 삭제
-    @DeleteMapping("/{scheduleId}/record")
+    @DeleteMapping("/{scheduleId}/record/{scheduleRecordId}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteScheduleRecord(
-            @PathVariable("scheduleId") Long scheduleId
+            @PathVariable("scheduleId") Long scheduleId,
+            @PathVariable("scheduleRecordId") Long scheduleRecordId
     ) {
-        scheduleService.deleteScheduleRecord(scheduleId);
+        scheduleService.deleteScheduleRecord(scheduleId, scheduleRecordId);
     }
 }
