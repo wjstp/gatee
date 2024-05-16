@@ -35,12 +35,12 @@ public class FcmTokenRefreshBatchConfig {
     private final EntityManagerFactory entityManagerFactory;
     private final MemberRepository memberRepository;
 
-//    @Bean
-//    public Job featureNotificationJob(JobRepository jobRepository, PlatformTransactionManager transactionManager) throws Exception {
-//        return new JobBuilder(JOB_NAME, jobRepository)
-//                .start(this.sendFeatureNotificationStep(jobRepository, transactionManager))
-//                .build();
-//    }
+    @Bean
+    public Job featureNotificationJob(JobRepository jobRepository, PlatformTransactionManager transactionManager) throws Exception {
+        return new JobBuilder(JOB_NAME, jobRepository)
+                .start(this.sendFeatureNotificationStep(jobRepository, transactionManager))
+                .build();
+    }
 
     @Bean(JOB_NAME + "_checkAndRefreshToken")
     public Step sendFeatureNotificationStep(JobRepository jobRepository, PlatformTransactionManager platformTransactionManager) throws Exception {

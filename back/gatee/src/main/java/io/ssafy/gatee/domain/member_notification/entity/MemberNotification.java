@@ -35,16 +35,6 @@ public class MemberNotification extends BaseEntity {
 
     private boolean chatNotification;
 
-
-    @PrePersist
-    public void prePersist() {
-        this.albumNotification = true;
-        this.scheduleNotification = true;
-        this.naggingNotification = true;
-        this.featureNotification = true;
-        this.chatNotification = true;
-    }
-
     public void modifyMemberNotification(NotificationAgreementReq notificationAgreementReq) {
         this.albumNotification = notificationAgreementReq.albumNotification();
         this.scheduleNotification = notificationAgreementReq.scheduleNotification();

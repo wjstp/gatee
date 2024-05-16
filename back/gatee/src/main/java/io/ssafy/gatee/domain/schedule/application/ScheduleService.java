@@ -22,5 +22,5 @@ public interface ScheduleService {
     void participateSchedule(ScheduleParticipateReq scheduleParticipateReq, UUID memberId, Long scheduleId) throws FamilyScheduleNotFoundException, MemberFamilyScheduleNotFoundException;
     void cancelSchedule(ScheduleCancelReq scheduleCancelReq, UUID memberId, Long scheduleId) throws FamilyScheduleNotFoundException, MemberFamilyScheduleNotFoundException;
     void saveScheduleRecord(ScheduleSaveRecordReq scheduleSaveRecordReq, UUID memberId, Long scheduleId);
-    void deleteScheduleRecord(Long scheduleId);
+    void deleteScheduleRecord(Long scheduleId, Long scheduleRecordId);
 }

@@ -1,0 +1,9 @@
+spring:
+  config:
+    activate:
+      on-profile: batch-local
+  batch:
+    job:
+      enabled: false
+    jdbc:
+      initialize-schema: always
