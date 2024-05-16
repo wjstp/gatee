@@ -116,10 +116,9 @@ const ExamTaking = () => {
   // 인덱스 넘겨주는 함수, 마지막 문제에서는 채점 화면으로 이동시켜준다
   const handleNextIndex: (questionNumber: number, value: number) => void = (questionNumber: number, value: number) => {
     // 답안 저장
-    if (value !== 0) {
-      const updatedAnswerList = setAnswerAtIndex(questionNumber, value, myAnswerList);
+    const updatedAnswerList = setAnswerAtIndex(questionNumber, value, myAnswerList);
       setMyAnswerList(updatedAnswerList); // 업데이트된 배열로 상태 업데이트
-    }
+
     if (questionIndex < 9) {
       // 9보다 적을때는 answerlist 업데이트
       setQuestionIndex(questionIndex + 1);
@@ -127,11 +126,11 @@ const ExamTaking = () => {
       // 마지막 문제일때는 저장 후 제출
 
       // 싹 다 답변 했을때는 바로 제출
-      if (unSelectedIndex(myAnswerList).length === 0) {
+      if (unSelectedIndex(updatedAnswerList).length === 0) {
         submitExam()
       } // 아닐때는 저장 안된 리스트 업데이트
       else {
-        setNoSelectList(unSelectedIndex(myAnswerList))
+        setNoSelectList(unSelectedIndex(updatedAnswerList))
         setWarning(true)
       }
     }
