@@ -1,24 +1,45 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import MissionItem from "@pages/mission/components/MissionItem";
 import Slider from "react-slick";
 import Improvement from "@pages/mission/components/Improvement";
 import {useFamilyStore} from "@store/useFamilyStore";
 import {getMissionApi} from "@api/mission";
 import {useMissionStore} from "@store/useMissionStore";
+import {useMemberStore} from "@store/useMemberStore";
 
 interface KoreanMentType {
   [key: string]: string;
 }
 
 const MissionIndex = () => {
-
+  const {familyId} = useFamilyStore()
   const {missionList, setMissionList} = useMissionStore()
+  const {myInfo} = useMemberStore()
+  // 우리 가족의 개선사항
+  const [improvement, setImprovement] = useState([
+    "heart",
+    "hello",
+  ])
+  // const [sli]
+
+  // 개선사항에 대한 한국어 번역
+  const koreanMent: KoreanMentType = {
+    "heart": "마음 표현",
+    "featureMission": "백과사전 작성",
+    "albumMission": "사진 업로드",
+    "examMission": "모의고사 응시",
+    "hello": "채팅 횟수",
+    "scheduleMission": "일정 잡기"
+  }
+
   // 미션 저장 api
   const getMissionApiFunc = () => {
-    getMissionApi(
+    getMissionApi({familyId: familyId},
       res => {
         console.log(res)
-        setMissionList(res.data)
+        setMissionList(res.data.missionListResList)
+        const data = Object.keys(res.data.missionImprovementsRes).filter(key => res.data.missionImprovementsRes[key]);
+        setImprovement(["heart", "hello", ...data])
       },
       err => {
         console.log(err)
@@ -55,7 +76,7 @@ const MissionIndex = () => {
     dots: true,
     // fade: true,
     infinite: true,
-    autoplay: true,
+    autoplay: false,
     autoplaySpeed: 3000,
     speed: 1000,
     slidesToShow: 1,
@@ -68,24 +89,6 @@ const MissionIndex = () => {
     dotsClass: 'dots_custom'
   };
 
-  //우리 가족 명
-  const {familyName} = useFamilyStore()
-  // 우리 가족의 개선사항
-  const improvement = [
-    "heart",
-    "about",
-    "hello",
-    "calendar"
-  ]
-
-  // 개선사항에 대한 한국어 번역
-  const koreanMent: KoreanMentType = {
-    "heart": "마음 표현",
-    "about": "백과사전 작성 횟수",
-    "hello": "채팅 횟수",
-    "calendar": "일정 잡기"
-  }
-
 
   return (
     <div className="mission__index">
@@ -94,14 +97,20 @@ const MissionIndex = () => {
 
 
           <div className="improvement-comment">
-            <span className="text-orange">{familyName} </span>
-            {improvement.map((item, i) => (
-              <React.Fragment key={i}>
-                {i > 0 && ", "}
-                {koreanMent[item]}
-              </React.Fragment>
-            ))}
-            {"가 부족해요"}
+            {improvement.length <= 2 ? null : <>
+              <span className="text-orange">{myInfo.nickname} </span>
+              {improvement.map((item, i) => {
+                  if (item === "heart" || item === "hello") return null
+                  else return (<React.Fragment key={i}>
+                      {i > 0 && ", "}
+                      {koreanMent[item]}
+                    </React.Fragment>
+                  )
+                }
+              )}
+              <span>가 부족해요</span>
+            </>
+            }
           </div>
         </div>
 

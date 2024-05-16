@@ -91,22 +91,23 @@ public class FeatureServiceImpl implements FeatureService{
 
     @Override
     public List<String> getWrongAnswersFromGPT(String question, String answer) {
-        String content = "\""+question + "\"라는 질문에 대해 \"" + answer +"\"라는 답변을 했고, 이를 객관식 문제로 낼 거야. " +
-                "이 객관식 문제를 낼 때선지에 있을 만한 예시 3개를 만들어줘\n" +
+        String content = "\""+question + "\"라는 질문에 대해 \"" + answer +"\"라는 답변을 했고, 이를 바탕으로 객관식 문제로 낼 거야. " +
+                "이 객관식 문제를 낼 때 선지에 있을 만한 예시 3개를 만들어줘\n" +
                 "객관식 문제를 낼 떄 선지에 있을만한 예시의 조건 9가지를 모두 충족해야한다.\n" +
-                "1. 비슷한 길이의 단어나 문장\n" +
-                "2. 같은 범주의 단어나 문장\n"+
-                "3. 시제(과거, 현재)가 일치\n"+
+                "1. 답변과 비슷한 길이의 단어나 문장\n" +
+                "2. 답변과 같은 범주의 단어나 문장\n"+
+                "3. 답변과 시제(과거, 현재)가 일치\n"+
                 "4. \"" + question + "\"라는 질문에 대한 답으로 어색하지 않음\n"+
-                "5. 예시에는 문제는 포함되지 않음\n" +
-                "6. 하나의 단어나 문장\n" +
-                "7. \""+answer + "\"과는 다른 의미를 갖고 있음\n" +
-                "8. 따옴표를 예시 양끝에 붙이지 말 것\n" +
-                "9. 선지끼리 같은 내용이 겹치지 않음\n" +
-//                "4. 비문이 아닌 단어나 문장\n"+
-                "이 예시 3개를 string type으로 해서 하나의 파이썬 리스트에 이 예시들이 담긴 형태로 만들어줘."+
-                "미사여구 없이 리스트 한개만 보여줘."+
-                "[\"answer1\", \"answer2\", \"answer\"] 의 형식으로 보내줘. 따옴표가 중간에 반드시 있어야해."+
+                "5. 의미상 어색하지 않은 단어나 문장\n"+
+                "6. 예시에 질문은 포함되지 않음\n" +
+                "7. 하나의 단어나 문장\n" +
+                "8. 답변과 의미가 다름\n" +
+                "9. 따옴표를 예시 양끝에 붙이지 말 것\n" +
+                "10. 예시끼리 내용이 겹치지 않음\n" +
+                "이 예시 3개를 string type으로 해서 하나의 파이썬 리스트에 이 예시들이 담긴 형태로 만들어줘.\n"+
+                "미사여구 없이 리스트 한개만 보여줘.\n"+
+                "[\"answer1\", \"answer2\", \"answer3\"] 의 형식으로 보내줘. 따옴표가 중간에 반드시 있어야해.\n"+
+                "answer1, answer2, answer3 은 서로 겹치면 안돼. 답변이 answer1, answer2, answer3에 있어서도 안돼.\n"+
                 "파이썬 리스트는 단 하나만 보내줘";
 
         GptResponseDto result = gptService.askQuestion(QuestionDto.builder().content(content).build());
@@ -115,7 +116,9 @@ public class FeatureServiceImpl implements FeatureService{
         log.info(result);
         // 응답이 배열 형태로 왔을 떄만 wronganswers 저장
         if (result.answer().startsWith("[") && result.answer().endsWith("]")) {
-            String wrongAnswer = result.answer().substring(1, result.answer().length() - 1).replaceAll("\"", "");
+            String wrongAnswer = result.answer().substring(1, result.answer().length() - 1)
+                    .replaceAll("\"", "")
+                    .replaceAll("\"", "");
             List<String> wrongAnswers = Arrays.asList(wrongAnswer.split(", "));
             if (wrongAnswers.size() ==3) {
                 return wrongAnswers;

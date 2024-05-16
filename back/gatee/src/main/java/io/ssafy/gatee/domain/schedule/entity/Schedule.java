@@ -2,7 +2,6 @@ package io.ssafy.gatee.domain.schedule.entity;
 
 import io.ssafy.gatee.domain.base.BaseEntity;
 import io.ssafy.gatee.domain.schedule.dto.request.ScheduleEditReq;
-import io.ssafy.gatee.domain.schedule_record.entity.ScheduleRecord;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,9 +35,6 @@ public class Schedule extends BaseEntity {
     private LocalDateTime startDate;
 
     private LocalDateTime endDate;
-
-    @OneToOne(mappedBy = "schedule", cascade = CascadeType.ALL)
-    private ScheduleRecord scheduleRecord;
 
     public void editSchedule(ScheduleEditReq scheduleEditReq) {
         this.category = scheduleEditReq.category();

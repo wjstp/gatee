@@ -26,6 +26,9 @@ build:
     - cp application-security.yaml.template application-security.yaml
     - cat application-security.yaml
 
+    # batch 관련 설정 파일 생성
+    - cp application-batch.yaml.template application-batch.yaml
+
     # firebase key
     - echo "$FIREBASE_KEY" > gatee-bf33f-firebase-adminsdk-va5su-a0d2f8f65b.json
 

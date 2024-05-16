@@ -13,8 +13,8 @@ const ThirdAll = () => {
       </div>
 
       {/*  중간 캡쳐 사진 */}
-      <div className="explain pb">
-        <img src={Explain3} className="explain" alt=""/>
+      <div className="explain">
+        <img src={Explain3}  alt=""/>
       </div>
 
       {/*  다음 버튼 */}

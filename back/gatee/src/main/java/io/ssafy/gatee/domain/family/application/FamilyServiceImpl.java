@@ -29,6 +29,9 @@ import io.ssafy.gatee.global.exception.error.not_found.MemberFamilyNotFoundExcep
 import io.ssafy.gatee.global.redis.dao.OnlineRoomMemberRepository;
 import io.ssafy.gatee.global.redis.dto.OnlineRoomMember;
 import io.ssafy.gatee.global.s3.util.S3Util;
+import io.ssafy.gatee.global.websocket.application.ChatService;
+import io.ssafy.gatee.global.websocket.dto.FireStoreChatDto;
+import io.ssafy.gatee.global.websocket.dto.MessageType;
 import jodd.util.StringUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,10 +42,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static io.ssafy.gatee.global.exception.message.ExceptionMessage.*;
+import static io.ssafy.gatee.global.websocket.dto.MessageType.*;
 
 @Service
 @Slf4j
@@ -94,8 +99,11 @@ public class FamilyServiceImpl implements FamilyService {
                     .fileType(FileType.FAMILY_PROFILE)
                     .build();
 
-            imageFile = fileRepository.findByUrl(DEFAULT_FAMILY_IMAGE_URL)
-                    .orElse(fileRepository.save(defaultFile));
+            if(fileRepository.existsByUrl(DEFAULT_FAMILY_IMAGE_URL)){
+                imageFile = fileRepository.save(defaultFile);
+            } else {
+                imageFile = fileRepository.findByUrl(DEFAULT_FAMILY_IMAGE_URL).get(0);
+            }
         } else {
             imageFile = s3Util.upload(fileType, file);
 
@@ -175,8 +183,7 @@ public class FamilyServiceImpl implements FamilyService {
 
     @Override
     public Long findDefaultFamilyImageId(String url) {
-        return fileRepository.findByUrl(url).orElseThrow(() ->
-                new FileNotFoundException(FIlE_NOT_FOUND)).getId();
+        return fileRepository.findByUrl(url).get(0).getId();
     }
 
     @Override
@@ -217,10 +224,10 @@ public class FamilyServiceImpl implements FamilyService {
     // 가족 정보 및 구성원 조회
     @Override
     public FamilyInfoRes readFamily(String familyId) throws FamilyNotFoundException {
-        Family family = familyRepository.findById(UUID.fromString(familyId)).orElseThrow(()-> new FamilyNotFoundException(FAMILY_NOT_FOUND));
+        Family family = familyRepository.findById(UUID.fromString(familyId)).orElseThrow(() -> new FamilyNotFoundException(FAMILY_NOT_FOUND));
         List<MemberFamily> memberFamilies = memberFamilyRepository.findAllByFamily_Id(UUID.fromString(familyId));
         // 예외
-        if (! memberFamilies.isEmpty()) {
+        if (!memberFamilies.isEmpty()) {
 
             List<MemberFamilyInfoRes> memberFamilyInfoList = memberFamilies.stream().map(memberFamily -> MemberFamilyInfoRes.builder()
                     .memberId(memberFamily.getMember().getId())
@@ -233,16 +240,16 @@ public class FamilyServiceImpl implements FamilyService {
                     .mood(memberFamily.getMember().getMood())
                     .isLeader(memberFamily.isLeader())
                     .birthType(memberFamily.getMember().getBirthType())
-                    .profileImageUrl(Objects.nonNull(memberFamily.getMember().getFile())?
-                            memberFamily.getMember().getFile().getUrl():null)
+                    .profileImageUrl(Objects.nonNull(memberFamily.getMember().getFile()) ?
+                            memberFamily.getMember().getFile().getUrl() : null)
                     .phoneNumber(memberFamily.getMember().getPhoneNumber())
                     .build()).toList();
             return FamilyInfoRes.builder()
                     .name(family.getName())
                     .familyScore(family.getScore())
                     .chatRoomId(family.getChatRoom().getId())
-                    .familyImageUrl(Objects.nonNull(family.getFile())?
-                            family.getFile().getUrl():null)
+                    .familyImageUrl(Objects.nonNull(family.getFile()) ?
+                            family.getFile().getUrl() : null)
                     .memberFamilyInfoList(memberFamilyInfoList)
                     .build();
         }
@@ -270,7 +277,7 @@ public class FamilyServiceImpl implements FamilyService {
             throw new ExpiredCodeException(EXPIRED_CODE);
         } else {
             Family family = familyRepository.findById(UUID.fromString(familyId))
-                    .orElseThrow(()-> new FamilyNotFoundException(FAMILY_NOT_FOUND));
+                    .orElseThrow(() -> new FamilyNotFoundException(FAMILY_NOT_FOUND));
 
             return FamilyCheckRes.builder()
                     .familyId(familyId)
@@ -278,5 +285,10 @@ public class FamilyServiceImpl implements FamilyService {
                     .familyImageUrl(family.getFile().getUrl())
                     .build();
         }
+    }
+
+    @Override
+    public List<Family> findAllFamily() {
+        return familyRepository.findAll();
     }
 }

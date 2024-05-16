@@ -3,6 +3,10 @@ package io.ssafy.gatee.domain.schedule.api;
 import io.ssafy.gatee.config.restdocs.RestDocsTestSupport;
 import io.ssafy.gatee.config.security.CustomWithMockUser;
 import io.ssafy.gatee.domain.file.dto.FileUrlRes;
+import io.ssafy.gatee.domain.file.entity.File;
+import io.ssafy.gatee.domain.file.entity.type.FileType;
+import io.ssafy.gatee.domain.member.entity.BirthType;
+import io.ssafy.gatee.domain.member.entity.Member;
 import io.ssafy.gatee.domain.schedule.application.ScheduleService;
 import io.ssafy.gatee.domain.schedule.dto.request.*;
 import io.ssafy.gatee.domain.schedule.dto.response.ParticipateMemberRes;
@@ -12,7 +16,6 @@ import io.ssafy.gatee.domain.schedule.entity.Category;
 import io.ssafy.gatee.domain.schedule.entity.Schedule;
 import io.ssafy.gatee.domain.schedule_record.dto.response.ScheduleRecordRes;
 import lombok.extern.slf4j.Slf4j;
-import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -22,6 +25,8 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -71,8 +76,43 @@ class ScheduleControllerTest extends RestDocsTestSupport {
                 .endDate(LocalDateTime.parse("2024-05-12T23:59:59"))
                 .build();
 
-        scheduleListResList.add(ScheduleListRes.toDto(schedule1));
-        scheduleListResList.add(ScheduleListRes.toDto(schedule2));
+        List<Member> memberList = new ArrayList<>();
+
+        File file = File.builder()
+                .fileType(FileType.MEMBER_PROFILE)
+                .dir("default/")
+                .url("https://gaty.duckdns.org/s3-image-url")
+                .originalName("profile image")
+                .name("image")
+                .build();
+
+        Member member1 = Member.builder()
+                .name("test1")
+                .email("test1@gmail.com")
+                .nickname("test1")
+                .birth(LocalDate.parse("2000-07-20"))
+                .birthType(BirthType.valueOf("SOLAR"))
+                .mood("happy")
+                .phoneNumber("010-0101-0101")
+                .file(file)
+                .build();
+
+        Member member2 = Member.builder()
+                .name("test2")
+                .email("test2@gmail.com")
+                .nickname("test2")
+                .birth(LocalDate.parse("2000-07-20"))
+                .birthType(BirthType.valueOf("SOLAR"))
+                .mood("happy")
+                .phoneNumber("010-0101-0101")
+                .file(file)
+                .build();
+
+        memberList.add(member1);
+        memberList.add(member2);
+
+        scheduleListResList.add(ScheduleListRes.toDto(schedule1, memberList, 0));
+        scheduleListResList.add(ScheduleListRes.toDto(schedule2, memberList, 1));
 
         given(scheduleService.readSchedule(any(UUID.class), any(Integer.class)))
                 .willReturn(scheduleListResList);
@@ -99,7 +139,11 @@ class ScheduleControllerTest extends RestDocsTestSupport {
                                 fieldWithPath("[].emoji").type(JsonFieldType.STRING).description("이모티콘"),
                                 fieldWithPath("[].content").type(JsonFieldType.STRING).description("일정 내용"),
                                 fieldWithPath("[].startDate").type(JsonFieldType.STRING).description("시작 시간"),
-                                fieldWithPath("[].endDate").type(JsonFieldType.STRING).description("종료 시간")
+                                fieldWithPath("[].endDate").type(JsonFieldType.STRING).description("종료 시간"),
+                                fieldWithPath("[].participateMembers").type(JsonFieldType.ARRAY).description("일정 참여 멤버"),
+                                fieldWithPath("[].participateMembers[].nickname").type(JsonFieldType.STRING).description("참여 멤버 별명"),
+                                fieldWithPath("[].participateMembers[].profileImageUrl").type(JsonFieldType.STRING).description("참여 멤버 프로필 이미지 URL"),
+                                fieldWithPath("[].scheduleRecordCount").type(JsonFieldType.NUMBER).description("일정 후기 개수")
                                 )
                 ));
     }
@@ -139,11 +183,22 @@ class ScheduleControllerTest extends RestDocsTestSupport {
         fileUrlResList.add(fileUrlRes1);
         fileUrlResList.add(fileUrlRes2);
 
-        ScheduleRecordRes scheduleRecordRes = ScheduleRecordRes.builder()
+        List<ScheduleRecordRes> scheduleRecordResList = new ArrayList<>();
+
+        ScheduleRecordRes scheduleRecordRes1 = ScheduleRecordRes.builder()
                 .scheduleRecordId(1L)
                 .content("일정 후기")
                 .fileUrlList(fileUrlResList)
                 .build();
+
+        ScheduleRecordRes scheduleRecordRes2 = ScheduleRecordRes.builder()
+                .scheduleRecordId(2L)
+                .content("일정 후기")
+                .fileUrlList(fileUrlResList)
+                .build();
+
+        scheduleRecordResList.add(scheduleRecordRes1);
+        scheduleRecordResList.add(scheduleRecordRes2);
 
         given(scheduleService.readScheduleDetail(any(Long.class), any(UUID.class)))
                 .willReturn(ScheduleInfoRes.builder()
@@ -154,7 +209,7 @@ class ScheduleControllerTest extends RestDocsTestSupport {
                         .content("가족 일정 내용")
                         .startDate("2024-05-01")
                         .endDate("2024-05-12")
-                        .scheduleRecordRes(scheduleRecordRes)
+                        .scheduleRecordResList(scheduleRecordResList)
                         .participateMembers(participateMemberResList)
                         .build());
 
@@ -182,12 +237,12 @@ class ScheduleControllerTest extends RestDocsTestSupport {
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("일정 내용"),
                                 fieldWithPath("startDate").type(JsonFieldType.STRING).description("시작 시간"),
                                 fieldWithPath("endDate").type(JsonFieldType.STRING).description("종료 시간"),
-                                fieldWithPath("scheduleRecordRes").type(JsonFieldType.OBJECT).description("일정 후기"),
-                                fieldWithPath("scheduleRecordRes.scheduleRecordId").type(JsonFieldType.NUMBER).description("일정 후기 ID"),
-                                fieldWithPath("scheduleRecordRes.content").type(JsonFieldType.STRING).description("일정 후기 내용"),
-                                fieldWithPath("scheduleRecordRes.fileUrlList").type(JsonFieldType.ARRAY).description("일정 후기 사진 목록"),
-                                fieldWithPath("scheduleRecordRes.fileUrlList[].fileId").type(JsonFieldType.NUMBER).description("일정 후기 사진 파일 ID"),
-                                fieldWithPath("scheduleRecordRes.fileUrlList[].imageUrl").type(JsonFieldType.STRING).description("일정 후기 사진 URL"),
+                                fieldWithPath("scheduleRecordResList").type(JsonFieldType.ARRAY).description("일정 후기 목록"),
+                                fieldWithPath("scheduleRecordResList[].scheduleRecordId").type(JsonFieldType.NUMBER).description("일정 후기 ID"),
+                                fieldWithPath("scheduleRecordResList[].content").type(JsonFieldType.STRING).description("일정 후기 내용"),
+                                fieldWithPath("scheduleRecordResList[].fileUrlList").type(JsonFieldType.ARRAY).description("일정 후기 사진 목록"),
+                                fieldWithPath("scheduleRecordResList[].fileUrlList[].fileId").type(JsonFieldType.NUMBER).description("일정 후기 사진 파일 ID"),
+                                fieldWithPath("scheduleRecordResList[].fileUrlList[].imageUrl").type(JsonFieldType.STRING).description("일정 후기 사진 URL"),
                                 fieldWithPath("participateMembers").type(JsonFieldType.ARRAY).description("일정 참여 멤버 목록"),
                                 fieldWithPath("participateMembers[].nickname").type(JsonFieldType.STRING).description("닉네임"),
                                 fieldWithPath("participateMembers[].profileImageUrl").type(JsonFieldType.STRING).description("프로필 사진 URL")
@@ -360,16 +415,17 @@ class ScheduleControllerTest extends RestDocsTestSupport {
     void deleteScheduleRecord() throws Exception {
 
         // given
-        doNothing().when(scheduleService).deleteScheduleRecord(any(Long.class));
+        doNothing().when(scheduleService).deleteScheduleRecord(any(Long.class), any(Long.class));
 
         // when
-        ResultActions result = mockMvc.perform(delete("/api/schedule/{scheduleId}/record", 1L));
+        ResultActions result = mockMvc.perform(delete("/api/schedule/{scheduleId}/record/{scheduleRecordId}", 1L, 1L));
 
         // then
         result.andExpect(status().isOk())
                 .andDo(restDocs.document(
                         pathParameters(
-                                parameterWithName("scheduleId").description("일정 ID").optional()
+                                parameterWithName("scheduleId").description("일정 ID").optional(),
+                                parameterWithName("scheduleRecordId").description("일정 후기 ID").optional()
                         )
                 ));
     }

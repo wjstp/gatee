@@ -1,17 +1,16 @@
 import React, {useState} from 'react';
-import {NotificationRes} from "@type/index";
+import {MemberApiRes, NotificationRes} from "@type/index";
 import TextField from "@mui/material/TextField";
 import {IoSend} from "react-icons/io5";
 import {InputAdornment} from "@mui/material";
 import {naggingApi} from "@api/notification";
-import {useMemberStore} from "@store/useMemberStore";
 
 
-const NaggingModal = ({notificationData, handleModal}: {
-  notificationData: NotificationRes | null | undefined,
+const MissionNaggingModal = ({memberInfo, handleModal}: {
+  memberInfo: MemberApiRes | null | undefined,
   handleModal: () => void // 수정된 부분
 }) => {
-  const {myInfo} = useMemberStore()
+
   // 한마디 보내기 버튼 누르기 상태 관리
   const [isSendBtnClicked, setIsSendBtnClicked] = useState(false);
 // 메세지 입력 상태
@@ -42,9 +41,9 @@ const NaggingModal = ({notificationData, handleModal}: {
   };
 
   const sendNagging = () => {
-    if (notificationData?.senderId)
+    if (memberInfo?.memberId)
       naggingApi({
-        "receiverId": notificationData?.senderId,
+        "receiverId": memberInfo?.memberId,
         "message": messageInput
       }, res => {
         console.log(res.data)
@@ -58,25 +57,19 @@ const NaggingModal = ({notificationData, handleModal}: {
   return (
     <div className="nagging-modal-bg" onClick={() => handleModal()}>
       <div className="nagging-modal-content--container" onClick={(e) => e.stopPropagation()}>
-        <h2 className="nagging-modal-title">{notificationData?.title}</h2>
-        <p className="nagging-modal-content">{notificationData?.content}</p>
+        <h2 className="nagging-modal-title">{memberInfo?.nickname}님에게</h2>
+        {/*<p className="nagging-modal-content"></p>*/}
 
-        {notificationData?.senderId !== myInfo.memberId ?
-          <div className="nagging-modal-btn-container">
-            {isSendBtnClicked ? null :
-              <button onClick={handleOpenInput} className="orange btn">한마디 보내기
-              </button>
-            }
-            <button onClick={() => handleModal()} className="plane btn">닫기</button>
-          </div>
-          : <div className="nagging-modal-btn-container">
-            <button onClick={() => handleModal()} className="orange btn">닫기
+        <div className="nagging-modal-btn-container">
+          {isSendBtnClicked ? null :
+            <button onClick={handleOpenInput} className="orange btn">한마디 보내기
             </button>
-          </div>
-        }
+          }
+          <button onClick={() => handleModal()} className="plane btn">닫기</button>
+        </div>
 
         {/*한마디 입력창 */}
-        {isSendBtnClicked && notificationData?.senderId !== myInfo.memberId ?
+        {isSendBtnClicked ?
           <div className="message-input--container">
 
             {
@@ -120,4 +113,4 @@ const NaggingModal = ({notificationData, handleModal}: {
   )
 }
 
-export default NaggingModal;
+export default MissionNaggingModal;

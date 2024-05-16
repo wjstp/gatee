@@ -25,6 +25,24 @@ public interface MemberFeatureRepository extends JpaRepository<MemberFeature, Lo
     List<MemberFeature> findByMember_Id(UUID memberId);
 
     @Query("""
+        select mf from MemberFeature mf
+        where mf.member.id = :memberId
+        order by rand()
+        limit 1
+    """)
+    Optional<MemberFeature> findRandomFeature(UUID memberId);
+
+
+    @Query("""
+        select t from MemberFeature t
+        where t.member = (select mf.member from MemberFamily mf
+        where mf.family = (select f.family from MemberFamily f where f.member.id = :memberId)
+        order by rand() limit 1)
+        order by rand() limit 1
+    """)    //todo:수정
+    Optional<MemberFeature> findRandomMyFamilyFeature(UUID memberId);
+
+    @Query("""
         select f from MemberFeature f
         join MemberFamily mf
         on mf.member.id = f.member.id

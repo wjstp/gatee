@@ -133,7 +133,7 @@ const CharacterQuestion = () => {
             </div>
 
             {/*  문제 명 */}
-            <h1>{askList[askIndex]?.question}</h1>
+            <h2>{askList[askIndex]?.question}</h2>
 
             {/*  입력란 */}
             <TextField value={inputValue}

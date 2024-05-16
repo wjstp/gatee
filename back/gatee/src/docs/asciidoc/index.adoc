@@ -26,6 +26,7 @@ include::{snippets}/member-controller-test/save-info/http-response.adoc[]
 - Request
 
 include::{snippets}/member-controller-test/save-notification-token/http-request.adoc[]
+include::{snippets}/member-controller-test/save-notification-token/query-parameters.adoc[]
 
 - Response
 
@@ -37,6 +38,7 @@ include::{snippets}/member-controller-test/save-notification-token/http-response
 - Request
 
 include::{snippets}/member-controller-test/edit-info/http-request.adoc[]
+include::{snippets}/member-controller-test/edit-info/query-parameters.adoc[]
 
 - Response
 
@@ -60,6 +62,7 @@ include::{snippets}/member-controller-test/edit-profile-image/http-response.adoc
 - Request
 
 include::{snippets}/member-controller-test/edit-mood/http-request.adoc[]
+include::{snippets}/member-controller-test/edit-mood/query-parameters.adoc[]
 
 - Response
 
@@ -94,6 +97,7 @@ include::{snippets}/family-controller-test/save-family/form-parameters.adoc[]
 - Response
 
 include::{snippets}/family-controller-test/save-family/http-response.adoc[]
+include::{snippets}/family-controller-test/save-family/response-fields.adoc[]
 
 
 == 가족 정보 조회
@@ -120,6 +124,7 @@ include::{snippets}/family-controller-test/create-family-code/query-parameters.a
 - Response
 
 include::{snippets}/family-controller-test/create-family-code/http-response.adoc[]
+include::{snippets}/family-controller-test/create-family-code/response-fields.adoc[]
 
 == 가족 코드 확인
 
@@ -139,6 +144,7 @@ include::{snippets}/family-controller-test/check-family-code/response-fields.ado
 - Request
 
 include::{snippets}/family-controller-test/join-family/http-request.adoc[]
+include::{snippets}/family-controller-test/join-family/query-parameters.adoc[]
 
 - Response
 
@@ -552,6 +558,7 @@ include::{snippets}/photo-controller-test/delete-photo-reaction/http-response.ad
 - Request
 
 include::{snippets}/push-notification-controller-test/read-notifications/http-request.adoc[]
+include::{snippets}/push-notification-controller-test/read-notifications/query-parameters.adoc[]
 
 - Response
 
@@ -744,6 +751,7 @@ include::{snippets}/appointment-controller-test/join-appointment/http-response.a
 - Request
 
 include::{snippets}/mission-controller-test/read-mission/http-request.adoc[]
+include::{snippets}/mission-controller-test/read-mission/query-parameters.adoc[]
 
 - Response
 
