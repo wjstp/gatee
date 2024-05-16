@@ -1,5 +1,6 @@
 @use '../abstracts/index' as *;
 @use '../components/index' as *;
+@use '../base' as *;
 
 .onboarding__container-center {
   justify-content: center;
@@ -49,6 +50,9 @@
 
     .emptyBox {
       height: 100px;
+      font-family: $ChosunGs;
+      color: white;
+      font-size: 0.1rem;
     }
 
     .textFlex {
