@@ -115,6 +115,14 @@ public class MemberServiceImpl implements MemberService {
 
         albumRepository.save(album);
 
+        // 알림 동의 모두 열기
+        memberNotificationRepository.save(MemberNotification.builder()
+                .albumNotification(true)
+                .scheduleNotification(true)
+                .chatNotification(true)
+                .featureNotification(true)
+                .naggingNotification(true).build());
+
         Mission albumMission = Mission.builder()
                 .type(Type.ALBUM)
                 .nowRange(0)
@@ -160,13 +168,11 @@ public class MemberServiceImpl implements MemberService {
 
         missionRepository.saveAll(missionList);
 
+
+
         // 토큰 발급
         modifyMemberToken(member, response);
 
-        // 알림 동의 모두 열기
-        memberNotificationRepository.save(MemberNotification.builder()
-                .member(member)
-                .build());
     }
 
     @Override
