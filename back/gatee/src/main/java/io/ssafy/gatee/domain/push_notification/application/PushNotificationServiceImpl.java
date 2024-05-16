@@ -40,6 +40,7 @@ import java.util.*;
 
 import static com.google.firebase.messaging.MessagingErrorCode.INVALID_ARGUMENT;
 import static com.google.firebase.messaging.MessagingErrorCode.UNREGISTERED;
+import static io.ssafy.gatee.global.exception.message.ExceptionMessage.*;
 
 @Service
 @Slf4j
@@ -61,7 +62,7 @@ public class PushNotificationServiceImpl implements PushNotificationService {
     @Override
     public void checkReadNotification(String notificationId) {
         PushNotifications pushNotifications = pushNotificationRepository.findById(notificationId)
-                .orElseThrow(()-> new PushNotificationNotFoundException(ExceptionMessage.PUSH_NOTIFICATION_NOT_FOUND));
+                .orElseThrow(()-> new PushNotificationNotFoundException(PUSH_NOTIFICATION_NOT_FOUND));
         pushNotifications.checkPushNotifications();
         pushNotificationRepository.save(pushNotifications);
     }
@@ -70,7 +71,7 @@ public class PushNotificationServiceImpl implements PushNotificationService {
     public NotificationAgreementRes readNotificationAgreements(UUID memberId) {
         Member member = memberRepository.getReferenceById(memberId);
         MemberNotification memberNotification = memberNotificationRepository.findByMember(member)
-                .orElseThrow(()-> new MemberNotificationNotFoundException(ExceptionMessage.MEMBER_NOTIFICATION_NOT_FOUND));
+                .orElseThrow(()-> new MemberNotificationNotFoundException(MEMBER_NOTIFICATION_NOT_FOUND));
         return NotificationAgreementRes.toDto(memberNotification);
     }
 
@@ -79,14 +80,14 @@ public class PushNotificationServiceImpl implements PushNotificationService {
     public void modifyNotificationAgreements(UUID memberId, NotificationAgreementReq agreementReq) {
         Member proxyMember = memberRepository.getReferenceById(memberId);
         MemberNotification memberNotification = memberNotificationRepository.findByMember(proxyMember)
-                .orElseThrow(()-> new MemberNotFoundException(ExceptionMessage.MEMBER_NOTIFICATION_NOT_FOUND));
+                .orElseThrow(()-> new MemberNotFoundException(MEMBER_NOTIFICATION_NOT_FOUND));
         memberNotification.modifyMemberNotification(agreementReq);
     }
 
     @Override
     public String findTokenByMemberId(UUID memberId) {
         return memberRepository.findById(memberId).orElseThrow(()
-                -> new MemberNotFoundException(ExceptionMessage.MEMBER_NOT_FOUND)).getNotificationToken();
+                -> new MemberNotFoundException(MEMBER_NOT_FOUND)).getNotificationToken();
     }
 
     @Override
@@ -105,7 +106,7 @@ public class PushNotificationServiceImpl implements PushNotificationService {
     @Override
     public void savePushNotification(PushNotificationFCMReq pushNotificationFCMReq) {
         String senderImageUrl = memberRepository.findById(pushNotificationFCMReq.senderId())
-                .orElseThrow(()-> new MemberNotFoundException(ExceptionMessage.MEMBER_NOT_FOUND)).getFile().getUrl();
+                .orElseThrow(()-> new MemberNotFoundException(MEMBER_NOT_FOUND)).getFile().getUrl();
         if (pushNotificationFCMReq.dataFCMReq().type().equals(Type.CHATTING)) {
             return;
         }
@@ -134,7 +135,7 @@ public class PushNotificationServiceImpl implements PushNotificationService {
         String content = "\"" + naggingReq.message() + "\"라는 문장을 상냥한 어투로 바꿔줘. 이모티콘도 붙여줘.";
         GptResponseDto result = gptService.askQuestion(QuestionDto.builder().content(content).build());
         log.info(result.answer());
-        Member member = memberRepository.findById(memberId).orElseThrow(()-> new MemberNotFoundException(ExceptionMessage.MEMBER_NOT_FOUND));
+        Member member = memberRepository.findById(memberId).orElseThrow(()-> new MemberNotFoundException(MEMBER_NOT_FOUND));
 
         PushNotificationFCMReq pushNotification = PushNotificationFCMReq.builder()
                 .receiverId(Collections.singletonList(naggingReq.receiverId()))
@@ -203,7 +204,7 @@ public class PushNotificationServiceImpl implements PushNotificationService {
         List<String> receiverTokens = pushNotificationFCMReq.receiverId().stream()
                 .map(memberRepository::findById)
                 .filter(Optional::isPresent)
-                .filter(receiverGet -> Objects.nonNull(receiverGet.get().getNotificationToken())&& ! receiverGet.equals(""))    // todo: 수정
+                .filter(receiverGet -> Objects.nonNull(receiverGet.get().getNotificationToken()) && ! receiverGet.equals(""))    // todo: 수정
                 .filter(receiver -> checkAgreement(pushNotificationFCMReq.dataFCMReq().type(), receiver.get().getId()))
                 .map(receiver -> receiver.get().getNotificationToken()).toList();
         log.info(checkAgreement(pushNotificationFCMReq.dataFCMReq().type(), pushNotificationFCMReq.receiverId().get(0))+"");
