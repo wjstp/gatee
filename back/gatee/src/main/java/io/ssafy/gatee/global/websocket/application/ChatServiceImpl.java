@@ -157,7 +157,6 @@ public class ChatServiceImpl implements ChatService {
                 .sender(memberId.toString())
                 .unReadMember(unReadMemberAsStringList)
                 .currentTime(chatDto.currentTime())
-                .appointmentId(appointmentService.createAppointment(chatDto, familyId, memberId))
                 .build(), familyId);
         pushNotificationService.sendPushOneToMany(
                 PushNotificationFCMReq.builder()
@@ -183,7 +182,6 @@ public class ChatServiceImpl implements ChatService {
                 .sender(memberId.toString())
                 .unReadMember(unReadMemberAsStringList)
                 .currentTime(chatDto.currentTime())
-                .appointmentId(appointmentService.createAppointment(chatDto, familyId, memberId))
                 .build(), familyId);
         pushNotificationService.sendPushOneToMany(
                 PushNotificationFCMReq.builder()
