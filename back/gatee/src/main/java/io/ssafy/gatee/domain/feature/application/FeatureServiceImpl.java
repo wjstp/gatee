@@ -55,7 +55,6 @@ public class FeatureServiceImpl implements FeatureService{
                         .answer(featureReq.answer())
                         .wrongAnswer(wrongAnswers)
                         .build());
-
     }
 
     @Override

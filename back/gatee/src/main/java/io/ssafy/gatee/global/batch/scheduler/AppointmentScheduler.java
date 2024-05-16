@@ -16,6 +16,8 @@ import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.concurrent.ScheduledFuture;
 
@@ -28,19 +30,23 @@ public class AppointmentScheduler {
     private final MemberFamilyScheduleRepository memberFamilyScheduleRepository;
     private final AppointmentRepository appointmentRepository;
     private final FamilyScheduleRepository familyScheduleRepository;
-    TaskScheduler taskScheduler;
+    private final TaskScheduler taskScheduler;
     private final PushNotificationService pushNotificationService;
     private Map<String, ScheduledFuture<?>> scheduledTasks = new HashMap<>();
 
     public void registerAppointment(String memberId, Long appointmentId, LocalDateTime planTime) {
+        ZonedDateTime appointmentTime = planTime.atZone(ZoneId.systemDefault()).plusDays(1).minusHours(1)
+                .withZoneSameInstant(ZoneId.of("Asia/Seoul"));
+        System.out.println(appointmentTime);
         ScheduledFuture<?> scheduledTask = taskScheduler.schedule(() -> {
                     try {
+                        log.info(appointmentId);
                         sendAppointmentNotification(appointmentId);
                     } catch (FirebaseMessagingException e) {
                         throw new RuntimeException(e);
                     }
                 },
-                Instant.from(planTime.plusDays(1).minusHours(1)));    // tood: 수정
+                Instant.from(appointmentTime.plusDays(1).minusHours(1)));
         scheduledTasks.put(memberId + "_" + appointmentId.toString(), scheduledTask);
     }
 
@@ -65,6 +71,7 @@ public class AppointmentScheduler {
         if (joinMemberIds.isEmpty()) {
             return;
         }
+        System.out.println(appointment.get().getJoinMembers());
 
         PushNotificationFCMReq fcmReq = PushNotificationFCMReq.builder()
                 .receiverId(joinMemberIds)

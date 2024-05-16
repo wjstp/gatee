@@ -42,8 +42,10 @@ public class AppointmentServiceImpl implements AppointmentService {
                 .family(proxyFamily)
                 .joinMembers(Set.of(proxyMember))
                 .build();
-//        appointmentScheduler.registerAppointment(memberId.toString(), appointment.getId(), appointment.getCreatedAt());
-        return appointmentRepository.save(appointment).getId();
+        Appointment savedAppointment = appointmentRepository.save(appointment);
+        System.out.println(savedAppointment.getCreatedAt());
+        appointmentScheduler.registerAppointment(memberId.toString(), savedAppointment.getId(), savedAppointment.getCreatedAt());
+        return savedAppointment.getId();
     }
 
     @Override

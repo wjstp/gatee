@@ -94,6 +94,7 @@ public class FamilyServiceImpl implements FamilyService {
                     .fileType(FileType.FAMILY_PROFILE)
                     .build();
 
+            if (fileRepository)
             imageFile = fileRepository.findByUrl(DEFAULT_FAMILY_IMAGE_URL)
                     .orElse(fileRepository.save(defaultFile));
         } else {
