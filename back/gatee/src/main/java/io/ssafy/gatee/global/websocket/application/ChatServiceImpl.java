@@ -197,6 +197,11 @@ public class ChatServiceImpl implements ChatService {
                         .build());
     }
 
+    @Override
+    public void sendDateLine(FireStoreChatDto fireStoreChatDto, UUID familyId) {
+        this.saveMessageToRealtimeDatabase(fireStoreChatDto, familyId);
+    }
+
 
     public void saveMessageToRealtimeDatabase(FireStoreChatDto fireStoreChatDto, UUID familyId) {
         // roomId를 사용하여 채팅방에 대한 참조를 가져옵니다.
