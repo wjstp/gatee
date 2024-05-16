@@ -54,6 +54,7 @@ public class BatchScheduler {
 
     @Scheduled(cron = "0 * * * * *")
     public void runTimeLineToChatRoomJob() {
+        log.info("batch start!!");
         familyService.sendDateLineToAll();
     }
 }
