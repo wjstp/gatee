@@ -148,6 +148,17 @@ public class PushNotificationServiceImpl implements PushNotificationService {
                         .build())
                 .build();
         sendPushOneToOne(pushNotification);
+        PushNotificationFCMReq myPushNotification = PushNotificationFCMReq.builder()
+                .receiverId(Collections.singletonList(memberId))
+                .senderId(memberId)
+                .title("나의 "+Type.NAGGING.korean+"가 전송되었습니다.")
+                .content(result.answer())
+                .dataFCMReq(DataFCMReq.builder()
+                        .type(Type.NAGGING)
+                        .typeId(0L)
+                        .build())
+                .build();
+        sendPushOneToOne(myPushNotification);
 
         return NaggingRes.builder().naggingMessage(result.answer()).build();
     }
