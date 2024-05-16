@@ -32,15 +32,6 @@ services:
     image: ${CI_REGISTRY}/gatee-nodejs:blue
     networks:
       - gatee-net
-  gatee-batch-blue:
-    container_name: gatee-batch-blue
-    image: ${CI_REGISTRY}/gatee-api:blue
-    environment:
-      - ENV=batch
-    env_file:
-      - devops/.env
-    networks:
-      - gatee-net
 networks:
   gatee-net:
     external: true
