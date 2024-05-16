@@ -24,11 +24,11 @@ public class BatchScheduler {
     private final JobLauncher jobLauncher;
     private final JobRegistry jobRegistry;
 
-    @Scheduled(cron = "0 20 10 * * ?")
-    public void runJob() {
+    @Scheduled(cron = "0 20 10 ? * *")  // 매일 아침 10시 20분
+    public void runFeatureNotificationJob() {
         String time = LocalDateTime.now().toString();
         try {
-            Job job = jobRegistry.getJob("featureNotificationJob");
+            Job job = jobRegistry.getJob("FeatureNotificationJob");
             JobParametersBuilder jobParameter = new JobParametersBuilder().addString("time", time);
             jobLauncher.run(job, jobParameter.toJobParameters());
         } catch (NoSuchJobException | JobRestartException | JobParametersInvalidException |
@@ -36,4 +36,19 @@ public class BatchScheduler {
             throw new RuntimeException(e);
         }
     }
+
+    @Scheduled(cron = "0 15 1 ? * *")   // 새벽 1시 15분마다 매일
+    public void runFcmTokenRefreshJob() {
+        String time = LocalDateTime.now().toString();
+        try {
+            Job job = jobRegistry.getJob("FcmTokenRefreshJob");
+            JobParametersBuilder jobParameter = new JobParametersBuilder().addString("time", time);
+            jobLauncher.run(job, jobParameter.toJobParameters());
+        } catch (NoSuchJobException | JobRestartException | JobParametersInvalidException |
+                 JobInstanceAlreadyCompleteException | JobExecutionAlreadyRunningException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 }

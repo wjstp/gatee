@@ -42,18 +42,19 @@ public class FeatureNotificationBatchConfig {
     private final MemberFeatureRepository memberFeatureRepository;
 
     @Bean
-    public Job featureNotificationJob(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
+    public Job featureNotificationJob(JobRepository jobRepository, PlatformTransactionManager transactionManager) throws Exception {
         return new JobBuilder(JOB_NAME, jobRepository)
                 .start(this.sendFeatureNotificationStep(jobRepository, transactionManager))
                 .build();
     }
 
     @Bean(JOB_NAME + "_notificationStep")
-    public Step sendFeatureNotificationStep(JobRepository jobRepository, PlatformTransactionManager platformTransactionManager) {
+    public Step sendFeatureNotificationStep(JobRepository jobRepository, PlatformTransactionManager platformTransactionManager) throws Exception {
         return new StepBuilder("notificationStep", jobRepository)
-                .chunk(CHUNK_SIZE, platformTransactionManager)
-//                .reader(loadMemberData())
-//                .writer()
+                .<Member, Member>chunk(CHUNK_SIZE, platformTransactionManager)
+                .reader(loadMemberData())
+                .processor(checkMemberAgreement())
+                .writer(sendNotification())
                 .build();
     }
 
