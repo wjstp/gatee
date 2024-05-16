@@ -51,6 +51,11 @@ public class MissionServiceImpl implements MissionService {
 
         List<Mission> missionList = missionRepository.findAllByMember(member);
 
+        Mission myAlbumMission = missionList.stream().filter(mission -> mission.getType().equals(Type.ALBUM)).toList().get(0);
+        Mission myExamMission = missionList.stream().filter(mission -> mission.getType().equals(Type.EXAM)).toList().get(0);
+        Mission myFeatureMission = missionList.stream().filter(mission -> mission.getType().equals(Type.FEATURE)).toList().get(0);
+        Mission myScheduleMission = missionList.stream().filter(mission -> mission.getType().equals(Type.SCHEDULE)).toList().get(0);
+
         List<MissionListRes> missionListRes = missionList.stream().map(MissionListRes::toDto).toList();
 
         List<MemberFamily> memberFamilyList = memberFamilyRepository.findAllByFamily(family)
@@ -69,10 +74,10 @@ public class MissionServiceImpl implements MissionService {
                     .build();
         } else {
             missionImprovementsRes = MissionImprovementsRes.builder()
-                    .albumMission(missionRepositoryCustom.findByMemberListAndType(memberList, Type.ALBUM).get(0).equals(member))
-                    .examMission(missionRepositoryCustom.findByMemberListAndType(memberList, Type.EXAM).get(0).equals(member))
-                    .featureMission(missionRepositoryCustom.findByMemberListAndType(memberList, Type.FEATURE).get(0).equals(member))
-                    .scheduleMission(missionRepositoryCustom.findByMemberListAndType(memberList, Type.SCHEDULE).get(0).equals(member))
+                    .albumMission(missionRepositoryCustom.findByMemberListAndType(memberList, Type.ALBUM).get(0) == myAlbumMission)
+                    .examMission(missionRepositoryCustom.findByMemberListAndType(memberList, Type.EXAM).get(0) == myExamMission)
+                    .featureMission(missionRepositoryCustom.findByMemberListAndType(memberList, Type.FEATURE).get(0) == myFeatureMission)
+                    .scheduleMission(missionRepositoryCustom.findByMemberListAndType(memberList, Type.SCHEDULE).get(0) == myScheduleMission)
                     .build();
         }
 
@@ -100,6 +105,14 @@ public class MissionServiceImpl implements MissionService {
 
         if (mission.isComplete()) {
             mission.doComplete();
+
+            MemberFamily memberFamily = memberFamilyRepository.findByMember(member)
+                    .orElseThrow(() -> new MemberFamilyNotFoundException(MEMBER_FAMILY_NOT_FOUND));
+
+            Family family = memberFamily.getFamily();
+
+            family.increaseScore();
+
         } else {
             throw new DidNotCompleted(DID_NOT_COMPLETED);
         }
