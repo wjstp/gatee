@@ -121,8 +121,6 @@ const ScheduleCreate = () => {
 
     if (event.target.value as string === ScheduleType.GROUP) {
       setMemberIdList(allMember);
-    } else if (event.target.value as string === ScheduleType.PERSONAL) {
-      setMemberIdList([myInfo.memberId]);
     }
     else {
       setMemberIdList([]);
@@ -216,12 +214,17 @@ const ScheduleCreate = () => {
     
     // 시간 초기화
     setStartTime(dayjs(`${searchParams.get("start")}T00:00:00`));
-    setEndTime(dayjs(`${searchParams.get("end")}T23:59:59`));;
+    setEndTime(dayjs(`${searchParams.get("end")}T23:59:59`));
   }
 
   useEffect(() => {
     if (category === ScheduleType.EVENT) {
       setIsAllDayCheck(true);
+
+      // 날짜 및 시간 초기화
+      setEndDate(startDate);
+      setStartTime(dayjs(`${searchParams.get("start")}T00:00:00`));
+      setEndTime(dayjs(`${searchParams.get("end")}T23:59:59`));
     } else {
       setIsAllDayCheck(false);
     }
@@ -318,7 +321,7 @@ const ScheduleCreate = () => {
             <button
               key={index}
               className={`create-schedule__input-color-item${item.name === emoji ? '--active' : ''}`}
-              style={{backgroundColor: getColorCode(item.name)}}
+              style={{backgroundColor: getColorCode(item.name).code}}
               onClick={(event) => {
                 handleFinishTab(event);
                 setEmoji(item.name);
@@ -411,7 +414,7 @@ const ScheduleCreate = () => {
                     <button
                       className="create-schedule-info__input-color-button"
                       onClick={toggleDrawer("bottom", true)}
-                      style={{backgroundColor: getColorCode(emoji)}}
+                      style={{backgroundColor: getColorCode(emoji).code}}
                     >
                     </button>
                   </InputAdornment>
@@ -536,7 +539,12 @@ const ScheduleCreate = () => {
 
         <div className="create-schedule-all-day">
           <p>하루 종일</p>
-          <CustomSwitch checked={isAllDayCheck} onChange={handleALlDayCheck} sx={{marginRight: "5px"}}/>
+          <CustomSwitch
+            checked={isAllDayCheck}
+            onChange={handleALlDayCheck}
+            sx={{marginRight: "5px"}}
+            disabled={category === ScheduleType.EVENT}
+          />
         </div>
 
         {/*일정 카테고리*/}

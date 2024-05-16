@@ -1,4 +1,4 @@
-import { Mood, Question, Emoji }from "@type/index";
+import {Mood, Question, Emoji, ScheduleColor} from "@type/index";
 import EmojiDogOne from "@assets/images/emoji/emoji_dog1.png";
 import EmojiDogTwo from "@assets/images/emoji/emoji_dog2.png";
 import EmojiDogThree from "@assets/images/emoji/emoji_dog3.png";
@@ -24,6 +24,16 @@ import EmojiBlackDogOne from "@assets/images/emoji/emoji_black_dog1.png";
 import EmojiBlackDogTwo from "@assets/images/emoji/emoji_black_dog2.png";
 import EmojiBlackDogThree from "@assets/images/emoji/emoji_black_dog3.png";
 import EmojiBlackDogFour from "@assets/images/emoji/emoji_black_dog4.png";
+import ScheduleIconBlue from "@assets/images/schedule/ic_calendar_blue.png";
+import ScheduleIconGray from "@assets/images/schedule/ic_calendar_gray.png";
+import ScheduleIconGreen from "@assets/images/schedule/ic_calendar_green.png";
+import ScheduleIconMint from "@assets/images/schedule/ic_calendar_mint.png";
+import ScheduleIconNavy from "@assets/images/schedule/ic_calendar_navy.png";
+import ScheduleIconOrange from "@assets/images/schedule/ic_calendar_orange.png";
+import ScheduleIconPink from "@assets/images/schedule/ic_calendar_pink.png";
+import ScheduleIconPurple from "@assets/images/schedule/ic_calendar_purple.png";
+import ScheduleIconRed from "@assets/images/schedule/ic_calendar_red.png";
+import ScheduleIconYellow from "@assets/images/schedule/ic_calendar_yellow.png";
 
 /* 대문자로 작성 */
 
@@ -92,17 +102,17 @@ export const MOOD: Mood[] = [
 ]
 
 // 일정 색상표
-export const SCHEDULE_COLOR: {name: string; code: string;}[] = [
-  {name: "red", code: "#ffbbbb"},
-  {name: "orange", code: "#ffd291"},
-  {name: "yellow", code: "#ffef98"},
-  {name: "green", code: "#caffb7"},
-  {name: "blue", code: "#bbdbff"},
-  {name: "navy", code: "#aeb8ff"},
-  {name: "purple", code: "#d9c8ff"},
-  {name: "mint", code: "#a8fadb"},
-  {name: "pink", code: "#ffc3eb"},
-  {name: "gray", code: "#bfbfbf"},
+export const SCHEDULE_COLOR: ScheduleColor[] = [
+  {name: "red", code: "#ffbbbb",  image: ScheduleIconRed},
+  {name: "orange", code: "#ffd291",  image: ScheduleIconOrange},
+  {name: "yellow", code: "#ffef98",  image: ScheduleIconYellow},
+  {name: "green", code: "#caffb7",  image: ScheduleIconGreen},
+  {name: "blue", code: "#bbdbff",  image: ScheduleIconBlue},
+  {name: "navy", code: "#aeb8ff",  image: ScheduleIconNavy},
+  {name: "purple", code: "#d9c8ff",  image: ScheduleIconPurple},
+  {name: "mint", code: "#a8fadb",  image: ScheduleIconMint},
+  {name: "pink", code: "#ffc3eb",  image: ScheduleIconPink},
+  {name: "gray", code: "#bfbfbf",  image: ScheduleIconGray},
 ]
 
 

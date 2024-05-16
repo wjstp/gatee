@@ -3,23 +3,25 @@
 
 
 .schedule {
+  align-items: center;
   height: 100%;
+  width: 100%;
   position: relative;
 }
 
 .schedule-calendar {
-  margin: 0 2%;
   height: 100%;
+  //transition: height 0.5s ease-in-out;
 
   &--open {
     height: 50%;
+    //transition: height 0.5s ease-in-out;
   }
 
   &__header {
     @include flex_center;
 
-    height: 15%;
-    padding-top: 1rem;
+    height: 4rem;
   }
 
   &__title-wrapper {
@@ -110,14 +112,14 @@
     background: $orange400;
     top: 0;
     left: 50%;
-    width: 25px;
-    height: 25px;
+    width: 22px;
+    height: 22px;
     transform: translate(-50%, -17%);
     border-radius: 50%;
   }
 
   &__group {
-    height: 16px;
+    height: 17px;
     display: flex;
     align-items: center;
     padding: 0 2px;
@@ -129,7 +131,7 @@
   }
 
   &__personal {
-    height: 16px;
+    height: 17px;
     display: flex;
     align-items: center;
     padding: 0 2px;
@@ -138,6 +140,19 @@
       weight: 500;
     }
     overflow: hidden;
+
+    &__profile {
+      @extend %circular-profile-image;
+
+      min-width: 17px;
+      height: 17px;
+      margin-right: 3px;
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
   }
 
   &__event {
@@ -153,20 +168,23 @@
 
     &-icon {
       position: absolute;
-      z-index: 30;
-      width: 1rem;
-      height: 1rem;
-      background-color: #c1f6b1;
-      right: 0;
-      top: 0;
+      width: 14px;
+      height: 14px;
+      right: -1px;
+      top: -2px;
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
     }
   }
 
   &__more {
     @include flex_center;
 
-    min-width: 5px;
-    min-height: 5px;
+    min-width: 6px;
+    min-height: 6px;
     background-color: $orange600;
     border-radius: 50%;
   }
@@ -174,37 +192,53 @@
 
 .day-toast {
   @include flex-col;
-  @include px-(1);
 
   height: 50%;
   width: 100dvw;
   overflow: auto;
-  border-top: $gray100 1px solid;
-  background-color: $gray75;
+  border-top: #efefef 1px solid;
+  background-color: #FAFAFA;
 
   &__header {
-    @include mt-(1);
+    border-bottom: #efefef 1px solid;
   }
 
-  &__title {
-    text-align: center;
-    font: {
-      size: 20px;
-      weight: 500;
+  &__date {
+    @include flex-row;
+
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.5rem 1rem 1rem 1rem;
+
+    &-solar {
+      font: {
+        weight: 500;
+        size: 19px;
+      }
+    }
+
+    &-lunar {
+      color: $subtext-color;
+      font-size: 16px;
     }
   }
 
   &__close {
+    @include flex_center;
 
+    color: $subtext-color;
   }
 
   &__no-event {
+    @include flex_center;
+    @include mt-(1);
 
+    color: $subtext-color;
   }
 
   &__color {
     position: absolute;
-    width: 8px;
+    width: 6px;
     height: 100%;
     border-radius: 2px;
   }
@@ -212,25 +246,93 @@
   &__schedule {
     @include flex_col;
 
-    gap: 1rem;
+    gap: 1.2rem;
+    padding: 15px 15px 6rem 15px;
+    overflow: scroll;
 
-    &-group {
-      min-height: 7rem;
-      background-color: white;
-      position: relative;
-    }
+    &-item {
+      @include flex-row;
 
-    &-personal {
-      min-height: 7rem;
-      background-color: white;
-      position: relative;
-    }
-
-    &-event {
-      min-height: 7rem;
-      background-color: white;
+      align-items: center;
+      min-height: 4rem;
       position: relative;
     }
   }
 
+  &__group {
+    @include flex-row;
+    @include mx-(1.5);
+
+    width: 100%;
+    align-items: center;
+    font-weight: 500;
+
+    &__participate {
+      position: absolute;
+      top: 3px;
+      right: 3px;
+
+      .MuiAvatar-root {
+        width: 1.5rem;
+        height: 1.5rem;
+        font-size: $font-size-small;
+      };
+    }
+  }
+
+  &__personal {
+    @include flex-row;
+    @include mx-(1.5);
+
+    width: 100%;
+    align-items: center;
+    gap: 1rem;
+    font-weight: 500;
+
+    &__profile {
+      @extend %circular-profile-image;
+
+      width: 2.5rem;
+      height: 2.5rem;
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+
+  &__event {
+    @include flex-row;
+    @include mx-(1.5);
+
+    width: 100%;
+    align-items: center;
+    font-weight: 500;
+    gap: 5px;
+
+    &__icon {
+      width: 1rem;
+      height: 1rem;
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+
+  &__record {
+    @include flex-row;
+
+    margin-right: 0.5rem;
+    gap: 3px;
+    align-items: end;
+    height: 100%;
+    color: $subtext-color;
+    font: {
+      size: $font-size-small;
+      weight: 300;
+    }
+  }
 }

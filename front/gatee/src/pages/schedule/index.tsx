@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import dayjs, { Dayjs } from 'dayjs';
 
-import {DateSelectArg, DayCellContentArg, EventInput, EventSourceInput} from '@fullcalendar/core'
+import {DateSelectArg, DayCellContentArg, EventSourceInput} from '@fullcalendar/core'
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin, { DateClickArg } from "@fullcalendar/interaction";
@@ -11,7 +11,7 @@ import googleCalendarPlugin from "@fullcalendar/google-calendar";
 import DayToast from "@pages/schedule/components/DayToast";
 import { getAllScheduleApi } from "@api/schedule";
 import { useFamilyStore } from "@store/useFamilyStore";
-import { ScheduleListRes } from "@type/index";
+import {ScheduleListRes} from "@type/index";
 import getColorCode from "@utils/getColorCode";
 import { ScheduleType } from "@type/index";
 
@@ -25,7 +25,7 @@ const ScheduleIndex = () => {
 
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const [currentMonth, setCurrentMonth] = useState<number | null>(null);
-  const [selectedDate, setSelectedDate] = useState<string>("");
+  const [selectedDate, setSelectedDate] = useState<string>(dayjs().format("YYYY-MM-DD"));
   const [isOpenDayToast, setIsOpenDayToast] = useState<boolean>(false);
   const [isShowTodayButton, setIsShowTodayButton] = useState<boolean>(false);
   const [selectedStartDate, setSelectedStartDate] = useState<string>(dayjs().format("YYYY-MM-DD"));
@@ -36,6 +36,7 @@ const ScheduleIndex = () => {
   const [scheduleList, setScheduleList] = useState<ScheduleListRes[]>([]);
   const [dayScheduleList, setDayScheduleList] = useState<ScheduleListRes[]>([]);
   const [monthScheduleList, setMonthScheduleList] = useState<EventSourceInput>([]);
+
   // Fullcalendar 설정
   useEffect(() => {
     if (calendarRef.current) {
@@ -65,14 +66,15 @@ const ScheduleIndex = () => {
         (res) => {
           setScheduleList(res.data);
 
-          const formattedScheduleList: EventSourceInput = res.data.filter((schedule: ScheduleListRes) => schedule.category != ScheduleType.EVENT)
+          const formattedScheduleList: EventSourceInput = res.data.filter((schedule: ScheduleListRes) =>
+            schedule.category !== ScheduleType.EVENT)
             .map((schedule: ScheduleListRes) => ({
               id: `${schedule.category}&${schedule.scheduleId}`,
               title: schedule.title,
-              color: getColorCode(schedule.emoji),
+              color: getColorCode(schedule.emoji).code,
               start: dayjs(schedule.startDate).format("YYYY-MM-DD"),
               end: dayjs(schedule.endDate).add(1, 'day').format("YYYY-MM-DD"),
-              sortIdx: `${schedule.category === ScheduleType.EVENT ? 0 : schedule.category === ScheduleType.GROUP ? 1 : 2}`
+              sortIdx: `${schedule.category === ScheduleType.GROUP ? 0 : 1}`
             }));
           setMonthScheduleList(formattedScheduleList);
         },
@@ -139,15 +141,32 @@ const ScheduleIndex = () => {
 
   // 선택한 날짜를 기준으로 해당 날짜의 일정들을 필터링
   const getDaySchedule = (date: string) => {
-    const daySchedule: ScheduleListRes[] = scheduleList.filter((schedule: ScheduleListRes) => {
-      // 해당 일자에 시작일 또는 종료일이 존재하는 경우 해당 일정을 추출
+    const eventSchedule: ScheduleListRes[] = [];
+    const nonEventSchedule: ScheduleListRes[] = [];
+
+    scheduleList.forEach((schedule: ScheduleListRes) => {
       const startDate: Dayjs = dayjs(schedule.startDate as string);
       const endDate: Dayjs = dayjs(schedule.endDate as string);
       const targetDate: Dayjs = dayjs(date);
 
-      return targetDate.isSame(startDate, 'day') || targetDate.isSame(endDate, 'day') ||
+      // 해당 날짜에 시작일 또는 종료일이 존재하는 경우 해당 일정을 추출
+      const isSameDate = targetDate.isSame(startDate, 'day') ||
+        targetDate.isSame(endDate, 'day') ||
         (targetDate.isAfter(startDate, 'day') && targetDate.isBefore(endDate, 'day'));
+
+      if (schedule.category === ScheduleType.EVENT) {
+        // 이벤트는 eventSchedule 배열에 추가
+        if (isSameDate) {
+          eventSchedule.push(schedule);
+        }
+      } else if (isSameDate) {
+        nonEventSchedule.push(schedule);
+      }
     });
+
+    // 이벤트 배열을 마지막에 이어 붙임
+    const daySchedule: ScheduleListRes[] = [...eventSchedule, ...nonEventSchedule];
+
     setDayScheduleList(daySchedule);
   };
 
@@ -159,21 +178,34 @@ const ScheduleIndex = () => {
 
   // Day cell render hooks
   const useDayCellContent = (arg: DayCellContentArg) => {
-    const dayNumber: string = arg.dayNumberText.replace("일", "");   // 일자에서 '일' 제거
-    const dayDate: string = dayjs(arg.date).format("YYYYMMDD");
-    const isEvent: boolean = scheduleList.some((schedule: ScheduleListRes) => {
-      const startDate: string = dayjs(schedule.startDate).format("YYYYMMDD");
-      const endDate: string = dayjs(schedule.endDate).format("YYYYMMDD");
-      return startDate <= dayDate && dayDate <= endDate;
+    // 일자에서 '일' 제거
+    const dayNumber: string = arg.dayNumberText.replace("일", "");
+
+    // 해당 날짜에 있는 이벤트 찾기
+    const eventOnDate: ScheduleListRes | undefined = scheduleList.find(schedule => {
+      const startDate: Dayjs = dayjs(schedule.startDate);
+      const endDate: Dayjs = dayjs(schedule.endDate);
+      const targetDate: Dayjs = dayjs(arg.date);
+
+      return (
+        schedule.category === ScheduleType.EVENT &&
+        (targetDate.isSame(startDate, 'day') || targetDate.isSame(endDate, 'day') ||
+          (targetDate.isAfter(startDate, 'day') && targetDate.isBefore(endDate, 'day')))
+      );
     });
+
+    const isEvent: boolean = !!eventOnDate; // 이벤트가 있는지 여부
 
     return (
       <div className="schedule-calendar__day" style={{color: arg.isToday ? "white" : ""}}>
-        {dayNumber}
-        {arg.isToday && <div className="schedule-calendar__today"></div>}
-        {isEvent && (
+        { dayNumber }
+        { arg.isToday
+          &&
+          <div className="schedule-calendar__today"></div>
+        }
+        { isEvent && eventOnDate && (
           <div className="schedule-calendar__event-icon">
-            <img src="" alt=""/>
+            <img src={getColorCode(eventOnDate.emoji).image} alt="ic_calendar"/>
           </div>
         )}
       </div>
@@ -192,25 +224,28 @@ const ScheduleIndex = () => {
         </div>
       );
     } else if (eventInfo[0] === ScheduleType.PERSONAL) {
-      return (
-        <div className="schedule-calendar__personal">
-          <div>
-            <img src="" alt=""/>
+      // 스케줄 리스트에서 해당하는 스케줄 찾기
+      const scheduleId = parseInt(eventInfo[1], 10);
+      const foundSchedule = scheduleList.find(schedule => schedule.scheduleId === scheduleId);
+
+      if (foundSchedule) {
+        // 스케줄의 참여 멤버 중 첫 번째 멤버의 프로필 이미지 URL 가져오기
+        const profileImageUrl: string = foundSchedule.participateMembers[0]?.profileImageUrl || "";
+
+        return (
+          <div className="schedule-calendar__personal">
+            <div className="schedule-calendar__personal__profile">
+              <img src={profileImageUrl} alt="Profile" />
+            </div>
+            { event.title }
           </div>
-          { event.title }
-        </div>
-      );
-    } else if (eventInfo[0] === ScheduleType.EVENT) {
-      return (
-        <div className="schedule-calendar__event">
-          { event.title }
-        </div>
-      );
+        );
+      }
     }
   };
 
   // More lick cell render hooks
-  const useMoreLinkContent = (arg: any) => {
+  const useMoreLinkContent = () => {
     return (
       <div className="schedule-calendar__more"></div>
     )
@@ -218,6 +253,44 @@ const ScheduleIndex = () => {
 
   // 일자 탭 닫기
   const handleDayClose = () => setIsOpenDayToast(false);
+
+  // 캘린더 높이 설정
+  const [calendarHeight, setCalendarHeight] = useState<string>('100%');
+
+  // useEffect(() => {
+  //   if (isOpenDayToast) {
+  //     let decreasedHeight = 1;
+  //     const intervalId = setInterval(() => {
+  //       setCalendarHeight((prevHeight) => {
+  //         const currentHeight = parseInt(prevHeight.replace('px', ''), 10);
+  //         if (currentHeight > 0) {
+  //           decreasedHeight++;
+  //           return `${currentHeight - decreasedHeight}px`;
+  //         } else {
+  //           clearInterval(intervalId);
+  //           return '35dvh';
+  //         }
+  //       });
+  //     }, 10);
+  //     return () => clearInterval(intervalId);
+  //   } else {
+  //     let increasedHeight = 1;
+  //     const intervalId = setInterval(() => {
+  //       setCalendarHeight((prevHeight) => {
+  //         const currentHeight = parseInt(prevHeight.replace('px', ''), 10);
+  //         if (currentHeight < 400) {
+  //           increasedHeight++;
+  //           return `${currentHeight + increasedHeight}px`;
+  //         } else {
+  //           clearInterval(intervalId);
+  //           return '60dvh';
+  //         }
+  //       });
+  //     }, 10);
+  //     return () => clearInterval(intervalId);
+  //   }
+  // }, [isOpenDayToast]);
+
 
   return (
     <div className="schedule">
@@ -253,7 +326,7 @@ const ScheduleIndex = () => {
             googleCalendarApiKey={REACT_APP_GOOGLE_API_KEY}    // 구글 캘린더 API
             headerToolbar={{left: "", center: "", right: ""}}
             initialView={"dayGridMonth"}
-            height={"100%"}               // calendar 높이
+            height={calendarHeight}
             locale={"kr"}                // 언어 한글로 변경
             selectable={true}            // 영역 선택
             dayMaxEvents={true}          // row 높이보다 많으면 +N more 링크 표시
@@ -283,10 +356,7 @@ const ScheduleIndex = () => {
       </div>
 
       {/*일자별 일정 리스트*/}
-      { isOpenDayToast
-        &&
-        <DayToast date={selectedDate} schedules={dayScheduleList} onCloseClick={handleDayClose} />
-      }
+      <DayToast date={selectedDate} schedules={dayScheduleList} onCloseClick={handleDayClose} />
 
       { isShowTodayButton && (
         // 오늘 날짜 이동 버튼
