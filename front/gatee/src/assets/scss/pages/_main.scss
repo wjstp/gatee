@@ -13,32 +13,51 @@
     @include px-(2);
     @include flex-col;
 
+    align-items: center;
     flex: 1;
     width: 100%;
     gap: 1rem;
+    //background-color: green;
 
     .title--container {
 
       @include mt-(1);
       @include flex-row;
+
       align-items: end;
-      gap: 1rem;
+
       font-weight: bold;
+      width: 90dvw;
+      //background-color: yellow;
+      justify-content: space-between;
 
       .main-family-img{
-        height: 7dvh;
+        height: 17dvw;
+        width: 17dvw;
         object-fit: contain;
         border-radius: 1rem;
       }
-      .title--content {
-        font-size: 1.5rem;
 
+      .title--content {
+        width: 49dvw;
+        text-align: start;
+        //background-color: yellow;
+        padding-left: 5dvw;
+
+        //font-size: 100%;
       }
 
       .title--temperature {
-        font-size: 2rem;
+        font-size: 1.8rem;
+        width: 24dvw;
+        text-align: center;
+        //background-color: red;
         color: $orange500;
       }
+
+    }
+    .progressbar-container{
+      width: 90dvw;
     }
 
     .compare-with-avg-content {

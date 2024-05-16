@@ -18,6 +18,7 @@ import ScrollAnimation from "@assets/images/animation/scroll_animation.json";
 import getUrlFromType from "@utils/getUrlFromType";
 import {useNavigate} from "react-router-dom";
 import {useNotificationStore} from "@store/useNotificationStore";
+import FeatureModal from "@pages/notification/components/FeatureModal";
 
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
@@ -29,7 +30,8 @@ const NotificationIndex = () => {
     bottom: false,
   });
   // 모달 상태관리
-  const {isOpen, openModal, closeModal} = useModal()
+  const {isOpen:isNaggingModalOpen, openModal:openNaggingModal, closeModal:closeNaggingModal} = useModal()
+  const {isOpen:isFeatureModalOpen, openModal:openFeatureModal, closeModal:closeFeatureModal} = useModal()
   // MUI 관련 코드 -> 슬라이드 다운 해서 내리기 기능 가능
   const toggleDrawer =
     (anchor: Anchor, open: boolean) =>
@@ -89,7 +91,9 @@ const NotificationIndex = () => {
     const clicked = notificationDataList.find((item) => item.notificationId === id)
     setClickedNotification(clicked)
     if (clicked && clicked?.type === "NAGGING")
-      openModal()
+      openNaggingModal()
+    else if (clicked && clicked?.type === "FEATURE")
+      openFeatureModal()
     if (!isCheck) {
       readNotificationApi({notificationId: id}
         , res => {
@@ -112,7 +116,8 @@ const NotificationIndex = () => {
 
   // 모달 내리기
   const handleModal = () => {
-    closeModal()
+    closeNaggingModal()
+    closeFeatureModal()
   }
 
   // 스크롤
@@ -207,13 +212,15 @@ const NotificationIndex = () => {
           모든 알림을 조회하였습니다.
         </div>
         : null}
-      {isOpen ?
+      {isNaggingModalOpen ?
 
         <NaggingModal notificationData={clickedNotification} handleModal={handleModal}/>
 
         :
         null}
-
+      {isFeatureModalOpen?
+      <FeatureModal notificationData={clickedNotification} handleModal={handleModal}/>
+      :null}
     </div>
   );
 };
@@ -235,7 +242,7 @@ const NotificationItem = ({notificationData, handleReadNotification}: {
   const hour = dateDate.getHours()
   const minute = dateDate.getMinutes()
 
-
+  console.log(minute)
 
 
   // 알림 누르기
@@ -257,8 +264,8 @@ const NotificationItem = ({notificationData, handleReadNotification}: {
           <p className="notification-item-title">{notificationData.title}</p>
           {/*올해가 아니면 년도 보여줌, 오늘이면 시간 보여줌*/}
           <p>{todayYear === year && todayMonth===month && todayDate===date ?
-            hour >= 12 ? `오후 ${hour-12}: ` : `오전 ${hour}:`+
-           `${minute}`: todayYear === year ? `${month}월 ${date}일` : `${year}년 ${month}월 ${date}일`}
+            hour >= 12 ? `오후 ${hour-12}:${minute} ` : `오전 ${hour}:${minute}`
+            : todayYear === year ? `${month}월 ${date}일` : `${year}년 ${month}월 ${date}일`}
           </p>
         </div>
         <p className="notification-item-content">{notificationData.content}</p>

@@ -12,14 +12,14 @@ interface KoreanMentType {
 }
 
 const MissionIndex = () => {
-
+  const {familyId} = useFamilyStore()
   const {missionList, setMissionList} = useMissionStore()
   // 미션 저장 api
   const getMissionApiFunc = () => {
-    getMissionApi(
+    getMissionApi({familyId:familyId},
       res => {
         console.log(res)
-        setMissionList(res.data)
+        setMissionList(res.data.missionListResList)
       },
       err => {
         console.log(err)
@@ -56,7 +56,7 @@ const MissionIndex = () => {
     dots: true,
     // fade: true,
     infinite: true,
-    autoplay: true,
+    autoplay:false,
     autoplaySpeed: 3000,
     speed: 1000,
     slidesToShow: 1,
