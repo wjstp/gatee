@@ -101,8 +101,11 @@ public class FamilyServiceImpl implements FamilyService {
                     .fileType(FileType.FAMILY_PROFILE)
                     .build();
 
-            imageFile = fileRepository.findByUrl(DEFAULT_FAMILY_IMAGE_URL)
-                    .orElse(fileRepository.save(defaultFile));
+            if(fileRepository.existsByUrl(DEFAULT_FAMILY_IMAGE_URL)){
+                imageFile = fileRepository.save(defaultFile);
+            } else {
+                imageFile = fileRepository.findByUrl(DEFAULT_FAMILY_IMAGE_URL).get(0);
+            }
         } else {
             imageFile = s3Util.upload(fileType, file);
 
