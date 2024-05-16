@@ -6,9 +6,9 @@ const local: AxiosInstance = localAxios("default");
 
 
 // 미션 조회
-export const getMissionApi = async function (success: (res: AxiosResponse<any>) => void,
+export const getMissionApi = async function (data:{familyId:string},success: (res: AxiosResponse<any>) => void,
                                              fail: (err: AxiosError<any>) => void) {
-  await local.get(`/missions`).then(success).catch(fail);
+  await local.get(`/missions`,{params:data}).then(success).catch(fail);
 }
 
 // 미션 수행

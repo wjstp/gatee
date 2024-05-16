@@ -153,9 +153,10 @@
     @extend %modal-content;
     @include p-(2);
     @include mx-(2);
-
     @include flex-col;
+
     align-items: start;
+
 
     .nagging-modal-title {
       @include mb-(0.8);
@@ -163,6 +164,24 @@
       font-size: 1.5rem;
     }
 
+    .feature-modal-top--container{
+      @include flex-row;
+      @include flex_center;
+      @include mb-(1);
+
+      gap: 1rem;
+
+      .profile-img{
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50%;
+      }
+    }
+
+    .close-btn{
+      @extend %orange-button-medium;
+      width: 100%;
+    }
     .nagging-modal-content {
       font-size: 1.3rem;
     }
