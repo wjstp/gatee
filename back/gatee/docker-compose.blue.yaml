@@ -33,8 +33,8 @@ services:
     networks:
       - gatee-net
   gatee-batch-blue:
-    image: ${CI_REGISTRY}/gatee-batch:blue
-    container_name: gatee-batch-blue-01
+    container_name: gatee-batch-blue
+    image: ${CI_REGISTRY}/gatee-api:blue
     environment:
       - ENV=batch
     env_file:
