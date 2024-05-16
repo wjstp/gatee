@@ -38,7 +38,7 @@
     .explain {
       @include flex-col;
       @include flex_center;
-      //height: 100vh*0.5;
+      //height: 100vh*0.7;
       width: 100vw;
       padding-top: 3rem;
       //border: 3px solid red;
@@ -64,7 +64,7 @@
     img {
       object-fit: cover;
       height: 45dvh;
-      width: auto;
+      width: 100dvw;
     }
 
     ////카카오 버튼
