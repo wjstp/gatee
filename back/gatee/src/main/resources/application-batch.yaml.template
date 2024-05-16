@@ -1,7 +1,7 @@
 spring:
   config:
     activate:
-      on-profile: batch-prod
+      on-profile: common
   batch:
     job:
       enabled: false
