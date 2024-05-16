@@ -3,6 +3,8 @@ import HeartIcon from "@assets/images/icon3D/heart.png"
 import BookIcon from "@assets/images/icon3D/book.png"
 import GoalIcon from "@assets/images/icon3D/goal.png"
 import SmileIcon from "@assets/images/icon3D/smile.png"
+import PencilIcon from "@assets/images/icon3D/pencil.png"
+import CameraIcon from "@assets/images/icon3D/camera.png"
 import {useNavigate} from "react-router-dom";
 import {useFamilyStore} from "@store/useFamilyStore";
 import {useMemberStore} from "@store/useMemberStore";
@@ -29,13 +31,25 @@ const Improvement = ({type}: any) => {
       buttonComment: "채팅하기",
       icon: GoalIcon
     },
-    about: {
+    albumMission: {
+      content: ["함께 사진을 찍어", "공유해요"],
+      destination: "/photo",
+      buttonComment: "사진 올리기",
+      icon: CameraIcon
+    },
+    featureMission: {
       content: ["나의 이야기를", "전해볼까요?"],
       destination: "/character/start",
       buttonComment: "백과사전 쓰기",
       icon: BookIcon
     },
-    calendar: {
+    examMission :{
+      content: ["가족들의 이야기가 담긴 모의고사", "풀어보아요"],
+      destination: "/exam",
+      buttonComment: "모의고사 풀기",
+      icon: PencilIcon
+    },
+    scheduleMission: {
       content: ["함께 일정을", "잡아보아요"],
       destination: "/schedule",
       buttonComment: "일정 잡기",

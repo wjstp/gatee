@@ -4,7 +4,7 @@ import {useFamilyStore} from "@store/useFamilyStore";
 
 export const FamilyPoint = () => {
   const {familyScore, stringImage, familyName} = useFamilyStore()
-  const myFamilyTemp = 36 + familyScore * 0.1
+  const myFamilyTemp = 36 + familyScore
   const fontSizeFunc = (fontLength: number) => {
     if (fontLength <= 4) {
       return 28
