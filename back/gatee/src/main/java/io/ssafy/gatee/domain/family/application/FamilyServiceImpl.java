@@ -185,8 +185,7 @@ public class FamilyServiceImpl implements FamilyService {
 
     @Override
     public Long findDefaultFamilyImageId(String url) {
-        return fileRepository.findByUrl(url)(() ->
-                new FileNotFoundException(FIlE_NOT_FOUND)).getId();
+        return fileRepository.findByUrl(url).get(0).getId();
     }
 
     @Override
