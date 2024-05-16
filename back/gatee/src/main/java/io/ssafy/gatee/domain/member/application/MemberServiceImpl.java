@@ -117,6 +117,7 @@ public class MemberServiceImpl implements MemberService {
 
         // 알림 동의 모두 열기
         memberNotificationRepository.save(MemberNotification.builder()
+                .member(member)
                 .albumNotification(true)
                 .scheduleNotification(true)
                 .chatNotification(true)
@@ -169,7 +170,6 @@ public class MemberServiceImpl implements MemberService {
         missionRepository.saveAll(missionList);
 
 
-
         // 토큰 발급
         modifyMemberToken(member, response);
 
@@ -210,12 +210,12 @@ public class MemberServiceImpl implements MemberService {
 
         } else {
             entity = File.builder()
-                        .fileType(FileType.MEMBER_PROFILE)
-                        .url("https://spring-learning.s3.ap-southeast-2.amazonaws.com/default/profile_" + defaultImage + ".PNG")
-                        .dir("default/")
-                        .name("default_image")
-                        .originalName("default_image")
-                        .build();
+                    .fileType(FileType.MEMBER_PROFILE)
+                    .url("https://spring-learning.s3.ap-southeast-2.amazonaws.com/default/profile_" + defaultImage + ".PNG")
+                    .dir("default/")
+                    .name("default_image")
+                    .originalName("default_image")
+                    .build();
         }
 
         fileRepository.save(entity);
