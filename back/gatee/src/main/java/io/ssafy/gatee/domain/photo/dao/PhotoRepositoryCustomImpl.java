@@ -14,8 +14,8 @@ import java.util.List;
 @Repository
 @RequiredArgsConstructor
 public class PhotoRepositoryCustomImpl implements PhotoRepositoryCustom {
-    private final JPQLQueryFactory jpqlQueryFactory;
 
+    private final JPQLQueryFactory jpqlQueryFactory;
 
     @Override
     public List<Photo> findPhotoListByDay(List<MemberFamily> memberFamilyList) {

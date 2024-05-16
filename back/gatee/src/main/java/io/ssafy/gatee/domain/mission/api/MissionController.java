@@ -2,16 +2,14 @@ package io.ssafy.gatee.domain.mission.api;
 
 import io.ssafy.gatee.domain.mission.application.MissionService;
 import io.ssafy.gatee.domain.mission.dto.request.MissionTypeReq;
-import io.ssafy.gatee.domain.mission.dto.response.MissionListRes;
-import io.ssafy.gatee.domain.mission.entity.Type;
+import io.ssafy.gatee.domain.mission.dto.response.MissionInfoRes;
 import io.ssafy.gatee.global.security.user.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
-import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/missions")
@@ -23,10 +21,11 @@ public class MissionController {
     // 미션 목록 확인
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<MissionListRes> readMission(
-            @AuthenticationPrincipal CustomUserDetails customUserDetails
+    public MissionInfoRes readMission(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @RequestParam UUID familyId
     ) {
-        return missionService.readMission(customUserDetails.getMemberId());
+        return missionService.readMission(customUserDetails.getMemberId(), familyId);
     }
 
     // 미션 수행
