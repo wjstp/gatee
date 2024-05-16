@@ -1,11 +1,4 @@
-import {
-  Mood,
-  Question,
-  Schedule,
-  Emoji,
-  MemberApiRes,
-  MyMemberApiRes
-} from "@type/index";
+import { Mood, Question, Emoji }from "@type/index";
 import EmojiDogOne from "@assets/images/emoji/emoji_dog1.png";
 import EmojiDogTwo from "@assets/images/emoji/emoji_dog2.png";
 import EmojiDogThree from "@assets/images/emoji/emoji_dog3.png";
@@ -14,8 +7,8 @@ import EmojiJulOne from "@assets/images/emoji/emoji_jul1.png";
 import EmojiJulTwo from "@assets/images/emoji/emoji_jul2.png";
 import EmojiJulThree from "@assets/images/emoji/emoji_jul3.png";
 import EmojiJulFour from "@assets/images/emoji/emoji_jul4.png";
-import EmojiDogThum from "@assets/images/emoji/emoji_dog_thum.png";
-import EmojiJulThum from "@assets/images/emoji/emoji_jul_thum.png";
+import EmojiDogThumb from "@assets/images/emoji/emoji_dog_thum.png";
+import EmojiJulThumb from "@assets/images/emoji/emoji_jul_thum.png";
 
 /* 대문자로 작성 */
 
@@ -23,7 +16,7 @@ import EmojiJulThum from "@assets/images/emoji/emoji_jul_thum.png";
 export const EMOJI: Emoji[] = [
   {
     name: "dog",
-    image: EmojiDogThum,
+    image: EmojiDogThumb,
     item: [
       { id: "dog1", image: EmojiDogOne },
       { id: "dog2", image: EmojiDogTwo },
@@ -33,7 +26,7 @@ export const EMOJI: Emoji[] = [
   },
   {
     name: "jul",
-    image: EmojiJulThum,
+    image: EmojiJulThumb,
     item: [
       { id: "jul1", image: EmojiJulOne },
       { id: "jul2", image: EmojiJulTwo },
@@ -42,10 +35,6 @@ export const EMOJI: Emoji[] = [
     ]
   }
 ];
-
-// 파일 제한 사항
-// const ALLOW_FILE_EXTENSION: string = "jpg,jpeg,png";
-// const FILE_SIZE_MAX_LIMIT: number = 5 * 1024 * 1024;
 
 // 기분
 export const MOOD: Mood[] = [
@@ -56,6 +45,21 @@ export const MOOD: Mood[] = [
   { name: "FEAR", mood: "😱", content: "심란해요" },
   {name: "SLEEPY", mood: "😪", content: "피곤해요" },
 ]
+
+// 일정 색상표
+export const SCHEDULE_COLOR: {name: string; code: string;}[] = [
+  {name: "red", code: "#ffbbbb"},
+  {name: "orange", code: "#ffd291"},
+  {name: "yellow", code: "#ffef98"},
+  {name: "green", code: "#b8ffa1"},
+  {name: "blue", code: "#bbdbff"},
+  {name: "navy", code: "#9eaaff"},
+  {name: "purple", code: "#d0b8ff"},
+  {name: "mint", code: "#a8fadb"},
+  {name: "pink", code: "#ffc3eb"},
+  {name: "gray", code: "#bfbfbf"},
+]
+
 
 // 모의고사 임시 데이터
 export const QuestionSample: Question[] = [
@@ -118,37 +122,6 @@ export const QuestionSample: Question[] = [
     question: "가장 힘들 때가 언제였나요?",
     correctAnswer: "여자 친구와 헤어졌을 때",
     answerList: ["여자 친구와 헤어졌을 때", "밥 먹을 때", "지하철 탈 때", "코딩할 때"],
-  }
-]
-
-// 일정 임시 데이터
-export const ScheduleSample: Schedule[] = [
-  {
-    title: "단체 일정",
-    content: "단체 일정입니다.",
-    category: "group",
-    color: "pink",
-    startDate: "2024-05-01T00:00",
-    endDate: "2024-05-01T23:59",
-    participant: ["zyo0720@kakao.com", "yebin4684@gmail.com", "wjstp14@gmail.com"]
-  },
-  {
-    title: "개인 일정",
-    content: "개인 일정입니다.",
-    category: "personal",
-    color: "blue",
-    startDate: "2024-05-01T00:00",
-    endDate: "2024-05-01T23:59",
-    participant: ["zyo0720@kakao.com"]
-  },
-  {
-    title: "이벤트",
-    content: "이벤트입니다.",
-    category: "event",
-    color: "purple",
-    startDate: "2024-05-01T00:00",
-    endDate: "2024-05-01T23:59",
-    participant: []
   }
 ]
 

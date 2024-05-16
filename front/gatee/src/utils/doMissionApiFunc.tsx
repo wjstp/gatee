@@ -1,9 +1,9 @@
 import {doMissionApi} from "@api/mission";
 
-const doMissionApiFunc = (type:string,amount:number) => {
+const doMissionApiFunc = (type: string, amount: number | null) => {
   doMissionApi({
-    type:type,
-    photoCount:amount,
+    type: type,
+    photoCount: amount,
   },res => {
     console.log(res)
   },err => {
