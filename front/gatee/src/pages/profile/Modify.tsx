@@ -58,7 +58,13 @@ const ProfileModify = () => {
         phoneNumber: inputPhoneNumber,
       }
     )
-    modifyProfileImage();
+
+    // 이미지를 교체했는지에 따라 수정 요청 다르게 보내기
+    if (cropImage) {
+      modifyProfileImage();
+    } else {
+      modifyProfile();
+    }
   }
 
   // 회원 이미지 수정
@@ -80,7 +86,7 @@ const ProfileModify = () => {
       (err: AxiosError<any>) => {
         console.log(err);
       }
-    )
+    ).then().catch();
   }
 
   // 수정 요청

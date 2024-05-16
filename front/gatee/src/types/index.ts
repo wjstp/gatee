@@ -115,21 +115,6 @@ export interface GetFamilyMemberApiReq {
 }
 
 export interface MemberApiRes {
-  birth: string;
-  birthType: string;
-  email: string;
-  memberId: string;
-  mood: string|null;
-  name: string;
-  nickname: string;
-  role: string;
-  phoneNumber: string | null;
-  fileUrl: string;
-  isLeader: boolean;
-  memberFamilyId:number;
-}
-
-export interface MemberApiRes {
   birth: string
   birthType: string;
   email: string;

@@ -21,7 +21,7 @@ const SignupFamilySetCheck = () => {
   const goToFamilySetShare = () => {
     // 가족 생성하기
     createFamily();
-    // navigate('/signup/member-set');
+    navigate('/signup/member-set');
   }
 
   // 파일을 업로드했을 때
@@ -41,7 +41,6 @@ const SignupFamilySetCheck = () => {
         console.log(res);
         setFamilyId(res.data.familyId);
         setStringImage(res.data.fileUrl.imageUrl);
-        navigate('/signup/member-set');
       },
       (err: AxiosError<any>) => {
         console.log(err)

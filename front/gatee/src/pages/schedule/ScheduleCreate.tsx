@@ -199,7 +199,7 @@ const ScheduleCreate = () => {
            onClick={() => handleSetParticipants(memberId)}>
         <div
           className={`create-schedule-participant__profile-image${participants.includes(memberId) ? '--active' : ''}`}>
-          <img src={userInfo?.fileUrl} alt={userInfo?.nickname}/>
+          <img src={userInfo?.profileImageUrl} alt={userInfo?.nickname}/>
         </div>
         <div className="create-schedule-participant__profile-nickname">
           {userInfo?.nickname}

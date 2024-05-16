@@ -15,6 +15,9 @@ import dayjs from "dayjs";
 import { createFamilyCodeApi, getMyDataApi } from "@api/member";
 import { AxiosError, AxiosResponse } from "axios";
 import { getFamilyAnsweredAskApi } from "@api/dictionary";
+import useModal from "@hooks/useModal";
+import Loading from "@components/Loading";
+import getMoodContent from "@utils/getMoodContent";
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
@@ -27,6 +30,7 @@ const ProfileIndex = () => {
   const { askList, setAskList } = useDictStore();
   // 쿼리스트링으로 넘어온 이메일을 확인하기 위함
   const { email } = useParams<{ email: string }>();
+  const { isOpen, openModal, closeModal } = useModal();
 
   // 열린지 닫힌지 상태 확인 가능
   const [state, setState] = useState({
@@ -36,6 +40,8 @@ const ProfileIndex = () => {
   // 멤버 확인
   const familyMember = familyInfo.find(member => member.email === email);
   const [isMe, setIsMe] = useState<boolean>(false);
+  // 로딩
+  const [loading, setLoading] = useState(false);
 
   // 나로 들어왔는지 확인
   useEffect(() => {
@@ -49,6 +55,13 @@ const ProfileIndex = () => {
       getFamilyAnsweredAsk(familyMember?.memberFamilyId);
     }
   }, [email]);
+
+  // 기분 확인
+  useEffect(() => {
+    if (familyMember) {
+      const yourMood = getMoodContent(familyMember.mood);
+    }
+  }, [familyMember?.mood]);
 
   // MUI 관련 코드 -> 슬라이드 다운 해서 내리기 기능 가능
   const toggleDrawer =
@@ -160,6 +173,21 @@ const ProfileIndex = () => {
     }
   }
 
+  // 모달 내리기
+  const handleModal = () => {
+    closeModal()
+  }
+  
+  // 한마디 보내기 모달 띄우기
+  // const sendNagging = () => {
+  //   setClickedSender(
+  //     {
+  //       typeId: 1,
+  //       title: "profile-sender"
+  //     }
+  //   )
+  // }
+  
   // 모의고사 예시
   const question = QuestionSample[0];
 
@@ -182,7 +210,7 @@ const ProfileIndex = () => {
         </div>
         
         {/*가족 초대 버튼*/}
-        {myInfo.isLeader && isMe ? (
+        {familyMember?.isLeader && isMe ? (
           <div className="profile__invite-box">
             <button
               className="invite-box__btn"
@@ -478,6 +506,16 @@ const ProfileIndex = () => {
         )}
 
       </div>
+
+      {/*한마디 보내기*/}
+      {/*{isOpen ? (*/}
+      {/*  // <NaggingModal*/}
+      {/*  //   notificationData={familyMember}*/}
+      {/*  //   handleModal={handleModal}*/}
+      {/*  // />*/}
+      {/*) : (*/}
+      {/*  null*/}
+      {/*)}*/}
 
     </div>
   );

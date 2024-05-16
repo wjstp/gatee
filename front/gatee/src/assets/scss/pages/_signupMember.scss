@@ -54,7 +54,7 @@
       }
 
       &:disabled {
-        background-color: $gray75;
+        background-color: $gray100;
       }
     }
   }
@@ -279,7 +279,7 @@
       }
 
       &:disabled {
-        background-color: $gray75;
+        background-color: $gray100;
       }
     }
   }
@@ -312,7 +312,7 @@
       }
 
       &:disabled {
-        background-color: $gray75;
+        background-color: $gray100;
       }
     }
   }
@@ -824,7 +824,7 @@
       @include flex_center;
 
       flex-direction: column;
-      margin-top: 10%;
+      margin-top: 8%;
 
       &__role {
         font-size: 23px;
@@ -834,7 +834,7 @@
         }
 
         .role__part--02 {
-          font-size: 28px;
+          font-size: 25px;
           font-weight: bold;
         }
 
@@ -848,7 +848,7 @@
         margin-top: 1%;
 
         .birth__part--01 {
-          font-size: 28px;
+          font-size: 25px;
           font-weight: bold;
         }
 
@@ -1043,14 +1043,15 @@
   }
 
   &__img {
-    height: 30%;
-    width: 70%;
-    margin-left: 5%;
+    height: 270px;
+    width: 360px;
+    margin-top: 5%;
+    margin-right: 3%;
 
     .img {
-      margin-top: 10%;
-      height: 100%;
-      width: 100%;
+      border-radius: 20px;
+      height: 270px;
+      width: 360px;
     }
   }
 

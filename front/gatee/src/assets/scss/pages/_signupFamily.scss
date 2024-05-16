@@ -302,7 +302,7 @@
       }
 
       &:disabled {
-        background-color: $gray75;
+        background-color: $gray100;
       }
     }
   }
@@ -359,7 +359,7 @@
       }
 
       &:disabled {
-        background-color: $gray75;
+        background-color: $gray100;
       }
     }
   }
@@ -466,6 +466,7 @@
     height: 155px;
     width: 155px;
     position: relative;
+    border-radius: 5%;
 
     .img-box__btn {
       @extend %circular-profile-image;
@@ -534,7 +535,7 @@
       }
 
       &:disabled {
-        background-color: $gray75;
+        background-color: $gray100;
       }
     }
   }
@@ -573,6 +574,7 @@
     margin-top: 7%;
 
     .img {
+      border-radius: 5%;
       height: 200px;
       width: 200px;
     }

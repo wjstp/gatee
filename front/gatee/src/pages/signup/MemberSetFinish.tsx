@@ -1,7 +1,7 @@
-import React, {useMemo} from 'react';
+import React from 'react';
 import { useNavigate } from "react-router-dom";
-import Finish from "@assets/images/signup/finish.svg"
 import { useMemberStore } from "@store/useMemberStore";
+import wholeFamily from "@assets/images/profile/whole_family.png"
 
 const SignupMemberSetFinish = () => {
   const navigate = useNavigate();
@@ -35,7 +35,7 @@ const SignupMemberSetFinish = () => {
       <div className="signup-member-set-finish__img">
         <img
           className="img"
-          src={Finish}
+          src={wholeFamily}
           alt=""
         />
       </div>

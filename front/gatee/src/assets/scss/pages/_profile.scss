@@ -17,14 +17,14 @@
     .profile__img-box {
       @extend %circular-profile-image;
 
-      margin-top: 10%;
-      height: 170px;
-      width: 170px;
-      border: 1px solid $gray75;
+      margin-top: 3%;
+      height: 23svh;
+      width: 23svh;
 
       .img-box__img {
-        height: 170px;
-        width: 170px;
+        border: 1px solid $gray75;
+        height: 23svh;
+        width: 23svh;
       }
     }
 
@@ -281,7 +281,7 @@
     display: flex;
     flex-direction: column;
 
-    // 빈, 내 프로필일 때 사전
+    // 비어 있고, 내 프로필일 때 사전
     .character__non-created-my {
       @include flex_center;
 
@@ -299,7 +299,7 @@
       }
     }
 
-    // 빈, 내 프로필이 아닐 때 사전
+    // 비어 있고, 내 프로필이 아닐 때 사전
     .character__non-created-other {
       @include flex_center;
 
@@ -341,7 +341,7 @@
         flex-direction: column;
         margin-top: 2%;
         height: 65%;
-        width: 90%;
+        width: 80%;
         background-color: $orange100;
         border-radius: 15px;
         font-size: 18px;
@@ -433,7 +433,7 @@
         flex-direction: column;
         margin-top: 2%;
         height: 65%;
-        width: 90%;
+        width: 80%;
         background-color: $orange100;
         border-radius: 15px;
         font-size: 18px;
@@ -499,11 +499,11 @@
     .profile__img-box {
       @extend %circular-profile-image;
 
-      margin-top: 10%;
+      margin-top: 3%;
       height: 170px;
       width: 170px;
-      border: 1px solid $gray75;
       position: relative;
+      border: 1px solid $gray75;
 
       .img-box__btn {
         @extend %circular-profile-image;
@@ -554,7 +554,7 @@
     }
 
     .profile__blank-box {
-      margin-top: 3.5%;
+      margin-top: 2.5%;
       margin-bottom: 2%;
       height: 10%;
       width: 100%;

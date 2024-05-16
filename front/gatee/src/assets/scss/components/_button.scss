@@ -25,7 +25,6 @@
 
     width: 90%;
 
-    &:focus,
     &:active {
       background-color: $orange600;
     }
@@ -37,7 +36,6 @@
     width: 200px;
     border-radius: 25px;
 
-    &:focus,
     &:active {
       background-color: $orange600;
     }
@@ -53,7 +51,6 @@
       size: $font-size;
     };
 
-    &:focus,
     &:active {
       background-color: $orange600;
     }
