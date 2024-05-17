@@ -256,7 +256,7 @@ public class FamilyServiceImpl implements FamilyService {
     public FamilyCheckRes checkFamilyCode(String familyCode, UUID memberId) {
         ValueOperations<String, String> redisValueOperation = redisTemplate.opsForValue();
 
-        String familyId = redisValueOperation.get(familyCode);
+        String familyId = redisValueOperation.get(familyCode.trim());
 
         if (familyId == null) {
             log.info("family code : " + familyCode);
