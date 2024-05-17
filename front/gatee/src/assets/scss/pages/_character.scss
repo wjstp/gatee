@@ -46,14 +46,19 @@
 
   .orangeButtonLarge {
     @extend %orange-button-large;
-    width: 100%;
+    @include mt-(0);
 
+    width: 100%;
   }
 
   .flex-center {
     @include flex-center;
   }
 
+  .warning-dictionary-text {
+    color: $orange500;
+    font-size: 0.8rem;
+  }
   .skipButton {
     text-decoration: underline;
     color: $gray200;
@@ -76,13 +81,13 @@
   background-color: $gray50;
 
   .new-question-not-found-title {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     font-weight: bold;
     @include mb-(1);
   }
 
   .new-question-not-found-explain {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
   }
 }
 

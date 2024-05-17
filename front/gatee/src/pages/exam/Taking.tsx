@@ -311,7 +311,7 @@ const WarningModal = ({noSelectList, handleWarningModal}: {
   return (
     <div className="warning-modal-bg">
       <div className="warning-modal-content">
-        <h3>안 푼 문제가 있어요</h3>
+        <p>안 푼 문제가 있어요</p>
         <div>
           <IoWarningSharp size={100} color={"lightgray"}/>
           {/*{noSelectList.map((item, index) => <span key={index}>{item}{index===noSelectList.length-1 ? "":", "}</span>)}*/}

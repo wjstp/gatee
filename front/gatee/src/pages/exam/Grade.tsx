@@ -12,6 +12,7 @@ import getUserInfoByMemberFamilyId from "@utils/getUserInfoByMemberFamilyId";
 const ExamGrade = () => {
   const params = useParams();
   const {familyInfo} = useFamilyStore()
+  const [isLoading, setIsLoading] = useState(true);
   const [userInfo, setUserInfo] = useState<MemberApiRes | null>(null);
   const [avgGrade, setAvgGrade] = useState<null | number>(null)
 
@@ -36,6 +37,7 @@ const ExamGrade = () => {
         res => {
           console.log("getFamilyExamResultApi", res)
           setGradeDataList(res.data)
+          setIsLoading(false)
           if (res.data?.length) {
             const scores = res.data.map(item => item.score)
             const scoreSum = scores.reduce((sum, score) => sum + score, 0);
@@ -52,7 +54,8 @@ const ExamGrade = () => {
     <div className="exam-grade">
 
       {/* 상단 헤더 */}
-      {avgGrade === null ?
+      {isLoading ? null:
+        avgGrade === null ?
         <GradeNotFound/>
         :
         <>
