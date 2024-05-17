@@ -17,7 +17,7 @@ spring:
       test:
         - db-prod
         - security-prod
-        - batch
+        - batch-prod
     include:
       - db
       - security
