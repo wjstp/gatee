@@ -84,7 +84,7 @@ public class FamilyServiceImpl implements FamilyService {
 
         File imageFile;
 
-        if (!file.isEmpty()) {
+        if (file != null) {
             imageFile = s3Util.upload(fileType, file);
             fileRepository.save(imageFile);
         } else {
@@ -289,7 +289,7 @@ public class FamilyServiceImpl implements FamilyService {
 
         File entity;
 
-        if (!file.isEmpty()) {
+        if (file != null) {
             entity = s3Util.upload(fileType, file);
             fileRepository.save(entity);
         } else {
