@@ -68,6 +68,7 @@ const CharacterQuestion = () => {
     setInputValue("")
     // 미션 수행
     doMissionApiFunc()
+    setWarning(false)
     sumbitAskAnswerApi(
       {
         featureId: askList[askIndex].featureId,

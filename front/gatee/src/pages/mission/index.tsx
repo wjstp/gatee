@@ -106,8 +106,8 @@ const MissionIndex = () => {
                 {improvement.map((item, i) => {
                     if (item === "heart" || item === "hello") return null
                     else return (<React.Fragment key={i}>
-                        {i > 0 && ", "}
-                        {koreanMent[item]}
+                        {i > 2 && ", "} {koreanMent[item]}
+
                       </React.Fragment>
                     )
                   }
