@@ -7,9 +7,9 @@ import CalendarIcon from "@assets/images/icon3D/calendar-improvement.png"
 import PencilIcon from "@assets/images/icon3D/pencil-improvement.png"
 import CameraIcon from "@assets/images/icon3D/camera-improvement.png"
 import {useNavigate} from "react-router-dom";
-import {useFamilyStore} from "@store/useFamilyStore";
-import {useMemberStore} from "@store/useMemberStore";
-import getRandomFamilyName from "@utils/getRandomFamilyName";
+// import {useFamilyStore} from "@store/useFamilyStore";
+// import {useMemberStore} from "@store/useMemberStore";
+// import getRandomFamilyName from "@utils/getRandomFamilyName";
 
 
 const Improvement = ({type}: any) => {
