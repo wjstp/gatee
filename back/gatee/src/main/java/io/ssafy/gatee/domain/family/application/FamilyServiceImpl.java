@@ -259,6 +259,8 @@ public class FamilyServiceImpl implements FamilyService {
         String familyId = redisValueOperation.get(familyCode);
 
         if (familyId == null) {
+            log.info("family code : " + familyCode);
+//            log.info("family id : " + familyId);
             throw new ExpiredCodeException(EXPIRED_CODE);
         } else {
             Family family = familyRepository.findById(UUID.fromString(familyId))
