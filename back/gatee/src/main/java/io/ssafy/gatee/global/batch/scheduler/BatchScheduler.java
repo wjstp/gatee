@@ -29,7 +29,7 @@ public class BatchScheduler {
     private final JobRegistry jobRegistry;
     private final ChatService chatService;
 
-    @Scheduled(cron = "0 0 * * * *")  // 매일 아침 10시 20분
+//    @Scheduled(cron = "0 0 * * * *")  // 매일 아침 10시 20분
     public void runFeatureNotificationJob() {
         String time = LocalDateTime.now().toString();
         try {
@@ -42,7 +42,7 @@ public class BatchScheduler {
         }
     }
 
-    @Scheduled(cron = "0 15 1 ? * *")   // 새벽 1시 15분마다 매일
+//    @Scheduled(cron = "0 15 1 ? * *")   // 새벽 1시 15분마다 매일
     public void runFcmTokenRefreshJob() {
         String time = LocalDateTime.now().toString();
         try {
