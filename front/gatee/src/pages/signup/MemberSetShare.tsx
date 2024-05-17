@@ -60,13 +60,13 @@ const SignupMemberSetShare = () => {
         },
       },
       itemContent: {
-        profileText: `가족과 같이 '가티'해요 ><`,
+        profileText: `가족과 같이 '가티'해요`,
         titleImageText: `'${familyName}' 가족에서 초대가 왔어요~`,
-        titleImageCategory: '아래 코드를 복사해 들어오세요!'
+        titleImageCategory: '아래 코드를 복사해서 들어오세요!'
       },
       buttons: [
         {
-          title: '가티로 이동',
+          title: '가티로 이동해봐요',
           link: {
             mobileWebUrl: server,
             webUrl: server,

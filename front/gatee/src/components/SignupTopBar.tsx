@@ -29,7 +29,8 @@ const SignupTopBar = () => {
     <div
       className="top-bar"
       style={location.pathname === '/signup' ? {
-        backgroundColor: '#FFBE5C'
+        backgroundColor: '#FFBE5C',
+        borderBottom: "1px solid #FFBE5C",
       } : {
 
       }}
