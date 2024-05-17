@@ -24,4 +24,6 @@ public interface MemberFamilyScheduleRepository extends JpaRepository<MemberFami
         where fs.schedule = :schedule
         """)
     List<UUID> findMemberIdBySchedule(Schedule schedule);
+
+    Boolean existsByMemberAndFamilySchedule(Member member, FamilySchedule familySchedule);
 }

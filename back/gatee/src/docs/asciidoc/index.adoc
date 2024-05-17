@@ -163,6 +163,18 @@ include::{snippets}/family-controller-test/edit-family-name/path-parameters.adoc
 include::{snippets}/family-controller-test/edit-family-name/http-response.adoc[]
 
 
+== 가족 이미지 수정
+
+- Request
+
+include::{snippets}/family-controller-test/edit-profile-image/curl-request.adoc[]
+include::{snippets}/family-controller-test/edit-profile-image/form-parameters.adoc[]
+
+- Response
+
+include::{snippets}/family-controller-test/edit-profile-image/http-response.adoc[]
+
+
 ---
 ---
 
