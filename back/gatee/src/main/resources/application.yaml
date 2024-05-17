@@ -11,6 +11,7 @@ spring:
         - db-prod
         - security-prod
       test:
+        - common
         - db-prod
         - security-prod
     include:
