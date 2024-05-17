@@ -32,6 +32,15 @@ services:
     image: ${CI_REGISTRY}/gatee-nodejs:green
     networks:
       - gatee-net
+  gatee-batch-green:
+    image: ${CI_REGISTRY}/gatee-api:green
+    container_name: gatee-batch-green
+    environment:
+      - ENV=batch
+    env_file:
+      - devops/.env
+    networks:
+      - gatee-net
 
 networks:
   gatee-net:
