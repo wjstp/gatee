@@ -1,7 +1,7 @@
 import React from 'react';
 import HeartIcon from "@assets/images/icon3D/heart.png"
 import BookIcon from "@assets/images/icon3D/book.png"
-import GoalIcon from "@assets/images/icon3D/goal.png"
+// import GoalIcon from "@assets/images/icon3D/goal.png"
 import SmileIcon from "@assets/images/icon3D/smile.png"
 import CalendarIcon from "@assets/images/icon3D/calendar-improvement.png"
 import PencilIcon from "@assets/images/icon3D/pencil-improvement.png"
@@ -14,9 +14,9 @@ import getRandomFamilyName from "@utils/getRandomFamilyName";
 
 const Improvement = ({type}: any) => {
   const navigate = useNavigate();
-  const {familyInfo} = useFamilyStore()
-  const {myInfo} = useMemberStore()
-  const randomFamily = getRandomFamilyName(familyInfo,myInfo.nickname)
+  // const {familyInfo} = useFamilyStore()
+  // const {myInfo} = useMemberStore()
+  // const randomFamily = getRandomFamilyName(familyInfo,myInfo.nickname)
   // console.log(type)
   // const type = "hello"
   const content:any = {
