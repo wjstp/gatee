@@ -13,12 +13,14 @@ const CharacterQuestion = () => {
   const {askList, askIndex, setAskIndex, setAskList} = useDictStore()
   const [isEmpty, setEmpty] = useState(false);
   const [inputValue, setInputValue] = useState('');
-  const [loading,setLoading] = useState(false)
+  const [warning, setWarning] = useState(false);
+  const [loading, setLoading] = useState(false)
   const {myInfo} = useMemberStore()
   const muiFocusCustom = {
     "& .MuiOutlinedInput-root": {
       fontSize: "1.2rem",
       marginTop: "1rem",
+      marginBottom: "0",
       borderRadius: "0.5rem",
 
       "&.Mui-focused": {
@@ -43,6 +45,10 @@ const CharacterQuestion = () => {
 
   // 제출 후 다음질문
   const submitHandler = () => {
+    if (inputValue.trim().length === 0) {
+      setWarning(true)
+      return
+    }
     if (askIndex < askList.length - 1) {
       sumbitAskAnswerApiFunc(inputValue)
     } else {
@@ -74,8 +80,8 @@ const CharacterQuestion = () => {
         console.log(err)
         // 로딩
         setLoading(true)
-        setTimeout(()=>setLoading(false), 1000)
-        setAskIndex(askIndex -1)
+        setTimeout(() => setLoading(false), 1000)
+        setAskIndex(askIndex - 1)
         setInputValue(input)
       }
     )
@@ -90,9 +96,9 @@ const CharacterQuestion = () => {
         // 마지막 질문일때
         if (askIndex >= askList.length - 1) {
           setLoading(true)
-          setTimeout(()=> {
+          setTimeout(() => {
             setLoading(false)
-          navigate(`/character/start/${myInfo.memberFamilyId}`)
+            navigate(`/character/start/${myInfo.memberFamilyId}`)
           }, 500)
         }
       }, err => {
@@ -118,12 +124,14 @@ const CharacterQuestion = () => {
   return (
     <div className="character__question">
       {isLoading ?
-        null :
+        null
+        :
         isEmpty ?
           <>
             <NewQuestionNotFound/>
 
-          </> :
+          </>
+          :
           <>
             {/*  그만두기 버튼 */}
             <div className="skipButton"
@@ -137,13 +145,19 @@ const CharacterQuestion = () => {
 
             {/*  입력란 */}
             <TextField value={inputValue}
-                       onChange={(e) => setInputValue(e.target.value)}
+                       onChange={(e) => {
+                         setInputValue(e.target.value)
+                         if (e.target.value.length > 0) {
+                           setWarning(false)
+                         }
+                       }}
                        type="text"
                        spellCheck={false}
                        placeholder="답변을 입력해 주세요"
                        sx={muiFocusCustom}
                        autoFocus
                        multiline
+                       helperText={warning ? "빈칸은 제출할 수 없습니다" : " "}
                        onClick={(event) => event.stopPropagation()}/>
             {/*  다음 버튼 */}
             <button className="orangeButtonLarge" onClick={submitHandler}>
@@ -165,7 +179,7 @@ const CharacterQuestion = () => {
             }
 
           </>}
-      {loading? <Loading/>:null}
+      {loading ? <Loading/> : null}
     </div>
   );
 }

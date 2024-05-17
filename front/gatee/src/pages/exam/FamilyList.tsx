@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import getGradeSvg from "@utils/getGradeSvg";
 import {useFamilyStore} from "@store/useFamilyStore";
 import Stamp from "@assets/images/icons/stamp_logo.png";
@@ -10,12 +10,12 @@ import getUserInfo from "@utils/getUserInfo";
 interface FamilyGrade {
   nickname: string,
   memberId: string,
-  memberFamilyId:number;
+  memberFamilyId: number;
   averageScore: number | null
 }
 
 const ExamFamilyList = () => {
-
+  const [loading, setLoading] = useState(true);
   const {familyName} = useFamilyStore()
   const [familyGrade, setFamilyGrade] = useState<FamilyGrade[]>([
     // {
@@ -40,6 +40,7 @@ const ExamFamilyList = () => {
     getAllFamilyExamResultApi(res => {
       setFamilyGrade(res.data)
       console.log(res)
+      setLoading(false)
     }, err => {
       console.log(err)
     })
@@ -47,7 +48,8 @@ const ExamFamilyList = () => {
   return (
     <div className="exam-grade">
 
-      {
+      {loading ?
+        null :
         familyGrade.length === 0 ?
           <GradeNotFound/>
           :
@@ -87,14 +89,14 @@ const ExamFamilyList = () => {
 const Table = ({familyData}: { familyData: FamilyGrade }) => {
   const grade = getGradeSvg(familyData.averageScore)
   const {familyInfo} = useFamilyStore()
-  const userInfo = getUserInfo(familyInfo,familyData.memberId)
+  const userInfo = getUserInfo(familyInfo, familyData.memberId)
   const navigate = useNavigate()
-  const gotoDetail = ()=>{
+  const gotoDetail = () => {
     if (userInfo)
-    navigate(`/exam/grade/${userInfo.memberFamilyId}`)
+      navigate(`/exam/grade/${userInfo.memberFamilyId}`)
   }
   return (
-    <div onClick={()=>gotoDetail()} className="exam-grade-data">
+    <div onClick={() => gotoDetail()} className="exam-grade-data">
       <div className="flex-date">{familyData.nickname}</div>
       <div className="flex-point">
         {familyData.averageScore === null ?

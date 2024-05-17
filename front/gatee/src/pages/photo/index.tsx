@@ -298,7 +298,7 @@ const PhotoIndex = () => {
       if (files) {
         // 여러 파일을 업로드할 수 있도록 multiple 속성이 설정
         for (const file of files) {
-          const resizedFile: File = (await imageResizer(file, 1000, 1000)) as File;
+          const resizedFile: File = (await imageResizer(file, 800, 800)) as File;
           const formData = new FormData();
           formData.append("fileType", "ALBUM");
           formData.append('file', resizedFile);
