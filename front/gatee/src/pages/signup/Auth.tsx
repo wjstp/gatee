@@ -10,6 +10,7 @@ const SignupAuth = () => {
   const navigate = useNavigate();
   const kakaoJavaScriptKey: string | undefined = process.env.REACT_APP_KAKAO_JAVASCRIPT_KEY;
   const redirectUri: string | undefined = `${process.env.REACT_APP_API_URL}/auth`
+  const taehyeon: string = "http://localhost:3000/auth"
 
   // 인가 코드 가져오기
   const code: string | null = new URL(window.location.href).searchParams.get('code');
@@ -43,7 +44,7 @@ const SignupAuth = () => {
       {
         grant_type: "authorization_code",
         client_id: kakaoJavaScriptKey,
-        redirect_uri: redirectUri,
+        redirect_uri: taehyeon,
         code: code
       },
       {
