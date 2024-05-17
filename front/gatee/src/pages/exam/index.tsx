@@ -29,7 +29,7 @@ function ExamIndex() {
             <div>
               모의고사 보러가기
             </div>
-            <MdArrowForwardIos/>
+            <MdArrowForwardIos style={{ marginRight:"-1rem"}}/>
           </div>
 
         </Link>

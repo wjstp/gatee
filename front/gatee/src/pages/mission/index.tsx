@@ -6,6 +6,7 @@ import {useFamilyStore} from "@store/useFamilyStore";
 import {getMissionApi} from "@api/mission";
 import {useMissionStore} from "@store/useMissionStore";
 import {useMemberStore} from "@store/useMemberStore";
+import Loading from "@components/Loading";
 
 interface KoreanMentType {
   [key: string]: string;
@@ -14,6 +15,7 @@ interface KoreanMentType {
 const MissionIndex = () => {
   const {familyId} = useFamilyStore()
   const {missionList, setMissionList} = useMissionStore()
+  const [loading, setLoading] = useState(true)
   const {myInfo} = useMemberStore()
   // 우리 가족의 개선사항
   const [improvement, setImprovement] = useState([
@@ -39,10 +41,8 @@ const MissionIndex = () => {
         console.log(res)
         setMissionList(res.data.missionListResList)
         const data = Object.keys(res.data.missionImprovementsRes).filter(key => res.data.missionImprovementsRes[key]);
-        setImprovement(["heart", "hello","featureMission",
-        "albumMission",
-        "examMission",
-        "scheduleMission",...data])
+        setImprovement(["heart", "hello", ...data])
+        setLoading(false)
       },
       err => {
         console.log(err)
@@ -95,39 +95,45 @@ const MissionIndex = () => {
 
   return (
     <div className="mission__index">
-      <div className="improvement-oneline">
-        <div className="flex-row">
+      {loading ? <Loading/> :null }
+        <div className="improvement-oneline">
+          <div className="flex-row">
 
 
-          <div className="improvement-comment">
-            {improvement.length <= 2 ? null : <>
-              <span className="text-orange">{myInfo.nickname} </span>
-              {improvement.map((item, i) => {
-                  if (item === "heart" || item === "hello") return null
-                  else return (<React.Fragment key={i}>
-                      {i > 0 && ", "}
-                      {koreanMent[item]}
-                    </React.Fragment>
-                  )
-                }
-              )}
-              <span> 이/가 부족해요</span>
-            </>
-            }
+            <div className="improvement-comment">
+              {improvement.length <= 2 ? null : <>
+                <span className="text-orange">{myInfo.nickname} </span>
+                {improvement.map((item, i) => {
+                    if (item === "heart" || item === "hello") return null
+                    else return (<React.Fragment key={i}>
+                        {i > 0 && ", "}
+                        {koreanMent[item]}
+                      </React.Fragment>
+                    )
+                  }
+                )}
+                <span> 이/가 부족해요</span>
+              </>
+              }
+            </div>
           </div>
+
         </div>
+        <Slider {...settings}>
+      {improvement.map((item, i) => (<Improvement type={item} key={i}/>))}
 
-      </div>
-      <Slider {...settings}>
-        {improvement.map((item, i) => (<Improvement type={item} key={i}/>))}
+    </Slider>
+  <h2 className="mission__item-title">미션 리스트</h2>
+  {
+    missionList.map((mission, index) => {
+      return <MissionItem key={index} mission={mission} handleSubmitMission={handleSubmitMission}/>
+    })
+  }
 
-      </Slider>
-      <h2 className="mission__item-title">미션 리스트</h2>
-      {missionList.map((mission, index) => {
-        return <MissionItem key={index} mission={mission} handleSubmitMission={handleSubmitMission}/>
-      })}
-    </div>
-  );
+</div>
+
+)
+  ;
 }
 
 export default MissionIndex;
