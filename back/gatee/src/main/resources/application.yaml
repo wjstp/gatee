@@ -17,13 +17,11 @@ spring:
       test:
         - db-prod
         - security-prod
-        - batch-prod
     include:
       - db
       - security
       - aws
       - ai
-      - batch
 
 ---
 spring:
