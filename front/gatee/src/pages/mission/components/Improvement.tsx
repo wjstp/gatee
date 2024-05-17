@@ -3,8 +3,9 @@ import HeartIcon from "@assets/images/icon3D/heart.png"
 import BookIcon from "@assets/images/icon3D/book.png"
 import GoalIcon from "@assets/images/icon3D/goal.png"
 import SmileIcon from "@assets/images/icon3D/smile.png"
-import PencilIcon from "@assets/images/icon3D/pencil.png"
-import CameraIcon from "@assets/images/icon3D/camera.png"
+import CalendarIcon from "@assets/images/icon3D/calendar-improvement.png"
+import PencilIcon from "@assets/images/icon3D/pencil-improvement.png"
+import CameraIcon from "@assets/images/icon3D/camera-improvement.png"
 import {useNavigate} from "react-router-dom";
 import {useFamilyStore} from "@store/useFamilyStore";
 import {useMemberStore} from "@store/useMemberStore";
@@ -44,7 +45,7 @@ const Improvement = ({type}: any) => {
       icon: BookIcon
     },
     examMission :{
-      content: ["가족들의 이야기가 담긴 모의고사", "풀어보아요"],
+      content: ["가족 탐구 모의고사", "풀어보아요"],
       destination: "/exam",
       buttonComment: "모의고사 풀기",
       icon: PencilIcon
@@ -53,7 +54,7 @@ const Improvement = ({type}: any) => {
       content: ["함께 일정을", "잡아보아요"],
       destination: "/schedule",
       buttonComment: "일정 잡기",
-      icon: SmileIcon
+      icon: CalendarIcon
     }
   }
   return (

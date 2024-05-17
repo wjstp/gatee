@@ -39,7 +39,10 @@ const MissionIndex = () => {
         console.log(res)
         setMissionList(res.data.missionListResList)
         const data = Object.keys(res.data.missionImprovementsRes).filter(key => res.data.missionImprovementsRes[key]);
-        setImprovement(["heart", "hello", ...data])
+        setImprovement(["heart", "hello","featureMission",
+        "albumMission",
+        "examMission",
+        "scheduleMission",...data])
       },
       err => {
         console.log(err)
@@ -108,7 +111,7 @@ const MissionIndex = () => {
                   )
                 }
               )}
-              <span>가 부족해요</span>
+              <span> 이/가 부족해요</span>
             </>
             }
           </div>
