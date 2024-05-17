@@ -32,7 +32,6 @@ const ProfileModify = () => {
   const [inputRole, setInputRole] = useState<string>(myInfo?.role);
   // 생일 관련
   const [inputBirthDay, setInputBirthDay] = useState<string>(myInfo?.birth);
-  const [birthDayErrorMessage, setBirthDayErrorMessage] = useState<string>("");
   // 캘린더타입
   const [inputBirthType, setInputBirthType] = useState<string>(myInfo?.birthType)
   // 전화번호 관련
@@ -58,7 +57,13 @@ const ProfileModify = () => {
         phoneNumber: inputPhoneNumber,
       }
     )
-    modifyProfileImage();
+
+    // 이미지를 교체했는지에 따라 수정 요청 다르게 보내기
+    if (cropImage) {
+      modifyProfileImage();
+    } else {
+      modifyProfile();
+    }
   }
 
   // 회원 이미지 수정
@@ -80,7 +85,7 @@ const ProfileModify = () => {
       (err: AxiosError<any>) => {
         console.log(err);
       }
-    )
+    ).then().catch();
   }
 
   // 수정 요청
@@ -545,20 +550,20 @@ const BirthModal = ({handleBirthModal, birth, birthType}: {
               </DemoContainer>
             </LocalizationProvider>
           </div>
-          
+
           {/*음력 양력*/}
           <div className="birthday-choice">
             <FormControlLabel
-            style={{color:"#fff", fontWeight: "bold"}}
+              style={{color:"#fff", fontWeight: "bold"}}
               control={
-              <Checkbox checked={inputBirthType !== "SOLAR"}
-                        onChange={() => setInputBirthType(inputBirthType === "SOLAR" ? "LUNAR" : "SOLAR")}
-                        sx={{
-                          color: "#fff",
-                          '&.Mui-checked': {
-                            color: "#FFBE5C",
-                          },
-                        }}/>} label="음력"/>
+                <Checkbox checked={inputBirthType !== "SOLAR"}
+                          onChange={() => setInputBirthType(inputBirthType === "SOLAR" ? "LUNAR" : "SOLAR")}
+                          sx={{
+                            color: "#fff",
+                            '&.Mui-checked': {
+                              color: "#FFBE5C",
+                            },
+                          }}/>} label="음력"/>
           </div>
 
         </div>

@@ -44,7 +44,9 @@ body {
 
   // 전체 영역 차지
   #sub {
-    height: 100svh;
+    height: 88svh;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 }
 

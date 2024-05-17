@@ -10,10 +10,14 @@ import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import FeelingToast from "@pages/profile/components/FeelingToast";
 import { useMemberStore } from "@store/useMemberStore";
 import { useFamilyStore } from "@store/useFamilyStore";
+import { useDictStore } from "@store/useDictStore";
 import dayjs from "dayjs";
 import { createFamilyCodeApi, getMyDataApi } from "@api/member";
 import { AxiosError, AxiosResponse } from "axios";
-import {getFamilyAnsweredAskApi} from "@api/dictionary";
+import { getFamilyAnsweredAskApi } from "@api/dictionary";
+import useModal from "@hooks/useModal";
+import Loading from "@components/Loading";
+import getMoodContent from "@utils/getMoodContent";
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
@@ -23,8 +27,10 @@ const ProfileIndex = () => {
   const { setShowModal } = useModalStore();
   const { myInfo, setMyInfo } = useMemberStore();
   const { familyInfo, setFamilyCode } = useFamilyStore();
+  const { askList, setAskList } = useDictStore();
   // 쿼리스트링으로 넘어온 이메일을 확인하기 위함
   const { email } = useParams<{ email: string }>();
+  const { isOpen, openModal, closeModal } = useModal();
 
   // 열린지 닫힌지 상태 확인 가능
   const [state, setState] = useState({
@@ -34,9 +40,8 @@ const ProfileIndex = () => {
   // 멤버 확인
   const familyMember = familyInfo.find(member => member.email === email);
   const [isMe, setIsMe] = useState<boolean>(false);
-  
-  // 백과사전이 있는지 조회하기 용
-  const [createdCharacter, setCreateCharacter] = useState<boolean>(false);
+  // 로딩
+  const [loading, setLoading] = useState(false);
 
   // 나로 들어왔는지 확인
   useEffect(() => {
@@ -44,11 +49,19 @@ const ProfileIndex = () => {
     if (email === myInfo.email) {
       setIsMe(true);
       saveMemberData();
+      getFamilyAnsweredAsk(myInfo.memberFamilyId);
     } else {
       setIsMe(false);
-      getFamilyAnsweredAsk();
+      getFamilyAnsweredAsk(familyMember?.memberFamilyId);
     }
   }, [email]);
+
+  // 기분 확인
+  useEffect(() => {
+    if (familyMember) {
+      const yourMood = getMoodContent(familyMember.mood);
+    }
+  }, [familyMember?.mood]);
 
   // MUI 관련 코드 -> 슬라이드 다운 해서 내리기 기능 가능
   const toggleDrawer =
@@ -126,7 +139,7 @@ const ProfileIndex = () => {
       }
     ).then().catch();
   }
-  
+
   // 수정으로 넘어가기
   const goToModify = () => {
     navigate(`/profile/${email}/modify`)
@@ -138,23 +151,20 @@ const ProfileIndex = () => {
 
     return formattedDate;
   }
-  
+
   // 백과사전 이동
   const handleCharacter = (): void => {
     navigate(`/character`);
   }
 
   // 백과사전 푼 문제 조회
-  const getFamilyAnsweredAsk = () => {
-    if (familyMember) {
+  const getFamilyAnsweredAsk = (memberFamilyId: number | undefined) => {
+    if (memberFamilyId) {
       getFamilyAnsweredAskApi(
-        familyMember?.memberFamilyId,
+        memberFamilyId,
         (res: AxiosResponse<any>) => {
           console.log("다른 사람 백과사전 푼 문제 상태", res);
-
-          if (res.data.length === 0) {
-            setCreateCharacter(true);
-          }
+          setAskList(res.data);
         },
         (err: AxiosError<any>) => {
           console.log(err);
@@ -163,6 +173,21 @@ const ProfileIndex = () => {
     }
   }
 
+  // 모달 내리기
+  const handleModal = () => {
+    closeModal()
+  }
+
+  // 한마디 보내기 모달 띄우기
+  // const sendNagging = () => {
+  //   setClickedSender(
+  //     {
+  //       typeId: 1,
+  //       title: "profile-sender"
+  //     }
+  //   )
+  // }
+
   // 모의고사 예시
   const question = QuestionSample[0];
 
@@ -170,7 +195,7 @@ const ProfileIndex = () => {
     <div className="profile-index">
       {/*프로필 섹션*/}
       <div className="profile-index__profile">
-        
+
         {/*프로필 이미지*/}
         <div className="profile__img-box">
           <img
@@ -183,9 +208,9 @@ const ProfileIndex = () => {
             alt="profile-image"
           />
         </div>
-        
+
         {/*가족 초대 버튼*/}
-        {myInfo.isLeader && isMe ? (
+        {familyMember?.isLeader && isMe ? (
           <div className="profile__invite-box">
             <button
               className="invite-box__btn"
@@ -199,7 +224,7 @@ const ProfileIndex = () => {
         ) : (
           null
         )}
-        
+
         {/*닉네임*/}
         <div className="profile__nickname">
           <div className="profile__nickname__part--01">
@@ -220,7 +245,7 @@ const ProfileIndex = () => {
             )}
           </div>
         </div>
-        
+
         {/*기분 상태*/}
         <div className="profile__mood-box">
           <React.Fragment key={"bottom"}>
@@ -325,9 +350,9 @@ const ProfileIndex = () => {
               </span>
               <span className="birth__body__part--02">
                 {isMe ? (
-                  myInfo.birthType === "SOLAR" ? (" (양력)") : (" (음력)")
+                  myInfo.birthType === "SOLAR" ? (null) : (" (음력)")
                 ) : (
-                  familyMember?.birthType === "SOLAR" ? (" (양력)") : (" (음력)")
+                  familyMember?.birthType === "SOLAR" ? (null) : (" (음력)")
                 )}
               </span>
             </div>
@@ -380,66 +405,108 @@ const ProfileIndex = () => {
           </div>
         </div>
       </div>
-      
+
       {/*백과사전 섹션*/}
       <div className="profile-index__character">
 
-        {createdCharacter ? (
-          <div className="character__created">
-            <div className="created__title">
-              <span className="created__title--text">
-                오늘의 한줄 정보
-              </span>
+        {askList.length === 0 ? (
+          // 사전이 비어있다면
+
+          isMe ? (
+            // 내 프로필일 때
+            <div className="character__non-created-my">
+              <button
+                className="non-created-my__btn"
+                onClick={handleCharacter}
+              >
+                <span className="btn--text">
+                    내 사전 만들기
+                </span>
+              </button>
             </div>
-            <div className="created__character-box">
-              <div className="character-box">
-                <div className="character-box__question">
-                  <span className="question__part--01">
+
+          ) : (
+            // 내 프로필이 아닐 때
+            <div className="character__non-created-other">
+              <div className="non-created-other__character-box">
+                <div className="character-box__header">
+                  <span className="header__part--01">
                     {familyMember?.nickname}
                   </span>
-                  <span className="question__part--02">
-                  님의 {question.question}
+                  <span className="header__part--02">
+                    님의 사전이 텅 비어있어요!
                   </span>
                 </div>
-                <div className="character-box__answer">
-                <span className="answer__part--01">
-                  {question.correctAnswer}
-                </span>
+                <div className="character-box__body--01">
+                  <span className="body--01--text">
+                    사전을 만들어달라고 말해 볼까요?
+                  </span>
                 </div>
-                <div className="character-box__icon">
-                  <Book
-                    className="icon"
-                  />
-                </div>
-                <div className="character-box__btn">
+                <div className="character-box__body--02">
                   <button
-                    className="character-box__btn-detail"
-                    onClick={handleCharacter}
+                    className="body--02__btn"
                   >
-                    <span className="btn-detail__part--01">
-                      {familyMember?.nickname}
-                    </span>
-                    <span className="btn-detail__part--02">
-                      님의 백과사전 보러가기
+                    <span className="btn--text">
+                      한마디 보내기
                     </span>
                   </button>
                 </div>
               </div>
             </div>
-          </div>
+          )
+
         ) : (
-          <div className="character__non-created">
-            <button
-              className="non-created__btn"
-              onClick={handleCharacter}
-            >
-              <span className="btn--text">
-                  나의 사전 만들기
-              </span>
-            </button>
+          // 사전이 비어있지 않다면
+          <div className="character__created">
+            <div className="created__title">
+              <div className="text--icon">
+                <Book
+                  className="icon"
+                />
+              </div>
+              <span className="title--text">
+                  오늘의 한줄 정보
+                </span>
+            </div>
+            <div className="created__character-box">
+              <div className="character-box__header">
+                  <span className="header__part--01">
+                    {familyMember?.nickname}
+                  </span>
+                <span className="header__part--02">
+                    님의 사전이 텅 비어있어요!
+                  </span>
+              </div>
+              <div className="character-box__body--01">
+                  <span className="body--01--text">
+                    사전을 만들어달라고 말해 볼까요?
+                  </span>
+              </div>
+              <div className="character-box__body--02">
+                <button
+                  className="body--02__btn"
+                >
+                    <span className="btn--text">
+                      한마디 보내기
+                    </span>
+                </button>
+              </div>
+            </div>
           </div>
         )}
+
       </div>
+
+      {/*한마디 보내기*/}
+      {/*{isOpen ? (*/}
+      {/*  // <NaggingModal*/}
+      {/*  //   notificationData={familyMember}*/}
+      {/*  //   handleModal={handleModal}*/}
+      {/*  // />*/}
+      {/*) : (*/}
+      {/*  null*/}
+      {/*)}*/}
+
     </div>
   );
 }

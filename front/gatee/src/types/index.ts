@@ -1,5 +1,22 @@
 /* 응답타입: Res, 요청타입: Req, props타입: Props 뒤에 붙이고 사용하기 */
 
+// 인앱설치용
+export interface BeforeInstallPromptEvent {
+  readonly platforms: string[];
+  readonly userChoice: Promise<{
+    outcome: 'accepted' | 'dismissed';
+    platform: string;
+  }>;
+  preventDefault(): void;
+  prompt(): Promise<void>;
+}
+
+declare global {
+  interface WindowEventMap {
+    beforeinstallprompt: BeforeInstallPromptEvent;
+  }
+}
+
 // 가족
 export interface FamilyStore {
   chatRoomId: number | null;
@@ -100,7 +117,7 @@ export interface CreateFamilyCodeApiReq {
 }
 
 // 가족 코드로 조회하기
-export interface getFamilyDataApiReq {
+export interface GetFamilyDataApiReq {
   familyCode: string;
 }
 
@@ -109,24 +126,15 @@ export interface JoinFamilyApiReq {
   familyCode: string;
 }
 
-// 가족 정보 조회
-export interface GetFamilyMemberApiReq {
+// 가족 이름 수정
+export interface ChangeFamilyNameApiReq {
+  familyName: string;
   familyId: string;
 }
 
-export interface MemberApiRes {
-  birth: string;
-  birthType: string;
-  email: string;
-  memberId: string;
-  mood: string|null;
-  name: string;
-  nickname: string;
-  role: string;
-  phoneNumber: string | null;
-  fileUrl: string;
-  isLeader: boolean;
-  memberFamilyId:number;
+// 가족 정보 조회
+export interface GetFamilyMemberApiReq {
+  familyId: string;
 }
 
 export interface MemberApiRes {
