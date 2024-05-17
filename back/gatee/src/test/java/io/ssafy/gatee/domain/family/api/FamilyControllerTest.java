@@ -21,6 +21,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -45,13 +46,11 @@ class FamilyControllerTest extends RestDocsTestSupport {
     @MockBean
     private FamilyService familyService;
 
-
     @Test
     @CustomWithMockUser
     void saveFamily() throws Exception {
 
         // given
-
         // Mock 파일 생성
         MockMultipartFile file = new MockMultipartFile(
                 "file", // 파일의 파라미터 이름
@@ -178,7 +177,6 @@ class FamilyControllerTest extends RestDocsTestSupport {
         ));
     }
 
-
     @Test
     @CustomWithMockUser
     void readFamily() throws Exception {
@@ -245,5 +243,39 @@ class FamilyControllerTest extends RestDocsTestSupport {
                                 parameterWithName("familyId").description("가족 ID").optional()
                         )
                 ));
+    }
+
+    @Test
+    @CustomWithMockUser
+    void editProfileImage() throws Exception {
+
+        // given
+        doNothing().when(familyService).editFamilyImage(any(FileType.class), any(MultipartFile.class), any(UUID.class));
+
+        // when
+        // Mock 파일 생성
+        MockMultipartFile file = new MockMultipartFile(
+                "file", // 파일의 파라미터 이름
+                "testImage1.jpg", // 실제 파일 이름
+                "image/jpg", // 파일의 확장자 타입
+                new FileInputStream(new File("src/test/resources/image/testImage1.jpg")) // 실제 파일
+        );
+
+        ResultActions result = mockMvc.perform(multipart("/api/family/image")
+                .file(file)
+                .param("fileType", "FAMILY_PROFILE")
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .accept(MediaType.APPLICATION_JSON)
+        );
+
+        // then
+        result.andExpect(status().isOk())
+                .andDo(restDocs.document(
+                        formParameters(
+                                parameterWithName("file").description("이미지 파일").optional(),
+                                parameterWithName("fileType").description("파일 타입").optional()
+                        )
+                )
+        );
     }
 }
