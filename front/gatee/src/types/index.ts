@@ -217,7 +217,7 @@ export interface ScheduleDetailRes {
   content: string;
   startDate: string;
   endDate: string;
-  scheduleRecordRes: ScheduleRecord[] | null;
+  scheduleRecordResList: ScheduleRecord[] | null;
   participateMembers: {
     nickname: string;
     profileImageUrl: string;
@@ -256,6 +256,7 @@ export interface ModifyScheduleReq {
 export interface CreateRecordReq {
   scheduleId: number;
   data: {
+    familyId: string;
     content: string;
     fileIdList: number[];
   }
@@ -265,6 +266,8 @@ export interface ScheduleRecord {
   scheduleRecordId: number;
   content: string;
   fileUrlList: FileRes[];
+  nickname: string;
+  profileImageUrl: string;
 }
 
 export enum ScheduleType {
