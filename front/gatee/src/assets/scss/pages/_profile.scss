@@ -28,28 +28,6 @@
       }
     }
 
-    .profile__invite-box {
-      @include flex_center;
-
-      position: absolute;
-      height: 40px;
-      width: 80px;
-      bottom: 0;
-      left: 1%;
-
-      .invite-box__btn {
-        height: 100%;
-        width: 100%;
-        color: $gray100;
-        font-size: 14px;
-        text-decoration: underline;
-
-        &:active {
-          opacity: 0.5;
-        }
-      }
-    }
-
     .profile__nickname {
       @include flex_center;
 
@@ -325,14 +303,7 @@
           }
         }
 
-        .title--text {
-          @include flex_center;
 
-          font-size: 18px;
-          height: 100%;
-          font-weight: bold;
-          margin-right: 30%;
-        }
       }
 
       .non-created-other__character-box {
@@ -347,6 +318,7 @@
         font-size: 18px;
 
         .character-box__header {
+
 
           .header__part--01 {
             font-weight: bold;
@@ -395,20 +367,18 @@
     .character__created {
       @include flex_center;
 
-      height: 100%;
+      // height: 100%;
       width: 100%;
       flex-direction: column;
 
       .created__title {
-        @include flex_center;
+        @include flex_row;
+        @include mt-(0.5);
 
-        height: 10%;
         width: 100%;
 
         .text--icon {
           @include flex_center;
-
-          height: 100%;
           width: 10%;
 
           .icon {
@@ -428,65 +398,62 @@
       }
 
       .created__character-box {
-        @include flex_center;
+        @include flex_col;
 
         flex-direction: column;
         margin-top: 2%;
-        height: 65%;
+        min-height: 65%;
         width: 80%;
+        padding: 0.5rem;
         background-color: $orange100;
         border-radius: 15px;
         font-size: 18px;
-        position: relative;
 
         .character-box__header {
           margin-top: 2%;
           height: 90%;
-          width: 95%;
+          width: 100%;
 
           .header__part--01 {
             font-weight: bold;
           }
 
           .header__part--02 {
-
+            font-size: 19px;
           }
         }
 
         .character-box__body--01 {
-          margin-top: 5%;
+          @include my-(0.5);
+          @include flex_center;
 
           .body--01--text {
-            font-size: 1.5rem;
-            font-weight: bold;
+            font-size: 23px;
+            font-weight: 600;
           }
         }
 
         .character-box__body--02 {
           @include flex_center;
 
-          margin-top: 5%;
-          height: 8svh;
-          width: 8svh;
-          border-radius: 100%;
+          border-radius: 10px;
+          width: 100%;
 
           .body--02__btn {
-            @extend %orange-button-medium;
+            @include m-(0.5);
 
-            height: 8svh;
-            width: 8svh;
-            border-radius: 100%;
+            //@extend %orange-button-medium;
+            padding: 10px;
+            width: 100%;
             background-color: $orange400;
             color: white;
-            position: absolute;
-            top: 32%;
-            right: 3%;
+            border-radius: 10px;
 
             &:active {}
 
             .btn--text {
-              font-size: 20px;
-              font-weight: bold;
+              font-size: 18px;
+              font-weight: 600;
             }
           }
         }
@@ -1108,6 +1075,49 @@
       background-color: $orange400;
       border-bottom-right-radius: 12px;
       color: white;
+    }
+  }
+}
+
+.created__character-box__top {
+  @include flex_row;
+
+  align-items: center;
+  gap: 5px;
+}
+
+.profile__book-icon {
+  width: 2rem;
+  height: 2rem;
+}
+
+.profile__title-text {
+  @include flex-row;
+
+  align-items: center;
+  font-size: 18px;
+  height: 100%;
+  font-weight: bold;
+}
+
+.profile__invite-box {
+  @include flex_center;
+
+  position: absolute;
+  height: 40px;
+  width: 80px;
+  top: 0;
+  left: 1%;
+
+  .invite-box__btn {
+    height: 100%;
+    width: 100%;
+    color: $gray100;
+    font-size: 14px;
+    text-decoration: underline;
+
+    &:active {
+      opacity: 0.5;
     }
   }
 }
