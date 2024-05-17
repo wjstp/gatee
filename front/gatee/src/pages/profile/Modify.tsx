@@ -214,6 +214,7 @@ const ProfileModify = () => {
             onChange={handleNicknameChange}
             maxLength={8}
             autoFocus
+            spellCheck={false}
           />
         </div>
 
@@ -365,6 +366,7 @@ const NameModal = ({handleNameModal, name}: { handleNameModal: (name: string) =>
              placeholder="실명"
              autoFocus
              onBlur={()=>handleNameModal(inputValue)}
+             spellCheck={false}
              onClick={(event) => event.stopPropagation()}/>
 
     </div>
@@ -458,6 +460,7 @@ const RoleModal = ({handleRoleModal, role}: { handleRoleModal: (role: string) =>
                      onChange={handleChange}
                      placeholder="역할"
                      autoFocus
+                     spellCheck={false}
                      onClick={(event) => event.stopPropagation()}/>
               <button disabled={inputRole.trim().length === 0}
                       className="role__submit__btn"
@@ -546,6 +549,7 @@ const BirthModal = ({handleBirthModal, birth, birthType}: {
                     },
                   }}
                   sx={dateFieldCustom}
+                  spellCheck={false}
                 />
               </DemoContainer>
             </LocalizationProvider>
@@ -609,6 +613,7 @@ const PhoneModal = ({handlePhoneModal, phone}: { handlePhoneModal: (phone: strin
              onBlur ={() => {
                handlePhoneModal(inputPhone)
              }}
+             spellCheck={false}
              onClick={(event) => event.stopPropagation()}/>
 
     </div>

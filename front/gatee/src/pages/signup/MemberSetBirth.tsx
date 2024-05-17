@@ -152,6 +152,7 @@ const SignupMemberSetBirth = () => {
                 }}
                 sx={dateFieldCustom}
                 maxDate={dayjs()}
+                spellCheck={false}
               />
             </DemoContainer>
           </LocalizationProvider>

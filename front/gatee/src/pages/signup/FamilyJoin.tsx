@@ -97,9 +97,10 @@ const SignupFamilyJoin = () => {
           className="input-box__input"
           ref={inputRef}
           type="text"
-          placeholder="예) a43eg5Fc "
+          placeholder="예) a43eg5Fc"
           value={code}
           onChange={handleInputChange}
+          spellCheck={false}
         />
       </div>
       <div className="signup-family-set__error-message">

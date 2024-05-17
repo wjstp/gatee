@@ -9,7 +9,7 @@ const KaKaoLogin = () => {
   // 카카오 인가코드 발급
   const loginWithKaKao = () => {
     window.Kakao.Auth.authorize({
-      redirectUri: redirectUri,
+      redirectUri: "http://localhost:3000/auth",
       scope: "profile_nickname, account_email",
     })
   }

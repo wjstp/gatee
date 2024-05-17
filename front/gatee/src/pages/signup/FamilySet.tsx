@@ -154,6 +154,7 @@ const SignupFamilySet = () => {
           placeholder="예) 길동이네"
           value={familyName}
           onChange={handleInputChange}
+          spellCheck={false}
         />
       </div>
       <div className="signup-family-set__error-message">

@@ -120,9 +120,9 @@ export const SCHEDULE_COLOR: ScheduleColor[] = [
 export const QuestionSample: Question[] = [
   {
     memberName: "윤예빈",
-    question: "님이 어렸을 적 부모님에게 받았던 벌 중 가장 슬프고 서러웠던 것은?",
-    correctAnswer: "몽둥이찜질",
-    answerList: ["손바닥 맞기", "손들고 서있기", "몽둥이찜질", "딱밤"],
+    question: "님이 좋아하는 음식은 무엇인가요?",
+    correctAnswer: "삼겹살",
+    answerList: ["삼겹살", "마라탕", "곱창", "코딱지"],
   },
   {
     memberName: "이형우",
