@@ -43,7 +43,7 @@ const SignupAuth = () => {
       {
         grant_type: "authorization_code",
         client_id: kakaoJavaScriptKey,
-        redirect_uri: "http://localhost:3000/auth",
+        redirect_uri: redirectUri,
         code: code
       },
       {
