@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
+
 import BubbleChat from "@pages/chat/components/BubbleChat";
 import ChatInput from "@pages/chat/components/ChatInput";
 import ChatDate from "@pages/chat/components/ChatDate";
@@ -161,7 +163,6 @@ const ChatIndex = () => {
           messagesArray.unshift(newMessage);
         });
 
-
         // 마지막 메시지일 경우를 제외하고는 뒤에 메시지를 자름
         if (messagesArray.length !== 1) {
           messagesArray.pop();
@@ -189,6 +190,13 @@ const ChatIndex = () => {
         setIsLoading(false);
         setIsGetAllData(true);
         setIsEntryChat(true);
+
+        // 시작 date line 생성
+        setMessages([{
+          id: "",
+          messageType: "DATE_LINE",
+          content: dayjs().format("YYYY-MM-DD")
+        }])
       });
   };
 
