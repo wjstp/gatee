@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
 import { IoIosCamera } from "react-icons/io";
 import { useMemberStore } from "@store/useMemberStore";
-import { createFamilyApi, createMemberApi, createFamilyCodeApi } from "@api/member";
+import {createFamilyApi, createMemberApi, createFamilyCodeApi, joinFamilyApi} from "@api/member";
 import { AxiosResponse, AxiosError } from "axios";
 import { useFamilyStore } from "@store/useFamilyStore";
 import dayjs from 'dayjs';
@@ -16,7 +16,6 @@ import Loading from "@components/Loading";
 const SignupMemberSetCheck = () => {
   const location = useLocation();
   const icon: string = location.state?.icon;
-  const previous: string = location.state?.previous;
   const navigate = useNavigate();
   const sender: string = "member-set"
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -85,9 +84,15 @@ const SignupMemberSetCheck = () => {
 
   // 다음 넘어가기
   const goToMemberSetPermission = () => {
-    createFamily();
     // 로딩 시작
     changeLoading();
+    
+    // 코드 여부에 따라 동작 변경
+    if (familyCode) {
+      joinFamily();
+    } else {
+      createFamily();
+    }
   }
 
   // 가족 생성하기
@@ -118,6 +123,24 @@ const SignupMemberSetCheck = () => {
     ).then().catch();
   }
 
+  // 가족 합류 api
+  const joinFamily = () => {
+    joinFamilyApi(
+      {
+        familyCode: familyCode
+      },
+      (res: AxiosResponse<any>) => {
+        console.log(res);
+        createMember(familyId);
+      },
+      (err: AxiosError<any>) => {
+        console.log(err);
+        alert("에러가 발생했습니다.\n다시 로그인해보실래요?");
+        navigate("/kakao");
+      }
+    ).then().catch();
+  }
+
   // 회원 정보 등록
   const createMember = (familyId: string) => {
     if (birth && role) {
@@ -140,6 +163,8 @@ const SignupMemberSetCheck = () => {
         },
         (err: AxiosError<any>): void => {
           console.log(err);
+          alert("에러가 발생했습니다.\n다시 입력해보실래요?");
+          navigate("/signup/member-set/check");
         }
       ).then(
         // 이미지 수정
@@ -166,7 +191,11 @@ const SignupMemberSetCheck = () => {
 
         // 패밀리 코드가 있다면 바로 가입축하로 넘기기
         if (familyCode) {
-          navigate(`/signup/member-set/finish`);
+          navigate(`/signup/member-set/finish`, {
+            state: {
+              from: "member-set-check"
+            }
+          });
         } else {
           // 가족 코드 생성
           createFamilyCode();
@@ -174,6 +203,8 @@ const SignupMemberSetCheck = () => {
       },
       (err: AxiosError<any>) => {
         console.log(err);
+        alert("에러가 발생했습니다.\n다시 입력해보실래요?");
+        navigate("/signup/member-set/check");
       }
     )
   }
@@ -196,6 +227,8 @@ const SignupMemberSetCheck = () => {
       },
       (err: AxiosError<any>): void => {
         console.log(err);
+        alert("에러가 발생했습니다.\n다시 입력해보실래요?");
+        navigate("/signup/member-set/check");
       }
     ).then().catch();
   }

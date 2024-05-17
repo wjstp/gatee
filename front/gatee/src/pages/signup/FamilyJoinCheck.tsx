@@ -31,28 +31,12 @@ const SignupFamilyJoinCheck = () => {
 
   // 다음으로 넘어가기
   const goToMemberSet = () => {
-    joinFamily();
+    navigate("/signup/member-set")
   }
 
   // 뒤로 가기
   const backTo = () => {
     navigate(-1);
-  }
-
-  // 가족 합류 api
-  const joinFamily = () => {
-    joinFamilyApi(
-      {
-        familyCode: familyCode
-      },
-      (res: AxiosResponse<any>) => {
-        console.log(res);
-        navigate("/signup/member-set");
-      },
-      (err: AxiosError<any>) => {
-        console.log(err);
-      }
-    ).then().catch();
   }
 
   return (
