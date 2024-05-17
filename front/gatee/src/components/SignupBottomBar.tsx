@@ -10,7 +10,7 @@ const SignupBottomBar = () => {
       style={{
         height: "6svh",
         padding: 0,
-        border: "none",
+        borderTop: "1px solid #FFBE5C",
         backgroundColor: location.pathname === '/signup' ? '#FFBE5C' : 'white'
       }}
     >
