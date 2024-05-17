@@ -48,7 +48,7 @@ export async function requestPermission() {
 
     // 토큰 조회한 뒤, 서버로 토큰 구독
     if (token) {
-      // alert(token)
+      alert(token)
       // console.log(token)
       // 스토어에 저장
       localStorage.setItem('fcmDeviceToken', token);

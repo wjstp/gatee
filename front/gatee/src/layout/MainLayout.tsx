@@ -68,8 +68,8 @@ const MainLayout = () => {
     if (familyInfo.length === 0) {
       saveMemberData();
     }
-    // fcm 권한 묻기
-    requestPermission()
+    // // fcm 권한 묻기
+    // requestPermission()
 
   }, []);
 
