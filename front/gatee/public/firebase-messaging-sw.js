@@ -46,11 +46,11 @@ messaging.onBackgroundMessage((payload) => {
 });
 
 
-self.addEventListener('notificationclick', function (event) {
-  const url = "/main"
-  event.notification.close();
-  event.waitUntil(clients.openWindow(url));
-});
+// self.addEventListener('notificationclick', function (event) {
+//   const url = "/main"
+//   event.notification.close();
+//   event.waitUntil(clients.openWindow(url));
+// });
 
 
 // 전역 알림 받기 설정
