@@ -1,8 +1,10 @@
 import React from 'react';
-import { ScheduleListRes } from '@type/index';
 import { NavLink } from "react-router-dom";
+import { ScheduleListRes, ScheduleType } from '@type/index';
 import getColorCode from "@utils/getColorCode";
-import { ScheduleType } from "@type/index";
+import { VscCommentDiscussion } from "react-icons/vsc";
+import AvatarGroup from "@mui/material/AvatarGroup";
+import Avatar from "@mui/material/Avatar";
 
 type DayScheduleProps = {
   schedule: ScheduleListRes;
@@ -13,44 +15,51 @@ const Group = (props: DayScheduleProps) => {
   return (
     <NavLink
       to={`/schedule/${schedule.scheduleId}`}
-      className="day-toast__schedule-group"
-      style={{ borderLeft: `5px solid ${getColorCode(schedule.emoji)}` }}
+      className="day-toast__schedule-item"
     >
-      <div>
-        { schedule.startDate }
+      <div className="day-toast__color" style={{backgroundColor: `${getColorCode(schedule.emoji).code}`}}></div>
+
+      <div className="day-toast__group">
+        {schedule.title}
       </div>
-      <div>
-        { schedule.endDate }
+
+      {/*기록 수*/}
+      <div className="day-toast__record">
+        <VscCommentDiscussion size={15} />
+        {schedule.scheduleRecordCount}
       </div>
-      <div>
-        { schedule.title }
-      </div>
-      <div>
-        { schedule.content }
-      </div>
+
+      {/*참여자 리스트*/}
+      <AvatarGroup max={6} className="day-toast__group__participate">
+        { schedule.participateMembers.map((participateMember: {profileImageUrl: string; nickname: string}, index: number) => {
+          return <Avatar src={participateMember.profileImageUrl} alt={participateMember.nickname} key={index}/>;
+        }) }
+      </AvatarGroup >
     </NavLink>
   );
 };
 
 const Personal = (props: DayScheduleProps) => {
-  const { schedule} = props;
+  const {schedule} = props;
   return (
     <NavLink
       to={`/schedule/${schedule.scheduleId}`}
-      className="day-toast__schedule-personal"
-      style={{borderLeft: `5px solid ${getColorCode(schedule.emoji)}`}}
+      className="day-toast__schedule-item"
     >
-      <div>
-        {schedule.startDate}
-      </div>
-      <div>
-        {schedule.endDate}
-      </div>
-      <div>
+      <div className="day-toast__color" style={{backgroundColor: `${getColorCode(schedule.emoji).code}`}}></div>
+
+      <div className="day-toast__personal">
+        {/*참여자 프로필*/}
+        <div className="day-toast__personal__profile">
+          <img src={schedule.participateMembers[0].profileImageUrl} alt="profile"/>
+        </div>
         {schedule.title}
       </div>
-      <div>
-        {schedule.content}
+
+      {/*기록 수*/}
+      <div className="day-toast__record">
+        <VscCommentDiscussion size={15} />
+        {schedule.scheduleRecordCount}
       </div>
     </NavLink>
   );
@@ -61,20 +70,27 @@ const Event = (props: DayScheduleProps) => {
   return (
     <NavLink
       to={`/schedule/${schedule.scheduleId}`}
-      className="day-toast__schedule-event"
-      style={{borderLeft: `5px solid ${getColorCode(schedule.emoji)}`}}
+      className="day-toast__schedule-item"
     >
-      <div>
-        {schedule.startDate}
+      <div className="day-toast__color" style={{backgroundColor: `${getColorCode(schedule.emoji).code}`}}></div>
+
+      <div className="day-toast__event">
+        <p
+          style={{
+            textDecoration: "underline",
+            textDecorationColor: `${getColorCode(schedule.emoji).code}`,
+            textDecorationStyle: "wavy"
+          }}
+        >{schedule.title}</p>
+        <div className="day-toast__event__icon">
+          <img src={getColorCode(schedule.emoji).image} alt="ic_calendar"/>
+        </div>
       </div>
-      <div>
-        {schedule.endDate}
-      </div>
-      <div>
-        {schedule.title}
-      </div>
-      <div>
-        {schedule.content}
+
+      {/*기록 수*/}
+      <div className="day-toast__record">
+        <VscCommentDiscussion size={15}/>
+        {schedule.scheduleRecordCount}
       </div>
     </NavLink>
   );
