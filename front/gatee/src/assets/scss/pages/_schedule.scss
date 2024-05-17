@@ -11,11 +11,11 @@
 .schedule-calendar {
   height: 100%;
   margin: 0 5px;
-  //transition: height 0.5s ease-in-out;
+  transition: height 0.28s ease-out;
 
   &--open {
     height: 50%;
-    //transition: height 0.5s ease-in-out;
+    transition: height 0.28s ease-out;
   }
 
   &__header {
@@ -193,6 +193,7 @@
 .day-toast {
   @include flex-col;
 
+  z-index: 30;
   height: 50%;
   width: 100dvw;
   overflow: auto;
