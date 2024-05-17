@@ -5,16 +5,11 @@
 .onboarding__container-center {
   justify-content: center;
   align-items: center;
-  height: 100%;
-  width: 100%;
 
   .slider__container {
     @include flex_center;
-
     flex-direction: column;
-    height: 100%;
-    width: 100%;
-    margin-top: 15vh;
+    height: 100vh;
 
     h1, h2, h3, h4, h5, h6, p {
       text-align: center;
@@ -127,8 +122,8 @@
   display: flex;
   gap: 10px;
   justify-content: center;
-  width: 100%;
-  margin-top: 10%;
+  width: 100vw;
+  margin-top: 10dvh;
   position: absolute;
 
   // 인디케이터 도트

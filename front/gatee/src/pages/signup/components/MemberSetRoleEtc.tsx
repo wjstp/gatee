@@ -32,6 +32,7 @@ const SignupMemberSetRoleEtc = (props: {
           value={role?.toString()}
           onChange={handleInputChange}
           autoFocus
+          spellCheck={false}
         />
       </div>
 
