@@ -12,8 +12,10 @@ const SignupMemberSetRoleEtc = (props: {
   // 입력값
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const value: string = e.target.value;
-    setRole(value);
-    setErrorMessage("");
+    if (value.length <= 6) {
+      setRole(value);
+      setErrorMessage("");
+    }
   }
 
   return (

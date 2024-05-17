@@ -6,12 +6,15 @@ import basicFamily from "@assets/images/profile/family.jpg";
 import ProfileCropper from "@pages/profile/components/Cropper";
 import useModal from "@hooks/useModal";
 import { imageResizer } from "@utils/imageResizer";
+import base64 from "base-64";
+import {PiCaretLeft} from "react-icons/pi";
 
 const SignupFamilySet = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const sender: string = "family-set"
+  const accessToken: string | null = localStorage.getItem("accessToken");
   const { familyName, setFamilyName, setFamilyImage, stringImage, setStringImage } = useFamilyStore();
   const { isOpen, openModal, closeModal } = useModal();
 
@@ -22,6 +25,18 @@ const SignupFamilySet = () => {
   useEffect(() => {
     setFamilyImage(null);
     setStringImage(basicFamily);
+
+    // 권한에 따라 redirect
+    if (accessToken) {
+      const payload: string = accessToken.substring(accessToken.indexOf('.')+1,accessToken.lastIndexOf('.'));
+      const decode = base64.decode(payload);
+      const json = JSON.parse(decode);
+
+      if (json.authorities[0] === "ROLE_ROLE_USER") {
+        alert(`잘못된 접근입니다.`);
+        navigate(`/main`);
+      }
+    }
   }, []);
 
   // 입력값
@@ -77,6 +92,11 @@ const SignupFamilySet = () => {
     closeModal();
   }
 
+  // 뒤로 가기
+  const backTo = ():void => {
+    navigate(-1);
+  }
+
   return (
     <div className="signup-family-set slide-in">
 
@@ -85,7 +105,7 @@ const SignupFamilySet = () => {
         <span className="title__part--01">가족을 소개</span>
         <span className="title__part--02">해 주세요</span>
       </div>
-      
+
       {/*가족 이미지*/}
       <div className="signup-family-set__img-box">
         <button
@@ -112,7 +132,7 @@ const SignupFamilySet = () => {
           </div>
         </button>
       </div>
-      
+
       {/*크롭 모달*/}
       {isOpen ? (
         <ProfileCropper
@@ -147,8 +167,8 @@ const SignupFamilySet = () => {
       {/*다음 버튼*/}
       <div className="signup-family-set__btn">
         <button className="btn-next"
-          onClick={goToFamilySetCheck}
-          disabled={!familyName}
+                onClick={goToFamilySetCheck}
+                disabled={!familyName}
         >
           <span className="btn-next__text">
             소개하기

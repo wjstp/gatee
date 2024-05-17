@@ -2,6 +2,8 @@ import React, {useEffect, useState} from "react";
 import {Outlet, useLocation} from 'react-router-dom'
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { useModalStore } from "@store/useModalStore";
+import SignupTopBar from "@components/SignupTopBar";
+import SignupBottomBar from "@components/SignupBottomBar";
 
 const SubLayout = () => {
   const { showModal } = useModalStore();
@@ -18,21 +20,23 @@ const SubLayout = () => {
       {/*Helmet 라이브러리를 사용하여 상단바 동적 컨트롤
       인덱스에서만 오렌지 색상 부여
       */}
-        <HelmetProvider>
-          <Helmet>
-            {currentUrl === "/signup" ? (
-              <meta name="theme-color" id="theme-color" content="#FFBE5C"/>
-            ) : (showModal ? (
-                <meta name="theme-color" id="theme-color" content="#808080"/>
-              ) : (
-                <meta name="theme-color" id="theme-color" content="#FFFFFF"/>
-              )
-              )}
-          </Helmet>
-        </HelmetProvider>
+      <HelmetProvider>
+        <Helmet>
+          {currentUrl === "/signup" ? (
+            <meta name="theme-color" id="theme-color" content="#FFBE5C"/>
+          ) : (showModal ? (
+              <meta name="theme-color" id="theme-color" content="#808080"/>
+            ) : (
+              <meta name="theme-color" id="theme-color" content="#FFFFFF"/>
+            )
+          )}
+        </Helmet>
+      </HelmetProvider>
+      <SignupTopBar/>
       <div id="sub">
         <Outlet />
       </div>
+      <SignupBottomBar/>
     </>
   )
 }

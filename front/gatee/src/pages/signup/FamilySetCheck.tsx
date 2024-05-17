@@ -1,52 +1,39 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useFamilyStore } from "@store/useFamilyStore";
-import { createFamilyApi } from "@api/member";
-import { AxiosError, AxiosResponse } from "axios";
+import base64 from "base-64";
 
 const SignupFamilySetCheck = () => {
   const navigate = useNavigate();
+  const accessToken: string | null = localStorage.getItem("accessToken");
   const {
     familyName,
-    familyImage,
     stringImage,
-    setStringImage,
-    familyId,
-    setFamilyId,
-    setFamilyCode,
-    setFamilyImage
   } = useFamilyStore();
 
-  // 초대 코드 공유 페이지로 가기
-  const goToFamilySetShare = () => {
-    // 가족 생성하기
-    createFamily();
-    // navigate('/signup/member-set');
-  }
+  // 권한에 따라 redirect
+  useEffect(() => {
+    if (accessToken) {
+      const payload: string = accessToken.substring(accessToken.indexOf('.')+1,accessToken.lastIndexOf('.'));
+      const decode = base64.decode(payload);
+      const json = JSON.parse(decode);
 
-  // 파일을 업로드했을 때
-  const createFamily = (): void => {
-    const formData = new FormData();
-    // 파일이 업로드 되어있으면 파일 이어붙이기
-    if (familyImage instanceof File) {
-      formData.append("file", familyImage);
-    }
-    formData.append("name", familyName);
-    formData.append("fileType", "FAMILY_PROFILE");
-
-    // 가족 생성 요청 보내기
-    createFamilyApi(
-      formData,
-      (res: AxiosResponse<any>) => {
-        console.log(res);
-        setFamilyId(res.data.familyId);
-        setStringImage(res.data.fileUrl.imageUrl);
-        navigate('/signup/member-set');
-      },
-      (err: AxiosError<any>) => {
-        console.log(err)
+      if (json.authorities[0] === "ROLE_ROLE_USER") {
+        alert(`잘못된 접근입니다.`);
+        navigate(`/main`);
+      } else {
+        if (!familyName) {
+          alert('먼저 가족을 소개해주세요!');
+          navigate(`/signup/family-set`);
+        }
       }
-    ).then().catch();
+    }
+  }, []);
+
+
+  // 초대 코드 공유 페이지로 가기
+  const goToFamilySetShare = () => {;
+    navigate('/signup/member-set');
   }
 
   // 뒤로 가기
