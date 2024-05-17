@@ -6,11 +6,8 @@ const SignupBottomBar = () => {
 
   return (
     <div
-      className="bottom-bar"
+      className="signup-bottom-bar"
       style={{
-        height: "6svh",
-        padding: 0,
-        borderTop: location.pathname === '/signup' ? "1px solid #FFBE5C" : 'white',
         backgroundColor: location.pathname === '/signup' ? '#FFBE5C' : 'white'
       }}
     >
