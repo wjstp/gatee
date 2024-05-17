@@ -6,12 +6,11 @@ import { useLocation } from "react-router-dom";
 const KaKaoLogin = () => {
   const redirectUri: string | undefined = `${process.env.REACT_APP_API_URL}/auth`
   const location = useLocation();
-  const taehyeon: string = "http://localhost:3000/auth"
 
   // 카카오 인가코드 발급
   const loginWithKaKao = () => {
     window.Kakao.Auth.authorize({
-      redirectUri: taehyeon,
+      redirectUri: redirectUri,
       scope: "profile_nickname, account_email",
     })
   }
