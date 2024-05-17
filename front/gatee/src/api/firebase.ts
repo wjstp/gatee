@@ -10,9 +10,10 @@ export const getPushAlarmByLocalStorageApi = async () => {
     local.patch(`/members/notifications`,
       {notificationToken: fcmDeviceToken})
       .then(res => {
+        alert("토큰 발신 성공")
       })
-      .catch(err => console.log(err))
+      .catch(err => alert(err))
   } catch (error) {
-    console.error(`getPushAlarmByLocalStorageApi 에러 발생 : ${error}`);
+    alert(`getPushAlarmByLocalStorageApi 에러 발생 : ${error}`);
   }
 };
