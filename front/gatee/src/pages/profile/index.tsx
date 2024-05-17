@@ -409,7 +409,7 @@ const ProfileIndex = () => {
       {/*백과사전 섹션*/}
       <div className="profile-index__character">
 
-        {askList.length === 0 ? (
+        {askList.length !== 0 ? (
           // 사전이 비어있다면
 
           isMe ? (
@@ -470,25 +470,25 @@ const ProfileIndex = () => {
             </div>
             <div className="created__character-box">
               <div className="character-box__header">
-                  <span className="header__part--01">
-                    {familyMember?.nickname}
-                  </span>
+                <span className="header__part--01">
+                  {familyMember?.nickname}
+                </span>
                 <span className="header__part--02">
-                    님의 사전이 텅 비어있어요!
-                  </span>
+                  &nbsp;{question.question}
+                </span>
               </div>
               <div className="character-box__body--01">
-                  <span className="body--01--text">
-                    사전을 만들어달라고 말해 볼까요?
-                  </span>
+                <span className="body--01--text">
+                  {question.correctAnswer}
+                </span>
               </div>
               <div className="character-box__body--02">
                 <button
                   className="body--02__btn"
                 >
-                    <span className="btn--text">
-                      한마디 보내기
-                    </span>
+                  <span className="btn--text">
+                    사전
+                  </span>
                 </button>
               </div>
             </div>

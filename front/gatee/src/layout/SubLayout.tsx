@@ -32,11 +32,11 @@ const SubLayout = () => {
           )}
         </Helmet>
       </HelmetProvider>
-      <SignupTopBar/>
+      {/*<SignupTopBar/>*/}
       <div id="sub">
         <Outlet />
       </div>
-      <SignupBottomBar/>
+      {/*<SignupBottomBar/>*/}
     </>
   )
 }
