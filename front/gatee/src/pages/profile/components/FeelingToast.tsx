@@ -40,10 +40,10 @@ const FeelingToast = ({handleFinishTab}:HandleFinishTab) => {
       className="profile-feeling-toast"
       onClick={() => handleFinish}
     >
-      
+
       {/*행복과 슬픔*/}
       <div className="feeling-toast__first">
-        
+
         {/*행복*/}
         <button
           className={`first__part--01 ${myInfo.mood === "HAPPY" ? "active" : ""}`}
@@ -56,7 +56,7 @@ const FeelingToast = ({handleFinishTab}:HandleFinishTab) => {
             행복해요
           </span>
         </button>
-        
+
         {/*슬픔*/}
         <button
           className={`first__part--02 ${myInfo.mood === "SAD" ? "active" : ""}`}
@@ -69,12 +69,12 @@ const FeelingToast = ({handleFinishTab}:HandleFinishTab) => {
             속상해요
           </span>
         </button>
-        
+
       </div>
-      
+
       {/*분노와 외로움*/}
       <div className="feeling-toast__second">
-        
+
         {/*분노*/}
         <button
           className={`second__part--01 ${myInfo.mood === "ANGRY" ? "active" : ""}`}
@@ -87,7 +87,7 @@ const FeelingToast = ({handleFinishTab}:HandleFinishTab) => {
             화나요
           </span>
         </button>
-        
+
         {/*외로움*/}
         <button
           className={`second__part--02 ${myInfo.mood === "ALONE" ? "active" : ""}`}

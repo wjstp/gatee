@@ -3,7 +3,7 @@ import React from "react";
 import {useFamilyStore} from "@store/useFamilyStore";
 
 export const FamilyPoint = () => {
-  const {familyScore, stringImage, familyName} = useFamilyStore()
+  const {familyScore, stringImage, familyName} = useFamilyStore();
   const myFamilyTemp = 36 + familyScore
   const fontSizeFunc = (fontLength: number) => {
     if (fontLength <= 4) {
@@ -14,6 +14,7 @@ export const FamilyPoint = () => {
       return 24
     }
   }
+
   return (
     <div className="main-family-info">
       {/* 가족 온도 */}

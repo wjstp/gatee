@@ -1,9 +1,25 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { useNavigate } from "react-router-dom";
 import { ReactComponent as HomeIcon } from "@assets/images/icons/ic_home.svg"
+import base64 from "base-64";
 
 const SignupIndex = () => {
   const navigate = useNavigate();
+  const accessToken: string | null = localStorage.getItem("accessToken");
+
+  // 권한에 따라 redirect
+  useEffect(() => {
+    if (accessToken) {
+      const payload: string = accessToken.substring(accessToken.indexOf('.')+1,accessToken.lastIndexOf('.'));
+      const decode = base64.decode(payload);
+      const json = JSON.parse(decode);
+
+      if (json.authorities[0] === "ROLE_ROLE_USER") {
+        alert(`잘못된 접근입니다.`);
+        navigate(`/main`);
+      }
+    }
+  }, []);
 
   // 약관 페이지로 이동
   const goToFamilyJoin = ():void => {

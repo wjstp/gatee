@@ -17,14 +17,14 @@
     .profile__img-box {
       @extend %circular-profile-image;
 
-      margin-top: 10%;
-      height: 170px;
-      width: 170px;
-      border: 1px solid $gray75;
+      margin-top: 3%;
+      height: 23svh;
+      width: 23svh;
 
       .img-box__img {
-        height: 170px;
-        width: 170px;
+        border: 1px solid $gray75;
+        height: 23svh;
+        width: 23svh;
       }
     }
 
@@ -281,6 +281,117 @@
     display: flex;
     flex-direction: column;
 
+    // 비어 있고, 내 프로필일 때 사전
+    .character__non-created-my {
+      @include flex_center;
+
+      height: 100%;
+      width: 100%;
+
+      .non-created-my__btn {
+        @extend %orange-button-medium;
+
+        font-size: 18px;
+        margin-top: 5%;
+
+        .btn--text {
+        }
+      }
+    }
+
+    // 비어 있고, 내 프로필이 아닐 때 사전
+    .character__non-created-other {
+      @include flex_center;
+
+      height: 100%;
+      width: 100%;
+      flex-direction: column;
+
+      .non-created-other__title {
+        @include flex_center;
+
+        height: 10%;
+        width: 100%;
+
+        .text--icon {
+          @include flex_center;
+
+          height: 100%;
+          width: 10%;
+
+          .icon {
+            height: 110%;
+            width: 110%;
+          }
+        }
+
+        .title--text {
+          @include flex_center;
+
+          font-size: 18px;
+          height: 100%;
+          font-weight: bold;
+          margin-right: 30%;
+        }
+      }
+
+      .non-created-other__character-box {
+        @include flex_center;
+
+        flex-direction: column;
+        margin-top: 2%;
+        height: 65%;
+        width: 80%;
+        background-color: $orange100;
+        border-radius: 15px;
+        font-size: 18px;
+
+        .character-box__header {
+
+          .header__part--01 {
+            font-weight: bold;
+          }
+
+          .header__part--02 {
+
+          }
+        }
+
+        .character-box__body--01 {
+          margin-top: 2%;
+
+          .body--01--text {
+
+          }
+        }
+
+        .character-box__body--02 {
+          @include flex_center;
+
+          margin-top: 5%;
+          height: 30%;
+          width: 80%;
+
+          .body--02__btn {
+            @extend %orange-button-medium;
+
+            height: 100%;
+            width: 100%;
+            background-color: $orange400;
+            color: white;
+
+            &:active {}
+
+            .btn--text {
+              font-size: 19px;
+              font-weight: bold;
+            }
+          }
+        }
+      }
+    }
+
+    // 사전이 비어있지 않다면
     .character__created {
       @include flex_center;
 
@@ -289,92 +400,85 @@
       flex-direction: column;
 
       .created__title {
+        @include flex_center;
 
-        &--text {
-          font-size: 20px;
+        height: 10%;
+        width: 100%;
+
+        .text--icon {
+          @include flex_center;
+
+          height: 100%;
+          width: 10%;
+
+          .icon {
+            height: 110%;
+            width: 110%;
+          }
+        }
+
+        .title--text {
+          @include flex_center;
+
+          font-size: 18px;
+          height: 100%;
           font-weight: bold;
-          margin-left: 15%;
+          margin-right: 30%;
         }
       }
 
       .created__character-box {
-        display: flex;
-        justify-content: center;
+        @include flex_center;
 
-        .character-box {
-          position: relative;
-          display: flex;
-          flex-direction: column;
-          margin-top: 2%;
-          background-color: $orange200;
-          height: 80%;
-          width: 80%;
-          border-radius: 12px;
+        flex-direction: column;
+        margin-top: 2%;
+        height: 65%;
+        width: 80%;
+        background-color: $orange100;
+        border-radius: 15px;
+        font-size: 18px;
 
-          .character-box__question {
-            margin-top: 5%;
-            margin-left: 5%;
+        .character-box__header {
 
-            .question__part--01 {
-              font-size: 18px;
-              font-weight: bold;
-            }
-
-            .question__part--02 {
-              font-size: 18px;
-            }
-
+          .header__part--01 {
+            font-weight: bold;
           }
 
-          .character-box__answer {
-            margin-left: 5%;
-            margin-top: 2%;
+          .header__part--02 {
 
-            .answer__part--01 {
-              font-weight: bold;
-              font-size: 30px;
-            }
-          }
-
-          .character-box__icon {
-            position: absolute;
-            right: 3%;
-            top: 25%;
-
-            .icon {
-
-            }
-          }
-
-          .character-box__btn {
-            @include flex_center;
-
-            .character-box__btn-detail {
-              @extend %orange-button-large;
-
-              .btn-detail--text {
-
-              }
-            }
           }
         }
-      }
-    }
 
-    .character__non-created {
-      @include flex_center;
+        .character-box__body--01 {
+          margin-top: 2%;
 
-      height: 100%;
-      width: 100%;
+          .body--01--text {
 
-      .non-created__btn {
-        @extend %orange-button-medium;
+          }
+        }
 
-        font-size: 18px;
-        margin-top: 5%;
+        .character-box__body--02 {
+          @include flex_center;
 
-        .btn--text {
+          margin-top: 5%;
+          height: 30%;
+          width: 80%;
 
+          .body--02__btn {
+            @extend %orange-button-medium;
+
+            height: 100%;
+            width: 100%;
+            background-color: $orange400;
+            color: white;
+
+            &:active {}
+
+            .btn--text {
+              font-size: 19px;
+              font-weight: bold;
+            }
+          }
         }
       }
     }
@@ -395,17 +499,16 @@
     .profile__img-box {
       @extend %circular-profile-image;
 
-      margin-top: 10%;
-      height: 170px;
-      width: 170px;
+      margin-top: 3%;
+      height: 23svh;
+      width: 23svh;
       border: 1px solid $gray75;
-      position: relative;
 
       .img-box__btn {
         @extend %circular-profile-image;
 
-        height: 170px;
-        width: 170px;
+        height: 23svh;
+        width: 23svh;
         opacity: 0.7;
         position: relative;
 
@@ -414,8 +517,8 @@
         }
 
         .btn--img {
-          height: 170px;
-          width: 170px;
+          height: 23svh;
+          width: 23svh;
         }
 
         .btn--icon {
@@ -427,7 +530,7 @@
             height: 100%;
             width: 100%;
             fill: $gray300;
-            opacity: 0.2;
+            opacity: 0.5;
           }
         }
       }
@@ -450,7 +553,7 @@
     }
 
     .profile__blank-box {
-      margin-top: 3.5%;
+      margin-top: 2.5%;
       margin-bottom: 2%;
       height: 10%;
       width: 100%;
@@ -837,7 +940,7 @@
   @extend %modal-fade-in;
 
   .name__input {
-   font-size: 2rem;
+    font-size: 2rem;
     text-align: center;
     color: white;
     font-weight: bold;
@@ -860,85 +963,85 @@
 
 
 
-    .role__container {
-      @include py-(1);
-      @include flex-row;
-      @include flex_center;
+  .role__container {
+    @include py-(1);
+    @include flex-row;
+    @include flex_center;
 
-      gap: 0.3rem;
-      row-gap: 1rem;
-      flex-wrap: wrap;
+    gap: 0.3rem;
+    row-gap: 1rem;
+    flex-wrap: wrap;
 
-      .role__btn {
+    .role__btn {
 
-        font-weight: bold;
-        font-size: 1.5rem;
-        color: white;
-        height: 3rem;
-        width: 8rem;
-        border: 2px solid white;
-        //background-color: $gray200;
-        border-radius: 30px;
-      }
-
-      .selected {
-        border: 2px solid $orange500;
-        color: $orange500;
-        background-color: $orange100;
-      }
-
-      .etc__container {
-        @include flex-row;
-        @include flex_center;
-        color: white;
-        gap: 0.5rem;
-
-        .role__input {
-          font-size: 1.5rem;
-          padding: 0.5rem;
-          text-align: center;
-          color: white;
-          font-weight: bold;
-          border: 2px solid white;
-          border-radius: 1rem;
-          width: 46%;
-          display: inline-block;
-        }
-        .role__submit__btn {
-
-          background-color: $orange400;
-          color: white;
-          font-weight: bold;
-          font-size: 1.2rem;
-          @include p-(0.6);
-          @include px-(1);
-          @include m-(0);
-
-          border-radius: 1rem;
-
-          &:disabled {
-            background-color: white;
-            color: $gray100;
-          }
-
-        }
-
-      }
+      font-weight: bold;
+      font-size: 1.5rem;
+      color: white;
+      height: 3rem;
+      width: 8rem;
+      border: 2px solid white;
+      //background-color: $gray200;
+      border-radius: 30px;
     }
 
-    .birth__container {
+    .selected {
+      border: 2px solid $orange500;
+      color: $orange500;
+      background-color: $orange100;
+    }
+
+    .etc__container {
+      @include flex-row;
+      @include flex_center;
+      color: white;
+      gap: 0.5rem;
+
+      .role__input {
+        font-size: 1.5rem;
+        padding: 0.5rem;
+        text-align: center;
+        color: white;
+        font-weight: bold;
+        border: 2px solid white;
+        border-radius: 1rem;
+        width: 46%;
+        display: inline-block;
+      }
+      .role__submit__btn {
+
+        background-color: $orange400;
+        color: white;
+        font-weight: bold;
+        font-size: 1.2rem;
+        @include p-(0.6);
+        @include px-(1);
+        @include m-(0);
+
+        border-radius: 1rem;
+
+        &:disabled {
+          background-color: white;
+          color: $gray100;
+        }
+
+      }
+
+    }
+  }
+
+  .birth__container {
+    @include flex-center;
+    @include flex-col;
+    @include p-(1);
+
+    gap: 1rem;
+
+
+    .birthday-choice {
       @include flex-center;
-      @include flex-col;
-      @include p-(1);
-
-      gap: 1rem;
-
-
-      .birthday-choice {
-        @include flex-center;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
 
 
 
