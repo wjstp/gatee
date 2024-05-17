@@ -30,7 +30,7 @@ const Improvement = ({type}: any) => {
       content: ["가벼운 인사 한마디", "건네봐요"],
       destination: "/chatting",
       buttonComment: "채팅하기",
-      icon: GoalIcon
+      icon: SmileIcon
     },
     albumMission: {
       content: ["함께 사진을 찍어", "공유해요"],

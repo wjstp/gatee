@@ -261,7 +261,7 @@ const NotificationItem = ({notificationData, handleReadNotification}: {
         <div className="notification-item--top--container">
           <p className="notification-item-title">{notificationData.title}</p>
           {/*올해가 아니면 년도 보여줌, 오늘이면 시간 보여줌*/}
-          <p>{todayYear === year && todayMonth===month && todayDate===date ?
+          <p className="notification-item-time">{todayYear === year && todayMonth===month && todayDate===date ?
             hour >= 12 ? `오후 ${hour-12}:${minute} ` : `오전 ${hour}:${minute}`
             : todayYear === year ? `${month}월 ${date}일` : `${year}년 ${month}월 ${date}일`}
           </p>
