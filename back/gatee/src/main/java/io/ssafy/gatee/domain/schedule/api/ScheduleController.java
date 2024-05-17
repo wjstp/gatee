@@ -123,8 +123,9 @@ public class ScheduleController {
     @ResponseStatus(HttpStatus.OK)
     public void deleteScheduleRecord(
             @PathVariable("scheduleId") Long scheduleId,
-            @PathVariable("scheduleRecordId") Long scheduleRecordId
+            @PathVariable("scheduleRecordId") Long scheduleRecordId,
+            @AuthenticationPrincipal CustomUserDetails customUserDetails
     ) {
-        scheduleService.deleteScheduleRecord(scheduleId, scheduleRecordId);
+        scheduleService.deleteScheduleRecord(scheduleId, scheduleRecordId, customUserDetails.getMemberId());
     }
 }
