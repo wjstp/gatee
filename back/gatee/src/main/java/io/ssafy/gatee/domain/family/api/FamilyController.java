@@ -100,4 +100,16 @@ public class FamilyController {
         log.info(familyId);
         familyService.editFamilyName(UUID.fromString(familyId), familyNameReq);
     }
+
+    // 가족 사진 변경
+    @PostMapping("/image")
+    @ResponseStatus(HttpStatus.OK)
+    public void editProfileImage(
+            @Valid
+            @RequestParam FileType fileType,
+            @RequestParam @Nullable MultipartFile file,
+            @AuthenticationPrincipal CustomUserDetails customUserDetails
+    ) throws IOException {
+        familyService.editFamilyImage(fileType, file, customUserDetails.getMemberId());
+    }
 }
