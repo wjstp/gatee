@@ -325,6 +325,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         ScheduleRecord scheduleRecord = ScheduleRecord.builder()
                 .content(scheduleSaveRecordReq.content())
                 .schedule(schedule)
+                .member(member)
                 .build();
 
         scheduleRecordRepository.save(scheduleRecord);
@@ -349,9 +350,15 @@ public class ScheduleServiceImpl implements ScheduleService {
     // 일정 후기 삭제
     @Override
     @Transactional
-    public void deleteScheduleRecord(Long scheduleId, Long scheduleRecordId) {
+    public void deleteScheduleRecord(Long scheduleId, Long scheduleRecordId, UUID memberId) {
+        Member member = memberRepository.getReferenceById(memberId);
+
         ScheduleRecord scheduleRecord = scheduleRecordRepository.getReferenceById(scheduleRecordId);
 
-        scheduleRecord.deleteData();
+        if (scheduleRecord.getMember().equals(member)) {
+            scheduleRecord.deleteData();
+        } else {
+            throw new DoNotHavePermissionException(DO_NOT_HAVE_REQUEST);
+        }
     }
 }

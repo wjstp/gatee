@@ -9,6 +9,7 @@ import java.util.UUID;
 @Builder
 public record ScheduleSaveRecordReq(
 
+        @NotNull
         UUID familyId,
 
         @NotNull
