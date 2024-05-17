@@ -3,6 +3,7 @@ spring:
     active:
       - local
       - common
+      - batch
     group:
       local:
         - db-local
@@ -17,13 +18,11 @@ spring:
       test:
         - db-prod
         - security-prod
-        - batch-prod
     include:
       - db
       - security
       - aws
       - ai
-      - batch
 
 ---
 spring:
