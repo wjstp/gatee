@@ -37,7 +37,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Slf4j
-@ActiveProfiles({"common, prod"})
+@ActiveProfiles("test")
 @WebMvcTest({AlbumController.class})
 @MockBean(JpaMetamodelMappingContext.class)
 class AlbumControllerTest extends RestDocsTestSupport {

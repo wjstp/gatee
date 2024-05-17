@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @Slf4j
-@ActiveProfiles({"common, prod"})
+@ActiveProfiles("test")
 @WebMvcTest({FileController.class})
 @MockBean(JpaMetamodelMappingContext.class)
 class FileControllerTest extends RestDocsTestSupport {

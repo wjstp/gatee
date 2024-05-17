@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @Slf4j
-@ActiveProfiles({"common, prod"})
+@ActiveProfiles("test")
 @WebMvcTest({ChatRoomController.class})
 @MockBean(JpaMetamodelMappingContext.class)
 class ChatRoomControllerTest extends RestDocsTestSupport {
