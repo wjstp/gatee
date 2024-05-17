@@ -8,7 +8,8 @@ const SignupBottomBar = () => {
     <div
       className="signup-bottom-bar"
       style={{
-        backgroundColor: location.pathname === '/signup' ? '#FFBE5C' : 'white'
+        backgroundColor: location.pathname === '/signup' ? '#FFBE5C' : 'white',
+        border: location.pathname === '/signup' ? '1px solid #FFBE5C' : 'none',
       }}
     >
     </div>
