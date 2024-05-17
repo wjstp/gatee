@@ -1,6 +1,13 @@
 @use '../abstracts/index' as *;
 @use '../components/index' as *;
 
+// 뒤로가기 버튼
+.signup__left {
+  position: absolute;
+  left: 4.5%;
+  top: 1.5%;
+}
+
 // 로딩중 페이지(우리 서버의 액세스 토큰을 받는 페이지)
 .signup-auth {
   @include flex_center;

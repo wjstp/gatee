@@ -1,8 +1,11 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { ScheduleListRes } from "@type/index";
 import DayScheduleCard from "@pages/schedule/components/DayScheduleCard";
 import dayjs from 'dayjs';
 import calculateWeekday from "@utils/calculateWeekday";
+import calculateLunarDate from "@utils/calculateLunarDate";
+import { BsChevronCompactDown } from "react-icons/bs";
+
 
 interface DayToastProps {
   date: string,
@@ -10,15 +13,27 @@ interface DayToastProps {
   onCloseClick: () => void;
 }
 
+
 const DayToast = (props: DayToastProps) => {
   const { date, schedules, onCloseClick } = props;
   const dateTitle: string = dayjs(date).format("M월 D일");
+  const lunarDate: string = calculateLunarDate(new Date(date));
+
 
   return (
     <div className="day-toast">
       <div className="day-toast__header">
-        <div className="day-toast__title">{dateTitle} {`${calculateWeekday(dayjs(date))}요일`}</div>
-        <button className="day-toast__close" onClick={onCloseClick}>close</button>
+        {/*닫기 버튼*/}
+        <div className="day-toast__close" onClick={onCloseClick}>
+          <BsChevronCompactDown size={25} />
+        </div>
+        
+        {/*날짜*/}
+        <div className="day-toast__date">
+          <span className="day-toast__date-solar">{dateTitle} {`${calculateWeekday(dayjs(date))}요일`}</span>
+          <span className="day-toast__date-lunar">{lunarDate}</span>
+        </div>
+
       </div>
 
       {/*일정 리스트*/}

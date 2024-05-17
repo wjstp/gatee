@@ -1,11 +1,42 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { BsThreeDotsVertical } from "react-icons/bs";
+import { BeforeInstallPromptEvent } from "@type/index";
 
 interface HandleFinishTab {
   handleFinishTab: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
 const Android = () => {
+  const [installPrompt, setInstallPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (e: BeforeInstallPromptEvent) => {
+      e.preventDefault();
+      setInstallPrompt(e);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    };
+  }, []);
+
+  const handleInstallClick = () => {
+    if (installPrompt) {
+      installPrompt.prompt();
+      installPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('User accepted the install prompt');
+        } else {
+          console.log('User dismissed the install prompt');
+        }
+        setInstallPrompt(null);
+      });
+    }
+  };
+
+  console.log(installPrompt)
   return (
     <div className="android">
       <div className="android-header">
@@ -25,6 +56,10 @@ const Android = () => {
             &nbsp;로 빠른 앱 실행을 해 보세요!
           </div>
         </div>
+
+        <button onClick={handleInstallClick}>
+          Install App
+        </button>
       </div>
     </div>
   );

@@ -4,13 +4,14 @@ import TextField from "@mui/material/TextField";
 import {IoSend} from "react-icons/io5";
 import {InputAdornment} from "@mui/material";
 import {naggingApi} from "@api/notification";
+import {useMemberStore} from "@store/useMemberStore";
 
 
 const NaggingModal = ({notificationData, handleModal}: {
   notificationData: NotificationRes | null | undefined,
   handleModal: () => void // 수정된 부분
 }) => {
-
+  const {myInfo} = useMemberStore()
   // 한마디 보내기 버튼 누르기 상태 관리
   const [isSendBtnClicked, setIsSendBtnClicked] = useState(false);
 // 메세지 입력 상태
@@ -60,16 +61,22 @@ const NaggingModal = ({notificationData, handleModal}: {
         <h2 className="nagging-modal-title">{notificationData?.title}</h2>
         <p className="nagging-modal-content">{notificationData?.content}</p>
 
-        <div className="nagging-modal-btn-container">
-          {isSendBtnClicked ? null :
-            <button onClick={handleOpenInput} className="orange btn">한마디 보내기
+        {notificationData?.senderId !== myInfo.memberId ?
+          <div className="nagging-modal-btn-container">
+            {isSendBtnClicked ? null :
+              <button onClick={handleOpenInput} className="orange btn">한마디 보내기
+              </button>
+            }
+            <button onClick={() => handleModal()} className="plane btn">닫기</button>
+          </div>
+          : <div className="nagging-modal-btn-container">
+            <button onClick={() => handleModal()} className="orange btn">닫기
             </button>
-          }
-          <button onClick={() => handleModal()} className="plane btn">닫기</button>
-        </div>
+          </div>
+        }
 
         {/*한마디 입력창 */}
-        {isSendBtnClicked ?
+        {isSendBtnClicked && notificationData?.senderId !== myInfo.memberId ?
           <div className="message-input--container">
 
             {

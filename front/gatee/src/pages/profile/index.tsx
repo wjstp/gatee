@@ -350,9 +350,9 @@ const ProfileIndex = () => {
               </span>
               <span className="birth__body__part--02">
                 {isMe ? (
-                  myInfo.birthType === "SOLAR" ? (" (양력)") : (" (음력)")
+                  myInfo.birthType === "SOLAR" ? (null) : (" (음력)")
                 ) : (
-                  familyMember?.birthType === "SOLAR" ? (" (양력)") : (" (음력)")
+                  familyMember?.birthType === "SOLAR" ? (null) : (" (음력)")
                 )}
               </span>
             </div>
@@ -428,16 +428,6 @@ const ProfileIndex = () => {
           ) : (
             // 내 프로필이 아닐 때
             <div className="character__non-created-other">
-              <div className="non-created-other__title">
-                <div className="text--icon">
-                  <Book
-                    className="icon"
-                  />
-                </div>
-                <span className="title--text">
-                  오늘의 한줄 정보
-                </span>
-              </div>
               <div className="non-created-other__character-box">
                 <div className="character-box__header">
                   <span className="header__part--01">

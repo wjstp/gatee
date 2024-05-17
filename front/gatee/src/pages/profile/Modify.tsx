@@ -32,7 +32,6 @@ const ProfileModify = () => {
   const [inputRole, setInputRole] = useState<string>(myInfo?.role);
   // 생일 관련
   const [inputBirthDay, setInputBirthDay] = useState<string>(myInfo?.birth);
-  const [birthDayErrorMessage, setBirthDayErrorMessage] = useState<string>("");
   // 캘린더타입
   const [inputBirthType, setInputBirthType] = useState<string>(myInfo?.birthType)
   // 전화번호 관련

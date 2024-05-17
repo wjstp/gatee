@@ -4,7 +4,9 @@ import {
   GetFamilyMemberApiReq,
   CreateFamilyCodeApiReq,
   JoinFamilyApiReq,
-  CreateMemberApiReq, getFamilyDataApiReq,
+  CreateMemberApiReq,
+  GetFamilyDataApiReq,
+  ChangeFamilyNameApiReq
 } from "@type/index";
 
 const local: AxiosInstance = localAxios();
@@ -25,7 +27,7 @@ export const createFamilyCodeApi = async function (data: CreateFamilyCodeApiReq,
 }
 
 // 가족 코드로 가족 조회
-export const getFamilyDataApi = async function (data: getFamilyDataApiReq,
+export const getFamilyDataApi = async function (data: GetFamilyDataApiReq,
                                                 success: (res: AxiosResponse<any>) => void,
                                                 fail: (err: AxiosError<any>) => void) {
   await local.get(`/family/check`, { params: data }).then(success).catch(fail);
@@ -36,6 +38,13 @@ export const joinFamilyApi = async function (data: JoinFamilyApiReq,
                                              success: (res: AxiosResponse<any>) => void,
                                              fail: (err: AxiosError<any>) => void) {
   await local.post(`/family/join`, data).then(success).catch(fail);
+}
+
+// 가족 이름 수정
+export const changeFamilyNameApi = async function (data: ChangeFamilyNameApiReq,
+                                                success: (res: AxiosResponse<any>) => void,
+                                                fail: (err: AxiosError<any>) => void) {
+  await local.patch(`/family/${data.familyId}`, data.familyName).then(success).catch(fail);
 }
 
 // 가족 정보 조회

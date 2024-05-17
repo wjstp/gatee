@@ -8,10 +8,15 @@ import dayjs, { Dayjs } from 'dayjs';
 import { DateField } from '@mui/x-date-pickers/DateField';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { useMemberStore } from "@store/useMemberStore";
+import base64 from "base-64";
+import { useFamilyStore } from "@store/useFamilyStore";
 
 const SignupMemberSetBirth = () => {
   const navigate = useNavigate();
-  const {
+  const accessToken: string | null = localStorage.getItem("accessToken");
+  const { familyName } = useFamilyStore();
+  const { myInfo, setMyInfo,
+    name,
     birth,
     birthType,
     gender,
@@ -22,6 +27,30 @@ const SignupMemberSetBirth = () => {
   } = useMemberStore();
 
   const [errorMessage, setErrorMessage] = useState<string>("");
+
+  // 권한에 따라 redirect
+  useEffect(() => {
+    if (accessToken) {
+      const payload: string = accessToken.substring(accessToken.indexOf('.')+1,accessToken.lastIndexOf('.'));
+      const decode = base64.decode(payload);
+      const json = JSON.parse(decode);
+
+      if (json.authorities[0] === "ROLE_ROLE_USER") {
+        alert(`잘못된 접근입니다.`);
+        navigate(`/main`);
+      } else {
+        if (!familyName) {
+          alert('먼저 가족을 소개해주세요!');
+          navigate(`/signup/family-set`);
+        } else {
+          if (!myInfo) {
+            alert('먼저 이름을 입력해주세요!');
+            navigate(`/signup/member-set`);
+          }
+        }
+      }
+    }
+  }, []);
 
   // MUI 커스텀 스타일
   const dateFieldCustom = {

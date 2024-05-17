@@ -1,7 +1,7 @@
 import React from 'react';
 import { ReactComponent as LineLogo } from "@assets/images/logo/logo_line.svg"
 import { ReactComponent as KaKao } from "@assets/images/signup/kakao_narrow.svg"
-import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const KaKaoLogin = () => {
   const redirectUri: string | undefined = `${process.env.REACT_APP_API_URL}/auth`
@@ -9,21 +9,28 @@ const KaKaoLogin = () => {
   const mobile_yebin: string = "http://192.168.137.1:3000/auth"
   const mobile_taehyeon: string = "http://70.12.247.24:3000/auth"
   const mobile_home_taehyeon: string = "http://192.168.35.47:3000/auth"
-  const navigate = useNavigate();
+  const location = useLocation();
 
   // 카카오 인가코드 발급
   const loginWithKaKao = () => {
     window.Kakao.Auth.authorize({
-      redirectUri: mobile_taehyeon,
+      redirectUri: web,
       scope: "profile_nickname, account_email",
     })
-    // navigate("/signup");
   }
 
   return (
-    <div className="onboarding__container-center">
+    <div
+      className="onboarding__container-center"
+    >
 
-      <div className="slider__container">
+      <div
+        className="slider__container"
+        style={location.pathname === '/' ? {
+          marginTop: "20dvh" } : {
+          marginTop: 0
+        }}
+      >
         {/* 한줄 소개 */}
         <div className="textFlex">
           <h2>가족들과 같이, </h2><h1>가티</h1>

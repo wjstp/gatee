@@ -6,12 +6,15 @@ import basicFamily from "@assets/images/profile/family.jpg";
 import ProfileCropper from "@pages/profile/components/Cropper";
 import useModal from "@hooks/useModal";
 import { imageResizer } from "@utils/imageResizer";
+import base64 from "base-64";
+import {PiCaretLeft} from "react-icons/pi";
 
 const SignupFamilySet = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const sender: string = "family-set"
+  const accessToken: string | null = localStorage.getItem("accessToken");
   const { familyName, setFamilyName, setFamilyImage, stringImage, setStringImage } = useFamilyStore();
   const { isOpen, openModal, closeModal } = useModal();
 
@@ -22,6 +25,18 @@ const SignupFamilySet = () => {
   useEffect(() => {
     setFamilyImage(null);
     setStringImage(basicFamily);
+
+    // 권한에 따라 redirect
+    if (accessToken) {
+      const payload: string = accessToken.substring(accessToken.indexOf('.')+1,accessToken.lastIndexOf('.'));
+      const decode = base64.decode(payload);
+      const json = JSON.parse(decode);
+
+      if (json.authorities[0] === "ROLE_ROLE_USER") {
+        alert(`잘못된 접근입니다.`);
+        navigate(`/main`);
+      }
+    }
   }, []);
 
   // 입력값
@@ -75,6 +90,11 @@ const SignupFamilySet = () => {
   const handleModalEvent = () => {
     // 모달 종료
     closeModal();
+  }
+
+  // 뒤로 가기
+  const backTo = ():void => {
+    navigate(-1);
   }
 
   return (

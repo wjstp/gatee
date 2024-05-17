@@ -178,6 +178,7 @@ const OnboardingIndex = () => {
 
   return (
     <div className="onboarding__container-center">
+
       <React.Fragment key={"bottom"}>
         <SwipeableDrawer
           anchor={"top"}

@@ -1,8 +1,8 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
 import { IoIosCamera } from "react-icons/io";
 import { useMemberStore } from "@store/useMemberStore";
-import { createMemberApi, createFamilyCodeApi } from "@api/member";
+import { createFamilyApi, createMemberApi, createFamilyCodeApi } from "@api/member";
 import { AxiosResponse, AxiosError } from "axios";
 import { useFamilyStore } from "@store/useFamilyStore";
 import dayjs from 'dayjs';
@@ -10,6 +10,7 @@ import ProfileCropper from "@pages/profile/components/Cropper";
 import useModal from "@hooks/useModal";
 import { modifyProfileImageApi } from "@api/profile";
 import { imageResizer } from "@utils/imageResizer";
+import base64 from "base-64";
 
 const SignupMemberSetCheck = () => {
   const location = useLocation();
@@ -18,6 +19,8 @@ const SignupMemberSetCheck = () => {
   const navigate = useNavigate();
   const sender: string = "member-set"
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const accessToken: string | null = localStorage.getItem("accessToken");
+
   const { isOpen, openModal, closeModal } = useModal();
   const {
     name,
@@ -27,17 +30,88 @@ const SignupMemberSetCheck = () => {
     memberImage,
     stringMemberImage,
   } = useMemberStore();
-  const { familyId, familyCode, setFamilyCode } = useFamilyStore();
+  const {
+    familyId,
+    setFamilyId,
+    familyImage,
+    familyName,
+    familyCode,
+    setFamilyCode,
+  } = useFamilyStore();
 
   const [cropImage, setCropImage] = useState<string>("");
 
+  // 권한에 따라 redirect
+  useEffect(() => {
+    if (accessToken) {
+      const payload: string = accessToken.substring(accessToken.indexOf('.')+1,accessToken.lastIndexOf('.'));
+      const decode = base64.decode(payload);
+      const json = JSON.parse(decode);
+
+      if (json.authorities[0] === "ROLE_ROLE_USER") {
+        alert(`잘못된 접근입니다.`);
+        navigate(`/main`);
+      } else {
+        if (!familyName) {
+          alert('먼저 가족을 소개해주세요!');
+          navigate(`/signup/family-set`);
+        } else {
+          if (!name) {
+            alert('먼저 이름을 입력해주세요!');
+            navigate(`/signup/member-set`);
+          } else {
+            if (!birth) {
+              alert('먼저 생일을 입력해주세요!');
+              navigate(`/signup/member-set/birth`);
+            } else {
+              if (!role) {
+                alert('먼저 역할을 입력해주세요!');
+                navigate(`/signup/member-set/role`);
+              }
+            }
+          }
+        }
+      }
+    }
+  }, []);
+
   // 다음 넘어가기
   const goToMemberSetPermission = () => {
-    createMember();
+    createFamily();
+    // createMember();
+  }
+
+  // 가족 생성하기
+  const createFamily = (): void => {
+    const formData = new FormData();
+    // 파일이 업로드 되어있으면 파일 이어붙이기
+    if (familyImage instanceof File) {
+      formData.append("file", familyImage);
+    }
+    formData.append("name", familyName);
+    formData.append("fileType", "FAMILY_PROFILE");
+
+    // 가족 생성 요청 보내기
+    createFamilyApi(
+      formData,
+      (res: AxiosResponse<any>) => {
+        console.log(res);
+        setFamilyId(res.data.familyId);
+        console.log("응답 아이디", res.data.familyId);
+        console.log("응답 바꾼 아이디", familyId);
+        // 회원 생성
+        createMember(res.data.familyId);
+      },
+      (err: AxiosError<any>) => {
+        console.log(err)
+        alert("에러가 발생했습니다.\n다시 로그인해보실래요?");
+        navigate("/kakao");
+      }
+    ).then().catch();
   }
 
   // 회원 정보 등록
-  const createMember = () => {
+  const createMember = (familyId: string) => {
     if (birth && role) {
       createMemberApi(
         {
@@ -118,9 +192,9 @@ const SignupMemberSetCheck = () => {
     ).then().catch();
   }
 
-  // 뒤로 가기
+  // 다시 입력하기
   const backTo = () => {
-    navigate(-1);
+    navigate(`/signup/member-set`);
   }
 
   // 이미지 선택 처리

@@ -1,15 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { requestPermission } from "../../firebase-messaging-sw";
+import base64 from "base-64";
 
 const SignupPermission = () => {
   const navigate = useNavigate();
+  const accessToken: string | null = localStorage.getItem("accessToken");
 
   // 체크박스
   const [allChecked, setAllChecked] = useState(false);
   const [privacyChecked, setPrivacyChecked] = useState(false);
   const [pushChecked, setPushChecked] = useState(false);
   const [cameraChecked, setCameraChecked] = useState(false);
+
+  // 권한에 따라 redirect
+  useEffect(() => {
+    if (accessToken) {
+      const payload: string = accessToken.substring(accessToken.indexOf('.')+1,accessToken.lastIndexOf('.'));
+      const decode = base64.decode(payload);
+      const json = JSON.parse(decode);
+
+      if (json.authorities[0] === "ROLE_ROLE_USER") {
+        alert(`잘못된 접근입니다.`);
+        navigate(`/main`);
+      }
+    }
+  }, []);
 
   // 멤버 생성
   const goToFamilyJoin = () => {

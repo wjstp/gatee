@@ -500,16 +500,16 @@
       @extend %circular-profile-image;
 
       margin-top: 3%;
-      height: 170px;
-      width: 170px;
+      height: 23svh;
+      width: 23svh;
       position: relative;
       border: 1px solid $gray75;
 
       .img-box__btn {
         @extend %circular-profile-image;
 
-        height: 170px;
-        width: 170px;
+        height: 23svh;
+        width: 23svh;
         opacity: 0.7;
         position: relative;
 

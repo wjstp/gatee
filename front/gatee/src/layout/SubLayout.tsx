@@ -2,6 +2,8 @@ import React, {useEffect, useState} from "react";
 import {Outlet, useLocation} from 'react-router-dom'
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { useModalStore } from "@store/useModalStore";
+import SignupTopBar from "@components/SignupTopBar";
+import SignupBottomBar from "@components/SignupBottomBar";
 
 const SubLayout = () => {
   const { showModal } = useModalStore();
@@ -30,9 +32,11 @@ const SubLayout = () => {
               )}
           </Helmet>
         </HelmetProvider>
+      <SignupTopBar/>
       <div id="sub">
         <Outlet />
       </div>
+      <SignupBottomBar/>
     </>
   )
 }

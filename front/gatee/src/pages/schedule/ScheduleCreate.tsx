@@ -44,7 +44,7 @@ const ScheduleCreate = () => {
   const { myInfo } = useMemberStore();
 
   const [title, setTitle] = useState<string>("");
-  const [emoji, setEmoji] = useState<string>("red")
+  const [emoji, setEmoji] = useState<string>("orange")
   const [content, setContent] = useState<string>("");
   const [category, setCategory] = useState<string>(ScheduleType.GROUP)
   const [startDate, setStartDate] = useState<Dayjs | null>(null);
@@ -121,8 +121,6 @@ const ScheduleCreate = () => {
 
     if (event.target.value as string === ScheduleType.GROUP) {
       setMemberIdList(allMember);
-    } else if (event.target.value as string === ScheduleType.PERSONAL) {
-      setMemberIdList([myInfo.memberId]);
     }
     else {
       setMemberIdList([]);
@@ -216,8 +214,21 @@ const ScheduleCreate = () => {
 
     // 시간 초기화
     setStartTime(dayjs(`${searchParams.get("start")}T00:00:00`));
-    setEndTime(dayjs(`${searchParams.get("end")}T23:59:59`));;
+    setEndTime(dayjs(`${searchParams.get("end")}T23:59:59`));
   }
+
+  useEffect(() => {
+    if (category === ScheduleType.EVENT) {
+      setIsAllDayCheck(true);
+
+      // 날짜 및 시간 초기화
+      setEndDate(startDate);
+      setStartTime(dayjs(`${searchParams.get("start")}T00:00:00`));
+      setEndTime(dayjs(`${searchParams.get("end")}T23:59:59`));
+    } else {
+      setIsAllDayCheck(false);
+    }
+  }, [category]);
 
   // 참여자 입력 핸들러
   const handleSetParticipants = (value: string) => {
@@ -310,17 +321,14 @@ const ScheduleCreate = () => {
             <button
               key={index}
               className={`create-schedule__input-color-item${item.name === emoji ? '--active' : ''}`}
-              style={{backgroundColor: getColorCode(item.name)}}
-              onClick={() => setEmoji(item.name)}
+              style={{backgroundColor: getColorCode(item.name).code}}
+              onClick={(event) => {
+                handleFinishTab(event);
+                setEmoji(item.name);
+              }}
             />
           ))}
         </div>
-        <button
-          className="create-schedule__input-color-close"
-          onClick={handleFinishTab}
-        >
-          확인
-        </button>
       </div>
     )
   }
@@ -380,74 +388,65 @@ const ScheduleCreate = () => {
 
   return (
     <div className="create-schedule">
-        <div className="create-schedule__input-container">
-          <div className="create-schedule__title">
-            새 일정 만들기
+      <div className="create-schedule__input-container">
+        <div className="create-schedule__title">
+          새 일정 만들기
+        </div>
 
-            <div className="create-schedule__button-create">
-              <button
-                disabled={!isButtonEnabled()}
-                onClick={createSchedule}
-              >
-                저장
-              </button>
-            </div>
-          </div>
-
-          <ThemeProvider theme={customTheme(outerTheme)}>
+        <ThemeProvider theme={customTheme(outerTheme)}>
           <div className="create-schedule-info">
-              {/*일정 제목 입력*/}
-              <TextField
-                fullWidth
-                value={title}
-                onChange={handleSetTitle}
-                placeholder="일정 제목을 입력해 주세요"
-                error={isTitleError}
-                multiline
-                variant="standard"
-                spellCheck={false}
-                InputProps={{
-                  style: { padding: '20px 0' },
-                  inputProps: { maxLength: 20 },
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      {/*일정 색상 선택*/}
-                      <button
-                        className="create-schedule-info__input-color-button"
-                        onClick={toggleDrawer("bottom", true)}
-                        style={{ backgroundColor: getColorCode(emoji) }}
-                      >
-                      </button>
-                    </InputAdornment>
-                  ),
-                  endAdornment: (
-                    <InputAdornment position="end" style={{ fontSize: '15px', marginRight: '5px' }}>
-                      {title.length}/20
-                    </InputAdornment>
-                  )
-                }}
-              />
+            {/*일정 제목 입력*/}
+            <TextField
+              fullWidth
+              value={title}
+              onChange={handleSetTitle}
+              placeholder="일정 제목을 입력해 주세요"
+              error={isTitleError}
+              multiline
+              variant="standard"
+              spellCheck={false}
+              InputProps={{
+                style: {padding: '24px 0'},
+                inputProps: {maxLength: 20},
+                startAdornment: (
+                  <InputAdornment position="start">
+                    {/*일정 색상 선택*/}
+                    <button
+                      className="create-schedule-info__input-color-button"
+                      onClick={toggleDrawer("bottom", true)}
+                      style={{backgroundColor: getColorCode(emoji).code}}
+                    >
+                    </button>
+                  </InputAdornment>
+                ),
+                endAdornment: (
+                  <InputAdornment position="end" style={{fontSize: '15px', marginRight: '5px'}}>
+                    {title.length}/20
+                  </InputAdornment>
+                )
+              }}
+            />
 
-              {/*일정 내용 입력*/}
-              <TextField
-                fullWidth
-                value={content}
-                onChange={handleSetContent}
-                placeholder="설명 추가"
-                multiline
-                maxRows={5}
-                variant="standard"
-                spellCheck={false}
-                InputProps={{
-                  style: { padding: '20px 0' },
-                  inputProps: { maxLength: 1000 },
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <BsTextParagraph size={24} />
-                    </InputAdornment>
-                  )
-                }}
-              />
+            {/*일정 내용 입력*/}
+            <TextField
+              fullWidth
+              value={content}
+              onChange={handleSetContent}
+              placeholder="설명 추가"
+              multiline
+              maxRows={5}
+              variant="standard"
+              spellCheck={false}
+              InputProps={{
+                style: {padding: '24px 0'},
+                inputProps: {maxLength: 1000},
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <BsTextParagraph size={24}/>
+                  </InputAdornment>
+                )
+              }}
+            />
           </div>
 
           {/*일정 기간 선택*/}
@@ -465,7 +464,6 @@ const ScheduleCreate = () => {
                   onChange={handleSetStartDate}
                   onError={(newError) => setStartDateError(newError)}
                   variant="standard"
-                  fullWidth
                   className="create-schedule-period__input-date"
                   slotProps={{
                     textField: {
@@ -473,12 +471,14 @@ const ScheduleCreate = () => {
                     },
                   }}
                   InputProps={{
-                    style: { padding: '20px 0' },
+                    style: {padding: '20px 0', width: '220px'},
                   }}
                   FormHelperTextProps={{
-                    style: { textAlign: 'center' },
+                    style: {textAlign: 'center'},
                   }}
                 />
+
+                <div style={{flex: "1", borderBottom: "1px solid #efefef"}}></div>
 
                 {/*시작 시간*/}
                 <TimeField
@@ -489,7 +489,7 @@ const ScheduleCreate = () => {
                   variant="standard"
                   className="create-schedule-period__input-time"
                   InputProps={{
-                    style: { padding: '20px 0' },
+                    style: {padding: '20px 0', width: '60px'},
                   }}
                 />
               </div>
@@ -498,12 +498,12 @@ const ScheduleCreate = () => {
                 {/*종료 일자*/}
                 <DateField
                   value={endDate}
+                  disabled={category === ScheduleType.EVENT}
                   format={`YYYY. MM. DD. ${calculateWeekday(endDate)}요일`}
                   onChange={handleSetEndDate}
                   minDate={dayjs(startDate)}
                   onError={(newError) => setEndDateError(newError)}
                   variant="standard"
-                  fullWidth
                   className="create-schedule-period__input-date"
                   slotProps={{
                     textField: {
@@ -511,12 +511,14 @@ const ScheduleCreate = () => {
                     },
                   }}
                   InputProps={{
-                    style: { padding: '20px 0' },
+                    style: {padding: '20px 0', width: '220px'},
                   }}
                   FormHelperTextProps={{
-                    style: { textAlign: 'center' },
+                    style: {textAlign: 'center'},
                   }}
                 />
+
+                <div style={{flex: "1", borderBottom: "1px solid #efefef"}}></div>
 
                 {/*종료 시간*/}
                 <TimeField
@@ -527,75 +529,88 @@ const ScheduleCreate = () => {
                   variant="standard"
                   className="create-schedule-period__input-time"
                   InputProps={{
-                    style: { padding: '20px 0' },
+                    style: {padding: '20px 0', width: '60px'},
                   }}
                 />
               </div>
             </LocalizationProvider>
           </div>
-          </ThemeProvider>
+        </ThemeProvider>
 
-          <div className="create-schedule-all-day">
-            <p>하루 종일</p>
-            <CustomSwitch checked={isAllDayCheck} onChange={handleALlDayCheck} sx={{marginRight: "5px"}}/>
-          </div>
-
-          {/*일정 카테고리*/}
-          <div className="create-schedule-category">
-            <div className="create-schedule__wrapper">
-              <div className="create-schedule__icon">
-                <PiShapes size={24} />
-              </div>
-              <p>일정 종류</p>
-            </div>
-
-            {/*일정 카테고리 선택*/}
-            <FormControl variant="standard">
-              <Select
-                value={category}
-                onChange={handleSetCategory}
-              >
-                <MenuItem value={ScheduleType.GROUP}>단체 일정</MenuItem>
-                <MenuItem value={ScheduleType.PERSONAL}>개인 일정</MenuItem>
-                <MenuItem value={ScheduleType.EVENT}>이벤트</MenuItem>
-              </Select>
-            </FormControl>
-          </div>
-
-          {/*참여하는 사람*/}
-          {category === ScheduleType.GROUP && (
-            <>
-              <div className="create-schedule-participant-title">
-                <div className="create-schedule__wrapper">
-                  <div className="create-schedule__icon">
-                    <GoPerson size={24} />
-                  </div>
-                  <p>참석자 선택</p>
-                </div>
-                <div className="create-schedule-participant__number">
-                  {getParticipantNumber()}
-                </div>
-              </div>
-
-              {/*가족 프로필*/}
-              <div className="create-schedule-participant__profile">
-                {familyInfo.map((member) => (
-                  renderProfile(member.memberId)
-                ))}
-              </div>
-            </>
-          )}
+        <div className="create-schedule-all-day">
+          <p>하루 종일</p>
+          <CustomSwitch
+            checked={isAllDayCheck}
+            onChange={handleALlDayCheck}
+            sx={{marginRight: "5px"}}
+            disabled={category === ScheduleType.EVENT}
+          />
         </div>
 
-        {/*색상 선택 모달*/}
-        <SwipeableDrawer
-          anchor={"bottom"}
-          open={state["bottom"]}
-          onClose={toggleDrawer("bottom", false)}
-          onOpen={toggleDrawer("bottom", true)}>
-          {renderColorList("bottom")}
-        </SwipeableDrawer>
+        {/*일정 카테고리*/}
+        <div className="create-schedule-category">
+          <div className="create-schedule__wrapper">
+            <div className="create-schedule__icon">
+              <PiShapes size={24}/>
+            </div>
+            <p>일정 종류</p>
+          </div>
 
+          {/*일정 카테고리 선택*/}
+          <FormControl variant="standard">
+            <Select
+              value={category}
+              onChange={handleSetCategory}
+            >
+              <MenuItem value={ScheduleType.GROUP}>단체 일정</MenuItem>
+              <MenuItem value={ScheduleType.PERSONAL}>개인 일정</MenuItem>
+              <MenuItem value={ScheduleType.EVENT}>이벤트</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
+
+        {/*참여하는 사람*/}
+        {category === ScheduleType.GROUP && (
+          <>
+            <div className="create-schedule-participant-title">
+              <div className="create-schedule__wrapper">
+                <div className="create-schedule__icon">
+                  <GoPerson size={24}/>
+                </div>
+                <p>참석자 선택</p>
+              </div>
+              <div className="create-schedule-participant__number">
+                {getParticipantNumber()}
+              </div>
+            </div>
+
+            {/*가족 프로필*/}
+            <div className="create-schedule-participant__profile">
+              {familyInfo.map((member) => (
+                renderProfile(member.memberId)
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+
+      {/*색상 선택 모달*/}
+      <SwipeableDrawer
+        anchor={"bottom"}
+        open={state["bottom"]}
+        onClose={toggleDrawer("bottom", false)}
+        onOpen={toggleDrawer("bottom", true)}>
+        {renderColorList("bottom")}
+      </SwipeableDrawer>
+
+      <div className="create-schedule__button-create">
+        <button
+          disabled={!isButtonEnabled()}
+          onClick={createSchedule}
+        >
+          저장
+        </button>
+      </div>
     </div>
   );
 }

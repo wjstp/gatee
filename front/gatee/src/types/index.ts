@@ -1,5 +1,22 @@
 /* 응답타입: Res, 요청타입: Req, props타입: Props 뒤에 붙이고 사용하기 */
 
+// 인앱설치용
+export interface BeforeInstallPromptEvent {
+  readonly platforms: string[];
+  readonly userChoice: Promise<{
+    outcome: 'accepted' | 'dismissed';
+    platform: string;
+  }>;
+  preventDefault(): void;
+  prompt(): Promise<void>;
+}
+
+declare global {
+  interface WindowEventMap {
+    beforeinstallprompt: BeforeInstallPromptEvent;
+  }
+}
+
 // 가족
 export interface FamilyStore {
   chatRoomId: number | null;
@@ -100,13 +117,19 @@ export interface CreateFamilyCodeApiReq {
 }
 
 // 가족 코드로 조회하기
-export interface getFamilyDataApiReq {
+export interface GetFamilyDataApiReq {
   familyCode: string;
 }
 
 // 가족 합류
 export interface JoinFamilyApiReq {
   familyCode: string;
+}
+
+// 가족 이름 수정
+export interface ChangeFamilyNameApiReq {
+  familyName: string;
+  familyId: string;
 }
 
 // 가족 정보 조회
@@ -174,6 +197,11 @@ export interface ScheduleListRes {
   content: string;
   startDate: string;
   endDate: string;
+  scheduleRecordCount: number;
+  participateMembers: {
+    nickname: string;
+    profileImageUrl: string;
+  }[]
 }
 
 export interface ScheduleListReq {
@@ -189,7 +217,7 @@ export interface ScheduleDetailRes {
   content: string;
   startDate: string;
   endDate: string;
-  scheduleRecordRes: ScheduleRecord[];
+  scheduleRecordRes: ScheduleRecord[] | null;
   participateMembers: {
     nickname: string;
     profileImageUrl: string;
@@ -229,7 +257,7 @@ export interface CreateRecordReq {
   scheduleId: number;
   data: {
     content: string;
-    fileIdList: string[];
+    fileIdList: number[];
   }
 }
 
@@ -243,6 +271,12 @@ export enum ScheduleType {
   GROUP = 'GROUP',
   PERSONAL = 'PERSONAL',
   EVENT = 'EVENT'
+}
+
+export interface ScheduleColor {
+  name: string;
+  code: string;
+  image: string;
 }
 
 export interface Holiday {

@@ -55,13 +55,9 @@
 
   // more 버튼
   .fc-daygrid-day-bottom {
-    .fc-daygrid-more-link {
-      pointer-events: none;
-      font:{
-        size: $font-size-xSmall;
-        weight: 500;
-      }
-      color: $orange400;
-    }
+    display: flex;
+    justify-content: center;
+    align-items: end;
   }
 }
+
