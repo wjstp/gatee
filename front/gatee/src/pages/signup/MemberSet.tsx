@@ -80,6 +80,7 @@ const SignupMemberSet = () => {
           placeholder="예) 홍길동"
           value={name}
           onChange={handleInputChange}
+          spellCheck={false}
         />
       </div>
 
