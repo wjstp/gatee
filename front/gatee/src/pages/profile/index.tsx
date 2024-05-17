@@ -193,6 +193,23 @@ const ProfileIndex = () => {
 
   return (
     <div className="profile-index">
+
+      {/*가족 초대 버튼*/}
+      {familyMember?.isLeader && isMe ? (
+        <div className="profile__invite-box">
+          <button
+            className="invite-box__btn"
+            onClick={createFamilyCode}
+          >
+            <div className="btn--text">
+              초대하기
+            </div>
+          </button>
+        </div>
+      ) : (
+        null
+      )}
+
       {/*프로필 섹션*/}
       <div className="profile-index__profile">
 
@@ -208,22 +225,6 @@ const ProfileIndex = () => {
             alt="profile-image"
           />
         </div>
-
-        {/*가족 초대 버튼*/}
-        {familyMember?.isLeader && isMe ? (
-          <div className="profile__invite-box">
-            <button
-              className="invite-box__btn"
-              onClick={createFamilyCode}
-            >
-              <div className="btn--text">
-                초대하기
-              </div>
-            </button>
-          </div>
-        ) : (
-          null
-        )}
 
         {/*닉네임*/}
         <div className="profile__nickname">
@@ -409,7 +410,7 @@ const ProfileIndex = () => {
       {/*백과사전 섹션*/}
       <div className="profile-index__character">
 
-        {askList.length !== 0 ? (
+        {askList.length === 0 ? (
           // 사전이 비어있다면
 
           isMe ? (
@@ -434,12 +435,12 @@ const ProfileIndex = () => {
                     {familyMember?.nickname}
                   </span>
                   <span className="header__part--02">
-                    님의 사전이 텅 비어있어요!
+                    님의 사전이 텅 비어 있어요!
                   </span>
                 </div>
                 <div className="character-box__body--01">
                   <span className="body--01--text">
-                    사전을 만들어달라고 말해 볼까요?
+                    사전을 만들어 달라고 말해 볼까요?
                   </span>
                 </div>
                 <div className="character-box__body--02">
@@ -460,15 +461,19 @@ const ProfileIndex = () => {
           <div className="character__created">
             <div className="created__title">
               <div className="text--icon">
-                <Book
-                  className="icon"
-                />
+
               </div>
-              <span className="title--text">
-                  오늘의 한줄 정보
-                </span>
+
+            <Book
+              className="profile__book-icon"
+            />
+            <span className="profile__title-text">
+              오늘의 한줄 정보
+            </span>
             </div>
             <div className="created__character-box">
+              <div className="created__character-box__top">
+              </div>
               <div className="character-box__header">
                 <span className="header__part--01">
                   {familyMember?.nickname}
@@ -487,7 +492,7 @@ const ProfileIndex = () => {
                   className="body--02__btn"
                 >
                   <span className="btn--text">
-                    사전
+                    백과사전 보러 가기
                   </span>
                 </button>
               </div>
