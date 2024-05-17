@@ -24,6 +24,7 @@ build:
 
     # security 관련 설정 파일 생성
     - cp application-security.yaml.template application-security.yaml
+    - cat application-security.yaml
 
     # batch 관련 설정 파일 생성
     - cp application-batch.yaml.template application-batch.yaml

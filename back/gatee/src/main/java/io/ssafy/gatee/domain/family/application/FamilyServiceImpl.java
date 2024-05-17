@@ -99,8 +99,11 @@ public class FamilyServiceImpl implements FamilyService {
                     .fileType(FileType.FAMILY_PROFILE)
                     .build();
 
-            imageFile = fileRepository.findByUrl(DEFAULT_FAMILY_IMAGE_URL)
-                    .orElse(fileRepository.save(defaultFile));
+            if(fileRepository.existsByUrl(DEFAULT_FAMILY_IMAGE_URL)){
+                imageFile = fileRepository.save(defaultFile);
+            } else {
+                imageFile = fileRepository.findByUrl(DEFAULT_FAMILY_IMAGE_URL).get(0);
+            }
         } else {
             imageFile = s3Util.upload(fileType, file);
 
@@ -180,8 +183,7 @@ public class FamilyServiceImpl implements FamilyService {
 
     @Override
     public Long findDefaultFamilyImageId(String url) {
-        return fileRepository.findByUrl(url).orElseThrow(() ->
-                new FileNotFoundException(FIlE_NOT_FOUND)).getId();
+        return fileRepository.findByUrl(url).get(0).getId();
     }
 
     @Override
