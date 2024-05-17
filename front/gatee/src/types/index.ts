@@ -189,6 +189,11 @@ export interface ScheduleListRes {
   content: string;
   startDate: string;
   endDate: string;
+  scheduleRecordCount: number;
+  participateMembers: {
+    nickname: string;
+    profileImageUrl: string;
+  }[]
 }
 
 export interface ScheduleListReq {
@@ -204,7 +209,7 @@ export interface ScheduleDetailRes {
   content: string;
   startDate: string;
   endDate: string;
-  scheduleRecordRes: ScheduleRecord[];
+  scheduleRecordRes: ScheduleRecord[] | null;
   participateMembers: {
     nickname: string;
     profileImageUrl: string;
@@ -244,7 +249,7 @@ export interface CreateRecordReq {
   scheduleId: number;
   data: {
     content: string;
-    fileIdList: string[];
+    fileIdList: number[];
   }
 }
 
@@ -258,6 +263,12 @@ export enum ScheduleType {
   GROUP = 'GROUP',
   PERSONAL = 'PERSONAL',
   EVENT = 'EVENT'
+}
+
+export interface ScheduleColor {
+  name: string;
+  code: string;
+  image: string;
 }
 
 export interface Holiday {

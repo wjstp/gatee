@@ -54,7 +54,7 @@ export const applyScheduleParticipationApi = async function (requestData: Schedu
                                                     success: (res: AxiosResponse<any>) => void,
                                                     fail: (err: AxiosError<any>) => void) {
   const { scheduleId, familyId } = requestData;
-  await local.post(`/schedule/${scheduleId}`, familyId).then(success).catch(fail);
+  await local.post(`/schedule/${scheduleId}?familyId=${familyId}`).then(success).catch(fail);
 }
 
 // 일정 참여 취소
@@ -62,7 +62,7 @@ export const cancelScheduleParticipationApi = async function (requestData: Sched
                                                 success: (res: AxiosResponse<any>) => void,
                                                 fail: (err: AxiosError<any>) => void) {
   const { scheduleId, familyId } = requestData;
-  await local.patch(`/schedule/${scheduleId}/cancel`, familyId).then(success).catch(fail);
+  await local.patch(`/schedule/${scheduleId}/cancel?familyId=${familyId}`).then(success).catch(fail);
 }
 
 // 일정 후기 등록
