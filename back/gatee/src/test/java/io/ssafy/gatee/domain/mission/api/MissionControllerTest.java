@@ -34,7 +34,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.queryPar
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Slf4j
-@ActiveProfiles({"common, test"})
+@ActiveProfiles({"common", "test"})
 @WebMvcTest({MissionController.class})
 @MockBean(JpaMetamodelMappingContext.class)
 class MissionControllerTest extends RestDocsTestSupport {

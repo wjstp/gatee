@@ -41,7 +41,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Slf4j
-@ActiveProfiles({"common, test"})
+@ActiveProfiles({"common", "test"})
 @WebMvcTest({ScheduleController.class})
 @MockBean(JpaMetamodelMappingContext.class)
 class ScheduleControllerTest extends RestDocsTestSupport {

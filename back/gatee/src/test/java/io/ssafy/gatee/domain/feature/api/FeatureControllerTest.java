@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 
 @Slf4j
-@ActiveProfiles({"common, test"})
+@ActiveProfiles({"common", "test"})
 @WebMvcTest({FeatureController.class})
 @MockBean(JpaMetamodelMappingContext.class)
 class FeatureControllerTest extends RestDocsTestSupport {

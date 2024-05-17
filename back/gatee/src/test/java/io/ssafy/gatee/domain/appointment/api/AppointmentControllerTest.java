@@ -31,7 +31,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Slf4j
-@ActiveProfiles({"common, test"})
+@ActiveProfiles({"common", "test"})
 @WebMvcTest({AppointmentController.class})
 @MockBean(JpaMetamodelMappingContext.class)
 class AppointmentControllerTest extends RestDocsTestSupport {
