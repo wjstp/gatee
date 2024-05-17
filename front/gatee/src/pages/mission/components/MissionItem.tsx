@@ -1,5 +1,6 @@
 import React from "react";
 import CameraIcon from "@assets/images/icon3D/camera.png"
+// import SmileIcon from "@assets/images/icon3D/smile.png"
 import TargetIcon from "@assets/images/icon3D/target.png"
 import CalendarIcon from "@assets/images/icon3D/calendar.png"
 import PencilIcon from "@assets/images/icon3D/pencil.png"

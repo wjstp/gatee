@@ -21,7 +21,7 @@ function ExamIndex() {
         <h2>나를 테스트해보는 시간!</h2>
       </div>
       <div className="exam__index__img">
-        <Lottie animationData={ExamAnimation} />
+        <Lottie animationData={ExamAnimation} loop={true} />
       </div>
       <div className="exam__index-goToExam">
         <Link to="/exam/taking">

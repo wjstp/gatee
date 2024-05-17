@@ -60,6 +60,7 @@
 
         .notification-item--top--container {
           @include flex-row;
+          width: 69dvw;
           justify-content: space-between;
 
           .notification-item-title {
@@ -69,6 +70,11 @@
             text-overflow: ellipsis;
             white-space: nowrap;
             //color: $orange500;
+          }
+
+          .notification-item-time {
+            //@include mr-(1);
+            //background-color: red;
           }
         }
 
@@ -216,6 +222,7 @@
 
       .plane {
         flex-grow: 5;
+        color: black;
         border: 1px solid $gray100;
       }
     }
