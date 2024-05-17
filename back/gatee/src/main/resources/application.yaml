@@ -10,11 +10,19 @@ spring:
       prod:
         - db-prod
         - security-prod
+#      batch:
+#        - db-prod
+#        - batch-prod
+#        - security-prod
+      test:
+        - db-prod
+        - security-prod
     include:
       - db
       - security
       - aws
       - ai
+      - batch
 
 ---
 spring:

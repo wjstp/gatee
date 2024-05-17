@@ -1,13 +1,36 @@
-import React, { useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import { useNavigate } from "react-router-dom";
 import { useMemberStore } from "@store/useMemberStore";
+import base64 from "base-64";
+import { useFamilyStore } from "@store/useFamilyStore";
 
 const SignupMemberSet = () => {
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
+  const accessToken: string | null = localStorage.getItem("accessToken");
   const { name, setName } = useMemberStore();
+  const { familyName } = useFamilyStore();
 
   const [errorMessage, setErrorMessage] = useState<string>("");
+
+  // 권한에 따라 redirect
+  useEffect(() => {
+    if (accessToken) {
+      const payload: string = accessToken.substring(accessToken.indexOf('.')+1,accessToken.lastIndexOf('.'));
+      const decode = base64.decode(payload);
+      const json = JSON.parse(decode);
+
+      if (json.authorities[0] === "ROLE_ROLE_USER") {
+        alert(`잘못된 접근입니다.`);
+        navigate(`/main`);
+      } else {
+        if (!familyName) {
+          alert('먼저 가족을 소개해주세요!');
+          navigate(`/signup/family-set`);
+        }
+      }
+    }
+  }, []);
 
   // 입력값
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -57,6 +80,7 @@ const SignupMemberSet = () => {
           placeholder="예) 홍길동"
           value={name}
           onChange={handleInputChange}
+          spellCheck={false}
         />
       </div>
 

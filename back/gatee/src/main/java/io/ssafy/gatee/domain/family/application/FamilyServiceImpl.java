@@ -24,14 +24,10 @@ import io.ssafy.gatee.domain.member_family.entity.MemberFamily;
 import io.ssafy.gatee.global.exception.error.bad_request.ExistsFamilyException;
 import io.ssafy.gatee.global.exception.error.bad_request.ExpiredCodeException;
 import io.ssafy.gatee.global.exception.error.not_found.FamilyNotFoundException;
-import io.ssafy.gatee.global.exception.error.not_found.FileNotFoundException;
 import io.ssafy.gatee.global.exception.error.not_found.MemberFamilyNotFoundException;
 import io.ssafy.gatee.global.redis.dao.OnlineRoomMemberRepository;
 import io.ssafy.gatee.global.redis.dto.OnlineRoomMember;
 import io.ssafy.gatee.global.s3.util.S3Util;
-import io.ssafy.gatee.global.websocket.application.ChatService;
-import io.ssafy.gatee.global.websocket.dto.FireStoreChatDto;
-import io.ssafy.gatee.global.websocket.dto.MessageType;
 import jodd.util.StringUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,12 +38,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static io.ssafy.gatee.global.exception.message.ExceptionMessage.*;
-import static io.ssafy.gatee.global.websocket.dto.MessageType.*;
 
 @Service
 @Slf4j
@@ -90,24 +84,20 @@ public class FamilyServiceImpl implements FamilyService {
 
         File imageFile;
 
-        if (fileType == null || file == null) {
-            File defaultFile = File.builder()
-                    .name("family")
-                    .originalName("family.jpg")
-                    .url(DEFAULT_FAMILY_IMAGE_URL)
-                    .dir("/default")
-                    .fileType(FileType.FAMILY_PROFILE)
-                    .build();
-
-            if(fileRepository.existsByUrl(DEFAULT_FAMILY_IMAGE_URL)){
-                imageFile = fileRepository.save(defaultFile);
-            } else {
-                imageFile = fileRepository.findByUrl(DEFAULT_FAMILY_IMAGE_URL).get(0);
-            }
-        } else {
+        if (file != null) {
             imageFile = s3Util.upload(fileType, file);
-
             fileRepository.save(imageFile);
+        } else {
+            imageFile = fileRepository.findByUrl(DEFAULT_FAMILY_IMAGE_URL)
+                    .orElse(fileRepository.save(
+                            File.builder()
+                                    .name("family")
+                                    .originalName("family.jpg")
+                                    .url(DEFAULT_FAMILY_IMAGE_URL)
+                                    .dir("/default")
+                                    .fileType(FileType.FAMILY_PROFILE)
+                                    .build())
+                    );
         }
 
         ChatRoom chatRoom = ChatRoom.builder().build();
@@ -179,11 +169,6 @@ public class FamilyServiceImpl implements FamilyService {
         return FamilyCodeRes.builder()
                 .familyCode(randomCode)
                 .build();
-    }
-
-    @Override
-    public Long findDefaultFamilyImageId(String url) {
-        return fileRepository.findByUrl(url).get(0).getId();
     }
 
     @Override
@@ -271,9 +256,11 @@ public class FamilyServiceImpl implements FamilyService {
     public FamilyCheckRes checkFamilyCode(String familyCode, UUID memberId) {
         ValueOperations<String, String> redisValueOperation = redisTemplate.opsForValue();
 
-        String familyId = redisValueOperation.get(familyCode);
+        String familyId = redisValueOperation.get(familyCode.trim());
 
         if (familyId == null) {
+            log.info("family code : " + familyCode);
+//            log.info("family id : " + familyId);
             throw new ExpiredCodeException(EXPIRED_CODE);
         } else {
             Family family = familyRepository.findById(UUID.fromString(familyId))
@@ -290,5 +277,36 @@ public class FamilyServiceImpl implements FamilyService {
     @Override
     public List<Family> findAllFamily() {
         return familyRepository.findAll();
+    }
+
+    // 가족 사진 변경
+    @Override
+    public void editFamilyImage(FileType fileType, MultipartFile file, UUID memberId) throws IOException {
+        Member member = memberRepository.getReferenceById(memberId);
+
+        MemberFamily memberFamily = memberFamilyRepository.findByMember(member)
+                .orElseThrow(() -> new MemberFamilyNotFoundException(MEMBER_FAMILY_NOT_FOUND));
+
+        Family family = memberFamily.getFamily();
+
+        File entity;
+
+        if (file != null) {
+            entity = s3Util.upload(fileType, file);
+            fileRepository.save(entity);
+        } else {
+            entity = fileRepository.findByUrl(DEFAULT_FAMILY_IMAGE_URL)
+                    .orElse(fileRepository.save(
+                            File.builder()
+                            .name("family")
+                            .originalName("family.jpg")
+                            .url(DEFAULT_FAMILY_IMAGE_URL)
+                            .dir("/default")
+                            .fileType(FileType.FAMILY_PROFILE)
+                            .build())
+                    );
+        }
+
+        family.editFamilyImage(entity);
     }
 }

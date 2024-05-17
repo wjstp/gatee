@@ -12,8 +12,10 @@ const SignupMemberSetRoleEtc = (props: {
   // 입력값
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const value: string = e.target.value;
-    setRole(value);
-    setErrorMessage("");
+    if (value.length <= 6) {
+      setRole(value);
+      setErrorMessage("");
+    }
   }
 
   return (
@@ -30,6 +32,7 @@ const SignupMemberSetRoleEtc = (props: {
           value={role?.toString()}
           onChange={handleInputChange}
           autoFocus
+          spellCheck={false}
         />
       </div>
 

@@ -35,6 +35,7 @@ public class ExceptionAdvice {
             ExpiredCodeException.class,
             WrongTypeFilterException.class,
             ExistsFamilyException.class,
+            ExistsMemberFamilyScheduleException.class,
             DidNotCompleted.class
     })
     public String handleBadRequest(RuntimeException e) {

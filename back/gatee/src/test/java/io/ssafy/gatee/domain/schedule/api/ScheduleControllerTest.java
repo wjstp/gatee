@@ -41,7 +41,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Slf4j
-@ActiveProfiles({"common, prod"})
+@ActiveProfiles({"common", "test"})
 @WebMvcTest({ScheduleController.class})
 @MockBean(JpaMetamodelMappingContext.class)
 class ScheduleControllerTest extends RestDocsTestSupport {
@@ -187,12 +187,16 @@ class ScheduleControllerTest extends RestDocsTestSupport {
 
         ScheduleRecordRes scheduleRecordRes1 = ScheduleRecordRes.builder()
                 .scheduleRecordId(1L)
+                .profileImageUrl("https://gaty.duckdns.org/profile-image-url-1")
+                .nickname("이윤정")
                 .content("일정 후기")
                 .fileUrlList(fileUrlResList)
                 .build();
 
         ScheduleRecordRes scheduleRecordRes2 = ScheduleRecordRes.builder()
                 .scheduleRecordId(2L)
+                .profileImageUrl("https://gaty.duckdns.org/profile-image-url-2")
+                .nickname("윤예빈")
                 .content("일정 후기")
                 .fileUrlList(fileUrlResList)
                 .build();
@@ -239,6 +243,8 @@ class ScheduleControllerTest extends RestDocsTestSupport {
                                 fieldWithPath("endDate").type(JsonFieldType.STRING).description("종료 시간"),
                                 fieldWithPath("scheduleRecordResList").type(JsonFieldType.ARRAY).description("일정 후기 목록"),
                                 fieldWithPath("scheduleRecordResList[].scheduleRecordId").type(JsonFieldType.NUMBER).description("일정 후기 ID"),
+                                fieldWithPath("scheduleRecordResList[].profileImageUrl").type(JsonFieldType.STRING).description("일정 후기 멤버 프로필 이미지 URL"),
+                                fieldWithPath("scheduleRecordResList[].nickname").type(JsonFieldType.STRING).description("일정 후기 멤버 별명"),
                                 fieldWithPath("scheduleRecordResList[].content").type(JsonFieldType.STRING).description("일정 후기 내용"),
                                 fieldWithPath("scheduleRecordResList[].fileUrlList").type(JsonFieldType.ARRAY).description("일정 후기 사진 목록"),
                                 fieldWithPath("scheduleRecordResList[].fileUrlList[].fileId").type(JsonFieldType.NUMBER).description("일정 후기 사진 파일 ID"),
@@ -404,6 +410,7 @@ class ScheduleControllerTest extends RestDocsTestSupport {
                                 parameterWithName("scheduleId").description("일정 ID").optional()
                         ),
                         queryParameters(
+                                parameterWithName("familyId").description("가족 ID").optional(),
                                 parameterWithName("content").description("후기 내용").optional(),
                                 parameterWithName("fileIdList").description("파일 ID 목록").optional()
                         )
@@ -415,7 +422,7 @@ class ScheduleControllerTest extends RestDocsTestSupport {
     void deleteScheduleRecord() throws Exception {
 
         // given
-        doNothing().when(scheduleService).deleteScheduleRecord(any(Long.class), any(Long.class));
+        doNothing().when(scheduleService).deleteScheduleRecord(any(Long.class), any(Long.class), any(UUID.class));
 
         // when
         ResultActions result = mockMvc.perform(delete("/api/schedule/{scheduleId}/record/{scheduleRecordId}", 1L, 1L));

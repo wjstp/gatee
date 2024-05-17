@@ -1,8 +1,8 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
 import { IoIosCamera } from "react-icons/io";
 import { useMemberStore } from "@store/useMemberStore";
-import { createMemberApi, createFamilyCodeApi } from "@api/member";
+import {createFamilyApi, createMemberApi, createFamilyCodeApi, joinFamilyApi} from "@api/member";
 import { AxiosResponse, AxiosError } from "axios";
 import { useFamilyStore } from "@store/useFamilyStore";
 import dayjs from 'dayjs';
@@ -10,14 +10,17 @@ import ProfileCropper from "@pages/profile/components/Cropper";
 import useModal from "@hooks/useModal";
 import { modifyProfileImageApi } from "@api/profile";
 import { imageResizer } from "@utils/imageResizer";
+import base64 from "base-64";
+import Loading from "@components/Loading";
 
 const SignupMemberSetCheck = () => {
   const location = useLocation();
   const icon: string = location.state?.icon;
-  const previous: string = location.state?.previous;
   const navigate = useNavigate();
   const sender: string = "member-set"
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const accessToken: string | null = localStorage.getItem("accessToken");
+
   const { isOpen, openModal, closeModal } = useModal();
   const {
     name,
@@ -27,17 +30,119 @@ const SignupMemberSetCheck = () => {
     memberImage,
     stringMemberImage,
   } = useMemberStore();
-  const { familyId, familyCode, setFamilyCode } = useFamilyStore();
+  const {
+    familyId,
+    setFamilyId,
+    familyImage,
+    familyName,
+    familyCode,
+    setFamilyCode,
+  } = useFamilyStore();
 
   const [cropImage, setCropImage] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isShowLoading, setIsShowLoading] = useState<boolean>(false);
+
+  // 권한에 따라 redirect
+  useEffect(() => {
+    if (accessToken) {
+      const payload: string = accessToken.substring(accessToken.indexOf('.')+1,accessToken.lastIndexOf('.'));
+      const decode = base64.decode(payload);
+      const json = JSON.parse(decode);
+
+      if (json.authorities[0] === "ROLE_ROLE_USER") {
+        alert(`잘못된 접근입니다.`);
+        navigate(`/main`);
+      } else {
+        if (!familyName) {
+          alert('먼저 가족을 소개해주세요!');
+          navigate(`/signup/family-set`);
+        } else {
+          if (!name) {
+            alert('먼저 이름을 입력해주세요!');
+            navigate(`/signup/member-set`);
+          } else {
+            if (!birth) {
+              alert('먼저 생일을 입력해주세요!');
+              navigate(`/signup/member-set/birth`);
+            } else {
+              if (!role) {
+                alert('먼저 역할을 입력해주세요!');
+                navigate(`/signup/member-set/role`);
+              }
+            }
+          }
+        }
+      }
+    }
+  }, []);
+
+  // 로딩 교체
+  const changeLoading = () => {
+    setIsLoading(!isLoading);
+  }
 
   // 다음 넘어가기
   const goToMemberSetPermission = () => {
-    createMember();
+    // 로딩 시작
+    changeLoading();
+    
+    // 코드 여부에 따라 동작 변경
+    if (familyCode) {
+      joinFamily();
+    } else {
+      createFamily();
+    }
+  }
+
+  // 가족 생성하기
+  const createFamily = (): void => {
+    const formData = new FormData();
+    // 파일이 업로드 되어있으면 파일 이어붙이기
+    if (familyImage instanceof File) {
+      formData.append("file", familyImage);
+    }
+    formData.append("name", familyName);
+    formData.append("fileType", "FAMILY_PROFILE");
+
+    // 가족 생성 요청 보내기
+    createFamilyApi(
+      formData,
+      (res: AxiosResponse<any>) => {
+        console.log(res);
+        setFamilyId(res.data.familyId);
+
+        // 회원 생성
+        createMember(res.data.familyId);
+      },
+      (err: AxiosError<any>) => {
+        console.log(err)
+        alert("에러가 발생했습니다.\n다시 로그인해보실래요?");
+        navigate("/kakao");
+      }
+    ).then().catch();
+  }
+
+  // 가족 합류 api
+  const joinFamily = () => {
+    joinFamilyApi(
+      {
+        familyCode: familyCode
+      },
+      (res: AxiosResponse<any>) => {
+        console.log(res);
+        createMember(familyId);
+      },
+      (err: AxiosError<any>) => {
+        console.log(err);
+        alert("에러가 발생했습니다.\n다시 로그인해보실래요?");
+        navigate("/kakao");
+      }
+    ).then().catch();
   }
 
   // 회원 정보 등록
-  const createMember = () => {
+  const createMember = (familyId: string) => {
     if (birth && role) {
       createMemberApi(
         {
@@ -58,6 +163,8 @@ const SignupMemberSetCheck = () => {
         },
         (err: AxiosError<any>): void => {
           console.log(err);
+          alert("에러가 발생했습니다.\n다시 입력해보실래요?");
+          navigate("/signup/member-set/check");
         }
       ).then(
         // 이미지 수정
@@ -75,7 +182,7 @@ const SignupMemberSetCheck = () => {
     } else {
       formData.append("defaultImage", icon);
     }
-    
+
     // 프로필 이미지 수정 요청 보내기
     modifyProfileImageApi(
       formData,
@@ -84,7 +191,11 @@ const SignupMemberSetCheck = () => {
 
         // 패밀리 코드가 있다면 바로 가입축하로 넘기기
         if (familyCode) {
-          navigate(`/signup/member-set/finish`);
+          navigate(`/signup/member-set/finish`, {
+            state: {
+              from: "member-set-check"
+            }
+          });
         } else {
           // 가족 코드 생성
           createFamilyCode();
@@ -92,6 +203,8 @@ const SignupMemberSetCheck = () => {
       },
       (err: AxiosError<any>) => {
         console.log(err);
+        alert("에러가 발생했습니다.\n다시 입력해보실래요?");
+        navigate("/signup/member-set/check");
       }
     )
   }
@@ -114,13 +227,15 @@ const SignupMemberSetCheck = () => {
       },
       (err: AxiosError<any>): void => {
         console.log(err);
+        alert("에러가 발생했습니다.\n다시 입력해보실래요?");
+        navigate("/signup/member-set/check");
       }
     ).then().catch();
   }
 
-  // 뒤로 가기
+  // 다시 입력하기
   const backTo = () => {
-    navigate(-1);
+    navigate(`/signup/member-set`);
   }
 
   // 이미지 선택 처리
@@ -159,118 +274,126 @@ const SignupMemberSetCheck = () => {
   return (
     <div className="signup-member-set-check slide-in">
 
-      {/*제목*/}
-      <div className="signup-member-set-check__title">
+      {/*로딩*/}
+      {isLoading ? (
+        <div className="signup-member-set-check__loading">
+          <Loading/>
+        </div>
+      ) : (
+        <>
+          {/*제목*/}
+          <div className="signup-member-set-check__title">
         <span className="title__text">
           정보를 확인해 주세요
         </span>
-      </div>
-
-      {/*이미지*/}
-      <div className="signup-member-set-check__img-box">
-        <button
-          className="img-box__btn"
-          onClick={handleCameraButtonClick}
-        >
-          <img
-            className="btn__img"
-            src={stringMemberImage}
-            alt="member-image"
-          />
-          <input
-            type="file"
-            accept="image/*"
-            style={{display: 'none'}}
-            ref={fileInputRef}
-            onChange={handleImageChange}
-          />
-          <div className="btn--icon">
-            <IoIosCamera
-              className="icon"
-              size={25}
-            />
           </div>
-        </button>
-      </div>
 
-      {/*크롭 모달*/}
-      {isOpen ? (
-        <ProfileCropper
-          cropImage={cropImage}
-          cropShape={"round"}
-          handleModalEvent={handleModalEvent}
-          sender={sender}
-        />
-      ) : (
-        null
-      )}
+          {/*이미지*/}
+          <div className="signup-member-set-check__img-box">
+            <button
+              className="img-box__btn"
+              onClick={handleCameraButtonClick}
+            >
+              <img
+                className="btn__img"
+                src={stringMemberImage}
+                alt="member-image"
+              />
+              <input
+                type="file"
+                accept="image/*"
+                style={{display: 'none'}}
+                ref={fileInputRef}
+                onChange={handleImageChange}
+              />
+              <div className="btn--icon">
+                <IoIosCamera
+                  className="icon"
+                  size={25}
+                />
+              </div>
+            </button>
+          </div>
 
-      {/*가입 정보*/}
-      <div className="signup-member-set-check__info">
+          {/*크롭 모달*/}
+          {isOpen ? (
+            <ProfileCropper
+              cropImage={cropImage}
+              cropShape={"round"}
+              handleModalEvent={handleModalEvent}
+              sender={sender}
+            />
+          ) : (
+            null
+          )}
 
-        {/*이름*/}
-        <div className="info-header">
-          <div className="info-header__name">
+          {/*가입 정보*/}
+          <div className="signup-member-set-check__info">
+
+            {/*이름*/}
+            <div className="info-header">
+              <div className="info-header__name">
             <span className="name--text">
               {name}
             </span>
-          </div>
-        </div>
-        
-        {/*역할 및 생일*/}
-        <div className="info-body">
-          
-          {/*역할*/}
-          <div className="info-body__role">
+              </div>
+            </div>
+
+            {/*역할 및 생일*/}
+            <div className="info-body">
+
+              {/*역할*/}
+              <div className="info-body__role">
             <span className="role__part--01">
               당신의 역할은
             </span>
-            <span className="role__part--02">
+                <span className="role__part--02">
               &nbsp;{role}
             </span>
-            <span className="role__part--03">
+                <span className="role__part--03">
               입니다
             </span>
-          </div>
-          
-          {/*생일*/}
-          <div className="info-body__birth">
+              </div>
+
+              {/*생일*/}
+              <div className="info-body__birth">
             <span className="birth__part--01">
               {birth ? changeDate(birth) : null}
             </span>
-            <span className="birth__part--02">
+                <span className="birth__part--02">
               에 태어났어요
             </span>
+              </div>
+
+            </div>
+
           </div>
 
-        </div>
-        
-      </div>
-
-      {/*다음 버튼*/}
-      <div className="signup-member-set-check__btn-next">
-        <button
-          className="btn-next__btn"
-          onClick={goToMemberSetPermission}
-        >
+          {/*다음 버튼*/}
+          <div className="signup-member-set-check__btn-next">
+            <button
+              className="btn-next__btn"
+              onClick={goToMemberSetPermission}
+            >
             <span className="btn__text">
               가입하기
             </span>
-        </button>
-      </div>
+            </button>
+          </div>
 
-      {/*뒤로 가기 버튼*/}
-      <div className="signup-member-set-check__btn-back">
-        <button
-          className="btn-back__btn"
-          onClick={backTo}
-        >
+          {/*뒤로 가기 버튼*/}
+          <div className="signup-member-set-check__btn-back">
+            <button
+              className="btn-back__btn"
+              onClick={backTo}
+            >
           <span className="btn__text">
             다시 입력할래요
           </span>
-        </button>
-      </div>
-
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
 };

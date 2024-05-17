@@ -44,4 +44,9 @@ public class Family extends BaseEntity {
     public void increaseScore() {
         this.score++;
     }
+
+    // 가족 이미지 수정
+    public void editFamilyImage(File file) {
+        this.file = file;
+    }
 }

@@ -120,7 +120,7 @@ export const SCHEDULE_COLOR: ScheduleColor[] = [
 export const QuestionSample: Question[] = [
   {
     memberName: "윤예빈",
-    question: "좋아하는 음식은 무엇인가요?",
+    question: "님이 좋아하는 음식은 무엇인가요?",
     correctAnswer: "삼겹살",
     answerList: ["삼겹살", "마라탕", "곱창", "코딱지"],
   },

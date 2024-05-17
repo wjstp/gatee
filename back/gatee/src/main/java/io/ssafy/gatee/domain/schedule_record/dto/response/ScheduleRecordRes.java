@@ -14,6 +14,12 @@ public record ScheduleRecordRes(
         Long scheduleRecordId,
 
         @NotNull
+        String profileImageUrl,
+
+        @NotNull
+        String nickname,
+
+        @NotNull
         String content,
 
         @NotNull
@@ -22,6 +28,8 @@ public record ScheduleRecordRes(
     public static ScheduleRecordRes toDto(ScheduleRecord scheduleRecord, List<FileUrlRes> fileUrlResList) {
         return ScheduleRecordRes.builder()
                 .scheduleRecordId(scheduleRecord.getId())
+                .profileImageUrl(scheduleRecord.getMember().getFile().getUrl())
+                .nickname(scheduleRecord.getMember().getNickname())
                 .content(scheduleRecord.getContent())
                 .fileUrlList(fileUrlResList)
                 .build();

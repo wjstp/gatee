@@ -3,15 +3,17 @@ import { useLocation, useNavigate } from "react-router-dom";
 import SignupMemberSetRoleMale from "@pages/signup/components/MemberSetRoleMale";
 import SignupMemberSetRoleFemale from "@pages/signup/components/MemberSetRoleFemale";
 import { useMemberStore } from "@store/useMemberStore";
-import { getMyDataApi } from "@api/member";
-import { AxiosError, AxiosResponse } from "axios";
+import base64 from "base-64";
 import { useFamilyStore } from "@store/useFamilyStore";
 
 const SignupMemberSetRole = () => {
-  const location = useLocation();
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+  const accessToken: string | null = localStorage.getItem("accessToken");
+  const { familyName } = useFamilyStore();
   const {
+    name,
+    birth,
     role,
     gender,
     setMemberImage,
@@ -22,16 +24,44 @@ const SignupMemberSetRole = () => {
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [icon, setIcon] = useState<string>("");
 
+  // 초기에 사진 초기화
+  useEffect(() => {
+    setMemberImage(null);
+    setStringMemberImage("");
+
+    // 권한에 따라 redirect
+    if (accessToken) {
+      const payload: string = accessToken.substring(accessToken.indexOf('.')+1,accessToken.lastIndexOf('.'));
+      const decode = base64.decode(payload);
+      const json = JSON.parse(decode);
+
+      if (json.authorities[0] === "ROLE_ROLE_USER") {
+        alert(`잘못된 접근입니다.`);
+        navigate(`/main`);
+      } else {
+        if (!familyName) {
+          alert('먼저 가족을 소개해주세요!');
+          navigate(`/signup/family-set`);
+        } else {
+          if (!name) {
+            alert('먼저 이름을 입력해주세요!');
+            navigate(`/signup/member-set`);
+          } else {
+            if (!birth) {
+              alert('먼저 생일을 입력해주세요!');
+              navigate(`/signup/member-set/birth`);
+            }
+          }
+        }
+      }
+    }
+  }, []);
+
   // 역할이 바뀌면 에러메시지 초기화
   useEffect(() => {
     setErrorMessage("");
   }, [role]);
 
-  // 초기에 사진 초기화
-  useEffect(() => {
-    setMemberImage(null);
-    setStringMemberImage("");
-  }, []);
 
   // 다음으로 가는 버튼
   const goToMemberSetCheck = () => {
@@ -45,13 +75,12 @@ const SignupMemberSetRole = () => {
       }
       // 함수 실행 중단
       return;
-    
-    // 역할과 아이콘이 선택되었을 때
+
+      // 역할과 아이콘이 선택되었을 때
     } else {
       navigate("/signup/member-set/check", {
         state: {
-          icon,
-          previous: "member-set"
+          icon
         }
       })
     }

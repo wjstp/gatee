@@ -25,7 +25,7 @@ const ScheduleIndex = () => {
 
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const [currentMonth, setCurrentMonth] = useState<number | null>(null);
-  const [selectedDate, setSelectedDate] = useState<string>(dayjs().format("YYYY-MM-DD"));
+  const [selectedDate, setSelectedDate] = useState<string>("");
   const [isOpenDayToast, setIsOpenDayToast] = useState<boolean>(false);
   const [isShowTodayButton, setIsShowTodayButton] = useState<boolean>(false);
   const [selectedStartDate, setSelectedStartDate] = useState<string>(dayjs().format("YYYY-MM-DD"));
@@ -129,7 +129,6 @@ const ScheduleIndex = () => {
   // 일자 클릭 핸들러
   const handleDateClick = (arg: DateClickArg) => {
     setSelectedDate(arg.dateStr);
-    setIsOpenDayToast(true);
   }
 
   // 일자별 일정 가져오기
@@ -169,6 +168,12 @@ const ScheduleIndex = () => {
 
     setDayScheduleList(daySchedule);
   };
+
+  useEffect(() => {
+    if (dayScheduleList.length > 0) {
+      setIsOpenDayToast(true);
+    }
+  }, [dayScheduleList]);
 
   // 영역 선택 핸들러
   const handleSelect = (arg: DateSelectArg) => {
@@ -255,42 +260,41 @@ const ScheduleIndex = () => {
   const handleDayClose = () => setIsOpenDayToast(false);
 
   // 캘린더 높이 설정
-  const [calendarHeight, setCalendarHeight] = useState<string>('100%');
+  const [calendarHeight, setCalendarHeight] = useState<number>(1);
 
-  // useEffect(() => {
-  //   if (isOpenDayToast) {
-  //     let decreasedHeight = 1;
-  //     const intervalId = setInterval(() => {
-  //       setCalendarHeight((prevHeight) => {
-  //         const currentHeight = parseInt(prevHeight.replace('px', ''), 10);
-  //         if (currentHeight > 0) {
-  //           decreasedHeight++;
-  //           return `${currentHeight - decreasedHeight}px`;
-  //         } else {
-  //           clearInterval(intervalId);
-  //           return '35dvh';
-  //         }
-  //       });
-  //     }, 10);
-  //     return () => clearInterval(intervalId);
-  //   } else {
-  //     let increasedHeight = 1;
-  //     const intervalId = setInterval(() => {
-  //       setCalendarHeight((prevHeight) => {
-  //         const currentHeight = parseInt(prevHeight.replace('px', ''), 10);
-  //         if (currentHeight < 400) {
-  //           increasedHeight++;
-  //           return `${currentHeight + increasedHeight}px`;
-  //         } else {
-  //           clearInterval(intervalId);
-  //           return '60dvh';
-  //         }
-  //       });
-  //     }, 10);
-  //     return () => clearInterval(intervalId);
-  //   }
-  // }, [isOpenDayToast]);
+  useEffect(() => {
+    if (isOpenDayToast) {
+      let dh = 1;
+      const intervalId = setInterval(() => {
+        setCalendarHeight((prevHeight) => {
+          if (prevHeight > 0.43) {
+            dh++;
+            return prevHeight - (0.02 * dh);
+          } else {
+            clearInterval(intervalId);
+            return 0.43;
+          }
+        });
+      }, 1 / 10000);
 
+      return () => clearInterval(intervalId);
+    } else {
+      let dh = 1;
+      const intervalId = setInterval(() => {
+        setCalendarHeight((prevHeight) => {
+          if (prevHeight < 1) {
+            dh++;
+            return prevHeight + (0.02 * dh);
+          } else {
+            clearInterval(intervalId);
+            return 1;
+          }
+        });
+      }, 1 / 10000);
+
+      return () => clearInterval(intervalId);
+    }
+  }, [isOpenDayToast, calendarHeight]);
 
   return (
     <div className="schedule">
@@ -326,7 +330,7 @@ const ScheduleIndex = () => {
             googleCalendarApiKey={REACT_APP_GOOGLE_API_KEY}    // 구글 캘린더 API
             headerToolbar={{left: "", center: "", right: ""}}
             initialView={"dayGridMonth"}
-            height={calendarHeight}
+            height={`calc(78dvh * ${calendarHeight})`}
             locale={"kr"}                // 언어 한글로 변경
             selectable={true}            // 영역 선택
             dayMaxEvents={true}          // row 높이보다 많으면 +N more 링크 표시

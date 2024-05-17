@@ -1,5 +1,6 @@
 package io.ssafy.gatee.domain.member_family_schedule.entity;
 
+import io.ssafy.gatee.domain.base.BaseEntity;
 import io.ssafy.gatee.domain.family_schedule.entity.FamilySchedule;
 import io.ssafy.gatee.domain.member.entity.Member;
 import jakarta.persistence.*;
@@ -13,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberFamilySchedule {
+public class MemberFamilySchedule extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +27,4 @@ public class MemberFamilySchedule {
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
-
-    private boolean isCreater;
 }

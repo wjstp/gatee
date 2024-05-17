@@ -1,25 +1,51 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BiCopy } from "react-icons/bi";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ReactComponent as KaKaoMessage } from "@assets/images/signup/kakao_message.svg";
 import { useFamilyStore } from "@store/useFamilyStore";
+import base64 from "base-64";
 
 const SignupMemberSetShare = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const from: string = location.state?.from;
+  const from: string | null = location.state?.from;
   const server: string | undefined = process.env.REACT_APP_API_URL;
+  const accessToken: string | null = localStorage.getItem("accessToken");
 
   const { familyName, stringImage, familyCode } = useFamilyStore();
 
+  // from이 없다면 이동 막기
+  useEffect(() => {
+    if (!from) {
+      if (accessToken) {
+        const payload: string = accessToken.substring(accessToken.indexOf('.')+1,accessToken.lastIndexOf('.'));
+        const decode = base64.decode(payload);
+        const json = JSON.parse(decode);
+
+        if (json.authorities[0] === "ROLE_ROLE_USER") {
+          alert(`잘못된 접근입니다.`);
+          navigate(`/main`);
+        } else {
+          alert(`잘못된 접근입니다.`);
+          navigate(`/kakao`);
+        }
+      }
+    }
+  }, []);
+
+  // 마지막 페이지로 이동
   const goToMemberSetFininsh = () => {
     if (from === "member-set") {
-      navigate("/signup/member-set/finish");
+      navigate("/signup/member-set/finish", {
+        state: {
+          from: "member-set"
+        }
+      });
     } else {
       navigate(-1);
     }
   }
-  
+
   // 카카오 공유하기 버튼
   const kakaoMessage = () => {
     window.Kakao.Share.sendDefault({
@@ -34,13 +60,13 @@ const SignupMemberSetShare = () => {
         },
       },
       itemContent: {
-        profileText: `가족과 함께 '가티'`,
-        titleImageText: `${familyName} 가족에서 초대가 왔어요~`,
-        titleImageCategory: '아래 코드를 복사해 들어올래요?'
+        profileText: `가족과 같이 '가티'해요`,
+        titleImageText: `'${familyName}' 가족에서 초대가 왔어요~`,
+        titleImageCategory: '아래 코드를 복사해서 들어오세요!'
       },
       buttons: [
         {
-          title: '가티로 이동',
+          title: '가티로 이동해봐요',
           link: {
             mobileWebUrl: server,
             webUrl: server,
@@ -55,8 +81,8 @@ const SignupMemberSetShare = () => {
     navigator.clipboard.writeText(familyCode)
       .then()
       .catch(err => {
-      console.error('클립보드 복사에 실패했습니다', err);
-    });
+        console.error('클립보드 복사에 실패했습니다', err);
+      });
   }
 
   return (

@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 
 const KaKaoLogin = () => {
   const redirectUri: string | undefined = `${process.env.REACT_APP_API_URL}/auth`
-  const navigate = useNavigate();
 
   // 카카오 인가코드 발급
   const loginWithKaKao = () => {
@@ -13,7 +12,6 @@ const KaKaoLogin = () => {
       redirectUri: redirectUri,
       scope: "profile_nickname, account_email",
     })
-    // navigate("/signup");
   }
 
   return (

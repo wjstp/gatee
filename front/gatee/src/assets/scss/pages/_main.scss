@@ -35,7 +35,8 @@
         height: 17dvw;
         width: 17dvw;
         object-fit: contain;
-        border-radius: 1rem;
+        border-radius: 5%;
+        border: 1px solid $gray75;
       }
 
       .title--content {

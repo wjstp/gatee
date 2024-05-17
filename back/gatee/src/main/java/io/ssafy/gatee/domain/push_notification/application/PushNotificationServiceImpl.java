@@ -218,7 +218,7 @@ public class PushNotificationServiceImpl implements PushNotificationService {
                 .filter(receiverGet -> Objects.nonNull(receiverGet.get().getNotificationToken()) && ! receiverGet.equals(""))    // todo: 수정
                 .filter(receiver -> checkAgreement(pushNotificationFCMReq.dataFCMReq().type(), receiver.get().getId()))
                 .map(receiver -> receiver.get().getNotificationToken()).toList();
-        log.info(checkAgreement(pushNotificationFCMReq.dataFCMReq().type(), pushNotificationFCMReq.receiverId().get(0))+"");
+//        log.info(checkAgreement(pushNotificationFCMReq.dataFCMReq().type(), pushNotificationFCMReq.receiverId().get(0))+"");
         log.info(receiverTokens.toString());
         if (!receiverTokens.isEmpty()) {
             MulticastMessage message = MulticastMessage.builder()

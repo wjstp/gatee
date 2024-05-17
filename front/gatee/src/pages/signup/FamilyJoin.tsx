@@ -1,16 +1,32 @@
-import React, { useState, useRef } from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import { useNavigate } from "react-router-dom";
 import { AxiosResponse, AxiosError } from "axios";
 import { useFamilyStore } from "@store/useFamilyStore";
 import { getMyDataApi, getFamilyDataApi } from "@api/member";
+import base64 from "base-64";
 
 const SignupFamilyJoin = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+  const accessToken: string | null = localStorage.getItem("accessToken");
   const { setFamilyCode, setFamilyId, setStringImage, setFamilyName } = useFamilyStore();
 
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [code, setCode] = useState<string>("");
+
+  // 권한에 따라 redirect
+  useEffect(() => {
+    if (accessToken) {
+      const payload: string = accessToken.substring(accessToken.indexOf('.')+1,accessToken.lastIndexOf('.'));
+      const decode = base64.decode(payload);
+      const json = JSON.parse(decode);
+
+      if (json.authorities[0] === "ROLE_ROLE_USER") {
+        alert(`잘못된 접근입니다.`);
+        navigate(`/main`);
+      }
+    }
+  }, []);
 
   // 입력값
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -35,7 +51,7 @@ const SignupFamilyJoin = () => {
       getFamilyData();
     }
   };
-  
+
   // 가족 코드로 가족 조회하기
   const getFamilyData = () => {
     getFamilyDataApi(
@@ -81,10 +97,10 @@ const SignupFamilyJoin = () => {
           className="input-box__input"
           ref={inputRef}
           type="text"
-          pattern="[가-힣]*"
-          placeholder="예) A43959FE "
+          placeholder="예) a43eg5Fc"
           value={code}
           onChange={handleInputChange}
+          spellCheck={false}
         />
       </div>
       <div className="signup-family-set__error-message">

@@ -1,37 +1,42 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { useNavigate } from "react-router-dom";
 import { useFamilyStore } from "@store/useFamilyStore";
 import { joinFamilyApi } from "@api/member";
 import { AxiosError, AxiosResponse } from "axios";
+import base64 from "base-64";
 
 const SignupFamilyJoinCheck = () => {
   const navigate = useNavigate();
+  const accessToken: string | null = localStorage.getItem("accessToken");
   const { familyCode, stringImage, familyName, familyId } = useFamilyStore();
-  
+
+  // 권한에 따라 redirect
+  useEffect(() => {
+    if (accessToken) {
+      const payload: string = accessToken.substring(accessToken.indexOf('.')+1,accessToken.lastIndexOf('.'));
+      const decode = base64.decode(payload);
+      const json = JSON.parse(decode);
+
+      if (json.authorities[0] === "ROLE_ROLE_USER") {
+        alert(`잘못된 접근입니다.`);
+        navigate(`/main`);
+      } else {
+        if (!familyCode) {
+          alert(`먼저 코드를 입력해 주세요!`)
+          navigate(`/signup/family-join`);
+        }
+      }
+    }
+  }, []);
+
   // 다음으로 넘어가기
   const goToMemberSet = () => {
-    joinFamily();
+    navigate("/signup/member-set")
   }
-  
+
   // 뒤로 가기
   const backTo = () => {
     navigate(-1);
-  }
-
-  // 가족 합류 api
-  const joinFamily = () => {
-    joinFamilyApi(
-      {
-        familyCode: familyCode
-      },
-      (res: AxiosResponse<any>) => {
-        console.log(res);
-        navigate("/signup/member-set");
-      },
-      (err: AxiosError<any>) => {
-        console.log(err);
-      }
-    ).then().catch();
   }
 
   return (

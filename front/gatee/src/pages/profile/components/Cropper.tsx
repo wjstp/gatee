@@ -22,7 +22,6 @@ const ProfileCropper = (props: {
   // 크롭조정
   const onCropComplete = (croppedArea: Area, croppedAreaPixels: Area) => {
     setCroppedAreaPixels(croppedAreaPixels);
-    console.log(croppedAreaPixels)
   }
 
   // 이미지 저장하기
@@ -40,7 +39,6 @@ const ProfileCropper = (props: {
       const lastModified = new Date().getTime();
       const file = new File([blob], fileName, { type: "image/jpeg", lastModified });
       const resizedFile: File = (await imageResizer(file, 500, 500)) as File;
-      console.log(resizedFile);
       const jpgUrl = URL.createObjectURL(resizedFile);
 
       // 가족사진일 경우에만 가족 스토어 수정
@@ -61,10 +59,15 @@ const ProfileCropper = (props: {
       console.error(e);
     }
   }, [croppedAreaPixels, cropImage]);
-  
+
   // 모달 닫기
   const handleCancel = () => {
     handleModalEvent();
+  };
+
+  // 모달 내용 클릭 시 이벤트 전파 막기
+  const handleContentClick = (event: React.MouseEvent) => {
+    event.stopPropagation();
   };
 
   return (
@@ -72,9 +75,12 @@ const ProfileCropper = (props: {
       className="profile-cropper"
       onClick={handleModalEvent}
     >
-      
+
       {/*모달 내용*/}
-      <div className="profile-cropper__content">
+      <div
+        className="profile-cropper__content"
+        onClick={handleContentClick}
+      >
         <Cropper
           image={cropImage}
           crop={crop}

@@ -28,11 +28,13 @@ import io.ssafy.gatee.domain.schedule.dto.request.*;
 import io.ssafy.gatee.domain.schedule.dto.response.ParticipateMemberRes;
 import io.ssafy.gatee.domain.schedule.dto.response.ScheduleInfoRes;
 import io.ssafy.gatee.domain.schedule.dto.response.ScheduleListRes;
+import io.ssafy.gatee.domain.schedule.entity.Category;
 import io.ssafy.gatee.domain.schedule.entity.Schedule;
 import io.ssafy.gatee.domain.schedule_record.dao.ScheduleRecordRepository;
 import io.ssafy.gatee.domain.schedule_record.dto.response.ScheduleRecordRes;
 import io.ssafy.gatee.domain.schedule_record.entity.ScheduleRecord;
 import io.ssafy.gatee.global.exception.error.bad_request.DoNotHavePermissionException;
+import io.ssafy.gatee.global.exception.error.bad_request.ExistsMemberFamilyScheduleException;
 import io.ssafy.gatee.global.exception.error.not_found.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -205,13 +207,14 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         familyScheduleRepository.save(familySchedule);
 
-        MemberFamilySchedule memberFamilySchedule = MemberFamilySchedule.builder()
-                .member(member)
-                .familySchedule(familySchedule)
-                .isCreater(true)
-                .build();
+        if (scheduleSaveReq.category().equals(Category.PERSONAL)) {
+            MemberFamilySchedule memberFamilySchedule = MemberFamilySchedule.builder()
+                    .member(member)
+                    .familySchedule(familySchedule)
+                    .build();
 
-        memberFamilyScheduleRepository.save(memberFamilySchedule);
+            memberFamilyScheduleRepository.save(memberFamilySchedule);
+        }
 
         if (!scheduleSaveReq.memberIdList().isEmpty()) {
             List<Member> memberList = scheduleSaveReq.memberIdList().stream().map(memberRepository::getReferenceById).toList();
@@ -220,7 +223,6 @@ public class ScheduleServiceImpl implements ScheduleService {
                 MemberFamilySchedule.builder()
                         .member(member1)
                         .familySchedule(familySchedule)
-                        .isCreater(false)
                         .build()
             ).toList();
 
@@ -244,24 +246,9 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Transactional
     public void editSchedule(ScheduleEditReq scheduleEditReq, UUID memberId, Long scheduleId)
             throws DoNotHavePermissionException, FamilyScheduleNotFoundException, MemberFamilyScheduleNotFoundException, FamilyNotFoundException {
-        Member member = memberRepository.getReferenceById(memberId);
-
-        Family family = familyRepository.getReferenceById(UUID.fromString(scheduleEditReq.familyId()));
-
         Schedule schedule = scheduleRepository.getReferenceById(scheduleId);
 
-        FamilySchedule familySchedule = familyScheduleRepository.findByFamilyAndSchedule(family, schedule)
-                .orElseThrow(() -> new FamilyScheduleNotFoundException(FAMILY_SCHEDULE_NOT_FOUND));
-
-        MemberFamilySchedule memberFamilySchedule = memberFamilyScheduleRepository.findByMemberAndFamilySchedule(member, familySchedule)
-                .orElseThrow(() -> new MemberFamilyScheduleNotFoundException(MEMBER_FAMILY_SCHEDULE_NOT_FOUND));
-
-        // 해당 유저가 일정을 만든 사람인지 확인
-        if (memberFamilySchedule.isCreater()) {
-            schedule.editSchedule(scheduleEditReq);
-        } else {
-            throw new DoNotHavePermissionException(DO_NOT_HAVE_REQUEST);
-        }
+        schedule.editSchedule(scheduleEditReq);
     }
 
     //일정 삭제
@@ -291,13 +278,16 @@ public class ScheduleServiceImpl implements ScheduleService {
         FamilySchedule familySchedule = familyScheduleRepository.findByFamilyAndSchedule(family, schedule)
                 .orElseThrow(() -> new FamilyScheduleNotFoundException(FAMILY_SCHEDULE_NOT_FOUND));
 
-        memberFamilyScheduleRepository.findByMemberAndFamilySchedule(member, familySchedule)
-            .orElse(memberFamilyScheduleRepository.save(MemberFamilySchedule.builder()
-                        .member(member)
-                        .familySchedule(familySchedule)
-                        .isCreater(false)
-                        .build())
-            );
+        if (!memberFamilyScheduleRepository.existsByMemberAndFamilySchedule(member, familySchedule)) {
+            MemberFamilySchedule memberFamilySchedule = MemberFamilySchedule.builder()
+                    .member(member)
+                    .familySchedule(familySchedule)
+                    .build();
+
+            memberFamilyScheduleRepository.save(memberFamilySchedule);
+        } else {
+            throw new ExistsMemberFamilyScheduleException(EXISTS_MEMBER_FAMILY_SCHEDULE);
+        }
     }
 
     // 일정 참여 취소
@@ -335,6 +325,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         ScheduleRecord scheduleRecord = ScheduleRecord.builder()
                 .content(scheduleSaveRecordReq.content())
                 .schedule(schedule)
+                .member(member)
                 .build();
 
         scheduleRecordRepository.save(scheduleRecord);
@@ -359,9 +350,15 @@ public class ScheduleServiceImpl implements ScheduleService {
     // 일정 후기 삭제
     @Override
     @Transactional
-    public void deleteScheduleRecord(Long scheduleId, Long scheduleRecordId) {
+    public void deleteScheduleRecord(Long scheduleId, Long scheduleRecordId, UUID memberId) {
+        Member member = memberRepository.getReferenceById(memberId);
+
         ScheduleRecord scheduleRecord = scheduleRecordRepository.getReferenceById(scheduleRecordId);
 
-        scheduleRecord.deleteData();
+        if (scheduleRecord.getMember().equals(member)) {
+            scheduleRecord.deleteData();
+        } else {
+            throw new DoNotHavePermissionException(DO_NOT_HAVE_REQUEST);
+        }
     }
 }

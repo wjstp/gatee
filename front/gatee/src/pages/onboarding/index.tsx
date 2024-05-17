@@ -38,23 +38,23 @@ const OnboardingIndex = () => {
       //     }
       //   }
       // ).then(response => {
-            // 가족이 있으면 멤버 조회
-            // 가족이 없으면 가족 생성으로 가기
-            // axios.get(
-            //   `${server}/api/${}`, null, {
-            //     headers: {
-            //
-            //     }
-            //   }
-            // ).then(response => {
-            //   // 멤버도 있으면 main으로 보내기
-            //   navigate('/main')
-            //   }
-            //   // 멤버가 없으면 멤버형성으로 보내기
-            //   navigate('/signup/member-set')
-            // ).catch(error => {
-            //   }
-            // )
+      // 가족이 있으면 멤버 조회
+      // 가족이 없으면 가족 생성으로 가기
+      // axios.get(
+      //   `${server}/api/${}`, null, {
+      //     headers: {
+      //
+      //     }
+      //   }
+      // ).then(response => {
+      //   // 멤버도 있으면 main으로 보내기
+      //   navigate('/main')
+      //   }
+      //   // 멤버가 없으면 멤버형성으로 보내기
+      //   navigate('/signup/member-set')
+      // ).catch(error => {
+      //   }
+      // )
       //   }
       // ).catch(error => {
       //    // r
