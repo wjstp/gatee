@@ -19,12 +19,45 @@ const TopBar = () => {
     setCurrentRoute(location.pathname);
   }, [location])
 
-  const hideBackButton: boolean = ['/main', '/chatting', '/schedule', '/exam', '/photo/album', '/photo/day', '/photo/month', '/photo/year'].includes(currentRoute);
+  const hideBackButton: boolean = [
+    '/main',
+    '/chatting',
+    '/schedule',
+    '/exam',
+    '/photo/album',
+    '/photo/day',
+    '/photo/month',
+    '/photo/year',
+    '/character/question'
+  ].includes(currentRoute);
 
-  // 바로 이전 페이지로 이동
+  // 뒤로가기
   const goBack = () => {
-    navigate(-1);
-  }
+    let parentRoute;
+    const photoNumberPattern = /^\/photo\/\d+$/;
+
+    if (currentRoute.includes('/photo/album/')) {
+      parentRoute = '/photo/album';
+    } else if (currentRoute.includes('mission') ||
+      currentRoute.includes('notification') ||
+      currentRoute.includes('profile') ||
+      currentRoute == "/chatting/photo/detail" ||
+      photoNumberPattern.test(currentRoute)) {
+      navigate(-1);
+      return;
+    } else if (currentRoute.includes('exam')) {
+      parentRoute = "/exam";
+    } else if (currentRoute.includes('/character/start/')) {
+      parentRoute = "/character/start";
+    } else if (currentRoute === '/character/start' || currentRoute === '/character') {
+      parentRoute = "/main";
+    } else {
+      parentRoute = currentRoute.split('/').slice(0, -1).join('/') || '/';
+    }
+
+    navigate(parentRoute);
+  };
+
 
   return (
     <div className="top-bar">
