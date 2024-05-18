@@ -66,7 +66,6 @@ function ScheduleDetail() {
       getDetailScheduleApi(
         data,
         (res) => {
-          console.log(res.data)
           setSchedule(res.data);
           const startDate = dayjs(res.data.startDate).format("M/D");
           const startWeekday = calculateWeekday(dayjs(res.data.startDate));

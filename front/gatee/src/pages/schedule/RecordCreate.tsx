@@ -8,6 +8,7 @@ import TextField from '@mui/material/TextField';
 import {MdOutlineAddPhotoAlternate} from "react-icons/md";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
+import {IoCloseOutline} from "react-icons/io5";
 
 
 const RecordCreate = () => {
@@ -123,12 +124,17 @@ const RecordCreate = () => {
     if (event.target.files && event.target.files.length > 0) {
       const selectedFiles = Array.from(event.target.files);
       setFiles(selectedFiles);
-
-      // 미리보기 URL 생성
-      const previewUrls = selectedFiles.map(file => URL.createObjectURL(file));
-      setPreviewUrls(previewUrls);
     }
   };
+
+  // 미리보기 이미지 삭제 핸들러
+  const handlePreviewImageDeleteClick = (index: number) => {
+    if (files) {
+      const newFiles = [...files];
+      newFiles.splice(index, 1);
+      setFiles(newFiles);
+    }
+  }
 
   const muiFocusCustom = {
     "& .MuiOutlinedInput-root": {
@@ -203,9 +209,14 @@ const RecordCreate = () => {
 
       {/*사진 미리보기*/}
       <div className="create-record__previews">
-        {previewUrls.map((url, index) => (
+        {files.map((file, index) => (
           <div className="create-record__preview">
-            <img key={index} src={url} alt={`preview-${index}`}/>
+            <img key={index} src={URL.createObjectURL(file)} alt={`preview-${index}`}/>
+
+            {/*삭제 버튼*/}
+            <button className="chat-input__preview__button" onClick={() => handlePreviewImageDeleteClick(index)}>
+              <IoCloseOutline size={20}/>
+            </button>
           </div>
         ))}
       </div>
