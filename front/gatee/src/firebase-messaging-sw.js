@@ -32,7 +32,7 @@ export async function requestPermission() {
       alert("FCM 알림 권한이 거부되었습니다. 앱 설정 -> 가티 -> 알림 허용해 주세요.");
       return;
     } else {
-      // console.log("FCM 알림 권한 허용");
+      console.log("FCM 알림 권한 허용");
     }
 
     // 사용자 디바이스 토큰 얻기
