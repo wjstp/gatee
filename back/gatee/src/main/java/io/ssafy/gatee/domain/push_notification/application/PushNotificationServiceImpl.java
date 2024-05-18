@@ -178,9 +178,11 @@ public class PushNotificationServiceImpl implements PushNotificationService {
         // type별 권한 확인
         boolean isAgreed = checkAgreement(pushNotificationFCMReq.dataFCMReq().type(), pushNotificationFCMReq.receiverId().get(0));
 
+        log.info("알림 배치 테스트 1");
         // fcm 요청
         if (Objects.nonNull(receiverToken) && isAgreed) {
             firebaseInit.init();
+            log.info("알림");
             Message message = Message.builder()
                     .putData(pushNotificationFCMReq.dataFCMReq().type().toString(),
                             pushNotificationFCMReq.dataFCMReq().typeId().toString())
