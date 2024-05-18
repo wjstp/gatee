@@ -11,8 +11,7 @@ import {getFamilyMemberApi, getMyDataApi} from "@api/member";
 import firebase from "../firebase-config";
 import 'firebase/database';
 import NotificationPopUp from "@components/NotificationPopup";
-import {getPushAlarmByLocalStorageApi} from "@api/firebase";
-// import {requestPermission} from "../firebase-messaging-sw";
+import {requestPermission} from "../firebase-messaging-sw";
 
 const MainLayout = () => {
   const {showModal} = useModalStore();
@@ -69,8 +68,8 @@ const MainLayout = () => {
     if (familyInfo.length === 0) {
       saveMemberData();
     }
-    // fcm 토큰 전송
-    // getPushAlarmByLocalStorageApi()
+    // // fcm 권한 묻기
+    // requestPermission()
 
   }, []);
 
