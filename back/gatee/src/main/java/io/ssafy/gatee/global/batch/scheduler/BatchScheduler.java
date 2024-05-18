@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 
 @Log4j2
 @Component
-//@Profile("batch")
+@Profile("batch")
 @RequiredArgsConstructor
 public class BatchScheduler {
 
