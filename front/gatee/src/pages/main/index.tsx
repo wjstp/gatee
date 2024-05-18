@@ -24,6 +24,7 @@ const MainIndex = () => {
     setFamilyScore,
     setFamilyImage,
     setStringImage,
+    setInputStringImage,
   } = useFamilyStore()
   const [loading, setLoading] = useState(true)
   const { setMissionList} = useMissionStore()
@@ -36,6 +37,7 @@ const MainIndex = () => {
         setFamilyName(res.data.name);
         setFamilyScore(res.data.familyScore);
         setStringImage(res.data.familyImageUrl);
+        setInputStringImage(res.data.familyImageUrl);
       },
       (err) => {
         console.log(err);

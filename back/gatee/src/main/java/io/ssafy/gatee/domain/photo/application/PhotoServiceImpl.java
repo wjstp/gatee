@@ -159,7 +159,7 @@ public class PhotoServiceImpl implements PhotoService {
                         .title("앨범 사진 등록")
                         .content(memberFamily.getMember().getName() + "님이 사진을 등록하셨습니다.")
                         .receiverId(memberFamilyRepository.findMyFamily(memberId))
-                        .senderId(memberFamily.getMember().getId())
+                        .senderId(String.valueOf(memberFamily.getMember().getId()))
                         .dataFCMReq(DataFCMReq.builder()
                                 .type(Type.ALBUM)
                                 .typeId(photo.getId())

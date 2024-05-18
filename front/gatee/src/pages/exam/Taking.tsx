@@ -10,7 +10,7 @@ import {transformQuestionData, getExamScore, setAnswerAtIndex, unSelectedIndex} 
 import {questionList} from "@constants/index";
 import ExamNotFound from "@pages/exam/components/ExamNotFound";
 import {doMissionApi} from "@api/mission";
-import { IoWarningSharp } from "react-icons/io5";
+import {IoWarningSharp} from "react-icons/io5";
 
 const ExamTaking = () => {
   const navigate = useNavigate();
@@ -114,10 +114,17 @@ const ExamTaking = () => {
   }
 
   // 인덱스 넘겨주는 함수, 마지막 문제에서는 채점 화면으로 이동시켜준다
+
+  const chooseValue: (questionNumber: number, value: number) => void = (questionNumber: number, value: number) => {
+    // 답안 저장
+    const updatedAnswerList = setAnswerAtIndex(questionNumber, value, myAnswerList);
+    setMyAnswerList(updatedAnswerList); // 업데이트된 배열로 상태 업데이트
+
+  }
   const handleNextIndex: (questionNumber: number, value: number) => void = (questionNumber: number, value: number) => {
     // 답안 저장
     const updatedAnswerList = setAnswerAtIndex(questionNumber, value, myAnswerList);
-      setMyAnswerList(updatedAnswerList); // 업데이트된 배열로 상태 업데이트
+    setMyAnswerList(updatedAnswerList); // 업데이트된 배열로 상태 업데이트
 
     if (questionIndex < 9) {
       // 9보다 적을때는 answerlist 업데이트
@@ -142,7 +149,7 @@ const ExamTaking = () => {
       submitExam()
     } else {
       setWarning(false)
-      setQuestionIndex(noSelectList[0]-1)
+      setQuestionIndex(noSelectList[0] - 1)
     }
   }
 
@@ -253,16 +260,17 @@ const ExamTaking = () => {
           notFound ?
             <ExamNotFound/>
             :
-          <>
-            <Header/>
-            <QuestionItemTaking myAnswerList={myAnswerList}
-                                handleNextIndex={handleNextIndex}
-                                handleBeforeIndex={handleBeforeIndex}
-                                questionNumber={questionIndex}
-                                questionItem={transformedData[questionIndex]}/>
+            <>
+              <Header/>
+              <QuestionItemTaking myAnswerList={myAnswerList}
+                                  handleNextIndex={handleNextIndex}
+                                  chooseValue={chooseValue}
+                                  handleBeforeIndex={handleBeforeIndex}
+                                  questionNumber={questionIndex}
+                                  questionItem={transformedData[questionIndex]}/>
 
-            <MyAnswerSheet myAnswerList={myAnswerList} handleProblem={handleProblem}/>
-          </>
+              <MyAnswerSheet myAnswerList={myAnswerList} handleProblem={handleProblem}/>
+            </>
       }
       {/* 정답 다 안했을 때 */}
       {warning ? <WarningModal noSelectList={noSelectList} handleWarningModal={handleWarningModal}/> : null}

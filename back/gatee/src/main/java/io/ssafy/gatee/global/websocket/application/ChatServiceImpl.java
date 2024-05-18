@@ -78,7 +78,7 @@ public class ChatServiceImpl implements ChatService {
                 .build(), familyId);
         pushNotificationService.sendPushOneToMany(
                 PushNotificationFCMReq.builder()
-                        .senderId(memberId)
+                        .senderId(String.valueOf(memberId))
                         .receiverId(familyMemberIdList)
                         .title("채팅 알림")
                         .content(chatDto.content())
@@ -136,7 +136,7 @@ public class ChatServiceImpl implements ChatService {
                 .build(), familyId);
         pushNotificationService.sendPushOneToMany(
                 PushNotificationFCMReq.builder()
-                        .senderId(memberId)
+                        .senderId(String.valueOf(memberId))
                         .receiverId(familyMemberIdList)
                         .title("약속해요")
                         .content(chatDto.content())
@@ -162,7 +162,7 @@ public class ChatServiceImpl implements ChatService {
                 .build(), familyId);
         pushNotificationService.sendPushOneToMany(
                 PushNotificationFCMReq.builder()
-                        .senderId(memberId)
+                        .senderId(String.valueOf(memberId))
                         .receiverId(familyMemberIdList)
                         .title("채팅 알림")
                         .content(chatDto.content())
@@ -187,7 +187,7 @@ public class ChatServiceImpl implements ChatService {
                 .build(), familyId);
         pushNotificationService.sendPushOneToMany(
                 PushNotificationFCMReq.builder()
-                        .senderId(memberId)
+                        .senderId(String.valueOf(memberId))
                         .receiverId(familyMemberIdList)
                         .title("채팅 알림")
                         .content("사진")
