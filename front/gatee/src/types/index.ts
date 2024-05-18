@@ -244,7 +244,7 @@ export interface CreateScheduleReq {
   memberIdList: string[];
 }
 
-export interface ModifyScheduleReq {
+export interface UpdateScheduleReq {
   scheduleId: number;
   data : {
     familyId: string;

@@ -22,14 +22,18 @@ const MainIndex = () => {
     setFamilyInfo,
     setFamilyName,
     setFamilyScore,
-    setFamilyImage,
     setStringImage,
     setInputStringImage,
   } = useFamilyStore()
-  const [loading, setLoading] = useState(true)
-  const { setMissionList} = useMissionStore()
+  const [loading, setLoading] = useState<boolean>(false);
+  const { setMissionList} = useMissionStore();
+  const [isGetFamilyDate, setIsGetFamilyDate] = useState<boolean>(false);
+  const [isGetMemberDate, setIsGetMemberDate] = useState<boolean>(false);
+  const [isGetMissionDate, setIsGetMissionDate] = useState<boolean>(false);
+
   // 가족 데이터 저장 Api
   const saveFamilyData = (familyId:string) => {
+    setIsGetFamilyDate(false);
     getFamilyMemberApi({familyId:familyId},
       (res) => {
         console.log("가족 정보 조회",res.data);
@@ -38,38 +42,46 @@ const MainIndex = () => {
         setFamilyScore(res.data.familyScore);
         setStringImage(res.data.familyImageUrl);
         setInputStringImage(res.data.familyImageUrl);
+        setIsGetFamilyDate(true);
       },
       (err) => {
         console.log(err);
+        setIsGetFamilyDate(true);
       }
     );
   }
 
   // 미션 저장 api
   const getMissionApiFunc = () => {
+    setIsGetMissionDate(false);
     getMissionApi({familyId:familyId},
       res => {
-        console.log(res)
-        setMissionList(res.data.missionListResList)
+        console.log(res);
+        setMissionList(res.data.missionListResList);
+        setIsGetMissionDate(true);
       },
       err => {
-        console.log(err)
+        console.log(err);
+        setIsGetMissionDate(true);
       }
     )
   }
   // 정보 불러오기 Api
   const saveMemberData = () => {
+    setIsGetMemberDate(false);
     getMyDataApi(
       (res) => {
-        console.log("내 정보 조회",res.data)
+        console.log("내 정보 조회",res.data);
         // 스토어에 저장
-        setMyInfo(res.data)
-        setFamilyId(res.data.familyId)
+        setMyInfo(res.data);
+        setFamilyId(res.data.familyId);
         // 가족 데이터 저장 Api
-        saveFamilyData(res.data.familyId)
+        saveFamilyData(res.data.familyId);
+        setIsGetMemberDate(true);
       },
       (err) => {
         console.log(err);
+        setIsGetMemberDate(true);
       }
     );
   }
@@ -77,10 +89,13 @@ const MainIndex = () => {
   useEffect(() => {
     saveMemberData()
     getMissionApiFunc()
-    setTimeout(()=>
-      setLoading(false)
-    ,700)
   }, []);
+
+  useEffect(() => {
+    if (isGetFamilyDate && isGetMemberDate && isGetMissionDate) {
+      setLoading(false);
+    }
+  }, [isGetFamilyDate, isGetMemberDate, isGetMissionDate]);
 
   return (
     <div className="main-container">

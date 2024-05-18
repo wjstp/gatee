@@ -50,8 +50,8 @@ const ScheduleCreate = () => {
   const [category, setCategory] = useState<string>(ScheduleType.GROUP)
   const [startDate, setStartDate] = useState<Dayjs | null>(null);
   const [endDate, setEndDate] = useState<Dayjs | null>(null);
-  const [startTime, setStartTime] = useState<Dayjs | null>();
-  const [endTime, setEndTime] = useState<Dayjs | null>();
+  const [startTime, setStartTime] = useState<Dayjs | null>(null);
+  const [endTime, setEndTime] = useState<Dayjs | null>(null);
   const [memberIdList, setMemberIdList] = useState<string[]>([]);
   const allMember: string[] = familyInfo.map(member => member.memberId);
 

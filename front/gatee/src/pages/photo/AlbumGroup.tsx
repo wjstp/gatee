@@ -107,7 +107,7 @@ const GroupItem = ({editMode, handleChecked, groupPhotoData}: PhotoOutletInfoCon
                   checked={checked}
                   onChange={() => handleCheckBox()}
         />}
-      <p  className="title">{groupPhotoData.name}</p>
+      <p className="title">{groupPhotoData.name}</p>
     </div>
   )
 }

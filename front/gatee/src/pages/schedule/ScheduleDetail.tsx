@@ -190,6 +190,13 @@ function ScheduleDetail() {
     navigate(`/photo/${fileId}`);
   }
 
+  const handleScheduleUpdateClick = () => {
+    navigate({
+      pathname: `/schedule/${scheduleId}/update`,
+      search: `?category=${schedule.category}&title=${schedule.title}&content=${schedule.content}&emoji=${schedule.emoji}&start=${schedule.startDate}&end=${schedule.endDate}`,
+    });
+  }
+
   return (
     <div className="schedule-detail">
       {/*일정 정보*/}
@@ -218,7 +225,7 @@ function ScheduleDetail() {
           onClose={handleClose}
         >
           <MenuItem onClick={handleScheduleDeleteClick} style={{color: "#FF4F4FFF"}}>삭제하기</MenuItem>
-          <MenuItem onClick={() => navigate(`/schedule/${scheduleId}/update`)}>수정하기</MenuItem>
+          <MenuItem onClick={handleScheduleUpdateClick}>수정하기</MenuItem>
         </Menu>
 
         {/*일정 제목*/}
