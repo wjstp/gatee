@@ -97,7 +97,7 @@ const ChatInput = (props: ChatInputProps) => {
 
       inputFile.forEach(async (file: File) => {
         // 이미지 리사이저
-        const resizedFile: File = (await imageResizer(file, 2000, 2000)) as File;
+        const resizedFile: File = (await imageResizer(file, 1000, 1000)) as File;
         // FormData 객체 생성
         const formData = new FormData();
         formData.append("fileType", "MESSAGE");

@@ -48,7 +48,7 @@ import NotFound from "@components/NotFound";
 import ExamFamilyList from "@pages/exam/FamilyList";
 import ChatPhotoDetail from "@pages/chat/ChatPhotoDetail";
 import CharacterFamilyList from "@pages/character/FamilyList";
-
+import ScheduleUpdate from "@pages/schedule/ScheduleUpdate";
 
 const Router = () => {
   return (
@@ -84,6 +84,7 @@ const Router = () => {
         <Route path="/schedule/create" element={<ScheduleCreate/>}/>
         <Route path="/schedule/:id" element={<ScheduleDetail/>}/>
         <Route path="/schedule/:id/record" element={<RecordCreate/>}/>
+        <Route path="/schedule/:id/update" element={<ScheduleUpdate/>}/>
 
         {/*백과사전 페이지*/}
         <Route path="/character" element={<CharacterIndex/>}/>

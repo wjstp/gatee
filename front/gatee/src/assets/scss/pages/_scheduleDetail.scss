@@ -4,6 +4,7 @@
 .schedule-detail {
   min-height: 100%;
   background-color: #FAFAFA;
+  padding-bottom: 3rem;
 }
 
 .schedule-detail__setting {
@@ -41,7 +42,10 @@
   margin: 0.5rem 2.2rem;
 
   color: $subtext-color;
-  font-weight: 400;
+  font: {
+    size: $font-size-small;
+    weight: 400;
+  }
 }
 
 .schedule-detail__content {
@@ -57,7 +61,8 @@
 
 .schedule-detail__record {
   @include flex-col;
-  @include p-(1);
+  @include pb-(1);
+  @include px-(1);
 
   gap: 1rem;
 
@@ -84,6 +89,13 @@
         height: 100%;
       }
     }
+  }
+
+  &__delete {
+    color: $subtext-color;
+    position: absolute;
+    top: 5px;
+    right: 5px;
   }
 
   &__content {
@@ -163,7 +175,123 @@
 }
 
 .schedule-detail__participant {
-  position: absolute;
-  bottom: 1rem;
-  right: 1rem;
+  .MuiAvatar-root {
+    width: 2rem;
+    height: 2rem;
+  }
+}
+
+.schedule-detail__button-wrapper {
+  @include flex_between;
+  @include px-(1);
+
+  width: 100%;
+  height: 3.5rem;
+
+  div {
+    @include flex_row;
+
+    gap: 0.5rem;
+
+    button {
+      font-size: $font-size-small;
+      padding: 7px 15px;
+      border-radius: 20px;
+    }
+
+    .schedule-detail__apply {
+      background-color: $orange400;
+      color: white;
+      font-weight: 600;
+    }
+
+    .schedule-detail__cancel {
+      background-color: $gray200;
+      color: white;
+      font-weight: 600;
+    }
+  }
+
+  button {
+    font-size: $font-size-small;
+    padding: 7px 15px;
+    border-radius: 20px;
+    background-color: white;
+    color: $orange500;
+    font-weight: 600;
+  }
+}
+
+.create-record {
+  &__title {
+    @include px-(0.5);
+
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    margin: 0.5rem;
+    font: {
+      weight: 500;
+      size: $font-size-big;
+    };
+  }
+
+  &__content {
+    width: 100%;
+    position: relative;
+
+    input {
+      background-color: #ed6363;
+      width: 100%;
+      min-height: 60dvh;
+    }
+
+    &__length {
+      position: absolute;
+      bottom: 0;
+      right: 14px;
+      color: $subtext-color;
+      font-size: $font-size-small;
+    }
+  }
+
+  &__create-button {
+    width: 2rem;
+    button {
+      color: $orange500;
+      font: {
+        weight: 500;
+        size: $font-size;
+      }
+    }
+  }
+
+  &__photo-button {
+    width: 2rem;
+    color: $orange500;
+  }
+
+  &__previews {
+    padding: 15px 5px 0 5px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+    gap: 2px;
+  }
+
+  &__preview {
+    @include flex_center;
+
+    border: 1px #efefef solid;
+    position: relative;
+    width: 32dvw;
+    height: 32dvw;
+
+    img {
+      width: 32dvw;
+      height: 100%;
+      object-fit: cover;
+      border-radius: inherit;
+    }
+  }
 }

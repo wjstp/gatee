@@ -3,9 +3,10 @@ import {useParams, useNavigate} from 'react-router-dom';
 import dayjs from "dayjs";
 import {
   applyScheduleParticipationApi,
-  cancelScheduleParticipationApi, createRecordApi,
+  cancelScheduleParticipationApi,
   deleteScheduleApi,
-  getDetailScheduleApi
+  getDetailScheduleApi,
+  deleteRecordApi,
 } from "@api/schedule";
 import {useFamilyStore} from "@store/useFamilyStore";
 import {ScheduleDetailRes, ScheduleRecord, FileRes, ScheduleType} from "@type/index";
@@ -14,9 +15,14 @@ import Avatar from "@mui/material/Avatar";
 import Card from '@mui/material/Card';
 import getColorInfo from "@utils/getColorCode";
 import calculateWeekday from "@utils/calculateWeekday";
-import { BsTextParagraph } from "react-icons/bs";
-import { HiOutlineDotsHorizontal } from "react-icons/hi";
+import {BsTextParagraph} from "react-icons/bs";
+import {HiOutlineDotsHorizontal} from "react-icons/hi";
 import {useMemberStore} from "@store/useMemberStore";
+import IconButton from '@mui/material/IconButton';
+import MenuItem from '@mui/material/MenuItem';
+import Menu from '@mui/material/Menu';
+import {RiDeleteBin6Line} from "react-icons/ri";
+
 
 function ScheduleDetail() {
   const {id} = useParams();
@@ -36,7 +42,8 @@ function ScheduleDetail() {
   });
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
-  const { myInfo } = useMemberStore();
+  const {myInfo} = useMemberStore();
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   // id를 number 타입으로 변환
   useEffect(() => {
@@ -68,7 +75,6 @@ function ScheduleDetail() {
           const endTime = dayjs(res.data.endDate).format("HH:mm");
           setStartDate(`${startDate} (${startWeekday}) ${startTime}`)
           setEndDate(`${endDate} (${endWeekday}) ${endTime}`)
-          console.log(res.data)
         },
         (err) => {
           console.error(err);
@@ -89,29 +95,6 @@ function ScheduleDetail() {
           console.log(err);
         }
       )
-    }
-  }
-
-  // 일정 후기 등록 버튼 클릭 핸들러
-  const handleCreateRecordClick = () => {
-    if (scheduleId) {
-      createRecordApi(
-        {
-          scheduleId,
-          data: {
-            familyId: familyId,
-            content: "후기요",
-            fileIdList: [1, 2, 3, 4]
-          }
-        },
-        (res) => {
-          console.log(res);
-          navigate(`/schedule/${scheduleId}/record`);
-        },
-        (err) => {
-          console.log(err);
-        }
-      ).then().catch();
     }
   }
 
@@ -146,7 +129,17 @@ function ScheduleDetail() {
       cancelScheduleParticipationApi(
         data,
         (res) => {
-          getDetailSchedule();
+          setSchedule(prevSchedule => {
+            if (prevSchedule.participateMembers) {
+              // 내 닉네임을 참여자 리스트에서 제거
+              const updatedParticipants = prevSchedule.participateMembers.filter(participant => participant.nickname !== myInfo.nickname);
+              return {
+                ...prevSchedule,
+                participateMembers: updatedParticipants
+              };
+            }
+            return prevSchedule;
+          });
         },
         (err) => {
           console.log(err);
@@ -162,27 +155,72 @@ function ScheduleDetail() {
     });
   }
 
+  // 설정 토글
+  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  // 후기 삭제
+  const handleRecordDeleteClick = (scheduleRecordId: number) => {
+    deleteRecordApi(
+      scheduleRecordId,
+      (res) => {
+        // 삭제된 후기를 리스트에서 제거
+        setSchedule(prevSchedule => {
+          if (prevSchedule.scheduleRecordResList) {
+            return {
+              ...prevSchedule,
+              scheduleRecordResList: prevSchedule.scheduleRecordResList.filter(record => record.scheduleRecordId !== scheduleRecordId)
+            };
+          }
+          return prevSchedule;
+        });
+      },
+      (err) => {
+        console.error(err);
+      }
+    ).then().catch();
+  }
 
   return (
     <div className="schedule-detail">
-      {/*/!*일정 삭제*!/*/}
-      {/*<button onClick={handleScheduleDeleteClick}>일정 삭제</button>/*/}
-      {/*/!*일정 후기 생성*!/*/}
-      {/*<button onClick={handleCreateRecordClick}>일정 후기 생성</button>/*/}
-      {/*/!*일정 후기 생성*!/*/}
-      {/*<button onClick={handleApplyClick}>일정 참여</button>/*/}
-      {/*/!*일정 후기 생성*!/*/}
-      {/*<button onClick={handleApplyCancelClick}>일정 참여 취소</button>*/}
-      
       {/*일정 정보*/}
       <div className="schedule-detail__info">
+        {/*설정*/}
         <div className="schedule-detail__setting">
-          <HiOutlineDotsHorizontal size={23}/>
+          <IconButton
+            onClick={handleMenu}
+          >
+            <HiOutlineDotsHorizontal size={23}/>
+          </IconButton>
         </div>
+
+        <Menu
+          anchorEl={anchorEl}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right',
+          }}
+          keepMounted
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+          }}
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+        >
+          <MenuItem onClick={handleScheduleDeleteClick} style={{color: "#FF4F4FFF"}}>삭제하기</MenuItem>
+          <MenuItem onClick={() => navigate(`/schedule/${scheduleId}/update`)}>수정하기</MenuItem>
+        </Menu>
 
         {/*일정 제목*/}
         <div className="schedule-detail__title">
-          <div className="schedule-detail__emoji" style={{backgroundColor: `${getColorInfo(schedule.emoji).code}`}}></div>
+          <div className="schedule-detail__emoji"
+               style={{backgroundColor: `${getColorInfo(schedule.emoji).code}`}}></div>
           {schedule.title}
         </div>
 
@@ -193,33 +231,50 @@ function ScheduleDetail() {
 
         {schedule.content && (
           <div className="schedule-detail__content">
-            <BsTextParagraph size={20} />
+            <BsTextParagraph size={20}/>
             <div className="schedule-detail__content__text">
               {schedule.content}
             </div>
           </div>
         )}
 
-        { schedule.category !== ScheduleType.EVENT && (
+        {schedule.category !== ScheduleType.EVENT && (
           <AvatarGroup max={6} className="schedule-detail__participant">
-            { schedule.participateMembers.map((participateMember: {profileImageUrl: string; nickname: string}, index: number) => {
+            {schedule.participateMembers.map((participateMember: {
+              profileImageUrl: string;
+              nickname: string
+            }, index: number) => {
               return <Avatar src={participateMember.profileImageUrl} alt={participateMember.nickname} key={index}/>;
-            }) }
-          </AvatarGroup >
+            })}
+          </AvatarGroup>
         )}
+      </div>
 
-        {isParticipant() ?
-          <button
-            className="schedule-detail__button-cancel"
-            onClick={handleApplyClick}
-          >
-            불참</button>
-          :
-          <button
-            className="schedule-detail__button-apply"
-            onClick={handleApplyCancelClick}
-          >참석</button>
-        }
+      {/*버튼 묶음*/}
+      <div className="schedule-detail__button-wrapper">
+        <div>
+          {(!isParticipant() && schedule.category === ScheduleType.GROUP) ?
+            <button
+              className="schedule-detail__apply"
+              onClick={handleApplyClick}
+            >참석</button>
+            :
+            schedule.category === ScheduleType.GROUP ?
+              <button
+                className="schedule-detail__cancel"
+                onClick={handleApplyCancelClick}
+              >
+                불참
+              </button>
+              :
+              null
+          }
+        </div>
+        <button
+          onClick={() => navigate(`/schedule/${scheduleId}/record`)}
+        >
+          추억 기록하기
+        </button>
       </div>
 
       {/*일정 후기*/}
@@ -244,11 +299,15 @@ function ScheduleDetail() {
 
               <div
                 className={`schedule-detail__record__image${record.fileUrlList && record.fileUrlList.length >= 2 ? '--multiple' : '--single'}`}>
-                {record.fileUrlList.map((file: FileRes,) => (
+                {record.fileUrlList.map((file: FileRes) => (
                   <div className="schedule-detail__record__image__item" key={file.fileId}>
                     <img src={file.imageUrl} alt=""/>
                   </div>
                 ))}
+              </div>
+
+              <div className="schedule-detail__record__delete" onClick={() => handleRecordDeleteClick(record.scheduleRecordId)}>
+                <RiDeleteBin6Line size={20} />
               </div>
             </Card>
           );

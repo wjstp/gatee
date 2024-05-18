@@ -263,7 +263,7 @@ const ScheduleIndex = () => {
         setCalendarHeight((prevHeight) => {
           if (prevHeight > 0.48) {
             dh++;
-            return prevHeight - (0.02 * dh);
+            return prevHeight - (0.03 * dh);
           } else {
             clearInterval(intervalId);
             return 0.48;
@@ -278,7 +278,7 @@ const ScheduleIndex = () => {
         setCalendarHeight((prevHeight) => {
           if (prevHeight < 1) {
             dh++;
-            return prevHeight + (0.02 * dh);
+            return prevHeight + (0.03 * dh);
           } else {
             clearInterval(intervalId);
             return 1;
