@@ -322,6 +322,7 @@
 
           .header__part--01 {
             font-weight: bold;
+            text-align: center;
           }
 
           .header__part--02 {
@@ -398,7 +399,8 @@
         }
 
         .reset-btn {
-          margin-left: 0;
+          margin-left: 0.2rem;
+          margin-top: 0.2rem;
 
           &:active {
             opacity: 0.3;
@@ -429,6 +431,7 @@
 
           .header__part--01 {
             font-weight: bold;
+            text-align: center;
           }
 
           .header__part--02 {
@@ -441,7 +444,7 @@
 
           .body--01--text {
             font-size: 23px;
-            font-weight: 600;
+            font-weight: 800;
           }
         }
 
