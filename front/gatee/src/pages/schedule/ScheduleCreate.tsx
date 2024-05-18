@@ -16,6 +16,8 @@ import InputAdornment from '@mui/material/InputAdornment';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import calculateWeekday from "@utils/calculateWeekday";
 import getUserInfo from "@utils/getUserInfo";
@@ -41,7 +43,6 @@ const ScheduleCreate = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { familyInfo, familyId} = useFamilyStore();
-  const { myInfo } = useMemberStore();
 
   const [title, setTitle] = useState<string>("");
   const [emoji, setEmoji] = useState<string>("orange")
@@ -385,9 +386,17 @@ const ScheduleCreate = () => {
       },
     });
 
-
   return (
     <div className="create-schedule">
+      {/*로딩*/}
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={isCreatingSchedule}
+        onClick={() => setIsCreatingSchedule(false)}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+
       <div className="create-schedule__input-container">
         <div className="create-schedule__title">
           새 일정 만들기

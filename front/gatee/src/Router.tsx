@@ -56,9 +56,9 @@ const Router = () => {
       <Route element={<MainLayout/>}>
         {/*모의고사 페이지*/}
         <Route path="/exam" element={<ExamIndex/>}/>
-        <Route path="/exam/list" element={<ExamFamilyList/>}/>
+        <Route path="/exam/grade" element={<ExamFamilyList/>}/>
         <Route path="/exam/grade/:memberFamilyId" element={<ExamGrade/>}/>
-        <Route path="/exam/scored/:examId" element={<ExamScored/>}/>
+        <Route path="/exam/:examId" element={<ExamScored/>}/>
         <Route path="/exam/taking" element={<ExamTaking/>}/>
 
         {/*채팅 페이지*/}

@@ -1,37 +1,37 @@
 @use '../abstracts' as *;
 @use '../components' as *;
 
+@font-face {
+  font-family: 'yg-jalnan';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
 
 .schedule {
-  height: 100%;
   width: 100%;
+  height: 100%;
   position: relative;
+  background-color: #FAFAFA;
+  overflow: hidden;
 }
 
 .schedule-calendar {
-  height: 100%;
-  margin: 0 5px;
+  padding: 0 5px;
   transition: height 0.28s ease-out;
-
-  &--open {
-    height: 50%;
-    transition: height 0.28s ease-out;
-  }
+  background-color: white;
 
   &__header {
-    @include flex_center;
+    @include flex_col;
 
-    height: 4rem;
+    justify-content: center;
+    height: 3.5rem;
   }
 
   &__title-wrapper {
     @include flex_center;
 
     gap: 1.5rem;
-  }
-
-  &__main {
-    height: 85%;
   }
 
   &__button {
@@ -83,20 +83,18 @@
   &__month {
     position: relative;
     font: {
-      weight: 800;
-      size: $font-size-big;
+      weight: 600;
+      size: 22px;
+      family: 'yg-jalnan';
     };
   }
 
   &__year {
-    position: absolute;
-    top: -20px;
     text-align: center;
-    width: 100%;
     color: $gray400;
     font: {
       weight: 500;
-      size: $font-size-small;
+      size: $font-size-xSmall;
     };
   }
 
@@ -144,13 +142,13 @@
     &__profile {
       @extend %circular-profile-image;
 
-      min-width: 17px;
+      width: 17px;
       height: 17px;
       margin-right: 3px;
 
       img {
-        width: 100%;
-        height: 100%;
+        width: 17px;
+        height: 17px;
       }
     }
   }
@@ -168,9 +166,9 @@
 
     &-icon {
       position: absolute;
-      width: 14px;
-      height: 14px;
-      right: -1px;
+      width: 15px;
+      height: 15px;
+      right: -2px;
       top: -2px;
 
       img {
@@ -198,7 +196,6 @@
   width: 100dvw;
   overflow: auto;
   border-top: #efefef 1px solid;
-  background-color: #FAFAFA;
 
   &__header {
     border-bottom: #efefef 1px solid;
@@ -297,8 +294,8 @@
       height: 2.5rem;
 
       img {
-        width: 100%;
-        height: 100%;
+        width: 2.5rem;
+        height: 2.5rem;
       }
     }
   }

@@ -6,7 +6,7 @@ import { FileRes } from "@type/index";
 
 const ChatPhoto = () => {
   const { chatRoomId } = useFamilyStore();
-  const [files, setFiles] = useState<FileRes[] | null>(null);
+  const [files, setFiles] = useState<FileRes[]>([]);
 
   useEffect(() => {
     if (chatRoomId) {
@@ -30,6 +30,11 @@ const ChatPhoto = () => {
 
   return (
     <div className="chat-photo">
+      { files.length === 0 && (
+        <div className="chat-photo__no-photo">
+         사진이 없습니다
+        </div>
+      )}
       {files && files.map((file: FileRes, index: number) => (
         <div key={index} className="chat-photo__item">
           <img src={file.imageUrl} alt={`Photo ${index + 1}`} className="chat-photo__image"/>

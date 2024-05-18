@@ -185,7 +185,7 @@ const ExamTaking = () => {
       // 미션 수행 api
       setTimeout(() => {
           setEndLoading(false)
-          navigate(`/exam/scored/${res.data.examId}`)
+          navigate(`/exam/${res.data.examId}`)
         }
         , 1000)
 
