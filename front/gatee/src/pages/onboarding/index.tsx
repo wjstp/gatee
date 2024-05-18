@@ -4,8 +4,8 @@ import SecondDict from "@pages/onboarding/components/SecondDict";
 import ThirdAll from "@pages/onboarding/components/ThirdAll";
 import Slider from "react-slick";
 import KaKaoLogin from "@pages/onboarding/components/KaKaoLogin";
-// import * as events from "node:events";
-// import {isBoolean} from "@craco/craco/dist/lib/utils";
+import * as events from "node:events";
+import {isBoolean} from "@craco/craco/dist/lib/utils";
 import {useNavigate} from "react-router-dom";
 // import {useMemberStore} from "@store/useMemberStore";
 // import axios from "axios";
@@ -79,7 +79,6 @@ const OnboardingIndex = () => {
     } else {
       setDeviceType('android');
     }
-    // installApp()
   }, []);
 
   // 모달 상태 적용
@@ -108,7 +107,6 @@ const OnboardingIndex = () => {
         }
         setState({...state, [anchor]: open});
       };
-
   // 토스트 객체
   const list = (anchor: Anchor) => (
     <Box

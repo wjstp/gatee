@@ -1,6 +1,3 @@
-
-
-
 importScripts('https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js');
 importScripts('https://www.gstatic.com/firebasejs/8.3.1/firebase-messaging.js');
 
@@ -25,6 +22,9 @@ self.addEventListener('install', function (e) {
 self.addEventListener('activate', function (e) {
   console.log('fcm sw activate..');
 });
+
+
+
 
 messaging.onBackgroundMessage((payload) => {
   console.log(
@@ -71,3 +71,4 @@ self.addEventListener('notificationclick', function (event) {
 //   };
 //    self.registration.showNotification(notificationTitle, notificationOptions);
 // });
+
