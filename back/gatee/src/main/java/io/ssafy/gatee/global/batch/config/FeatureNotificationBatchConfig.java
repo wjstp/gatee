@@ -89,11 +89,13 @@ public class FeatureNotificationBatchConfig {
                         .question(randomMemberFeature.get().getFeature().getQuestion())
                         .answer(randomMemberFeature.get().getAnswer());
                 try {
+                    log.info(member.getId());
+                    log.info(member.getNickname());
                     pushNotificationService.sendPushOneToOne(PushNotificationFCMReq.builder()
                             .title(Type.FEATURE.korean)
                             .receiverId(List.of(member.getId()))
                             .content(randomMemberFeature.get().getMember().getNickname()
-                                    + randomMemberFeature.get().getFeature().getQuestion()
+                                    + randomMemberFeature.get().getFeature().getMainPoint()
                                     + "\n"
                                     + randomMemberFeature.get().getAnswer())
                             .dataFCMReq(DataFCMReq.builder().type(Type.FEATURE).build())
