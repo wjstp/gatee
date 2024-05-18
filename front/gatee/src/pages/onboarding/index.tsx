@@ -7,14 +7,13 @@ import KaKaoLogin from "@pages/onboarding/components/KaKaoLogin";
 import * as events from "node:events";
 import {isBoolean} from "@craco/craco/dist/lib/utils";
 import {useNavigate} from "react-router-dom";
-import {useMemberStore} from "@store/useMemberStore";
-import axios from "axios";
+// import {useMemberStore} from "@store/useMemberStore";
+// import axios from "axios";
 import Ios from "@pages/onboarding/components/Ios"
 import Android from "@pages/onboarding/components/Android"
 import {useModalStore} from "@store/useModalStore";
 import Box from "@mui/material/Box";
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
-import {BeforeInstallPromptEvent} from "@type/index";
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
