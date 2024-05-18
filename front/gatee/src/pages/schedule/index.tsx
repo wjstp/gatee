@@ -30,7 +30,6 @@ const ScheduleIndex = () => {
   const [isShowTodayButton, setIsShowTodayButton] = useState<boolean>(false);
   const [selectedStartDate, setSelectedStartDate] = useState<string>(dayjs().format("YYYY-MM-DD"));
   const [selectedEndDate, setSelectedEndDate] = useState<string>(dayjs().format("YYYY-MM-DD"));
-  const { REACT_APP_GOOGLE_API_KEY, REACT_APP_GOOGLE_CALENDAR_ID } = process.env;
   const { familyId} = useFamilyStore();
 
   const [scheduleList, setScheduleList] = useState<ScheduleListRes[]>([]);
@@ -98,9 +97,11 @@ const ScheduleIndex = () => {
 
       // 달력 업데이트
       const updatedDate: Date = calendarApi.getDate();
+      updatedDate.setDate(1);
       const formatUpdateDate: string = dayjs(updatedDate).format("YYYY-MM-DD");
       setCurrentDate(updatedDate);
       setSelectedDate(formatUpdateDate);
+      setIsOpenDayToast(false);
     }
   };
 
@@ -129,6 +130,7 @@ const ScheduleIndex = () => {
   // 일자 클릭 핸들러
   const handleDateClick = (arg: DateClickArg) => {
     setSelectedDate(arg.dateStr);
+    setIsOpenDayToast(true);
   }
 
   // 일자별 일정 가져오기
@@ -168,12 +170,6 @@ const ScheduleIndex = () => {
 
     setDayScheduleList(daySchedule);
   };
-
-  useEffect(() => {
-    if (dayScheduleList.length > 0) {
-      setIsOpenDayToast(true);
-    }
-  }, [dayScheduleList]);
 
   // 영역 선택 핸들러
   const handleSelect = (arg: DateSelectArg) => {
@@ -267,15 +263,15 @@ const ScheduleIndex = () => {
       let dh = 1;
       const intervalId = setInterval(() => {
         setCalendarHeight((prevHeight) => {
-          if (prevHeight > 0.43) {
+          if (prevHeight > 0.48) {
             dh++;
-            return prevHeight - (0.02 * dh);
+            return prevHeight - (0.03 * dh);
           } else {
             clearInterval(intervalId);
-            return 0.43;
+            return 0.48;
           }
         });
-      }, 1 / 10000);
+      }, 1 / 1000);
 
       return () => clearInterval(intervalId);
     } else {
@@ -284,13 +280,13 @@ const ScheduleIndex = () => {
         setCalendarHeight((prevHeight) => {
           if (prevHeight < 1) {
             dh++;
-            return prevHeight + (0.02 * dh);
+            return prevHeight + (0.03 * dh);
           } else {
             clearInterval(intervalId);
             return 1;
           }
         });
-      }, 1 / 10000);
+      }, 1 / 1000);
 
       return () => clearInterval(intervalId);
     }
@@ -298,82 +294,73 @@ const ScheduleIndex = () => {
 
   return (
     <div className="schedule">
-      <div className={`schedule-calendar${isOpenDayToast ? '--open' : ''}`}>
+      <div className="schedule-calendar">
         {/*달력 헤더*/}
         <div className="schedule-calendar__header">
+          {/*연도*/}
+          <div className="schedule-calendar__year">
+            {currentDate.getFullYear()}
+          </div>
+          
           <div className="schedule-calendar__title-wrapper">
             {/*이전 달 전환 버튼*/}
-            <button className="schedule-calendar__button-month" onClick={() => handleMonthChange(-1)}>
+            <button className="schedule-calendar__button-month left" onClick={() => handleMonthChange(-1)}>
               <FaCaretLeft size={18}/>
             </button>
 
-            {/*달력 제목*/}
+            {/*월*/}
             <div className="schedule-calendar__month">
-              {currentDate.getMonth() + 1}월
-              <div className="schedule-calendar__year">
-                {currentDate.getFullYear()}
-              </div>
+              {currentDate.getMonth() + 1}
             </div>
 
             {/*다음 달 전환 버튼*/}
-            <button className="schedule-calendar__button-month" onClick={() => handleMonthChange(1)}>
+            <button className="schedule-calendar__button-month right" onClick={() => handleMonthChange(1)}>
               <FaCaretRight size={18}/>
             </button>
           </div>
         </div>
 
         {/*달력*/}
-        <div className="schedule-calendar__main">
-          <FullCalendar
-            ref={calendarRef}
-            plugins={[dayGridPlugin, interactionPlugin, googleCalendarPlugin]}
-            googleCalendarApiKey={REACT_APP_GOOGLE_API_KEY}    // 구글 캘린더 API
-            headerToolbar={{left: "", center: "", right: ""}}
-            initialView={"dayGridMonth"}
-            height={`calc(78dvh * ${calendarHeight})`}
-            locale={"kr"}                // 언어 한글로 변경
-            selectable={true}            // 영역 선택
-            dayMaxEvents={true}          // row 높이보다 많으면 +N more 링크 표시
-            dayMaxEventRows={2}
-            moreLinkClick={"disable"}    // more 링크 비활성화
+        <FullCalendar
+          ref={calendarRef}
+          plugins={[dayGridPlugin, interactionPlugin]}
+          headerToolbar={{left: "", center: "", right: ""}}
+          initialView={"dayGridMonth"}
+          height={`calc((84dvh - 3.5rem) * ${calendarHeight})`}
+          locale={"kr"}                // 언어 한글로 변경
+          selectable={true}            // 영역 선택
+          dayMaxEvents={true}          // row 높이보다 많으면 +N more 링크 표시
+          dayMaxEventRows={2}
+          moreLinkClick={"disable"}    // more 링크 비활성화
 
-            dayCellContent={useDayCellContent}    // // Day cell
-            eventContent={useEventContent}        // Event cell
-            moreLinkContent={useMoreLinkContent}  // More lick cell
-            dateClick={handleDateClick}           // 일자 클릭 이벤트
-            select={handleSelect}                 // 영역 선택 이벤트
+          dayCellContent={useDayCellContent}    // // Day cell
+          eventContent={useEventContent}        // Event cell
+          moreLinkContent={useMoreLinkContent}  // More lick cell
+          dateClick={handleDateClick}           // 일자 클릭 이벤트
+          select={handleSelect}                 // 영역 선택 이벤트
 
 
-            events={monthScheduleList}  // 이벤트 리스트
-            eventTextColor={"black"}    // 이벤트 폰트 색상
-            eventBorderColor={"white"}  // 이벤트 테두리 색상
-            eventOrder="sortIdx"        // 이벤트 정렬
-            // eventSources={[
-            //   {
-            //     googleCalendarId: REACT_APP_GOOGLE_CALENDAR_ID,
-            //     className: 'schedule-calendar__holiday',
-            //     color: "#ed6363",
-            //     textColor: "#FFF",
-            //   }
-            // ]}
-          />
-        </div>
+          events={monthScheduleList}  // 이벤트 리스트
+          eventTextColor={"black"}    // 이벤트 폰트 색상
+          eventBorderColor={"white"}  // 이벤트 테두리 색상
+          eventOrder="sortIdx"        // 이벤트 정렬
+        />
+
+        {/* 오늘 날짜 이동 버튼*/}
+        { isShowTodayButton && (
+          <button className="schedule-calendar__button-today" onClick={handleTodayClick}>
+            <span>오늘</span>
+          </button>
+        )}
+
+        {/*이벤트 추가 버튼*/}
+        <button className="schedule-calendar__button-add-event" onClick={handleCreateScheduleClick}>
+          <FaPlus size={22} />
+        </button>
       </div>
 
       {/*일자별 일정 리스트*/}
       <DayToast date={selectedDate} schedules={dayScheduleList} onCloseClick={handleDayClose} />
-
-      { isShowTodayButton && (
-        // 오늘 날짜 이동 버튼
-        <button className="schedule-calendar__button-today" onClick={handleTodayClick}>
-          <span>오늘</span>
-        </button>
-      )}
-
-      {/*이벤트 추가 버튼*/}
-      <button className="schedule-calendar__button-add-event" onClick={handleCreateScheduleClick}>
-        <FaPlus size={22} />
-      </button>
     </div>
   );
 };
