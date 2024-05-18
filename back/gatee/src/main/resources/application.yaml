@@ -23,6 +23,7 @@ spring:
       - security
       - aws
       - ai
+      - batch
 
 ---
 spring:
