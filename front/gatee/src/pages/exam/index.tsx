@@ -10,7 +10,7 @@ function ExamIndex() {
     <div className="exam__index">
       {/*성적표로 이동*/}
       <div className="exam__index__heading">
-        <Link to="/exam/list" className="exam__index__heading-font">
+        <Link to="/exam/grade" className="exam__index__heading-font">
           지난 평가 결과는?
         </Link>
       </div>

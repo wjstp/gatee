@@ -74,8 +74,8 @@ export const createRecordApi = async function (requestData: CreateRecordReq,
 }
 
 // 일정 후기 삭제
-export const deleteRecordApi = async function (recordId: number,
+export const deleteRecordApi = async function (scheduleRecordId: number,
                                                  success: (res: AxiosResponse<any>) => void,
                                                  fail: (err: AxiosError<any>) => void) {
-  await local.delete(`/schedule/${recordId}`).then(success).catch(fail);
+  await local.delete(`/schedule/${scheduleRecordId}`).then(success).catch(fail);
 }

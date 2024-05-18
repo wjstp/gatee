@@ -48,7 +48,7 @@ import NotFound from "@components/NotFound";
 import ExamFamilyList from "@pages/exam/FamilyList";
 import ChatPhotoDetail from "@pages/chat/ChatPhotoDetail";
 import CharacterFamilyList from "@pages/character/FamilyList";
-
+import ScheduleUpdate from "@pages/schedule/ScheduleUpdate";
 
 const Router = () => {
   return (
@@ -56,15 +56,15 @@ const Router = () => {
       <Route element={<MainLayout/>}>
         {/*모의고사 페이지*/}
         <Route path="/exam" element={<ExamIndex/>}/>
-        <Route path="/exam/list" element={<ExamFamilyList/>}/>
+        <Route path="/exam/grade" element={<ExamFamilyList/>}/>
         <Route path="/exam/grade/:memberFamilyId" element={<ExamGrade/>}/>
-        <Route path="/exam/scored/:examId" element={<ExamScored/>}/>
+        <Route path="/exam/:examId" element={<ExamScored/>}/>
         <Route path="/exam/taking" element={<ExamTaking/>}/>
 
         {/*채팅 페이지*/}
         <Route path="/chatting" element={<ChatIndex/>}/>
         <Route path="/chatting/photo" element={<ChatPhoto/>}/>
-        <Route path="/chatting/photo/:id" element={<ChatPhotoDetail/>}/>
+        <Route path="/chatting/photo/detail" element={<ChatPhotoDetail/>}/>
 
         {/*알림 페이지*/}
         <Route path="/notification" element={<NotificationIndex/>}/>
@@ -84,6 +84,7 @@ const Router = () => {
         <Route path="/schedule/create" element={<ScheduleCreate/>}/>
         <Route path="/schedule/:id" element={<ScheduleDetail/>}/>
         <Route path="/schedule/:id/record" element={<RecordCreate/>}/>
+        <Route path="/schedule/:id/update" element={<ScheduleUpdate/>}/>
 
         {/*백과사전 페이지*/}
         <Route path="/character" element={<CharacterIndex/>}/>

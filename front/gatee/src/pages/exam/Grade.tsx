@@ -103,7 +103,7 @@ const Table = ({gradeData}: { gradeData: ExamResult }) => {
   const score = gradeData.score;
   const grade = getGradeSvg(score);
   return (
-    <div className="exam-grade-data" onClick={() => navigate(`/exam/scored/${gradeData.examId}`)}>
+    <div className="exam-grade-data" onClick={() => navigate(`/exam/${gradeData.examId}`)}>
       <div className="flex-date">{gradeData.createdAt}</div>
       <div className="flex-point">{gradeData.score}/100</div>
       <div className="flex-comment">{grade}</div>

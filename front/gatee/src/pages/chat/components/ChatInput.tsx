@@ -16,6 +16,8 @@ import { useChatStore } from "@store/useChatStore";
 import { sendChatFileApi } from "@api/chat";
 import { useFamilyStore } from "@store/useFamilyStore";
 import { imageResizer } from "@utils/imageResizer";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
 interface ChatInputProps {
   onSendMessage: (newMessages: ChatSendMessage) => void;
@@ -41,6 +43,7 @@ const ChatInput = (props: ChatInputProps) => {
   const [fileIds, setFileIds]= useState<number[]>([]);
   const [data, setData] = useState<FileRes | null>(null);
   const [fileLength, setFileLength] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (data) {
@@ -88,12 +91,13 @@ const ChatInput = (props: ChatInputProps) => {
     const currentTime: string = dayjs().format("YYYY-MM-DD HH:mm:ss");
     // FILE
     if (fileLength > 0) {
+      setIsLoading(true);
       setFileUrls([]);
       setFileIds([]);
 
       inputFile.forEach(async (file: File) => {
         // 이미지 리사이저
-        const resizedFile: File = (await imageResizer(file, 2000, 2000)) as File;
+        const resizedFile: File = (await imageResizer(file, 1000, 1000)) as File;
         // FormData 객체 생성
         const formData = new FormData();
         formData.append("fileType", "MESSAGE");
@@ -108,7 +112,9 @@ const ChatInput = (props: ChatInputProps) => {
           (error) => {
             console.error(error);
           })
-          .then().catch();
+          .then(() => {
+            setIsLoading(false);
+          }).catch();
       });
     }
 
@@ -274,10 +280,25 @@ const ChatInput = (props: ChatInputProps) => {
     }
   }
 
+  useEffect(() => {
+    if (isOpenFilePreview) {
+      setIsOpenEmoji(false);
+    }
+  }, [isOpenFilePreview]);
+
   // 미리보기 조건부 렌더링
   const renderPreview = () => {
     return (
       <div className="chat-input__preview__container">
+        {isOpenFilePreview && (
+          <div className="chat-input__preview__send">
+            <button onClick={() => {
+              reset();
+              setFileLength(0);
+            }}>취소</button>
+            <button onClick={handleSendMessage}>전송</button>
+          </div>
+        )}
         {/*파일 미리보기*/}
         {isOpenFilePreview && (
           <div className="chat-input__preview__file-list">
@@ -335,6 +356,15 @@ const ChatInput = (props: ChatInputProps) => {
 
   return (
     <div className="chat-input">
+      {/*로딩*/}
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={isLoading}
+        onClick={() => setIsLoading(false)}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+
       <div className="chat-input__main">
         <div className={`chat-input__button-wrapper${isOpenAppointment ? "--disabled" : ""}`} ref={buttonWrapperRef}>
           {/*플러스 버튼 - 클릭 시 카메라 및 약속 버튼 렌더링*/}
@@ -430,7 +460,7 @@ const ChatInput = (props: ChatInputProps) => {
 
         {/*미리보기 창*/}
         {(isOpenFilePreview || isOpenEmojiPreview) && (
-          <div className="chat-input__preview">
+          <div className={`chat-input__preview ${isOpenFilePreview ? "file" : "emoji"}`}>
             {renderPreview()}
           </div>
         )}
