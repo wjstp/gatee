@@ -431,7 +431,7 @@ const ProfileIndex = () => {
       {/*백과사전 섹션*/}
       <div className="profile-index__character">
 
-        {askList.length !== 0 ? (
+        {askList.length === 0 ? (
           // 사전이 비어있다면
 
           isMe ? (
