@@ -61,7 +61,7 @@ public class BatchScheduler {
         chatService.sendDateLineToAll();
     }
 
-    @Scheduled(cron = "0 0 * * * *")  // 매일 아침 10시 20분
+    @Scheduled(cron = "0 * * * * *")  // 매일 아침 10시 20분
     public void runTestJob() {
         String time = LocalDateTime.now().toString();
         log.info("batch test : " + time) ;
