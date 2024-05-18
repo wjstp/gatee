@@ -33,6 +33,10 @@ export interface FamilyStore {
   setFamilyCode: (newCode: string) => void;
   familyScore: number;
   setFamilyScore: (newScore: number) => void;
+  inputImage: File | null;
+  setInputImage: (newInputImage: File | null) => void;
+  inputStringImage: string;
+  setInputStringImage: (newInputStringImage: string) => void;
   familyInfo: MemberApiRes[];
   setFamilyInfo: (newInfo: MemberApiRes[]) => void;
 }
@@ -128,7 +132,7 @@ export interface JoinFamilyApiReq {
 
 // 가족 이름 수정
 export interface ChangeFamilyNameApiReq {
-  familyName: string;
+  name: string;
   familyId: string;
 }
 

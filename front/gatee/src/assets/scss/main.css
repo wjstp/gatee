@@ -3,6 +3,7 @@
 @import url("https://webfontworld.github.io/ChosunGs/ChosunGs.css");
 @import url(https://db.onlinewebfonts.com/c/0b450459366b32eaf5e8d79c6a3848cd?family=HYMyeongJo-Extra);
 @import url("https://fonts.cdnfonts.com/css/itim");
+
 .top-bar {
   display: flex;
   justify-content: space-between;

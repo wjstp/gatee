@@ -281,6 +281,7 @@ public class FamilyServiceImpl implements FamilyService {
 
     // 가족 사진 변경
     @Override
+    @Transactional
     public void editFamilyImage(FileType fileType, MultipartFile file, UUID memberId) throws IOException {
         Member member = memberRepository.getReferenceById(memberId);
 

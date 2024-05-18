@@ -54,6 +54,8 @@ public class PushNotificationServiceImpl implements PushNotificationService {
     private final PushNotificationRepository pushNotificationRepository;
     private final CustomPushNotificationRepositoryImpl customPushNotificationRepository;
 
+    private final String DEFAULT_NOTIFICATION_IMAGE = "https://spring-learning.s3.ap-southeast-2.amazonaws.com/default/family.jpg";
+
     @Override
     public PushNotificationPageRes readNotifications(UUID memberId, Pageable pageable, String cursor) {
         return customPushNotificationRepository.findMyPushNotifications(memberId.toString(), PageRequest.of(pageable.getPageNumber(), pageable.getPageSize() + 1), cursor);
@@ -99,14 +101,20 @@ public class PushNotificationServiceImpl implements PushNotificationService {
             case SCHEDULE -> Objects.nonNull(memberNotification) && memberNotification.isScheduleNotification();
             case ALBUM -> Objects.nonNull(memberNotification) && memberNotification.isAlbumNotification();
             case CHATTING -> Objects.nonNull(memberNotification) && memberNotification.isChatNotification();
+            case FEATURE -> Objects.nonNull(memberNotification) && memberNotification.isFeatureNotification();
             default -> false;
         };
     }
 
     @Override
     public void savePushNotification(PushNotificationFCMReq pushNotificationFCMReq) {
-        String senderImageUrl = memberRepository.findById(pushNotificationFCMReq.senderId())
-                .orElseThrow(()-> new MemberNotFoundException(MEMBER_NOT_FOUND)).getFile().getUrl();
+        String senderImageUrl;
+        if (Objects.nonNull(pushNotificationFCMReq.senderId())) {
+            senderImageUrl = memberRepository.findById(UUID.fromString(pushNotificationFCMReq.senderId()))
+                    .orElseThrow(()-> new MemberNotFoundException(MEMBER_NOT_FOUND)).getFile().getUrl();
+        } else {
+            senderImageUrl = DEFAULT_NOTIFICATION_IMAGE;
+        }
         if (pushNotificationFCMReq.dataFCMReq().type().equals(Type.CHATTING)) {
             return;
         }
@@ -119,7 +127,7 @@ public class PushNotificationServiceImpl implements PushNotificationService {
                 .map(receiverId -> PushNotifications.builder()
                         .type(pushNotificationFCMReq.dataFCMReq().type().toString())
                         .typeId(pushNotificationFCMReq.dataFCMReq().typeId())
-                        .senderId(pushNotificationFCMReq.senderId().toString())
+                        .senderId(pushNotificationFCMReq.senderId())
                         .senderImageUrl(senderImageUrl)
                         .receiverId(receiverId.toString())
                         .title(pushNotificationFCMReq.title())
@@ -139,7 +147,7 @@ public class PushNotificationServiceImpl implements PushNotificationService {
 
         PushNotificationFCMReq pushNotification = PushNotificationFCMReq.builder()
                 .receiverId(Collections.singletonList(naggingReq.receiverId()))
-                .senderId(memberId)
+                .senderId(String.valueOf(memberId))
                 .title(member.getNickname() +"님의 "+Type.NAGGING.korean)
                 .content(result.answer())
                 .dataFCMReq(DataFCMReq.builder()
@@ -150,7 +158,7 @@ public class PushNotificationServiceImpl implements PushNotificationService {
         sendPushOneToOne(pushNotification);
         PushNotificationFCMReq myPushNotification = PushNotificationFCMReq.builder()
                 .receiverId(Collections.singletonList(memberId))
-                .senderId(memberId)
+                .senderId(String.valueOf(memberId))
                 .title("나의 "+Type.NAGGING.korean+"가 전송되었습니다.")
                 .content(result.answer())
                 .dataFCMReq(DataFCMReq.builder()
@@ -167,10 +175,8 @@ public class PushNotificationServiceImpl implements PushNotificationService {
     public void sendPushOneToOne(PushNotificationFCMReq pushNotificationFCMReq) throws FirebaseMessagingException {
         // receiver의 권한 여부 확인 - 권한이 없으면 token도 없다
         String receiverToken = findTokenByMemberId(pushNotificationFCMReq.receiverId().get(0));
-
         // type별 권한 확인
         boolean isAgreed = checkAgreement(pushNotificationFCMReq.dataFCMReq().type(), pushNotificationFCMReq.receiverId().get(0));
-
         // fcm 요청
         if (Objects.nonNull(receiverToken) && isAgreed) {
             firebaseInit.init();
