@@ -9,7 +9,7 @@ import java.util.UUID;
 @Builder
 public record PushNotificationFCMReq(
 
-        UUID senderId,
+        String senderId,
 
         List<UUID> receiverId,
 
