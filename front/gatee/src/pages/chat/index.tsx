@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import dayjs from "dayjs";
 
 import BubbleChat from "@pages/chat/components/BubbleChat";
 import ChatInput from "@pages/chat/components/ChatInput";
@@ -13,13 +12,12 @@ import Loading from "@components/Loading";
 import { FaArrowDown } from "react-icons/fa";
 import ScrollAnimation from "@assets/images/animation/scroll_animation.json";
 import useObserver from "@hooks/useObserver";
-import Lottie from "lottie-react";
 
 import SockJS from "sockjs-client";
 import firebase from "../../firebase-config";
 import 'firebase/database';
 import { useInView } from 'react-intersection-observer';
-
+import Lottie from "lottie-react";
 
 const ChatIndex = () => {
   const { REACT_APP_API_URL } = process.env;
@@ -44,6 +42,10 @@ const ChatIndex = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isGetAllData, setIsGetAllData] = useState<boolean>(false);
   const [isEntryChat, setIsEntryChat] = useState<boolean>(false);
+  const [isNoMessage, setIsNoMessage] = useState<boolean>(false);
+
+  const [isShowDateLine, setIsShowDateLine] = useState<boolean>(false);
+  const [dateLine, setDateLine] = useState<string>("");
 
   const [isShowPreviewMessage, setIsShowPreviewMessage] = useState<boolean>(false);
   const [previewMessage, setPreviewMessage] = useState<{ sender: string | undefined, content: string } | null>(null);
@@ -75,6 +77,22 @@ const ChatIndex = () => {
       loadMessages();
     }
   }, [familyId]);
+
+  useEffect(() => {
+    if (messages.length === 0) {
+      setIsNoMessage(true);
+    } else {
+      setIsNoMessage(false);
+
+      // 렌더링된 메시지 중 가장 오래된 메시지가 date line이 아니라면 date line 표시
+      if ("currentTime" in messages[messages.length - 1]) {
+        setIsShowDateLine(true);
+        setDateLine((messages[messages.length - 1] as ChatContent).currentTime);
+      } else {
+        setIsShowDateLine(false);
+      }
+    }
+  }, [messages]);
 
   // WebSocket 연결
   const connect = () => {
@@ -163,11 +181,11 @@ const ChatIndex = () => {
           messagesArray.unshift(newMessage);
         });
 
-        // 마지막 메시지일 경우를 제외하고는 뒤에 메시지를 자름
-        if (messagesArray.length !== 1) {
-          messagesArray.pop();
-        } else {
+        if (messagesArray.length === 0) {
           setIsGetAllData(true);
+        } else if (messagesArray.length === 1) {
+          setIsGetAllData(true);
+          messagesArray.pop();
         }
 
         if (!isEntryChat) {
@@ -190,13 +208,6 @@ const ChatIndex = () => {
         setIsLoading(false);
         setIsGetAllData(true);
         setIsEntryChat(true);
-
-        // 시작 date line 생성
-        setMessages([{
-          id: "",
-          messageType: "DATE_LINE",
-          content: dayjs().format("YYYY-MM-DD")
-        }])
       });
   };
 
@@ -305,6 +316,11 @@ const ChatIndex = () => {
     <div className="chat">
       {/*로딩*/}
       {isReconnecting? <Loading/> : null}
+      
+      {/*메시지 없을 경우*/}
+      {isNoMessage && (
+        <div className="chat__no-message">가족들과 대화를 나눠 보세요 ♪</div>
+      )}
 
       {/*채팅 메인*/}
       <div className="chat__main">
@@ -338,7 +354,7 @@ const ChatIndex = () => {
         )}
 
         {/*새로운 메시지 프리뷰*/}
-        {(!inView && isShowPreviewMessage) && (
+        {(!inView && isShowPreviewMessage && previewMessage) && (
           <button
             className="chat__main__preview"
             onClick={scrollToBottom}
@@ -347,6 +363,14 @@ const ChatIndex = () => {
             <span className="chat__main__preview__content">{previewMessage?.content}</span>
           </button>
         )}
+
+        { (isShowDateLine && messages) &&
+          <ChatDate chat={{
+            id: "",
+            messageType: ChatType.DATE_LINE,
+            content: dateLine,
+          }}/>
+        }
       </div>
 
       {/*채팅 입력*/}
