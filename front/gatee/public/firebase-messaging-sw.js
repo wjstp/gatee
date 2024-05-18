@@ -1,3 +1,14 @@
+
+
+self.addEventListener('install', function (e) {
+  console.log('fcm sw install..');
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', function (e) {
+  console.log('fcm sw activate..');
+});
+
 importScripts('https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js');
 importScripts('https://www.gstatic.com/firebasejs/8.3.1/firebase-messaging.js');
 
@@ -11,20 +22,7 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
-messaging.usePublicVapidKey('BHM_6_Y5fpMq6wpVagokLqSOdbPAwoNXW5eUO2DNw3lV_bGMgrr9f7BnymfevaF_TaJMpwummAey77-wsO-0VsE');
-
-
-self.addEventListener('install', function (e) {
-  console.log('fcm sw install..');
-  self.skipWaiting();
-});
-
-self.addEventListener('activate', function (e) {
-  console.log('fcm sw activate..');
-});
-
-
-
+// messaging.usePublicVapidKey('BHM_6_Y5fpMq6wpVagokLqSOdbPAwoNXW5eUO2DNw3lV_bGMgrr9f7BnymfevaF_TaJMpwummAey77-wsO-0VsE');
 
 messaging.onBackgroundMessage((payload) => {
   console.log(
@@ -46,11 +44,11 @@ messaging.onBackgroundMessage((payload) => {
 });
 
 
-// self.addEventListener('notificationclick', function (event) {
-//   const url = "/main"
-//   event.notification.close();
-//   event.waitUntil(clients.openWindow(url));
-// });
+self.addEventListener('notificationclick', function (event) {
+  const url = "/main"
+  event.notification.close();
+  event.waitUntil(clients.openWindow(url));
+});
 
 
 // 전역 알림 받기 설정
