@@ -4,8 +4,8 @@ import SecondDict from "@pages/onboarding/components/SecondDict";
 import ThirdAll from "@pages/onboarding/components/ThirdAll";
 import Slider from "react-slick";
 import KaKaoLogin from "@pages/onboarding/components/KaKaoLogin";
-import * as events from "node:events";
-import {isBoolean} from "@craco/craco/dist/lib/utils";
+// import * as events from "node:events";
+// import {isBoolean} from "@craco/craco/dist/lib/utils";
 import {useNavigate} from "react-router-dom";
 // import {useMemberStore} from "@store/useMemberStore";
 // import axios from "axios";
@@ -14,6 +14,7 @@ import Android from "@pages/onboarding/components/Android"
 import {useModalStore} from "@store/useModalStore";
 import Box from "@mui/material/Box";
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
+// import {BeforeInstallPromptEvent} from '@type/index';
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
@@ -62,21 +63,13 @@ const OnboardingIndex = () => {
       // )
     }
   }, []);
+
+
+
   const [visible, setVisible] = useState(true)
   const [deviceType, setDeviceType] = useState('unknown');
 
-  // // 깔려있지 않음을 감지하면 토스트 나오게 함
-  // window.addEventListener("beforeinstallprompt", event => {
-  //   console.log("안깔림")
-  //   setVisible(true)
-  // })
-  //
-  // // 깔림을 감지하면 토스트 지우기
-  // window.addEventListener("appinstalled", () => {
-  //   console.log("깔았음");
-  //   setVisible(false)
-  // });
-  //
+
   // 기기 파악
   useEffect(() => {
     const isDeviceIOS = /iPad|iPhone|iPod/.test(window.navigator.userAgent);
@@ -86,6 +79,7 @@ const OnboardingIndex = () => {
     } else {
       setDeviceType('android');
     }
+    // installApp()
   }, []);
 
   // 모달 상태 적용
