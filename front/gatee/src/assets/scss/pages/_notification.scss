@@ -162,9 +162,9 @@
   .nagging-modal-content--container {
     @extend %modal-content;
     @include p-(2);
-    @include mx-(2);
+    //@include mx-(2);
     @include flex-col;
-
+    width: 80dvw;
     align-items: start;
 
 
@@ -174,26 +174,46 @@
       font-size: 1.5rem;
     }
 
-    .feature-modal-top--container{
+    .feature-modal-top--container {
       @include flex-row;
       @include flex_center;
       @include mb-(1);
 
       gap: 1rem;
 
-      .profile-img{
+      .profile-img {
         width: 3rem;
         height: 3rem;
         border-radius: 50%;
       }
     }
 
-    .close-btn{
+    .close-btn {
       @extend %orange-button-medium;
       width: 100%;
     }
+
     .nagging-modal-content {
       font-size: 1.3rem;
+    }
+
+    .feature-modal-content--container {
+      width: 100%;
+
+      .feature-modal-content-answer {
+        @include mt-(0.5);
+        font-size: 1.5rem;
+        text-align: center;
+        font-weight: 600;
+      }
+
+      .feature-modal-content-ask {
+        font-size: 1.3rem;
+        width: 100%;
+        margin: auto auto;
+        //background-color: red;
+        //text-align: center;
+      }
     }
 
     .nagging-modal-btn-container {

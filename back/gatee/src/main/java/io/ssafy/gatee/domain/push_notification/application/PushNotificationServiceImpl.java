@@ -101,6 +101,7 @@ public class PushNotificationServiceImpl implements PushNotificationService {
             case SCHEDULE -> Objects.nonNull(memberNotification) && memberNotification.isScheduleNotification();
             case ALBUM -> Objects.nonNull(memberNotification) && memberNotification.isAlbumNotification();
             case CHATTING -> Objects.nonNull(memberNotification) && memberNotification.isChatNotification();
+            case FEATURE -> Objects.nonNull(memberNotification) && memberNotification.isFeatureNotification();
             default -> false;
         };
     }
@@ -174,10 +175,8 @@ public class PushNotificationServiceImpl implements PushNotificationService {
     public void sendPushOneToOne(PushNotificationFCMReq pushNotificationFCMReq) throws FirebaseMessagingException {
         // receiver의 권한 여부 확인 - 권한이 없으면 token도 없다
         String receiverToken = findTokenByMemberId(pushNotificationFCMReq.receiverId().get(0));
-
         // type별 권한 확인
         boolean isAgreed = checkAgreement(pushNotificationFCMReq.dataFCMReq().type(), pushNotificationFCMReq.receiverId().get(0));
-
         // fcm 요청
         if (Objects.nonNull(receiverToken) && isAgreed) {
             firebaseInit.init();

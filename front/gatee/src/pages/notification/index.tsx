@@ -100,7 +100,7 @@ const NotificationIndex = () => {
           console.log(res.data)
 
           // 이동해야할때 navigate
-          if (clicked?.type !== "NAGGING")
+          if (clicked?.type !== "NAGGING" && clicked?.type !== "FEATURE")
             navigate(getUrlFromType(clicked?.type, clicked?.typeId))
 
           // 이동 안할때는 상태 업데이트(css) 변경
@@ -109,7 +109,7 @@ const NotificationIndex = () => {
         , err => {
           console.log(err)
         })
-    } else if (clicked?.type !== "NAGGING") {
+    } else if (clicked?.type !== "NAGGING" && clicked?.type !== "FEATURE") {
       navigate(getUrlFromType(clicked?.type, clicked?.typeId))
     }
   }

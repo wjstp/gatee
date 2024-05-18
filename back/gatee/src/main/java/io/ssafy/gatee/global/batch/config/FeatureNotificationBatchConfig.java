@@ -85,6 +85,7 @@ public class FeatureNotificationBatchConfig {
         return members -> members.forEach(member -> {
             Optional<MemberFeature> randomMemberFeature = memberFeatureRepository.findRandomMyFamilyFeature(member.getId());
             if (randomMemberFeature.isPresent()) {
+                log.info(randomMemberFeature.get().getFeature() + ", " + member.getName());
                 FeatureNotificationDTO.builder()
                         .question(randomMemberFeature.get().getFeature().getQuestion())
                         .answer(randomMemberFeature.get().getAnswer());
@@ -93,10 +94,10 @@ public class FeatureNotificationBatchConfig {
                             .title(Type.FEATURE.korean)
                             .receiverId(List.of(member.getId()))
                             .content(randomMemberFeature.get().getMember().getNickname()
-                                    + randomMemberFeature.get().getFeature().getQuestion()
+                                    + randomMemberFeature.get().getFeature().getMainPoint()
                                     + "\n"
                                     + randomMemberFeature.get().getAnswer())
-                            .dataFCMReq(DataFCMReq.builder().type(Type.FEATURE).build())
+                            .dataFCMReq(DataFCMReq.builder().type(Type.FEATURE).typeId(0L).build())
                             .build());
                 } catch (FirebaseMessagingException e) {
                     throw new RuntimeException(e);
