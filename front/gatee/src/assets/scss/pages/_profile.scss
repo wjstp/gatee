@@ -365,6 +365,7 @@
 
     // 사전이 비어있지 않다면
     .character__created {
+
       @include flex_center;
 
       // height: 100%;
@@ -375,7 +376,7 @@
         @include flex_row;
         @include mt-(0.5);
 
-        width: 100%;
+        width: 80%;
 
         .text--icon {
           @include flex_center;
@@ -387,13 +388,25 @@
           }
         }
 
-        .title--text {
+        .profile__title--text {
           @include flex_center;
 
+          margin-left: 3%;
           font-size: 18px;
           height: 100%;
           font-weight: bold;
-          margin-right: 30%;
+        }
+
+        .reset-btn {
+          margin-left: 0;
+
+          &:active {
+            opacity: 0.3;
+          }
+
+          &--icon {
+            color: $gray300;
+          }
         }
       }
 
@@ -419,7 +432,6 @@
           }
 
           .header__part--02 {
-            font-size: 19px;
           }
         }
 
@@ -1040,15 +1052,15 @@
     height: 60%;
     width: 80%;
     flex-direction: column;
-    border-radius: 12px;
+    border: 3px solid white;
   }
 
   &__btn {
 
     height: 10%;
     width: 100%;
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
 
     .btn-cancel,
     .btn-save {
@@ -1067,13 +1079,13 @@
     }
 
     .btn-cancel {
-      border-bottom-left-radius: 12px;
+      border-bottom-left-radius: 5px;
       background-color: white;
     }
 
     .btn-save {
       background-color: $orange400;
-      border-bottom-right-radius: 12px;
+      border-bottom-right-radius: 5px;
       color: white;
     }
   }
@@ -1089,15 +1101,6 @@
 .profile__book-icon {
   width: 2rem;
   height: 2rem;
-}
-
-.profile__title-text {
-  @include flex-row;
-
-  align-items: center;
-  font-size: 18px;
-  height: 100%;
-  font-weight: bold;
 }
 
 .profile__invite-box {

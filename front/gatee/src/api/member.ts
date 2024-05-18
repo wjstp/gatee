@@ -44,7 +44,14 @@ export const joinFamilyApi = async function (data: JoinFamilyApiReq,
 export const changeFamilyNameApi = async function (data: ChangeFamilyNameApiReq,
                                                    success: (res: AxiosResponse<any>) => void,
                                                    fail: (err: AxiosError<any>) => void) {
-  await local.patch(`/family/${data.familyId}`, data.familyName).then(success).catch(fail);
+  await local.patch(`/family/${data.familyId}`, { name: data.name }).then(success).catch(fail);
+}
+
+// 가족 이미지 수정
+export const changeFamilyImageApi = async function (data: FormData,
+                                                 success: (res: AxiosResponse<any>) => void,
+                                                 fail: (err: AxiosError<any>) => void) {
+  await local_file.post(`/family/image`, data).then(success).catch(fail);
 }
 
 // 가족 정보 조회
