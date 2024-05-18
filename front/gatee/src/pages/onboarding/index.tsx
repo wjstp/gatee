@@ -4,8 +4,8 @@ import SecondDict from "@pages/onboarding/components/SecondDict";
 import ThirdAll from "@pages/onboarding/components/ThirdAll";
 import Slider from "react-slick";
 import KaKaoLogin from "@pages/onboarding/components/KaKaoLogin";
-// import * as events from "node:events";
-// import {isBoolean} from "@craco/craco/dist/lib/utils";
+import * as events from "node:events";
+import {isBoolean} from "@craco/craco/dist/lib/utils";
 import {useNavigate} from "react-router-dom";
 // import {useMemberStore} from "@store/useMemberStore";
 // import axios from "axios";
@@ -14,6 +14,7 @@ import Android from "@pages/onboarding/components/Android"
 import {useModalStore} from "@store/useModalStore";
 import Box from "@mui/material/Box";
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
+import {getMyDataApi} from "@api/member";
 // import {BeforeInstallPromptEvent} from '@type/index';
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
@@ -30,40 +31,15 @@ const OnboardingIndex = () => {
   //토큰이 있는 경우 메인으로 보내줌
   useEffect(() => {
     if (accessToken) {
-      navigate("/main");
-      // 가족 조회
-      // axios.get(
-      //   `${server}/api/family/1`, null, {
-      //     headers: {
-      //       Authorization: accessToken
-      //     }
-      //   }
-      // ).then(response => {
-      // 가족이 있으면 멤버 조회
-      // 가족이 없으면 가족 생성으로 가기
-      // axios.get(
-      //   `${server}/api/${}`, null, {
-      //     headers: {
-      //
-      //     }
-      //   }
-      // ).then(response => {
-      //   // 멤버도 있으면 main으로 보내기
-      //   navigate('/main')
-      //   }
-      //   // 멤버가 없으면 멤버형성으로 보내기
-      //   navigate('/signup/member-set')
-      // ).catch(error => {
-      //   }
-      // )
-      //   }
-      // ).catch(error => {
-      //    // r
-      //   }
-      // )
+      // 내정보 조회하고 있으면 메인 없으면 카카오로
+      getMyDataApi(res => {
+        navigate("/main");
+      }, err => {
+        navigate("/kakao");
+      })
+
     }
   }, []);
-
 
 
   const [visible, setVisible] = useState(true)
@@ -79,7 +55,6 @@ const OnboardingIndex = () => {
     } else {
       setDeviceType('android');
     }
-    // installApp()
   }, []);
 
   // 모달 상태 적용
@@ -108,7 +83,6 @@ const OnboardingIndex = () => {
         }
         setState({...state, [anchor]: open});
       };
-
   // 토스트 객체
   const list = (anchor: Anchor) => (
     <Box

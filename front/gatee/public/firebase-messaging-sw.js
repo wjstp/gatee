@@ -1,4 +1,11 @@
+self.addEventListener('install', function (e) {
+  console.log('fcm sw install..');
+  self.skipWaiting();
+});
 
+self.addEventListener('activate', function (e) {
+  console.log('fcm sw activate..');
+});
 
 
 importScripts('https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js');
@@ -16,15 +23,6 @@ firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
 messaging.usePublicVapidKey('BHM_6_Y5fpMq6wpVagokLqSOdbPAwoNXW5eUO2DNw3lV_bGMgrr9f7BnymfevaF_TaJMpwummAey77-wsO-0VsE');
 
-
-self.addEventListener('install', function (e) {
-  console.log('fcm sw install..');
-  self.skipWaiting();
-});
-
-self.addEventListener('activate', function (e) {
-  console.log('fcm sw activate..');
-});
 
 messaging.onBackgroundMessage((payload) => {
   console.log(
@@ -71,3 +69,4 @@ self.addEventListener('notificationclick', function (event) {
 //   };
 //    self.registration.showNotification(notificationTitle, notificationOptions);
 // });
+

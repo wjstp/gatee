@@ -11,7 +11,6 @@
 
 // v8
 
-// import firebase from 'firebase/app';
 import 'firebase/messaging';
 import { getPushAlarmByLocalStorageApi } from "@api/firebase";
 import firebase from "./firebase-config";
@@ -48,7 +47,7 @@ export async function requestPermission() {
 
     // 토큰 조회한 뒤, 서버로 토큰 구독
     if (token) {
-      console.log(token)
+      alert(token)
       // console.log(token)
       // 스토어에 저장
       localStorage.setItem('fcmDeviceToken', token);
