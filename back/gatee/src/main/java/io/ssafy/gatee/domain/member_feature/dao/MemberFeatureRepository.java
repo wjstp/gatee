@@ -38,6 +38,7 @@ public interface MemberFeatureRepository extends JpaRepository<MemberFeature, Lo
         where t.member = (select mf.member from MemberFamily mf
         where mf.family = (select f.family from MemberFamily f where f.member.id = :memberId)
         order by rand() limit 1)
+        and t.member.id != :memberId
         order by rand() limit 1
     """)    //todo:수정
     Optional<MemberFeature> findRandomMyFamilyFeature(UUID memberId);
