@@ -505,16 +505,16 @@ const ProfileIndex = () => {
                 <div className="created__character-box__top">
                 </div>
                 <div className="character-box__header">
-                <span className="header__part--01">
-                  {familyMember?.nickname}
-                </span>
-                  <span className="header__part--02">
+                <div className="header__part--01">
                   &nbsp;{randomQuestion ? (
-                    randomQuestion.question
-                  ) : (
-                    null
-                  )}
-                </span>
+                  randomQuestion.question
+                ) : (
+                  null
+                )}
+                </div>
+                {/*  <span className="header__part--02">*/}
+
+                {/*</span>*/}
                 </div>
                 <div className="character-box__body--01">
                 <span className="body--01--text">
@@ -546,7 +546,7 @@ const ProfileIndex = () => {
                   className="profile__book-icon"
                 />
                 <span className="profile__title--text">
-                오늘의 한줄 정보
+                오늘의 {familyMember?.nickname} 한줄 정보
               </span>
                 <button
                   className="reset-btn"
@@ -562,16 +562,13 @@ const ProfileIndex = () => {
                 <div className="created__character-box__top">
                 </div>
                 <div className="character-box__header">
-                <span className="header__part--01">
-                  {familyMember?.nickname}
-                </span>
-                  <span className="header__part--02">
-                  &nbsp;{randomQuestion ? (
-                    randomQuestion.question
-                  ) : (
-                    null
-                  )}
-                </span>
+                <div className="header__part--01">
+                   &nbsp;{randomQuestion ? (
+                  randomQuestion.question
+                ) : (
+                  null
+                )}
+                </div>
                 </div>
                 <div className="character-box__body--01">
                 <span className="body--01--text">
