@@ -54,7 +54,7 @@ public class PushNotificationServiceImpl implements PushNotificationService {
     private final PushNotificationRepository pushNotificationRepository;
     private final CustomPushNotificationRepositoryImpl customPushNotificationRepository;
 
-    private String DEFAULT_NOTIFICATION_IMAGE = "https://spring-learning.s3.ap-southeast-2.amazonaws.com/default/family.jpg";
+    private final String DEFAULT_NOTIFICATION_IMAGE = "https://spring-learning.s3.ap-southeast-2.amazonaws.com/default/family.jpg";
 
     @Override
     public PushNotificationPageRes readNotifications(UUID memberId, Pageable pageable, String cursor) {
@@ -109,7 +109,7 @@ public class PushNotificationServiceImpl implements PushNotificationService {
     public void savePushNotification(PushNotificationFCMReq pushNotificationFCMReq) {
         String senderImageUrl;
         if (Objects.nonNull(pushNotificationFCMReq.senderId())) {
-            senderImageUrl = memberRepository.findById(pushNotificationFCMReq.senderId())
+            senderImageUrl = memberRepository.findById(UUID.fromString(pushNotificationFCMReq.senderId()))
                     .orElseThrow(()-> new MemberNotFoundException(MEMBER_NOT_FOUND)).getFile().getUrl();
         } else {
             senderImageUrl = DEFAULT_NOTIFICATION_IMAGE;
@@ -126,7 +126,7 @@ public class PushNotificationServiceImpl implements PushNotificationService {
                 .map(receiverId -> PushNotifications.builder()
                         .type(pushNotificationFCMReq.dataFCMReq().type().toString())
                         .typeId(pushNotificationFCMReq.dataFCMReq().typeId())
-                        .senderId(pushNotificationFCMReq.senderId().toString())
+                        .senderId(pushNotificationFCMReq.senderId())
                         .senderImageUrl(senderImageUrl)
                         .receiverId(receiverId.toString())
                         .title(pushNotificationFCMReq.title())
@@ -146,7 +146,7 @@ public class PushNotificationServiceImpl implements PushNotificationService {
 
         PushNotificationFCMReq pushNotification = PushNotificationFCMReq.builder()
                 .receiverId(Collections.singletonList(naggingReq.receiverId()))
-                .senderId(memberId)
+                .senderId(String.valueOf(memberId))
                 .title(member.getNickname() +"님의 "+Type.NAGGING.korean)
                 .content(result.answer())
                 .dataFCMReq(DataFCMReq.builder()
@@ -157,7 +157,7 @@ public class PushNotificationServiceImpl implements PushNotificationService {
         sendPushOneToOne(pushNotification);
         PushNotificationFCMReq myPushNotification = PushNotificationFCMReq.builder()
                 .receiverId(Collections.singletonList(memberId))
-                .senderId(memberId)
+                .senderId(String.valueOf(memberId))
                 .title("나의 "+Type.NAGGING.korean+"가 전송되었습니다.")
                 .content(result.answer())
                 .dataFCMReq(DataFCMReq.builder()
