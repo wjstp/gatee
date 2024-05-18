@@ -19,6 +19,10 @@ export const useFamilyStore = create<FamilyStore>(
     setFamilyScore: (newScore: number) => set({familyScore: newScore}),
     familyCode: "",
     setFamilyCode: (newCode: string) => set({familyCode: newCode}),
+    inputImage: null,
+    setInputImage: (newImage: File | null) => set({inputImage: newImage}),
+    inputStringImage: "",
+    setInputStringImage: (newStringImage: string) => set({inputStringImage: newStringImage}),
     familyInfo: [],
     setFamilyInfo: (newInfo: MemberApiRes[]) => set({familyInfo: newInfo}),
   })

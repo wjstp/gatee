@@ -1052,15 +1052,15 @@
     height: 60%;
     width: 80%;
     flex-direction: column;
-    border-radius: 12px;
+    border: 3px solid white;
   }
 
   &__btn {
 
     height: 10%;
     width: 100%;
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
 
     .btn-cancel,
     .btn-save {
@@ -1079,13 +1079,13 @@
     }
 
     .btn-cancel {
-      border-bottom-left-radius: 12px;
+      border-bottom-left-radius: 5px;
       background-color: white;
     }
 
     .btn-save {
       background-color: $orange400;
-      border-bottom-right-radius: 12px;
+      border-bottom-right-radius: 5px;
       color: white;
     }
   }
