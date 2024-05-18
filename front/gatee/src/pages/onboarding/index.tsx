@@ -4,8 +4,8 @@ import SecondDict from "@pages/onboarding/components/SecondDict";
 import ThirdAll from "@pages/onboarding/components/ThirdAll";
 import Slider from "react-slick";
 import KaKaoLogin from "@pages/onboarding/components/KaKaoLogin";
-import * as events from "node:events";
-import {isBoolean} from "@craco/craco/dist/lib/utils";
+// import * as events from "node:events";
+// import {isBoolean} from "@craco/craco/dist/lib/utils";
 import {useNavigate} from "react-router-dom";
 // import {useMemberStore} from "@store/useMemberStore";
 // import axios from "axios";
@@ -14,6 +14,7 @@ import Android from "@pages/onboarding/components/Android"
 import {useModalStore} from "@store/useModalStore";
 import Box from "@mui/material/Box";
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
+// import {BeforeInstallPromptEvent} from '@type/index';
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
@@ -62,21 +63,44 @@ const OnboardingIndex = () => {
       // )
     }
   }, []);
+
+  // let deferredPrompt: BeforeInstallPromptEvent | null = null;
+  //
+  // window.addEventListener('beforeinstallprompt', (event: Event) => {
+  //   event.preventDefault();
+  //   deferredPrompt = event as unknown as BeforeInstallPromptEvent;
+  // });
+  //
+  // const installApp = async (): Promise<void> => {
+  //   if (deferredPrompt === null) {
+  //     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+  //       const varUA = navigator.userAgent.toLowerCase(); // userAgent 값 얻기
+  //       if (varUA.includes("iphone") || varUA.includes("ipad") || varUA.includes("ipod")) {
+  //         alert('사파리에서 "공유하기"에서 "홈 화면에 추가"를 통해 설치하실 수 있습니다.');
+  //         return;
+  //       }
+  //     }
+  //     alert('이미 앱이 설치되어 있거나 앱을 설치할 수 없는 환경입니다.');
+  //     return;
+  //   }
+  //
+  //   deferredPrompt.prompt();
+  //
+  //   // 사용자 선택을 기다립니다.
+  //   const choiceResult = await deferredPrompt.userChoice;
+  //   if (choiceResult.outcome === 'accepted') {
+  //     console.log('사용자가 PWA 설치를 수락했습니다.');
+  //   } else {
+  //     console.log('사용자가 PWA 설치를 거부했습니다.');
+  //   }
+  //   deferredPrompt = null;
+  // };
+
+
   const [visible, setVisible] = useState(true)
   const [deviceType, setDeviceType] = useState('unknown');
 
-  // // 깔려있지 않음을 감지하면 토스트 나오게 함
-  // window.addEventListener("beforeinstallprompt", event => {
-  //   console.log("안깔림")
-  //   setVisible(true)
-  // })
-  //
-  // // 깔림을 감지하면 토스트 지우기
-  // window.addEventListener("appinstalled", () => {
-  //   console.log("깔았음");
-  //   setVisible(false)
-  // });
-  //
+
   // 기기 파악
   useEffect(() => {
     const isDeviceIOS = /iPad|iPhone|iPod/.test(window.navigator.userAgent);
@@ -86,6 +110,7 @@ const OnboardingIndex = () => {
     } else {
       setDeviceType('android');
     }
+    // installApp()
   }, []);
 
   // 모달 상태 적용
