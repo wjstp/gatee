@@ -54,6 +54,8 @@ public class PushNotificationServiceImpl implements PushNotificationService {
     private final PushNotificationRepository pushNotificationRepository;
     private final CustomPushNotificationRepositoryImpl customPushNotificationRepository;
 
+    private String DEFAULT_NOTIFICATION_IMAGE = "https://spring-learning.s3.ap-southeast-2.amazonaws.com/default/family.jpg";
+
     @Override
     public PushNotificationPageRes readNotifications(UUID memberId, Pageable pageable, String cursor) {
         return customPushNotificationRepository.findMyPushNotifications(memberId.toString(), PageRequest.of(pageable.getPageNumber(), pageable.getPageSize() + 1), cursor);
@@ -105,8 +107,13 @@ public class PushNotificationServiceImpl implements PushNotificationService {
 
     @Override
     public void savePushNotification(PushNotificationFCMReq pushNotificationFCMReq) {
-        String senderImageUrl = memberRepository.findById(pushNotificationFCMReq.senderId())
-                .orElseThrow(()-> new MemberNotFoundException(MEMBER_NOT_FOUND)).getFile().getUrl();
+        String senderImageUrl;
+        if (Objects.nonNull(pushNotificationFCMReq.senderId())) {
+            senderImageUrl = memberRepository.findById(pushNotificationFCMReq.senderId())
+                    .orElseThrow(()-> new MemberNotFoundException(MEMBER_NOT_FOUND)).getFile().getUrl();
+        } else {
+            senderImageUrl = DEFAULT_NOTIFICATION_IMAGE;
+        }
         if (pushNotificationFCMReq.dataFCMReq().type().equals(Type.CHATTING)) {
             return;
         }
