@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {TransformedQuestionData} from "@type/index";
 
 interface QuestionItemTakingProps {
+  chooseValue: (questionNumber:number,value:number) => void,
   handleNextIndex: (questionNumber:number,value:number) => void,
   handleBeforeIndex: (questionNumber:number,value:number) => void,
   questionNumber: number,
@@ -9,9 +10,9 @@ interface QuestionItemTakingProps {
   myAnswerList:number[]
 }
 
-// 재사용성을 위해 시험을 보고 있는 아이템인지, 아닌지 type을 받음 -> 클릭이벤트 설정 여부
+
 const QuestionItemTaking = (
-  {
+  {chooseValue,
     questionItem,
     questionNumber,
     handleBeforeIndex
@@ -22,6 +23,7 @@ const QuestionItemTaking = (
   const [selected, setSelected] = useState(myAnswerList[questionNumber]);
 
   const handleAnswer = (value: number) => {
+    chooseValue(questionNumber,value)
     setSelected(value)
   }
 
@@ -35,6 +37,7 @@ const QuestionItemTaking = (
   // 문제 번호가 변경될때마다 선택된값을 변경해준다
   useEffect(() => {
     setSelected(myAnswerList[questionNumber])
+
   }, [questionNumber]);
 
   return (
