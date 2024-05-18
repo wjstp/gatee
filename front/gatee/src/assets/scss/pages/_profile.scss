@@ -365,6 +365,7 @@
 
     // 사전이 비어있지 않다면
     .character__created {
+
       @include flex_center;
 
       // height: 100%;
@@ -375,7 +376,7 @@
         @include flex_row;
         @include mt-(0.5);
 
-        width: 100%;
+        width: 80%;
 
         .text--icon {
           @include flex_center;
@@ -387,13 +388,25 @@
           }
         }
 
-        .title--text {
+        .profile__title--text {
           @include flex_center;
 
+          margin-left: 3%;
           font-size: 18px;
           height: 100%;
           font-weight: bold;
-          margin-right: 30%;
+        }
+
+        .reset-btn {
+          margin-left: 0;
+
+          &:active {
+            opacity: 0.3;
+          }
+
+          &--icon {
+            color: $gray300;
+          }
         }
       }
 
@@ -419,7 +432,6 @@
           }
 
           .header__part--02 {
-            font-size: 19px;
           }
         }
 
@@ -1089,15 +1101,6 @@
 .profile__book-icon {
   width: 2rem;
   height: 2rem;
-}
-
-.profile__title-text {
-  @include flex-row;
-
-  align-items: center;
-  font-size: 18px;
-  height: 100%;
-  font-weight: bold;
 }
 
 .profile__invite-box {
