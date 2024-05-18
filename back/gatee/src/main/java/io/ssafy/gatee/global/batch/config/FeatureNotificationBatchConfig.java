@@ -97,7 +97,7 @@ public class FeatureNotificationBatchConfig {
                                     + randomMemberFeature.get().getFeature().getMainPoint()
                                     + "\n"
                                     + randomMemberFeature.get().getAnswer())
-                            .dataFCMReq(DataFCMReq.builder().type(Type.FEATURE).build())
+                            .dataFCMReq(DataFCMReq.builder().type(Type.FEATURE).typeId(0L).build())
                             .build());
                 } catch (FirebaseMessagingException e) {
                     throw new RuntimeException(e);
