@@ -29,7 +29,7 @@ export async function requestPermission() {
   if (firebase.messaging.isSupported()) {
     const permission = await Notification.requestPermission();
     if (permission === "denied") {
-      console.log("FCM 알림 권한이 거부되었습니다. 앱 설정 -> 가티 -> 알림 허용해 주세요.");
+      alert("FCM 알림 권한이 거부되었습니다. 앱 설정 -> 가티 -> 알림 허용해 주세요.");
       return;
     } else {
       // console.log("FCM 알림 권한 허용");
@@ -48,7 +48,7 @@ export async function requestPermission() {
 
     // 토큰 조회한 뒤, 서버로 토큰 구독
     if (token) {
-      alert(token)
+      console.log(token)
       // console.log(token)
       // 스토어에 저장
       localStorage.setItem('fcmDeviceToken', token);

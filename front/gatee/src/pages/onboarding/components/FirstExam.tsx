@@ -17,7 +17,7 @@ const FirstExam = () => {
         <img src={Explain1} width={200} alt=""/>
       </div>
       <div className="buttonContainer">
-        <Link to="/main" className="skipButton">
+        <Link to="/kakao" className="skipButton">
           건너뛰기
         </Link>
       </div>
