@@ -12,6 +12,7 @@ import firebase from "../firebase-config";
 import 'firebase/database';
 import NotificationPopUp from "@components/NotificationPopup";
 import {requestPermission} from "../firebase-messaging-sw";
+import {getPushAlarmByLocalStorageApi} from "@api/firebase";
 
 const MainLayout = () => {
   const {showModal} = useModalStore();
@@ -68,8 +69,8 @@ const MainLayout = () => {
     if (familyInfo.length === 0) {
       saveMemberData();
     }
-    // // fcm 권한 묻기
-    // requestPermission()
+    // // fcm 토큰 전송
+    // getPushAlarmByLocalStorageApi()
 
   }, []);
 
