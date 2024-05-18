@@ -66,6 +66,7 @@ function ScheduleDetail() {
       getDetailScheduleApi(
         data,
         (res) => {
+          console.log(res.data)
           setSchedule(res.data);
           const startDate = dayjs(res.data.startDate).format("M/D");
           const startWeekday = calculateWeekday(dayjs(res.data.startDate));
@@ -186,6 +187,10 @@ function ScheduleDetail() {
     ).then().catch();
   }
 
+  const handlePhotoClick = (fileId: number) => {
+    navigate(`/photo/${fileId}`);
+  }
+
   return (
     <div className="schedule-detail">
       {/*일정 정보*/}
@@ -300,7 +305,7 @@ function ScheduleDetail() {
               <div
                 className={`schedule-detail__record__image${record.fileUrlList && record.fileUrlList.length >= 2 ? '--multiple' : '--single'}`}>
                 {record.fileUrlList.map((file: FileRes) => (
-                  <div className="schedule-detail__record__image__item" key={file.fileId}>
+                  <div className="schedule-detail__record__image__item" key={file.fileId} onClick={() => handlePhotoClick(file.fileId)}>
                     <img src={file.imageUrl} alt=""/>
                   </div>
                 ))}

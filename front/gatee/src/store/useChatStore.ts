@@ -2,11 +2,13 @@ import { create } from "zustand";
 
 type ChatStore = {
   isShowBottomBar: boolean;
-  isUserParticipant: Record<string, boolean>; // 각 약속별로 상태 관리
+  isUserParticipant: Record<string, boolean>;
   setIsShowBottomBar: (newShow: boolean) => void;
   setIsUserParticipant: (appointmentId: number, newParticipants: boolean) => void;
   isNewMessage: boolean;
   setIsNewMessage: (newMessage: boolean) => void;
+  photoDetailUrl: string;
+  setPhotoDetailUrl: (photoDetailUrl: string) => void;
 }
 
 export const useChatStore = create<ChatStore>(
@@ -22,6 +24,8 @@ export const useChatStore = create<ChatStore>(
         },
       })),
     isNewMessage: false,
-    setIsNewMessage: (newMessage: boolean) => set({ isNewMessage: newMessage })
+    setIsNewMessage: (newMessage: boolean) => set({ isNewMessage: newMessage }),
+    photoDetailUrl: "",
+    setPhotoDetailUrl: (newUrl: string) => set({ photoDetailUrl: newUrl }),
   })
 );

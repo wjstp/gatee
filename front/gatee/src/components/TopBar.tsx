@@ -34,26 +34,30 @@ const TopBar = () => {
   // 뒤로가기
   const goBack = () => {
     let parentRoute;
+    const photoNumberPattern = /^\/photo\/\d+$/;
+
     if (currentRoute.includes('/photo/album/')) {
       parentRoute = '/photo/album';
     } else if (currentRoute.includes('mission') ||
       currentRoute.includes('notification') ||
-      currentRoute.includes('profile')) {
+      currentRoute.includes('profile') ||
+      currentRoute == "/chatting/photo/detail" ||
+      photoNumberPattern.test(currentRoute)) {
       navigate(-1);
       return;
     } else if (currentRoute.includes('exam')) {
-      parentRoute = "/exam"
+      parentRoute = "/exam";
     } else if (currentRoute.includes('/character/start/')) {
-      parentRoute = "/character/start"
+      parentRoute = "/character/start";
     } else if (currentRoute === '/character/start' || currentRoute === '/character') {
-      parentRoute = "/main"
-    }
-    else {
+      parentRoute = "/main";
+    } else {
       parentRoute = currentRoute.split('/').slice(0, -1).join('/') || '/';
     }
 
     navigate(parentRoute);
   };
+
 
   return (
     <div className="top-bar">

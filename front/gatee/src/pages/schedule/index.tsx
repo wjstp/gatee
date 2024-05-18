@@ -97,9 +97,11 @@ const ScheduleIndex = () => {
 
       // 달력 업데이트
       const updatedDate: Date = calendarApi.getDate();
+      updatedDate.setDate(1);
       const formatUpdateDate: string = dayjs(updatedDate).format("YYYY-MM-DD");
       setCurrentDate(updatedDate);
       setSelectedDate(formatUpdateDate);
+      setIsOpenDayToast(false);
     }
   };
 
@@ -269,7 +271,7 @@ const ScheduleIndex = () => {
             return 0.48;
           }
         });
-      }, 1 / 100);
+      }, 1 / 1000);
 
       return () => clearInterval(intervalId);
     } else {
@@ -284,7 +286,7 @@ const ScheduleIndex = () => {
             return 1;
           }
         });
-      }, 1 / 100);
+      }, 1 / 1000);
 
       return () => clearInterval(intervalId);
     }
@@ -302,7 +304,7 @@ const ScheduleIndex = () => {
           
           <div className="schedule-calendar__title-wrapper">
             {/*이전 달 전환 버튼*/}
-            <button className="schedule-calendar__button-month" onClick={() => handleMonthChange(-1)}>
+            <button className="schedule-calendar__button-month left" onClick={() => handleMonthChange(-1)}>
               <FaCaretLeft size={18}/>
             </button>
 
@@ -312,7 +314,7 @@ const ScheduleIndex = () => {
             </div>
 
             {/*다음 달 전환 버튼*/}
-            <button className="schedule-calendar__button-month" onClick={() => handleMonthChange(1)}>
+            <button className="schedule-calendar__button-month right" onClick={() => handleMonthChange(1)}>
               <FaCaretRight size={18}/>
             </button>
           </div>

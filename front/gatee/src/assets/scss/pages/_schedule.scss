@@ -54,8 +54,19 @@
     }
 
     &-month {
+      @include flex_row;
+      @include px-(1);
+
       color: black;
-      width: 3rem;
+      width: 100%;
+    }
+
+    &-month.left {
+      justify-content: end;
+    }
+
+    &-month.right {
+      justify-content: start;
     }
 
     &-add-event {
