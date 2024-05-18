@@ -1,19 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import FirstExam from "@pages/onboarding/components/FirstExam";
 import SecondDict from "@pages/onboarding/components/SecondDict";
 import ThirdAll from "@pages/onboarding/components/ThirdAll";
 import Slider from "react-slick";
 import KaKaoLogin from "@pages/onboarding/components/KaKaoLogin";
 import * as events from "node:events";
-import { isBoolean } from "@craco/craco/dist/lib/utils";
-import { useNavigate } from "react-router-dom";
-import { useMemberStore } from "@store/useMemberStore";
+import {isBoolean} from "@craco/craco/dist/lib/utils";
+import {useNavigate} from "react-router-dom";
+import {useMemberStore} from "@store/useMemberStore";
 import axios from "axios";
 import Ios from "@pages/onboarding/components/Ios"
 import Android from "@pages/onboarding/components/Android"
-import { useModalStore } from "@store/useModalStore";
+import {useModalStore} from "@store/useModalStore";
 import Box from "@mui/material/Box";
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
+import {BeforeInstallPromptEvent} from "@type/index";
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
@@ -26,10 +27,10 @@ const OnboardingIndex = () => {
 
   const accessToken = localStorage.getItem("accessToken");
 
-  //토큰이 있는 경우
+  //토큰이 있는 경우 메인으로 보내줌
   useEffect(() => {
     if (accessToken) {
-      // navigate("/main");
+      navigate("/main");
       // 가족 조회
       // axios.get(
       //   `${server}/api/family/1`, null, {
@@ -62,8 +63,16 @@ const OnboardingIndex = () => {
       // )
     }
   }, []);
-
+  const [visible, setVisible] = useState(false)
   const [deviceType, setDeviceType] = useState('unknown');
+
+  // 깔려있지 않음을 감지하면 토스트 나오게 함
+  window.addEventListener("beforeinstallprompt", event => {
+    event.preventDefault()
+    //@ts-ignore
+    window.promptEvent = event;
+    setVisible(true)
+  })
 
   // 기기 파악
   useEffect(() => {
@@ -77,7 +86,7 @@ const OnboardingIndex = () => {
   }, []);
 
   // 모달 상태 적용
-  const { setShowModal } = useModalStore();
+  const {setShowModal} = useModalStore();
   // 열린지 닫힌지 상태 확인 가능
   const [state, setState] = useState({
     top: true,
@@ -87,7 +96,7 @@ const OnboardingIndex = () => {
   const toggleDrawer =
     (anchor: Anchor, open: boolean) =>
       (event: React.KeyboardEvent | React.MouseEvent) => {
-        if (open === true){
+        if (open === true) {
           setShowModal(true)
         } else {
           setShowModal(false)
@@ -111,13 +120,13 @@ const OnboardingIndex = () => {
       }}
       role="presentation"
       onKeyDown={toggleDrawer(anchor, true)}
-      style={{backgroundColor:"#7B7B7B"}}
+      style={{backgroundColor: "#7B7B7B"}}
     >
       {/* 토스트 팝업 되는 컴포넌트 넣기 */}
       {deviceType === 'ios' ? (
-        <Ios />
+        <Ios/>
       ) : (
-        <Android />
+        <Android/>
       )}
     </Box>
   );
@@ -165,7 +174,7 @@ const OnboardingIndex = () => {
       <div className="onboarding__dotContainer">
 
         {/* 4개의 인덱스를 넘어가면서 현재 인덱스 이전까지 주황표시 */}
-        {index.map((item: number,i:number) => {
+        {index.map((item: number, i: number) => {
           if (activeSlide >= item)
             return <div key={i} className="activeDot"></div>
           else
@@ -178,15 +187,17 @@ const OnboardingIndex = () => {
 
   return (
     <div className="onboarding__container-center">
-      <React.Fragment key={"bottom"}>
-        <SwipeableDrawer
-          anchor={"top"}
-          open={state["top"]}
-          onClose={toggleDrawer("top", false)}
-          onOpen={toggleDrawer("top", true)}>
-          {list("bottom")}
-        </SwipeableDrawer>
-      </React.Fragment>
+      {visible ?
+        <React.Fragment key={"bottom"}>
+          <SwipeableDrawer
+            anchor={"top"}
+            open={state["top"]}
+            onClose={toggleDrawer("top", false)}
+            onOpen={toggleDrawer("top", true)}>
+            {list("bottom")}
+          </SwipeableDrawer>
+        </React.Fragment>
+        : null}
 
       {/* 상단 인덱스 표시 도트 */}
       <Indicator/>
