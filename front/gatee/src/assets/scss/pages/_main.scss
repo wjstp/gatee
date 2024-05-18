@@ -31,12 +31,20 @@
       //background-color: yellow;
       justify-content: space-between;
 
-      .main-family-img {
+      &__btn {
         height: 17dvw;
         width: 17dvw;
-        object-fit: contain;
-        border-radius: 5%;
         border: 1px solid $gray75;
+
+        &:active {
+          opacity: 0.3;
+        }
+
+        .main-family-img {
+          height: 100%;
+          width: 100%;
+          border-radius: 5%;
+        }
       }
 
       .title--content {
@@ -284,5 +292,119 @@
 
   :disabled {
     background-color: $orange100;
+  }
+}
+
+.family-profile {
+  @extend %modal-overlay;
+  @extend %modal-fade-in;
+
+  &__content {
+    @extend %modal-content;
+
+    flex-direction: column;
+    position: relative;
+    width: 35svh;
+    height: 50svh;
+
+    // 이미지 상자
+    &__img-box {
+      height: 29svh;
+      width: 29svh;
+      position: relative;
+      border-radius: 5px;
+
+      .img-box__btn {
+        @extend %circular-profile-image;
+
+        height: 29svh;
+        width: 29svh;
+        border: 1px solid $gray75;
+        border-radius: 5px;
+
+        &:active {
+          opacity: 0.5;
+        }
+
+        .btn--img {
+        }
+
+        .btn--icon {
+          @include flex_center;
+
+          position: absolute;
+          border-radius: 100%;
+          height: 2rem;
+          width: 2rem;
+          background-color: $gray100;
+          right: 5px;
+          bottom: 5px;
+
+          .icon {
+            fill: white;
+          }
+        }
+      }
+    }
+
+    &__input-box {
+      @include flex_center;
+
+      height: 6%;
+      width: 65%;
+      margin-top: 15%;
+      margin-bottom: 10%;
+      border-bottom: 1px solid $gray100;
+
+      .input-box__input {
+        width: 100%;
+        font-size: 1.5rem;
+        text-align: center;
+        justify-content: center;
+        margin-bottom: 6%;
+      }
+    }
+
+    &__error-message {
+      color: red;
+      margin-top: 1%;
+    }
+
+    &__btn {
+
+      height: 10%;
+      width: 100%;
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+      position: absolute;
+      bottom: 1.5%;
+
+      .btn-cancel,
+      .btn-save {
+        height: 100%;
+        width: 49%;
+        color: black;
+
+        &:active {
+          opacity: 0.5;
+        }
+
+        &--text {
+          font-size: 1.2rem;
+          font-weight: bold;
+        }
+      }
+
+      .btn-cancel {
+        border-bottom-left-radius: 5px;
+        background-color: white;
+      }
+
+      .btn-save {
+        background-color: $orange400;
+        border-bottom-right-radius: 5px;
+        color: white;
+      }
+    }
   }
 }

@@ -12,7 +12,7 @@ const ProfileCropper = (props: {
   sender: string
 }) => {
   const { cropImage, cropShape, handleModalEvent, sender } = props;
-  const { setFamilyImage, setStringImage } = useFamilyStore();
+  const { setFamilyImage, setStringImage, setInputImage, setInputStringImage } = useFamilyStore();
   const { setMemberImage, setStringMemberImage, setMyInfo } = useMemberStore();
 
   const [crop, setCrop] = useState({ x: 0, y: 0 })
@@ -48,11 +48,14 @@ const ProfileCropper = (props: {
       } else if (sender === "member-set") {
         setMemberImage(resizedFile);
         setStringMemberImage(jpgUrl);
-      } else {
+      } else if (sender === "profile") {
         setMemberImage(resizedFile);
         setMyInfo({
           profileImageUrl: jpgUrl,
         })
+      } else {
+        setInputImage(resizedFile);
+        setInputStringImage(jpgUrl);
       }
       handleModalEvent();
     } catch (e) {
@@ -96,24 +99,26 @@ const ProfileCropper = (props: {
               width: "100%",
               height: "90%",
               position: "relative",
-              borderTopLeftRadius: "12px",
-              borderTopRightRadius: "12px",
+              borderTopLeftRadius: "5px",
+              borderTopRightRadius: "5px",
               backgroundColor: "black",
+              borderBottom: "3px solid white"
             },
           }}
         />
+
         <div className="profile-cropper__btn">
-          <button
-            className="btn-cancel"
-            onClick={handleCancel}
-          >
-          <span className="btn-cancel--text">
-            취소
-          </span>
-          </button>
-          <button
-            className="btn-save"
-            onClick={handleSave}
+              <button
+              className="btn-cancel"
+              onClick={handleCancel}
+              >
+              <span className="btn-cancel--text">
+              취소
+              </span>
+              </button>
+              <button
+              className="btn-save"
+              onClick={handleSave}
           >
           <span className="btn-save--text">
             저장

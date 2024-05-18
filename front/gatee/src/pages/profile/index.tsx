@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import { FaPhone } from "react-icons/fa";
 import { ReactComponent as PencilIcon } from "@assets/images/icons/ic_pencil.svg";
-import { QuestionSample } from "@constants/index";
 import { ReactComponent as Book} from "@assets/images/character/book.svg";
 import { useModalStore } from "@store/useModalStore";
 import Box from '@mui/material/Box';
@@ -16,8 +15,10 @@ import { createFamilyCodeApi, getMyDataApi } from "@api/member";
 import { AxiosError, AxiosResponse } from "axios";
 import { getFamilyAnsweredAskApi } from "@api/dictionary";
 import useModal from "@hooks/useModal";
-import Loading from "@components/Loading";
 import getMoodContent from "@utils/getMoodContent";
+import { Dictionary } from "@fullcalendar/core/internal";
+import { IoMdRefresh } from "react-icons/io";
+import {naggingApi} from "@api/notification";
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
@@ -42,6 +43,7 @@ const ProfileIndex = () => {
   const [isMe, setIsMe] = useState<boolean>(false);
   // 로딩
   const [loading, setLoading] = useState(false);
+  const [randomQuestion, setRandomQuestion] = useState<Dictionary | null>(null);
 
   // 나로 들어왔는지 확인
   useEffect(() => {
@@ -152,7 +154,7 @@ const ProfileIndex = () => {
     return formattedDate;
   }
 
-  // 백과사전 이동
+  // 내 백과사전 이동
   const handleCharacter = (): void => {
     navigate(`/character`);
   }
@@ -165,6 +167,7 @@ const ProfileIndex = () => {
         (res: AxiosResponse<any>) => {
           console.log("다른 사람 백과사전 푼 문제 상태", res);
           setAskList(res.data);
+          getRandomQuestion(res.data);
         },
         (err: AxiosError<any>) => {
           console.log(err);
@@ -172,24 +175,42 @@ const ProfileIndex = () => {
       )
     }
   }
+  
+  // 랜덤 문제 만들기
+  const getRandomQuestion = (arr: Dictionary[]) => {
+    if (!arr.length) {
+      return null;
+    } else {
+      const randomIndex = Math.floor(Math.random() * arr.length);
+      setRandomQuestion(arr[randomIndex]);
+    }
+  };
 
-  // 모달 내리기
-  const handleModal = () => {
-    closeModal()
+  // 백과사전 보러 가기
+  const goToCharacter = () => {
+    navigate(`/character/start/${familyMember?.memberFamilyId}`);
   }
-
-  // 한마디 보내기 모달 띄우기
-  // const sendNagging = () => {
-  //   setClickedSender(
-  //     {
-  //       typeId: 1,
-  //       title: "profile-sender"
-  //     }
-  //   )
-  // }
-
-  // 모의고사 예시
-  const question = QuestionSample[0];
+  
+  // 한마디 보내기
+  const sendNaggingMessage = () => {
+    const content: string = "백과사전 만들어!"
+    if (familyMember) {
+      naggingApi(
+        {
+          receiverId: familyMember?.memberId,
+          message: content
+        }, res => {
+          console.log(res);
+          alert(`사전을 만들어 달라고 했어요!`)
+        }, err => {
+          console.log(err);
+          // 로딩
+          setLoading(true)
+          setTimeout(()=>setLoading(false), 1000)
+        }
+      )
+    }
+  }
 
   return (
     <div className="profile-index">
@@ -410,7 +431,7 @@ const ProfileIndex = () => {
       {/*백과사전 섹션*/}
       <div className="profile-index__character">
 
-        {askList.length === 0 ? (
+        {askList.length !== 0 ? (
           // 사전이 비어있다면
 
           isMe ? (
@@ -446,6 +467,7 @@ const ProfileIndex = () => {
                 <div className="character-box__body--02">
                   <button
                     className="body--02__btn"
+                    onClick={sendNaggingMessage}
                   >
                     <span className="btn--text">
                       한마디 보내기
@@ -458,46 +480,121 @@ const ProfileIndex = () => {
 
         ) : (
           // 사전이 비어있지 않다면
-          <div className="character__created">
-            <div className="created__title">
-              <div className="text--icon">
 
+          isMe ? (
+            // 내 프로필일 때
+            <div className="character__created">
+              <div className="created__title">
+                <Book
+                  className="profile__book-icon"
+                />
+                <span className="profile__title--text">
+                내 백과사전 한줄 정보
+              </span>
+                <button
+                  className="reset-btn"
+                  onClick={() => getRandomQuestion(askList)}
+                >
+                  <IoMdRefresh
+                    className="reset-btn--icon"
+                    size={20}
+                  />
+                </button>
               </div>
-
-            <Book
-              className="profile__book-icon"
-            />
-            <span className="profile__title-text">
-              오늘의 한줄 정보
-            </span>
-            </div>
-            <div className="created__character-box">
-              <div className="created__character-box__top">
-              </div>
-              <div className="character-box__header">
+              <div className="created__character-box">
+                <div className="created__character-box__top">
+                </div>
+                <div className="character-box__header">
                 <span className="header__part--01">
                   {familyMember?.nickname}
                 </span>
-                <span className="header__part--02">
-                  &nbsp;{question.question}
+                  <span className="header__part--02">
+                  &nbsp;{randomQuestion ? (
+                    randomQuestion.question
+                  ) : (
+                    null
+                  )}
                 </span>
-              </div>
-              <div className="character-box__body--01">
+                </div>
+                <div className="character-box__body--01">
                 <span className="body--01--text">
-                  {question.correctAnswer}
+                  {randomQuestion ? (
+                    randomQuestion.answer
+                  ) : (
+                    null
+                  )}
                 </span>
+                </div>
+                <div className="character-box__body--02">
+                  <button
+                    className="body--02__btn"
+                    onClick={goToCharacter}
+                  >
+                  <span className="btn--text">
+                    내 백과사전 수정하기
+                  </span>
+                  </button>
+                </div>
               </div>
-              <div className="character-box__body--02">
+            </div>
+            
+          ) : (
+            // 내 프로필이 아닐 때
+            <div className="character__created">
+              <div className="created__title">
+                <Book
+                  className="profile__book-icon"
+                />
+                <span className="profile__title--text">
+                오늘의 한줄 정보
+              </span>
                 <button
-                  className="body--02__btn"
+                  className="reset-btn"
+                  onClick={() => getRandomQuestion(askList)}
                 >
+                  <IoMdRefresh
+                    className="reset-btn--icon"
+                    size={20}
+                  />
+                </button>
+              </div>
+              <div className="created__character-box">
+                <div className="created__character-box__top">
+                </div>
+                <div className="character-box__header">
+                <span className="header__part--01">
+                  {familyMember?.nickname}
+                </span>
+                  <span className="header__part--02">
+                  &nbsp;{randomQuestion ? (
+                    randomQuestion.question
+                  ) : (
+                    null
+                  )}
+                </span>
+                </div>
+                <div className="character-box__body--01">
+                <span className="body--01--text">
+                  {randomQuestion ? (
+                    randomQuestion.answer
+                  ) : (
+                    null
+                  )}
+                </span>
+                </div>
+                <div className="character-box__body--02">
+                  <button
+                    className="body--02__btn"
+                    onClick={goToCharacter}
+                  >
                   <span className="btn--text">
                     백과사전 보러 가기
                   </span>
-                </button>
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
+          )
         )}
 
       </div>
