@@ -89,8 +89,7 @@ public class FeatureNotificationBatchConfig {
                         .question(randomMemberFeature.get().getFeature().getQuestion())
                         .answer(randomMemberFeature.get().getAnswer());
                 try {
-                    log.info(member.getId());
-                    log.info(member.getNickname());
+
                     pushNotificationService.sendPushOneToOne(PushNotificationFCMReq.builder()
                             .title(Type.FEATURE.korean)
                             .receiverId(List.of(member.getId()))
