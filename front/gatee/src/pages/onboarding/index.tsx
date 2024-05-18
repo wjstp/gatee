@@ -64,37 +64,6 @@ const OnboardingIndex = () => {
     }
   }, []);
 
-  // let deferredPrompt: BeforeInstallPromptEvent | null = null;
-  //
-  // window.addEventListener('beforeinstallprompt', (event: Event) => {
-  //   event.preventDefault();
-  //   deferredPrompt = event as unknown as BeforeInstallPromptEvent;
-  // });
-  //
-  // const installApp = async (): Promise<void> => {
-  //   if (deferredPrompt === null) {
-  //     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-  //       const varUA = navigator.userAgent.toLowerCase(); // userAgent 값 얻기
-  //       if (varUA.includes("iphone") || varUA.includes("ipad") || varUA.includes("ipod")) {
-  //         alert('사파리에서 "공유하기"에서 "홈 화면에 추가"를 통해 설치하실 수 있습니다.');
-  //         return;
-  //       }
-  //     }
-  //     alert('이미 앱이 설치되어 있거나 앱을 설치할 수 없는 환경입니다.');
-  //     return;
-  //   }
-  //
-  //   deferredPrompt.prompt();
-  //
-  //   // 사용자 선택을 기다립니다.
-  //   const choiceResult = await deferredPrompt.userChoice;
-  //   if (choiceResult.outcome === 'accepted') {
-  //     console.log('사용자가 PWA 설치를 수락했습니다.');
-  //   } else {
-  //     console.log('사용자가 PWA 설치를 거부했습니다.');
-  //   }
-  //   deferredPrompt = null;
-  // };
 
 
   const [visible, setVisible] = useState(true)
