@@ -85,11 +85,11 @@ public class FeatureNotificationBatchConfig {
         return members -> members.forEach(member -> {
             Optional<MemberFeature> randomMemberFeature = memberFeatureRepository.findRandomMyFamilyFeature(member.getId());
             if (randomMemberFeature.isPresent()) {
+                log.info(randomMemberFeature.get().getFeature() + ", " + member.getName());
                 FeatureNotificationDTO.builder()
                         .question(randomMemberFeature.get().getFeature().getQuestion())
                         .answer(randomMemberFeature.get().getAnswer());
                 try {
-
                     pushNotificationService.sendPushOneToOne(PushNotificationFCMReq.builder()
                             .title(Type.FEATURE.korean)
                             .receiverId(List.of(member.getId()))
