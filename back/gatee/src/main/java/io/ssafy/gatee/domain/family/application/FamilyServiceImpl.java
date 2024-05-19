@@ -88,16 +88,17 @@ public class FamilyServiceImpl implements FamilyService {
             imageFile = s3Util.upload(fileType, file);
             fileRepository.save(imageFile);
         } else {
-            imageFile = fileRepository.findByUrl(DEFAULT_FAMILY_IMAGE_URL)
-                    .orElse(fileRepository.save(
-                            File.builder()
-                                    .name("family")
-                                    .originalName("family.jpg")
-                                    .url(DEFAULT_FAMILY_IMAGE_URL)
-                                    .dir("/default")
-                                    .fileType(FileType.FAMILY_PROFILE)
-                                    .build())
-                    );
+            if (fileRepository.existsByUrl(DEFAULT_FAMILY_IMAGE_URL)) {
+                imageFile = fileRepository.findByUrl(DEFAULT_FAMILY_IMAGE_URL);
+            } else {
+                imageFile = fileRepository.save(File.builder()
+                                .name("family")
+                                .originalName("family.jpg")
+                                .url(DEFAULT_FAMILY_IMAGE_URL)
+                                .dir("/default")
+                                .fileType(FileType.FAMILY_PROFILE)
+                                .build());
+            }
         }
 
         ChatRoom chatRoom = ChatRoom.builder().build();
@@ -296,16 +297,18 @@ public class FamilyServiceImpl implements FamilyService {
             entity = s3Util.upload(fileType, file);
             fileRepository.save(entity);
         } else {
-            entity = fileRepository.findByUrl(DEFAULT_FAMILY_IMAGE_URL)
-                    .orElse(fileRepository.save(
-                            File.builder()
-                            .name("family")
-                            .originalName("family.jpg")
-                            .url(DEFAULT_FAMILY_IMAGE_URL)
-                            .dir("/default")
-                            .fileType(FileType.FAMILY_PROFILE)
-                            .build())
-                    );
+            if (fileRepository.existsByUrl(DEFAULT_FAMILY_IMAGE_URL)) {
+                entity = fileRepository.findByUrl(DEFAULT_FAMILY_IMAGE_URL);
+            } else {
+                entity = fileRepository.save(
+                        File.builder()
+                                .name("family")
+                                .originalName("family.jpg")
+                                .url(DEFAULT_FAMILY_IMAGE_URL)
+                                .dir("/default")
+                                .fileType(FileType.FAMILY_PROFILE)
+                                .build());
+            }
         }
 
         family.editFamilyImage(entity);
