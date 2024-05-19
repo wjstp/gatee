@@ -9,7 +9,7 @@ interface ChatDateProps {
 
 const ChatDate = (props: ChatDateProps) => {
   const { chat } = props;
-  const date: Dayjs = dayjs(chat.content);
+  const date: Dayjs = dayjs(chat.currentTime);
   return (
     <div className="chat__date">
       <div className="chat__date__main">
