@@ -256,6 +256,14 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         List<ScheduleRecord> scheduleRecordList = scheduleRecordRepository.findAllBySchedule(schedule);
 
+        List<PhotoScheduleRecord> photoScheduleRecordList = new ArrayList<>();
+
+        scheduleRecordList.stream().map(scheduleRecord ->
+            photoScheduleRecordRepository.findAllByScheduleRecord(scheduleRecord).stream().map(photoScheduleRecordList::add)
+        );
+
+        photoScheduleRecordRepository.deleteAll(photoScheduleRecordList);
+
         scheduleRecordRepository.deleteAll(scheduleRecordList);
 
         schedule.deleteData();
