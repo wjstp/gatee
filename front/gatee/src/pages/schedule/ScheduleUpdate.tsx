@@ -68,6 +68,7 @@ const ScheduleUpdate = () => {
     if (isButtonEnabled()) {
       if (scheduleId && familyId && title && category !== null && emoji !== null) {
         setIsLoading(true);
+        setShowModal(true);
         const data = {
           familyId,
           category,
@@ -84,10 +85,12 @@ const ScheduleUpdate = () => {
           },
           (res) => {
             setIsLoading(false);
+            setShowModal(false);
             navigate(`/schedule/${scheduleId}`);
           },
           (err) => {
             setIsLoading(false);
+            setShowModal(false);
             console.error(err);
           }
         ).then().catch()

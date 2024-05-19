@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { FileRes } from "@type/index";
 
 type ChatStore = {
   isShowBottomBar: boolean;
@@ -9,6 +10,8 @@ type ChatStore = {
   setIsNewMessage: (newMessage: boolean) => void;
   photoDetailUrl: string;
   setPhotoDetailUrl: (photoDetailUrl: string) => void;
+  files: FileRes[];
+  setFiles: (newFiles: FileRes[]) => void;
 }
 
 export const useChatStore = create<ChatStore>(
@@ -27,5 +30,7 @@ export const useChatStore = create<ChatStore>(
     setIsNewMessage: (newMessage: boolean) => set({ isNewMessage: newMessage }),
     photoDetailUrl: "",
     setPhotoDetailUrl: (newUrl: string) => set({ photoDetailUrl: newUrl }),
+    files: [],
+    setFiles: (newFiles: FileRes[]) => set({ files: newFiles })
   })
 );

@@ -9,6 +9,7 @@ import {MdOutlineAddPhotoAlternate} from "react-icons/md";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import {IoCloseOutline} from "react-icons/io5";
+import {useModalStore} from "@store/useModalStore";
 
 
 const RecordCreate = () => {
@@ -19,9 +20,9 @@ const RecordCreate = () => {
   const [content, setContent] = useState<string>("");
   const [files, setFiles] = useState<File[]>([]);
   const [fileIdList, setFileIdList] = useState<number[]>([]);
-  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const {setShowModal} = useModalStore();
 
   // id를 number 타입으로 변환
   useEffect(() => {
@@ -41,6 +42,7 @@ const RecordCreate = () => {
   // 파일 업로드
   const handleCreateRecordClick = async () => {
     setIsLoading(true);
+    setShowModal(true);
 
     if (files.length === 0) {
       // 파일이 선택되지 않은 경우 바로 createRecordApi 호출
@@ -105,15 +107,18 @@ const RecordCreate = () => {
           },
           (res) => {
             setIsLoading(false);
+            setShowModal(false);
             navigate(`/schedule/${scheduleId}`);
           },
           (err) => {
             setIsLoading(false);
+            setShowModal(false);
             console.log(err);
           }
         );
       } catch (err) {
         setIsLoading(false);
+        setShowModal(false);
         console.error(err);
       }
     }
@@ -156,7 +161,6 @@ const RecordCreate = () => {
       <Backdrop
         sx={{color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1}}
         open={isLoading}
-        onClick={() => setIsLoading(false)}
       >
         <CircularProgress color="inherit"/>
       </Backdrop>
