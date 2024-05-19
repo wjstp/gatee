@@ -11,9 +11,9 @@ spring:
         - db-prod
         - security-prod
       batch:
-        - db-prod
+        - db-local
         - batch-prod
-        - security-prod
+        - security-local
       test:
         - db-prod
         - security-prod
@@ -22,7 +22,6 @@ spring:
       - security
       - aws
       - ai
-      - batch
 
 ---
 spring:
@@ -42,6 +41,16 @@ spring:
   config:
     activate:
       on-profile: prod
+
+logging:
+  level:
+    com: info
+
+---
+spring:
+  config:
+    activate:
+      on-profile: batch
 
 logging:
   level:
