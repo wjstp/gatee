@@ -1,6 +1,5 @@
 package io.ssafy.gatee.global.batch.scheduler;
 
-import io.ssafy.gatee.domain.family.application.FamilyService;
 import io.ssafy.gatee.global.websocket.application.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -29,7 +28,7 @@ public class BatchScheduler {
     private final JobRegistry jobRegistry;
     private final ChatService chatService;
 
-    @Scheduled(cron = "0 0 * * * *")  // 매일 아침 10시 20분
+    @Scheduled(cron = "0 * * * * *")  // 매일 아침 10시 20분
     public void runFeatureNotificationJob() {
         String time = LocalDateTime.now().toString();
         try {
@@ -64,6 +63,6 @@ public class BatchScheduler {
     @Scheduled(cron = "0 * * * * *")
     public void runTestJob() {
         String time = LocalDateTime.now().toString();
-        log.info("batch test : " + time) ;
+        log.info("batch test : " + time);
     }
 }
