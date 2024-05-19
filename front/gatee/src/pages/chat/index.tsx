@@ -336,6 +336,14 @@ const ChatIndex = () => {
         {/*채팅 내용*/}
         {renderChatBubble}
 
+        { (isShowDateLine && messages) &&
+            <ChatDate chat={{
+              id: "",
+              messageType: ChatType.DATE_LINE,
+              currentTime: dateLine,
+            }}/>
+        }
+
         {/*DB에 더 불러올 데이터가 존재하고 데이터가 페이지 크기를 넘어갔을 때 표시*/}
         {(!isGetAllData && messages.length >= PAGE_SIZE - 1) && (
           <div className="scroll-target" ref={target} >
@@ -366,14 +374,6 @@ const ChatIndex = () => {
             <span className="chat__main__preview__content">{previewMessage?.content}</span>
           </button>
         )}
-
-        { (isShowDateLine && messages) &&
-          <ChatDate chat={{
-            id: "",
-            messageType: ChatType.DATE_LINE,
-            currentTime: dateLine,
-          }}/>
-        }
       </div>
 
       {/*채팅 입력*/}
