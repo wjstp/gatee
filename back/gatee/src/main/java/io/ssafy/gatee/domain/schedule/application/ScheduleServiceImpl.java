@@ -18,6 +18,7 @@ import io.ssafy.gatee.domain.member_family_schedule.entity.MemberFamilySchedule;
 import io.ssafy.gatee.domain.photo.dao.PhotoRepository;
 import io.ssafy.gatee.domain.photo.entity.Photo;
 import io.ssafy.gatee.domain.photo_schedule_record.dao.PhotoScheduleRecordRepository;
+import io.ssafy.gatee.domain.photo_schedule_record.dao.PhotoScheduleRecordRepositoryCustom;
 import io.ssafy.gatee.domain.photo_schedule_record.entity.PhotoScheduleRecord;
 import io.ssafy.gatee.domain.push_notification.application.PushNotificationService;
 import io.ssafy.gatee.domain.push_notification.dto.request.DataFCMReq;
@@ -74,6 +75,8 @@ public class ScheduleServiceImpl implements ScheduleService {
     private final PhotoRepository photoRepository;
 
     private final PhotoScheduleRecordRepository photoScheduleRecordRepository;
+
+    private final PhotoScheduleRecordRepositoryCustom photoScheduleRecordRepositoryCustom;
 
     private final FileRepository fileRepository;
 
@@ -256,13 +259,11 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         List<ScheduleRecord> scheduleRecordList = scheduleRecordRepository.findAllBySchedule(schedule);
 
-        List<PhotoScheduleRecord> photoScheduleRecordList = new ArrayList<>();
+        List<PhotoScheduleRecord> photoScheduleRecordList = photoScheduleRecordRepositoryCustom.findAllByScheduleRecordList(scheduleRecordList);
 
-        scheduleRecordList.stream().map(scheduleRecord ->
-            photoScheduleRecordRepository.findAllByScheduleRecord(scheduleRecord).stream().map(photoScheduleRecordList::add)
-        );
-
-        photoScheduleRecordRepository.deleteAll(photoScheduleRecordList);
+        if (!photoScheduleRecordList.isEmpty()) {
+            photoScheduleRecordRepository.deleteAll(photoScheduleRecordList);
+        }
 
         scheduleRecordRepository.deleteAll(scheduleRecordList);
 
