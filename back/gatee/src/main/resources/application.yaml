@@ -3,7 +3,6 @@ spring:
     active:
       - local
       - common
-      - batch
     group:
       local:
         - db-local
@@ -23,6 +22,7 @@ spring:
       - security
       - aws
       - ai
+      - batch
 
 ---
 spring:
