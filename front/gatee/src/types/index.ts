@@ -244,7 +244,7 @@ export interface CreateScheduleReq {
   memberIdList: string[];
 }
 
-export interface ModifyScheduleReq {
+export interface UpdateScheduleReq {
   scheduleId: number;
   data : {
     familyId: string;
@@ -266,10 +266,18 @@ export interface CreateRecordReq {
   }
 }
 
+export interface DeleteRecordReq {
+  scheduleRecordId: number;
+  scheduleId: number;
+}
+
 export interface ScheduleRecord {
   scheduleRecordId: number;
   content: string;
-  fileUrlList: FileRes[];
+  scheduleRecordPhotoResList: {
+    photoId: number;
+    imageUrl: string;
+  }[]
   nickname: string;
   profileImageUrl: string;
 }
@@ -359,7 +367,7 @@ export interface ChatEmoji {  // EMOJI
 export interface ChatDateLine { // DATE_LINE
   id: string;
   messageType: string;
-  content: string;
+  currentTime: string;
 }
 
 export interface ChatAlarm {  // ALARM

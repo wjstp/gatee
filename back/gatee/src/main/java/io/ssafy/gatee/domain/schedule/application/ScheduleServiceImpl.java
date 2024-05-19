@@ -18,6 +18,7 @@ import io.ssafy.gatee.domain.member_family_schedule.entity.MemberFamilySchedule;
 import io.ssafy.gatee.domain.photo.dao.PhotoRepository;
 import io.ssafy.gatee.domain.photo.entity.Photo;
 import io.ssafy.gatee.domain.photo_schedule_record.dao.PhotoScheduleRecordRepository;
+import io.ssafy.gatee.domain.photo_schedule_record.dao.PhotoScheduleRecordRepositoryCustom;
 import io.ssafy.gatee.domain.photo_schedule_record.entity.PhotoScheduleRecord;
 import io.ssafy.gatee.domain.push_notification.application.PushNotificationService;
 import io.ssafy.gatee.domain.push_notification.dto.request.DataFCMReq;
@@ -31,6 +32,7 @@ import io.ssafy.gatee.domain.schedule.dto.response.ScheduleListRes;
 import io.ssafy.gatee.domain.schedule.entity.Category;
 import io.ssafy.gatee.domain.schedule.entity.Schedule;
 import io.ssafy.gatee.domain.schedule_record.dao.ScheduleRecordRepository;
+import io.ssafy.gatee.domain.schedule_record.dto.response.ScheduleRecordPhotoRes;
 import io.ssafy.gatee.domain.schedule_record.dto.response.ScheduleRecordRes;
 import io.ssafy.gatee.domain.schedule_record.entity.ScheduleRecord;
 import io.ssafy.gatee.global.exception.error.bad_request.DoNotHavePermissionException;
@@ -73,6 +75,8 @@ public class ScheduleServiceImpl implements ScheduleService {
     private final PhotoRepository photoRepository;
 
     private final PhotoScheduleRecordRepository photoScheduleRecordRepository;
+
+    private final PhotoScheduleRecordRepositoryCustom photoScheduleRecordRepositoryCustom;
 
     private final FileRepository fileRepository;
 
@@ -156,25 +160,21 @@ public class ScheduleServiceImpl implements ScheduleService {
 
                 List<Photo> photoList;
 
-                List<File> fileList;
-
-                List<FileUrlRes> fileUrlResList;
+                List<ScheduleRecordPhotoRes> scheduleRecordPhotoResList;
 
                 if (photoScheduleRecordList.isEmpty()) {
-                    fileUrlResList = new ArrayList<>();
+                    scheduleRecordPhotoResList = new ArrayList<>();
                 } else {
                     photoList = photoScheduleRecordList.stream().map(PhotoScheduleRecord::getPhoto).toList();
 
                     if (photoList.isEmpty()) {
-                        fileUrlResList = new ArrayList<>();
+                        scheduleRecordPhotoResList = new ArrayList<>();
                     } else {
-                        fileList = photoList.stream().map(Photo::getFile).toList();
-
-                        fileUrlResList = fileList.stream().map(FileUrlRes::toDto).toList();
+                        scheduleRecordPhotoResList = photoList.stream().map(ScheduleRecordPhotoRes::toDto).toList();
                     }
                 }
 
-                return ScheduleRecordRes.toDto(scheduleRecord, fileUrlResList);
+                return ScheduleRecordRes.toDto(scheduleRecord, scheduleRecordPhotoResList);
             }).toList();
         }
 
@@ -258,6 +258,12 @@ public class ScheduleServiceImpl implements ScheduleService {
         Schedule schedule = scheduleRepository.getReferenceById(scheduleId);
 
         List<ScheduleRecord> scheduleRecordList = scheduleRecordRepository.findAllBySchedule(schedule);
+
+        List<PhotoScheduleRecord> photoScheduleRecordList = photoScheduleRecordRepositoryCustom.findAllByScheduleRecordList(scheduleRecordList);
+
+        if (!photoScheduleRecordList.isEmpty()) {
+            photoScheduleRecordRepository.deleteAll(photoScheduleRecordList);
+        }
 
         scheduleRecordRepository.deleteAll(scheduleRecordList);
 
@@ -355,8 +361,11 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         ScheduleRecord scheduleRecord = scheduleRecordRepository.getReferenceById(scheduleRecordId);
 
+        List<PhotoScheduleRecord> photoScheduleRecordList = photoScheduleRecordRepository.findAllByScheduleRecord(scheduleRecord);
+
         if (scheduleRecord.getMember().equals(member)) {
-            scheduleRecord.deleteData();
+            photoScheduleRecordRepository.deleteAll(photoScheduleRecordList);
+            scheduleRecordRepository.delete(scheduleRecord);
         } else {
             throw new DoNotHavePermissionException(DO_NOT_HAVE_REQUEST);
         }

@@ -3,14 +3,13 @@ import PhotoList from "@components/PhotoList";
 import { applyAppointmentParticipationApi, getChatFileApi } from "@api/chat";
 import { useFamilyStore } from "@store/useFamilyStore";
 import { FileRes } from "@type/index";
-import {useNavigate} from "react-router-dom";
-import {useChatStore} from "@store/useChatStore";
+import { useNavigate } from "react-router-dom";
+import { useChatStore } from "@store/useChatStore";
 
 const ChatPhoto = () => {
   const { chatRoomId } = useFamilyStore();
-  const [files, setFiles] = useState<FileRes[]>([]);
   const navigate = useNavigate();
-  const {setPhotoDetailUrl} = useChatStore();
+  const { setPhotoDetailUrl, files, setFiles } = useChatStore();
 
   useEffect(() => {
     if (chatRoomId) {

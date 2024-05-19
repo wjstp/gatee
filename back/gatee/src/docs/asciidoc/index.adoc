@@ -287,8 +287,8 @@ include::{snippets}/schedule-controller-test/save-schedule-record/http-response.
 
 - Request
 
-include::{snippets}/schedule-controller-test/delete-schedule/http-request.adoc[]
-include::{snippets}/schedule-controller-test/delete-schedule/path-parameters.adoc[]
+include::{snippets}/schedule-controller-test/delete-schedule-record/http-request.adoc[]
+include::{snippets}/schedule-controller-test/delete-schedule-record/path-parameters.adoc[]
 
 - Response
 

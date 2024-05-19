@@ -14,6 +14,7 @@ import io.ssafy.gatee.domain.schedule.dto.response.ScheduleInfoRes;
 import io.ssafy.gatee.domain.schedule.dto.response.ScheduleListRes;
 import io.ssafy.gatee.domain.schedule.entity.Category;
 import io.ssafy.gatee.domain.schedule.entity.Schedule;
+import io.ssafy.gatee.domain.schedule_record.dto.response.ScheduleRecordPhotoRes;
 import io.ssafy.gatee.domain.schedule_record.dto.response.ScheduleRecordRes;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -168,20 +169,20 @@ class ScheduleControllerTest extends RestDocsTestSupport {
         participateMemberResList.add(participateMember1);
         participateMemberResList.add(participateMember2);
 
-        List<FileUrlRes> fileUrlResList = new ArrayList<>();
+        List<ScheduleRecordPhotoRes> scheduleRecordPhotoResList = new ArrayList<>();
 
-        FileUrlRes fileUrlRes1 = FileUrlRes.builder()
-                .fileId(1L)
+        ScheduleRecordPhotoRes scheduleRecordPhotoRes1 = ScheduleRecordPhotoRes.builder()
+                .photoId(1L)
                 .imageUrl("https://gaty.duckdns.org/s3-image-url-3")
                 .build();
 
-        FileUrlRes fileUrlRes2 = FileUrlRes.builder()
-                .fileId(2L)
+        ScheduleRecordPhotoRes scheduleRecordPhotoRes2 = ScheduleRecordPhotoRes.builder()
+                .photoId(2L)
                 .imageUrl("https://gaty.duckdns.org/s3-image-url-4")
                 .build();
 
-        fileUrlResList.add(fileUrlRes1);
-        fileUrlResList.add(fileUrlRes2);
+        scheduleRecordPhotoResList.add(scheduleRecordPhotoRes1);
+        scheduleRecordPhotoResList.add(scheduleRecordPhotoRes2);
 
         List<ScheduleRecordRes> scheduleRecordResList = new ArrayList<>();
 
@@ -190,7 +191,7 @@ class ScheduleControllerTest extends RestDocsTestSupport {
                 .profileImageUrl("https://gaty.duckdns.org/profile-image-url-1")
                 .nickname("이윤정")
                 .content("일정 후기")
-                .fileUrlList(fileUrlResList)
+                .scheduleRecordPhotoResList(scheduleRecordPhotoResList)
                 .build();
 
         ScheduleRecordRes scheduleRecordRes2 = ScheduleRecordRes.builder()
@@ -198,7 +199,7 @@ class ScheduleControllerTest extends RestDocsTestSupport {
                 .profileImageUrl("https://gaty.duckdns.org/profile-image-url-2")
                 .nickname("윤예빈")
                 .content("일정 후기")
-                .fileUrlList(fileUrlResList)
+                .scheduleRecordPhotoResList(scheduleRecordPhotoResList)
                 .build();
 
         scheduleRecordResList.add(scheduleRecordRes1);
@@ -246,9 +247,9 @@ class ScheduleControllerTest extends RestDocsTestSupport {
                                 fieldWithPath("scheduleRecordResList[].profileImageUrl").type(JsonFieldType.STRING).description("일정 후기 멤버 프로필 이미지 URL"),
                                 fieldWithPath("scheduleRecordResList[].nickname").type(JsonFieldType.STRING).description("일정 후기 멤버 별명"),
                                 fieldWithPath("scheduleRecordResList[].content").type(JsonFieldType.STRING).description("일정 후기 내용"),
-                                fieldWithPath("scheduleRecordResList[].fileUrlList").type(JsonFieldType.ARRAY).description("일정 후기 사진 목록"),
-                                fieldWithPath("scheduleRecordResList[].fileUrlList[].fileId").type(JsonFieldType.NUMBER).description("일정 후기 사진 파일 ID"),
-                                fieldWithPath("scheduleRecordResList[].fileUrlList[].imageUrl").type(JsonFieldType.STRING).description("일정 후기 사진 URL"),
+                                fieldWithPath("scheduleRecordResList[].scheduleRecordPhotoResList").type(JsonFieldType.ARRAY).description("일정 후기 사진 목록"),
+                                fieldWithPath("scheduleRecordResList[].scheduleRecordPhotoResList[].photoId").type(JsonFieldType.NUMBER).description("일정 후기 사진 ID"),
+                                fieldWithPath("scheduleRecordResList[].scheduleRecordPhotoResList[].imageUrl").type(JsonFieldType.STRING).description("일정 후기 사진 URL"),
                                 fieldWithPath("participateMembers").type(JsonFieldType.ARRAY).description("일정 참여 멤버 목록"),
                                 fieldWithPath("participateMembers[].nickname").type(JsonFieldType.STRING).description("닉네임"),
                                 fieldWithPath("participateMembers[].profileImageUrl").type(JsonFieldType.STRING).description("프로필 사진 URL")

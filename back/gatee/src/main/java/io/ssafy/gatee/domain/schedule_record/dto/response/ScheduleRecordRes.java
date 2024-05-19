@@ -23,15 +23,15 @@ public record ScheduleRecordRes(
         String content,
 
         @NotNull
-        List<FileUrlRes> fileUrlList
+        List<ScheduleRecordPhotoRes> scheduleRecordPhotoResList
 ) {
-    public static ScheduleRecordRes toDto(ScheduleRecord scheduleRecord, List<FileUrlRes> fileUrlResList) {
+    public static ScheduleRecordRes toDto(ScheduleRecord scheduleRecord, List<ScheduleRecordPhotoRes> scheduleRecordPhotoResList) {
         return ScheduleRecordRes.builder()
                 .scheduleRecordId(scheduleRecord.getId())
                 .profileImageUrl(scheduleRecord.getMember().getFile().getUrl())
                 .nickname(scheduleRecord.getMember().getNickname())
                 .content(scheduleRecord.getContent())
-                .fileUrlList(fileUrlResList)
+                .scheduleRecordPhotoResList(scheduleRecordPhotoResList)
                 .build();
     }
 }

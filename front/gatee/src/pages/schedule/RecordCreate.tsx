@@ -8,6 +8,8 @@ import TextField from '@mui/material/TextField';
 import {MdOutlineAddPhotoAlternate} from "react-icons/md";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
+import {IoCloseOutline} from "react-icons/io5";
+import {useModalStore} from "@store/useModalStore";
 
 
 const RecordCreate = () => {
@@ -18,9 +20,9 @@ const RecordCreate = () => {
   const [content, setContent] = useState<string>("");
   const [files, setFiles] = useState<File[]>([]);
   const [fileIdList, setFileIdList] = useState<number[]>([]);
-  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const {setShowModal} = useModalStore();
 
   // id를 number 타입으로 변환
   useEffect(() => {
@@ -40,6 +42,7 @@ const RecordCreate = () => {
   // 파일 업로드
   const handleCreateRecordClick = async () => {
     setIsLoading(true);
+    setShowModal(true);
 
     if (files.length === 0) {
       // 파일이 선택되지 않은 경우 바로 createRecordApi 호출
@@ -104,15 +107,18 @@ const RecordCreate = () => {
           },
           (res) => {
             setIsLoading(false);
+            setShowModal(false);
             navigate(`/schedule/${scheduleId}`);
           },
           (err) => {
             setIsLoading(false);
+            setShowModal(false);
             console.log(err);
           }
         );
       } catch (err) {
         setIsLoading(false);
+        setShowModal(false);
         console.error(err);
       }
     }
@@ -123,12 +129,17 @@ const RecordCreate = () => {
     if (event.target.files && event.target.files.length > 0) {
       const selectedFiles = Array.from(event.target.files);
       setFiles(selectedFiles);
-
-      // 미리보기 URL 생성
-      const previewUrls = selectedFiles.map(file => URL.createObjectURL(file));
-      setPreviewUrls(previewUrls);
     }
   };
+
+  // 미리보기 이미지 삭제 핸들러
+  const handlePreviewImageDeleteClick = (index: number) => {
+    if (files) {
+      const newFiles = [...files];
+      newFiles.splice(index, 1);
+      setFiles(newFiles);
+    }
+  }
 
   const muiFocusCustom = {
     "& .MuiOutlinedInput-root": {
@@ -150,7 +161,6 @@ const RecordCreate = () => {
       <Backdrop
         sx={{color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1}}
         open={isLoading}
-        onClick={() => setIsLoading(false)}
       >
         <CircularProgress color="inherit"/>
       </Backdrop>
@@ -203,9 +213,14 @@ const RecordCreate = () => {
 
       {/*사진 미리보기*/}
       <div className="create-record__previews">
-        {previewUrls.map((url, index) => (
+        {files.map((file, index) => (
           <div className="create-record__preview">
-            <img key={index} src={url} alt={`preview-${index}`}/>
+            <img key={index} src={URL.createObjectURL(file)} alt={`preview-${index}`}/>
+
+            {/*삭제 버튼*/}
+            <button className="chat-input__preview__button" onClick={() => handlePreviewImageDeleteClick(index)}>
+              <IoCloseOutline size={20}/>
+            </button>
           </div>
         ))}
       </div>

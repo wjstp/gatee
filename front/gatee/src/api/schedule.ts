@@ -3,9 +3,10 @@ import { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 import {
   ScheduleListReq,
   CreateScheduleReq,
-  ModifyScheduleReq,
+  UpdateScheduleReq,
   ScheduleDetailReq,
-  CreateRecordReq } from "@type/index";
+  CreateRecordReq,
+  DeleteRecordReq } from "@type/index";
 
 
 const local: AxiosInstance = localAxios();
@@ -35,7 +36,7 @@ export const createScheduleApi = async function (data: CreateScheduleReq,
 }
 
 // 일정 수정
-export const modifyScheduleApi = async function (requestData: ModifyScheduleReq,
+export const updateScheduleApi = async function (requestData: UpdateScheduleReq,
                                                  success: (res: AxiosResponse<any>) => void,
                                                  fail: (err: AxiosError<any>) => void) {
   const { scheduleId, data } = requestData;
@@ -74,8 +75,9 @@ export const createRecordApi = async function (requestData: CreateRecordReq,
 }
 
 // 일정 후기 삭제
-export const deleteRecordApi = async function (scheduleRecordId: number,
+export const deleteRecordApi = async function (data: DeleteRecordReq,
                                                  success: (res: AxiosResponse<any>) => void,
                                                  fail: (err: AxiosError<any>) => void) {
-  await local.delete(`/schedule/${scheduleRecordId}`).then(success).catch(fail);
+  const { scheduleId, scheduleRecordId } = data;
+  await local.delete(`/schedule/${scheduleId}/record/${scheduleRecordId}`).then(success).catch(fail);
 }

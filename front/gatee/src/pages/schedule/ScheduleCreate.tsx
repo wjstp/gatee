@@ -25,7 +25,6 @@ import doMissionApiFunc from "@utils/doMissionApiFunc";
 import getColorCode from "@utils/getColorCode";
 import { useFamilyStore } from "@store/useFamilyStore";
 import { useModalStore } from "@store/useModalStore";
-import {useMemberStore} from "@store/useMemberStore";
 import { SCHEDULE_COLOR } from "@constants/index";
 import { createScheduleApi } from "@api/schedule";
 import { CreateScheduleReq } from "@type/index";
@@ -50,8 +49,8 @@ const ScheduleCreate = () => {
   const [category, setCategory] = useState<string>(ScheduleType.GROUP)
   const [startDate, setStartDate] = useState<Dayjs | null>(null);
   const [endDate, setEndDate] = useState<Dayjs | null>(null);
-  const [startTime, setStartTime] = useState<Dayjs | null>();
-  const [endTime, setEndTime] = useState<Dayjs | null>();
+  const [startTime, setStartTime] = useState<Dayjs | null>(null);
+  const [endTime, setEndTime] = useState<Dayjs | null>(null);
   const [memberIdList, setMemberIdList] = useState<string[]>([]);
   const allMember: string[] = familyInfo.map(member => member.memberId);
 
@@ -81,6 +80,7 @@ const ScheduleCreate = () => {
   const createSchedule = () => {
     if (isButtonEnabled()) {
       setIsCreatingSchedule(true);
+      setShowModal(true);
 
       const data: CreateScheduleReq = {
         familyId,
@@ -97,11 +97,13 @@ const ScheduleCreate = () => {
         data,
         (res) => {
           setIsCreatingSchedule(false);
+          setShowModal(false);
           doMissionApiFunc("SCHEDULE", null);
           navigate('/schedule');
         },
         (err) => {
           setIsCreatingSchedule(false);
+          setShowModal(false);
           console.error(err);
         }
       ).then().catch()
@@ -278,9 +280,9 @@ const ScheduleCreate = () => {
     (anchor: Anchor, open: boolean) =>
       (event: React.KeyboardEvent | React.MouseEvent) => {
         if (open === true) {
-          setShowModal(true)
+          setShowModal(true);
         } else {
-          setShowModal(false)
+          setShowModal(false);
         }
         if (
           event &&
@@ -295,7 +297,7 @@ const ScheduleCreate = () => {
 
   // 설정 탭에서 완료 버튼 누를 때 팝업 내리기
   const handleFinishTab = (event: React.MouseEvent) => {
-    toggleDrawer('bottom', false)(event)
+    toggleDrawer('bottom', false)(event);
   }
 
   // 토스트 객체
@@ -392,7 +394,6 @@ const ScheduleCreate = () => {
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={isCreatingSchedule}
-        onClick={() => setIsCreatingSchedule(false)}
       >
         <CircularProgress color="inherit" />
       </Backdrop>

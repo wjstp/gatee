@@ -9,7 +9,7 @@ import {
   deleteRecordApi,
 } from "@api/schedule";
 import {useFamilyStore} from "@store/useFamilyStore";
-import {ScheduleDetailRes, ScheduleRecord, FileRes, ScheduleType} from "@type/index";
+import {ScheduleDetailRes, ScheduleRecord, ScheduleType} from "@type/index";
 import AvatarGroup from "@mui/material/AvatarGroup";
 import Avatar from "@mui/material/Avatar";
 import Card from '@mui/material/Card';
@@ -66,7 +66,6 @@ function ScheduleDetail() {
       getDetailScheduleApi(
         data,
         (res) => {
-          console.log(res.data)
           setSchedule(res.data);
           const startDate = dayjs(res.data.startDate).format("M/D");
           const startWeekday = calculateWeekday(dayjs(res.data.startDate));
@@ -167,28 +166,41 @@ function ScheduleDetail() {
 
   // 후기 삭제
   const handleRecordDeleteClick = (scheduleRecordId: number) => {
-    deleteRecordApi(
-      scheduleRecordId,
-      (res) => {
-        // 삭제된 후기를 리스트에서 제거
-        setSchedule(prevSchedule => {
-          if (prevSchedule.scheduleRecordResList) {
-            return {
-              ...prevSchedule,
-              scheduleRecordResList: prevSchedule.scheduleRecordResList.filter(record => record.scheduleRecordId !== scheduleRecordId)
-            };
-          }
-          return prevSchedule;
-        });
-      },
-      (err) => {
-        console.error(err);
-      }
-    ).then().catch();
+    if (scheduleId && scheduleRecordId) {
+      deleteRecordApi(
+        {
+          scheduleId,
+          scheduleRecordId
+        }
+        ,
+        (res) => {
+          // 삭제된 후기를 리스트에서 제거
+          setSchedule(prevSchedule => {
+            if (prevSchedule.scheduleRecordResList) {
+              return {
+                ...prevSchedule,
+                scheduleRecordResList: prevSchedule.scheduleRecordResList.filter(record => record.scheduleRecordId !== scheduleRecordId)
+              };
+            }
+            return prevSchedule;
+          });
+        },
+        (err) => {
+          console.error(err);
+        }
+      ).then().catch();
+    }
   }
 
   const handlePhotoClick = (fileId: number) => {
     navigate(`/photo/${fileId}`);
+  }
+
+  const handleScheduleUpdateClick = () => {
+    navigate({
+      pathname: `/schedule/${scheduleId}/update`,
+      search: `?category=${schedule.category}&title=${schedule.title}&content=${schedule.content}&emoji=${schedule.emoji}&start=${schedule.startDate}&end=${schedule.endDate}`,
+    });
   }
 
   return (
@@ -219,7 +231,7 @@ function ScheduleDetail() {
           onClose={handleClose}
         >
           <MenuItem onClick={handleScheduleDeleteClick} style={{color: "#FF4F4FFF"}}>삭제하기</MenuItem>
-          <MenuItem onClick={() => navigate(`/schedule/${scheduleId}/update`)}>수정하기</MenuItem>
+          <MenuItem onClick={handleScheduleUpdateClick}>수정하기</MenuItem>
         </Menu>
 
         {/*일정 제목*/}
@@ -303,9 +315,9 @@ function ScheduleDetail() {
               </div>
 
               <div
-                className={`schedule-detail__record__image${record.fileUrlList && record.fileUrlList.length >= 2 ? '--multiple' : '--single'}`}>
-                {record.fileUrlList.map((file: FileRes) => (
-                  <div className="schedule-detail__record__image__item" key={file.fileId} onClick={() => handlePhotoClick(file.fileId)}>
+                className={`schedule-detail__record__image${record.scheduleRecordPhotoResList && record.scheduleRecordPhotoResList.length >= 2 ? '--multiple' : '--single'}`}>
+                {record.scheduleRecordPhotoResList.map((file: { photoId: number; imageUrl: string; }) => (
+                  <div className="schedule-detail__record__image__item" key={file.photoId} onClick={() => handlePhotoClick(file.photoId)}>
                     <img src={file.imageUrl} alt=""/>
                   </div>
                 ))}
