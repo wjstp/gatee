@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 
 @Log4j2
 @Component
-@Profile("batch")
+@Profile("batch-prod")
 @RequiredArgsConstructor
 public class BatchScheduler {
 
@@ -61,7 +61,7 @@ public class BatchScheduler {
         chatService.sendDateLineToAll();
     }
 
-    @Scheduled(cron = "0 * * * * *")  // 매일 아침 10시 20분
+    @Scheduled(cron = "0 * * * * *")
     public void runTestJob() {
         String time = LocalDateTime.now().toString();
         log.info("batch test : " + time) ;
