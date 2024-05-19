@@ -131,13 +131,9 @@ const PhotoItem = ({photoDetailData}: { photoDetailData: PhotoDetailData }) => {
       <img className="photo-detail-img" src={photoDetailData.imageUrl} alt=""/>
 
       <div className="interaction--container">
-        <div className="liked--container">
-          {/* 좋아요 표시 */}
-          {isPressed ?
-            <IoHeart onClick={pressHeart} size={35} color="red"/>
-            :
-            <IoHeartOutline onClick={pressHeart} size={35} color="lightgray"/>
-          }
+        <div className={`liked--container${isPressed ? '--active' : ''}`}>
+          <IoHeart onClick={pressHeart} size={35} />
+
           {/* 좋아요 누른 사람 */}
           <div className="liked-profiles--container">
             {reactionList.map((item, index) => {

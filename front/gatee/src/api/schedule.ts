@@ -3,7 +3,7 @@ import { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 import {
   ScheduleListReq,
   CreateScheduleReq,
-  ModifyScheduleReq,
+  UpdateScheduleReq,
   ScheduleDetailReq,
   CreateRecordReq } from "@type/index";
 
@@ -35,7 +35,7 @@ export const createScheduleApi = async function (data: CreateScheduleReq,
 }
 
 // 일정 수정
-export const modifyScheduleApi = async function (requestData: ModifyScheduleReq,
+export const updateScheduleApi = async function (requestData: UpdateScheduleReq,
                                                  success: (res: AxiosResponse<any>) => void,
                                                  fail: (err: AxiosError<any>) => void) {
   const { scheduleId, data } = requestData;

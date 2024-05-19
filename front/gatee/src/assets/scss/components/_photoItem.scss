@@ -20,11 +20,21 @@
     @include mx-(1);
     //@include mb-(0.5);
     height: 7dvh;
+
     .liked--container {
       @include flex_center;
 
       margin-top: 1dvh;
       gap: 1.5rem;
+      color: #d8d8d8;
+      transition: color ease-in-out 0.1s;
+
+      &--active {
+        @extend .liked--container;
+
+        color: #ff5a5a;
+        transition: color ease-in-out 0.1s;
+      }
 
       .liked-profiles--container {
         .liked-icon {

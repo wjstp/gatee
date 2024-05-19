@@ -204,7 +204,7 @@ const ChatIndex = () => {
         setIsEntryChat(true);
       })
       .catch(() => {
-        console.log("There's no message")
+        // No message
         setIsLoading(false);
         setIsGetAllData(true);
         setIsEntryChat(true);
