@@ -11,9 +11,9 @@ spring:
         - db-prod
         - security-prod
       batch:
-        - db-prod
-        - batch
-        - security-prod
+        - db-local
+        - batch-prod
+        - security-local
       test:
         - db-prod
         - security-prod
@@ -22,7 +22,6 @@ spring:
       - security
       - aws
       - ai
-      - batch
 
 ---
 spring:

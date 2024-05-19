@@ -24,6 +24,7 @@ import org.springframework.batch.item.database.JpaPagingItemReader;
 import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import java.util.List;
@@ -34,6 +35,7 @@ import java.util.UUID;
 
 @Log4j2
 @Configuration
+@Profile("batch")
 @RequiredArgsConstructor
 public class FeatureNotificationBatchConfig {
     private final int CHUNK_SIZE = 1000;
