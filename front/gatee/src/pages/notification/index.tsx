@@ -19,6 +19,7 @@ import getUrlFromType from "@utils/getUrlFromType";
 import {useNavigate} from "react-router-dom";
 import {useNotificationStore} from "@store/useNotificationStore";
 import FeatureModal from "@pages/notification/components/FeatureModal";
+import dayjs from "dayjs";
 
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
@@ -122,7 +123,6 @@ const NotificationIndex = () => {
 
   // 스크롤
   const nextScroll = () => {
-    console.log("스크롤")
     setLoading(true)
     if (nextCursor && hasNext) {
       getNotificationListNextApi(nextCursor,
@@ -231,17 +231,29 @@ const NotificationItem = ({notificationData, handleReadNotification}: {
   handleReadNotification: (id: string, isCheck: boolean) => void // 수정된 부분
 }) => {
 
-  const today = new Date()
-  const todayYear = today.getFullYear()
-  const todayMonth = today.getMonth()+1
-  const todayDate = today.getDate()
-  const dateDate = new Date(notificationData.createdAt)
-  const year = dateDate.getFullYear()
-  const month = dateDate.getMonth() + 1
-  const date = dateDate.getDate()
-  const hour = dateDate.getHours()
-  const minute = dateDate.getMinutes()
+  // const today = new Date()
+  // const todayYear = today.getFullYear()
+  // const todayMonth = today.getMonth()+1
+  // const todayDate = today.getDate()
+  // const dateDate = new Date(notificationData.createdAt)
+  // const year = dateDate.getFullYear()
+  // const month = dateDate.getMonth() + 1
+  // const date = dateDate.getDate()
+  // const hour = dateDate.getHours()
+  // const minute = dateDate.getMinutes()
 
+  const today = dayjs();
+  const notificationDate = dayjs(notificationData.createdAt);
+
+  let displayTime;
+
+  if (notificationDate.isSame(today, 'day')) {
+    displayTime = notificationDate.format('HH:mm');
+  } else if (notificationDate.isSame(today, 'year')) {
+    displayTime = notificationDate.format('M월 D일');
+  } else {
+    displayTime = notificationDate.format('YYYY년 M월');
+  }
 
   // 알림 누르기
   const handleNotificationItemClick = () => {
@@ -261,9 +273,12 @@ const NotificationItem = ({notificationData, handleReadNotification}: {
         <div className="notification-item--top--container">
           <p className="notification-item-title">{notificationData.title}</p>
           {/*올해가 아니면 년도 보여줌, 오늘이면 시간 보여줌*/}
-          <p className="notification-item-time">{todayYear === year && todayMonth===month && todayDate===date ?
-            hour >= 12 ? `오후 ${hour-12}:${minute} ` : `오전 ${hour}:${minute}`
-            : todayYear === year ? `${month}월 ${date}일` : `${year}년 ${month}월 ${date}일`}
+          {/*<p className="notification-item-time">{todayYear === year && todayMonth===month && todayDate===date ?*/}
+          {/*  hour >= 12 ? `오후 ${hour-12}:${minute} ` : `오전 ${hour}:${minute}`*/}
+          {/*  : todayYear === year ? `${month}월 ${date}일` : `${year}년 ${month}월 ${date}일`}*/}
+          {/*</p>*/}
+          <p className="notification-item-time">
+            { displayTime }
           </p>
         </div>
         <p className="notification-item-content">{notificationData.content}</p>
