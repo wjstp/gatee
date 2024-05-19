@@ -57,6 +57,7 @@
         height: 100%;
         //background-color: red;
         justify-content: space-between;
+        overflow: hidden;
 
         .notification-item--top--container {
           @include flex-row;
@@ -82,7 +83,7 @@
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
-          width: 80%;
+          width: 90%;
         }
       }
     }

@@ -266,6 +266,11 @@ export interface CreateRecordReq {
   }
 }
 
+export interface DeleteRecordReq {
+  scheduleRecordId: number;
+  scheduleId: number;
+}
+
 export interface ScheduleRecord {
   scheduleRecordId: number;
   content: string;

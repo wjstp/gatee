@@ -166,24 +166,30 @@ function ScheduleDetail() {
 
   // 후기 삭제
   const handleRecordDeleteClick = (scheduleRecordId: number) => {
-    deleteRecordApi(
-      scheduleRecordId,
-      (res) => {
-        // 삭제된 후기를 리스트에서 제거
-        setSchedule(prevSchedule => {
-          if (prevSchedule.scheduleRecordResList) {
-            return {
-              ...prevSchedule,
-              scheduleRecordResList: prevSchedule.scheduleRecordResList.filter(record => record.scheduleRecordId !== scheduleRecordId)
-            };
-          }
-          return prevSchedule;
-        });
-      },
-      (err) => {
-        console.error(err);
-      }
-    ).then().catch();
+    if (scheduleId && scheduleRecordId) {
+      deleteRecordApi(
+        {
+          scheduleId,
+          scheduleRecordId
+        }
+        ,
+        (res) => {
+          // 삭제된 후기를 리스트에서 제거
+          setSchedule(prevSchedule => {
+            if (prevSchedule.scheduleRecordResList) {
+              return {
+                ...prevSchedule,
+                scheduleRecordResList: prevSchedule.scheduleRecordResList.filter(record => record.scheduleRecordId !== scheduleRecordId)
+              };
+            }
+            return prevSchedule;
+          });
+        },
+        (err) => {
+          console.error(err);
+        }
+      ).then().catch();
+    }
   }
 
   const handlePhotoClick = (fileId: number) => {
