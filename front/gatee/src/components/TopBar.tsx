@@ -45,8 +45,6 @@ const TopBar = () => {
       photoNumberPattern.test(currentRoute)) {
       navigate(-1);
       return;
-    } else if (currentRoute.includes('exam')) {
-      parentRoute = "/exam";
     } else if (currentRoute.includes('/character/start/')) {
       parentRoute = "/character/start";
     } else if (currentRoute === '/character/start' || currentRoute === '/character') {

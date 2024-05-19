@@ -359,7 +359,7 @@ export interface ChatEmoji {  // EMOJI
 export interface ChatDateLine { // DATE_LINE
   id: string;
   messageType: string;
-  content: string;
+  currentTime: string;
 }
 
 export interface ChatAlarm {  // ALARM

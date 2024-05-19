@@ -85,7 +85,7 @@ const ChatIndex = () => {
       setIsNoMessage(false);
 
       // 렌더링된 메시지 중 가장 오래된 메시지가 date line이 아니라면 date line 표시
-      if ("currentTime" in messages[messages.length - 1]) {
+      if (messages[messages.length - 1].messageType !== ChatType.DATE_LINE) {
         setIsShowDateLine(true);
         setDateLine((messages[messages.length - 1] as ChatContent).currentTime);
       } else {
@@ -178,7 +178,9 @@ const ChatIndex = () => {
 
         snapshot.forEach((childSnapshot) => {
           const newMessage = { id: childSnapshot.key, ...childSnapshot.val() };
-          if (messagesArray.length > 0 && messagesArray[0].messageType !== ChatType.DATE_LINE) {
+          console.log(newMessage)
+          if (messagesArray.length > 0 && newMessage.messageType === ChatType.DATE_LINE && messagesArray[0].messageType === ChatType.DATE_LINE) {
+          } else {
             messagesArray.unshift(newMessage);
           }
         });
@@ -370,7 +372,7 @@ const ChatIndex = () => {
           <ChatDate chat={{
             id: "",
             messageType: ChatType.DATE_LINE,
-            content: dateLine,
+            currentTime: dateLine,
           }}/>
         }
       </div>
