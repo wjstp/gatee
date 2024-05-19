@@ -35,6 +35,7 @@ const TopBar = () => {
   const goBack = () => {
     let parentRoute;
     const photoNumberPattern = /^\/photo\/\d+$/;
+    const photoMonthPattern = /^\/photo\/month\/\d{4}\/\d{1,2}$/;
 
     if (currentRoute.includes('/photo/album/')) {
       parentRoute = '/photo/album';
@@ -49,6 +50,8 @@ const TopBar = () => {
       parentRoute = "/character/start";
     } else if (currentRoute === '/character/start' || currentRoute === '/character') {
       parentRoute = "/main";
+    } else if (photoMonthPattern.test(currentRoute)) {
+      parentRoute = '/photo/month';
     } else {
       parentRoute = currentRoute.split('/').slice(0, -1).join('/') || '/';
     }
