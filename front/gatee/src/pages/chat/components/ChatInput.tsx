@@ -13,6 +13,7 @@ import { uploadFileApi } from "@api/file";
 import { NavLink } from "react-router-dom";
 import dayjs from "dayjs";
 import { useChatStore } from "@store/useChatStore";
+import { useModalStore } from "@store/useModalStore";
 import { sendChatFileApi } from "@api/chat";
 import { useFamilyStore } from "@store/useFamilyStore";
 import { imageResizer } from "@utils/imageResizer";
@@ -25,9 +26,14 @@ interface ChatInputProps {
 
 const ChatInput = (props: ChatInputProps) => {
   const { onSendMessage } = props;
+  const { setIsShowBottomBar } = useChatStore();
+  const { chatRoomId } = useFamilyStore();
+  const { setShowModal } = useModalStore();
+
   const [inputMessage, setInputMessage] = useState<string>("");
   const [inputFile, setInputFile] = useState<File[]>([]);
   const [inputEmoji, setInputEmoji] = useState<EmojiItem | null>(null);
+
   const [isOpenPlus, setIsOpenPlus] = useState<boolean>(false);
   const [isOpenAppointment, setIsOpenAppointment] = useState<boolean>(false);
   const [inputPlaceholder, setInputPlaceholder] = useState<string>("");
@@ -37,8 +43,7 @@ const ChatInput = (props: ChatInputProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedEmojiCategory, SetSelectedEmojiCategory] = useState<string>(EMOJI[0].name);
   const buttonWrapperRef = useRef<HTMLDivElement>(null);
-  const { setIsShowBottomBar } = useChatStore();
-  const { chatRoomId } = useFamilyStore();
+
   const [fileUrls, setFileUrls]= useState<string[]>([]);
   const [fileIds, setFileIds]= useState<number[]>([]);
   const [data, setData] = useState<FileRes | null>(null);
@@ -92,6 +97,7 @@ const ChatInput = (props: ChatInputProps) => {
     // FILE
     if (fileLength > 0) {
       setIsLoading(true);
+      setShowModal(true);
       setFileUrls([]);
       setFileIds([]);
 
@@ -114,6 +120,7 @@ const ChatInput = (props: ChatInputProps) => {
           })
           .then(() => {
             setIsLoading(false);
+            setShowModal(false);
           }).catch();
       });
     }
@@ -360,7 +367,6 @@ const ChatInput = (props: ChatInputProps) => {
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={isLoading}
-        onClick={() => setIsLoading(false)}
       >
         <CircularProgress color="inherit" />
       </Backdrop>

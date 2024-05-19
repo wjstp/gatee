@@ -49,7 +49,7 @@ const ExamScored = () => {
             <div className="exam__scored-footer">
             </div>
 
-            <Link to="/exam/grage" className="exam__scored--goto-grade">
+            <Link to="/exam/grade" className="exam__scored--goto-grade">
               가족 성적표 보러가기
             </Link>
           </>
