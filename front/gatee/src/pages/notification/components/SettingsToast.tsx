@@ -3,6 +3,7 @@ import CustomSwitch from "@components/CustomSwitch";
 import {editAgreeNotificationApi, getAgreeNotificationApi} from "@api/notification";
 import {getPushAlarmByLocalStorageApi} from "@api/firebase";
 import {requestPermission} from "../../../firebase-messaging-sw";
+// import {requestPermission} from "../../../firebase-messaging-sw";
 
 
 interface HandleFinishTab {
@@ -19,7 +20,12 @@ const SettingsToast = ({handleFinishTab}: HandleFinishTab) => {
   const [loading, setLoading] = useState(true);
   // 스위치 조절 함수
   const handleAlbumChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    requestPermission()
+    if (localStorage.getItem("fcmDeviceToken")) {
+      getPushAlarmByLocalStorageApi()
+    }
+    else {
+      requestPermission()
+    }
     setAlbumAlarmChecked(event.target.checked);
 
   };
