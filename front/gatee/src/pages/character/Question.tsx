@@ -82,8 +82,8 @@ const CharacterQuestion = () => {
         // 로딩
         setLoading(true)
         setTimeout(() => setLoading(false), 1000)
-        setAskIndex(askIndex - 1)
-        setInputValue(input)
+        // setAskIndex(askIndex - 1)
+        // setInputValue(input)
       }
     )
   }
