@@ -269,7 +269,10 @@ export interface CreateRecordReq {
 export interface ScheduleRecord {
   scheduleRecordId: number;
   content: string;
-  fileUrlList: FileRes[];
+  scheduleRecordPhotoResList: {
+    photoId: number;
+    imageUrl: string;
+  }[]
   nickname: string;
   profileImageUrl: string;
 }

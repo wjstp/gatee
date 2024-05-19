@@ -9,7 +9,7 @@ import {
   deleteRecordApi,
 } from "@api/schedule";
 import {useFamilyStore} from "@store/useFamilyStore";
-import {ScheduleDetailRes, ScheduleRecord, FileRes, ScheduleType} from "@type/index";
+import {ScheduleDetailRes, ScheduleRecord, ScheduleType} from "@type/index";
 import AvatarGroup from "@mui/material/AvatarGroup";
 import Avatar from "@mui/material/Avatar";
 import Card from '@mui/material/Card';
@@ -309,9 +309,9 @@ function ScheduleDetail() {
               </div>
 
               <div
-                className={`schedule-detail__record__image${record.fileUrlList && record.fileUrlList.length >= 2 ? '--multiple' : '--single'}`}>
-                {record.fileUrlList.map((file: FileRes) => (
-                  <div className="schedule-detail__record__image__item" key={file.fileId} onClick={() => handlePhotoClick(file.fileId)}>
+                className={`schedule-detail__record__image${record.scheduleRecordPhotoResList && record.scheduleRecordPhotoResList.length >= 2 ? '--multiple' : '--single'}`}>
+                {record.scheduleRecordPhotoResList.map((file: { photoId: number; imageUrl: string; }) => (
+                  <div className="schedule-detail__record__image__item" key={file.photoId} onClick={() => handlePhotoClick(file.photoId)}>
                     <img src={file.imageUrl} alt=""/>
                   </div>
                 ))}
