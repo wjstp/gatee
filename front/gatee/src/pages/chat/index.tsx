@@ -178,7 +178,9 @@ const ChatIndex = () => {
 
         snapshot.forEach((childSnapshot) => {
           const newMessage = { id: childSnapshot.key, ...childSnapshot.val() };
-          messagesArray.unshift(newMessage);
+          if (messagesArray.length > 0 && messagesArray[0].messageType !== ChatType.DATE_LINE) {
+            messagesArray.unshift(newMessage);
+          }
         });
 
         if (messagesArray.length === 0) {
