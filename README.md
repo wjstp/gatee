@@ -79,18 +79,45 @@
 # ❤️ 화면 소개
 
 ### 1. 로그인 / 회원가입
+![signup-family](/assets/page_introduction/signup-family.gif)
 ### 2. 메인 화면
-
+![main](/assets/page_introduction/main.gif)
 ### 3. 한마디 하기 
 ![nagging](/assets/page_introduction/nagging.gif)
-### 4. 백과사전 - 서재에서 내 사전 작성하는 화면
-### 5. 모의고사 - 문제 푸는 화면, 문제풀고 나서 결과 페이지, 가족별 성적표
-### 6. 채팅 - 채팅, 사진 업로드, 이모티콘 전송, 약속
-### 7. 알림 - 알림 동의목록 보여주고 일정 등록 알림 받고 일정 페이지로 이동
-### 8. 일정 - 일정 보기 후 일정 등록
-### 9. 앨범 - 사진 등록 후 앨범에 추가, 사진 상세, 상호작용
-### 10. 미션 - 미션 리스트에서 하러가기 버튼 누르기
+### 4. 백과사전
+- 백과사전 답변 작성
+
+![feature-answer](/assets/page_introduction/feature-answer.gif)
+- 다른 가족들의 백과사전 조회
+
+![feature](/assets/page_introduction/feature.gif)
+### 5. 모의고사 
+- 모의고사 풀기
+
+![exam](/assets/page_introduction/exam.gif)
+- 모의고사 결과 조회
+
+![exam-result](/assets/page_introduction/exam-result.gif)
+### 6. 채팅 
+- 채팅 화면
+
+![chatting](/assets/page_introduction/chatting.gif)
+- 약속 잡기
+
+![appointment](/assets/page_introduction/appointment.gif)
+### 8. 일정 
+- 일정 조회
+
+![schedule](/assets/page_introduction/schedule.gif)
+- 일정 생성
+
+![private-schedule](/assets/page_introduction/private-schedule.gif)
+### 9. 앨범 
+![album](/assets/page_introduction/album.gif)
+### 10. 미션 
+![mission](/assets/page_introduction/mission.gif)
 ### 11. 프로필 수정
+![profile](/assets/page_introduction/profile.gif)
 
 <br />
 
