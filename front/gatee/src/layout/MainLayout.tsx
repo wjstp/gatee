@@ -70,11 +70,11 @@ const MainLayout = () => {
       saveMemberData();
     }
     // fcm 토큰 전송 - 로컬 스토리지에 있을때는 그거 보내고, 없으면 권한 묻고 다시 보냄
-    // if (localStorage.getItem("fcmDeviceToken")) {
-    //   getPushAlarmByLocalStorageApi()
-    // } else {
+    if (localStorage.getItem("fcmDeviceToken")) {
+      getPushAlarmByLocalStorageApi()
+    } else {
       requestPermission()
-    // }
+    }
 
   }, []);
 

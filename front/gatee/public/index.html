@@ -40,11 +40,26 @@
         // console.log(Kakao.isInitialized());
     </script>
     <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/firebase-messaging-sw.js');
-            });
+        <!--서비스 워커 업데이트-->
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker
+              .register("/firebase-messaging-sw.js")
+              .then((registration) => {
+                  // registration worked
+                  console.log("Registration succeeded.");
+                  registration.update();
+
+              })
+              .catch((error) => {
+                  // registration failed
+                  console.error(`Registration failed with ${error}`);
+              });
         }
+        // if ('serviceWorker' in navigator) {
+        //     window.addEventListener('load', () => {
+        //         navigator.serviceWorker.register('/firebase-messaging-sw.js');
+        //     });
+        // }
     </script>
 </head>
 <body>
