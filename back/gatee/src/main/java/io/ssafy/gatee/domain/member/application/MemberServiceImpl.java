@@ -210,15 +210,19 @@ public class MemberServiceImpl implements MemberService {
             fileRepository.save(entity);
 
         } else {
-            entity = fileRepository.findByUrl("https://spring-learning.s3.ap-southeast-2.amazonaws.com/default/profile_" + defaultImage + ".PNG")
-                    .orElse(fileRepository.save(
-                            File.builder()
-                            .fileType(FileType.MEMBER_PROFILE)
-                            .url("https://spring-learning.s3.ap-southeast-2.amazonaws.com/default/profile_" + defaultImage + ".PNG")
-                            .dir("default/")
-                            .name("default_image")
-                            .originalName("default_image")
-                            .build()));
+            String s3ImageUrl = "https://spring-learning.s3.ap-southeast-2.amazonaws.com/default/profile_" + defaultImage + ".PNG";
+
+            if (fileRepository.existsByUrl(s3ImageUrl)) {
+                entity = fileRepository.findByUrl(s3ImageUrl);
+            } else {
+                entity = fileRepository.save(File.builder()
+                                .fileType(FileType.MEMBER_PROFILE)
+                                .url(s3ImageUrl)
+                                .dir("default/")
+                                .name("default_image")
+                                .originalName("default_image")
+                                .build());
+            }
         }
 
         Member member = memberRepository.getReferenceById(memberId);

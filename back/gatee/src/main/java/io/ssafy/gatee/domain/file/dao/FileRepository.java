@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface FileRepository extends JpaRepository<File, Long> {
 
-    Optional<File> findByUrl(String url);
+    File findByUrl(String url);
 
     boolean existsByUrl(String url);
 }
