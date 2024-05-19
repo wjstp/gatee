@@ -178,7 +178,6 @@ const ChatIndex = () => {
 
         snapshot.forEach((childSnapshot) => {
           const newMessage = { id: childSnapshot.key, ...childSnapshot.val() };
-          console.log(newMessage)
           if (messagesArray.length > 0 && newMessage.messageType === ChatType.DATE_LINE && messagesArray[0].messageType === ChatType.DATE_LINE) {
           } else {
             messagesArray.unshift(newMessage);

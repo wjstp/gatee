@@ -35,8 +35,7 @@
 
     .notification-item--container {
       @include flex-row;
-      @include p-(1.5);
-      @include py-(1.2);
+      @include p-(1.2);
 
 
       height: 5.5rem;
@@ -57,10 +56,11 @@
         height: 100%;
         //background-color: red;
         justify-content: space-between;
+        overflow: hidden;
 
         .notification-item--top--container {
           @include flex-row;
-          width: 69dvw;
+          width: 100%;
           justify-content: space-between;
 
           .notification-item-title {
@@ -73,8 +73,9 @@
           }
 
           .notification-item-time {
-            //@include mr-(1);
+            @include mr-(0.5);
             //background-color: red;
+            color: $gray400;
           }
         }
 
@@ -82,7 +83,7 @@
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
-          width: 80%;
+          width: 90%;
         }
       }
     }
