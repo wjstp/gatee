@@ -169,7 +169,11 @@
 
 ## 1. Firebase
 
-![firebase](./assets/skill_stacks/firebase.png)
+
+
+<img src="./assets/skill_stacks/firebase.png" width=500/>
+
+
 
 ### (1) Firebase Realtime Database
 >  Google의 Firebase 플랫폼에서 제공하는 NoSQL 기반의 실시간 데이터베이스 서비스로 모바일 및 웹 애플리케이션에 실시간 데이터 동기화 및 데이터베이스 관리 기능을 제공합니다.
@@ -200,7 +204,7 @@
 
 ## 2. Redis
 
-![redis.png](./assets/skill_stacks/redis.png)
+<img src="./assets/skill_stacks/redis.png" width=500 />
 
 > Redis는 주로 애플리케이션 캐시나 빠른 응답 속도를 가진 데이터베이스로 사용되는 오픈 소스 인메모리 NoSQL 저장소 입니다.
 
@@ -228,7 +232,7 @@
 
 ## 3. Amazon S3
 
-![amazonS3.png](./assets/skill_stacks/amazonS3.png)
+<img src="./assets/skill_stacks/amazonS3.png" width=700 />
 
 > AmazonS3는 주로 웹 서비스를 위한 온라인 파일 저장소로 사용되는 클라우드 스토리지 서비스입니다.
 > 
@@ -245,7 +249,7 @@
 
 ## 4. Open AI ChatGPT
 
-![chatGPT.jpg](./assets/skill_stacks/chatGPT.jpg)
+<img src="./assets/skill_stacks/chatGPT.jpg" width=500 />
 
 > OpenAI의 ChatGPT는 다양한 주제에 대해 즉각적인 답변, 창의적인 영감, 그리고 학습 기회를 제공하는 도구입니다.
 > 
@@ -261,7 +265,7 @@
 
 ## 5. MongoDB
 
-![mongodb.png](./assets/skill_stacks/mongodb.png)
+<img src="./assets/skill_stacks/mongodb.png" width=500 />
 
 > MongoDB는 RDBMS과 비교하여 유연성이 높은 NoSQL 데이터베이스입니다. Gatee는 다양한 종류의 알림을 MongoDB에 저장하고 관리합니다.
 > 
