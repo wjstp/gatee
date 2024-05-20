@@ -18,7 +18,7 @@
 
 ## UCC 🎞️
 
-- ucc 추가
+- [![Video Label](http://img.youtube.com/vi/jY7TfR6VFlQ/0.jpg)](https://youtu.be/jY7TfR6VFlQ)
 
 <br />
 
@@ -170,8 +170,9 @@
 ## 1. Firebase
 
 
-
-<img src="./assets/skill_stacks/firebase.png" width=500/>
+<p align="center">
+    <img src="./assets/skill_stacks/firebase.png" width=500/>
+</p>
 
 
 
@@ -204,7 +205,9 @@
 
 ## 2. Redis
 
-<img src="./assets/skill_stacks/redis.png" width=500 />
+<p align="center">
+    <img src="./assets/skill_stacks/redis.png" width=500 />
+</p>
 
 > Redis는 주로 애플리케이션 캐시나 빠른 응답 속도를 가진 데이터베이스로 사용되는 오픈 소스 인메모리 NoSQL 저장소 입니다.
 
@@ -232,7 +235,9 @@
 
 ## 3. Amazon S3
 
-<img src="./assets/skill_stacks/amazonS3.png" width=700 />
+<p align="center">
+    <img src="./assets/skill_stacks/amazonS3.png" width=700 />
+</p>
 
 > AmazonS3는 주로 웹 서비스를 위한 온라인 파일 저장소로 사용되는 클라우드 스토리지 서비스입니다.
 > 
@@ -249,7 +254,9 @@
 
 ## 4. Open AI ChatGPT
 
-<img src="./assets/skill_stacks/chatGPT.jpg" width=500 />
+<p align="center">
+    <img src="./assets/skill_stacks/chatGPT.jpg" width=500 />
+</p>
 
 > OpenAI의 ChatGPT는 다양한 주제에 대해 즉각적인 답변, 창의적인 영감, 그리고 학습 기회를 제공하는 도구입니다.
 > 
@@ -265,7 +272,9 @@
 
 ## 5. MongoDB
 
-<img src="./assets/skill_stacks/mongodb.png" width=500 />
+<p align="center">
+    <img src="./assets/skill_stacks/mongodb.png" width=500 />
+</p>
 
 > MongoDB는 RDBMS과 비교하여 유연성이 높은 NoSQL 데이터베이스입니다. Gatee는 다양한 종류의 알림을 MongoDB에 저장하고 관리합니다.
 > 
@@ -287,6 +296,7 @@
 # 👩‍👧 프로젝트 산출물
 
 ### 1. Figma
+
 ![figma](./assets/figma.png)
 
 <br />
