@@ -3,4 +3,4 @@ spring:
     activate:
       on-profile: common
 chatgpt:
-  api-key:
+  api-key: ${CHATGPT_KEY}

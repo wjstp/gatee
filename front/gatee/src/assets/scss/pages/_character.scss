@@ -1,0 +1,216 @@
+@use '../abstracts/index' as *;
+@use '../components/index' as *;
+
+.character__index {
+
+  @include flex-col;
+  @include my-(5);
+  @include mx-(2);
+  @extend %modal-fade-in;
+
+  height: 100%;
+
+  .character__index__explain__title {
+    @include my-(1);
+  }
+
+  .character__index__explain__content {
+    @include flex-col;
+    @include mb-(1);
+
+    color: $gray200;
+    gap: 0.4rem;
+  }
+
+  .orangeButtonLarge {
+    @extend %orange-button-large;
+
+    width: 100%;
+  }
+
+}
+
+.character__question {
+  @include flex-col;
+  @include mx-(2);
+  height: 80dvh;
+  justify-content: center;
+
+  .character__question-input {
+    font-size: 1.3rem;
+    border: 1px solid $gray100;
+    border-radius: 0.5rem;
+    @include my-(1);
+    @include p-(0.6);
+  }
+
+  .orangeButtonLarge {
+    @extend %orange-button-large;
+    @include mt-(0);
+
+    width: 100%;
+  }
+
+  .flex-center {
+    @include flex-center;
+  }
+
+  .warning-dictionary-text {
+    color: $orange500;
+    font-size: 0.8rem;
+  }
+  .skipButton {
+    text-decoration: underline;
+    color: $gray200;
+    @include mb-(1);
+  }
+
+}
+
+.character__header {
+  .character__header__bookIconSize {
+    width: 30dvw;
+  }
+}
+
+.new-question-not-found-container {
+  @include flex-center;
+  @include flex-col;
+  @include p-(3);
+  border-radius: 1rem;
+  background-color: $gray50;
+
+  .new-question-not-found-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+    @include mb-(1);
+  }
+
+  .new-question-not-found-explain {
+    font-size: 1.1rem;
+  }
+}
+
+.character__answerList {
+  @include mx-(2);
+
+  .orangeButtonLarge {
+    @extend %orange-button-large;
+    @include mb-(1);
+    width: 100%;
+  }
+
+  .empty-answer-list-container {
+    @include flex-center;
+    @include flex-col;
+    @include p-(2);
+    @include my-(2);
+
+    font-size: 1.5rem;
+    background-color: $gray50;
+    border-radius: 1rem;
+
+    .empty-answer-list-icon {
+      width: 5rem;
+      height: 10rem;
+
+      path {
+        fill: $gray100;
+      }
+
+    }
+  }
+
+  .character__answer__item-card {
+    @include p-(1);
+    @include my-(1);
+    border: 1px solid $gray100;
+    border-radius: 0.5rem;
+    position: relative;
+
+    .character__answer-item-container {
+      @include flex-row;
+      gap: 0.3rem;
+
+      .character__answer__item-index {
+        color: $orange400;
+        font-weight: bold;
+        //font-family: $Itim;
+      }
+
+
+    }
+
+    .editPencil {
+      color: $gray200;
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+    }
+
+    .character__answer__item-content {
+      font-weight: 600;
+      font-size: 1.5rem;
+      @include mt-(0.5);
+
+      .edit__input {
+        font-size: 1.3rem;
+        border-bottom: 1px solid $gray100;
+        //@include pb-(0.3);
+      }
+    }
+  }
+}
+
+.character-family-list {
+
+  .go-to-question {
+    @include flex_center;
+    @extend %orange-button-large;
+
+    width: 85dvw;
+    margin: 1rem auto;
+  }
+
+  .character-family-list-title {
+    @include flex-center;
+    @include my-(2);
+  }
+
+  .character-family-list-container {
+    @include flex-col;
+    gap: 0.5rem;
+
+    .character-family-list-item-container {
+
+      @include p-(0.5);
+      @include pr-(2);
+      @include mx-(2);
+      @include flex-row;
+      gap: 0.4rem;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid $gray100;
+      border-radius: 0.5rem;
+      flex: 1;
+
+      .icon-and-name-container {
+        @include flex-row;
+        gap: 0.4rem;
+        align-items: center;
+
+        .character-family-list-item-name {
+          font-size: 1.3rem;
+
+        }
+      }
+
+      .go-to-dict-btn {
+        font-size: 1rem;
+        text-decoration: underline;
+        color: $orange500;
+      }
+    }
+  }
+
+}

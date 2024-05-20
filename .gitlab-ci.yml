@@ -1,0 +1,87 @@
+stages:
+  - build spring server
+  - deploy spring server
+
+build:
+  stage: build spring server
+  image: docker:latest
+  services:
+    - docker:dind
+  before_script:
+    - echo [INFO] docker deploy start!
+    - echo "$DOCKER_REGISTRY_PASSWORD" | docker login -u $DOCKER_REGISTRY_USER --password-stdin
+  script:
+    - echo [INFO] yaml Settings
+    - cd ./back/gatee/src/main/resources
+    # AI 관련 설정 파일 생성
+    - cp application-ai.yaml.template application-ai.yaml
+
+    # 데이터베이스 관련 설정 파일 생성
+    - cp application-db.yaml.template application-db.yaml
+
+    # AWS 관련 설정 파일 생성
+    - cp application-aws.yaml.template application-aws.yaml
+
+    # security 관련 설정 파일 생성
+    - cp application-security.yaml.template application-security.yaml
+    - cat application-security.yaml
+
+    # batch 관련 설정 파일 생성
+    - cp application-batch.yaml.template application-batch.yaml
+
+    # firebase key
+    - echo "$FIREBASE_KEY" > gatee-bf33f-firebase-adminsdk-va5su-a0d2f8f65b.json
+
+    # 권한 부여 후 현재 서버 환경 확인
+    - cd ../../..
+    - cd devops/
+    - cat .env.template | grep -v '^[#\s]' | awk -F '=' '$1 && ENVIRON[$1] {print $1 "=" ENVIRON[$1]}' > .env
+    - cat .env
+    - cd ..
+    - chmod +x ./devops/nginx/detect_env.sh
+    - DEPLOY_ENV=$(source ./devops/nginx/detect_env.sh gatee-api)
+    # tag 설정
+    - if [ "$DEPLOY_ENV" == "blue" ]; then TAG="blue"; else TAG="green"; fi
+    - echo "Building images for $TAG environment..."
+    - chmod +x ./devops/build-image.sh
+    - ./devops/build-image.sh $CI_REGISTRY/gatee-api:$TAG
+    - docker push $CI_REGISTRY/gatee-api:$TAG
+    # 프론트 빌드 & 푸시
+    - echo [INFO] Start build Nextjs
+    - cd ../../front/gatee
+    - echo "$FRONT_ENV" > ".env"
+    - docker build -t $CI_REGISTRY/gatee-nodejs:$TAG .
+    - docker push $CI_REGISTRY/gatee-nodejs:$TAG # Container
+  only:
+    - develop
+    - master
+    - release
+
+deploy:
+  image: docker:latest
+  stage: deploy spring server
+  services:
+    - docker:dind
+  before_script:
+    - echo [INFO] docker deploy start!
+    - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_PASSWORD
+  script:
+    - echo [INFO] get env
+    - cd ./back/gatee/devops
+    - cat .env.template | grep -v '^[#\s]' | awk -F '=' '$1 && ENVIRON[$1] {print $1 "=" ENVIRON[$1]}' > .env
+    - cat .env
+    - echo [INFO] upstream change
+    - chmod +x ./nginx/deploy_script.sh
+    - echo [INFO] $TAG
+    - ./nginx/deploy_script.sh
+  after_script:
+    - docker logout
+    - echo [INFO] docker deploy end!
+  only:
+    - develop
+    - master
+    - release
+
+
+
+

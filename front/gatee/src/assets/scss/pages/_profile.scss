@@ -1,0 +1,1129 @@
+@use '../abstracts/index' as *;
+@use '../components/index' as *;
+
+.profile-index {
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+  position: relative;
+
+  &__profile {
+    @include flex_center;
+
+    flex-direction: column;
+    height: 65%;
+    width: 100%;
+
+    .profile__img-box {
+      @extend %circular-profile-image;
+
+      margin-top: 3%;
+      height: 20svh;
+      width: 20svh;
+
+      .img-box__img {
+        border: 1px solid $gray75;
+        height: 20svh;
+        width: 20svh;
+      }
+    }
+
+    .profile__nickname {
+      @include flex_center;
+
+      height: 30%;
+      width: 40%;
+      margin-top: 5%;
+
+      &__part--01 {
+        font-size: 28px;
+        font-weight: bold;
+        position: relative;
+        text-align: center;
+      }
+
+      &__part--02 {
+        @include flex_center;
+
+        height: 20px;
+        width: 20px;
+        position: absolute;
+        right: -30px;
+        top: 25%;
+
+        &:active {
+          opacity: 0.1;
+        }
+
+        .icon {
+          height: 100%;
+          width: 100%;
+
+          path {
+
+            stroke: $gray200;
+          }
+        }
+      }
+    }
+
+    .profile__mood-box {
+      margin-top: 2%;
+      margin-bottom: 2%;
+      height: 10%;
+      width: 100%;
+
+      .mood-box__btn {
+        height: 100%;
+        width: 100%;
+        text-align: center;
+
+        &:active {
+          opacity: 0.5;
+        }
+
+        .btn--text {
+          font-size: 20px;
+          color: $orange400;
+        }
+
+        .btn--icon {
+          font-size: 24px;
+        }
+      }
+
+      .mood-box__btn--disabled {
+        height: 100%;
+        width: 100%;
+        text-align: center;
+        pointer-events: none;
+
+        .btn--text {
+          font-size: 20px;
+          color: $orange400;
+        }
+
+        .btn--icon {
+          font-size: 24px;
+        }
+      }
+    }
+
+    .profile__info-box {
+      height: 100%;
+      width: 65%;
+      font-size: 18px;
+      color: $gray200;
+
+      .info-box__name {
+        display: flex;
+        align-items: center;
+        height: 25%;
+        width: 100%;
+
+        .name__title {
+          height: 100%;
+          width: 30%;
+          display: flex;
+          align-items: center;
+
+          &--text {
+
+          }
+        }
+
+        .name__body {
+
+          &--text {
+            color: black;
+          }
+        }
+      }
+
+      .info-box__role {
+        display: flex;
+        align-items: center;
+        height: 25%;
+        width: 100%;
+
+        .role__title {
+          height: 100%;
+          width: 30%;
+          display: flex;
+          align-items: center;
+
+          &--text {
+
+          }
+        }
+
+        .role__body {
+
+          &--text {
+            color: black;
+          }
+        }
+      }
+
+      .info-box__birth {
+        display: flex;
+        align-items: center;
+        height: 25%;
+        width: 100%;
+
+        .birth__title {
+          height: 100%;
+          width: 30%;
+          display: flex;
+          align-items: center;
+
+          &--text {
+
+          }
+        }
+
+        .birth__body {
+          height: 100%;
+          //width: 70%;
+          color: black;
+          align-content: center;
+
+
+          &__part--01 {
+            //margin-right: 5%;
+            margin-top: auto;
+          }
+
+          &__part--02 {
+          }
+        }
+      }
+
+      .info-box__phone {
+        display: flex;
+        align-items: center;
+        height: 25%;
+        width: 100%;
+
+        .phone__title {
+          height: 100%;
+          width: 30%;
+          display: flex;
+          align-items: center;
+
+          &--text {
+
+          }
+        }
+
+        .phone__body {
+          height: 100%;
+          width: 70%;
+          color: black;
+          position: relative;
+          align-content: center;
+
+          &__part--01 {
+            margin-right: 5%;
+          }
+
+          &__part--02 {
+            display: inline-block;
+            height: 22px;
+            width: 22px;
+            border-radius: 100%;
+            position: absolute;
+            background-color: $orange400;
+
+            .icon {
+              position: absolute;
+              height: 13px;
+              width: 13px;
+              color: white;
+              right: 22%;
+              bottom: 22%;
+            }
+          }
+
+          &__part--03 {
+            color: $gray100;
+          }
+        }
+      }
+    }
+  }
+
+  &__character {
+    height: 32%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    // 비어 있고, 내 프로필일 때 사전
+    .character__non-created-my {
+      @include flex_center;
+
+      height: 100%;
+      width: 100%;
+
+      .non-created-my__btn {
+        @extend %orange-button-medium;
+
+        font-size: 18px;
+        margin-top: 5%;
+
+        .btn--text {
+        }
+      }
+    }
+
+    // 비어 있고, 내 프로필이 아닐 때 사전
+    .character__non-created-other {
+      @include flex_center;
+
+      height: 100%;
+      width: 100%;
+      flex-direction: column;
+
+      .non-created-other__title {
+        @include flex_center;
+
+        height: 10%;
+        width: 100%;
+
+        .text--icon {
+          @include flex_center;
+
+          height: 100%;
+          width: 10%;
+
+          .icon {
+            height: 110%;
+            width: 110%;
+          }
+        }
+
+
+      }
+
+      .non-created-other__character-box {
+        @include flex_center;
+
+        flex-direction: column;
+        margin-top: 2%;
+        height: 65%;
+        width: 80%;
+        background-color: $orange100;
+        border-radius: 15px;
+        font-size: 18px;
+
+        .character-box__header {
+
+
+          .header__part--01 {
+            font-weight: bold;
+            text-align: center;
+          }
+
+          .header__part--02 {
+
+          }
+        }
+
+        .character-box__body--01 {
+          margin-top: 2%;
+
+          .body--01--text {
+
+          }
+        }
+
+        .character-box__body--02 {
+          @include flex_center;
+
+          margin-top: 5%;
+          height: 30%;
+          width: 80%;
+
+          .body--02__btn {
+            @extend %orange-button-medium;
+
+            height: 100%;
+            width: 100%;
+            background-color: $orange400;
+            color: white;
+
+            &:active {}
+
+            .btn--text {
+              font-size: 19px;
+              font-weight: bold;
+            }
+          }
+        }
+      }
+    }
+
+    // 사전이 비어있지 않다면
+    .character__created {
+
+      @include flex_center;
+
+      // height: 100%;
+      width: 100%;
+      flex-direction: column;
+
+      .created__title {
+        @include flex_row;
+        @include mt-(0.5);
+
+        width: 80%;
+
+        .text--icon {
+          @include flex_center;
+          width: 10%;
+
+          .icon {
+            height: 110%;
+            width: 110%;
+          }
+        }
+
+        .profile__title--text {
+          @include flex_center;
+
+          margin-left: 3%;
+          font-size: 18px;
+          height: 100%;
+          font-weight: bold;
+        }
+
+        .reset-btn {
+          margin-left: 0.2rem;
+          margin-top: 0.2rem;
+
+          &:active {
+            opacity: 0.3;
+          }
+
+          &--icon {
+            color: $gray300;
+          }
+        }
+      }
+
+      .created__character-box {
+        @include flex_col;
+
+        flex-direction: column;
+        margin-top: 2%;
+        min-height: 65%;
+        width: 80%;
+        padding: 0.5rem;
+        background-color: $orange100;
+        border-radius: 15px;
+        font-size: 18px;
+
+        .character-box__header {
+          margin-top: 2%;
+          height: 90%;
+          width: 100%;
+
+          .header__part--01 {
+            font-weight: bold;
+            text-align: center;
+          }
+
+          .header__part--02 {
+          }
+        }
+
+        .character-box__body--01 {
+          @include my-(0.5);
+          @include flex_center;
+
+          .body--01--text {
+            font-size: 23px;
+            font-weight: 800;
+          }
+        }
+
+        .character-box__body--02 {
+          @include flex_center;
+
+          border-radius: 10px;
+          width: 100%;
+
+          .body--02__btn {
+            @include m-(0.5);
+
+            //@extend %orange-button-medium;
+            padding: 10px;
+            width: 100%;
+            background-color: $orange400;
+            color: white;
+            border-radius: 10px;
+
+            &:active {}
+
+            .btn--text {
+              font-size: 18px;
+              font-weight: 600;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.profile-modify {
+  height: 100%;
+  width: 100%;
+
+  &__profile {
+    @include flex_center;
+
+    flex-direction: column;
+    height: 65%;
+    width: 100%;
+
+    .profile__img-box {
+      @extend %circular-profile-image;
+
+      margin-top: 3%;
+      height: 23svh;
+      width: 23svh;
+      border: 1px solid $gray75;
+
+      .img-box__btn {
+        @extend %circular-profile-image;
+
+        height: 23svh;
+        width: 23svh;
+        opacity: 0.7;
+        position: relative;
+
+        &:active {
+          opacity: 0.3;
+        }
+
+        .btn--img {
+          height: 23svh;
+          width: 23svh;
+        }
+
+        .btn--icon {
+          height: 60px;
+          width: 60px;
+          position: absolute;
+
+          .icon {
+            height: 100%;
+            width: 100%;
+            fill: $gray300;
+            opacity: 0.5;
+          }
+        }
+      }
+    }
+
+    .profile__nickname {
+      height: 30%;
+      width: 40%;
+      margin-top: 5%;
+
+      &__part--01 {
+        height: 100%;
+        width: 100%;
+        text-align: center;
+        font-size: 28px;
+        font-weight: bold;
+        text-decoration: underline;
+        color: $gray200;
+      }
+    }
+
+    .profile__blank-box {
+      margin-top: 2.5%;
+      margin-bottom: 2%;
+      height: 10%;
+      width: 100%;
+      font-size: 22px;
+    }
+
+    .profile__info-box {
+      height: 100%;
+      width: 65%;
+      font-size: 18px;
+      color: black;
+
+      .info-box__name {
+        display: flex;
+        align-items: center;
+        height: 25%;
+        width: 100%;
+
+        .name__title {
+          height: 100%;
+          width: 30%;
+          display: flex;
+          align-items: center;
+
+          &--text {
+
+          }
+        }
+
+        .name__body {
+          width: 70%;
+
+          &--text {
+            width: 100%;
+            text-align: left;
+            font-size: 18px;
+            color: $gray200;
+            text-decoration: underline;
+          }
+        }
+      }
+
+      .info-box__role {
+        display: flex;
+        align-items: center;
+        height: 25%;
+        width: 100%;
+
+        .role__title {
+          height: 100%;
+          width: 30%;
+          display: flex;
+          align-items: center;
+
+          &--text {
+
+          }
+        }
+
+        .role__body {
+          width: 70%;
+
+          &--select {
+            appearance: none; /* 기본 화살표 제거 */
+            -webkit-appearance: none; /* 크롬, 사파리용 */
+            -moz-appearance: none; /* 파이어폭스용 */
+            height: 100%;
+            width: 21%;
+            font-size: 18px;
+            border-radius: 6px;
+            border: 1px solid black;
+            text-align: center;
+            justify-content: center;
+            padding-left: 2%;
+          }
+
+          &--text {
+            margin-left: 2%;
+            width: 60%;
+            color: $gray200;
+            font-size: 18px;
+            text-decoration: underline;
+          }
+
+          &__part--01 {
+            color: $gray200;
+            font-size: 18px;
+            text-decoration: underline;
+          }
+        }
+      }
+
+      .info-box__birth {
+
+        display: flex;
+        align-items: center;
+        height: 25%;
+        width: 100%;
+
+        .birth__title {
+          height: 100%;
+          width: 30%;
+          display: flex;
+          align-items: center;
+
+          &--text {
+
+          }
+        }
+
+        .birth__body {
+          display: flex;
+          height: 100%;
+          width: 70%;
+          color: black;
+
+          &__part--01 {
+            display: flex;
+            align-items: center;
+            margin-right: 5%;
+            height: 100%;
+            width: 100%;
+            font-size: 18px;
+            color: $gray200;
+            text-decoration: underline;
+
+
+          }
+
+          .birthday-choice {
+            @include flex_center;
+
+            width: 40%;
+
+            &__btn-solar, &__btn-lunar {
+              @include flex_center;
+
+              width: 50%;
+              font-size: 11px;
+              font-weight: bold;
+
+              .btn-solar__input, .btn-lunar__input {
+                margin-top: 5%;
+                appearance: none;
+                background-color: #fff;
+                color: $gray400;
+                width: 1.2em;
+                height: 1.2em;
+                border: 1px solid $gray200;
+                border-radius: 50%;
+                transform: translateY(-0.075em);
+                display: grid;
+                place-content: center;
+
+                &:checked {
+                  color: orange;
+                  border-color: orange;
+                }
+
+                &:checked::before {
+                  content: "";
+                  width: 0.8em;
+                  height: 0.8em;
+                  border-radius: 50%;
+                  background: orange;
+                }
+
+                &--label {
+                  color: $gray200;
+                  margin-left: 5%;
+                }
+
+                &--label--selected {
+                  color: $orange400;
+                  margin-left: 5%;
+                }
+              }
+
+              .btn-solar__input {
+
+                &--label {
+                  margin-right: 5%;
+
+                  &--selected {
+                    margin-right: 5%;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .info-box__phone {
+        display: flex;
+        align-items: center;
+        height: 25%;
+        width: 100%;
+
+        .phone__title {
+          height: 100%;
+          width: 30%;
+          display: flex;
+          align-items: center;
+
+          &--text {
+
+          }
+        }
+
+        .phone__body {
+          height: 100%;
+          width: 70%;
+          color: black;
+          position: relative;
+          align-content: center;
+
+          .phone__plus__btn {
+            font-size: 1rem;
+            color: $gray200;
+            text-decoration: underline;
+          }
+
+          &__part--01 {
+            font-size: 18px;
+            color: $gray200;
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+
+  &__btn {
+    @include flex_center;
+
+    height: 32%;
+    width: 100%;
+
+    .btn-modified {
+      @extend %orange-button-medium;
+
+      font-size: 18px;
+      margin-top: 5%;
+
+      &--text {
+
+      }
+    }
+  }
+}
+
+.profile-feeling-toast {
+  @include flex_center;
+  flex-direction: column;
+  height: 50%;
+  width: 100%;
+  padding-top: 10%;
+  padding-bottom: 10%;
+  background-color: white;
+  border-top-left-radius: 2rem;
+  border-top-right-radius: 2rem;
+
+  .feeling-toast__first,
+  .feeling-toast__second,
+  .feeling-toast__third {
+    width: 95%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .first__part--01,
+  .first__part--02,
+  .second__part--01,
+  .second__part--02,
+  .third__part--01,
+  .third__part--02 {
+    width: 50%;
+    font-size: 15px;
+    border: 1px solid $gray100;
+    border-radius: 20px;
+    padding: 10px;
+    color: black;
+
+    &:active {
+      opacity: 0.5;
+      background-color: $gray50;
+    }
+  }
+
+  .first__part--01,
+  .second__part--01,
+  .third__part--01 {
+    margin-left: 3%;
+    margin-right: 2%;
+  }
+
+  .first__part--02,
+  .second__part--02,
+  .third__part--02 {
+    margin-right: 3%;
+    margin-left: 2%;
+  }
+
+  .active {
+    background-color: $gray75;
+  }
+
+  .feeling-toast-first {
+    height: 50px;
+    width: 100%;
+
+    .first__part--01 {
+      border: 1px solid black;
+
+      .part--01--emoji {
+      }
+
+      .part--01--text {
+      }
+    }
+
+    .first__part--02 {
+      border: 1px solid black;
+
+      .part--02--emoji {
+      }
+
+      .part--02--text {
+      }
+    }
+  }
+
+  .feeling-toast-second {
+
+    .second__part--01 {
+      border: 1px solid black;
+
+      .part--01--emoji {
+      }
+
+      .part--01--text {
+      }
+    }
+
+    .second__part--02 {
+      border: 1px solid black;
+
+      .part--02--emoji {
+      }
+
+      .part--02--text {
+      }
+    }
+  }
+
+  .feeling-toast-third {
+
+    .third__part--01 {
+      border: 1px solid black;
+
+      .part--01--emoji {
+      }
+
+      .part--01--text {
+      }
+    }
+
+    .third__part--02 {
+      border: 1px solid black;
+
+      .part--02--emoji {
+      }
+
+      .part--02--text {
+      }
+    }
+  }
+}
+
+.modal__bg {
+  @extend %modal-overlay;
+  @extend %modal-fade-in;
+
+  .name__input {
+    font-size: 2rem;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    //border-bottom: 1.5px solid white;
+    display: inline-block;
+    width: 50%;
+  }
+
+  .phone__input {
+    font-size: 2rem;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    //border-bottom: 1.5px solid white;
+    display: inline-block;
+
+
+
+  }
+
+
+
+  .role__container {
+    @include py-(1);
+    @include flex-row;
+    @include flex_center;
+
+    gap: 0.3rem;
+    row-gap: 1rem;
+    flex-wrap: wrap;
+
+    .role__btn {
+
+      font-weight: bold;
+      font-size: 1.5rem;
+      color: white;
+      height: 3rem;
+      width: 8rem;
+      border: 2px solid white;
+      //background-color: $gray200;
+      border-radius: 30px;
+    }
+
+    .selected {
+      border: 2px solid $orange500;
+      color: $orange500;
+      background-color: $orange100;
+    }
+
+    .etc__container {
+      @include flex-row;
+      @include flex_center;
+      color: white;
+      gap: 0.5rem;
+
+      .role__input {
+        font-size: 1.5rem;
+        padding: 0.5rem;
+        text-align: center;
+        color: white;
+        font-weight: bold;
+        border: 2px solid white;
+        border-radius: 1rem;
+        width: 46%;
+        display: inline-block;
+      }
+      .role__submit__btn {
+
+        background-color: $orange400;
+        color: white;
+        font-weight: bold;
+        font-size: 1.2rem;
+        @include p-(0.6);
+        @include px-(1);
+        @include m-(0);
+
+        border-radius: 1rem;
+
+        &:disabled {
+          background-color: white;
+          color: $gray100;
+        }
+
+      }
+
+    }
+  }
+
+  .birth__container {
+    @include flex-center;
+    @include flex-col;
+    @include p-(1);
+
+    gap: 1rem;
+
+
+    .birthday-choice {
+      @include flex-center;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+
+
+    }
+  }
+}
+
+.profile-cropper {
+  @extend %modal-overlay;
+  @extend %modal-fade-in;
+
+  animation: modalFadeIn 0.3s ease-out forwards;
+  height: 100%;
+  width: 100%;
+
+  &__content {
+    @extend %modal-content;
+
+    height: 60%;
+    width: 80%;
+    flex-direction: column;
+    border: 3px solid white;
+  }
+
+  &__btn {
+
+    height: 10%;
+    width: 100%;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+
+    .btn-cancel,
+    .btn-save {
+      height: 100%;
+      width: 50%;
+      color: black;
+
+      &:active {
+        opacity: 0.5;
+      }
+
+      &--text {
+        font-size: 22px;
+        font-weight: bold;
+      }
+    }
+
+    .btn-cancel {
+      border-bottom-left-radius: 5px;
+      background-color: white;
+    }
+
+    .btn-save {
+      background-color: $orange400;
+      border-bottom-right-radius: 5px;
+      color: white;
+    }
+  }
+}
+
+.created__character-box__top {
+  @include flex_row;
+
+  align-items: center;
+  gap: 5px;
+}
+
+.profile__book-icon {
+  width: 2rem;
+  height: 2rem;
+}
+
+.profile__invite-box {
+  @include flex_center;
+
+  position: absolute;
+  height: 40px;
+  width: 80px;
+  top: 0;
+  left: 1%;
+
+  .invite-box__btn {
+    height: 100%;
+    width: 100%;
+    color: $gray100;
+    font-size: 14px;
+    text-decoration: underline;
+
+    &:active {
+      opacity: 0.5;
+    }
+  }
+}

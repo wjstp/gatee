@@ -1,0 +1,252 @@
+@use '../abstracts/index' as *;
+@use '../components/index' as *;
+
+.notification-tab--container {
+
+  position: relative;
+  height: 100%;
+
+  .notification--top--container {
+    position: fixed;
+    @include flex-row;
+    @include mt-(-0.5);
+    @include py-(0.5);
+    @include pr-(1);
+    @include pl-(2);
+
+    width: 100%;
+    background-color: #fff;
+    justify-content: space-between;
+    align-items: center;
+
+    button {
+      font-size: 1rem;
+      color: $orange500;
+    }
+  }
+
+  .read {
+    background-color: $gray50;
+  }
+
+  .notification-list-container {
+
+    @include pt-(3);
+
+    .notification-item--container {
+      @include flex-row;
+      @include p-(1.2);
+
+
+      height: 5.5rem;
+      align-items: center;
+      gap: 1rem;
+
+      .notification-item-profile--img {
+        width: 3rem;
+        height: 3rem;
+        object-fit: cover;
+        border-radius: 50%;
+      }
+
+      .notification-item--content-container {
+        @include flex-col;
+
+        flex-grow: 1;
+        height: 100%;
+        //background-color: red;
+        justify-content: space-between;
+        overflow: hidden;
+
+        .notification-item--top--container {
+          @include flex-row;
+          width: 100%;
+          justify-content: space-between;
+
+          .notification-item-title {
+            font-weight: 500;
+            max-width: 40dvw;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            //color: $orange500;
+          }
+
+          .notification-item-time {
+            @include mr-(0.5);
+            //background-color: red;
+            color: $gray400;
+          }
+        }
+
+        .notification-item-content {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          width: 90%;
+        }
+      }
+    }
+  }
+
+  .notification-scroll-finish-explain {
+    @include flex-center;
+    @include p-(1);
+
+    color: $gray100;
+    background-color: $gray50;
+  }
+
+}
+
+.notification-setting--container {
+  @include p-(2);
+  @include pb-(3);
+
+  //position: absolute;
+  width: 100%;
+  bottom: 0;
+  background-color: #fff;
+  border-top-left-radius: 2rem;
+  border-top-right-radius: 2rem;
+
+
+  .setting-top--container {
+
+    @include mb-(2);
+    @include flex-center;
+
+    position: relative;
+
+    .setting--title {
+      text-align: center;
+    }
+
+    .setting-finish-btn {
+      position: absolute;
+      right: 0;
+      font-size: $font-size;
+      color: $subtext-color;
+      //color: $orange500;
+    }
+  }
+
+
+  .toggle-set-list--container {
+    @include flex-col;
+
+    gap: 1rem;
+
+    .toggle-set-one-line--container {
+      @include flex-row;
+
+      gap: 2.5rem;
+
+      .toggle-item--container {
+        @include flex-row;
+        align-items: center;
+
+        font-size: 1rem;
+        justify-content: space-between;
+        flex: 1;
+        gap: 1rem;
+      }
+
+    }
+  }
+
+}
+
+.nagging-modal-bg {
+  @extend %modal-overlay;
+
+  .nagging-modal-content--container {
+    @extend %modal-content;
+    @include p-(2);
+    //@include mx-(2);
+    @include flex-col;
+    width: 80dvw;
+    align-items: start;
+
+
+    .nagging-modal-title {
+      @include mb-(0.8);
+
+      font-size: 1.5rem;
+    }
+
+    .feature-modal-top--container {
+      @include flex-row;
+      @include flex_center;
+      @include mb-(1);
+
+      gap: 1rem;
+
+      .profile-img {
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50%;
+      }
+    }
+
+    .close-btn {
+      @extend %orange-button-medium;
+      width: 100%;
+    }
+
+    .nagging-modal-content {
+      font-size: 1.3rem;
+    }
+
+    .feature-modal-content--container {
+      width: 100%;
+
+      .feature-modal-content-answer {
+        @include mt-(0.5);
+        font-size: 1.5rem;
+        text-align: center;
+        font-weight: 600;
+      }
+
+      .feature-modal-content-ask {
+        font-size: 1.3rem;
+        width: 100%;
+        margin: auto auto;
+        //background-color: red;
+        //text-align: center;
+      }
+    }
+
+    .nagging-modal-btn-container {
+      @include mt-(1);
+
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      gap: 1rem;
+
+      .btn {
+        @include px-(0.8);
+        @include py-(0.6);
+
+        flex-basis: fit-content;
+        font-size: 1.1rem;
+        font-weight: bold;
+        border-radius: 5rem;
+      }
+
+      .orange {
+        flex-grow: 6;
+        background-color: $orange500;
+        color: white;
+      }
+
+      .plane {
+        flex-grow: 5;
+        color: black;
+        border: 1px solid $gray100;
+      }
+    }
+  }
+}
+

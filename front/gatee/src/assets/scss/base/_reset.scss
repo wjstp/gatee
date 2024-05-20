@@ -1,0 +1,94 @@
+@use '../abstracts/index' as *;
+@use 'typography' as *;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  // 모든 속성에 대해 드래그 및 요소 복사 금지
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+:root {
+  font: {
+    size: $font-size;
+    family: $pretendard;
+  }
+
+}
+
+body {
+  background-color: $bg-color;
+
+  #root {
+    position: fixed;
+    height: 100svh;
+    width: 100svw;
+  }
+
+
+  // topBar, bottomBar 제외한 나머지 영역 차지
+  #main {
+    height: $container-height;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  #main-focus {
+    height: calc($container-height + $bottomBar-height);
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  // 전체 영역 차지
+  #sub {
+    height: 100svh;
+  }
+}
+
+h1 {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  background-color: transparent;
+  border: 0;
+  caret-color: $orange300;
+
+  &:focus {
+    outline: none;
+    background-color: transparent;
+  }
+}
+
+a,
+button {
+  cursor: pointer;
+  -webkit-tap-highlight-color : transparent !important;
+
+  &:focus &:active {
+    outline: none;
+    box-shadow: none;
+  }
+}
+
+ul,
+ol {
+  padding-left: 0;
+  list-style: none;
+}
+
+::-webkit-scrollbar {
+  display: none;
+  width: 0;
+}

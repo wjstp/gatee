@@ -1,0 +1,1070 @@
+@use '../abstracts/index' as *;
+@use '../components/index' as *;
+
+// 멤버 이름 설정 페이지
+.signup-member-set {
+  @include flex_center;
+
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  &__title {
+    font-size: 28px;
+
+    .title__part--01 {
+      font-weight: bold;
+    }
+
+    .title__part--02 {
+    }
+  }
+
+  &__input-box {
+    @include flex_center;
+
+    height: 6%;
+    width: 60%;
+    margin-top: 10%;
+    border-bottom: 1px solid $gray100;
+
+    .input-box__input {
+      width: 100%;
+      font-size: 30px;
+      text-align: center;
+      justify-content: center;
+    }
+  }
+
+  &__error-message {
+    margin-top: 1%;
+    color: red;
+  }
+
+  &__btn {
+    @include flex_center;
+
+    width: 80%;
+
+    .btn-next {
+      @extend %orange-button-large;
+
+      &__text {
+      }
+
+      &:disabled {
+        background-color: $gray100;
+      }
+    }
+  }
+}
+
+// 멤버 생일과 성별 입력 페이지
+.signup-member-set-birth {
+  @include flex_center;
+
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  &__title-birth {
+    margin-top: 10%;
+    font-size: 28px;
+
+    .title-birth__part--01 {
+      font-weight: bold;
+    }
+
+    .title-birth__part--02 {
+    }
+  }
+
+  &__birthday {
+    @include flex_center;
+
+    margin-top: 5%;
+    width: 100%;
+    align-items: center;
+
+    .birthday-date-field {
+      height: 100%;
+
+      &__input {
+      }
+    }
+
+    .birthday-choice {
+      @include flex_center;
+
+      height: 90%;
+      width: 20%;
+      margin-left: 3%;
+      margin-top: 2%;
+
+      &__lunar {
+        @include flex_center;
+
+        height: 50%;
+        width: 100%;
+
+        .btn-lunar {
+          @include flex_center;
+
+          font-size: 18px;
+          width: 100%;
+          height: 100%;
+
+          &:active {
+            opacity: 0.5;
+          }
+
+          .btn-lunar__input {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            height: 28px;
+            width: 28px;
+            border: 1.5px solid $gray100;
+            border-radius: 10%;
+            cursor: default;
+            padding-left: 1px;
+
+            &:checked {
+              background-color: $orange400;
+              border-color: $orange400;
+              cursor: default;
+
+              &::after {
+                content: '\2713';
+                font-size: 28px;
+                color: white;
+                line-height: 27px;
+              }
+            }
+
+            &--label {
+              color: $gray100;
+              margin-left: 6%;
+            }
+
+            &--label--selected {
+              color: $orange400;
+              margin-left: 6%;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &__title-gender {
+    margin-top: 10%;
+    font-size: 28px;
+
+    .title-gender__part--01 {
+      font-weight: bold;
+    }
+
+    .title-gender__part--02 {
+    }
+  }
+
+  &__gender {
+    @include flex_center;
+
+    width: 100%;
+    font-size: 18px;
+    margin-top: 5%;
+
+    .gender-choice {
+      @include flex_center;
+
+      width: 100%;
+      height: 100%;
+      gap: 20px;
+
+      &__btn-male {
+        @include flex_center;
+
+        width: 60px;
+        height: 60px;
+        border: 2px solid $gray100;
+        border-radius: 100%;
+
+        &:active {
+          opacity: 0.5;
+        }
+
+        &--selected {
+          @include flex_center;
+
+          width: 60px;
+          height: 60px;
+          border-radius: 100%;
+          border: 2px solid $lightblue;
+          background-color: $lightblue;
+
+          &:active {
+            opacity: 0.5;
+          }
+        }
+      }
+
+      &__btn-female {
+        @include flex_center;
+
+        width: 60px;
+        height: 60px;
+        border: 2px solid $gray100;
+        border-radius: 100%;
+
+        &:active {
+          opacity: 0.5;
+        }
+
+        &--selected {
+          @include flex_center;
+
+          width: 60px;
+          height: 60px;
+          border-radius: 100%;
+          border: 2px solid #FFB6D5;
+          background-color: #FFB6D5;
+
+          &:active {
+            opacity: 0.5;
+          }
+        }
+      }
+
+      .btn-male--icon {
+        color: $gray100;
+        width: 75%;
+        height: 75%;
+
+        &--selected {
+          color: white;
+          width: 75%;
+          height: 75%;
+        }
+      }
+
+      .btn-female--icon {
+        color: $gray100;
+        width: 75%;
+        height: 75%;
+
+        &--selected {
+          color: white;
+          width: 75%;
+          height: 75%;
+        }
+      }
+    }
+  }
+
+  &__btn {
+    @include flex_center;
+
+    width: 80%;
+    margin-top: 5%;
+
+    .btn-next {
+      @extend %orange-button-large;
+
+      &__text {
+      }
+
+      &:disabled {
+        background-color: $gray100;
+      }
+    }
+  }
+}
+
+// 멤버 역할 및 아이콘 설정 페이지
+.signup-member-set-role {
+  @include flex_center;
+
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+
+  &__choice {
+    @include flex_center;
+
+    height: 65%;
+    width: 100%;
+  }
+
+  &__btn {
+    @include flex_center;
+
+    width: 80%;
+
+    .btn-next {
+      @extend %orange-button-large;
+
+      &__text {
+      }
+
+      &:disabled {
+        background-color: $gray100;
+      }
+    }
+  }
+}
+
+// 멤버 역할 - 남성
+.signup-member-set-role-male {
+  @include flex_center;
+
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+
+  &__title-role {
+    @include flex_center;
+
+    font-size: 28px;
+
+    .title__part--01 {
+      font-weight: bold;
+    }
+
+    .title__part--02 {
+    }
+  }
+
+  &__role {
+    @include flex_center;
+
+    margin-top: 5%;
+    gap: 10px;
+
+    .btn-dad, .btn-son, .btn-etc {
+      margin-top: 5%;
+      font-weight: bold;
+      font-size: 20px;
+      color: $gray100;
+      height: 50px;
+      width: 90px;
+      border: 2px solid $gray100;
+      border-radius: 30px;
+
+      &:active {
+        opacity: 0.3;
+      }
+
+      &--selected {
+        margin-top: 5%;
+        font-weight: bold;
+        font-size: 20px;
+        color: $orange400;
+        height: 50px;
+        width: 90px;
+        border: 2px solid $orange400;
+        border-radius: 30px;
+
+        &:active {
+          opacity: 0.3;
+        }
+      }
+    }
+  }
+
+  &__role-etc {
+    @include flex_center;
+
+    height: 8%;
+    width: 80%;
+    margin-top: 1%;
+  }
+
+  &__error-message {
+    color: red;
+    margin-top: 4%;
+  }
+
+  &__title-icon {
+    @include flex_center;
+
+    font-size: 28px;
+    margin-top: 8%;
+
+    .title__part--01 {
+      font-weight: bold;
+    }
+
+    .title__part--02 {
+    }
+  }
+
+  &__icon {
+    @include flex_center;
+
+    width: 100%;
+    margin-top: 7%;
+    flex-direction: column;
+
+    .icon-box1 {
+      @include flex_center;
+
+      width: 80%;
+      height: 80%;
+      gap: 15px;
+
+      &__btn-kid, &__btn-young, &__btn-old {
+        @include flex_center;
+
+        width: 70px;
+        height: 70px;
+        border-radius: 100%;
+        opacity: 0.5;
+
+        &:active {
+          opacity: 0.5;
+        }
+
+        &--selected {
+          @include flex_center;
+
+          width: 70px;
+          height: 70px;
+          border-radius: 100%;
+
+          &:active {
+            opacity: 0.5;
+          }
+        }
+      }
+
+      .btn-kid--icon, .btn-young--icon, .btn-old--icon {
+        width: 70px;
+        height: 70px;
+        border-radius: 100%;
+        opacity: 0.5;
+
+        &:active {
+          opacity: 0.3;
+        }
+
+        &--selected {
+          width: 70px;
+          height: 70px;
+          border-radius: 100%;
+
+          &:active {
+            opacity: 0.3;
+          }
+        }
+      }
+    }
+
+    .icon-box2 {
+      @include flex_center;
+
+      width: 70px;
+      height: 70px;
+      gap: 15px;
+
+      &__btn-kid, &__btn-young, &__btn-old {
+        @include flex_center;
+
+        width: 70px;
+        height: 70px;
+        border-radius: 100%;
+        opacity: 0.3;
+
+        &:active {
+          opacity: 0.5;
+        }
+
+        &--selected {
+          @include flex_center;
+
+          width: 70px;
+          height: 70px;
+          border-radius: 100%;
+
+          &:active {
+            opacity: 0.5;
+          }
+        }
+      }
+
+      .btn-kid--icon, .btn-young--icon, .btn-old--icon {
+        width: 70px;
+        height: 70px;
+        border-radius: 100%;
+        opacity: 0.5;
+
+        &:active {
+          opacity: 0.3;
+        }
+
+        &--selected {
+          width: 70px;
+          height: 70px;
+          border-radius: 100%;
+
+          &:active {
+            opacity: 0.3;
+          }
+        }
+      }
+    }
+  }
+}
+
+// 멤버 역할 - 여성
+.signup-member-set-role-female {
+  @include flex_center;
+
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+
+  &__title-role {
+    @include flex_center;
+
+    font-size: 28px;
+
+    .title__part--01 {
+      font-weight: bold;
+    }
+
+    .title__part--02 {
+    }
+  }
+
+  &__role {
+    @include flex_center;
+
+    margin-top: 5%;
+    gap: 10px;
+
+    .btn-mom, .btn-daughter, .btn-etc {
+      margin-top: 5%;
+      font-weight: bold;
+      font-size: 20px;
+      color: $gray100;
+      height: 50px;
+      width: 90px;
+      border: 2px solid $gray100;
+      border-radius: 30px;
+
+      &:active {
+        opacity: 0.3;
+      }
+
+      &--selected {
+        margin-top: 5%;
+        font-weight: bold;
+        font-size: 20px;
+        color: $orange400;
+        height: 50px;
+        width: 90px;
+        border: 2px solid $orange400;
+        border-radius: 30px;
+
+        &:active {
+          opacity: 0.3;
+        }
+      }
+    }
+  }
+
+  &__role-etc {
+    @include flex_center;
+
+    height: 8%;
+    width: 80%;
+    margin-top: 1%;
+  }
+
+  &__error-message {
+    color: red;
+    margin-top: 4%;
+  }
+
+  &__title-icon {
+    @include flex_center;
+
+    font-size: 28px;
+    margin-top: 8%;
+
+    .title__part--01 {
+      font-weight: bold;
+    }
+
+    .title__part--02 {
+    }
+  }
+
+  &__icon {
+    @include flex_center;
+
+    width: 100%;
+    margin-top: 7%;
+    flex-direction: column;
+
+    .icon-box1 {
+      @include flex_center;
+
+      width: 80%;
+      height: 80%;
+      gap: 15px;
+
+      &__btn-kid, &__btn-young, &__btn-old {
+        @include flex_center;
+
+        width: 70px;
+        height: 70px;
+        border-radius: 100%;
+        opacity: 0.5;
+
+        &:active {
+          opacity: 0.5;
+        }
+
+        &--selected {
+          @include flex_center;
+
+          width: 70px;
+          height: 70px;
+          border-radius: 100%;
+
+          &:active {
+            opacity: 0.5;
+          }
+        }
+      }
+
+      .btn-kid--icon, .btn-young--icon, .btn-old--icon {
+        width: 70px;
+        height: 70px;
+        border-radius: 100%;
+        opacity: 0.5;
+
+        &:active {
+          opacity: 0.3;
+        }
+
+        &--selected {
+          width: 70px;
+          height: 70px;
+          border-radius: 100%;
+
+          &:active {
+            opacity: 0.3;
+          }
+        }
+      }
+    }
+
+    .icon-box2 {
+      @include flex_center;
+
+      width: 70px;
+      height: 70px;
+      gap: 15px;
+
+      &__btn-kid, &__btn-young, &__btn-old {
+        @include flex_center;
+
+        width: 70px;
+        height: 70px;
+        border-radius: 100%;
+        opacity: 0.3;
+
+        &:active {
+          opacity: 0.5;
+        }
+
+        &--selected {
+          @include flex_center;
+
+          width: 70px;
+          height: 70px;
+          border-radius: 100%;
+
+          &:active {
+            opacity: 0.5;
+          }
+        }
+      }
+
+      .btn-kid--icon, .btn-young--icon, .btn-old--icon {
+        width: 70px;
+        height: 70px;
+        border-radius: 100%;
+        opacity: 0.5;
+
+        &:active {
+          opacity: 0.3;
+        }
+
+        &--selected {
+          width: 70px;
+          height: 70px;
+          border-radius: 100%;
+
+          &:active {
+            opacity: 0.3;
+          }
+        }
+      }
+    }
+  }
+}
+
+// 멤버 역할 - 기타
+.signup-member-set-role-etc {
+  @include flex_center;
+
+  height: 100%;
+  width: 100%;
+  margin-top: 10%;
+
+  &__input {
+    @include flex_center;
+
+    height: 90%;
+    width: 50%;
+    border-bottom: 1px solid $gray100;
+
+    .input {
+      width: 100%;
+      font-size: 22px;
+      text-align: center;
+      justify-content: center;
+    }
+  }
+}
+
+// 멤버 정보 확인 페이지
+.signup-member-set-check {
+  @include flex_center;
+
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+
+  &__title {
+    font-size: 28px;
+
+    .title__text {
+    }
+  }
+
+  &__img-box {
+    @extend %circular-profile-image;
+
+    margin-top: 10%;
+    height: 200px;
+    width: 200px;
+    border-radius: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .img-box__btn {
+      @extend %circular-profile-image;
+
+      height: 200px;
+      width: 200px;
+      border: 1px solid $gray75;
+
+      &:active {
+        opacity: 0.5;
+      }
+
+      .btn--img {
+      }
+
+      .btn--icon {
+        @include flex_center;
+
+        position: absolute;
+        border-radius: 100%;
+        height: 33px;
+        width: 33px;
+        background-color: $gray100;
+        right: 6%;
+        bottom: 6%;
+
+        .icon {
+          fill: white;
+        }
+      }
+    }
+  }
+
+  &__info {
+    margin-top: 5%;
+
+    .info-header {
+      @include flex_center;
+
+      &__name {
+
+        .name--text {
+          font-size: 30px;
+          font-weight: bold;
+        }
+      }
+    }
+
+    .info-body {
+      @include flex_center;
+
+      flex-direction: column;
+      margin-top: 8%;
+
+      &__role {
+        font-size: 23px;
+
+        .role__part--01 {
+
+        }
+
+        .role__part--02 {
+          font-size: 25px;
+          font-weight: bold;
+        }
+
+        .role__part--03 {
+
+        }
+      }
+
+      &__birth {
+        font-size: 23px;
+        margin-top: 1%;
+
+        .birth__part--01 {
+          font-size: 25px;
+          font-weight: bold;
+        }
+
+        .birth__part--02 {
+
+        }
+      }
+    }
+  }
+
+  &__btn-next {
+    @include flex_center;
+
+    width: 100%;
+    margin-top: 5%;
+
+    .btn-next__btn {
+      @extend %orange-button-medium;
+
+      .btn__text {
+      }
+    }
+  }
+
+  &__btn-back {
+    @include flex_center;
+
+    .btn-back__btn {
+
+      .btn__text {
+        font-size: 120%;
+        color: $gray200;
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+// 코드 공유
+.signup-member-set-share {
+  @include flex_center;
+
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+
+  &__title {
+    font-size: 30px;
+
+    .title__part--01 {
+      font-weight: bold;
+    }
+
+    .title__part--02 {
+    }
+  }
+
+  &__img {
+    margin-top: 5%;
+    height: 200px;
+    width: 200px;
+    border-radius: 5%;
+    border: 1px solid $gray75;
+
+    .img {
+      height: 200px;
+      width: 200px;
+      border-radius: 5%;
+    }
+  }
+
+  &__name {
+    margin-top: 5%;
+    height: 7%;
+
+    .name {
+      font-weight: bold;
+      font-size: 30px;
+    }
+  }
+
+  &__code-box {
+    @include flex_center;
+
+    position: relative;
+    height: 18%;
+    width: 70%;
+    background-color: $gray50;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+
+    .code-box {
+
+      &__text {
+        font-size: 20px;
+      }
+
+      &__code {
+        margin-top: 5%;
+        display: block;
+        font-size: 30px;
+        font-weight: bold;
+      }
+
+      &__btn {
+        height: 20px;
+        width: 20px;
+        position: absolute;
+        top: 55%;
+        right: 10%;
+
+        .btn-copy {
+          height: 100%;
+          width: 100%;
+
+          &__icon {
+            color: black;
+          }
+        }
+      }
+    }
+  }
+
+  &__message {
+    margin-top: 1%;
+
+    .message--text {
+      color: red;
+    }
+  }
+
+  &__btn-kakao {
+
+    margin-top: 5%;
+    margin-bottom: 1%;
+
+    .btn-kakao__btn {
+
+    }
+
+    .btn-kakao__logo {
+
+    }
+  }
+
+  &__btn-next {
+    @include flex_center;
+
+    height: 10%;
+    width: 80%;
+
+    .btn-next__btn {
+      @extend %orange-button-large;
+
+    }
+  }
+}
+
+// 가입 축하 페이지
+.signup-member-set-finish {
+  @include flex_center;
+
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+
+  &__title {
+    height: 10%;
+    display: flex;
+    flex-direction: column;
+
+    .title__header {
+      font-size: 28px;
+
+      .title__part--01 {
+        font-weight: bold;
+        font-size: 30px;
+      }
+
+      .title__part--02 {
+      }
+    }
+
+    .title__body {
+      margin-top: 1%;
+      font-size: 28px;
+
+      .title__part--03 {
+      }
+    }
+  }
+
+  &__img {
+    height: 270px;
+    width: 360px;
+    margin-top: 5%;
+    margin-right: 3%;
+
+    .img {
+      border-radius: 20px;
+      height: 270px;
+      width: 360px;
+    }
+  }
+
+  &__btn {
+    @include flex_center;
+
+    width: 80%;
+
+    .btn-next {
+      @extend %orange-button-large;
+
+      &__text {
+      }
+    }
+  }
+}

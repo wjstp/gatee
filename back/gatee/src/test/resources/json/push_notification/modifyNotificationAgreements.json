@@ -1,0 +1,7 @@
+{
+  "albumNotification" : false,
+  "naggingNotification" : false,
+  "scheduleNotification" : true,
+  "featureNotification" : true,
+  "chatNotification" : true
+}

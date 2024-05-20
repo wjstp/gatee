@@ -1,0 +1,66 @@
+@use '../abstracts/index' as *;
+
+.bottom-bar {
+  @include flex-row;
+
+  background-color: $white;
+  justify-content: space-between;
+  height: $bottomBar-height;
+  align-items: start;
+  width: 100%;
+  padding: 0 1rem;
+  border-top: 1px solid $gray100;
+
+  &__item {
+    @include flex-col;
+    @include flex-center;
+
+    color: $gray200;
+    font-size: $font-size-xSmall;
+    gap: 5px;
+    margin-top: 10px;
+    width: 20%;
+    height: 60%;
+
+    &--active {
+      @extend .bottom-bar__item;
+
+      color: $orange500;
+    }
+
+    &-chat {
+      position: relative;
+    }
+
+    &-home {
+      @include flex-col;
+      @include flex-center;
+
+      color: $gray200;
+      font-size: $font-size-xSmall;
+      gap: 5px;
+      margin-top: 10px;
+      width: 20%;
+      height: 60%;
+
+      svg path {
+        fill: $gray200;
+      }
+
+      &--active {
+        @extend .bottom-bar__item-home;
+
+        color: $orange500;
+
+        svg path {
+          fill: $orange500;
+        }
+      }
+    }
+  }
+}
+
+.signup-bottom-bar {
+  height: 6svh;
+}
+

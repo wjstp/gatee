@@ -1,0 +1,84 @@
+@use '../abstracts/index' as *;
+
+// @extend %orange-button-large;
+// @extend %orange-button-medium;
+// @extend %orange-button-small;
+// @extend %orange-button-radius-large;
+
+@mixin orangeButtonCommon() {
+  @include flex_center;
+  @include my-(1);
+
+  background-color: $orange500;
+  font: {
+    weight: 600;
+    size: $font-size-big;
+  }
+  height: 50px;
+  color: white;
+  border-radius: 10px;
+}
+
+%orange-button {
+  &-large {
+    @include orangeButtonCommon;
+
+    width: 90%;
+
+    &:focus,
+    &:active,
+    &:hover {
+      background-color: $orange600;
+    }
+  }
+
+  &-medium {
+    @include orangeButtonCommon;
+
+    width: 200px;
+    border-radius: 25px;
+
+    &:focus,
+    &:active,
+    &:hover {
+      background-color: $orange600;
+    }
+  }
+
+  &-small {
+    @include orangeButtonCommon;
+
+    width: 80px;
+    height: 35px;
+    font: {
+      weight: 600;
+      size: $font-size;
+    };
+
+    &:focus,
+    &:active,
+    &:hover {
+      background-color: $orange600;
+    }
+  }
+
+  &-radius-large {
+    @include px-(1.2);
+    @include py-(0.5);
+
+    background-color: $orange500;
+    color: white;
+    height: 40px;
+    border-radius: 10rem;
+    font: {
+      weight: 800;
+      size: 1.2rem;
+    };
+
+    &:focus,
+    &:active,
+    &:hover {
+      background-color: $orange600;
+    }
+  }
+}

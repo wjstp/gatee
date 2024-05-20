@@ -1,0 +1,204 @@
+@use '../abstracts/index' as *;
+@use '../components/index' as *;
+
+.create-schedule {
+  @include flex-col;
+
+  justify-content: space-between;
+  min-height: 100%;
+
+  &__input-container {
+    @include flex-col;
+    @include px-(1);
+  }
+
+  &__title {
+    font: {
+      weight: 500;
+      size: $font-size-big;
+    };
+    text-align: center;
+    position: relative;
+    margin: 0.5rem 0.5rem 1rem 0.5rem;
+  }
+
+  &__button-create {
+    @include flex_center;
+    @include mt-(0.5);
+
+    width: 100%;
+
+    button {
+      @extend %orange-button-large;
+
+      width: 90%;
+    }
+
+    button[disabled] {
+      @extend %orange-button-large;
+
+      background-color: $gray100;
+      cursor: not-allowed;
+      font-weight: 400;
+      width: 90%;
+    }
+  }
+
+  &-info {
+    &__input {
+      &-color-button {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+
+        button {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+
+  &-period {
+    @include flex-col;
+
+    &__icon {
+      color: rgba(0, 0, 0, 0.54);
+      position: absolute;
+      top: 50%;
+      transform: translate(0, -50%);
+    }
+
+    &__input {
+      @include flex-row;
+
+      position: relative;
+
+      &-date {
+        input {
+          text-align: center;
+        }
+      }
+
+      &-time {
+        input {
+          text-align: center;
+        }
+      }
+    }
+  }
+
+  &-all-day {
+    @include flex_between;
+
+    align-items: center;
+    border-bottom: 1px solid #efefef;
+    font-size: $font-size;
+    padding: 25px 0;
+
+    p {
+      margin-left: calc(25px + 0.5rem);
+    }
+
+    div {
+      margin-right: 5px;
+    }
+  }
+
+  &-category {
+    @include flex-between;
+
+    align-items: center;
+    border-bottom: 1px solid #efefef;
+    font-size: $font-size;
+    padding: 19.5px 0;
+  }
+
+  &__icon {
+    color: rgba(0, 0, 0, 0.54);
+    margin-right: 0.5rem;
+  }
+
+  &__wrapper {
+    @include flex-row;
+
+    align-items: center;
+  }
+
+  &-participant {
+    &-title {
+      @include flex-between;
+
+      padding: 22px 0;
+      align-items: center;
+      font-size: $font-size;
+    }
+
+    &__profile {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+
+      &-item {
+        @include flex-col;
+
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      &-image {
+        @extend %circular-profile-image;
+
+        width: 65px;
+        height: 65px;
+        opacity: 0.4;
+        transition: opacity 0.2s ease-in-out;
+
+        &--active {
+          @extend .create-schedule-participant__profile-image;
+
+          opacity: 1;
+        }
+      }
+
+      &-nickname {
+        text-align: center;
+      }
+    }
+
+    &__number {
+      margin-right: 5px;
+      font-size: $font-size;
+      color: $orange500;
+    }
+  }
+
+  &__input-color {
+    @include flex_col;
+    @include py-(2);
+
+    align-items: center;
+    background-color: white;
+    width: 100%;
+    border-top-left-radius: 2rem;
+    border-top-right-radius: 2rem;
+
+    &-list {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1rem;
+    }
+
+    &-item {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+
+      &--active {
+        @extend .create-schedule__input-color-item;
+
+        border: $orange300 3px solid;
+      }
+    }
+  }
+}

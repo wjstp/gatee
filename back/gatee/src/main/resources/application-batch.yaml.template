@@ -1,0 +1,10 @@
+spring:
+  config:
+    activate:
+      on-profile: batch-prod
+  batch:
+    job:
+      enabled: false
+      name: FcmTokenRefreshJob
+    jdbc:
+      initialize-schema: always

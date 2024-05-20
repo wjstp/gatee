@@ -1,0 +1,50 @@
+@use '../abstracts/index' as *;
+
+.photo-detail--container {
+  @include flex-col;
+
+  width: 100dvw;
+  height: 100%;
+
+  .photo-detail-img {
+    @include flex-center;
+    flex: 1;
+    max-width: 100dvw;
+    max-height: calc(100dvh - $topBar-height - $bottomBar-height - 7dvh);
+    object-fit: contain;
+  }
+
+
+  .interaction--container {
+    @include flex_between;
+    @include mx-(1);
+    //@include mb-(0.5);
+    height: 7dvh;
+
+    .liked--container {
+      @include flex_center;
+
+      margin-top: 1dvh;
+      gap: 1.5rem;
+      color: #d8d8d8;
+      transition: color ease-in-out 0.1s;
+
+      &--active {
+        @extend .liked--container;
+
+        color: #ff5a5a;
+        transition: color ease-in-out 0.1s;
+      }
+
+      .liked-profiles--container {
+        .liked-icon {
+          margin-left: -1rem;
+          width: 5dvh;
+          height: 5dvh;
+          background-color: white;
+          border-radius: 10rem;
+        }
+      }
+    }
+  }
+}

@@ -10,6 +10,13 @@ spring:
       prod:
         - db-prod
         - security-prod
+      batch:
+        - db-local
+        - batch-prod
+        - security-local
+      test:
+        - db-prod
+        - security-prod
     include:
       - db
       - security
@@ -34,6 +41,16 @@ spring:
   config:
     activate:
       on-profile: prod
+
+logging:
+  level:
+    com: info
+
+---
+spring:
+  config:
+    activate:
+      on-profile: batch
 
 logging:
   level:

@@ -1,0 +1,526 @@
+@use '../abstracts' as *;
+@use '../base' as *;
+@use '../components' as *;
+
+.exam__font-choson {
+  font-family: $ChosunGs;
+}
+
+.exam__index {
+  @extend %modal-fade-in;
+
+  //지난 평가
+  .exam__index__heading {
+    display: flex;
+    height: 10dvh;
+    align-items: end;
+    justify-content: end;
+
+    .exam__index__heading-font {
+      color: $orange500;
+      border-bottom: 1px solid $orange500;
+      margin-right: 5dvw;
+      font-weight: bold;
+      font-size: 1.3rem;
+    }
+  }
+
+  .exam__index__main-font {
+    margin-top: 3dvh;
+
+    p, h2 {
+      margin-bottom: 1dvh;
+      margin-left: 10dvw;
+    }
+
+    p {
+      font-size: 1.3rem;
+    }
+  }
+
+  .exam__index__img {
+    height: 35vh;
+    //
+    margin: 3vh 5vw;
+    display: flex;
+    justify-content: center;
+
+    img {
+      object-fit: cover;
+    }
+
+  }
+
+  .exam__index-goToExam {
+    border: 1px solid black;
+    font-family: $ChosunGs;
+    text-align: center;
+    margin: 0 5vw;
+    font-size: 1.8rem;
+    padding: 1.5vh;
+    color: black;
+
+    .exam__index-goToExam-button {
+      @include flex_center;
+    }
+  }
+
+  .exam__index__hint {
+    margin-top: 1vh;
+    text-align: center;
+  }
+}
+
+.exam__header {
+  * {
+    font-family: $ChosunGs;
+  }
+
+  .exam__header-title {
+    padding-top: 2vh;
+    text-align: center;
+    font-size: 2rem;
+    font-weight: normal;
+  }
+
+  .exam__header-info {
+    margin: 3vh 0;
+    display: flex;
+    justify-content: space-evenly;
+
+    .exam__header-border {
+      border: 1px solid black;
+      width: 20vh;
+      display: flex;
+      height: 4vh;
+
+      .exam__header-border-left {
+        width: 10vh;
+        @include flex_center;
+        border-right: 1px solid black;
+      }
+
+      .exam__header-border-right {
+        @include flex_center;
+
+        width: 10vh;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+
+  .exam__header-footer {
+    height: 1vh;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    margin: 0 7vw;
+  }
+}
+
+.exam__item {
+  position: relative;
+
+  * {
+    font-family: $ChosunGs;
+  }
+
+  .exam__result__mark {
+    position: absolute;
+    top: -2rem;
+    left: -0.3rem;
+    width: 10dvh;
+    //background-color: red;
+  }
+
+  .exam__item__question {
+    font-size: 1.2rem;
+    margin: 5vh 8vw 3vh 8vw;
+
+  }
+
+  .exam__item__answer-list {
+    margin: 1vh 10vw 2vh 10vw;
+    display: flex;
+    position: relative;
+    gap: 2vw;
+
+    .exam__item__checkImg {
+      position: absolute;
+      width: 2rem;
+      top: -1.3rem;
+      left: 0;
+    }
+
+    .deactivate-index {
+      border: 1px solid black;
+      border-radius: 50%;
+      width: 1.2rem;
+      height: 1.2rem;
+      @include flex_center;
+    }
+
+    .activate-index {
+      border: 1px solid black;
+      border-radius: 50%;
+      width: 1.2rem;
+      height: 1.2rem;
+      background-color: $gray300;
+      @include flex_center;
+    }
+
+    .answer-content {
+      width: 90%;
+      //background-color: red;
+
+    }
+  }
+}
+
+.exam__taking__footer {
+  @include flex_center;
+  justify-content: space-between;
+  margin: 6vh 10vw;
+
+  .nextButton {
+    border: 1px solid black;
+    font-family: $ChosunGs;
+    font-size: 1.3rem;
+    color: black;
+    padding: 1vh 3vw;
+  }
+}
+
+.exam__scored {
+  position: relative;
+
+  .exam__scored-mark {
+    position: absolute;
+    top: 0;
+    right: 3dvw;
+    width: 13dvh;
+    //background-color: #000000;
+  }
+
+  .exam__scored-footer {
+    @include mx-(2);
+    @include mt-(2);
+    @include mb-(1);
+
+    height: 1vh;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    //margin: 5vh 5vh 7vw 7vw;
+  }
+
+  .exam__scored--goto-grade {
+    @include flex_center;
+    @include my-(2);
+    @include mx-(2);
+    @include p-(1);
+
+    border: 1px solid black;
+    text-align: center;
+    font-size: 1.5rem;
+    font-family: $ChosunGs;
+  }
+
+  .exam__scored-comment {
+    @include flex_row;
+    align-items: center;
+    @include mx-(1.5);
+    @include mb-(1);
+
+    img {
+      width: $profile-icon-size;
+      height: $profile-icon-size;
+      border-radius: 50%;
+      border: 1px solid black;
+
+    }
+
+    .comment {
+      @include flex_col;
+      gap: 1dvw;
+      @include ml-(1);
+    }
+
+    .text-gray-100 {
+      color: $gray300;
+    }
+  }
+}
+
+.exam-grade {
+  position: relative;
+  @include flex-col;
+
+  * {
+    font-family: $ChosunGs;
+  }
+
+  height: 100%;
+
+
+  .exam__grade-header {
+    @include flex_row;
+    @include flex_center;
+
+    .small {
+      font-size: 1.3rem;
+    }
+
+    .large {
+      @include ml-(0.5);
+
+      font-size: 1.8rem;
+    }
+
+  }
+
+  .exam__grade-body {
+    border: 1px solid black;
+    border-bottom: 0;
+    @include mx-(1.5);
+    @include my-(2);
+
+    .exam-grade-data {
+      @include flex_row;
+      @include flex_center;
+      border-bottom: 1px solid black;
+      cursor: pointer;
+
+      .bgGray {
+        background-color: $gray100;
+      }
+
+      .flex-date {
+        flex: 1.3;
+        @include flex_center;
+        @include py-(0.7);
+        border-right: 1px solid black;
+      }
+
+      .flex-point {
+        flex: 1;
+        @include flex_center;
+        @include py-(0.7);
+
+      }
+
+      .flex-comment {
+        flex: 0.5;
+        @include flex_center;
+        border-left: 1px solid black;
+        @include py-(0.7);
+
+      }
+    }
+
+  }
+
+  .exam__grade-footer {
+    @include flex_center;
+    font-size: 1.3rem;
+
+    img {
+      position: absolute;
+      z-index: -1;
+      right: 10vw;
+      width: 13vw;
+    }
+  }
+
+
+}
+
+.exam__empty {
+
+  @include flex_center;
+  @include flex-col;
+  margin: auto;
+
+  .small {
+    font-size: 1.3rem;
+  }
+
+  .large {
+    font-size: 2rem;
+  }
+}
+
+.exam__empty-icon {
+  @include flex_center;
+  @include mt-(3);
+  width: 50%;
+  margin: auto auto;
+
+  path {
+    fill: $gray200;
+  }
+}
+
+.exam-loading-container {
+  @include flex_center;
+  @include flex-col;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background-color: #fff;
+
+}
+
+.exam-taking {
+  position: relative;
+  height: 100%;
+
+  .exam-answer-sheet-container {
+
+    @include flex-row;
+    @include flex_center;
+
+    position: absolute;
+    bottom: 1rem;
+    border: 1px solid $gray200;
+    flex: 1;
+    width: 90dvw;
+    margin: 0 5vw;
+
+
+    .item-container {
+      @include flex-col;
+      @include flex_center;
+
+      font-size: 1.2rem;
+      flex: 1;
+
+      .index {
+        @include py-(0.7);
+        @include flex_center;
+        width: 100%;
+        background-color: $gray100;
+        border-bottom: 1px solid $gray200;
+      }
+
+      .answer {
+        @include my-(0.7);
+        @include flex_center;
+        width: 1.5rem;
+        height: 1.5rem;
+        border: 1px solid $gray200;
+        border-radius: 5rem;
+      }
+
+      .no-answer {
+        color: white;
+        border: 0 !important;
+      }
+
+
+    }
+
+    .item-right-line {
+      border-right: 0.2px solid $gray200;
+    }
+  }
+
+
+  .warning-modal-bg {
+
+    @extend %modal-overlay;
+
+    .warning-modal-content {
+      * {
+        font-family: $ChosunGs;
+      }
+      @extend %modal-content;
+      @include p-(2);
+      @include m-(2);
+      @include flex-col;
+      gap:1rem;
+      font-size: 1.3rem;
+
+      .warning-modal-btn-container {
+
+        //@include mt-(1);
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        gap:1.5rem;
+        button {
+          //@extend %orange-button-medium;
+          border:1px solid $gray300;
+          //font-weight: bold;
+
+          @include px-(1);
+          @include py-(0.5);
+          @include mt-(0.5);
+
+          width: fit-content;
+          height: fit-content;
+          font-size: 1rem;
+          background-color: $gray50;
+          color: $gray200;
+        }
+        .keep-going-btn {
+          //background-color: $gray200;
+          //color: white;
+        }
+        .replay-btn {
+          color: black;
+        }
+      }
+    }
+  }
+}
+
+.exam-not-found-container {
+  flex-direction: column;
+  align-content: center;
+  //@include flex-col;
+  height: 100%;
+
+  .exam__empty-icon {
+    width: 20%;
+    height: 20%;
+
+    path {
+      fill: black
+    }
+  }
+
+  .exam-not-found-info {
+    //background-color: red;
+    p, h3 {
+      text-align: center;
+      font-size: 1.3rem;
+      @include mb-(0.5);
+    }
+  }
+
+  .exam-not-found-explain-container {
+    @include p-(2);
+    @include m-(2);
+
+    border-radius: 1rem;
+    background-color: $gray50;
+
+    p, h3 {
+      font-size: 1.1rem;
+      @include mb-(0.7);
+    }
+
+    .go-to-dictionary-btn {
+      //display: flex;
+      text-decoration: underline;
+      //justify-content: end;
+      font-size: 1.2rem;
+      @include mt-(1);
+    }
+
+  }
+}

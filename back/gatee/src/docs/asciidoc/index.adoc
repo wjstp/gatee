@@ -1,0 +1,829 @@
+= 가티 API 문서
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+
+
+---
+
+= Member
+
+== 회원 정보 등록
+
+- Request
+
+include::{snippets}/member-controller-test/save-info/http-request.adoc[]
+
+- Response
+
+include::{snippets}/member-controller-test/save-info/http-response.adoc[]
+
+
+== 회원 FCM 토큰 저장
+
+- Request
+
+include::{snippets}/member-controller-test/save-notification-token/http-request.adoc[]
+include::{snippets}/member-controller-test/save-notification-token/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/member-controller-test/save-notification-token/http-response.adoc[]
+
+
+== 회원 정보 수정
+
+- Request
+
+include::{snippets}/member-controller-test/edit-info/http-request.adoc[]
+include::{snippets}/member-controller-test/edit-info/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/member-controller-test/edit-info/http-response.adoc[]
+
+
+== 회원 프로필 이미지 수정
+
+- Request
+
+include::{snippets}/member-controller-test/edit-profile-image/curl-request.adoc[]
+include::{snippets}/member-controller-test/edit-profile-image/form-parameters.adoc[]
+
+- Response
+
+include::{snippets}/member-controller-test/edit-profile-image/http-response.adoc[]
+
+
+== 기분 상태 수정
+
+- Request
+
+include::{snippets}/member-controller-test/edit-mood/http-request.adoc[]
+include::{snippets}/member-controller-test/edit-mood/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/member-controller-test/edit-mood/http-response.adoc[]
+
+
+== 회원 정보 조회
+
+- Request
+
+include::{snippets}/member-controller-test/read-info/http-request.adoc[]
+
+- Response
+
+include::{snippets}/member-controller-test/read-info/http-response.adoc[]
+include::{snippets}/member-controller-test/read-info/response-fields.adoc[]
+
+
+---
+---
+
+
+= Family
+
+== 가족 생성
+
+- Request
+
+include::{snippets}/family-controller-test/save-family/curl-request.adoc[]
+include::{snippets}/family-controller-test/save-family/form-parameters.adoc[]
+
+- Response
+
+include::{snippets}/family-controller-test/save-family/http-response.adoc[]
+include::{snippets}/family-controller-test/save-family/response-fields.adoc[]
+
+
+== 가족 정보 조회
+
+- Request
+
+include::{snippets}/family-controller-test/read-family/http-request.adoc[]
+include::{snippets}/family-controller-test/read-family/query-parameters.adoc[]
+
+
+- Response
+
+include::{snippets}/family-controller-test/read-family/response-body.adoc[]
+include::{snippets}/family-controller-test/read-family/response-fields.adoc[]
+
+
+== 가족 코드 생성
+
+- Request
+
+include::{snippets}/family-controller-test/create-family-code/http-request.adoc[]
+include::{snippets}/family-controller-test/create-family-code/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/family-controller-test/create-family-code/http-response.adoc[]
+include::{snippets}/family-controller-test/create-family-code/response-fields.adoc[]
+
+== 가족 코드 확인
+
+- Request
+
+include::{snippets}/family-controller-test/check-family-code/http-request.adoc[]
+include::{snippets}/family-controller-test/check-family-code/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/family-controller-test/check-family-code/http-response.adoc[]
+include::{snippets}/family-controller-test/check-family-code/response-fields.adoc[]
+
+
+== 가족 합류
+
+- Request
+
+include::{snippets}/family-controller-test/join-family/http-request.adoc[]
+include::{snippets}/family-controller-test/join-family/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/family-controller-test/join-family/http-response.adoc[]
+
+
+== 가족 이름 수정
+
+- Request
+
+include::{snippets}/family-controller-test/edit-family-name/http-request.adoc[]
+include::{snippets}/family-controller-test/edit-family-name/path-parameters.adoc[]
+
+- Response
+
+include::{snippets}/family-controller-test/edit-family-name/http-response.adoc[]
+
+
+== 가족 이미지 수정
+
+- Request
+
+include::{snippets}/family-controller-test/edit-profile-image/curl-request.adoc[]
+include::{snippets}/family-controller-test/edit-profile-image/form-parameters.adoc[]
+
+- Response
+
+include::{snippets}/family-controller-test/edit-profile-image/http-response.adoc[]
+
+
+---
+---
+
+
+= Schedule
+
+== 전체 일정 조회
+
+- Request
+
+include::{snippets}/schedule-controller-test/read-schedule/http-request.adoc[]
+include::{snippets}/schedule-controller-test/read-schedule/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/schedule-controller-test/read-schedule/http-response.adoc[]
+include::{snippets}/schedule-controller-test/read-schedule/response-fields.adoc[]
+
+
+== 일정 상세 조회
+
+- Request
+
+include::{snippets}/schedule-controller-test/read-schedule-detail/http-request.adoc[]
+include::{snippets}/schedule-controller-test/read-schedule-detail/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/schedule-controller-test/read-schedule-detail/http-response.adoc[]
+include::{snippets}/schedule-controller-test/read-schedule-detail/response-fields.adoc[]
+
+
+== 일정 등록
+
+- Request
+
+include::{snippets}/schedule-controller-test/save-schedule/http-request.adoc[]
+include::{snippets}/schedule-controller-test/save-schedule/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/schedule-controller-test/save-schedule/http-response.adoc[]
+
+
+== 일정 수정
+
+- Request
+
+include::{snippets}/schedule-controller-test/edit-schedule/http-request.adoc[]
+include::{snippets}/schedule-controller-test/edit-schedule/path-parameters.adoc[]
+include::{snippets}/schedule-controller-test/edit-schedule/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/schedule-controller-test/edit-schedule/http-response.adoc[]
+
+
+== 일정 삭제
+
+- Request
+
+include::{snippets}/schedule-controller-test/delete-schedule/http-request.adoc[]
+include::{snippets}/schedule-controller-test/delete-schedule/path-parameters.adoc[]
+
+- Response
+
+include::{snippets}/schedule-controller-test/delete-schedule/http-response.adoc[]
+
+
+== 일정 참여
+
+- Request
+
+include::{snippets}/schedule-controller-test/participate-schedule/http-request.adoc[]
+include::{snippets}/schedule-controller-test/participate-schedule/path-parameters.adoc[]
+include::{snippets}/schedule-controller-test/participate-schedule/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/schedule-controller-test/participate-schedule/http-response.adoc[]
+
+
+== 일정 참여 취소
+
+- Request
+
+include::{snippets}/schedule-controller-test/cancel-schedule/http-request.adoc[]
+include::{snippets}/schedule-controller-test/cancel-schedule/path-parameters.adoc[]
+include::{snippets}/schedule-controller-test/cancel-schedule/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/schedule-controller-test/cancel-schedule/http-response.adoc[]
+
+
+== 일정 후기 등록
+
+- Request
+
+include::{snippets}/schedule-controller-test/save-schedule-record/http-request.adoc[]
+include::{snippets}/schedule-controller-test/save-schedule-record/path-parameters.adoc[]
+include::{snippets}/schedule-controller-test/save-schedule-record/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/schedule-controller-test/save-schedule-record/http-response.adoc[]
+
+
+== 일정 후기 삭제
+
+- Request
+
+include::{snippets}/schedule-controller-test/delete-schedule-record/http-request.adoc[]
+include::{snippets}/schedule-controller-test/delete-schedule-record/path-parameters.adoc[]
+
+- Response
+
+include::{snippets}/schedule-controller-test/save-schedule-record/http-response.adoc[]
+
+
+---
+---
+
+
+= Feature
+
+
+== 백문백답 답변 저장 및 문제 저장
+
+- Request
+
+include::{snippets}/feature-controller-test/save-feature/http-request.adoc[]
+include::{snippets}/feature-controller-test/save-feature/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/feature-controller-test/save-feature/http-response.adoc[]
+
+
+== 백문백답 답변 수정 및 문제 수정
+
+- Request
+include::{snippets}/feature-controller-test/update-feature/http-request.adoc[]
+include::{snippets}/feature-controller-test/update-feature/query-parameters.adoc[]
+
+- Response
+include::{snippets}/feature-controller-test/update-feature/http-response.adoc[]
+
+
+== 백문백답 질문 리스트 조회
+
+- Request
+
+include::{snippets}/feature-controller-test/read-feature-list/http-request.adoc[]
+
+- Response
+
+include::{snippets}/feature-controller-test/read-feature-list/http-response.adoc[]
+include::{snippets}/feature-controller-test/read-feature-list/response-fields.adoc[]
+
+
+
+== 백문백답 질문 및 답변 조회
+
+- Request
+
+include::{snippets}/feature-controller-test/read-feature-result/http-request.adoc[]
+
+- Response
+
+include::{snippets}/feature-controller-test/read-feature-result/http-response.adoc[]
+include::{snippets}/feature-controller-test/read-feature-result/response-fields.adoc[]
+
+== 다른 사람의 백문백답 질문 및 답변 조회
+
+- Request
+
+include::{snippets}/feature-controller-test/read-other-feature-result/http-request.adoc[]
+
+- Response
+
+include::{snippets}/feature-controller-test/read-other-feature-result/http-response.adoc[]
+include::{snippets}/feature-controller-test/read-other-feature-result/response-fields.adoc[]
+
+
+= Exam
+
+== 시험 문제 조회
+
+- Request
+
+include::{snippets}/exam-controller-test/read-exam/http-request.adoc[]
+
+- Response
+
+include::{snippets}/exam-controller-test/read-exam/http-response.adoc[]
+include::{snippets}/exam-controller-test/read-exam/response-fields.adoc[]
+
+== 시험 결과 조회
+
+- Request
+
+include::{snippets}/exam-controller-test/read-family-exam-results/http-request.adoc[]
+
+- Response
+
+include::{snippets}/exam-controller-test/read-family-exam-results/http-response.adoc[]
+include::{snippets}/exam-controller-test/read-family-exam-results/response-fields.adoc[]
+
+== 자신의 시험 결과 리스트 조회
+
+- Request
+
+include::{snippets}/exam-controller-test/read-exam-results/http-request.adoc[]
+
+- Response
+
+include::{snippets}/exam-controller-test/read-exam-results/http-response.adoc[]
+include::{snippets}/exam-controller-test/read-exam-results/response-fields.adoc[]
+
+
+== 다른 사람의 시험 결과 리스트 조회
+
+- Request
+
+include::{snippets}/exam-controller-test/read-other-exam-results/http-request.adoc[]
+include::{snippets}/exam-controller-test/read-other-exam-results/path-parameters.adoc[]
+
+- Response
+
+include::{snippets}/exam-controller-test/read-other-exam-results/http-response.adoc[]
+include::{snippets}/exam-controller-test/read-other-exam-results/response-fields.adoc[]
+
+== 시험 결과 상세 조회
+
+- Request
+
+include::{snippets}/exam-controller-test/read-exam-result-details/http-request.adoc[]
+include::{snippets}/exam-controller-test/read-exam-result-details/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/exam-controller-test/read-exam-result-details/http-response.adoc[]
+include::{snippets}/exam-controller-test/read-exam-result-details/response-fields.adoc[]
+
+
+== 시험 결과 저장
+
+- Request
+
+include::{snippets}/exam-controller-test/save-exam-result/http-request.adoc[]
+include::{snippets}/exam-controller-test/save-exam-result/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/exam-controller-test/save-exam-result/http-response.adoc[]
+include::{snippets}/exam-controller-test/save-exam-result/response-fields.adoc[]
+
+---
+---
+
+
+= File
+
+== S3 파일 등록
+
+- Request
+
+include::{snippets}/file-controller-test/upload-file/curl-request.adoc[]
+include::{snippets}/file-controller-test/upload-file/form-parameters.adoc[]
+
+- Response
+
+include::{snippets}/file-controller-test/upload-file/http-response.adoc[]
+include::{snippets}/file-controller-test/upload-file/response-fields.adoc[]
+
+
+---
+---
+
+
+= Photo
+
+== 사진 목록 조회
+
+- Request
+
+include::{snippets}/photo-controller-test/read-photo-list/http-request.adoc[]
+include::{snippets}/photo-controller-test/read-photo-list/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/photo-controller-test/read-photo-list/http-response.adoc[]
+include::{snippets}/photo-controller-test/read-photo-list/response-fields.adoc[]
+
+
+== 사진 목록 썸네일 조회
+
+- Request
+
+include::{snippets}/photo-controller-test/read-photo-thumbnail-list/http-request.adoc[]
+include::{snippets}/photo-controller-test/read-photo-thumbnail-list/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/photo-controller-test/read-photo-thumbnail-list/http-response.adoc[]
+include::{snippets}/photo-controller-test/read-photo-thumbnail-list/response-fields.adoc[]
+
+
+== 사진 상세 조회
+
+- Request
+
+include::{snippets}/photo-controller-test/read-photo-detail/http-request.adoc[]
+include::{snippets}/photo-controller-test/read-photo-detail/path-parameters.adoc[]
+
+- Response
+
+include::{snippets}/photo-controller-test/read-photo-detail/http-response.adoc[]
+include::{snippets}/photo-controller-test/read-photo-detail/response-fields.adoc[]
+
+
+== 사진 등록
+
+- Request
+
+include::{snippets}/photo-controller-test/save-photo/http-request.adoc[]
+include::{snippets}/photo-controller-test/save-photo/query-parameters.adoc[]
+
+
+- Response
+
+include::{snippets}/photo-controller-test/save-photo/http-response.adoc[]
+include::{snippets}/photo-controller-test/save-photo/response-fields.adoc[]
+
+
+== 사진 삭제
+
+- Request
+
+include::{snippets}/photo-controller-test/delete-photo/http-request.adoc[]
+include::{snippets}/photo-controller-test/delete-photo/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/photo-controller-test/delete-photo/http-response.adoc[]
+
+
+== 사진 삭제 (리스트)
+
+- Request
+
+include::{snippets}/photo-controller-test/delete-photo-list/http-request.adoc[]
+include::{snippets}/photo-controller-test/delete-photo-list/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/photo-controller-test/delete-photo-list/http-response.adoc[]
+
+
+
+== 사진 상호작용 생성
+
+- Request
+
+include::{snippets}/photo-controller-test/save-photo-reaction/http-request.adoc[]
+include::{snippets}/photo-controller-test/save-photo-reaction/path-parameters.adoc[]
+
+- Response
+
+include::{snippets}/photo-controller-test/save-photo-reaction/http-response.adoc[]
+
+
+== 사진 상호작용 삭제
+
+- Request
+
+include::{snippets}/photo-controller-test/delete-photo-reaction/http-request.adoc[]
+include::{snippets}/photo-controller-test/delete-photo-reaction/path-parameters.adoc[]
+
+- Response
+
+include::{snippets}/photo-controller-test/delete-photo-reaction/http-response.adoc[]
+
+
+---
+---
+
+= Push Notification
+
+== 알림 리스트 조회
+
+- Request
+
+include::{snippets}/push-notification-controller-test/read-notifications/http-request.adoc[]
+include::{snippets}/push-notification-controller-test/read-notifications/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/push-notification-controller-test/read-notifications/http-response.adoc[]
+include::{snippets}/push-notification-controller-test/read-notifications/response-fields.adoc[]
+
+== 알림 읽음 처리
+
+- Request
+
+include::{snippets}/push-notification-controller-test/check-read-notification/http-request.adoc[]
+include::{snippets}/push-notification-controller-test/check-read-notification/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/push-notification-controller-test/check-read-notification/http-response.adoc[]
+
+
+
+== 한마디 보내기
+
+- Request
+
+include::{snippets}/push-notification-controller-test/send-nagging/http-request.adoc[]
+include::{snippets}/push-notification-controller-test/send-nagging/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/push-notification-controller-test/send-nagging/http-response.adoc[]
+include::{snippets}/push-notification-controller-test/send-nagging/response-fields.adoc[]
+
+== 알림 동의 여부 조회
+
+- Request
+
+include::{snippets}/push-notification-controller-test/read-notification-agreements/http-request.adoc[]
+
+- Response
+
+include::{snippets}/push-notification-controller-test/read-notification-agreements/http-response.adoc[]
+include::{snippets}/push-notification-controller-test/read-notification-agreements/response-fields.adoc[]
+
+== 알림 동의 변경
+
+- Request
+
+include::{snippets}/push-notification-controller-test/modify-notification-agreements/http-request.adoc[]
+include::{snippets}/push-notification-controller-test/modify-notification-agreements/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/push-notification-controller-test/modify-notification-agreements/http-response.adoc[]
+
+---
+---
+
+
+= Album
+
+
+== 앨범 목록 조회
+
+- Request
+
+include::{snippets}/album-controller-test/read-album-list/http-request.adoc[]
+include::{snippets}/album-controller-test/read-album-list/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/album-controller-test/read-album-list/http-response.adoc[]
+include::{snippets}/album-controller-test/read-album-list/response-fields.adoc[]
+
+
+== 앨범 상세 조회
+
+- Request
+
+include::{snippets}/album-controller-test/read-album-detail/http-request.adoc[]
+include::{snippets}/album-controller-test/read-album-detail/path-parameters.adoc[]
+
+- Response
+
+include::{snippets}/album-controller-test/read-album-detail/http-response.adoc[]
+include::{snippets}/album-controller-test/read-album-detail/response-fields.adoc[]
+
+
+== 앨범 생성
+
+- Request
+
+include::{snippets}/album-controller-test/save-album/http-request.adoc[]
+include::{snippets}/album-controller-test/save-album/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/album-controller-test/save-album/http-response.adoc[]
+include::{snippets}/album-controller-test/save-album/response-fields.adoc[]
+
+
+== 앨범 이름 수정
+
+- Request
+
+include::{snippets}/album-controller-test/edit-album-name/http-request.adoc[]
+include::{snippets}/album-controller-test/edit-album-name/path-parameters.adoc[]
+include::{snippets}/album-controller-test/edit-album-name/query-parameters.adoc[]
+
+
+- Response
+
+include::{snippets}/album-controller-test/edit-album-name/http-response.adoc[]
+
+
+== 앨범 삭제
+
+- Request
+
+include::{snippets}/album-controller-test/delete-album/http-request.adoc[]
+include::{snippets}/album-controller-test/delete-album/path-parameters.adoc[]
+
+- Response
+
+include::{snippets}/album-controller-test/delete-album/http-response.adoc[]
+
+
+== 앨범 내 사진 추가
+
+- Request
+
+include::{snippets}/album-controller-test/add-album-photo-list/http-request.adoc[]
+include::{snippets}/album-controller-test/add-album-photo-list/path-parameters.adoc[]
+include::{snippets}/album-controller-test/add-album-photo-list/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/album-controller-test/add-album-photo-list/http-response.adoc[]
+include::{snippets}/album-controller-test/add-album-photo-list/response-fields.adoc[]
+
+
+== 앨범 내 사진 삭제
+
+- Request
+
+include::{snippets}/album-controller-test/delete-album-photo-list/http-request.adoc[]
+include::{snippets}/album-controller-test/delete-album-photo-list/path-parameters.adoc[]
+include::{snippets}/album-controller-test/delete-album-photo-list/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/album-controller-test/delete-album-photo-list/http-response.adoc[]
+include::{snippets}/album-controller-test/delete-album-photo-list/response-fields.adoc[]
+
+
+---
+
+= Appointment
+
+
+== 약속 참여자 목록 조회
+
+- Request
+
+include::{snippets}/appointment-controller-test/get-join-member-in-appointment/http-request.adoc[]
+include::{snippets}/appointment-controller-test/get-join-member-in-appointment/path-parameters.adoc[]
+
+- Response
+
+include::{snippets}/appointment-controller-test/get-join-member-in-appointment/http-response.adoc[]
+include::{snippets}/appointment-controller-test/get-join-member-in-appointment/response-fields.adoc[]
+
+
+== 약속 참여
+
+- Request
+
+include::{snippets}/appointment-controller-test/join-appointment/http-request.adoc[]
+include::{snippets}/appointment-controller-test/join-appointment/path-parameters.adoc[]
+
+- Response
+
+include::{snippets}/appointment-controller-test/join-appointment/http-response.adoc[]
+
+
+---
+
+= Mission
+
+== 미션 목록 조회
+
+- Request
+
+include::{snippets}/mission-controller-test/read-mission/http-request.adoc[]
+include::{snippets}/mission-controller-test/read-mission/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/mission-controller-test/read-mission/http-response.adoc[]
+include::{snippets}/mission-controller-test/read-mission/response-fields.adoc[]
+
+
+== 미션 수행
+
+- Request
+
+include::{snippets}/mission-controller-test/progress-mission/http-request.adoc[]
+include::{snippets}/mission-controller-test/progress-mission/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/mission-controller-test/progress-mission/http-response.adoc[]
+
+
+== 미션 완료
+
+- Request
+
+include::{snippets}/mission-controller-test/complete-mission/http-request.adoc[]
+include::{snippets}/mission-controller-test/complete-mission/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/mission-controller-test/complete-mission/http-response.adoc[]
+
+
+---
+
+
+= Mission
+
+== 채팅방 사진 전체 조회
+
+- Request
+
+include::{snippets}/chat-room-controller-test/read-file-list-chat-room/http-request.adoc[]
+include::{snippets}/chat-room-controller-test/read-file-list-chat-room/path-parameters.adoc[]
+
+- Response
+
+include::{snippets}/chat-room-controller-test/read-file-list-chat-room/http-response.adoc[]
+include::{snippets}/chat-room-controller-test/read-file-list-chat-room/response-fields.adoc[]
+
+
+== 채팅방 사진 등록
+
+- Request
+
+include::{snippets}/chat-room-controller-test/save-file-list-chat-room/http-request.adoc[]
+include::{snippets}/chat-room-controller-test/save-file-list-chat-room/path-parameters.adoc[]
+include::{snippets}/chat-room-controller-test/save-file-list-chat-room/query-parameters.adoc[]
+
+- Response
+
+include::{snippets}/chat-room-controller-test/save-file-list-chat-room/http-response.adoc[]
+
+
+---

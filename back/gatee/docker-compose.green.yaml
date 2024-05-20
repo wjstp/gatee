@@ -1,0 +1,47 @@
+services:
+  gatee-api-green-01:
+    image: ${CI_REGISTRY}/gatee-api:green
+    container_name: gatee-api-green-01
+    environment:
+      - ENV=prod
+    env_file:
+      - devops/.env
+    networks:
+      - gatee-net
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+  gatee-api-green-02:
+    image: ${CI_REGISTRY}/gatee-api:green
+    container_name: gatee-api-green-02
+    environment:
+      - ENV=prod
+    env_file:
+      - devops/.env
+    networks:
+      - gatee-net
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+  gatee-nodejs-green:
+    container_name: gatee-nodejs-green
+    image: ${CI_REGISTRY}/gatee-nodejs:green
+    networks:
+      - gatee-net
+  gatee-batch-green:
+    image: ${CI_REGISTRY}/gatee-api:green
+    container_name: gatee-batch-green
+    environment:
+      - ENV=batch
+    env_file:
+      - devops/.env
+    networks:
+      - gatee-net
+
+networks:
+  gatee-net:
+    external: true

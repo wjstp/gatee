@@ -1,0 +1,35 @@
+@use '../abstracts/index' as *;
+
+.top-bar {
+  @include flex_between;
+
+  background-color: $white;
+  width: 100%;
+  height: $topBar-height;
+  padding: 0 1rem;
+
+  &__left {
+    @include flex_center;
+  }
+
+  &__right {
+    @include flex_center;
+
+    color: $gray300;
+    gap: 1rem;
+
+    div, a {
+      @include flex_center;
+    }
+
+    &--active {
+      @extend .top-bar__right;
+
+      color: $orange400;
+    }
+  }
+}
+
+.position-relative {
+  position: relative;
+}

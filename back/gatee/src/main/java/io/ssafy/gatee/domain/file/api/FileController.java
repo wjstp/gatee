@@ -1,6 +1,7 @@
 package io.ssafy.gatee.domain.file.api;
 
 import io.ssafy.gatee.domain.file.application.FileService;
+import io.ssafy.gatee.domain.file.dto.FileUrlRes;
 import io.ssafy.gatee.domain.file.entity.type.FileType;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +13,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/files")
+@RequestMapping("/api/files")
 @RequiredArgsConstructor
 public class FileController {
 
@@ -20,14 +21,19 @@ public class FileController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void uploadFile(@RequestParam FileType fileType,
-                           @RequestParam MultipartFile file) throws IOException {
-        fileService.uploadFile(fileType, file);
+    public FileUrlRes uploadFile(
+            @RequestParam("fileType") FileType fileType,
+            @RequestParam("file") MultipartFile file
+    ) throws IOException {
+        return fileService.uploadFile(fileType, file);
     }
 
     @GetMapping("/{fileId}")
     @ResponseStatus(HttpStatus.OK)
-    public void downloadFile(@PathVariable Long fileId, HttpServletResponse response) throws Exception {
+    public void downloadFile(
+            @PathVariable Long fileId,
+            HttpServletResponse response
+    ) throws Exception {
         Object[] object = fileService.getObject(fileId);
         byte[] fileContent = (byte[]) object[0];
 

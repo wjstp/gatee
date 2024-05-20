@@ -1,0 +1,410 @@
+@use '../abstracts' as *;
+@use '../base' as *;
+@use '../components' as *;
+
+.main-container {
+  @include flex-col;
+
+  position: relative;
+  height: 100%;
+
+
+  .main-family-info {
+    @include px-(2);
+    @include flex-col;
+
+    align-items: center;
+    flex: 1;
+    width: 100%;
+    gap: 1rem;
+    //background-color: green;
+
+    .title--container {
+
+      @include mt-(1);
+      @include flex-row;
+
+      align-items: end;
+
+      font-weight: bold;
+      width: 90dvw;
+      //background-color: yellow;
+      justify-content: space-between;
+
+      &__btn {
+        height: 17dvw;
+        width: 17dvw;
+        border: 1px solid $gray75;
+
+        &:active {
+          opacity: 0.3;
+        }
+
+        .main-family-img {
+          height: 100%;
+          width: 100%;
+          border-radius: 5%;
+        }
+      }
+
+      .title--content {
+        width: 49dvw;
+        text-align: start;
+        //background-color: yellow;
+        padding-left: 5dvw;
+
+        //font-size: 100%;
+      }
+
+      .title--temperature {
+        font-size: 1.8rem;
+        width: 24dvw;
+        text-align: center;
+        //background-color: red;
+        color: $orange500;
+      }
+
+    }
+
+    .progressbar-container {
+      width: 90dvw;
+    }
+
+    .compare-with-avg-content {
+      @include flex_center;
+
+      font-size: 1.3rem;
+      font-weight: bold;
+    }
+
+  }
+
+  .main-heart-animation {
+    position: absolute;
+    bottom: 115vw;
+    z-index: -2;
+    right: 0;
+    width: 30%;
+    opacity: 0.2;
+  }
+
+  .main-house-img {
+    width: 100vw;
+    position: absolute;
+    opacity: 0.7;
+    z-index: -1;
+    bottom: 0;
+  }
+
+  .go-to-mission__button {
+
+    &-event {
+      @include flex_center;
+      @include flex-col;
+
+      gap: 0.5rem;
+      font-weight: bold;
+      font-size: 1rem;
+      position: absolute;
+      z-index: 10;
+      bottom: 1rem;
+      right: 1rem;
+      background-color: $orange400;
+      color: white;
+      width: 5rem;
+      height: 5rem;
+      border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+      &:focus,
+      &:active,
+      &:hover {
+        background-color: $orange500;
+      }
+    }
+  }
+
+  .main-profile-list--container--outside {
+    @include m-(3);
+    flex: 1;
+
+    .main-profile-list--container {
+      @include flex_row;
+
+      align-content: start;
+      flex-wrap: wrap;
+      margin-bottom: 10dvw;
+
+      .main-profile-list-item--box {
+        @include mb-(1);
+        @include px-(0.5);
+
+        width: 33.3%;
+        height: 25dvw;
+
+        .main-profile-list-item--container {
+          @include flex_center;
+
+          position: relative;
+          flex-direction: column;
+          gap: 0.2rem;
+          width: 100%;
+          height: 100%;
+          border-radius: 10px;
+          box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+          background-color: white;
+          font-weight: bold;
+          color: $gray200;
+
+          .main-profile-item-nickname {
+            text-align: center;
+            width: 80%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+
+          .main-profile-wrapper {
+            @include flex_center;
+
+            width: 15dvw;
+            height: 13dvw;
+            position: relative;
+          }
+
+          .main-profile-img {
+            width: 13dvw;
+            height: 13dvw;
+            object-fit: cover;
+            border-radius: 10rem;
+            box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+          }
+
+          .main-profile-mood {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+          }
+        }
+      }
+    }
+  }
+
+
+}
+
+.profile-modal--bg {
+  @extend %modal-overlay;
+  @extend %modal-fade-in;
+
+  .profile-modal--content {
+    @extend %modal-content;
+    @include p-(2);
+
+    @include flex-col;
+
+    align-items: start;
+
+
+    .profile-nickname {
+      @include mb-(0.5);
+
+      font-size: 1.8rem;
+      font-weight: bold;
+      align-items: start;
+
+    }
+
+    .profile-mood {
+      @include mb-(1);
+
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    .profile-modal--button--container {
+      @include flex-row;
+      @include flex-center;
+      @include mt-(0.3);
+
+      width: 100%;
+      gap: 0.5rem;
+
+      .profile-modal-go-to-detail {
+        @extend %orange-button-radius-large;
+        background-color: $orange100;
+        color: black;
+        //flex: 1;
+      }
+
+      .profile-modal-open-message {
+        @extend %orange-button-radius-large;
+        //flex: 2.5;
+      }
+
+      .flex-1 {
+        flex: 1;
+      }
+    }
+
+
+  }
+
+}
+
+.message-input--container {
+  @include flex-col;
+  width: 100%;
+
+  .message-input--warning {
+    @include my-(0.3);
+    font-size: 0.8rem;
+    color: $orange600;
+    display: flex;
+    align-items: center;
+  }
+
+  .message-input--no--seen {
+    @include my-(0.3);
+    font-size: 0.8rem;
+    color: white;
+  }
+
+  .message-input {
+    width: 100%;
+  }
+
+  .message-input--explain {
+    @include flex-center;
+    @include mt-(0.5);
+    color: $gray200;
+  }
+
+
+  .send-message-button {
+    @include flex-center;
+    margin: 0 auto;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 10rem;
+    background-color: $orange400;
+  }
+
+  :disabled {
+    background-color: $orange100;
+  }
+}
+
+.family-profile {
+  @extend %modal-overlay;
+  @extend %modal-fade-in;
+
+  &__content {
+    @extend %modal-content;
+
+    flex-direction: column;
+    position: relative;
+    width: 35svh;
+    height: 50svh;
+
+    // 이미지 상자
+    &__img-box {
+      height: 29svh;
+      width: 29svh;
+      position: relative;
+      border-radius: 5px;
+
+      .img-box__btn {
+        @extend %circular-profile-image;
+
+        height: 29svh;
+        width: 29svh;
+        border: 1px solid $gray75;
+        border-radius: 5px;
+
+        &:active {
+          opacity: 0.5;
+        }
+
+        .btn--img {
+        }
+
+        .btn--icon {
+          @include flex_center;
+
+          position: absolute;
+          border-radius: 100%;
+          height: 2rem;
+          width: 2rem;
+          background-color: $gray100;
+          right: 5px;
+          bottom: 5px;
+
+          .icon {
+            fill: white;
+          }
+        }
+      }
+    }
+
+    &__input-box {
+      @include flex_center;
+
+      height: 6%;
+      width: 65%;
+      margin-top: 15%;
+      margin-bottom: 10%;
+      border-bottom: 1px solid $gray100;
+
+      .input-box__input {
+        width: 100%;
+        font-size: 1.5rem;
+        text-align: center;
+        justify-content: center;
+        margin-bottom: 6%;
+      }
+    }
+
+    &__error-message {
+      color: red;
+      margin-top: 1%;
+    }
+
+    &__btn {
+
+      height: 10%;
+      width: 100%;
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+      position: absolute;
+      bottom: 1.5%;
+
+      .btn-cancel,
+      .btn-save {
+        height: 100%;
+        width: 49%;
+        color: black;
+
+        &:active {
+          opacity: 0.5;
+        }
+
+        &--text {
+          font-size: 1.2rem;
+          font-weight: bold;
+        }
+      }
+
+      .btn-cancel {
+        border-bottom-left-radius: 5px;
+        background-color: white;
+      }
+
+      .btn-save {
+        background-color: $orange400;
+        border-bottom-right-radius: 5px;
+        color: white;
+      }
+    }
+  }
+}
