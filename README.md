@@ -18,24 +18,20 @@
 
 ## UCC 🎞️
 
-- ucc 추가
+- [![Video Label](http://img.youtube.com/vi/jY7TfR6VFlQ/0.jpg)](https://youtu.be/jY7TfR6VFlQ)
 
 <br />
 
-## 서비스 설명
-
-### 개요
+## 개요 💌
 
 - 서비스 명 : **Gatee(가티)**
-
 - 현대 사회의 가족은 맞벌이, 교육, 개인주의, COIVD-19 펜데믹 등의 이유로 가족 간의 소통이 단절되어 있습니다.
-
 - 소원해진 가족 관계,  **가족 SNS 서비스 <가티>** 로 가까워질 수 있지 않을까요?
-- 가족들 간의 소통을 활성화하고 추억을 기록할 수 있게 함으로써 이를 개선해 보고자 합니다.
+- 가족들 간의 소통을 활성화하고 추억을 기록할 수 있게 함으로써 가족 관계 개선에 도움을 드리고자 합니다.
 
 <br />
 
-### 타겟 🎯
+## 타겟 🎯
 
 - 맞벌이, 교육 등의 이유로 서로 간 유대감이 떨어진 가족들
 - 자식들과 가까워지고 싶지만 다가가기 어려워하는 부모님들
@@ -54,25 +50,25 @@
 
 과연 정말 싫으셨을까요? 어머니는 사실 짜장면을 좋아하셨답니다. 이렇듯 부모님이, 그리고 내 자녀가 어떤 것을 좋아하고 어떤 것을 즐겨하는지 우리는 잘 모릅니다. 직접 물어보기도 민망하죠. 
 
-서로에 대해서 알아 준다면 좋겠지만, 표현하기 어려울 때가 많을 겁니다. ‘사랑합니다’라는 말 한마디가 간단하면서도 입으로 전하기에는 어렵습니다. 이럴 때 ‘누군가’가 내 마음을 대신 전해 준다면 얼마나 좋을까요. 저희가 그 징검다리가 되어 보겠습니다.
+서로에 대해서 알아 준다면 좋겠지만, 표현하기 어려울 때가 많을 겁니다. ‘사랑합니다’라는 말 한마디가 간단하면서도 입으로 전하기에는 어렵습니다. 이럴 때 ‘누군가’가 내 마음을 대신 전해 준다면 얼마나 좋을까요. 저희가 그 징검다리가 되어 드리겠습니다.
 
 <br />
 
 ## 목적 🥅
 
-가족 소통을 위한 All in One 서비스를 통해 가족 관계를 개선해 보자
+*가족 소통을 위한 All in One 서비스를 통해 가족 관계를 개선해 보자*
 
 <br />
 
 ## 의의
 
-1. **서로에 대한 이해 증진**: 가족 구성원들이 서로의 취향, 관심사, 그리고 일상 생활에 대해 더 잘 알 수 있게 도와줍니다. 이를 통해 가족 간의 오해를 줄이고 더 깊은 이해와 공감을 형성할 수 있습니다.
-2. **정서적 유대 강화**: 일상 속에서 소소한 감정과 생각을 공유함으로써 가족 구성원 간의 정서적 유대를 강화합니다. 이는 가족 구성원들이 더 큰 안정감과 소속감을 느끼게 합니다.
-3. **효율적인 소통 도구 제공**: 바쁜 현대 사회에서 가족들이 쉽게 소통할 수 있는 효율적인 도구를 제공하여, 물리적인 거리나 시간의 제약 없이 언제 어디서나 소통할 수 있게 합니다.
-4. **가족 추억 기록**: 가족 구성원들이 함께 만든 추억을 기록하고 저장할 수 있는 공간을 제공하여, 시간이 지나도 소중한 순간들을 되돌아보고 기억할 수 있게 합니다.
-5. **갈등 완화 및 해결**: 가족 간의 갈등 상황에서 중재 역할을 할 수 있는 기능을 제공하여, 갈등을 신속하고 효과적으로 해결할 수 있게 돕습니다.
-6. **가족 행사 및 이벤트 관리**: 생일, 기념일 등 중요한 가족 행사를 체계적으로 관리할 수 있는 기능을 제공하여, 중요한 순간을 놓치지 않고 함께 축하할 수 있게 합니다.
-7. **긍정적 가족 문화 조성**: 가족 간의 적극적인 소통과 상호작용을 통해 긍정적이고 건강한 가족 문화를 조성하고 유지할 수 있게 합니다.
+저희 가티는 다음의 세 가지에 의의를 두고 있습니다. 
+
+첫 번째는 **서로에 대한 이해 증진**입니다. 가족 구성원들이 서로의 취향, 관심사, 그리고 일상 생활에 대해 더 잘 알 수 있게 도와줍니다. 이를 통해 가족 간의 오해를 줄이고 더 깊은 이해와 공감을 형성할 수 있습니다.
+
+두 번째는 **가족 추억 기록**입니다. 앨범과 일정 기록 등 가족 구성원들이 함께 만든 추억을 기록하고 저장할 수 있는 공간을 제공하여, 시간이 지나도 소중한 순간들을 되돌아보고 기억할 수 있게 합니다.
+
+세 번째는 **정서적 유대 강화**입니다. 일상 속에서 소소한 감정과 생각을 공유함으로써 가족 구성원 간의 정서적 유대를 강화합니다. 이는 가족 구성원들이 더 큰 안정감과 소속감을 느끼게 합니다.
 
 <br />
 
@@ -80,42 +76,87 @@
 
 ### 1. 로그인 / 회원가입
 ![signup-family](/assets/page_introduction/signup-family.gif)
+
+<br/>
+
 ### 2. 메인 화면
+
 ![main](/assets/page_introduction/main.gif)
+
+<br/>
+
 ### 3. 한마디 하기 
+
 ![nagging](/assets/page_introduction/nagging.gif)
+
+<br/>
+
 ### 4. 백과사전
-- 백과사전 답변 작성
+
+#### (1) 백과사전 답변 작성
 
 ![feature-answer](/assets/page_introduction/feature-answer.gif)
-- 다른 가족들의 백과사전 조회
+
+<br/>
+
+#### (2) 다른 가족들의 백과사전 조회
 
 ![feature](/assets/page_introduction/feature.gif)
+
+<br/>
+
 ### 5. 모의고사 
-- 모의고사 풀기
+
+#### (1) 모의고사 풀기
 
 ![exam](/assets/page_introduction/exam.gif)
-- 모의고사 결과 조회
+
+<br/>
+
+#### (2) 모의고사 결과 조회
 
 ![exam-result](/assets/page_introduction/exam-result.gif)
+
+<br/>
+
 ### 6. 채팅 
-- 채팅 화면
+
+#### (1) 채팅 화면
 
 ![chatting](/assets/page_introduction/chatting.gif)
-- 약속 잡기
+
+<br/>
+
+#### (2) 약속 잡기
 
 ![appointment](/assets/page_introduction/appointment.gif)
+
+<br/>
+
 ### 8. 일정 
-- 일정 조회
+
+#### (1) 일정 조회
 
 ![schedule](/assets/page_introduction/schedule.gif)
-- 일정 생성
+
+<br/>
+
+#### (2) 일정 생성
 
 ![private-schedule](/assets/page_introduction/private-schedule.gif)
+
+<br/>
+
 ### 9. 앨범 
+
 ![album](/assets/page_introduction/album.gif)
+
+<br/>
+
 ### 10. 미션 
+
 ![mission](/assets/page_introduction/mission.gif)
+
 
 ### 11. 알림
 ![notification](/assets/page_introduction/notification.gif)
@@ -128,7 +169,12 @@
 
 ## 1. Firebase
 
-![firebase](./assets/skill_stacks/firebase.png)
+
+<p align="center">
+    <img src="./assets/skill_stacks/firebase.png" width=500/>
+</p>
+
+
 
 ### (1) Firebase Realtime Database
 >  Google의 Firebase 플랫폼에서 제공하는 NoSQL 기반의 실시간 데이터베이스 서비스로 모바일 및 웹 애플리케이션에 실시간 데이터 동기화 및 데이터베이스 관리 기능을 제공합니다.
@@ -154,13 +200,14 @@
 
   브라우저가 백그라운드에서 실행시키는 스크립트인 서비스워커를 사용하여 알림 수신 기능을 구현하였습니다. 앱의 백그라운드에서 Firebase 앱을 초기화하고 이벤트를 수신합니다. 또한, 앱에 접속 중이거나 채팅방에 접속 중일 때는 채팅 알람을 받지 않도록 직접 구현한 컴포넌트를 활용하여 알림을 표시합니다.
   
-   
 
 <br />
 
 ## 2. Redis
 
-![redis.png](./assets/skill_stacks/redis.png)
+<p align="center">
+    <img src="./assets/skill_stacks/redis.png" width=500 />
+</p>
 
 > Redis는 주로 애플리케이션 캐시나 빠른 응답 속도를 가진 데이터베이스로 사용되는 오픈 소스 인메모리 NoSQL 저장소 입니다.
 
@@ -182,13 +229,15 @@
     
     한 서버에서 스케줄된 `Job` 이 실행되면 Redis에 해당 실행 정보를 넣어 작업 수행 최대 시간만큼 유지되게 하여 작업 수행 전 Redis에 정보가 있으면 `Job`을 수행하지 않게 하였습니다.
     
-- 가족 합류 시 사용되는 가족 코드 관리
-  
-    
+- **가족 합류 시 사용되는 가족 코드 관리**
+
+<br/>
 
 ## 3. Amazon S3
 
-![amazonS3.png](./assets/skill_stacks/amazonS3.png)
+<p align="center">
+    <img src="./assets/skill_stacks/amazonS3.png" width=700 />
+</p>
 
 > AmazonS3는 주로 웹 서비스를 위한 온라인 파일 저장소로 사용되는 클라우드 스토리지 서비스입니다.
 > 
@@ -205,7 +254,9 @@
 
 ## 4. Open AI ChatGPT
 
-![chatGPT.jpg](./assets/skill_stacks/chatGPT.jpg)
+<p align="center">
+    <img src="./assets/skill_stacks/chatGPT.jpg" width=500 />
+</p>
 
 > OpenAI의 ChatGPT는 다양한 주제에 대해 즉각적인 답변, 창의적인 영감, 그리고 학습 기회를 제공하는 도구입니다.
 > 
@@ -221,7 +272,9 @@
 
 ## 5. MongoDB
 
-![mongodb.png](./assets/skill_stacks/mongodb.png)
+<p align="center">
+    <img src="./assets/skill_stacks/mongodb.png" width=500 />
+</p>
 
 > MongoDB는 RDBMS과 비교하여 유연성이 높은 NoSQL 데이터베이스입니다. Gatee는 다양한 종류의 알림을 MongoDB에 저장하고 관리합니다.
 > 
@@ -243,6 +296,7 @@
 # 👩‍👧 프로젝트 산출물
 
 ### 1. Figma
+
 ![figma](./assets/figma.png)
 
 <br />
