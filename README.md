@@ -116,6 +116,9 @@
 ![album](/assets/page_introduction/album.gif)
 ### 10. 미션 
 ![mission](/assets/page_introduction/mission.gif)
+
+### 11. 알림
+![notification](/assets/page_introduction/notification.gif)
 ### 11. 프로필 수정
 ![profile](/assets/page_introduction/profile.gif)
 
