@@ -68,7 +68,7 @@ public class Member extends BaseEntity {
     }
 
     // 회원 정보 수정
-    public void editInfo(MemberEditReq memberEditReq)   {
+    public void editInfo(MemberEditReq memberEditReq) {
         this.name = memberEditReq.name();
         this.nickname = memberEditReq.nickname();
         this.birth = LocalDate.parse(memberEditReq.birth(), DateTimeFormatter.ISO_DATE);
@@ -77,7 +77,7 @@ public class Member extends BaseEntity {
             this.phoneNumber = memberEditReq.phoneNumber();
         }
     }
-    
+
     // 토큰 수정
     public void saveNotificationToken(String token) {
         this.notificationToken = token;

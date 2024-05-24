@@ -24,7 +24,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException{
+            throws ServletException, IOException {
         if (!request.getRequestURI().endsWith(KAKAO_USER_INFO_URL)) {
             log.info("토큰 검증 시작");
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

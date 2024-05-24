@@ -1,7 +1,5 @@
 package io.ssafy.gatee.domain.album.dto.response;
 
-import io.ssafy.gatee.domain.photo.dto.response.PhotoListRes;
-import io.ssafy.gatee.domain.photo.entity.Photo;
 import io.ssafy.gatee.domain.photo_album.entity.PhotoAlbum;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;

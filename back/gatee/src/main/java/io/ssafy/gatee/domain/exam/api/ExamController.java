@@ -10,7 +10,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -34,6 +33,7 @@ public class ExamController {
     ) {
         return examService.readFamilyExamResults(customUserDetails.getMemberId());
     }
+
     @GetMapping("/results")
     @ResponseStatus(HttpStatus.OK)
     public List<ExamResultRes> readExamResults(
@@ -66,5 +66,4 @@ public class ExamController {
     ) {
         return examService.saveExamResult(examReq, customUserDetails.getMemberId());
     }
-
 }

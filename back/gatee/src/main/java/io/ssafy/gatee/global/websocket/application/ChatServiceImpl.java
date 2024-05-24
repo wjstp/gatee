@@ -4,7 +4,6 @@ import com.google.firebase.database.*;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import io.ssafy.gatee.domain.appointment.application.AppointmentService;
 import io.ssafy.gatee.domain.family.application.FamilyService;
-import io.ssafy.gatee.domain.family.dao.FamilyRepository;
 import io.ssafy.gatee.domain.family.entity.Family;
 import io.ssafy.gatee.domain.member.dao.MemberRepository;
 import io.ssafy.gatee.domain.member.entity.Member;
@@ -41,9 +40,7 @@ public class ChatServiceImpl implements ChatService {
     private final DatabaseReference databaseReference;
     private final FamilyService familyService;
     private final OnlineRoomMemberRepository onlineRoomMemberRepository;
-
     private final AppointmentService appointmentService;
-
     private final PushNotificationService pushNotificationService;
 
     public ChatServiceImpl(MemberRepository memberRepository,

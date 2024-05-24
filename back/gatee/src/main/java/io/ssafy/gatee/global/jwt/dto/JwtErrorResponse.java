@@ -25,10 +25,12 @@ public class JwtErrorResponse {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
         this.time = LocalDateTime.now().format(formatter);
     }
+
     public LocalDateTime getLocalDateTime() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
         return LocalDateTime.parse(this.time, formatter);
     }
+
     public LocalDate getLocalDate() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
         return LocalDate.parse(this.time, formatter);

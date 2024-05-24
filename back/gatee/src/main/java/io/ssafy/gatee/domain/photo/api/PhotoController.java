@@ -39,10 +39,10 @@ public class PhotoController {
             @RequestParam @Nullable String month
     ) throws WrongTypeFilterException {
         return photoService.readPhotoList(PhotoListReq.builder()
-                        .familyId(familyId)
-                        .filter(filter)
-                        .year(year)
-                        .month(month)
+                .familyId(familyId)
+                .filter(filter)
+                .year(year)
+                .month(month)
                 .build());
     }
 
@@ -63,7 +63,7 @@ public class PhotoController {
     public PhotoDetailRes readPhotoDetail(
             @PathVariable("photoId") Long photoId,
             @AuthenticationPrincipal CustomUserDetails customUserDetails
-            ) {
+    ) {
         return photoService.readPhotoDetail(photoId, customUserDetails.getMemberId());
     }
 
@@ -115,7 +115,7 @@ public class PhotoController {
     public void deletePhotoReaction(
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @PathVariable("photoId") Long photoId
-    ){
+    ) {
         photoService.deletePhotoReaction(customUserDetails.getMemberId(), photoId);
     }
 }

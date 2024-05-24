@@ -12,7 +12,6 @@ import io.ssafy.gatee.global.exception.message.ExceptionMessage;
 import io.ssafy.gatee.global.openai.config.ChatGptConfig;
 import io.ssafy.gatee.global.openai.util.Prompt;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,7 +34,7 @@ public class GptService {
 
             return openAiService.createChatCompletion(build);
         } catch (RuntimeException e) {
-            throw new GptServiceUnavailable(ExceptionMessage.GPT_SERIVCE_UNAVAILABLE);
+            throw new GptServiceUnavailable(ExceptionMessage.GPT_SERVICE_UNAVAILABLE);
         }
     }
 

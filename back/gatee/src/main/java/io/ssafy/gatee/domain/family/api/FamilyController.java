@@ -24,10 +24,10 @@ import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.UUID;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/family")
 @RequiredArgsConstructor
-@Slf4j
 public class FamilyController {
 
     private final FamilyService familyService;

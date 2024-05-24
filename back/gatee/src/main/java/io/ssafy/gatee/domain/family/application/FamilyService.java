@@ -19,12 +19,20 @@ import java.util.UUID;
 public interface FamilyService {
 
     FamilySaveRes saveFamily(String name, UUID memberId, FileType fileType, MultipartFile file) throws IOException;
+
     FamilyCodeRes createFamilyCode(String familyId);
+
     UUID getFamilyIdByMemberId(UUID memberId);
+
     void joinFamily(FamilyJoinReq familyCode, UUID memberId) throws ExpiredCodeException;
+
     FamilyInfoRes readFamily(String s) throws FamilyNotFoundException;
+
     void editFamilyName(UUID familyId, FamilyNameReq familyNameReq) throws FamilyNotFoundException;
+
     FamilyCheckRes checkFamilyCode(String familyCode, UUID memberId);
+
     List<Family> findAllFamily();
+
     void editFamilyImage(FileType fileType, MultipartFile file, UUID memberId) throws IOException;
 }

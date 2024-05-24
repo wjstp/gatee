@@ -19,7 +19,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -91,7 +90,6 @@ public class ExamServiceImpl implements ExamService {
     public List<ExamFamilyRes> readFamilyExamResults(UUID memberId) {
         return memberFamilyExamRepository.findFamilyExamResults(memberId);
     }
-
 
 
     @Override

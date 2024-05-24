@@ -23,7 +23,7 @@ public class ChatRoomController {
     // 채팅 사진 전체 조회
     @GetMapping("/{chatroomId}")
     @ResponseStatus(HttpStatus.OK)
-    public List<FileUrlRes> readFileListChatRoom (
+    public List<FileUrlRes> readFileListChatRoom(
             @PathVariable("chatroomId") Long chatroomId
     ) {
         return chatRoomService.readFileListChatRoom(chatroomId);
@@ -32,7 +32,7 @@ public class ChatRoomController {
     // 채팅 사진 등록
     @PostMapping("/{chatroomId}")
     @ResponseStatus(HttpStatus.OK)
-    public void saveFileListChatRoom (
+    public void saveFileListChatRoom(
             @Valid @RequestBody ChatRoomSaveReq chatRoomSaveReq,
             @PathVariable("chatroomId") Long chatroomId
     ) {

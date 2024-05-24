@@ -8,6 +8,7 @@ import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 public interface ChatService {
+
     void sendMessage(ChatDto chatDto, UUID memberId) throws ExecutionException, InterruptedException, FirebaseMessagingException;
 
     void updateRead(UUID memberId, UUID familyId);

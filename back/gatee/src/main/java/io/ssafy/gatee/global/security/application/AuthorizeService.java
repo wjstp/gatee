@@ -3,8 +3,6 @@ package io.ssafy.gatee.global.security.application;
 import io.ssafy.gatee.domain.appointment.dao.AppointmentRepository;
 import io.ssafy.gatee.domain.appointment.entity.Appointment;
 import io.ssafy.gatee.domain.family.application.FamilyService;
-import io.ssafy.gatee.domain.family.dao.FamilyRepository;
-import io.ssafy.gatee.domain.member.dao.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,8 +14,6 @@ import java.util.UUID;
 @Transactional(readOnly = true)
 public class AuthorizeService {
 
-    private final MemberRepository memberRepository;
-    private final FamilyRepository familyRepository;
     private final FamilyService familyService;
     private final AppointmentRepository appointmentRepository;
 

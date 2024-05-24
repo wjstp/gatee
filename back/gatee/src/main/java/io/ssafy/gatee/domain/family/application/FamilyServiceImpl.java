@@ -43,8 +43,8 @@ import java.util.concurrent.TimeUnit;
 
 import static io.ssafy.gatee.global.exception.message.ExceptionMessage.*;
 
-@Service
 @Slf4j
+@Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class FamilyServiceImpl implements FamilyService {
@@ -92,12 +92,12 @@ public class FamilyServiceImpl implements FamilyService {
                 imageFile = fileRepository.findByUrl(DEFAULT_FAMILY_IMAGE_URL);
             } else {
                 imageFile = fileRepository.save(File.builder()
-                                .name("family")
-                                .originalName("family.jpg")
-                                .url(DEFAULT_FAMILY_IMAGE_URL)
-                                .dir("/default")
-                                .fileType(FileType.FAMILY_PROFILE)
-                                .build());
+                        .name("family")
+                        .originalName("family.jpg")
+                        .url(DEFAULT_FAMILY_IMAGE_URL)
+                        .dir("/default")
+                        .fileType(FileType.FAMILY_PROFILE)
+                        .build());
             }
         }
 

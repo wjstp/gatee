@@ -17,7 +17,6 @@ import io.ssafy.gatee.domain.photo_album.dao.PhotoAlbumRepositoryCustom;
 import io.ssafy.gatee.domain.photo_album.entity.PhotoAlbum;
 import io.ssafy.gatee.global.exception.error.not_found.AlbumNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,8 +40,7 @@ public class AlbumServiceImpl implements AlbumService {
 
     private final PhotoAlbumRepositoryCustom photoAlbumRepositoryCustom;
 
-
-//    앨범 목록 조회
+    //    앨범 목록 조회
     @Override
     public List<AlbumListRes> readAlbumList(UUID familyId) throws AlbumNotFoundException {
         Family family = familyRepository.getReferenceById(familyId);
@@ -110,9 +108,9 @@ public class AlbumServiceImpl implements AlbumService {
         // 반환 값이 필요 없지만 stream.map 을 사용하여 반복문 구조를 사용하기 위해서 사용 (추후 수정 필요)
         List<PhotoAlbum> photoAlbumList = photoList.stream()
                 .map(photo -> PhotoAlbum.builder()
-                                .photo(photo)
-                                .album(album)
-                                .build()).toList();
+                        .photo(photo)
+                        .album(album)
+                        .build()).toList();
 
         photoAlbumRepository.saveAll(photoAlbumList);
 

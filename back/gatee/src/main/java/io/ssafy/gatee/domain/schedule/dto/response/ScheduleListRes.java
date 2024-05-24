@@ -35,17 +35,17 @@ public record ScheduleListRes(
 
         Integer scheduleRecordCount
 ) {
-        public static ScheduleListRes toDto(Schedule schedule, List<Member> memberList, Integer scheduleRecordCount) {
-                return ScheduleListRes.builder()
-                        .scheduleId(schedule.getId())
-                        .category(String.valueOf(schedule.getCategory()))
-                        .title(schedule.getTitle())
-                        .emoji(schedule.getEmoji())
-                        .content(schedule.getContent())
-                        .startDate(String.valueOf(schedule.getStartDate()))
-                        .endDate(String.valueOf(schedule.getEndDate()))
-                        .participateMembers(memberList.stream().map(ParticipateMemberRes::toDto).toList())
-                        .scheduleRecordCount(scheduleRecordCount)
-                        .build();
-        }
+    public static ScheduleListRes toDto(Schedule schedule, List<Member> memberList, Integer scheduleRecordCount) {
+        return ScheduleListRes.builder()
+                .scheduleId(schedule.getId())
+                .category(String.valueOf(schedule.getCategory()))
+                .title(schedule.getTitle())
+                .emoji(schedule.getEmoji())
+                .content(schedule.getContent())
+                .startDate(String.valueOf(schedule.getStartDate()))
+                .endDate(String.valueOf(schedule.getEndDate()))
+                .participateMembers(memberList.stream().map(ParticipateMemberRes::toDto).toList())
+                .scheduleRecordCount(scheduleRecordCount)
+                .build();
+    }
 }

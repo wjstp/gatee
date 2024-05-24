@@ -3,7 +3,6 @@ package io.ssafy.gatee.global.jwt.application;
 import io.jsonwebtoken.Claims;
 import io.ssafy.gatee.global.jwt.dao.RefreshTokenRedisRepository;
 import io.ssafy.gatee.global.jwt.dto.RefreshToken;
-import io.ssafy.gatee.global.jwt.exception.AccessTokenException;
 import io.ssafy.gatee.global.jwt.exception.RefreshTokenException;
 import io.ssafy.gatee.global.jwt.util.JwtClaimsParser;
 import io.ssafy.gatee.global.jwt.util.JwtProvider;
@@ -69,7 +68,7 @@ public class JwtService {
     }
 
     public String parseJwt(HttpServletRequest request) {
-        if (! request.getRequestURI().startsWith("/chat")) {
+        if (!request.getRequestURI().startsWith("/chat")) {
             // request에서 Authorization헤더를 찾음
             String authorization = request.getHeader(ACCESS_HEADER_AUTHORIZATION);
 

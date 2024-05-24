@@ -1,7 +1,6 @@
 package io.ssafy.gatee.global.security.handler;
 
 import io.ssafy.gatee.domain.member.dao.MemberRepository;
-import io.ssafy.gatee.domain.member.entity.Privilege;
 import io.ssafy.gatee.domain.member_family.dao.MemberFamilyRepository;
 import io.ssafy.gatee.global.exception.error.not_found.MemberNotFoundException;
 import io.ssafy.gatee.global.exception.message.ExceptionMessage;
@@ -26,15 +25,10 @@ import java.io.IOException;
 public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
     private final JwtService jwtService;
-
     private final MemberRepository memberRepository;
-
     private final MemberFamilyRepository memberFamilyRepository;
-
     private final String REDIRECT_URI_SUCCESS = "/main";
-
     private final String REDIRECT_URI_NOT_FAMILY = "/signup";
-
     private final String REDIRECT_URI_ANONYMOUS = "/signup/member-set";
 
 

@@ -1,6 +1,5 @@
 package io.ssafy.gatee.global.websocket.config;
 
-import io.ssafy.gatee.global.websocket.interceptor.CustomHandshakeInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.WebSocketHandler;

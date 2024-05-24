@@ -14,10 +14,10 @@ public record ReactionMemberRes(
         @NotNull
         String content
 ) {
-        public static ReactionMemberRes toDto(Reaction reaction) {
-                return ReactionMemberRes.builder()
-                        .memberId(reaction.getMember().getId())
-                        .content(reaction.getContent())
-                        .build();
-        }
+    public static ReactionMemberRes toDto(Reaction reaction) {
+        return ReactionMemberRes.builder()
+                .memberId(reaction.getMember().getId())
+                .content(reaction.getContent())
+                .build();
+    }
 }

@@ -14,15 +14,16 @@ import java.util.UUID;
 
 @Repository
 public interface MemberFamilyScheduleRepository extends JpaRepository<MemberFamilySchedule, Long> {
+
     Optional<MemberFamilySchedule> findByMemberAndFamilySchedule(Member member, FamilySchedule familySchedule);
 
     Optional<List<MemberFamilySchedule>> findAllByFamilySchedule(FamilySchedule familySchedule);
 
     @Query("""
-        select ms.member.id from MemberFamilySchedule ms
-        join FamilySchedule fs on fs.id = ms.familySchedule.id
-        where fs.schedule = :schedule
-        """)
+            select ms.member.id from MemberFamilySchedule ms
+            join FamilySchedule fs on fs.id = ms.familySchedule.id
+            where fs.schedule = :schedule
+            """)
     List<UUID> findMemberIdBySchedule(Schedule schedule);
 
     Boolean existsByMemberAndFamilySchedule(Member member, FamilySchedule familySchedule);

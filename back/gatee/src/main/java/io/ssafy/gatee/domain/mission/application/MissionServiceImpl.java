@@ -32,13 +32,9 @@ import static io.ssafy.gatee.global.exception.message.ExceptionMessage.MEMBER_FA
 public class MissionServiceImpl implements MissionService {
 
     private final MissionRepository missionRepository;
-
     private final MemberRepository memberRepository;
-
     private final FamilyRepository familyRepository;
-
     private final MemberFamilyRepository memberFamilyRepository;
-
     private final MissionRepositoryCustom missionRepositoryCustom;
 
     // 미션 목록 확인

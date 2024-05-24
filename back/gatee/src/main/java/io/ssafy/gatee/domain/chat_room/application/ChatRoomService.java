@@ -8,5 +8,6 @@ import java.util.List;
 public interface ChatRoomService {
 
     List<FileUrlRes> readFileListChatRoom(Long chatroomId);
+
     void saveFileListChatRoom(Long chatroomId, ChatRoomSaveReq chatRoomSaveReq);
 }

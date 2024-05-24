@@ -4,8 +4,6 @@ import io.ssafy.gatee.domain.schedule.entity.Category;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
-import java.util.UUID;
-
 @Builder
 public record ScheduleEditReq(
 

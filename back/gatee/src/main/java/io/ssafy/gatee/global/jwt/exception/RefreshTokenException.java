@@ -3,7 +3,7 @@ package io.ssafy.gatee.global.jwt.exception;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.Getter;
 
-public class RefreshTokenException extends JwtException{
+public class RefreshTokenException extends JwtException {
 
     private final REFRESH_TOKEN_ERROR error;
 

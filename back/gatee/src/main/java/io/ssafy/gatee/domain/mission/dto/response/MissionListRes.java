@@ -26,14 +26,14 @@ public record MissionListRes(
         @NotNull
         Integer completedLevel
 ) {
-        public static MissionListRes toDto(Mission mission) {
-                return MissionListRes.builder()
-                        .id(mission.getId())
-                        .type(mission.getType())
-                        .isComplete(mission.isComplete())
-                        .nowRange(mission.getNowRange())
-                        .maxRange(mission.getMaxRange())
-                        .completedLevel(mission.getCompletedLevel())
-                        .build();
-        }
+    public static MissionListRes toDto(Mission mission) {
+        return MissionListRes.builder()
+                .id(mission.getId())
+                .type(mission.getType())
+                .isComplete(mission.isComplete())
+                .nowRange(mission.getNowRange())
+                .maxRange(mission.getMaxRange())
+                .completedLevel(mission.getCompletedLevel())
+                .build();
+    }
 }

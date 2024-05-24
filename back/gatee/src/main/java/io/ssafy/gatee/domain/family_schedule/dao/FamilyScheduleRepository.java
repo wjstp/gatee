@@ -12,5 +12,6 @@ import java.util.Optional;
 @Repository
 public interface FamilyScheduleRepository extends JpaRepository<FamilySchedule, Long> {
     List<FamilySchedule> findAllByFamily(Family family);
+
     Optional<FamilySchedule> findByFamilyAndSchedule(Family family, Schedule schedule);
 }

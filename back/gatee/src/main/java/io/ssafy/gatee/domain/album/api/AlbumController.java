@@ -7,7 +7,6 @@ import io.ssafy.gatee.domain.album.dto.request.DeleteAlbumPhotoListReq;
 import io.ssafy.gatee.domain.album.dto.response.AlbumListRes;
 import io.ssafy.gatee.domain.album.dto.response.AlbumPhotoListRes;
 import io.ssafy.gatee.domain.album.dto.response.AlbumSaveRes;
-import io.ssafy.gatee.domain.photo.dto.response.PhotoListRes;
 import io.ssafy.gatee.global.exception.error.not_found.AlbumNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +23,7 @@ public class AlbumController {
 
     private final AlbumService albumService;
 
-//     앨범 목록 조회
+    //     앨범 목록 조회
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<AlbumListRes> readAlbumList(
@@ -34,10 +33,10 @@ public class AlbumController {
         return albumService.readAlbumList(familyId);
     }
 
-//    앨범 상세 조회
+    //    앨범 상세 조회
     @GetMapping("/{albumId}")
     @ResponseStatus(HttpStatus.OK)
-    public List<AlbumPhotoListRes> readAlbumDetail (
+    public List<AlbumPhotoListRes> readAlbumDetail(
             @PathVariable("albumId") Long albumId
     ) {
         return albumService.readAlbumDetail(albumId);

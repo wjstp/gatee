@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
 @Builder
-public record MemberSaveReq (
+public record MemberSaveReq(
 
         @NotNull
         String name,
@@ -19,5 +19,5 @@ public record MemberSaveReq (
         @NotNull
         String familyId,
         String phoneNumber
-){
+) {
 }

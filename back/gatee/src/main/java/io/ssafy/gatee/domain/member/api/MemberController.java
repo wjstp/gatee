@@ -24,6 +24,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Slf4j
 public class MemberController {
+
     private final MemberService memberService;
 
     // 회원 가입

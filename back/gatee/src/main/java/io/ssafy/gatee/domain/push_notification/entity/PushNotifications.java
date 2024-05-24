@@ -7,9 +7,6 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-import org.springframework.data.mongodb.core.mapping.MongoId;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Builder
@@ -27,7 +24,7 @@ public class PushNotifications {
     @Field(name = "sender_id")
     private String senderId;
 
-    @Field(name="sender_image_url")
+    @Field(name = "sender_image_url")
     private String senderImageUrl;
 
     @Field(name = "receiver_id")
@@ -40,7 +37,7 @@ public class PushNotifications {
     @Field(name = "is_check")
     private boolean isCheck;
 
-    @Field(name="created_at")
+    @Field(name = "created_at")
     private String createdAt;
 
     public void checkPushNotifications() {

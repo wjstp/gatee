@@ -6,6 +6,7 @@ public enum Type {
     ALBUM("사진 등록"), FEATURE("한줄 정보");
 
     public String korean;
+
     Type(String korean) {
         this.korean = korean;
     }

@@ -28,7 +28,7 @@ public class BatchScheduler {
     private final JobRegistry jobRegistry;
     private final ChatService chatService;
 
-    @Scheduled(cron = "0 0 * * * *")  // 매일 아침 10시 20분
+    @Scheduled(cron = "0 20 10 * * *")  // 매일 아침 10시 20분
     public void runFeatureNotificationJob() {
         String time = LocalDateTime.now().toString();
         try {
