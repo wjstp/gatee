@@ -119,7 +119,7 @@
 
 ### 11. 알림
 ![notification](/assets/page_introduction/notification.gif)
-### 11. 프로필 수정
+### 12. 프로필 수정
 ![profile](/assets/page_introduction/profile.gif)
 
 <br />
