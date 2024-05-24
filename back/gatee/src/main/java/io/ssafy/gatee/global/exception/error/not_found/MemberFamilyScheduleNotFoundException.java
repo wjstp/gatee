@@ -4,7 +4,5 @@ import io.ssafy.gatee.global.exception.message.ExceptionMessage;
 
 public class MemberFamilyScheduleNotFoundException extends RuntimeException {
 
-    public MemberFamilyScheduleNotFoundException(ExceptionMessage exceptionMessage) {
-        super(exceptionMessage.getMessage());
-    }
+    public MemberFamilyScheduleNotFoundException(ExceptionMessage exceptionMessage) {super(exceptionMessage.getMessage());}
 }

@@ -45,19 +45,12 @@ import static io.ssafy.gatee.global.exception.message.ExceptionMessage.*;
 public class PhotoServiceImpl implements PhotoService {
 
     private final PhotoRepository photoRepository;
-
     private final MemberRepository memberRepository;
-
     private final FamilyRepository familyRepository;
-
     private final MemberFamilyRepository memberFamilyRepository;
-
     private final ReactionRepository reactionRepository;
-
     private final FileRepository fileRepository;
-
     private final PhotoRepositoryCustom photoRepositoryCustom;
-
     private final PushNotificationService pushNotificationService;
 
     // 사진 목록 조회
@@ -153,18 +146,18 @@ public class PhotoServiceImpl implements PhotoService {
                 .build();
 
         photoRepository.save(photo);
-        
+
         // 사진 등록시 가족들에게 알림
         pushNotificationService.sendPushOneToMany(PushNotificationFCMReq.builder()
-                        .title("앨범 사진 등록")
-                        .content(memberFamily.getMember().getName() + "님이 사진을 등록하셨습니다.")
-                        .receiverId(memberFamilyRepository.findMyFamily(memberId))
-                        .senderId(String.valueOf(memberFamily.getMember().getId()))
-                        .dataFCMReq(DataFCMReq.builder()
-                                .type(Type.ALBUM)
-                                .typeId(photo.getId())
-                                .build())
-                        .build());
+                .title("앨범 사진 등록")
+                .content(memberFamily.getMember().getName() + "님이 사진을 등록하셨습니다.")
+                .receiverId(memberFamilyRepository.findMyFamily(memberId))
+                .senderId(String.valueOf(memberFamily.getMember().getId()))
+                .dataFCMReq(DataFCMReq.builder()
+                        .type(Type.ALBUM)
+                        .typeId(photo.getId())
+                        .build())
+                .build());
 
         return PhotoSaveRes.builder()
                 .photoId(photo.getId())

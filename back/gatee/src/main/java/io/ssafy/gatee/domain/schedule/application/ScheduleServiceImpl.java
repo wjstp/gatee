@@ -7,8 +7,6 @@ import io.ssafy.gatee.domain.family_schedule.dao.FamilyScheduleRepository;
 import io.ssafy.gatee.domain.family_schedule.dao.FamilyScheduleRepositoryCustom;
 import io.ssafy.gatee.domain.family_schedule.entity.FamilySchedule;
 import io.ssafy.gatee.domain.file.dao.FileRepository;
-import io.ssafy.gatee.domain.file.dto.FileUrlRes;
-import io.ssafy.gatee.domain.file.entity.File;
 import io.ssafy.gatee.domain.member.dao.MemberRepository;
 import io.ssafy.gatee.domain.member.entity.Member;
 import io.ssafy.gatee.domain.member_family.dao.MemberFamilyRepository;
@@ -57,29 +55,17 @@ import static io.ssafy.gatee.global.exception.message.ExceptionMessage.*;
 public class ScheduleServiceImpl implements ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
-
     private final ScheduleRecordRepository scheduleRecordRepository;
-
     private final MemberRepository memberRepository;
-
     private final FamilyRepository familyRepository;
-
     private final MemberFamilyRepository memberFamilyRepository;
-
     private final FamilyScheduleRepository familyScheduleRepository;
-
     private final FamilyScheduleRepositoryCustom familyScheduleRepositoryCustom;
-
     private final MemberFamilyScheduleRepository memberFamilyScheduleRepository;
-
     private final PhotoRepository photoRepository;
-
     private final PhotoScheduleRecordRepository photoScheduleRecordRepository;
-
     private final PhotoScheduleRecordRepositoryCustom photoScheduleRecordRepositoryCustom;
-
     private final FileRepository fileRepository;
-
     private final PushNotificationService pushNotificationService;
 
     // 전체 일정 조회
@@ -106,7 +92,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
                     if (memberFamilyScheduleList != null) {
                         memberList = memberFamilyScheduleList.stream().map(MemberFamilySchedule::getMember).toList();
-                    }  else {
+                    } else {
                         memberList = new ArrayList<>();
                     }
                 }
@@ -139,12 +125,12 @@ public class ScheduleServiceImpl implements ScheduleService {
             memberList = memberFamilyScheduleList.stream().map(MemberFamilySchedule::getMember).toList();
 
             participateMembers = memberList.stream().map(ParticipateMemberRes::toDto).toList();
-        }  else {
-            participateMembers =  new ArrayList<>();
+        } else {
+            participateMembers = new ArrayList<>();
 
             participateMembers.add(ParticipateMemberRes.builder()
-                            .profileImageUrl(null)
-                            .nickname(null)
+                    .profileImageUrl(null)
+                    .nickname(null)
                     .build());
         }
 
@@ -220,10 +206,10 @@ public class ScheduleServiceImpl implements ScheduleService {
             List<Member> memberList = scheduleSaveReq.memberIdList().stream().map(memberRepository::getReferenceById).toList();
 
             List<MemberFamilySchedule> memberFamilyScheduleList = memberList.stream().map(member1 ->
-                MemberFamilySchedule.builder()
-                        .member(member1)
-                        .familySchedule(familySchedule)
-                        .build()
+                    MemberFamilySchedule.builder()
+                            .member(member1)
+                            .familySchedule(familySchedule)
+                            .build()
             ).toList();
 
             memberFamilyScheduleRepository.saveAll(memberFamilyScheduleList);
@@ -231,14 +217,14 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         // 알림발송
         pushNotificationService.sendPushOneToMany(PushNotificationFCMReq.builder()
-                                .senderId(String.valueOf(memberId))
-                                .receiverId(memberFamilyRepository.findMyFamily(memberId))
-                                .title("일정 등록")
-                                .content(member.getName() + "님이 일정을 등록하였습니다.")
-                                .dataFCMReq(DataFCMReq.builder()
-                                    .type(Type.SCHEDULE)
-                                    .typeId(schedule.getId()).build())
-                                .build());
+                .senderId(String.valueOf(memberId))
+                .receiverId(memberFamilyRepository.findMyFamily(memberId))
+                .title("일정 등록")
+                .content(member.getName() + "님이 일정을 등록하였습니다.")
+                .dataFCMReq(DataFCMReq.builder()
+                        .type(Type.SCHEDULE)
+                        .typeId(schedule.getId()).build())
+                .build());
     }
 
     // 일정 수정
@@ -337,10 +323,10 @@ public class ScheduleServiceImpl implements ScheduleService {
         scheduleRecordRepository.save(scheduleRecord);
 
         List<Photo> photos = scheduleSaveRecordReq.fileIdList().stream().map(fileId ->
-            Photo.builder()
-                    .memberFamily(memberFamily)
-                    .file(fileRepository.getReferenceById(fileId))
-                    .build()).toList();
+                Photo.builder()
+                        .memberFamily(memberFamily)
+                        .file(fileRepository.getReferenceById(fileId))
+                        .build()).toList();
 
         List<Photo> photoList = photoRepository.saveAll(photos);
 

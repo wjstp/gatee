@@ -3,8 +3,9 @@ package io.ssafy.gatee.global.jwt.exception;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.Getter;
 
-public class AccessTokenException extends JwtException{
+public class AccessTokenException extends JwtException {
     private final ACCESS_TOKEN_ERROR error;
+
     @Getter
     public enum ACCESS_TOKEN_ERROR {
         UN_ACCEPT(401, "토큰이 비어있거나 짧습니다."),

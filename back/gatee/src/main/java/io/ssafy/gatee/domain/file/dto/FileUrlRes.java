@@ -13,10 +13,10 @@ public record FileUrlRes(
         @NotNull
         String imageUrl
 ) {
-        public static FileUrlRes toDto(File file) {
-                return FileUrlRes.builder()
-                        .fileId(file.getId())
-                        .imageUrl(file.getUrl())
-                        .build();
-        }
+    public static FileUrlRes toDto(File file) {
+        return FileUrlRes.builder()
+                .fileId(file.getId())
+                .imageUrl(file.getUrl())
+                .build();
+    }
 }

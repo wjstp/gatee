@@ -15,40 +15,40 @@ import java.util.UUID;
 public interface MemberFeatureRepository extends JpaRepository<MemberFeature, Long> {
 
     @Query(value = """
-        select mf from MemberFeature mf
-        where mf.member.id in :memberIdList
-        and size(mf.wrongAnswer) = 3
-        order by rand()
-        """)
+            select mf from MemberFeature mf
+            where mf.member.id in :memberIdList
+            and size(mf.wrongAnswer) = 3
+            order by rand()
+            """)
     List<MemberFeature> findRandomMemberFeature(@Param("memberIdList") List<UUID> memberIdList, Pageable pageable);
 
     List<MemberFeature> findByMember_Id(UUID memberId);
 
     @Query("""
-        select mf from MemberFeature mf
-        where mf.member.id = :memberId
-        order by rand()
-        limit 1
-    """)
+                select mf from MemberFeature mf
+                where mf.member.id = :memberId
+                order by rand()
+                limit 1
+            """)
     Optional<MemberFeature> findRandomFeature(UUID memberId);
 
 
     @Query("""
-        select t from MemberFeature t
-        where t.member = (select mf.member from MemberFamily mf
-        where mf.family = (select f.family from MemberFamily f where f.member.id = :memberId)
-        order by rand() limit 1)
-        and t.member.id != :memberId
-        order by rand() limit 1
-    """)    //todo:수정
+                select t from MemberFeature t
+                where t.member = (select mf.member from MemberFamily mf
+                where mf.family = (select f.family from MemberFamily f where f.member.id = :memberId)
+                order by rand() limit 1)
+                and t.member.id != :memberId
+                order by rand() limit 1
+            """)
     Optional<MemberFeature> findRandomMyFamilyFeature(UUID memberId);
 
     @Query("""
-        select f from MemberFeature f
-        join MemberFamily mf
-        on mf.member.id = f.member.id
-        where mf.id = :memberFamilyId
-    """)
+                select f from MemberFeature f
+                join MemberFamily mf
+                on mf.member.id = f.member.id
+                where mf.id = :memberFamilyId
+            """)
     List<MemberFeature> findByMemberFamilyId(Long memberFamilyId);
 
     Optional<MemberFeature> findByMember_IdAndFeature_Id(UUID memberId, Long featureId);

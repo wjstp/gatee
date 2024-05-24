@@ -7,7 +7,7 @@ import org.springframework.http.MediaType;
 
 import java.io.IOException;
 
-public class JwtException extends RuntimeException{
+public class JwtException extends RuntimeException {
     public JwtException(String message) {
         super(message);
     }

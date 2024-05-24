@@ -23,11 +23,8 @@ import java.util.List;
 public class ChatRoomServiceImpl implements ChatRoomService {
 
     private final ChatRoomRepository chatRoomRepository;
-
     private final FamilyRepository familyRepository;
-
     private final ChatRoomFileRepository chatRoomFileRepository;
-
     private final FileRepository fileRepository;
 
     // 채팅 사진 전체 조회

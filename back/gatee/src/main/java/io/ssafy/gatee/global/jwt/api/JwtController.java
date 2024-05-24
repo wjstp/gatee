@@ -33,7 +33,6 @@ public class JwtController {
             refreshTokenException.addResponseError(response);
         }
     }
-    // todo: access token 검증할 때 refresh token의 남은 시간을 확인해서 갱신하는 로직 추가
 
     private Cookie getCookie(HttpServletRequest request) {
         return Arrays.stream(request.getCookies())

@@ -114,7 +114,7 @@ public class ScheduleController {
             @RequestBody ScheduleSaveRecordReq scheduleSaveRecordReq,
             @AuthenticationPrincipal CustomUserDetails customUserDetails,
             @PathVariable("scheduleId") Long scheduleId
-    ){
+    ) {
         scheduleService.saveScheduleRecord(scheduleSaveRecordReq, customUserDetails.getMemberId(), scheduleId);
     }
 

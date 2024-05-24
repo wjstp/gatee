@@ -5,13 +5,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-@SpringBootApplication
 @EnableJpaAuditing
 @EnableScheduling
+@SpringBootApplication
 public class GateeApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(GateeApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(GateeApplication.class, args);
+    }
 
 }

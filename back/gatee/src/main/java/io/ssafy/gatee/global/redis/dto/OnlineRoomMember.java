@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.redis.core.RedisHash;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 

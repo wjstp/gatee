@@ -11,7 +11,7 @@ public interface AuthService {
 
     KakaoTokenRes requestKakaoUserInfo(String accessToken, HttpServletResponse httpServletResponse) throws IOException;
 
-    CustomUserDetails loadUserSecurityDTO(KakaoTokenRes socialData);  // todo: 인자 수정
+    CustomUserDetails loadUserSecurityDTO(KakaoTokenRes socialData);
 
-    Member register(KakaoTokenRes socialData); //todo: 인자 수정
+    Member register(KakaoTokenRes socialData);
 }

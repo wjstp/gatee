@@ -6,8 +6,8 @@ import java.util.List;
 
 @Builder
 public record PushNotificationPageRes(
-    List<PushNotificationRes> pushNotificationResList,
-    String nextCursor,
-    boolean hasNext
+        List<PushNotificationRes> pushNotificationResList,
+        String nextCursor,
+        boolean hasNext
 ) {
 }

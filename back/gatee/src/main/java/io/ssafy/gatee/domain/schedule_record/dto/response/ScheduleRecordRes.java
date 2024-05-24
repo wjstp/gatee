@@ -1,6 +1,5 @@
 package io.ssafy.gatee.domain.schedule_record.dto.response;
 
-import io.ssafy.gatee.domain.file.dto.FileUrlRes;
 import io.ssafy.gatee.domain.schedule_record.entity.ScheduleRecord;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;

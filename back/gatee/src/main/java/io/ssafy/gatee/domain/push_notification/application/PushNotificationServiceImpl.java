@@ -23,7 +23,6 @@ import io.ssafy.gatee.domain.push_notification.entity.Type;
 import io.ssafy.gatee.global.exception.error.not_found.MemberNotFoundException;
 import io.ssafy.gatee.global.exception.error.not_found.MemberNotificationNotFoundException;
 import io.ssafy.gatee.global.exception.error.not_found.PushNotificationNotFoundException;
-import io.ssafy.gatee.global.exception.message.ExceptionMessage;
 import io.ssafy.gatee.global.firebase.FirebaseInit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +37,6 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-import static com.google.firebase.messaging.MessagingErrorCode.INVALID_ARGUMENT;
 import static com.google.firebase.messaging.MessagingErrorCode.UNREGISTERED;
 import static io.ssafy.gatee.global.exception.message.ExceptionMessage.*;
 
@@ -64,7 +62,7 @@ public class PushNotificationServiceImpl implements PushNotificationService {
     @Override
     public void checkReadNotification(String notificationId) {
         PushNotifications pushNotifications = pushNotificationRepository.findById(notificationId)
-                .orElseThrow(()-> new PushNotificationNotFoundException(PUSH_NOTIFICATION_NOT_FOUND));
+                .orElseThrow(() -> new PushNotificationNotFoundException(PUSH_NOTIFICATION_NOT_FOUND));
         pushNotifications.checkPushNotifications();
         pushNotificationRepository.save(pushNotifications);
     }
@@ -73,7 +71,7 @@ public class PushNotificationServiceImpl implements PushNotificationService {
     public NotificationAgreementRes readNotificationAgreements(UUID memberId) {
         Member member = memberRepository.getReferenceById(memberId);
         MemberNotification memberNotification = memberNotificationRepository.findByMember(member)
-                .orElseThrow(()-> new MemberNotificationNotFoundException(MEMBER_NOTIFICATION_NOT_FOUND));
+                .orElseThrow(() -> new MemberNotificationNotFoundException(MEMBER_NOTIFICATION_NOT_FOUND));
         return NotificationAgreementRes.toDto(memberNotification);
     }
 
@@ -82,7 +80,7 @@ public class PushNotificationServiceImpl implements PushNotificationService {
     public void modifyNotificationAgreements(UUID memberId, NotificationAgreementReq agreementReq) {
         Member proxyMember = memberRepository.getReferenceById(memberId);
         MemberNotification memberNotification = memberNotificationRepository.findByMember(proxyMember)
-                .orElseThrow(()-> new MemberNotFoundException(MEMBER_NOTIFICATION_NOT_FOUND));
+                .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOTIFICATION_NOT_FOUND));
         memberNotification.modifyMemberNotification(agreementReq);
     }
 
@@ -111,7 +109,7 @@ public class PushNotificationServiceImpl implements PushNotificationService {
         String senderImageUrl;
         if (Objects.nonNull(pushNotificationFCMReq.senderId())) {
             senderImageUrl = memberRepository.findById(UUID.fromString(pushNotificationFCMReq.senderId()))
-                    .orElseThrow(()-> new MemberNotFoundException(MEMBER_NOT_FOUND)).getFile().getUrl();
+                    .orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND)).getFile().getUrl();
         } else {
             senderImageUrl = DEFAULT_NOTIFICATION_IMAGE;
         }
@@ -143,12 +141,12 @@ public class PushNotificationServiceImpl implements PushNotificationService {
         String content = "\"" + naggingReq.message() + "\"라는 문장을 상냥한 어투로 바꿔줘. 이모티콘도 붙여줘.";
         GptResponseDto result = gptService.askQuestion(QuestionDto.builder().content(content).build());
         log.info(result.answer());
-        Member member = memberRepository.findById(memberId).orElseThrow(()-> new MemberNotFoundException(MEMBER_NOT_FOUND));
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new MemberNotFoundException(MEMBER_NOT_FOUND));
 
         PushNotificationFCMReq pushNotification = PushNotificationFCMReq.builder()
                 .receiverId(Collections.singletonList(naggingReq.receiverId()))
                 .senderId(String.valueOf(memberId))
-                .title(member.getNickname() +"님의 "+Type.NAGGING.korean)
+                .title(member.getNickname() + "님의 " + Type.NAGGING.korean)
                 .content(result.answer())
                 .dataFCMReq(DataFCMReq.builder()
                         .type(Type.NAGGING)
@@ -159,7 +157,7 @@ public class PushNotificationServiceImpl implements PushNotificationService {
         PushNotificationFCMReq myPushNotification = PushNotificationFCMReq.builder()
                 .receiverId(Collections.singletonList(memberId))
                 .senderId(String.valueOf(memberId))
-                .title("나의 "+Type.NAGGING.korean+"가 전송되었습니다.")
+                .title("나의 " + Type.NAGGING.korean + "가 전송되었습니다.")
                 .content(result.answer())
                 .dataFCMReq(DataFCMReq.builder()
                         .type(Type.NAGGING)
@@ -196,19 +194,18 @@ public class PushNotificationServiceImpl implements PushNotificationService {
                                     .setTitle(pushNotificationFCMReq.title())
                                     .setImage("https://source.unsplash.com/random/cat")
                                     .setBody(pushNotificationFCMReq.content())
-                                    .setClickAction("push_click").build())  // todo: 푸시 알림 클릭시 연결 동작 - 아마도 프론트 함수 호출?
+                                    .setClickAction("push_click").build())  // 푸시 알림 클릭시 연결 동작
                             .build())
                     // ios 설정
                     .setApnsConfig(ApnsConfig.builder()
                             .setAps(Aps.builder()
                                     .setCategory("https://source.unsplash.com/random/apple")
-                                    .setBadge(42)   // todo: ?
+                                    .setBadge(42)
                                     .build())
                             .build())
                     .build();
             String response = FirebaseMessaging.getInstance().send(message);
             log.info("successfully sent message ? " + response);
-            // todo : 저장
         }
         savePushNotification(pushNotificationFCMReq);
 
@@ -221,7 +218,7 @@ public class PushNotificationServiceImpl implements PushNotificationService {
         List<String> receiverTokens = pushNotificationFCMReq.receiverId().stream()
                 .map(memberRepository::findById)
                 .filter(Optional::isPresent)
-                .filter(receiverGet -> Objects.nonNull(receiverGet.get().getNotificationToken()) && ! receiverGet.equals(""))    // todo: 수정
+                .filter(receiverGet -> Objects.nonNull(receiverGet.get().getNotificationToken()) && !receiverGet.equals(""))
                 .filter(receiver -> checkAgreement(pushNotificationFCMReq.dataFCMReq().type(), receiver.get().getId()))
                 .map(receiver -> receiver.get().getNotificationToken()).toList();
 //        log.info(checkAgreement(pushNotificationFCMReq.dataFCMReq().type(), pushNotificationFCMReq.receiverId().get(0))+"");
@@ -242,17 +239,17 @@ public class PushNotificationServiceImpl implements PushNotificationService {
                                     .setTitle(pushNotificationFCMReq.title())
                                     //                                .setImage("보내는 사람 프로필 이미지")
                                     .setBody(pushNotificationFCMReq.content())
-                                    .setClickAction("push_click").build())  // todo: 푸시 알림 클릭시 연결 동작 - 아마도 프론트 함수 호출?
+                                    .setClickAction("push_click").build())  //푸시 알림 클릭시 연결 동작
                             .build())
                     // ios 설정
                     .setApnsConfig(ApnsConfig.builder()
                             .setAps(Aps.builder()
                                     .setCategory("push_click")
-                                    .setBadge(42)   // todo: ?
+                                    .setBadge(42)
                                     .build())
                             .build())
                     .build();
-            BatchResponse response = FirebaseMessaging.getInstance().sendMulticast(message);    // sendEachForMulticast
+            BatchResponse response = FirebaseMessaging.getInstance().sendEachForMulticast(message);    // sendmulticast
             if (response.getFailureCount() > 0) {
                 List<SendResponse> responses = response.getResponses();
                 List<String> failedTokens = new ArrayList<>();
@@ -262,7 +259,7 @@ public class PushNotificationServiceImpl implements PushNotificationService {
                         MessagingErrorCode exception = responses.get(i).getException().getMessagingErrorCode();
                         if (exception.equals(UNREGISTERED)) {
                             Optional<Member> member = memberRepository.findByNotificationToken(receiverTokens.get(i));
-                            member.ifPresent(mem -> mem.saveNotificationToken(null));   // todo:수정
+                            member.ifPresent(mem -> mem.saveNotificationToken(null));
                         }
                         failedTokens.add(receiverTokens.get(i));
                     }
@@ -294,13 +291,13 @@ public class PushNotificationServiceImpl implements PushNotificationService {
                                 .setTitle("제목")
                                 .setImage("https://source.unsplash.com/random/cat")
                                 .setBody("내용")
-                                .setClickAction("push_click").build())  // todo: 푸시 알림 클릭시 연결 동작 - 아마도 프론트 함수 호출?
+                                .setClickAction("push_click").build())  // 푸시 알림 클릭시 연결 동작
                         .build())
                 // ios 설정
                 .setApnsConfig(ApnsConfig.builder()
                         .setAps(Aps.builder()
                                 .setCategory("https://source.unsplash.com/random/apple")
-                                .setBadge(42)   // todo: ?
+                                .setBadge(42)
                                 .build())
                         .build())
                 .build();

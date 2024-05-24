@@ -1,7 +1,6 @@
 package io.ssafy.gatee.domain.member.dto.response;
 
 import io.ssafy.gatee.domain.member.entity.Member;
-import io.ssafy.gatee.domain.member_family.dao.MemberFamilyRepository;
 import lombok.Builder;
 
 import java.util.UUID;

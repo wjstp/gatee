@@ -2,6 +2,7 @@ package io.ssafy.gatee.global.batch.config;
 
 
 import io.ssafy.gatee.domain.member.dao.MemberRepository;
+import io.ssafy.gatee.domain.member.entity.Member;
 import jakarta.persistence.EntityManagerFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -19,8 +20,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.transaction.PlatformTransactionManager;
-
-import io.ssafy.gatee.domain.member.entity.Member;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -78,9 +77,9 @@ public class FcmTokenRefreshBatchConfig {
     }
 
     private ItemWriter<? super Member> removeOldToken() {
-        return members -> members.forEach(member ->{
-                    member.saveNotificationToken("");
-                    memberRepository.save(member);
-            });
+        return members -> members.forEach(member -> {
+            member.saveNotificationToken("");
+            memberRepository.save(member);
+        });
     }
 }

@@ -15,14 +15,14 @@ public interface MemberFamilyExamRepository extends JpaRepository<MemberFamilyEx
     List<MemberFamilyExam> findByExam_Id(Long examId);
 
     @Query("""
-       select new io.ssafy.gatee.domain.exam.dto.response.ExamFamilyRes(
-         mf.member.nickname, mf.member.id, coalesce(avg(mfe.exam.score), null)
-       )
-       from MemberFamily mf
-       left outer join MemberFamilyExam mfe
-       on mfe.memberFamily.id = mf.id
-       where mf.family = (select f.family from MemberFamily f where f.member.id = :memberId)
-       group by mf.id
-        """)
+            select new io.ssafy.gatee.domain.exam.dto.response.ExamFamilyRes(
+              mf.member.nickname, mf.member.id, coalesce(avg(mfe.exam.score), null)
+            )
+            from MemberFamily mf
+            left outer join MemberFamilyExam mfe
+            on mfe.memberFamily.id = mf.id
+            where mf.family = (select f.family from MemberFamily f where f.member.id = :memberId)
+            group by mf.id
+             """)
     List<ExamFamilyRes> findFamilyExamResults(UUID memberId);
 }

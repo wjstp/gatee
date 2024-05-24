@@ -9,6 +9,7 @@ import java.util.List;
 
 @Builder
 public record ScheduleInfoRes(
+
         @NotNull
         Long scheduleId,
 

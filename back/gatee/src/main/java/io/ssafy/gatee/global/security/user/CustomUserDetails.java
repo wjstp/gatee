@@ -17,21 +17,13 @@ import java.util.UUID;
 public class CustomUserDetails implements UserDetails {
 
     private String username;
-
     private UUID memberId;
-
     private Collection<? extends GrantedAuthority> authorities;
-
     private String privilege;
-
     private String password;
-
     private boolean isAccountNonLocked;
-
     private boolean isAccountNonExpired;
-
     private boolean isCredentialsNonExpired;
-
     private boolean isEnabled;
 
 

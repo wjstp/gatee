@@ -17,12 +17,12 @@ public record AlbumListRes(
 
         String imageUrl
 ) {
-        public static AlbumListRes toDto(PhotoAlbum photoAlbum) {
-                return AlbumListRes.builder()
-                        .albumId(photoAlbum.getAlbum().getId())
-                        .name(photoAlbum.getAlbum().getName())
-                        .photoId(photoAlbum.getPhoto().getId())
-                        .imageUrl(photoAlbum.getPhoto().getFile().getUrl())
-                        .build();
-        }
+    public static AlbumListRes toDto(PhotoAlbum photoAlbum) {
+        return AlbumListRes.builder()
+                .albumId(photoAlbum.getAlbum().getId())
+                .name(photoAlbum.getAlbum().getName())
+                .photoId(photoAlbum.getPhoto().getId())
+                .imageUrl(photoAlbum.getPhoto().getFile().getUrl())
+                .build();
+    }
 }
